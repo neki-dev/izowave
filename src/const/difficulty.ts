@@ -1,0 +1,49 @@
+export const PLAYER_SPEED = 100; // Player speed
+export const PLAYER_HEALTH = 100; // Default player health
+export const PLAYER_HEALTH_GROWTH = 0.1; // Player health growth by level
+export const PLAYER_DAMAGE = 15; // Default player damage
+export const PLAYER_DAMAGE_GROWTH = 0.25; // Player damage growth by level
+export const PLAYER_ATTACK_DISTANCE = 30; // Player maximum attack distance
+export const PLAYER_ATTACK_DISTANCE_GROWTH = 0.05; // Attack distance growth
+export const PLAYER_ATTACK_PAUSE = 700; // Player attack pause
+export const PLAYER_START_RESOURCES = { bronze: 90, silver: 90, gold: 0 }; // Player start resources
+
+export const WAVE_PAUSE = 25000; // Pause in milliseconds between waves
+export const WAVE_ENEMIES_COUNT = 8; // Enemies count on first wave
+export const WAVE_ENEMIES_COUNT_GROWTH = 0.6; // Enemies count growth by wave number
+export const WAVE_ENEMIES_SPAWN_PAUSE = 2300; // Default pause in milliseconds between enemies spawn
+export const WAVE_ENEMIES_SPAWN_PAUSE_GROWTH = -0.01; // Enemies spawn pause growth by wave number
+export const WAVE_BOSS_SPAWN_RATE = 5; // Every Nth wave a boss will spawn
+export const WAVE_EXPERIENCE = 200; // Gained experience per complete wave
+export const WAVE_EXPERIENCE_GROWTH = 0.1; // Experience count growth by wave number
+
+export const EXPERIENCE_TO_NEXT_LEVEL = 300; // Need experience count to next level
+export const EXPERIENCE_TO_NEXT_LEVEL_GROWTH = 0.2; // Experience count growth by level
+
+export const CHEST_EXPERIENCE = 5; // Gained experience per open chest
+export const CHEST_EXPERIENCE_GROWTH = 0.2; // Experience growth by wave number
+export const CHEST_RESOURCES = { bronze: 4, silver: 4, gold: 2 }; // Default resources count in chest
+export const CHEST_RESOURCES_GROWTH = 0.1; // Resources count growth by wave number
+
+export const ENEMY_HEALTH_GROWTH = 0.14; // Enemy health growth by wave number
+export const ENEMY_SPEED_GROWTH = 0.058; // Enemy speed growth by wave number
+export const ENEMY_DAMAGE_GROWTH = 0.05; // Enemy damage growth by wave number
+export const ENEMY_KILL_EXPERIENCE = 10; // Gained experience per kill enemy
+export const ENEMY_KILL_EXPERIENCE_GROWTH = 0.1; // Experience growth by wave number
+
+export const BUILDING_ACTION_RADIUS_GROWTH = 0.3; // Actions radius growth by upgrade
+export const BUILDING_ACTION_PAUSE_GROWTH = -0.1; // Actions pause growth by upgrade
+
+export const BUILDING_BUILD_AREA = 180; // Default radius of build area
+export const BUILDING_BUILD_AREA_GROWTH = 0.08; // Radius growth by level
+
+export const TOWER_SHOT_DAMAGE_GROWTH = 0.6; // Shot damage growth by upgrade
+export const TOWER_SHOT_FREEZE_GROWTH = 0.6; // Frozen duration growth by upgrade
+export const TOWER_SHOT_SPEED_GROWTH = 0.3; // Shot speed growth by upgrade
+
+export const MINE_RESOURCES_LIMIT = 150; // Maximum amount of resources that mine can
+
+export const WALL_HEALTH_GROWTH = 0.8; // Wall health growth by upgrade
+
+export const MEDIC_HEAL_AMOUNT = 10; // Default heal amount
+export const MEDIC_HEAL_AMOUNT_GROWTH = 1; // Medic heal growth by upgrade

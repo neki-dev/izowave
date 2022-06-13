@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./app",
+    "module": "commonjs",
+    "target": "esnext",
+    "esModuleInterop": true,
+    "declaration": true,
+    "paths": {
+      "~scene/*": ["./src/scenes/*"],
+      "~type/*": ["./src/types/*"],
+      "~const/*": ["./src/const/*"],
+      "~lib/*": ["./src/lib/*"],
+      "~ui/*": ["./src/ui/*"]
+    }
+  },
+  "include": ["./src/**/*.ts"]
+}
