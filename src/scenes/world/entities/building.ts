@@ -32,7 +32,7 @@ export default class Building extends Phaser.GameObjects.Image {
   /**
    * Variant name.
    */
-  private variant: BuildingVariant;
+  readonly variant: BuildingVariant;
 
   /**
    * Current upgrade level.
@@ -158,13 +158,6 @@ export default class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Get building variant name.
-   */
-  public getVariantName(): string {
-    return this.variant.split('_').reverse().join(' ');
-  }
-
-  /**
    * Get building information labels.
    */
   public getInfo(): string[] {
@@ -280,9 +273,10 @@ export default class Building extends Phaser.GameObjects.Image {
 
     const isCanUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
     this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentInfoBox.call(this.scene, {
-      label: () => this.getVariantName(),
+      label: () => this.variant.split('_').reverse().join(' '),
       description: () => this.getInfo().join('\n'),
       cost: isCanUpgrade ? () => this.upgradeLevelCost() : undefined,
+      costTitle: 'Upgrade cost',
       player: this.scene.player,
     });
     this.uiBuildingInfo.setPosition(

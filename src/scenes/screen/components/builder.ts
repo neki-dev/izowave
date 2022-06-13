@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import Player from '~scene/world/entities/player';
 import ComponentInfoBox from '~scene/world/components/info-box';
+import Building from '~scene/world/entities/building';
 import Rectangle from '~ui/rectangle';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
@@ -10,7 +11,7 @@ import { BuildingVariant } from '~type/building';
 
 import { TILE_META } from '~const/level';
 import BUILDINGS from '~const/buildings';
-import { INTERFACE_PRIMARY_COLOR, INTERFACE_PADDING } from '~const/interface';
+import { INTERFACE_PADDING } from '~const/interface';
 import { WaveEvents } from '~type/wave';
 
 type Props = {
@@ -39,14 +40,21 @@ const Component: UIComponent<Props> = function ComponentBuilder(
   );
   container.setSize(fullWidth, fullHeight);
 
-  const param = (name: string) => ((hover.current !== null) ? BUILDINGS[BUILDING_VARIANTS[hover.current]][name] : undefined);
+  const filterBuildings = (variant: string) => player.scene.getBuildings().getChildren()
+    .filter((building: Building) => (building.variant === variant));
+
+  const param = (name: string) => (
+    (hover.current !== null)
+      ? BUILDINGS[BUILDING_VARIANTS[hover.current]][name]
+      : undefined
+  );
   const infoBox = ComponentInfoBox.call(this, {
     label: () => param('Name'),
-    description: () => param('Description'),
+    description: () => `${param('Description') || ''}\nYou have: ${filterBuildings(BUILDING_VARIANTS[hover.current]).length}`,
     cost: () => param('Cost'),
+    costTitle: 'Build cost',
     player,
   });
-  (<Phaser.GameObjects.Text> infoBox.getAt(1)).setColor(INTERFACE_PRIMARY_COLOR);
   infoBox.setVisible(false);
 
   const addPreview = (variant: BuildingVariant, index: number) => {

@@ -14,7 +14,7 @@ export default class Rectangle extends Phaser.GameObjects.Rectangle {
     position, update, size,
     origin = [0.5, 0.5],
     background = 0x000000,
-    alpha = 0.9,
+    alpha = 1.0,
   }: RectangleData) {
     super(
       scene,

@@ -40,7 +40,7 @@ const Component: UIComponent<Props> = function ComponentResources(
       },
       update: (self) => {
         const minesCount = buildings.getChildren().filter((building: Building) => (
-          building.getVariantName().includes(type.toUpperCase())
+          building.variant.includes(type.toUpperCase())
         )).length;
         self.setText(String(minesCount));
       },

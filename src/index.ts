@@ -19,7 +19,7 @@ new Game({
   height: window.innerHeight,
   pixelArt: true,
   disableContextMenu: true,
-  backgroundColor: '#111111',
+  backgroundColor: '#222222',
 });
 
 declare global {

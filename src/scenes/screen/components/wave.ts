@@ -47,7 +47,7 @@ const Component: UIComponent<Props> = function ComponentWave(
   });
 
   const labelNumber = new Text(this, {
-    position: { y: CONTAINER_HEIGHT / 2 + 2 },
+    position: { y: CONTAINER_HEIGHT / 2 },
     update: (self) => {
       self.setText(
         wave.isGoing ? 'CURRENT\nWAVE' : 'NEXT\nWAVE',
@@ -55,6 +55,7 @@ const Component: UIComponent<Props> = function ComponentWave(
     },
     origin: [0, 0.5],
     space: 2,
+    shadow: false,
   });
 
   const labelCounter = new Text(this, {
@@ -66,6 +67,7 @@ const Component: UIComponent<Props> = function ComponentWave(
     },
     origin: [1, 0.5],
     fontSize: 8,
+    shadow: false,
   });
 
   const counter = new Text(this, {
@@ -83,6 +85,7 @@ const Component: UIComponent<Props> = function ComponentWave(
     },
     origin: [1, 0.5],
     fontSize: 16,
+    shadow: false,
   });
 
   const number = new Text(this, {

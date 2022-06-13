@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import Text from '~ui/text';
+import Rectangle from '~ui/rectangle';
 
 import { UIComponent } from '~type/interface';
-import Rectangle from '~ui/rectangle';
+
+import { INTERFACE_BOX_COLOR } from '~const/interface';
 
 function KeyItem(position: Phaser.Types.Math.Vector2Like, name: string, description: string) {
   const container = this.add.container(position.x, position.y);
@@ -12,12 +14,13 @@ function KeyItem(position: Phaser.Types.Math.Vector2Like, name: string, descript
     value: name,
     origin: [0, 0],
     fontSize: 18,
+    shadow: false,
   });
 
   const body = new Rectangle(this, {
     position: { x: 0, y: 0 },
     size: { x: textName.width + 10, y: textName.height + 10 },
-    background: 0x3c1559,
+    background: INTERFACE_BOX_COLOR,
     origin: [0, 0],
   });
 
