@@ -105,7 +105,7 @@ export default class Builder {
    */
   private getAssumedPosition(): Phaser.Types.Math.Vector2Like {
     const { worldX, worldY } = this.scene.input.activePointer;
-    return Level.ToTilePosition({ x: worldX, y: worldY });
+    return Level.ToMatrixPosition({ x: worldX, y: worldY });
   }
 
   /**

@@ -59,8 +59,8 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
       return;
     }
 
-    const tilePosition = Level.ToTilePosition(this);
-    const tileGround = this.tower.scene.level.getTile({ ...tilePosition, z: 0 });
+    const tilePosition = { ...Level.ToMatrixPosition(this), z: 0 };
+    const tileGround = this.tower.scene.level.getTile(tilePosition);
     this.effect.setVisible(tileGround?.visible || false);
     this.setDepth(Level.GetDepth(this.y, 1, this.displayHeight));
   }

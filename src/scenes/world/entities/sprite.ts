@@ -94,7 +94,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     ground: boolean = true,
   ): boolean | Phaser.GameObjects.Image {
     const target = this.scene.physics.velocityFromAngle(direction, WORLD_COLLIDE_LOOK);
-    const occupiedTiles = this.getCorners().map((point) => Level.ToTilePosition({
+    const occupiedTiles = this.getCorners().map((point) => Level.ToMatrixPosition({
       x: point.x + target.x,
       y: point.y + target.y,
     }));
@@ -142,7 +142,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
    * Update current biome and tile position.
    */
   private updateCurrentMeta() {
-    const tilePosition = Level.ToTilePosition(this);
-    this.tile = this.scene.level.getTile({ ...tilePosition, z: 0 });
+    const tilePosition = { ...Level.ToMatrixPosition(this), z: 0 };
+    this.tile = this.scene.level.getTile(tilePosition);
   }
 }

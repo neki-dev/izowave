@@ -247,11 +247,11 @@ export default class Level extends TileMatrix {
   }
 
   /**
-   * Convert world position to tile position.
+   * Convert world position to matrix position.
    *
    * @param position - Position at world
    */
-  static ToTilePosition(position: Phaser.Types.Math.Vector2Like): Phaser.Types.Math.Vector3Like {
+  static ToMatrixPosition(position: Phaser.Types.Math.Vector2Like): Phaser.Types.Math.Vector3Like {
     const { halfWidth, halfHeight } = TILE_META;
     const n = {
       x: (position.x / halfWidth),
@@ -260,7 +260,6 @@ export default class Level extends TileMatrix {
     return {
       x: Math.round((n.x + n.y) / 2),
       y: Math.round((n.y - n.x) / 2),
-      z: 0,
     };
   }
 
