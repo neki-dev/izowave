@@ -1,6 +1,6 @@
 {
   "name": "izowave",
-  "description": "Top-down 8 bit game. Build and defence",
+  "description": "Isometric game. Build and defence",
   "version": "0.13.8",
   "keywords": [],
   "license": "MIT",
@@ -48,6 +48,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neki-dev/arrays-otherness.git"
+    "url": "git+https://github.com/neki-dev/izowave.git"
   }
 }
