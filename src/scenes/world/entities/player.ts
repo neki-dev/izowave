@@ -153,6 +153,19 @@ export default class Player extends Sprite {
     this.updateDirection();
     this.updateVelocity();
 
+    // Crop body in water
+    if (this.tile.biome.type === BiomeType.WATER) {
+      if (!this.isCropped) {
+        this.setCrop(0, 0, this.width, this.height * 0.65);
+        this.setOrigin(0.5, 0.0);
+        this.body.setOffset(5, 10 - this.height / 2);
+      }
+    } else if (this.isCropped) {
+      this.setCrop();
+      this.setOrigin(0.5, 0.5);
+      this.body.setOffset(5, 10);
+    }
+
     // Add visited way
     if ([BiomeType.SAND, BiomeType.GRASS].includes(this.tile.biome.type)) {
       this.tile.setTint(LEVEL_MAP_VISITED_TILE_TINT);
