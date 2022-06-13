@@ -463,7 +463,8 @@ export default class World extends Phaser.Scene {
     });
 
     // Creating default chests
-    const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE / 8) / this.difficulty);
+    const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE / 10) / this.difficulty);
+    console.log(maxCount);
     for (let i = 0; i < maxCount; i++) {
       create();
     }
