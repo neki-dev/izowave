@@ -457,12 +457,10 @@ export default class World extends Phaser.Scene {
    * Spawn chests on world.
    */
   private makeChests() {
-    const create = () => {
-      new Chest(this, {
-        position: Phaser.Utils.Array.GetRandom(this.level.spawnPositions),
-        variant: Phaser.Math.Between(0, 14),
-      });
-    };
+    const create = () => new Chest(this, {
+      position: Phaser.Utils.Array.GetRandom(this.level.spawnPositions),
+      variant: Phaser.Math.Between(0, 14),
+    });
 
     // Creating default chests
     const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE / 8) / this.difficulty);
@@ -479,7 +477,9 @@ export default class World extends Phaser.Scene {
 
       // Creating missing chests
       for (let i = 0; i < newCount; i++) {
-        create();
+        const chest = create();
+        const tileGround = this.level.getTile({ ...chest.positionAtMatrix, z: 0 });
+        chest.setVisible(tileGround.visible);
       }
     });
   }
