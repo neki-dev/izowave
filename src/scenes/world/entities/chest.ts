@@ -41,28 +41,28 @@ export default class Chest extends Phaser.GameObjects.Image {
    * Take resources from chest and destroy it.
    */
   public open() {
-    const waveNumber = this.scene.wave.number + 1;
+    const { player, wave } = this.scene;
+    const waveNumber = wave.number + 1;
 
     // Give resources
-    const resources = Object.entries(CHEST_RESOURCES)
-      .reduce((curr, [type, amount]) => {
-        // Randomizing amount
-        let totalAmount = Phaser.Math.Between(
-          amount - Math.floor(amount * 0.5),
-          amount + Math.floor(amount * 0.5),
-        );
+    const resources = Object.entries(CHEST_RESOURCES).reduce((curr, [type, amount]) => {
+      // Randomizing amount
+      let totalAmount = Phaser.Math.Between(
+        amount - Math.floor(amount * 0.5),
+        amount + Math.floor(amount * 0.5),
+      );
         // Update amount by wave number
-        totalAmount = calcGrowth(totalAmount, CHEST_RESOURCES_GROWTH, waveNumber);
-        return { ...curr, [type]: totalAmount };
-      }, {});
-    this.scene.player.giveResources(resources);
-    this.scene.player.addLabel(Object.entries(resources).map(([type, amount]) => (
+      totalAmount = calcGrowth(totalAmount, CHEST_RESOURCES_GROWTH, waveNumber);
+      return { ...curr, [type]: totalAmount };
+    }, {});
+    player.giveResources(resources);
+    player.addLabel(Object.entries(resources).map(([type, amount]) => (
       `+${amount} ${type}`
     )).join('\n'));
 
     // Give experience
     const experience = calcGrowth(CHEST_EXPERIENCE, CHEST_EXPERIENCE_GROWTH, waveNumber);
-    this.scene.player.giveExperience(experience);
+    player.giveExperience(experience);
 
     this.destroy();
   }

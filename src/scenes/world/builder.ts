@@ -245,8 +245,8 @@ export default class Builder {
   private createBuildArea() {
     const { player, difficulty } = this.scene;
     const d = calcGrowth(BUILDING_BUILD_AREA / difficulty, BUILDING_BUILD_AREA_GROWTH, player.level) * 2;
-    this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive)
-      .setStrokeStyle(2, 0xffffff, 0.4);
+    this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive);
+    this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
   }
 
   /**
@@ -255,9 +255,8 @@ export default class Builder {
   private updateBuildArea() {
     const position = this.scene.player.getBottomCenter();
     const out = TILE_META.height * 2;
-    this.buildArea
-      .setPosition(position.x, position.y)
-      .setDepth(Level.GetDepth(position.y, 1, this.buildArea.height + out));
+    this.buildArea.setPosition(position.x, position.y);
+    this.buildArea.setDepth(Level.GetDepth(position.y, 1, this.buildArea.height + out));
   }
 
   /**
@@ -274,8 +273,8 @@ export default class Builder {
    */
   private createBuildingPreview() {
     const { worldX, worldY } = this.scene.input.activePointer;
-    this.buildingPreview = this.scene.add.image(worldX, worldY, this.getBuildingMeta('Texture'))
-      .setOrigin(0.5, TILE_META.origin);
+    this.buildingPreview = this.scene.add.image(worldX, worldY, this.getBuildingMeta('Texture'));
+    this.buildingPreview.setOrigin(0.5, TILE_META.origin);
   }
 
   /**
@@ -286,11 +285,10 @@ export default class Builder {
   private updateBuildingPreview(position: Phaser.Types.Math.Vector3Like) {
     const isAllow = this.isAllowBuild();
     const { x, y } = Level.ToWorldPosition(position);
-    this.buildingPreview
-      .setPosition(x, y)
-      .setDepth(Level.GetTileDepth(y, position.z))
-      .setAlpha(isAllow ? 1.0 : 0.25)
-      .setVisible(this.assumedPosition.isFree);
+    this.buildingPreview.setPosition(x, y);
+    this.buildingPreview.setDepth(Level.GetTileDepth(y, position.z));
+    this.buildingPreview.setAlpha(isAllow ? 1.0 : 0.25);
+    this.buildingPreview.setVisible(this.assumedPosition.isFree);
   }
 
   /**

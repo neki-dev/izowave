@@ -231,10 +231,10 @@ export default class Building extends Phaser.GameObjects.Image {
    * Create action area.
    */
   private makeActionArea() {
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight)
-      .setStrokeStyle(2, 0xffffff, 0.5)
-      .setFillStyle(0xffffff, 0.2)
-      .setVisible(false);
+    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight);
+    this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
+    this.actionsArea.setFillStyle(0xffffff, 0.2);
+    this.actionsArea.setVisible(false);
 
     this.updateActionArea();
   }
@@ -250,10 +250,9 @@ export default class Building extends Phaser.GameObjects.Image {
         : 64
     ) * 2;
     const out = height * 2;
-    this.actionsArea
-      .setSize(d, d * persperctive)
-      .setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out))
-      .updateDisplayOrigin();
+    this.actionsArea.setSize(d, d * persperctive);
+    this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
+    this.actionsArea.updateDisplayOrigin();
   }
 
   /**

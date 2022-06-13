@@ -61,9 +61,9 @@ const Component: UIComponent<Props> = function ComponentResources(
       shadow: false,
     });
 
-    const icon = this.add.image(19, shift + 9, InterfaceSprite.RESOURCES, RESOURCE_FRAME[type])
-      .setScale(1.4)
-      .setOrigin(0, 0.5);
+    const icon = this.add.image(19, shift + 9, InterfaceSprite.RESOURCES, RESOURCE_FRAME[type]);
+    icon.setScale(1.4);
+    icon.setOrigin(0, 0.5);
 
     const text = new Text(this, {
       position: {

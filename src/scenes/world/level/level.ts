@@ -154,9 +154,9 @@ export default class Level extends TileMatrix {
         : biome.tileIndex;
       const tilePosition = { x, y, z: biome.z };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
-      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILES, variant)
-        .setOrigin(0.5, TILE_META.origin)
-        .setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILES, variant);
+      tile.setOrigin(0.5, TILE_META.origin);
+      tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
       tile.biome = biome;
       this.putTile(tile, TileType.MAP, tilePosition);
       this.mapTiles.add(tile);
@@ -198,8 +198,8 @@ export default class Level extends TileMatrix {
       const tilePosition = { ...positionAtMatrix, z: 1 };
       if (!this.getTile(tilePosition)) {
         const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
-        const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y + 11, texture, variant)
-          .setOrigin(0.5, 1.0);
+        const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y + 11, texture, variant);
+        tile.setOrigin(0.5, 1.0);
         tile.setDepth(Level.GetDepth(positionAtWorld.y + 14, tilePosition.z, tile.displayHeight));
         this.putTile(tile, TileType.TREE, tilePosition);
         this.treesTiles.add(tile);

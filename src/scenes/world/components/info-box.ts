@@ -72,7 +72,7 @@ const Component: UIComponent<Props> = function ComponentInfoBox(
 
   if (cost) {
     let offset = 12;
-    const costText = this.add.container(shift.x, 0);
+    const costContainer = this.add.container(shift.x, 0);
     const costBody = new Rectangle(this, {
       size: { x: 80, y: shift.y },
       position: { x: 0, y: 0 },
@@ -88,33 +88,31 @@ const Component: UIComponent<Props> = function ComponentInfoBox(
       shadow: false,
     });
     offset += constTitle.height + 8;
-    costText.add([costBody, constTitle]);
+    costContainer.add([costBody, constTitle]);
     for (const resource of Object.keys(ResourceType)) {
-      const type = ResourceType[resource];
-      const frame = ResourcesSpriteFrames[resource];
-      const image = this.add.image(10, offset, InterfaceSprite.RESOURCES, frame)
-        .setScale(0.75)
-        .setOrigin(0, 0);
-      const count = new Text(this, {
-        position: { x: 10 + image.width + 2, y: offset },
+      const resourceType = ResourceType[resource];
+      const resourceIcon = this.add.image(10, offset, InterfaceSprite.RESOURCES, ResourcesSpriteFrames[resource]);
+      resourceIcon.setScale(0.75);
+      resourceIcon.setOrigin(0, 0);
+      const countText = new Text(this, {
+        position: { x: 10 + resourceIcon.width + 2, y: offset },
         update: (self) => {
           const value = cost();
           if (value !== undefined) {
-            const amount = cost()[type] || 0;
-            const isEnough = (player.getResource(type) >= amount);
-            self
-              .setText(String(amount))
-              .setColor(isEnough ? '#ffffff' : '#ff6d6d');
+            const costAmount = value[resourceType] || 0;
+            const isEnough = (player.getResource(resourceType) >= costAmount);
+            self.setText(String(costAmount));
+            self.setColor(isEnough ? '#ffffff' : '#ff6d6d');
           }
         },
         origin: [0, 0],
         fontSize: 9,
         shadow: false,
       });
-      offset += image.height + 4;
-      costText.add([image, count]);
+      offset += resourceIcon.height + 4;
+      costContainer.add([resourceIcon, countText]);
     }
-    container.add(costText);
+    container.add(costContainer);
     shift.x += 80;
   }
 

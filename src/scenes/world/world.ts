@@ -445,9 +445,8 @@ export default class World extends Phaser.Scene {
     const from = Level.ToWorldPosition({ x: 0, y: this.level.size - 1, z: 0 });
     const to = Level.ToWorldPosition({ x: this.level.size - 1, y: 0, z: 0 });
     const camera = this.cameras.main;
-    camera
-      .setZoom(1.8)
-      .pan(from.x + (this.sys.canvas.width / 2), from.y, 0);
+    camera.setZoom(1.8);
+    camera.pan(from.x + (this.sys.canvas.width / 2), from.y, 0);
     setTimeout(() => {
       camera.pan(to.x - (this.sys.canvas.width / 2), to.y, 2 * 60 * 1000);
     }, 0);
@@ -464,7 +463,6 @@ export default class World extends Phaser.Scene {
 
     // Creating default chests
     const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE / 10) / this.difficulty);
-    console.log(maxCount);
     for (let i = 0; i < maxCount; i++) {
       create();
     }

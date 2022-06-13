@@ -43,8 +43,8 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     super(scene, positionAtWorld.x, positionAtWorld.y, texture, frame);
     scene.add.existing(this);
 
-    this.container = scene.add.container()
-      .setDepth(9998);
+    this.container = scene.add.container(this.x, this.y);
+    this.container.setDepth(9998);
 
     // Configure physics
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);

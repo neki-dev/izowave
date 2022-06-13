@@ -28,8 +28,8 @@ const Component: UIComponent<Props> = function ComponentWave(
     wave, enemies, x, y,
   },
 ) {
-  const container = this.add.container(x - CONTAINER_WIDTH / 2, y)
-    .setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
+  const container = this.add.container(x - CONTAINER_WIDTH / 2, y);
+  container.setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
   const background = new Rectangle(this, {
     size: { x: CONTAINER_WIDTH, y: CONTAINER_HEIGHT },

@@ -15,8 +15,8 @@ const Component: UIComponent<Props> = function ComponentHealthBar(
 ) {
   const [width, height] = size;
 
-  const body = this.add.rectangle(0, 0, width, height, 0x000000)
-    .setOrigin(0, 0);
+  const body = this.add.rectangle(0, 0, width, height, 0x000000);
+  body.setOrigin(0, 0);
 
   const progress = new Rectangle(this, {
     position: { x: 1, y: 1 },

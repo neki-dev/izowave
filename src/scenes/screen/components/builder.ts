@@ -76,11 +76,11 @@ const Component: UIComponent<Props> = function ComponentBuilder(
     });
     body.setInteractive();
 
-    const preview = this.add.image(0, 0, BUILDINGS[variant].Texture)
-      .setOrigin(0, 0);
+    const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);
+    preview.setOrigin(0, 0);
 
-    const number = this.add.text(0, height, String(index + 1), { fontSize: '14px' })
-      .setOrigin(0, 1);
+    const number = this.add.text(0, height, String(index + 1), { fontSize: '14px' });
+    number.setOrigin(0, 1);
 
     body.on(Phaser.Input.Events.POINTER_OVER, () => {
       if (!builder.isBuild) {

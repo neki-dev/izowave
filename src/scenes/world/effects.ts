@@ -25,8 +25,9 @@ export default class Effects {
     this.scene = scene;
 
     for (const effect of Object.values(WorldEffect)) {
-      this.particles[effect] = scene.add.particles(WorldTexture[effect])
-        .setDepth(9998);
+      const particle = scene.add.particles(WorldTexture[effect]);
+      particle.setDepth(9998);
+      this.particles[effect] = particle;
     }
   }
 
