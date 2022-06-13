@@ -45,10 +45,11 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
 
     this.container = scene.add.container()
       .setDepth(9998);
-    this.updateCurrentMeta();
 
     // Configure physics
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
+
+    this.updateCurrentMeta();
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
@@ -142,7 +143,11 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
    * Update current biome and tile position.
    */
   private updateCurrentMeta() {
-    const tilePosition = { ...Level.ToMatrixPosition(this), z: 0 };
+    const position = {
+      x: this.body.position.x,
+      y: this.body.position.y + this.body.height / 2,
+    };
+    const tilePosition = { ...Level.ToMatrixPosition(position), z: 0 };
     this.tile = this.scene.level.getTile(tilePosition);
   }
 }

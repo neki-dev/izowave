@@ -202,7 +202,7 @@ export default class Enemy extends Sprite {
       return;
     }
 
-    if (!this.tile.positionAtMatrix) {
+    if (!this.tile) {
       return;
     }
 
@@ -254,6 +254,10 @@ export default class Enemy extends Sprite {
    * Check is path waypoint has been reached.
    */
   private nextPathTile() {
+    if (!this.tile) {
+      return;
+    }
+
     const [target] = this.currentPath;
     if (equalPositions(target, this.tile.positionAtMatrix)) {
       this.currentPath.shift();
