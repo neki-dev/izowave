@@ -4,10 +4,18 @@ Your task is to survive as many waves as possible. With each wave, the number of
 
 You will spawn in a random place. Can start to build here, or can look for a place for better defense. But you don't so much time!
 
-### __[Play Now](https://izowave.neki.guru)__
+### __[PLAY NOW](https://izowave.neki.guru)__
+
+
+---
+
+
+[![Testing](https://github.com/neki-dev/izowave/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/test.yml)
+[![Building](https://github.com/neki-dev/izowave/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/build.yml)
+
 
 .
-### 🏣 - Building types
+### 🏣 - BUILDINGS TYPES
 .
 
 ### __WALL__
@@ -30,7 +38,7 @@ Building heals player within its range.
 Upgrades increase range and heal amount, and decrease pause between heals.
 
 .
-### 🕹 - Controls
+### 🕹 - CONTROLS
 .
 
 `W A S D` - Move player
@@ -44,3 +52,5 @@ Upgrades increase range and heal amount, and decrease pause between heals.
 `BACKSPACE` - Destroy building
 
 `ESC` - Pause game
+
+.
