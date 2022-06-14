@@ -176,10 +176,23 @@ export default class Player extends Sprite {
 
     this.experience += amount;
 
-    const experienceNeed = calcGrowth(EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH, this.level + 1);
-    if (this.experience >= experienceNeed) {
-      this.experience -= experienceNeed;
-      this.nextLevel();
+    const calc = (level: number) => calcGrowth(
+      EXPERIENCE_TO_NEXT_LEVEL,
+      EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+      this.level + level + 1,
+    );
+
+    let experienceNeed = calc(0);
+    let experienceLeft = this.experience;
+    let level = 0;
+    while (experienceLeft >= experienceNeed) {
+      level++;
+      experienceLeft -= experienceNeed;
+      experienceNeed = calc(level);
+    }
+
+    if (level > 0) {
+      this.nextLevel(level);
     }
   }
 
@@ -259,9 +272,11 @@ export default class Player extends Sprite {
 
   /**
    * Upgrade player to next level.
+   *
+   * @param count - Levels count
    */
-  private nextLevel() {
-    this.level++;
+  private nextLevel(count: number) {
+    this.level += count;
     this.addLabel('LEVEL UP');
 
     // Update maximum player health by level
