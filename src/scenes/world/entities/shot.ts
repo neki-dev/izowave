@@ -43,11 +43,6 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
 
     this.setActive(false);
     this.setVisible(false);
-
-    // Add events callbacks
-    tower.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.destroy();
-    });
   }
 
   /**

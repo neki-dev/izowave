@@ -52,6 +52,10 @@ export default class BuildingTower extends Building {
     } else {
       this.shot = new Shot(this);
     }
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.shot.destroy();
+    });
   }
 
   /**

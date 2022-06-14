@@ -40,6 +40,12 @@ export default class Lazer extends Phaser.GameObjects.Line {
     this.setStrokeStyle(2, 0xb136ff, 0.5);
     this.setDepth(9998);
     this.setOrigin(0.0, 0.0);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      if (this.timer) {
+        this.timer.destroy();
+      }
+    });
   }
 
   /**
@@ -79,9 +85,10 @@ export default class Lazer extends Phaser.GameObjects.Line {
    * Stop shooting.
    */
   public stop() {
-    delete this.target;
     this.setVisible(false);
     this.timer.destroy();
+    delete this.timer;
+    delete this.target;
   }
 
   /**
