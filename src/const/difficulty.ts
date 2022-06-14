@@ -4,7 +4,7 @@ export const PLAYER_HEALTH_GROWTH = 0.1; // Player health growth by level
 export const PLAYER_DAMAGE = 15; // Default player damage
 export const PLAYER_DAMAGE_GROWTH = 0.25; // Player damage growth by level
 export const PLAYER_ATTACK_DISTANCE = 30; // Player maximum attack distance
-export const PLAYER_ATTACK_DISTANCE_GROWTH = 0.05; // Attack distance growth
+export const PLAYER_ATTACK_DISTANCE_GROWTH = 0.03; // Attack distance growth
 export const PLAYER_ATTACK_PAUSE = 700; // Player attack pause
 export const PLAYER_START_RESOURCES = { bronze: 90, silver: 90, gold: 0 }; // Player start resources
 
@@ -18,7 +18,7 @@ export const WAVE_EXPERIENCE = 200; // Gained experience per complete wave
 export const WAVE_EXPERIENCE_GROWTH = 0.1; // Experience count growth by wave number
 
 export const EXPERIENCE_TO_NEXT_LEVEL = 300; // Need experience count to next level
-export const EXPERIENCE_TO_NEXT_LEVEL_GROWTH = 0.2; // Experience count growth by level
+export const EXPERIENCE_TO_NEXT_LEVEL_GROWTH = 0.3; // Experience count growth by level
 
 export const CHEST_EXPERIENCE = 5; // Gained experience per open chest
 export const CHEST_EXPERIENCE_GROWTH = 0.2; // Experience growth by wave number
@@ -29,7 +29,7 @@ export const ENEMY_HEALTH_GROWTH = 0.14; // Enemy health growth by wave number
 export const ENEMY_SPEED_GROWTH = 0.058; // Enemy speed growth by wave number
 export const ENEMY_DAMAGE_GROWTH = 0.05; // Enemy damage growth by wave number
 export const ENEMY_KILL_EXPERIENCE = 10; // Gained experience per kill enemy
-export const ENEMY_KILL_EXPERIENCE_GROWTH = 0.1; // Experience growth by wave number
+export const ENEMY_KILL_EXPERIENCE_GROWTH = 0.07; // Experience growth by wave number
 
 export const BUILDING_ACTION_RADIUS_GROWTH = 0.3; // Actions radius growth by upgrade
 export const BUILDING_ACTION_PAUSE_GROWTH = -0.1; // Actions pause growth by upgrade
