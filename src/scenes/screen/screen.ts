@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import ComponentWave from '~scene/screen/components/wave';
 import ComponentResources from '~scene/screen/components/resources';
-import ComponentDebug from '~scene/screen/components/debug';
+import ComponentFPS from '~scene/screen/components/fps';
 import ComponentBuilder from '~scene/screen/components/builder';
 import ComponentGaveOver from '~scene/world/components/gameover';
 import World from '~scene/world';
@@ -19,9 +19,7 @@ export default class Screen extends Phaser.Scene {
   create() {
     const world = <World> this.scene.get(SceneKey.WORLD);
 
-    if (IS_DEV_MODE) {
-      ComponentDebug.call(this, { world });
-    }
+    ComponentFPS.call(this);
 
     const wave = ComponentWave.call(this, {
       wave: world.wave,
@@ -31,7 +29,6 @@ export default class Screen extends Phaser.Scene {
     });
 
     const resources = ComponentResources.call(this, {
-      buildings: world.getBuildings(),
       player: world.player,
       x: INTERFACE_PADDING,
       y: INTERFACE_PADDING,

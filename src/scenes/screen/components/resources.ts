@@ -2,13 +2,11 @@ import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
 import Text from '~ui/text';
 import Player from '~scene/world/entities/player';
-import Building from '~scene/world/entities/building';
 
 import { ResourceType } from '~type/building';
 import { InterfaceSprite, UIComponent } from '~type/interface';
 
 type Props = {
-  buildings: Phaser.GameObjects.Group
   player: Player
   x: number
   y: number
@@ -24,69 +22,44 @@ const RESOURCE_FRAME: {
 
 const Component: UIComponent<Props> = function ComponentResources(
   this: Phaser.Scene,
-  {
-    buildings, player, x, y,
-  },
+  { player, x, y },
 ) {
-  const container = this.add.container(x + 10, y + 5);
+  const container = this.add.container(x, y);
 
-  Object.values(ResourceType).forEach((type, index) => {
-    const shift = (index * 48);
+  let shift = 0;
+  for (const type of Object.values(ResourceType)) {
+    const body = this.add.rectangle(0, shift, 100, 34, 0x000000);
+    body.setOrigin(0, 0);
 
-    const mines = new Text(this, {
-      position: {
-        x: 0,
-        y: shift + 11,
-      },
-      update: (self) => {
-        const minesCount = buildings.getChildren().filter((building: Building) => (
-          building.variant.includes(type.toUpperCase())
-        )).length;
-        self.setText(String(minesCount));
-      },
-      origin: [1.0, 0.5],
-      align: 'right',
-      fontSize: 12,
-    });
-
-    const pointer = new Text(this, {
-      position: {
-        x: 9,
-        y: shift + 9,
-      },
-      value: 'x',
-      alpha: 0.75,
-      origin: [0.5, 0.5],
-      fontSize: 7,
-      shadow: false,
-    });
-
-    const icon = this.add.image(19, shift + 9, InterfaceSprite.RESOURCES, RESOURCE_FRAME[type]);
+    const icon = this.add.image(7, shift + 7, InterfaceSprite.RESOURCES, RESOURCE_FRAME[type]);
     icon.setScale(1.4);
-    icon.setOrigin(0, 0.5);
+    icon.setOrigin(0, 0);
 
     const text = new Text(this, {
       position: {
-        x: 19 + icon.height + 14,
-        y: shift,
+        x: icon.width + 18,
+        y: shift + 6,
       },
       value: type,
-      fontSize: 10,
+      fontSize: 7,
+      origin: [0, 0],
     });
 
     const amount = new Text(this, {
       position: {
-        x: 19 + icon.height + 14,
-        y: shift + 15,
+        x: icon.width + 18,
+        y: shift + 14,
       },
       update: (self) => {
         self.setText(String(player.getResource(type)));
       },
       fontSize: 14,
+      origin: [0, 0],
     });
 
-    container.add([mines, pointer, icon, text, amount]);
-  });
+    container.add([body, icon, text, amount]);
+    shift += body.height + 5;
+  }
 
   return container
     .setName('ComponentResources');
