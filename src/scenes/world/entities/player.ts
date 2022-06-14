@@ -192,6 +192,7 @@ export default class Player extends Sprite {
     }
 
     if (level > 0) {
+      this.experience = experienceLeft;
       this.nextLevel(level);
     }
   }
