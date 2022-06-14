@@ -61,7 +61,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   public update() {
     super.update();
 
-    this.positionAtMatrix = Level.ToMatrixPosition(this.body.position);
+    this.positionAtMatrix = Level.ToMatrixPosition(this);
 
     this.container.setVisible(this.visible);
     if (this.visible) {
