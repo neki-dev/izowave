@@ -430,7 +430,7 @@ export default class Player extends Sprite {
    * Get player speed relative to friction force of current biome.
    */
   private getSpeed(): number {
-    const speed = PLAYER_SPEED + this.level - 1;
+    const speed = PLAYER_SPEED + (this.level - 1) * 2;
     return speed / (this.tile ? this.tile.biome.friction : 1);
   }
 

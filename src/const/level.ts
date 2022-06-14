@@ -160,7 +160,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     z: 0,
     collide: false,
     solid: true,
-    friction: 1.0,
+    friction: 0.8,
   },
 }];
 
