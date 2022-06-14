@@ -2,6 +2,6 @@ import Phaser from 'phaser';
 
 export type SpriteData = {
   texture: string
-  position: Phaser.Types.Math.Vector2Like // Position at matrix
+  positionAtMatrix: Phaser.Types.Math.Vector2Like
   frame?: number
 };

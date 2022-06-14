@@ -109,14 +109,17 @@ export default class Player extends Sprite {
   private attackPause: number = 0;
 
   /**
-   * Player constructor.
    *
-   * @param position - Position at matrix
    */
-  constructor(scene: World, position: Phaser.Types.Math.Vector2Like) {
+  private tile?: Phaser.GameObjects.Image;
+
+  /**
+   * Player constructor.
+   */
+  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
     super(scene, {
       texture: PlayerTexture.PLAYER,
-      position,
+      positionAtMatrix,
     });
     scene.add.existing(this);
 
@@ -153,21 +156,9 @@ export default class Player extends Sprite {
     this.updateDirection();
     this.updateVelocity();
 
-    // // Crop body in water
-    // if (this.tile.biome.type === BiomeType.WATER) {
-    //   if (!this.isCropped) {
-    //     this.setCrop(0, 0, this.width, this.height * 0.65);
-    //     this.setOrigin(0.5, 0.0);
-    //     this.body.setOffset(5, 10 - this.height / 2);
-    //   }
-    // } else if (this.isCropped) {
-    //   this.setCrop();
-    //   this.setOrigin(0.5, 0.5);
-    //   this.body.setOffset(5, 10);
-    // }
-
     // Add visited way
-    if ([BiomeType.SAND, BiomeType.GRASS].includes(this.tile.biome.type)) {
+    this.tile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
+    if ([BiomeType.SAND, BiomeType.GRASS].includes(this.tile?.biome.type)) {
       this.tile.setTint(LEVEL_MAP_VISITED_TILE_TINT);
     }
   }
@@ -440,7 +431,7 @@ export default class Player extends Sprite {
    */
   private getSpeed(): number {
     const speed = PLAYER_SPEED + this.level - 1;
-    return speed / this.tile.biome.friction;
+    return speed / (this.tile ? this.tile.biome.friction : 1);
   }
 
   /**

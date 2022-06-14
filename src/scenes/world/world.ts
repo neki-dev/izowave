@@ -247,7 +247,7 @@ export default class World extends Phaser.Scene {
 
     const EnemyInstance = ENEMIES[variant];
     return new EnemyInstance(this, {
-      position: Phaser.Utils.Array.GetRandom(positions),
+      positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
   }
 

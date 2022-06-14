@@ -21,7 +21,7 @@ export enum EnemyVariant {
 }
 
 export type EnemyData = {
-  position: Phaser.Types.Math.Vector2Like // Position at matrix
+  positionAtMatrix: Phaser.Types.Math.Vector2Like
   texture: string
   speed: number
   damage: number
@@ -31,5 +31,5 @@ export type EnemyData = {
 };
 
 export type EnemyVariantData = {
-  position: Phaser.Types.Math.Vector2Like // Position at matrix
+  positionAtMatrix: Phaser.Types.Math.Vector2Like
 };

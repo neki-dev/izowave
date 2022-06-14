@@ -25,16 +25,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set container(v) { this._container = v; }
 
   /**
-   * Current tile.
-   */
-  private _tile: Phaser.GameObjects.Image;
-
-  public get tile() { return this._tile; }
-
-  private set tile(v) { this._tile = v; }
-
-  /**
-   *
+   * Position at matrix.
    */
   private _positionAtMatrix: Phaser.Types.Math.Vector2Like;
 
@@ -46,20 +37,19 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
    * Sprite constructor.
    */
   constructor(scene: World, {
-    texture, position, frame = 0,
+    texture, positionAtMatrix, frame = 0,
   }: SpriteData) {
-    const positionAtWorld = Level.ToWorldPosition({ ...position, z: 0 });
+    const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
     super(scene, positionAtWorld.x, positionAtWorld.y, texture, frame);
     scene.add.existing(this);
 
-    this.container = scene.add.container(this.x, this.y);
-    this.container.setDepth(9998);
+    this.positionAtMatrix = positionAtMatrix;
 
     // Configure physics
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
 
-    this.updateCurrentMeta();
-
+    this.container = scene.add.container(this.x, this.y);
+    this.container.setDepth(9998);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
     });
@@ -71,7 +61,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   public update() {
     super.update();
 
-    this.updateCurrentMeta();
+    this.positionAtMatrix = Level.ToMatrixPosition(this.body.position);
 
     this.container.setVisible(this.visible);
     if (this.visible) {
@@ -146,20 +136,5 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     return points;
-  }
-
-  /**
-   * Update position at matrix and current tile.
-   */
-  private updateCurrentMeta() {
-    this.positionAtMatrix = Level.ToMatrixPosition(this.body.position);
-
-    const tilePosition = { ...this.positionAtMatrix, z: 0 };
-    const tile = this.scene.level.getTile(tilePosition);
-    if (tile) {
-      this.tile = tile;
-    } else {
-      console.warn('Undefined tile of sprite meta');
-    }
   }
 }

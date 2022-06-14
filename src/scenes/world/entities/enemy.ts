@@ -69,11 +69,11 @@ export default class Enemy extends Sprite {
    * Enemy constructor.
    */
   constructor(scene: World, {
-    position, texture, health, damage, speed,
+    positionAtMatrix, texture, health, damage, speed,
     scale = 1.0,
     experienceMultiply = 1.0,
   }: EnemyData) {
-    super(scene, { texture, position });
+    super(scene, { texture, positionAtMatrix });
     scene.add.existing(this);
     scene.getEnemies().add(this);
 
@@ -122,7 +122,8 @@ export default class Enemy extends Sprite {
     super.update();
 
     // Update visible state
-    this.setVisible(this.tile.visible);
+    const tile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
+    this.setVisible(tile ? tile.visible : false);
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
@@ -248,10 +249,6 @@ export default class Enemy extends Sprite {
    * Check is path waypoint has been reached.
    */
   private nextPathTile() {
-    if (!this.tile) {
-      return;
-    }
-
     const [target] = this.currentPath;
     if (equalPositions(target, this.positionAtMatrix)) {
       this.currentPath.shift();
