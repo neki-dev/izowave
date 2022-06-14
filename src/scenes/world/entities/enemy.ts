@@ -122,9 +122,7 @@ export default class Enemy extends Sprite {
     super.update();
 
     // Update visible state
-    if (this.tile) {
-      this.setVisible(this.tile.visible);
-    }
+    this.setVisible(this.tile.visible);
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
@@ -202,14 +200,10 @@ export default class Enemy extends Sprite {
       return;
     }
 
-    if (!this.tile) {
-      return;
-    }
-
     if (this.currentPath.length > 0) {
       // Check if target position is not changed
       const prev = this.currentPath[this.currentPath.length - 1];
-      if (equalPositions(prev, player.tile.positionAtMatrix)) {
+      if (equalPositions(prev, player.positionAtMatrix)) {
         return;
       }
     }
@@ -232,8 +226,8 @@ export default class Enemy extends Sprite {
     };
 
     this.pathFindingTask = level.navigator.createTask(
-      this.tile.positionAtMatrix,
-      player.tile.positionAtMatrix,
+      this.positionAtMatrix,
+      player.positionAtMatrix,
       onComplete,
     );
   }
@@ -259,7 +253,7 @@ export default class Enemy extends Sprite {
     }
 
     const [target] = this.currentPath;
-    if (equalPositions(target, this.tile.positionAtMatrix)) {
+    if (equalPositions(target, this.positionAtMatrix)) {
       this.currentPath.shift();
     }
   }

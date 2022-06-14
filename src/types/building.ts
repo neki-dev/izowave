@@ -44,7 +44,7 @@ export type BuildingActionsParams = {
 export type BuildingData = {
   variant: BuildingVariant
   health: number
-  position: Phaser.Types.Math.Vector2Like // Position at matrix
+  positionAtMatrix: Phaser.Types.Math.Vector2Like
   texture: BuildingTexture
   actions?: BuildingActionsParams
   upgradeCost: Resources

@@ -14,7 +14,7 @@ import setCheatsScheme from '~scene/world/cheats';
 import { WaveEvents } from '~type/wave';
 import { EnemyVariant } from '~type/enemy';
 import { SceneKey } from '~type/scene';
-import { GameDifficulty, WorldTexture } from '~type/world';
+import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
 
 import ENEMIES from '~const/enemies';
 import {
@@ -234,7 +234,7 @@ export default class World extends Phaser.Scene {
       ))
       .map((position: Phaser.Types.Math.Vector2Like) => ({
         position,
-        distance: Phaser.Math.Distance.BetweenPoints(position, this.player.tile.positionAtMatrix),
+        distance: Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix),
       }))
       .sort((a, b) => (a.distance - b.distance))
       .slice(0, ENEMY_SPAWN_POSITIONS)
@@ -340,7 +340,7 @@ export default class World extends Phaser.Scene {
    * @param record - Best stat
    */
   public finishGame(stat: PlayerStat, record: PlayerStat) {
-    this.events.emit('gameover', stat, record);
+    this.events.emit(WorldEvents.GAMEOVER, stat, record);
 
     this.isStarted = false;
 
@@ -457,7 +457,7 @@ export default class World extends Phaser.Scene {
    */
   private makeChests() {
     const create = () => new Chest(this, {
-      position: Phaser.Utils.Array.GetRandom(this.level.spawnPositions),
+      positionAtMatrix: Phaser.Utils.Array.GetRandom(this.level.spawnPositions),
       variant: Phaser.Math.Between(0, 14),
     });
 
@@ -487,7 +487,7 @@ export default class World extends Phaser.Scene {
    * Create default buildings close to player.
    */
   private makeDefaultBuildings() {
-    const { x, y } = this.player.tile.positionAtMatrix;
+    const { x, y } = this.player.positionAtMatrix;
     const shift = 2;
     const spawns = [
       { x, y: y - shift },

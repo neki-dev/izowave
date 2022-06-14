@@ -5,6 +5,6 @@ export enum ChestTexture {
 }
 
 export type ChestData = {
-  position: Phaser.Types.Math.Vector2Like // Position at matrix
+  positionAtMatrix: Phaser.Types.Math.Vector2Like
   variant?: number
 };

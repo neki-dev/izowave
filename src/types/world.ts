@@ -14,6 +14,10 @@ export enum WorldTexture {
   FLARE = 'effect/flare',
 }
 
+export enum WorldEvents {
+  GAMEOVER = 'gameover',
+}
+
 export enum GameDifficulty {
   EASY = 'EASY',
   NORMAL = 'NORMAL',

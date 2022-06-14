@@ -100,13 +100,11 @@ export default class TileMatrix {
       existsTile.destroy();
     }
 
-    const { x, y, z } = position;
-    this.tiles[z][y][x] = tile;
-
     // eslint-disable-next-line no-param-reassign
     tile.tileType = type;
-    // eslint-disable-next-line no-param-reassign
-    tile.positionAtMatrix = { x, y };
+
+    const { x, y, z } = position;
+    this.tiles[z][y][x] = tile;
   }
 
   /**

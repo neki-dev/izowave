@@ -44,8 +44,6 @@ declare global {
       interface Image {
         biome?: LevelBiome
         tileType?: TileType
-        positionAtMatrix?: Phaser.Types.Math.Vector2Like
-        onCollide?(object: any): void
       }
     }
   }

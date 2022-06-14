@@ -17,9 +17,9 @@ export default class BuildingMineGold extends BuildingMine {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, position: Phaser.Types.Math.Vector3Like) {
+  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector3Like) {
     super(scene, {
-      position,
+      positionAtMatrix,
       variant: BuildingVariant.MINE_GOLD,
       health: 1000,
       texture: BuildingMineGold.Texture,

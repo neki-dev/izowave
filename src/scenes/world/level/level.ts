@@ -127,7 +127,7 @@ export default class Level extends TileMatrix {
     });
     this.visibleTiles.clear();
 
-    const { x, y } = player.tile.positionAtMatrix;
+    const { x, y } = player.positionAtMatrix;
     const c = Math.ceil(r / 26);
     for (let z = 0; z < this.height; z++) {
       for (let iy = y - c + 1; iy <= y + c + 1; iy++) {

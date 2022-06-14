@@ -35,6 +35,11 @@ export default class Building extends Phaser.GameObjects.Image {
   readonly variant: BuildingVariant;
 
   /**
+   * Position at matrix.
+   */
+  readonly positionAtMatrix: Phaser.Types.Math.Vector2Like;
+
+  /**
    * Current upgrade level.
    */
   private _upgradeLevel: number = 1;
@@ -77,9 +82,9 @@ export default class Building extends Phaser.GameObjects.Image {
    * Building constructor.
    */
   constructor(scene: World, {
-    position, health, texture, actions, variant, upgradeCost,
+    positionAtMatrix, health, texture, actions, variant, upgradeCost,
   }: BuildingData) {
-    const tilePosition = { ...position, z: 1 };
+    const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.add.existing(this);
@@ -89,6 +94,7 @@ export default class Building extends Phaser.GameObjects.Image {
     this.actions = actions;
     this.upgradeCost = upgradeCost;
     this.variant = variant;
+    this.positionAtMatrix = positionAtMatrix;
 
     // Configure tile
     this.setOrigin(0.5, TILE_META.origin);

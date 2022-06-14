@@ -34,6 +34,15 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set tile(v) { this._tile = v; }
 
   /**
+   *
+   */
+  private _positionAtMatrix: Phaser.Types.Math.Vector2Like;
+
+  public get positionAtMatrix() { return this._positionAtMatrix; }
+
+  private set positionAtMatrix(v) { this._positionAtMatrix = v; }
+
+  /**
    * Sprite constructor.
    */
   constructor(scene: World, {
@@ -140,14 +149,17 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Update current biome and tile position.
+   * Update position at matrix and current tile.
    */
   private updateCurrentMeta() {
-    const position = {
-      x: this.body.position.x,
-      y: this.body.position.y + this.body.height / 2,
-    };
-    const tilePosition = { ...Level.ToMatrixPosition(position), z: 0 };
-    this.tile = this.scene.level.getTile(tilePosition);
+    this.positionAtMatrix = Level.ToMatrixPosition(this.body.position);
+
+    const tilePosition = { ...this.positionAtMatrix, z: 0 };
+    const tile = this.scene.level.getTile(tilePosition);
+    if (tile) {
+      this.tile = tile;
+    } else {
+      console.warn('Undefined tile of sprite meta');
+    }
   }
 }

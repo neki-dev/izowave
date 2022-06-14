@@ -222,7 +222,7 @@ export default class Builder {
     // Pointer position is free
     this.assumedPosition.isFree = (
       level.isFreePoint(tilePosition)
-      && !equalPositions(positionAtMatrix, player.tile.positionAtMatrix)
+      && !equalPositions(positionAtMatrix, player.positionAtMatrix)
     );
     if (this.assumedPosition.isFree) {
       // Pointer in build area

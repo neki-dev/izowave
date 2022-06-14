@@ -6,6 +6,7 @@ import ComponentBuilder from '~scene/screen/components/builder';
 import ComponentGaveOver from '~scene/world/components/gameover';
 import World from '~scene/world';
 
+import { WorldEvents } from '~type/world';
 import { SceneKey } from '~type/scene';
 import { PlayerStat } from '~type/player';
 
@@ -40,7 +41,7 @@ export default class Screen extends Phaser.Scene {
       player: world.player,
     });
 
-    world.events.on('gameover', (stat: PlayerStat, record: PlayerStat) => {
+    world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
       wave.destroy();
       resources.destroy();
       builder.destroy();

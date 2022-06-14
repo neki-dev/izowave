@@ -17,16 +17,23 @@ export default class Chest extends Phaser.GameObjects.Image {
   readonly scene: World;
 
   /**
+   * Position at matrix.
+   */
+  readonly positionAtMatrix: Phaser.Types.Math.Vector2Like;
+
+  /**
    * Chest constructor.
    */
   constructor(scene: World, {
-    position, variant = 0,
+    positionAtMatrix, variant = 0,
   }: ChestData) {
-    const tilePosition = { ...position, z: 1 };
+    const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
     super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.DEFAULT, variant);
     scene.add.existing(this);
     scene.getChests().add(this);
+
+    this.positionAtMatrix = positionAtMatrix;
 
     // Configure tile
     this.setDepth(Level.GetDepth(positionAtWorld.y - 10, tilePosition.z, this.displayHeight));

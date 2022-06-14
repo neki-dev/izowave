@@ -18,9 +18,9 @@ export default class BuildingTowerLazer extends BuildingTower {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, position: Phaser.Types.Math.Vector3Like) {
+  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector3Like) {
     super(scene, {
-      position,
+      positionAtMatrix,
       variant: BuildingVariant.TOWER_LAZER,
       health: 600,
       texture: BuildingTowerLazer.Texture,
