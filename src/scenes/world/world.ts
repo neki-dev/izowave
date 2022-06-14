@@ -523,11 +523,17 @@ export default class World extends Phaser.Scene {
       HEALPLS: () => {
         this.player.live.heal();
       },
-      RICHBICH: () => {
-        this.player.giveResources({ gold: 999, silver: 999, bronze: 999 });
+      RICHBITCH: () => {
+        this.player.giveResources({ gold: 9999, silver: 9999, bronze: 9999 });
       },
-      SKIPTIME: () => {
+      BOOSTME: () => {
+        this.player.giveExperience(9999);
+      },
+      FUTURE: () => {
         this.wave.number += 10;
+      },
+      FUTUREX: () => {
+        this.wave.number = 24;
       },
     });
   }
