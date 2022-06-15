@@ -68,9 +68,6 @@ const Component: UIComponent<Props> = function ComponentBuilder(
     body.setOrigin(0, 0);
     body.setInteractive();
     body.on(Phaser.Input.Events.POINTER_OVER, () => {
-      if (!builder.isBuild) {
-        return;
-      }
       this.input.setDefaultCursor('pointer');
       infoBox.setPosition(
         item.x - infoBox.width / 2 + ITEMS_MARGIN_H,
@@ -80,18 +77,14 @@ const Component: UIComponent<Props> = function ComponentBuilder(
       hover.current = index;
     });
     body.on(Phaser.Input.Events.POINTER_OUT, () => {
-      if (!builder.isBuild) {
-        return;
-      }
       this.input.setDefaultCursor('default');
       infoBox.setVisible(false);
       hover.current = null;
     });
     body.on(Phaser.Input.Events.POINTER_UP, () => {
-      if (!builder.isBuild) {
-        return;
-      }
-      builder.setBuildingVariant(index);
+      builder.setBuildingVariant(
+        (builder.variantIndex === index) ? null : index,
+      );
     });
 
     const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);

@@ -24,11 +24,6 @@ export default class Builder {
   private set isBuild(v) { this._isBuild = v; }
 
   /**
-   * Builder blocking.
-   */
-  public isDisallow: boolean = false;
-
-  /**
    * Assumed position state.
    */
   private assumedPosition: AssumedBuildPosition = {
@@ -50,7 +45,7 @@ export default class Builder {
   /**
    * Current building variant index.
    */
-  private _variantIndex: number = 0;
+  private _variantIndex: number = null;
 
   public get variantIndex() { return this._variantIndex; }
 
@@ -61,6 +56,8 @@ export default class Builder {
    */
   constructor(scene: World) {
     this.scene = scene;
+
+    this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant, this);
   }
 
   /**
@@ -84,6 +81,10 @@ export default class Builder {
    * @param param - Parameter key
    */
   public getBuildingMeta(param: string) {
+    if (this.variantIndex === null) {
+      return null;
+    }
+
     const variant = BUILDING_VARIANTS[this.variantIndex];
     return BUILDINGS[variant][param];
   }
@@ -120,7 +121,6 @@ export default class Builder {
     this.createBuildArea();
 
     const { input } = this.scene;
-    input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant, this);
     input.on(Phaser.Input.Events.POINTER_UP, this.build, this);
     input.on(Phaser.Input.Events.POINTER_MOVE, this.updateAssumedPositionState, this);
     this.updateAssumedPositionState();
@@ -137,7 +137,6 @@ export default class Builder {
     }
 
     const { input } = this.scene;
-    input.keyboard.off(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant);
     input.off(Phaser.Input.Events.POINTER_UP, this.build);
     input.off(Phaser.Input.Events.POINTER_MOVE, this.updateAssumedPositionState);
 
@@ -160,7 +159,9 @@ export default class Builder {
       return;
     }
 
-    this.setBuildingVariant(index);
+    this.setBuildingVariant(
+      (this.variantIndex === index) ? null : index,
+    );
   }
 
   /**
@@ -169,7 +170,7 @@ export default class Builder {
   private isCanBuild(): boolean {
     const { player, wave } = this.scene;
     return (
-      !this.isDisallow
+      this.variantIndex !== null
       && !wave.isGoing
       && !player.live.isDead()
       && player.isStopped()
@@ -283,12 +284,14 @@ export default class Builder {
    * @param position - Tile position
    */
   private updateBuildingPreview(position: Phaser.Types.Math.Vector3Like) {
-    const isAllow = this.isAllowBuild();
-    const { x, y } = Level.ToWorldPosition(position);
-    this.buildingPreview.setPosition(x, y);
-    this.buildingPreview.setDepth(Level.GetTileDepth(y, position.z));
-    this.buildingPreview.setAlpha(isAllow ? 1.0 : 0.25);
     this.buildingPreview.setVisible(this.assumedPosition.isFree);
+    if (this.buildingPreview.visible) {
+      const isAllow = this.isAllowBuild();
+      const { x, y } = Level.ToWorldPosition(position);
+      this.buildingPreview.setPosition(x, y);
+      this.buildingPreview.setDepth(Level.GetTileDepth(y, position.z));
+      this.buildingPreview.setAlpha(isAllow ? 1.0 : 0.25);
+    }
   }
 
   /**

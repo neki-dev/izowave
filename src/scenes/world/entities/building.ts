@@ -270,11 +270,10 @@ export default class Building extends Phaser.GameObjects.Image {
       player, wave, input, builder,
     } = this.scene;
 
-    if (player.live.isDead()) {
+    if (player.live.isDead() || builder.isBuild) {
       return;
     }
 
-    builder.isDisallow = true;
     this.actionsArea.setVisible(true);
 
     const isCanUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
@@ -304,14 +303,13 @@ export default class Building extends Phaser.GameObjects.Image {
    * Unfocus event.
    */
   private onUnfocus() {
-    const { input, builder } = this.scene;
+    const { input } = this.scene;
 
     if (this.uiBuildingInfo) {
       this.uiBuildingInfo.destroy();
       delete this.uiBuildingInfo;
     }
 
-    builder.isDisallow = false;
     this.actionsArea.setVisible(false);
 
     input.setDefaultCursor('default');
