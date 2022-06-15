@@ -18,6 +18,7 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import {
   BUILDING_ACTION_PAUSE_GROWTH,
   BUILDING_ACTION_RADIUS_GROWTH,
+  BUILDING_UPGRADE_EXPERIENCE,
 } from '~const/difficulty';
 
 export default class Building extends Phaser.GameObjects.Image {
@@ -230,6 +231,8 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.live.heal();
     this.setFrame(this.upgradeLevel - 1);
+
+    this.scene.player.giveExperience(BUILDING_UPGRADE_EXPERIENCE);
     this.scene.player.addLabel('UPGRADED');
   }
 

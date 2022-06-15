@@ -33,6 +33,7 @@ export const ENEMY_KILL_EXPERIENCE_GROWTH = 0.07; // Experience growth by wave n
 
 export const BUILDING_ACTION_RADIUS_GROWTH = 0.3; // Actions radius growth by upgrade
 export const BUILDING_ACTION_PAUSE_GROWTH = -0.1; // Actions pause growth by upgrade
+export const BUILDING_UPGRADE_EXPERIENCE = 30; // Gained experience per upgrade building
 
 export const BUILDING_BUILD_AREA = 180; // Default radius of build area
 export const BUILDING_BUILD_AREA_GROWTH = 0.08; // Radius growth by level
