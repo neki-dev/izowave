@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import Player from '~scene/world/entities/player';
 import ComponentInfoBox from '~scene/world/components/info-box';
 import Building from '~scene/world/entities/building';
-import Rectangle from '~ui/rectangle';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
 
@@ -56,45 +55,30 @@ const Component: UIComponent<Props> = function ComponentBuilder(
     player,
   });
   infoBox.setVisible(false);
+  container.add(infoBox);
 
-  const addPreview = (variant: BuildingVariant, index: number) => {
+  const addItem = (variant: BuildingVariant, index: number) => {
     const item = this.add.container(
       ITEMS_MARGIN_H + (width + ITEMS_PADDING) * index,
       ITEMS_MARGIN_V,
     );
     item.setSize(width, fullHeight);
 
-    const body = new Rectangle(this, {
-      size: { x: width + ITEMS_PADDING, y: fullHeight },
-      position: { x: -ITEMS_PADDING / 2, y: -ITEMS_MARGIN_V },
-      origin: [0, 0],
-      background: 0x3b1954,
-      update: (self) => {
-        const isActive = (builder.variantIndex === index) || (hover.current === index);
-        self.setAlpha(isActive ? 1.0 : 0.4);
-      },
-    });
+    const body = this.add.rectangle(-ITEMS_PADDING / 2, -ITEMS_MARGIN_V, width + ITEMS_PADDING, fullHeight, 0x3b1954);
+    body.setOrigin(0, 0);
     body.setInteractive();
-
-    const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);
-    preview.setOrigin(0, 0);
-
-    const number = this.add.text(0, height, String(index + 1), { fontSize: '14px' });
-    number.setOrigin(0, 1);
-
     body.on(Phaser.Input.Events.POINTER_OVER, () => {
       if (!builder.isBuild) {
         return;
       }
       this.input.setDefaultCursor('pointer');
-      infoBox.setVisible(true);
       infoBox.setPosition(
         item.x - infoBox.width / 2 + ITEMS_MARGIN_H,
         item.y - infoBox.height - ITEMS_MARGIN_V - ITEMS_PADDING / 2,
       );
+      infoBox.setVisible(true);
       hover.current = index;
     });
-
     body.on(Phaser.Input.Events.POINTER_OUT, () => {
       if (!builder.isBuild) {
         return;
@@ -103,7 +87,6 @@ const Component: UIComponent<Props> = function ComponentBuilder(
       infoBox.setVisible(false);
       hover.current = null;
     });
-
     body.on(Phaser.Input.Events.POINTER_UP, () => {
       if (!builder.isBuild) {
         return;
@@ -111,17 +94,17 @@ const Component: UIComponent<Props> = function ComponentBuilder(
       builder.setBuildingVariant(index);
     });
 
+    const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);
+    preview.setOrigin(0, 0);
+
+    const number = this.add.text(0, height, String(index + 1), { fontSize: '14px' });
+    number.setOrigin(0, 1);
+
     item.add([body, preview, number]);
     container.add(item);
   };
 
-  let index = 0;
-  for (const variant of BUILDING_VARIANTS) {
-    addPreview(variant, index);
-    index++;
-  }
-
-  container.add(infoBox);
+  BUILDING_VARIANTS.forEach(addItem);
 
   wave.on(WaveEvents.START, () => {
     container.setVisible(false);
@@ -131,6 +114,25 @@ const Component: UIComponent<Props> = function ComponentBuilder(
   wave.on(WaveEvents.FINISH, () => {
     container.setVisible(true);
   });
+
+  const update = () => {
+    if (!container.visible) {
+      return;
+    }
+
+    const itemsCount = container.getAll().length;
+    for (let i = 1; i < itemsCount; i++) {
+      const item = <Phaser.GameObjects.Container> container.getAt(i);
+      const body = <Phaser.GameObjects.Rectangle> item.getAt(0);
+      const isActive = (builder.variantIndex === i - 1) || (hover.current === i - 1);
+      body.setAlpha(isActive ? 1.0 : 0.4);
+    }
+  };
+  this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
+  container.on(Phaser.Scenes.Events.DESTROY, () => {
+    this.events.off(Phaser.Scenes.Events.UPDATE, update);
+  });
+  update();
 
   return container
     .setName('ComponentBuilder');

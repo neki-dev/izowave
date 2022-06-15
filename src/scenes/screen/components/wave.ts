@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 import Text from '~ui/text';
 import Wave from '~scene/world/wave';
-import Rectangle from '~ui/rectangle';
 
 import { WaveEvents } from '~type/wave';
 import { UIComponent } from '~type/interface';
@@ -31,20 +30,11 @@ const Component: UIComponent<Props> = function ComponentWave(
   const container = this.add.container(x - CONTAINER_WIDTH / 2, y);
   container.setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
-  const background = new Rectangle(this, {
-    size: { x: CONTAINER_WIDTH, y: CONTAINER_HEIGHT },
-    position: { x: 0, y: 0 },
-    origin: [0, 0],
-    alpha: 0.6,
-    background: 0x000000,
-  });
+  const background = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
+  background.setOrigin(0, 0);
 
-  const body = new Rectangle(this, {
-    size: { x: 0, y: 0 },
-    position: { x: 10, y: 10 },
-    origin: [0, 0],
-    background: 0x83a81c,
-  });
+  const body = this.add.rectangle(10, 10, 0, 0, 0x83a81c);
+  body.setOrigin(0, 0);
 
   const labelNumber = new Text(this, {
     position: { y: CONTAINER_HEIGHT / 2 },

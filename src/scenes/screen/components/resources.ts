@@ -28,7 +28,7 @@ const Component: UIComponent<Props> = function ComponentResources(
 
   let shift = 0;
   for (const type of Object.values(ResourceType)) {
-    const body = this.add.rectangle(0, shift, 100, 34, 0x000000);
+    const body = this.add.rectangle(0, shift, 100, 34, 0x000000, 0.75);
     body.setOrigin(0, 0);
 
     const icon = this.add.image(7, shift + 7, InterfaceSprite.RESOURCES, RESOURCE_FRAME[type]);

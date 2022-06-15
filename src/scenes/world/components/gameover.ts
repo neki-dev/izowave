@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import Text from '~ui/text';
-import Rectangle from '~ui/rectangle';
 
 import { UIComponent } from '~type/interface';
 import { INTERFACE_MONOSPACE_FONT } from '~const/interface';
@@ -18,12 +17,8 @@ const Component: UIComponent<Props> = function ComponentGaveOver(
 ) {
   const container = this.add.container(0, 0);
 
-  const body = new Rectangle(this, {
-    size: { x: 0, y: 0 },
-    position: { x: 0, y: 0 },
-    origin: [0, 0],
-    alpha: 0.7,
-  });
+  const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.75);
+  body.setOrigin(0, 0);
 
   let shift = CONTAINER_PADDING;
 

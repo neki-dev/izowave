@@ -1,12 +1,16 @@
 import Phaser from 'phaser';
 import Text from '~ui/text';
-import Rectangle from '~ui/rectangle';
 
 import { UIComponent } from '~type/interface';
 
 import { INTERFACE_BOX_COLOR } from '~const/interface';
 
-function KeyItem(position: Phaser.Types.Math.Vector2Like, name: string, description: string) {
+function ComponentKey(
+  this: Phaser.Scene,
+  position: Phaser.Types.Math.Vector2Like,
+  name: string,
+  description: string,
+) {
   const container = this.add.container(position.x, position.y);
 
   const textName = new Text(this, {
@@ -17,12 +21,8 @@ function KeyItem(position: Phaser.Types.Math.Vector2Like, name: string, descript
     shadow: false,
   });
 
-  const body = new Rectangle(this, {
-    position: { x: 0, y: 0 },
-    size: { x: textName.width + 10, y: textName.height + 10 },
-    background: INTERFACE_BOX_COLOR,
-    origin: [0, 0],
-  });
+  const body = this.add.rectangle(0, 0, textName.width + 10, textName.height + 10, INTERFACE_BOX_COLOR);
+  body.setOrigin(0, 0);
 
   const textDescription = new Text(this, {
     position: { x: body.width + 10, y: 7 },
@@ -34,7 +34,8 @@ function KeyItem(position: Phaser.Types.Math.Vector2Like, name: string, descript
   container.add([body, textName, textDescription]);
   container.setSize(body.width + 10 + textDescription.width, body.height);
 
-  return container;
+  return container
+    .setName('ComponentKey');
 }
 
 const Component: UIComponent = function ComponentControls(
@@ -52,9 +53,9 @@ const Component: UIComponent = function ComponentControls(
     { name: 'N', description: 'Skip wave timeleft' },
     { name: 'ESC', description: 'Pause game' },
   ]) {
-    const keyItem = KeyItem.call(this, { x: 0, y: shift }, item.name, item.description);
-    container.add(keyItem);
-    shift += keyItem.height + 15;
+    const key = ComponentKey.call(this, { x: 0, y: shift }, item.name, item.description);
+    container.add(key);
+    shift += key.height + 15;
   }
 
   return container

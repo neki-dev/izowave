@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import Player from '~scene/world/entities/player';
-import Rectangle from '~ui/rectangle';
 import Text from '~ui/text';
 
 import { InterfaceSprite, ResourcesSpriteFrames, UIComponent } from '~type/interface';
@@ -28,13 +27,8 @@ const Component: UIComponent<Props> = function ComponentInfoBox(
   const container = this.add.container(0, 0);
   const shift = { x: CONTAINER_PADDING, y: CONTAINER_PADDING };
 
-  const body = new Rectangle(this, {
-    size: { x: 0, y: 0 },
-    position: { x: 0, y: 0 },
-    origin: [0, 0],
-    alpha: 0.9,
-    background: INTERFACE_BOX_COLOR,
-  });
+  const body = this.add.rectangle(0, 0, 0, 0, INTERFACE_BOX_COLOR, 0.9);
+  body.setOrigin(0, 0);
 
   const labelText = new Text(this, {
     position: shift,
@@ -73,12 +67,8 @@ const Component: UIComponent<Props> = function ComponentInfoBox(
   if (cost) {
     let offset = 12;
     const costContainer = this.add.container(shift.x, 0);
-    const costBody = new Rectangle(this, {
-      size: { x: 80, y: shift.y },
-      position: { x: 0, y: 0 },
-      origin: [0, 0],
-      alpha: 0.9,
-    });
+    const costBody = this.add.rectangle(0, 0, 80, shift.y, 0x000000, 0.9);
+    costBody.setOrigin(0, 0);
     const constTitle = new Text(this, {
       position: { x: 10, y: offset },
       origin: [0, 0],

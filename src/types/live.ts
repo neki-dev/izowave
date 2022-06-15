@@ -3,4 +3,5 @@
 export enum LiveEvents {
   DEAD = 'dead',
   DAMAGE = 'damage',
+  HEAL = 'heal',
 }
