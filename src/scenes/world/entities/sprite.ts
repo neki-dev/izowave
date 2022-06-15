@@ -4,7 +4,7 @@ import Level from '~scene/world/level';
 import World from '~scene/world';
 
 import { SpriteData } from '~type/sprite';
-import { TileType } from '~type/level';
+import { BiomeType, TileType } from '~type/level';
 
 import { WORLD_COLLIDE_LOOK } from '~const/world';
 
@@ -108,7 +108,8 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
 
       // If not collide ground tile
       if (ground) {
-        if (!this.scene.level.getTile({ ...positionAtMatrix, z: 0 })) {
+        const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
+        if (!tileGround || tileGround?.biome.type === BiomeType.WATER) {
           return true;
         }
       }
