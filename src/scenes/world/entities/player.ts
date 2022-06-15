@@ -19,7 +19,6 @@ import { ResourceType, Resources } from '~type/building';
 import { WaveEvents } from '~type/wave';
 import { LiveEvents } from '~type/live';
 
-import { INTERFACE_MONOSPACE_FONT } from '~const/interface';
 import { WORLD_CAMERA_ZOOM } from '~const/world';
 import {
   PLAYER_PHRASES, PLAYER_PHRASE_PAUSE,
@@ -54,7 +53,11 @@ export default class Player extends Sprite {
   /**
    * Player experience on current level.
    */
-  private experience: number = 0;
+  private _experience: number = 0;
+
+  public get experience() { return this._experience; }
+
+  private set experience(v) { this._experience = v; }
 
   /**
    * Resourse amounts.
@@ -133,7 +136,6 @@ export default class Player extends Sprite {
     this.makeAnimations();
     this.registerKeyboard();
     this.addHealthIndicator();
-    this.addLevelIndicator();
     this.addPhrase('SPAWN');
 
     // Add events callbacks
@@ -570,22 +572,6 @@ export default class Player extends Sprite {
     });
     bar.setPosition(bar.x, -(this.displayHeight + 5));
     this.container.add(bar);
-  }
-
-  /**
-   * Add current level indicator above player.
-   */
-  private addLevelIndicator() {
-    const text = new Text(this.scene, {
-      position: { x: 0, y: -(this.displayHeight + 5) },
-      origin: [0.5, 1.0],
-      update: (self) => {
-        self.setText(`${this.level} LVL`);
-      },
-      fontFamily: INTERFACE_MONOSPACE_FONT,
-    });
-
-    this.container.add(text);
   }
 
   /**

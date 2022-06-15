@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import ComponentExperience from '~scene/screen/components/experience';
 import ComponentWave from '~scene/screen/components/wave';
 import ComponentResources from '~scene/screen/components/resources';
 import ComponentFPS from '~scene/screen/components/fps';
@@ -29,10 +30,16 @@ export default class Screen extends Phaser.Scene {
       y: INTERFACE_PADDING,
     });
 
-    const resources = ComponentResources.call(this, {
+    const experience = ComponentExperience.call(this, {
       player: world.player,
       x: INTERFACE_PADDING,
       y: INTERFACE_PADDING,
+    });
+
+    const resources = ComponentResources.call(this, {
+      player: world.player,
+      x: INTERFACE_PADDING,
+      y: INTERFACE_PADDING + experience.height + INTERFACE_PADDING / 2,
     });
 
     const builder = ComponentBuilder.call(this, {
@@ -43,6 +50,7 @@ export default class Screen extends Phaser.Scene {
 
     world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
       wave.destroy();
+      experience.destroy();
       resources.destroy();
       builder.destroy();
 
