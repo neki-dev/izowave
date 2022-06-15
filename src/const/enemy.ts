@@ -1,6 +1,6 @@
 import { EnemyVariant, EnemyTexture } from '~type/enemy';
 
-export const ENEMY_SPAWN_POSITIONS = 16;
+export const ENEMY_SPAWN_POSITIONS = 20;
 export const ENEMY_SPAWN_DISTANCE_FROM_BUILDING = 10;
 
 export const ENEMY_PATH_BREAKPOINT = 32;

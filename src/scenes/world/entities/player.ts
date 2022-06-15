@@ -417,7 +417,7 @@ export default class Player extends Sprite {
       value: `${value}\n`,
       update: (self) => {
         const index = this.labels.indexOf(label);
-        let offset = -(this.displayHeight + 5) - 8;
+        let offset = -this.displayHeight;
         for (let i = 0; i < index; i++) {
           offset -= this.labels[i].height;
         }
