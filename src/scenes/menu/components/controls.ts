@@ -49,6 +49,7 @@ const Component: UIComponent = function ComponentControls(
     { name: 'LEFT CLICK', description: 'Build' },
     { name: 'DOUBLE CLICK', description: 'Upgrade building' },
     { name: 'BACKSPACE', description: 'Destroy building' },
+    { name: 'N', description: 'Skip wave timeleft' },
     { name: 'ESC', description: 'Pause game' },
   ]) {
     const keyItem = KeyItem.call(this, { x: 0, y: shift }, item.name, item.description);

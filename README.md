@@ -51,6 +51,8 @@ Upgrades increase range and heal amount, and decrease pause between heals.
 
 `BACKSPACE` - Destroy building
 
+`N` - Skip wave timeleft
+
 `ESC` - Pause game
 
 .

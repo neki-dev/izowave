@@ -70,6 +70,15 @@ export default class Wave extends EventEmitter {
     this.scene = scene;
 
     this.runTimeleft();
+
+    // Skip timeleft
+    scene.input.keyboard.once('keyup-N', () => {
+      if (this.isGoing) {
+        return;
+      }
+
+      this.timeleft = this.scene.getTimerNow();
+    });
   }
 
   /**
