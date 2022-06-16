@@ -36,7 +36,11 @@ export default class Wave extends EventEmitter {
   /**
    * Current wave number.
    */
-  public number: number = 0;
+  private _number: number = 0;
+
+  public get number() { return this._number; }
+
+  private set number(v) { this._number = v; }
 
   /**
    * Count of spawned enemies in current wave.
@@ -71,14 +75,7 @@ export default class Wave extends EventEmitter {
 
     this.runTimeleft();
 
-    // Skip timeleft
-    scene.input.keyboard.once('keyup-N', () => {
-      if (this.isGoing) {
-        return;
-      }
-
-      this.timeleft = this.scene.getTimerNow();
-    });
+    scene.input.keyboard.once('keyup-N', this.skipTimeleft, this);
   }
 
   /**
@@ -114,10 +111,45 @@ export default class Wave extends EventEmitter {
   }
 
   /**
+   * Set current wave number.
+   *
+   * @param number - Number
+   */
+  public setNumber(number: number) {
+    this.number = number;
+
+    this.emit(WaveEvents.UPDATE);
+  }
+
+  /**
+   * Start timeleft to next wave.
+   */
+  public runTimeleft() {
+    const pause = WAVE_PAUSE / this.scene.difficulty;
+    this.timeleft = this.scene.getTimerNow() + pause;
+  }
+
+  /**
+   * Skip timeleft.
+   */
+  public skipTimeleft() {
+    if (this.isGoing) {
+      return;
+    }
+
+    const now = this.scene.getTimerNow();
+    if (this.timeleft - now <= 3000) {
+      return;
+    }
+
+    this.timeleft = now + 3000;
+  }
+
+  /**
    * Start wave.
    * Increment current wave number and start enemies spawning.
    */
-  private start() {
+  public start() {
     this.number++;
     this.isGoing = true;
 
@@ -129,6 +161,7 @@ export default class Wave extends EventEmitter {
       this.number,
     );
 
+    this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.START, this.number);
 
     const screen = this.scene.scene.get(SceneKey.SCREEN);
@@ -139,22 +172,15 @@ export default class Wave extends EventEmitter {
    * Complete wave.
    * Start timeleft to next wave and give player experience.
    */
-  private complete() {
+  public complete() {
     this.isGoing = false;
     this.runTimeleft();
 
+    this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.FINISH, this.number);
 
     const experience = calcGrowth(WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH, this.number);
     this.scene.player.giveExperience(experience);
-  }
-
-  /**
-   * Start timeleft to next wave.
-   */
-  private runTimeleft() {
-    const pause = WAVE_PAUSE / this.scene.difficulty;
-    this.timeleft = this.scene.getTimerNow() + pause;
   }
 
   /**
