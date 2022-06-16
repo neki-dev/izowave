@@ -230,8 +230,9 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.emit(BuildingEvents.UPGRADE, this.upgradeLevel);
 
-    this.scene.player.giveExperience(BUILDING_UPGRADE_EXPERIENCE);
-    this.scene.player.addLabel('UPGRADED');
+    const { player } = this.scene;
+    player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
+    player.addLabel('UPGRADED');
   }
 
   /**

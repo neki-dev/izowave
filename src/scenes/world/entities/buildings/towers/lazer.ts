@@ -31,7 +31,7 @@ export default class BuildingTowerLazer extends BuildingTower {
       },
       shotType: ShotType.LAZER,
       shotData: {
-        damage: 17,
+        damage: 15,
       },
     });
   }
