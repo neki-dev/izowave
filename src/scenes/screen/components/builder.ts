@@ -108,6 +108,7 @@ const Component: UIComponent<Props> = function ComponentBuilder(
     container.setVisible(true);
   });
 
+  // Update event
   const update = () => {
     if (!container.visible) {
       return;

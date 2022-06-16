@@ -25,7 +25,6 @@ export default class Screen extends Phaser.Scene {
 
     const wave = ComponentWave.call(this, {
       wave: world.wave,
-      enemies: world.getEnemies(),
       x: this.sys.canvas.width / 2,
       y: INTERFACE_PADDING,
     });

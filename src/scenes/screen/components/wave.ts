@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
-import Text from '~ui/text';
 import Wave from '~scene/world/wave';
 
 import { WaveEvents } from '~type/wave';
 import { UIComponent } from '~type/interface';
 
+import { INTERFACE_PIXEL_FONT } from '~const/interface';
+
 type Props = {
   wave: Wave
-  enemies: Phaser.GameObjects.Group
   x: number
   y: number
 };
@@ -23,83 +23,85 @@ const formatTime = (value: number) => {
 
 const Component: UIComponent<Props> = function ComponentWave(
   this: Phaser.Scene,
-  {
-    wave, enemies, x, y,
-  },
+  { wave, x, y },
 ) {
   const container = this.add.container(x - CONTAINER_WIDTH / 2, y);
   container.setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
-  const background = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
-  background.setOrigin(0, 0);
-
-  const body = this.add.rectangle(10, 10, 0, 0, 0x83a81c);
+  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
   body.setOrigin(0, 0);
 
-  const labelNumber = new Text(this, {
-    position: { y: CONTAINER_HEIGHT / 2 },
-    update: (self) => {
-      self.setText(
-        wave.isGoing ? 'CURRENT\nWAVE' : 'NEXT\nWAVE',
-      );
-    },
-    origin: [0, 0.5],
-    space: 2,
-    shadow: false,
-  });
+  const numberBody = this.add.rectangle(10, 10, 0, CONTAINER_HEIGHT - 20, 0x83a81c);
+  numberBody.setOrigin(0, 0);
 
-  const labelCounter = new Text(this, {
-    position: { x: CONTAINER_WIDTH - 10, y: CONTAINER_HEIGHT / 2 - 9 },
-    update: (self) => {
-      self.setText(
-        wave.isGoing ? 'ENEMIES' : 'TIMELEFT',
-      );
-    },
-    origin: [1, 0.5],
-    fontSize: 8,
-    shadow: false,
+  const number = this.add.text(0, CONTAINER_HEIGHT / 2, '', {
+    fontSize: '22px',
+    fontFamily: INTERFACE_PIXEL_FONT,
+    padding: { bottom: 1 },
   });
+  number.setOrigin(0.5, 0.5);
 
-  const counter = new Text(this, {
-    position: { x: CONTAINER_WIDTH - 10, y: CONTAINER_HEIGHT / 2 + 6 },
-    update: (self) => {
-      if (wave.isGoing) {
-        const killedCount = wave.spawnedCount - enemies.getTotalUsed();
-        self.setText(String(wave.maxSpawnedCount - killedCount));
-      } else {
-        const timeleft = wave.getTimeleft();
-        self.setText(
-          formatTime(Math.ceil(timeleft / 1000)),
-        );
-      }
-    },
-    origin: [1, 0.5],
-    fontSize: 16,
-    shadow: false,
+  const status = this.add.text(0, CONTAINER_HEIGHT / 2, '', {
+    fontSize: '11px',
+    fontFamily: INTERFACE_PIXEL_FONT,
+    // @ts-ignore
+    lineSpacing: 2,
   });
+  status.setOrigin(0.0, 0.5);
 
-  const number = new Text(this, {
-    position: { x: 0, y: 0 },
-    update: (self) => {
-      self.setText(String(wave.isGoing ? wave.number : wave.number + 1));
-      body.setSize(self.width + 20, CONTAINER_HEIGHT - 20);
-      self.setPosition(10 + body.width / 2, CONTAINER_HEIGHT / 2);
-      labelNumber.x = body.width + 20;
-    },
-    origin: [0.5, 0.55],
-    fontSize: 22,
-    shadow: false,
+  const counterLabel = this.add.text(CONTAINER_WIDTH - 10, CONTAINER_HEIGHT / 2 - 9, '', {
+    fontSize: '8px',
+    fontFamily: INTERFACE_PIXEL_FONT,
+    padding: { bottom: 1 },
   });
+  counterLabel.setOrigin(1.0, 0.5);
 
-  container.add([background, labelNumber, body, number, labelCounter, counter]);
-
-  wave.on(WaveEvents.START, () => {
-    body.fillColor = 0xdb2323;
+  const counter = this.add.text(CONTAINER_WIDTH - 10, CONTAINER_HEIGHT / 2 + 6, '', {
+    fontSize: '16px',
+    fontFamily: INTERFACE_PIXEL_FONT,
+    padding: { bottom: 1 },
   });
+  counter.setOrigin(1.0, 0.5);
 
-  wave.on(WaveEvents.FINISH, () => {
-    body.fillColor = 0x83a81c;
+  container.add([body, numberBody, number, status, counterLabel, counter]);
+
+  const refresh = () => {
+    if (wave.isGoing) {
+      numberBody.fillColor = 0xdb2323;
+      number.setText(String(wave.number));
+      counterLabel.setText('ENEMIES');
+      status.setText('CURRENT\nWAVE');
+    } else {
+      numberBody.fillColor = 0x83a81c;
+      number.setText(String(wave.number + 1));
+      counterLabel.setText('TIMELEFT');
+      status.setText('NEXT\nWAVE');
+    }
+    numberBody.width = number.width + 20;
+    number.setX(10 + numberBody.width / 2);
+    status.setX(numberBody.width + 20);
+  };
+
+  wave.on(WaveEvents.UPDATE, refresh);
+  refresh();
+
+  // Update event
+  const update = () => {
+    let counterValue: string;
+    if (wave.isGoing) {
+      const killedCount = wave.spawnedCount - wave.scene.getEnemies().getTotalUsed();
+      counterValue = String(wave.maxSpawnedCount - killedCount);
+    } else {
+      const timeleft = wave.getTimeleft();
+      counterValue = formatTime(Math.ceil(timeleft / 1000));
+    }
+    counter.setText(counterValue);
+  };
+  this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
+  container.on(Phaser.Scenes.Events.DESTROY, () => {
+    this.events.off(Phaser.Scenes.Events.UPDATE, update);
   });
+  update();
 
   return container
     .setName('ComponentWave');
