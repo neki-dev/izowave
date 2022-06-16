@@ -1,6 +1,5 @@
 import Enemy from '~scene/world/entities/enemy';
 import World from '~scene/world';
-import ComponentHealthBar from '~scene/world/components/health-bar';
 
 import { EnemyVariantData, EnemyTexture } from '~type/enemy';
 
@@ -15,19 +14,5 @@ export default class EnemyBoss extends Enemy {
       experienceMultiply: 10.0,
       scale: 2.0,
     });
-
-    this.addHealthIndicator();
-  }
-
-  /**
-   * Add current health indicator above enemy.
-   */
-  private addHealthIndicator() {
-    const bar = <Phaser.GameObjects.Container> ComponentHealthBar.call(this.scene, {
-      size: [50, 8],
-      live: this.live,
-    });
-    bar.setPosition(bar.x, -(this.displayHeight / 2 + 15));
-    this.container.add(bar);
   }
 }

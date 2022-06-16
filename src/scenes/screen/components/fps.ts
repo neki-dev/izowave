@@ -1,27 +1,20 @@
-import Phaser from 'phaser';
-import Text from '~ui/text';
+import Component from '~lib/ui';
 
-import { UIComponent } from '~type/interface';
+import { INTERFACE_MONOSPACE_FONT } from '~const/interface';
 
-import { INTERFACE_MONOSPACE_FONT, INTERFACE_PADDING } from '~const/interface';
-
-const Component: UIComponent = function ComponentFPS(
-  this: Phaser.Scene,
-) {
-  const stat = new Text(this, {
-    position: { x: this.sys.game.canvas.width - INTERFACE_PADDING, y: INTERFACE_PADDING },
-    update: (self) => {
-      self.setText(`${Math.round(this.sys.game.loop.actualFps)} FPS`);
-    },
+export default Component(function ComponentFPS(container) {
+  const fps = this.add.text(0, 0, '', {
+    fontSize: '12px',
     fontFamily: INTERFACE_MONOSPACE_FONT,
-    fontSize: 12,
-    space: 10,
-    origin: [1.0, 0],
-    alpha: 0.4,
   });
+  fps.setOrigin(1.0, 0.0);
+  fps.setAlpha(0.4);
 
-  return stat
-    .setName('ComponentFPS');
-};
+  container.add(fps);
 
-export default Component;
+  return {
+    update: () => {
+      fps.setText(`${Math.round(this.sys.game.loop.actualFps)} FPS`);
+    },
+  };
+});

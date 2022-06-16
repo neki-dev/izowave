@@ -1,9 +1,7 @@
 import Phaser from 'phaser';
-import Text from '~ui/text';
+import Component from '~lib/ui';
 
-import { UIComponent } from '~type/interface';
-
-import { INTERFACE_PRIMARY_COLOR } from '~const/interface';
+import { INTERFACE_PIXEL_FONT, INTERFACE_PRIMARY_COLOR } from '~const/interface';
 
 export type MenuItem = {
   label: string
@@ -13,8 +11,6 @@ export type MenuItem = {
 };
 
 type Props = {
-  x: number
-  y: number
   width: number
   data: MenuItem[]
   onSelect: (item: MenuItem) => void
@@ -22,27 +18,25 @@ type Props = {
 
 const MENU_ITEMS_MARGIN = 40;
 
-const Component: UIComponent<Props> = function ComponentItems(
-  this: Phaser.Scene,
-  {
-    x, y, width, data, onSelect,
-  },
-) {
-  const container = this.add.container(x, y);
+export default Component(function ComponentItems(container, { width, data, onSelect }: Props) {
   let shift = 0;
-
   for (const item of data) {
-    const text = new Text(this, {
-      position: { x: width, y: shift },
-      size: { x: width },
-      value: item.label,
-      origin: [1, 0.5],
-      alpha: 1.0,
-      fontSize: 20,
-      shadow: 4,
+    const text = this.add.text(width, shift, item.label, {
+      fixedWidth: width,
       color: item.onClick ? INTERFACE_PRIMARY_COLOR : '#ffffff',
+      fontSize: '20px',
+      fontFamily: INTERFACE_PIXEL_FONT,
       align: 'right',
+      padding: { bottom: 4 },
+      shadow: {
+        offsetX: 4,
+        offsetY: 4,
+        color: '#000000',
+        blur: 0,
+        fill: true,
+      },
     });
+    text.setOrigin(1.0, 0.0);
     text.setInteractive();
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
@@ -65,12 +59,9 @@ const Component: UIComponent<Props> = function ComponentItems(
 
   container.setSize(width, shift - MENU_ITEMS_MARGIN);
 
-  container.on(Phaser.GameObjects.Events.DESTROY, () => {
-    this.input.setDefaultCursor('default');
-  });
-
-  return container
-    .setName('ComponentItems');
-};
-
-export default Component;
+  return {
+    destroy: () => {
+      this.input.setDefaultCursor('default');
+    },
+  };
+});

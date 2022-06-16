@@ -1,10 +1,8 @@
 import EventEmitter from 'events';
 import { calcGrowth } from '~lib/utils';
-import TextNotify from '~ui/text-notify';
 import World from '~scene/world';
 
 import { WaveEvents } from '~type/wave';
-import { SceneKey } from '~type/scene';
 import { EnemyVariant } from '~type/enemy';
 
 import { ENEMY_VARIANTS_BY_WAVE } from '~const/enemy';
@@ -138,11 +136,11 @@ export default class Wave extends EventEmitter {
     }
 
     const now = this.scene.getTimerNow();
-    if (this.timeleft - now <= 3000) {
+    if (this.timeleft - now <= 1000) {
       return;
     }
 
-    this.timeleft = now + 3000;
+    this.timeleft = now + 1000;
   }
 
   /**
@@ -163,9 +161,6 @@ export default class Wave extends EventEmitter {
 
     this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.START, this.number);
-
-    const screen = this.scene.scene.get(SceneKey.SCREEN);
-    new TextNotify(screen, `WAVE ${this.number} STARTED`);
   }
 
   /**

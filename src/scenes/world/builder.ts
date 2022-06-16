@@ -81,7 +81,7 @@ export default class Builder {
    * @param param - Parameter key
    */
   public getBuildingMeta(param: string) {
-    if (this.variantIndex === null) {
+    if (!this.isVariantSelected()) {
       return null;
     }
 
@@ -98,6 +98,13 @@ export default class Builder {
     if (this.buildingPreview) {
       this.buildingPreview.setTexture(this.getBuildingMeta('Texture'));
     }
+  }
+
+  /**
+   * Check is building variant selected.
+   */
+  public isVariantSelected() {
+    return (this.variantIndex !== null);
   }
 
   /**
@@ -170,7 +177,7 @@ export default class Builder {
   private isCanBuild(): boolean {
     const { player, wave } = this.scene;
     return (
-      this.variantIndex !== null
+      this.isVariantSelected()
       && !wave.isGoing
       && !player.live.isDead()
       && player.isStopped()

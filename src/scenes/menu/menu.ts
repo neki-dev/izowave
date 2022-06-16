@@ -1,19 +1,15 @@
 import Phaser from 'phaser';
 import { loadFontFace } from '~lib/assets';
 import World from '~scene/world';
-import ComponentLogotype from '~scene/menu/components/logotype';
 import ComponentAbout from '~scene/menu/components/about';
 import ComponentDifficulty from '~scene/menu/components/difficulty';
 import ComponentControls from '~scene/menu/components/controls';
-import ComponentCopyright from '~scene/menu/components/copyright';
-import ComponentTitle from '~scene/menu/components/title';
-import ComponentContent from '~scene/menu/components/content';
 import ComponentItems, { MenuItem } from '~scene/menu/components/items';
 
 import { SceneKey } from '~type/scene';
-import { INTERFACE_PIXEL_FONT } from '~const/interface';
+import { INTERFACE_HEADER_COLOR, INTERFACE_MONOSPACE_FONT, INTERFACE_PIXEL_FONT } from '~const/interface';
+import { COPYRIGHT } from '~const/core';
 
-const MENU_WIDTH = 300;
 const CONTENT_MARGIN = 200;
 
 export default class Menu extends Phaser.Scene {
@@ -24,23 +20,97 @@ export default class Menu extends Phaser.Scene {
   }
 
   public create({ asPause = false }) {
-    this.addBackground();
+    const menuItems = [{
+      label: asPause ? 'Continue' : 'New game',
+      onClick: () => this.startGame(asPause),
+    }, {
+      label: 'Difficulty',
+      content: () => ComponentDifficulty.call(this, { x: 0, y: 0 }, { disabled: asPause }),
+    }, {
+      label: 'About',
+      content: () => ComponentAbout.call(this, { x: 0, y: 0 }),
+      default: true,
+    }, {
+      label: 'Controls',
+      content: () => ComponentControls.call(this, { x: 0, y: 0 }),
+    }];
+
+    const background = this.add.rectangle(0, 0, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.85);
+    background.setOrigin(0, 0);
+
+    this.container = this.add.container(0, 0);
 
     loadFontFace(INTERFACE_PIXEL_FONT, 'retro').finally(() => {
-      this.addMenu([{
-        label: asPause ? 'Continue' : 'New game',
-        onClick: () => this.startGame(asPause),
-      }, {
-        label: 'Difficulty',
-        content: () => ComponentDifficulty.call(this, { disabled: asPause }),
-      }, {
-        label: 'About',
-        content: () => ComponentAbout.call(this),
-        default: true,
-      }, {
-        label: 'Controls',
-        content: () => ComponentControls.call(this),
-      }]);
+      const shift = { x: 0, y: 0 };
+      const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
+        color: INTERFACE_HEADER_COLOR,
+        fontSize: '50px',
+        fontFamily: INTERFACE_PIXEL_FONT,
+        padding: { bottom: 6 },
+        shadow: {
+          offsetX: 6,
+          offsetY: 6,
+          color: '#000000',
+          blur: 0,
+          fill: true,
+        },
+      });
+      shift.y += logotype.height + 80;
+
+      const items = ComponentItems.call(this, shift, {
+        width: logotype.width,
+        data: menuItems,
+        onSelect: (item: MenuItem) => this.updateContent(item),
+      });
+      shift.y += items.height + 100;
+
+      const copyright = this.add.text(shift.x, shift.y, COPYRIGHT, {
+        fixedWidth: logotype.width,
+        fontSize: '12px',
+        fontFamily: INTERFACE_MONOSPACE_FONT,
+        align: 'right',
+      });
+      copyright.setAlpha(0.5);
+      shift.y += copyright.height;
+      shift.x = logotype.width;
+
+      this.container.setSize(shift.x + CONTENT_MARGIN + shift.x * 2, shift.y);
+      this.container.setPosition(
+        this.sys.canvas.width / 2 - this.container.width / 2,
+        this.sys.canvas.height / 2 - this.container.height / 2,
+      );
+
+      const line = this.add.rectangle(shift.x + CONTENT_MARGIN / 2, -100, 1, shift.y + 200, 0xffffff, 0.3);
+      line.setOrigin(0, 0);
+      shift.x += CONTENT_MARGIN;
+      shift.y = 0;
+
+      const title = this.add.text(shift.x, shift.y, '', {
+        fontSize: '50px',
+        fontFamily: INTERFACE_PIXEL_FONT,
+        padding: { bottom: 6 },
+        shadow: {
+          offsetX: 6,
+          offsetY: 6,
+          color: '#000000',
+          blur: 0,
+          fill: true,
+        },
+      });
+      title.setAlpha(0.3);
+      title.setName('Title');
+
+      shift.y += title.height + 80;
+
+      const content = this.add.container(shift.x, shift.y);
+      content.setName('Content');
+
+      this.container.add([logotype, items, copyright, line, title, content]);
+
+      const defaultItem = menuItems.find((item) => item.default);
+      if (defaultItem) {
+        this.updateContent(defaultItem);
+      }
     });
 
     this.input.keyboard.once('keyup-ENTER', () => {
@@ -63,10 +133,10 @@ export default class Menu extends Phaser.Scene {
   }
 
   private updateContent(item: MenuItem) {
-    const title = <Phaser.GameObjects.Text> this.container.getByName('ComponentTitle');
+    const title = <Phaser.GameObjects.Text> this.container.getByName('Title');
     title.setText(item.label);
 
-    const content = <Phaser.GameObjects.Container> this.container.getByName('ComponentContent');
+    const content = <Phaser.GameObjects.Container> this.container.getByName('Content');
     content.each((child: Phaser.GameObjects.GameObject) => {
       child.destroy();
     });
@@ -74,62 +144,5 @@ export default class Menu extends Phaser.Scene {
     const value = item.content();
     content.add(value);
     content.setSize(value.width, value.height);
-  }
-
-  private addMenu(data: any[]) {
-    this.container = this.add.container(0, 0);
-
-    let shift = 0;
-    const logotype = ComponentLogotype.call(this, { x: 0, y: shift, width: MENU_WIDTH });
-    const title = ComponentTitle.call(this, { x: MENU_WIDTH + CONTENT_MARGIN, y: shift });
-    shift += logotype.height + 100;
-    const items = ComponentItems.call(this, {
-      x: 0,
-      y: shift,
-      width: MENU_WIDTH,
-      data,
-      onSelect: (item: MenuItem) => this.updateContent(item),
-    });
-    const content = ComponentContent.call(this, { x: MENU_WIDTH + CONTENT_MARGIN, y: shift - 4 });
-    shift += items.height + 100;
-    const copyright = ComponentCopyright.call(this, { x: 0, y: shift, width: MENU_WIDTH });
-    shift += copyright.height;
-    const line = this.addDelimetr(shift);
-
-    this.container.add([logotype, items, copyright, line, title, content]);
-
-    const defaultItem = data.find((item) => item.default);
-    if (defaultItem) {
-      this.updateContent(defaultItem);
-    }
-
-    this.container.setSize(MENU_WIDTH + CONTENT_MARGIN + content.width, shift);
-    this.container.setPosition(
-      this.sys.canvas.width / 2 - this.container.width / 2,
-      this.sys.canvas.height / 2 - this.container.height / 2,
-    );
-  }
-
-  private addBackground() {
-    return this.add.rectangle(
-      0,
-      0,
-      this.sys.canvas.width,
-      this.sys.canvas.height,
-      0x000000,
-      0.85,
-    ).setOrigin(0, 0);
-  }
-
-  private addDelimetr(height: number) {
-    return this.add.rectangle(
-      MENU_WIDTH + CONTENT_MARGIN / 2,
-      -100,
-      1,
-      height + 200,
-      0xffffff,
-      0.3,
-    )
-      .setOrigin(0, 0);
   }
 }

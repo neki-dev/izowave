@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { equalPositions } from '~lib/utils';
 import Level from '~scene/world/level';
 import World from '~scene/world';
+import Live from '~scene/world/entities/live';
 
 import { SpriteData } from '~type/sprite';
 import { BiomeType, TileType } from '~type/level';
@@ -14,6 +15,11 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
 
   // @ts-ignore
   readonly body: Phaser.Physics.Arcade.Body;
+
+  /**
+   * Health managment.
+   */
+  readonly live: Live;
 
   /**
    * Child container.
@@ -34,25 +40,34 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   /**
+    *
+    */
+  private healthIndicator: Phaser.GameObjects.Container;
+
+  /**
    * Sprite constructor.
    */
   constructor(scene: World, {
-    texture, positionAtMatrix, frame = 0,
+    texture, positionAtMatrix, health, frame = 0,
   }: SpriteData) {
     const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
     super(scene, positionAtWorld.x, positionAtWorld.y, texture, frame);
     scene.add.existing(this);
 
     this.positionAtMatrix = positionAtMatrix;
+    this.live = new Live(health);
 
     // Configure physics
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
 
     this.container = scene.add.container(this.x, this.y);
     this.container.setDepth(9998);
+    this.container.setVisible(this.visible);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
     });
+
+    this.addHealthIndicator();
   }
 
   /**
@@ -65,7 +80,9 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
 
     this.container.setVisible(this.visible);
     if (this.visible) {
-      this.container.setPosition(this.x, this.y);
+      const { x, y } = this.getTopCenter();
+      this.container.setPosition(x, y);
+      this.updateHealthIndicator();
     }
 
     if (this.visible) {
@@ -137,5 +154,30 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     return points;
+  }
+
+  /**
+   * Add current health indicator above enemy.
+   */
+  private addHealthIndicator() {
+    const width = this.displayWidth * 1.5;
+    this.healthIndicator = this.scene.add.container(-width / 2, -13);
+    const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
+    body.setOrigin(0, 0);
+    const progress = this.scene.add.rectangle(1, 1, 0, 0, 0xe4372c);
+    progress.setOrigin(0, 0);
+    this.healthIndicator.setSize(body.width, body.height);
+    this.healthIndicator.add([body, progress]);
+    this.container.add(this.healthIndicator);
+  }
+
+  /**
+   * Update health indicator progress.
+   */
+  private updateHealthIndicator() {
+    const { width, height } = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(0);
+    const progress = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
+    const value = this.live.health / this.live.maxHealth;
+    progress.setSize((width - 2) * value, height - 2);
   }
 }

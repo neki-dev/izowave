@@ -5,7 +5,6 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import Player from '~scene/world/entities/player';
 import Building from '~scene/world/entities/building';
 import Level from '~scene/world/level';
-import Live from '~scene/world/entities/live';
 import Sprite from '~scene/world/entities/sprite';
 import World from '~scene/world';
 
@@ -21,11 +20,6 @@ import {
 } from '~const/difficulty';
 
 export default class Enemy extends Sprite {
-  /**
-   * Health managment.
-   */
-  readonly live: Live;
-
   /**
    * Damage power.
    */
@@ -73,11 +67,14 @@ export default class Enemy extends Sprite {
     scale = 1.0,
     experienceMultiply = 1.0,
   }: EnemyData) {
-    super(scene, { texture, positionAtMatrix });
+    super(scene, {
+      texture,
+      positionAtMatrix,
+      health: calcGrowth(health * scene.difficulty, ENEMY_HEALTH_GROWTH, scene.wave.number),
+    });
     scene.add.existing(this);
     scene.getEnemies().add(this);
 
-    this.live = new Live(calcGrowth(health * scene.difficulty, ENEMY_HEALTH_GROWTH, scene.wave.number));
     this.damage = calcGrowth(damage * scene.difficulty, ENEMY_DAMAGE_GROWTH, scene.wave.number);
     this.speed = calcGrowth(speed, ENEMY_SPEED_GROWTH, scene.wave.number);
     this.experienceMultiply = experienceMultiply;

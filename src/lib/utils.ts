@@ -28,3 +28,14 @@ export function equalPositions(
 ): boolean {
   return (a.x === b.x && a.y === b.y && a.z === b.z);
 }
+
+/**
+ * Format timestamp to string time.
+ *
+ * @param value - Timestamp
+ */
+export function formatTime(value: number) {
+  const h = Math.floor(value / 60);
+  const m = value % 60;
+  return `${(h < 10 ? '0' : '')}${h}:${(m < 10 ? '0' : '')}${m}`;
+}

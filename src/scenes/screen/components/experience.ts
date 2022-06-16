@@ -1,24 +1,15 @@
-import Phaser from 'phaser';
+import Component from '~lib/ui';
 import Player from '~scene/world/entities/player';
 import { calcGrowth } from '~lib/utils';
-
-import { UIComponent } from '~type/interface';
 
 import { EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH } from '~const/difficulty';
 import { INTERFACE_PIXEL_FONT } from '~const/interface';
 
 type Props = {
   player: Player
-  x: number
-  y: number
 };
 
-const Component: UIComponent<Props> = function ComponentExperience(
-  this: Phaser.Scene,
-  { player, x, y },
-) {
-  const container = this.add.container(x, y);
-
+export default Component(function ComponentExperience(container, { player }: Props) {
   const body = this.add.rectangle(0, 0, 100, 36, 0x000000);
   body.setOrigin(0, 0);
 
@@ -37,24 +28,15 @@ const Component: UIComponent<Props> = function ComponentExperience(
   container.add([body, progressBody, progress, level]);
   container.setSize(body.width, body.height);
 
-  // Update event
-  const update = () => {
-    const value = player.experience / calcGrowth(
-      EXPERIENCE_TO_NEXT_LEVEL,
-      EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
-      player.level + 1,
-    );
-    progress.setSize(body.width * value, 4);
-    level.setText(`${String(player.level)}  LVL`);
+  return {
+    update: () => {
+      const value = player.experience / calcGrowth(
+        EXPERIENCE_TO_NEXT_LEVEL,
+        EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+        player.level + 1,
+      );
+      progress.setSize(body.width * value, 4);
+      level.setText(`${String(player.level)}  LVL`);
+    },
   };
-  this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
-  container.on(Phaser.Scenes.Events.DESTROY, () => {
-    this.events.off(Phaser.Scenes.Events.UPDATE, update);
-  });
-  update();
-
-  return container
-    .setName('ComponentExperience');
-};
-
-export default Component;
+});

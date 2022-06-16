@@ -1,11 +1,8 @@
 import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import Text from '~ui/text';
 import Chest from '~scene/world/entities/chest';
 import Enemy from '~scene/world/entities/enemy';
-import Live from '~scene/world/entities/live';
-import ComponentHealthBar from '~scene/world/components/health-bar';
 import Sprite from '~scene/world/entities/sprite';
 import World from '~scene/world';
 
@@ -34,13 +31,9 @@ import {
   PLAYER_ATTACK_PAUSE,
 } from '~const/difficulty';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
+import { INTERFACE_PIXEL_FONT } from '~const/interface';
 
 export default class Player extends Sprite {
-  /**
-   * Health managment.
-   */
-  readonly live: Live;
-
   /**
    * Player level.
    */
@@ -79,7 +72,7 @@ export default class Player extends Sprite {
   /**
    * Text labels.
    */
-  private labels: Text[] = [];
+  private labels: Phaser.GameObjects.Text[] = [];
 
   /**
    * Keyboard keys.
@@ -123,6 +116,7 @@ export default class Player extends Sprite {
     super(scene, {
       texture: PlayerTexture.PLAYER,
       positionAtMatrix,
+      health: PLAYER_HEALTH,
     });
     scene.add.existing(this);
 
@@ -132,10 +126,8 @@ export default class Player extends Sprite {
     this.setPushable(false);
     this.setOrigin(0.5, 0.75);
 
-    this.live = new Live(PLAYER_HEALTH);
     this.makeAnimations();
     this.registerKeyboard();
-    this.addHealthIndicator();
     this.addPhrase('SPAWN');
 
     // Add events callbacks
@@ -413,35 +405,42 @@ export default class Player extends Sprite {
       return;
     }
 
-    const label = new Text(this.scene, {
-      value: `${value}\n`,
-      update: (self) => {
-        const index = this.labels.indexOf(label);
-        let offset = -this.displayHeight;
-        for (let i = 0; i < index; i++) {
-          offset -= this.labels[i].height;
-        }
-        self.setPosition(0, offset);
+    const label = this.scene.add.text(0, 0, `${value}\n`, {
+      fontSize: '11px',
+      fontFamily: INTERFACE_PIXEL_FONT,
+      // @ts-ignore
+      lineSpacing: 6,
+    });
+    label.setOrigin(0.5, 1.0);
+    label.setAlpha(0.0);
+    this.scene.tweens.add({
+      targets: label,
+      alpha: 1.0,
+      duration: 500,
+      ease: 'Power2',
+      hold: 800,
+      yoyo: true,
+      onComplete: () => {
+        Phaser.Utils.Array.Remove(this.labels, label);
+        label.destroy();
+        this.updateLabels();
       },
-      origin: [0.5, 1.0],
-      alpha: 0,
-      color: '#EEEEEE',
-      space: 6,
-      tweens: [{
-        alpha: 1,
-        duration: 500,
-        ease: 'Power2',
-        hold: 700,
-        yoyo: true,
-        onComplete: () => {
-          Phaser.Utils.Array.Remove(this.labels, label);
-          label.destroy();
-        },
-      }],
     });
 
-    this.labels.push(label);
     this.container.add(label);
+    this.labels.push(label);
+    this.updateLabels();
+  }
+
+  /**
+   * Update labels positions.
+   */
+  private updateLabels() {
+    let offset = 0;
+    for (const label of this.labels) {
+      label.setPosition(0, offset - 7);
+      offset -= label.height;
+    }
   }
 
   /**
@@ -560,18 +559,6 @@ export default class Player extends Sprite {
         [param]: Math.max(stat[param], record[param] || 0),
       }), {}),
     ));
-  }
-
-  /**
-   * Add current health indicator above player.
-   */
-  private addHealthIndicator() {
-    const bar = <Phaser.GameObjects.Container> ComponentHealthBar.call(this.scene, {
-      size: [32, 6],
-      live: this.live,
-    });
-    bar.setPosition(bar.x, -(this.displayHeight + 5));
-    this.container.add(bar);
   }
 
   /**

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import Live from '~scene/world/entities/live';
-import ComponentInfoBox from '~scene/world/components/info-box';
+import ComponentInfoBox from '~scene/screen/components/info-box';
 import Hexagon from '~lib/hexagon';
 import Level from '~scene/world/level';
 import World from '~scene/world';
@@ -279,6 +279,9 @@ export default class Building extends Phaser.GameObjects.Image {
 
     const isCanUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
     this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentInfoBox.call(this.scene, {
+      x: 0,
+      y: 0,
+    }, {
       label: () => this.variant.split('_').reverse().join(' '),
       description: () => this.getInfo().join('\n'),
       cost: isCanUpgrade ? () => this.upgradeLevelCost() : undefined,

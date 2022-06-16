@@ -1,34 +1,26 @@
-import Phaser from 'phaser';
-import Text from '~ui/text';
+import Component from '~lib/ui';
 
-import { UIComponent } from '~type/interface';
-
+import { INTERFACE_ACTIVE_COLOR, INTERFACE_PIXEL_FONT } from '~const/interface';
 import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
-import { INTERFACE_ACTIVE_COLOR } from '~const/interface';
 
 type Props = {
   disabled: boolean
 };
 
-const Component: UIComponent<Props> = function ComponentDifficulty(
-  this: Phaser.Scene,
-  { disabled },
-) {
-  const container = this.add.container(0, 0);
-  let shift = 0;
-
+export default Component(function ComponentDifficulty(container, { disabled }: Props) {
   const difficulty = {
     current: localStorage.getItem(WORLD_DIFFICULTY_KEY),
   };
+
+  let shift = 0;
   for (const type of Object.keys(WORLD_DIFFICULTY_POWERS)) {
-    const text = new Text(this, {
-      position: { x: 0, y: shift },
-      value: type,
-      origin: [0, 0],
-      alpha: disabled ? 0.5 : 1.0,
+    const text = this.add.text(0, shift, type, {
       color: (difficulty.current === type) ? INTERFACE_ACTIVE_COLOR : '#ffffff',
-      fontSize: 18,
+      fontSize: '18px',
+      fontFamily: INTERFACE_PIXEL_FONT,
     });
+    text.setAlpha(disabled ? 0.5 : 1.0);
+
     if (!disabled) {
       text.setInteractive();
       text.on(Phaser.Input.Events.POINTER_OVER, () => {
@@ -50,12 +42,14 @@ const Component: UIComponent<Props> = function ComponentDifficulty(
         text.setColor(INTERFACE_ACTIVE_COLOR);
       });
     }
+
     container.add(text);
-    shift += text.height + 20;
+    shift += text.height + 25;
   }
 
-  return container
-    .setName('ComponentDifficulty');
-};
-
-export default Component;
+  return {
+    destroy: () => {
+      this.input.setDefaultCursor('default');
+    },
+  };
+});
