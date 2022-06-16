@@ -51,6 +51,20 @@ export default class Live extends EventEmmiter {
   }
 
   /**
+   * Kill.
+   */
+  public kill() {
+    if (this.isDead()) {
+      return;
+    }
+
+    const prevHealth = this.health;
+    this.health = 0;
+    this.emit(LiveEvents.DAMAGE, prevHealth);
+    this.emit(LiveEvents.DEAD);
+  }
+
+  /**
    * Set current health amount to maximum.
    */
   public heal() {
