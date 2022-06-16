@@ -306,6 +306,8 @@ export default class World extends Phaser.Scene {
     this.makeChests();
     this.makeDefaultBuildings();
 
+    setCheatsScheme(this.getCheats());
+
     this.level.hideTiles();
     this.addEntityColliders();
 
@@ -517,9 +519,13 @@ export default class World extends Phaser.Scene {
   private makePlayer() {
     const positionAtMatrix = Phaser.Utils.Array.GetRandom(this.level.spawnPositions);
     this.player = new Player(this, positionAtMatrix);
+  }
 
-    // Add cheatcodes
-    setCheatsScheme({
+  /**
+   * Cheatcodes.
+   */
+  private getCheats() {
+    return {
       HEALPLS: () => {
         this.player.live.heal();
       },
@@ -529,13 +535,20 @@ export default class World extends Phaser.Scene {
       BOOSTME: () => {
         this.player.giveExperience(9999);
       },
+      GODHAND: () => {
+        this.getEnemies().children.iterate((enemy: Enemy) => {
+          enemy.live.kill();
+        });
+      },
       FUTURE: () => {
-        this.wave.number += 10;
+        if (this.wave.isGoing) {
+          this.wave.complete();
+        }
+        const waveNumber = this.wave.number + Phaser.Math.Between(3, 7);
+        this.wave.setNumber(waveNumber);
+        this.wave.runTimeleft();
       },
-      FUTUREX: () => {
-        this.wave.number = 24;
-      },
-    });
+    };
   }
 }
 
