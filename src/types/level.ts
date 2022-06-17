@@ -15,6 +15,13 @@ export type TileMeta = {
   deg: number
 };
 
+export enum SpawnTarget {
+  ENEMY = 'ENEMY',
+  PLAYER = 'PLAYER',
+  TREE = 'TREE',
+  CHEST = 'CHEST',
+}
+
 export type LevelBiome = {
   type: BiomeType
   tileIndex: number | [number, number]
@@ -22,6 +29,7 @@ export type LevelBiome = {
   collide: boolean
   solid: boolean
   friction: number
+  spawn: SpawnTarget[]
 };
 
 export enum LevelTexture {

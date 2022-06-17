@@ -15,6 +15,8 @@ import { WaveEvents } from '~type/wave';
 import { EnemyVariant } from '~type/enemy';
 import { SceneKey } from '~type/scene';
 import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
+import { PlayerStat } from '~type/player';
+import { SpawnTarget } from '~type/level';
 
 import ENEMIES from '~const/enemies';
 import {
@@ -25,7 +27,6 @@ import {
 } from '~const/world';
 import { ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
-import { PlayerStat } from '~type/player';
 
 export default class World extends Phaser.Scene {
   /**
@@ -48,6 +49,11 @@ export default class World extends Phaser.Scene {
    * Group of all shots.
    */
   private shots: Phaser.GameObjects.Group;
+
+  /**
+   * Enemies positions for spawn.
+   */
+  private enemySpawnPositions: Phaser.Types.Math.Vector2Like[] = [];
 
   /**
    * Effects manager.
@@ -157,6 +163,7 @@ export default class World extends Phaser.Scene {
     this.effects = new Effects(this);
 
     this.makeLevel();
+    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
 
     this.makeChestsGroup();
     this.makeBuildingsGroups();
@@ -225,7 +232,7 @@ export default class World extends Phaser.Scene {
    */
   public spawnEnemy(variant: EnemyVariant): Enemy {
     const buildings = this.getBuildings().getChildren();
-    const positions = this.level.spawnPositions
+    const positions = this.enemySpawnPositions
       .filter((position) => (
         !this.level.getTile({ ...position, z: 0 }).visible
         && !buildings.some((building: Building) => (
@@ -302,7 +309,9 @@ export default class World extends Phaser.Scene {
     this.wave = new Wave(this);
     this.builder = new Builder(this);
 
-    this.makePlayer();
+    const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
+    this.player = new Player(this, Phaser.Utils.Array.GetRandom(positions));
+
     this.makeChests();
     this.makeDefaultBuildings();
 
@@ -458,8 +467,10 @@ export default class World extends Phaser.Scene {
    * Spawn chests on world.
    */
   private makeChests() {
+    const positions = this.level.readSpawnPositions(SpawnTarget.CHEST);
+
     const create = () => new Chest(this, {
-      positionAtMatrix: Phaser.Utils.Array.GetRandom(this.level.spawnPositions),
+      positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
       variant: Phaser.Math.Between(0, 14),
     });
 
@@ -511,14 +522,6 @@ export default class World extends Phaser.Scene {
         break;
       }
     }
-  }
-
-  /**
-   * Create player.
-   */
-  private makePlayer() {
-    const positionAtMatrix = Phaser.Utils.Array.GetRandom(this.level.spawnPositions);
-    this.player = new Player(this, positionAtMatrix);
   }
 
   /**

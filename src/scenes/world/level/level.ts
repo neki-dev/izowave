@@ -6,7 +6,7 @@ import Navigator from '~scene/world/level/navigator';
 import World from '~scene/world';
 
 import {
-  BiomeType, LevelBiome, LevelTexture, TileType,
+  BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType,
 } from '~type/level';
 
 import {
@@ -37,13 +37,9 @@ export default class Level extends TileMatrix {
   private visibleTiles: Phaser.GameObjects.Group;
 
   /**
-   * List tile positions for spawns.
+   * Map matrix.
    */
-  private _spawnPositions: Phaser.Types.Math.Vector2Like[] = [];
-
-  public get spawnPositions() { return this._spawnPositions; }
-
-  private set spawnPositions(v) { this._spawnPositions = v; }
+  private matrix: LevelBiome[][];
 
   /**
    * Path finder.
@@ -70,16 +66,14 @@ export default class Level extends TileMatrix {
       layers: LEVEL_BIOME_LAYERS,
     });
     map.generate();
-    const matrix = map.getMatrix();
+    this.matrix = map.getMatrix();
 
     this.scene = scene;
     this.visibleTiles = scene.add.group();
 
-    this.makeMapTiles(matrix);
-    this.makePathFinder(matrix);
-    this.makeTrees(matrix);
-
-    this.spawnPositions = this.generateSpawns(matrix, [BiomeType.SAND, BiomeType.GRASS]);
+    this.makeMapTiles();
+    this.makePathFinder();
+    this.makeTrees();
   }
 
   /**
@@ -94,6 +88,29 @@ export default class Level extends TileMatrix {
    */
   public isFreePoint(position: Phaser.Types.Math.Vector3Like) {
     return !this.getTile(position) || this.tileIs(position, TileType.TREE);
+  }
+
+  /**
+   * Get spawn positions at matrix.
+   *
+   * @param target - Spawn target
+   */
+  public readSpawnPositions(target: SpawnTarget): Phaser.Types.Math.Vector2Like[] {
+    const positions = [];
+    const step = LEVEL_SPAWN_POSITIONS_STEP;
+    const rand = Math.floor(LEVEL_SPAWN_POSITIONS_STEP / 2);
+    for (let sY = step; sY < this.size - step; sY += step) {
+      for (let sX = step; sX < this.size - step; sX += step) {
+        const x = sX + Phaser.Math.Between(-rand, rand);
+        const y = sY + Phaser.Math.Between(-rand, rand);
+        const targets = this.matrix[y]?.[x]?.spawn;
+        if (targets && targets.includes(target)) {
+          positions.push({ x, y });
+        }
+      }
+    }
+
+    return positions;
   }
 
   /**
@@ -144,10 +161,8 @@ export default class Level extends TileMatrix {
 
   /**
    * Add biomes tiles on map.
-   *
-   * @param data - Map data
    */
-  private makeMapTiles(data: LevelBiome[][]) {
+  private makeMapTiles() {
     const make = (x: number, y: number, biome: LevelBiome) => {
       const variant = Array.isArray(biome.tileIndex)
         ? Phaser.Math.Between(...biome.tileIndex)
@@ -165,12 +180,12 @@ export default class Level extends TileMatrix {
     this.mapTiles = this.scene.add.group();
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
-        const biome = data[y][x];
+        const biome = this.matrix[y][x];
         make(x, y, biome);
         // Add tile to hole
         if (biome.z > 1) {
           const z = biome.z - 1;
-          if (data[y + 1]?.[x]?.z !== z || data[y]?.[x + 1]?.z !== z) {
+          if (this.matrix[y + 1]?.[x]?.z !== z || this.matrix[y]?.[x + 1]?.z !== z) {
             const neededBiome = Object.values(LEVEL_BIOMES).find((b) => (b.data.z === z));
             make(x, y, neededBiome.data);
           }
@@ -181,36 +196,26 @@ export default class Level extends TileMatrix {
 
   /**
    * Add trees on map.
-   *
-   * @param data - Map data
    */
-  private makeTrees(data: LevelBiome[][]) {
+  private makeTrees() {
     this.treesTiles = this.scene.add.group();
-    const positionsNormal = this.generateSpawns(data, [BiomeType.GRASS]);
-    const positionsDead = this.generateSpawns(data, [BiomeType.SAND]);
 
-    const spawn = (
-      positions: Phaser.Types.Math.Vector2Like[],
-      texture: LevelTexture,
-      variant: number,
-    ) => {
+    const positions = this.readSpawnPositions(SpawnTarget.TREE);
+    for (let i = 0; i < LEVEL_MAP_TREES_COUNT; i++) {
       const positionAtMatrix = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition = { ...positionAtMatrix, z: 1 };
       if (!this.getTile(tilePosition)) {
         const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
-        const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y + 11, texture, variant);
+        const tile = this.scene.add.image(
+          positionAtWorld.x,
+          positionAtWorld.y + 11,
+          LevelTexture.TREE,
+          Phaser.Math.Between(0, 3),
+        );
         tile.setOrigin(0.5, 1.0);
         tile.setDepth(Level.GetDepth(positionAtWorld.y + 14, tilePosition.z, tile.displayHeight));
         this.putTile(tile, TileType.TREE, tilePosition);
         this.treesTiles.add(tile);
-      }
-    };
-
-    for (let i = 0; i < LEVEL_MAP_TREES_COUNT; i++) {
-      if (i % 10 === 0) {
-        spawn(positionsDead, LevelTexture.TREE, 3);
-      } else {
-        spawn(positionsNormal, LevelTexture.TREE, Phaser.Math.Between(0, 2));
       }
     }
   }
@@ -218,32 +223,9 @@ export default class Level extends TileMatrix {
   /**
    * Create path finder.
    */
-  private makePathFinder(data: LevelBiome[][]) {
-    const grid = data.map((y) => y.map((x) => Number(x.collide)));
+  private makePathFinder() {
+    const grid = this.matrix.map((y) => y.map((x) => Number(x.collide)));
     this.navigator = new Navigator(grid);
-  }
-
-  /**
-   * Generate spawn positions.
-   */
-  private generateSpawns(data: LevelBiome[][], types: BiomeType[]): Phaser.Types.Math.Vector2Like[] {
-    const positions = [];
-    const step = LEVEL_SPAWN_POSITIONS_STEP;
-    const rand = Math.floor(LEVEL_SPAWN_POSITIONS_STEP / 2);
-    for (let sY = step; sY < this.size - step; sY += step) {
-      for (let sX = step; sX < this.size - step; sX += step) {
-        const x = sX + Phaser.Math.Between(-rand, rand);
-        const y = sY + Phaser.Math.Between(-rand, rand);
-        if (data[y]?.[x]) {
-          const { type } = data[y][x];
-          if (types.includes(type) && this.navigator.getPointCost(x, y) < 2) {
-            positions.push({ x, y });
-          }
-        }
-      }
-    }
-
-    return positions;
   }
 
   /**
