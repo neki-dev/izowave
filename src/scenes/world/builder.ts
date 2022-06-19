@@ -228,9 +228,10 @@ export default class Builder {
     const tilePosition = { ...positionAtMatrix, z: 1 };
 
     // Pointer position is free
+    const playerPositionsAtMatrix = player.getAllPositionsAtMatrix();
     this.assumedPosition.isFree = (
       level.isFreePoint(tilePosition)
-      && !equalPositions(positionAtMatrix, player.positionAtMatrix)
+      && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
     );
     if (this.assumedPosition.isFree) {
       // Pointer in build area

@@ -99,6 +99,13 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
+   * Get all occupied by body positions.
+   */
+  public getAllPositionsAtMatrix(): Phaser.Types.Math.Vector2Like[] {
+    return this.getCorners().map((point) => Level.ToMatrixPosition(point));
+  }
+
+  /**
    * Get collided tile by direction.
    *
    * @param direction - Current direction in degrees
