@@ -25,7 +25,6 @@ export default function Component(component: ComponentInstance) {
         update();
         this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
         container.on(Phaser.Scenes.Events.DESTROY, () => {
-          console.log('off');
           this.events.off(Phaser.Scenes.Events.UPDATE, update);
         });
       }

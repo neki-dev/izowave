@@ -134,10 +134,9 @@ export default class Level extends TileMatrix {
    */
   private updateVisibleTiles() {
     const { player, sys } = this.scene;
-    const { halfHeight, persperctive } = TILE_META;
-    const r = (sys.canvas.width / 2) * LEVEL_MAP_VISIBLE_PART;
+    const d = sys.canvas.width * LEVEL_MAP_VISIBLE_PART;
     const center = player.getBottomCenter();
-    const area = new Phaser.Geom.Ellipse(center.x, center.y + halfHeight, r * 2, r * 2 * persperctive);
+    const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
 
     this.visibleTiles.children.iterate((tile: Phaser.GameObjects.Image) => {
       tile.setVisible(false);
@@ -145,7 +144,7 @@ export default class Level extends TileMatrix {
     this.visibleTiles.clear();
 
     const { x, y } = player.positionAtMatrix;
-    const c = Math.ceil(r / 26);
+    const c = Math.ceil(d / 52);
     for (let z = 0; z < this.height; z++) {
       for (let iy = y - c + 1; iy <= y + c + 1; iy++) {
         for (let ix = x - c + 1; ix <= x + c + 1; ix++) {

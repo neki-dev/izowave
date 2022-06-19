@@ -1,6 +1,8 @@
 import { Biome, BiomeLayer } from 'gen-biome';
 
-import { BiomeType, LevelBiome, TileMeta } from '~type/level';
+import {
+  BiomeType, LevelBiome, SpawnTarget, TileMeta,
+} from '~type/level';
 
 export const TILE_META: TileMeta = {
   width: 42,
@@ -41,6 +43,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: false,
     friction: 5.0,
+    spawn: [],
   },
 }, {
   breakpoint: [0.14, 0.17],
@@ -51,6 +54,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: false,
     friction: 5.0,
+    spawn: [],
   },
 }, {
   breakpoint: [0.17, 0.20],
@@ -61,6 +65,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: false,
     friction: 5.0,
+    spawn: [],
   },
 }, {
   breakpoint: [0.20, 0.24],
@@ -71,6 +76,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: true,
     friction: 1.2,
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.CHEST],
   },
 }, {
   breakpoint: [0.24, 0.28],
@@ -81,6 +87,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: true,
     friction: 1.2,
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CHEST],
   },
 }, {
   breakpoint: [0.28, 0.36],
@@ -91,6 +98,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: true,
     friction: 1.0,
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CHEST, SpawnTarget.TREE],
   },
 }, {
   breakpoint: [0.36, 0.44],
@@ -101,6 +109,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: true,
     friction: 1.0,
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CHEST, SpawnTarget.TREE],
   },
 }, {
   breakpoint: [0.44, 0.54],
@@ -111,6 +120,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: true,
     friction: 1.0,
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.CHEST, SpawnTarget.TREE],
   },
 }, {
   breakpoint: [0.54, 0.59],
@@ -121,6 +131,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: true,
     solid: false,
     friction: 1.0,
+    spawn: [],
   },
 }, {
   breakpoint: [0.59, 0.63],
@@ -131,6 +142,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: true,
     solid: false,
     friction: 1.0,
+    spawn: [],
   },
 }, {
   breakpoint: [0.63, 0.70],
@@ -141,6 +153,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: true,
     solid: false,
     friction: 1.0,
+    spawn: [],
   },
 }, {
   breakpoint: [0.70],
@@ -151,6 +164,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: true,
     solid: false,
     friction: 1.0,
+    spawn: [],
   },
 }, {
   breakpoint: [Number.MAX_SAFE_INTEGER],
@@ -161,6 +175,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     collide: false,
     solid: true,
     friction: 0.8,
+    spawn: [SpawnTarget.PLAYER],
   },
 }];
 

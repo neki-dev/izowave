@@ -255,16 +255,17 @@ export default class Builder {
     const d = calcGrowth(BUILDING_BUILD_AREA / difficulty, BUILDING_BUILD_AREA_GROWTH, player.level) * 2;
     this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
+    this.updateBuildArea();
   }
 
   /**
    * Update build area position.
    */
   private updateBuildArea() {
-    const position = this.scene.player.getBottomCenter();
+    const { x, y } = this.scene.player.getBottomCenter();
     const out = TILE_META.height * 2;
-    this.buildArea.setPosition(position.x, position.y);
-    this.buildArea.setDepth(Level.GetDepth(position.y, 1, this.buildArea.height + out));
+    this.buildArea.setPosition(x, y);
+    this.buildArea.setDepth(Level.GetDepth(y, 1, this.buildArea.height + out));
   }
 
   /**

@@ -7,8 +7,8 @@ export enum BuildingEvents {
 export enum BuildingVariant {
   WALL = 'WALL',
   TOWER_FIRE = 'TOWER_FIRE',
-  TOWER_FROZEN = 'TOWER_FROZEN',
   TOWER_LAZER = 'TOWER_LAZER',
+  TOWER_FROZEN = 'TOWER_FROZEN',
   MINE_BRONZE = 'MINE_BRONZE',
   MINE_SILVER = 'MINE_SILVER',
   MINE_GOLD = 'MINE_GOLD',
