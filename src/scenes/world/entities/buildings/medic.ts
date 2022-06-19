@@ -19,7 +19,7 @@ export default class BuildingMedic extends Building {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector3Like) {
+  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.MEDIC,

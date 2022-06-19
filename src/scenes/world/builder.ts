@@ -3,7 +3,7 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import Level from '~scene/world/level';
 import World from '~scene/world';
 
-import { AssumedBuildPosition, BuildingVariant } from '~type/building';
+import { BuildingVariant } from '~type/building';
 
 import BUILDINGS from '~const/buildings';
 import { BUILDING_BUILD_AREA, BUILDING_BUILD_AREA_GROWTH } from '~const/difficulty';
@@ -22,15 +22,6 @@ export default class Builder {
   public get isBuild() { return this._isBuild; }
 
   private set isBuild(v) { this._isBuild = v; }
-
-  /**
-   * Assumed position state.
-   */
-  private assumedPosition: AssumedBuildPosition = {
-    inArea: false,
-    isFree: true,
-    isSolid: false,
-  };
 
   /**
    * Permitted build area.
@@ -124,13 +115,12 @@ export default class Builder {
       return;
     }
 
-    this.createBuildingPreview();
     this.createBuildArea();
+    this.createBuildingPreview();
 
     const { input } = this.scene;
     input.on(Phaser.Input.Events.POINTER_UP, this.build, this);
-    input.on(Phaser.Input.Events.POINTER_MOVE, this.updateAssumedPositionState, this);
-    this.updateAssumedPositionState();
+    input.on(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview, this);
 
     this.isBuild = true;
   }
@@ -145,7 +135,7 @@ export default class Builder {
 
     const { input } = this.scene;
     input.off(Phaser.Input.Events.POINTER_UP, this.build);
-    input.off(Phaser.Input.Events.POINTER_MOVE, this.updateAssumedPositionState);
+    input.off(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview);
 
     this.destroyBuildingPreview();
     this.destroyBuildArea();
@@ -188,8 +178,36 @@ export default class Builder {
    * Checks if allow to build on estimated position.
    */
   private isAllowBuild(): boolean {
-    const { inArea, isFree, isSolid } = this.assumedPosition;
-    return (inArea && isFree && isSolid);
+    const { player, level } = this.scene;
+    const positionAtMatrix = this.getAssumedPosition();
+    const tilePosition = { ...positionAtMatrix, z: 1 };
+
+    // Pointer in build area
+    const positionAtWorldDown = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
+    const offset = this.buildArea.getTopLeft();
+    const inArea = this.buildArea.geom.contains(positionAtWorldDown.x - offset.x, positionAtWorldDown.y - offset.y);
+    if (!inArea) {
+      return false;
+    }
+
+    // Pointer biome is solid
+    const tileGround = level.getTile({ ...positionAtMatrix, z: 0 });
+    const isSolid = tileGround?.biome.solid;
+    if (!isSolid) {
+      return false;
+    }
+
+    // Pointer is not contains player or other buildings
+    const playerPositionsAtMatrix = player.getAllPositionsAtMatrix();
+    const isFree = (
+      level.isFreePoint(tilePosition)
+      && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
+    );
+    if (!isFree) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -211,41 +229,10 @@ export default class Builder {
 
     player.takeResources(BuildingInstance.Cost);
 
-    const { x, y } = this.getAssumedPosition();
-    new BuildingInstance(this.scene, { x, y, z: 1 });
-
-    this.updateAssumedPositionState();
-  }
-
-  /**
-   * Update state of estimated position.
-   * Checks if position not intersects with player or other buildings
-   * and if ground is solid.
-   */
-  private updateAssumedPositionState() {
-    const { player, level } = this.scene;
     const positionAtMatrix = this.getAssumedPosition();
-    const tilePosition = { ...positionAtMatrix, z: 1 };
+    new BuildingInstance(this.scene, positionAtMatrix);
 
-    // Pointer position is free
-    const playerPositionsAtMatrix = player.getAllPositionsAtMatrix();
-    this.assumedPosition.isFree = (
-      level.isFreePoint(tilePosition)
-      && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
-    );
-    if (this.assumedPosition.isFree) {
-      // Pointer in build area
-      const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
-      const offset = this.buildArea.getTopLeft();
-      this.assumedPosition.inArea = this.buildArea.geom.contains(positionAtWorld.x - offset.x, positionAtWorld.y - offset.y);
-      if (this.assumedPosition.inArea) {
-        // Pointer biome is solid
-        const tileGround = level.getTile({ ...positionAtMatrix, z: 0 });
-        this.assumedPosition.isSolid = tileGround?.biome.solid;
-      }
-    }
-
-    this.updateBuildingPreview(tilePosition);
+    this.updateBuildArea();
   }
 
   /**
@@ -273,7 +260,6 @@ export default class Builder {
    * Destroy build area.
    */
   private destroyBuildArea() {
-    this.assumedPosition.inArea = false;
     this.buildArea.destroy();
     delete this.buildArea;
   }
@@ -282,25 +268,21 @@ export default class Builder {
    * Create building variant preview on map.
    */
   private createBuildingPreview() {
-    const { worldX, worldY } = this.scene.input.activePointer;
-    this.buildingPreview = this.scene.add.image(worldX, worldY, this.getBuildingMeta('Texture'));
+    this.buildingPreview = this.scene.add.image(0, 0, this.getBuildingMeta('Texture'));
     this.buildingPreview.setOrigin(0.5, TILE_META.origin);
+    this.updateBuildingPreview();
   }
 
   /**
    * Update position and visible of building preview.
-   *
-   * @param position - Tile position
    */
-  private updateBuildingPreview(position: Phaser.Types.Math.Vector3Like) {
-    this.buildingPreview.setVisible(this.assumedPosition.isFree);
-    if (this.buildingPreview.visible) {
-      const isAllow = this.isAllowBuild();
-      const { x, y } = Level.ToWorldPosition(position);
-      this.buildingPreview.setPosition(x, y);
-      this.buildingPreview.setDepth(Level.GetTileDepth(y, position.z));
-      this.buildingPreview.setAlpha(isAllow ? 1.0 : 0.25);
-    }
+  private updateBuildingPreview() {
+    const positionAtMatrix = this.getAssumedPosition();
+    const tilePosition = { ...positionAtMatrix, z: 1 };
+    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
+    this.buildingPreview.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
   }
 
   /**

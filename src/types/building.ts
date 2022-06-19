@@ -57,12 +57,3 @@ export interface BuildingInstance {
   Cost: Resources
   Health: number
 }
-
-export type AssumedBuildPosition = {
-  // Pointer in build area
-  inArea: boolean
-  // Pointer position is free
-  isFree: boolean
-  // Pointer biom is solid
-  isSolid: boolean
-};

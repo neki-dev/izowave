@@ -18,7 +18,7 @@ export default class BuildingTowerFire extends BuildingTower {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector3Like) {
+  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_FIRE,
