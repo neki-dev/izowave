@@ -4,9 +4,9 @@ import World from '~scene/world';
 import { BuildingVariant, BuildingTexture, ResourceType } from '~type/building';
 
 export default class BuildingMineSilver extends BuildingMine {
-  static Name = 'Sikver mine';
+  static Name = 'Silver mine';
 
-  static Description = 'For generation silver';
+  static Description = 'Generation silver\nHP: 1000';
 
   static Texture = BuildingTexture.MINE_SILVER;
 

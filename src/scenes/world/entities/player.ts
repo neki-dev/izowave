@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { calcGrowth, toEven } from '~lib/utils';
 import Chest from '~scene/world/entities/chest';
 import Enemy from '~scene/world/entities/enemy';
 import Sprite from '~scene/world/entities/sprite';
@@ -438,7 +438,7 @@ export default class Player extends Sprite {
   private updateLabels() {
     let offset = 0;
     for (const label of this.labels) {
-      label.setPosition(0, offset - 7);
+      label.setPosition(0, toEven(offset - 7));
       offset -= label.height;
     }
   }

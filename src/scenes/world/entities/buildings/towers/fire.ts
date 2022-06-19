@@ -7,7 +7,7 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerFire extends BuildingTower {
   static Name = 'Fire tower';
 
-  static Description = 'For attack enemies';
+  static Description = 'Attack enemies\nHP: 1000\nDamage: 35';
 
   static Texture = BuildingTexture.TOWER_FIRE;
 
@@ -26,7 +26,7 @@ export default class BuildingTowerFire extends BuildingTower {
       texture: BuildingTowerFire.Texture,
       upgradeCost: BuildingTowerFire.UpgradeCost,
       actions: {
-        radius: 220, // Attack radius
+        radius: 215, // Attack radius
         pause: 1400, // Pause between shoots
       },
       shotType: ShotType.FIRE,
@@ -35,5 +35,15 @@ export default class BuildingTowerFire extends BuildingTower {
         speed: 550,
       },
     });
+  }
+
+  /**
+   * Add damage to building info.
+   */
+  public getInfo(): string[] {
+    return [
+      ...super.getInfo(),
+      `Damage: ${this.getShotParams().damage}`,
+    ];
   }
 }

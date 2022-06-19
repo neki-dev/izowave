@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import Component from '~lib/ui';
+import { toEven } from '~lib/utils';
 import Player from '~scene/world/entities/player';
 import ComponentInfoBox from '~scene/screen/components/info-box';
-import Building from '~scene/world/entities/building';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
 
@@ -32,10 +32,6 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   container.setPosition(container.x - fullWidth / 2, container.y - fullHeight);
   container.setSize(fullWidth, fullHeight);
 
-  const filterBuildings = (variant: string) => (
-    player.scene.getBuildings().getChildren().filter((building: Building) => (building.variant === variant))
-  );
-
   const param = (name: string) => (
     (hover.current !== null)
       ? BUILDINGS[BUILDING_VARIANTS[hover.current]][name]
@@ -47,9 +43,9 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
     y: 0,
   }, {
     label: () => param('Name'),
-    description: () => `${param('Description') || ''}\nYou have: ${filterBuildings(BUILDING_VARIANTS[hover.current]).length}`,
+    description: () => `${param('Description') || '\n\n'}`,
     cost: () => param('Cost'),
-    costTitle: 'Build cost',
+    costTitle: 'Build',
     player,
   });
   infoBox.setVisible(false);
@@ -69,7 +65,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
       this.input.setDefaultCursor('pointer');
       infoBox.setPosition(
         item.x - infoBox.width / 2 + ITEMS_MARGIN_H,
-        item.y - infoBox.height - ITEMS_MARGIN_V - ITEMS_PADDING / 2,
+        toEven(item.y - infoBox.height - ITEMS_MARGIN_V - ITEMS_PADDING / 2),
       );
       infoBox.setVisible(true);
       hover.current = index;

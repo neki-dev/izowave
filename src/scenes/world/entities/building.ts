@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { calcGrowth, toEven } from '~lib/utils';
 import Live from '~scene/world/entities/live';
 import ComponentInfoBox from '~scene/screen/components/info-box';
 import Hexagon from '~lib/hexagon';
@@ -169,8 +169,7 @@ export default class Building extends Phaser.GameObjects.Image {
    */
   public getInfo(): string[] {
     return [
-      `Level: ${this.upgradeLevel}/${BUILDING_MAX_UPGRADE_LEVEL}`,
-      `Health: ${this.live.health}`,
+      `HP: ${this.live.health}`,
     ];
   }
 
@@ -225,10 +224,11 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.upgradeLevel++;
     this.updateActionArea();
-    this.live.heal();
     this.setFrame(this.upgradeLevel - 1);
 
     this.emit(BuildingEvents.UPGRADE, this.upgradeLevel);
+
+    this.live.heal();
 
     const { player } = this.scene;
     player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
@@ -252,15 +252,20 @@ export default class Building extends Phaser.GameObjects.Image {
    */
   private updateActionArea() {
     const { persperctive, height, halfHeight } = TILE_META;
-    const d = (
-      this.actions?.radius
-        ? calcGrowth(this.actions.radius, BUILDING_ACTION_RADIUS_GROWTH, this.upgradeLevel)
-        : 64
-    ) * 2;
+    const d = this.getActionsRadius() * 2;
     const out = height * 2;
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
+  }
+
+  /**
+   * Get actions radius.
+   */
+  private getActionsRadius(): number {
+    return this.actions?.radius
+      ? calcGrowth(this.actions.radius, BUILDING_ACTION_RADIUS_GROWTH, this.upgradeLevel)
+      : 64;
   }
 
   /**
@@ -283,14 +288,15 @@ export default class Building extends Phaser.GameObjects.Image {
       y: 0,
     }, {
       label: () => this.variant.split('_').reverse().join(' '),
+      subLabel: () => `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
       description: () => this.getInfo().join('\n'),
       cost: isCanUpgrade ? () => this.upgradeLevelCost() : undefined,
-      costTitle: 'Upgrade cost',
+      costTitle: 'Upgrade',
       player: this.scene.player,
     });
     this.uiBuildingInfo.setPosition(
       this.x - this.uiBuildingInfo.width / 2,
-      this.y - this.uiBuildingInfo.height - TILE_META.halfHeight,
+      toEven(this.y - this.uiBuildingInfo.height - TILE_META.halfHeight),
     );
 
     if (!wave.isGoing) {

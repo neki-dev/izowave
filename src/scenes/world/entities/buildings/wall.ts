@@ -1,4 +1,3 @@
-import { calcGrowth } from '~lib/utils';
 import Building from '~scene/world/entities/building';
 import World from '~scene/world';
 
@@ -6,12 +5,12 @@ import {
   BuildingEvents, BuildingVariant, BuildingTexture,
 } from '~type/building';
 
-import { WALL_HEALTH_GROWTH } from '~const/difficulty';
+import { WALL_HEALTH_AMOUNT } from '~const/difficulty';
 
 export default class BuildingWall extends Building {
   static Name = 'Wall';
 
-  static Description = 'For basic defence';
+  static Description = `Basic defence\nHP: ${WALL_HEALTH_AMOUNT}`;
 
   static Texture = BuildingTexture.WALL;
 
@@ -26,7 +25,7 @@ export default class BuildingWall extends Building {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.WALL,
-      health: 3000,
+      health: WALL_HEALTH_AMOUNT,
       texture: BuildingWall.Texture,
       upgradeCost: BuildingWall.UpgradeCost,
     });
@@ -40,7 +39,6 @@ export default class BuildingWall extends Building {
    * @param level - Upgrade level
    */
   private upgradeHealth(level: number) {
-    const health = Math.ceil(calcGrowth(3000, WALL_HEALTH_GROWTH, level) / 100) * 100;
-    this.live.setMaxHealth(health);
+    this.live.setMaxHealth(WALL_HEALTH_AMOUNT * level);
   }
 }

@@ -7,7 +7,7 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerFrozen extends BuildingTower {
   static Name = 'Frozen tower';
 
-  static Description = 'For stop enemies';
+  static Description = 'Stop enemies\nHP: 1200\nFreeze: 1.4 s';
 
   static Texture = BuildingTexture.TOWER_FROZEN;
 
@@ -35,5 +35,15 @@ export default class BuildingTowerFrozen extends BuildingTower {
         speed: 550,
       },
     });
+  }
+
+  /**
+   * Add freeze to building info.
+   */
+  public getInfo(): string[] {
+    return [
+      ...super.getInfo(),
+      `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
+    ];
   }
 }

@@ -7,7 +7,7 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerLazer extends BuildingTower {
   static Name = 'Lazer tower';
 
-  static Description = 'For attack enemies';
+  static Description = 'Attack enemies\nHP: 600\nDamage: 75';
 
   static Texture = BuildingTexture.TOWER_LAZER;
 
@@ -34,5 +34,15 @@ export default class BuildingTowerLazer extends BuildingTower {
         damage: 15,
       },
     });
+  }
+
+  /**
+   * Add damage to building info.
+   */
+  public getInfo(): string[] {
+    return [
+      ...super.getInfo(),
+      `Damage: ${this.getShotParams().damage * 5}`,
+    ];
   }
 }

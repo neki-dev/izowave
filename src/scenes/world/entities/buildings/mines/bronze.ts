@@ -6,7 +6,7 @@ import { BuildingTexture, BuildingVariant, ResourceType } from '~type/building';
 export default class BuildingMineBronze extends BuildingMine {
   static Name = 'Bronze mine';
 
-  static Description = 'For generation bronze';
+  static Description = 'Generation bronze\nHP: 1000';
 
   static Texture = BuildingTexture.MINE_BRONZE;
 

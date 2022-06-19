@@ -78,6 +78,23 @@ export default class BuildingTower extends Building {
   }
 
   /**
+   * Get shot params.
+   */
+  public getShotParams() {
+    const data: ShotParams = {};
+    if (this.shotData.speed) {
+      data.speed = calcGrowth(this.shotData.speed, TOWER_SHOT_SPEED_GROWTH, this.upgradeLevel);
+    }
+    if (this.shotData.damage) {
+      data.damage = calcGrowth(this.shotData.damage, TOWER_SHOT_DAMAGE_GROWTH, this.upgradeLevel);
+    }
+    if (this.shotData.freeze) {
+      data.freeze = calcGrowth(this.shotData.freeze, TOWER_SHOT_FREEZE_GROWTH, this.upgradeLevel);
+    }
+    return data;
+  }
+
+  /**
    * Find nearby enemy for shoot.
    */
   private getTarget(): Enemy {

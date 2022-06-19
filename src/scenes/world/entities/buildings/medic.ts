@@ -1,15 +1,14 @@
-import { calcGrowth } from '~lib/utils';
 import Building from '~scene/world/entities/building';
 import Player from '~scene/world/entities/player';
 import World from '~scene/world';
 
 import { BuildingVariant, BuildingTexture } from '~type/building';
-import { MEDIC_HEAL_AMOUNT, MEDIC_HEAL_AMOUNT_GROWTH } from '~const/difficulty';
+import { MEDIC_HEAL_AMOUNT } from '~const/difficulty';
 
 export default class BuildingMedic extends Building {
   static Name = 'Medic';
 
-  static Description = 'For heal player';
+  static Description = 'Heal player\nHP: 500';
 
   static Texture = BuildingTexture.MEDIC;
 
@@ -58,12 +57,29 @@ export default class BuildingMedic extends Building {
   }
 
   /**
+   * Add heal amount to building info.
+   */
+  public getInfo(): string[] {
+    return [
+      ...super.getInfo(),
+      `Heal: ${this.getHealAmount()}`,
+    ];
+  }
+
+  /**
+   * Get heal amount.
+   */
+  private getHealAmount(): number {
+    return MEDIC_HEAL_AMOUNT * this.upgradeLevel;
+  }
+
+  /**
    * Heal player.
    *
    * @param player - Player
    */
   private heal(player: Player) {
-    const health = calcGrowth(MEDIC_HEAL_AMOUNT, MEDIC_HEAL_AMOUNT_GROWTH, this.upgradeLevel);
+    const health = this.getHealAmount();
     player.live.setHealth(player.live.health + health);
     player.addLabel(`+${health} HP`);
   }
