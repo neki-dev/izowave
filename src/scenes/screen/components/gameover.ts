@@ -6,36 +6,44 @@ type Props = {
   data: string[]
 };
 
-const CONTAINER_SIZE = 440;
-const CONTAINER_PADDING = 40;
+const CONTAINER_SIZE = 400;
 
 export default Component(function ComponentGameOver(container, { data }: Props) {
-  const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.75);
-  body.setOrigin(0, 0);
-
-  let shift = CONTAINER_PADDING;
-
-  const title = this.add.text(CONTAINER_PADDING - 2, shift, 'GAME OVER', {
+  const title = this.add.text(CONTAINER_SIZE / 2, 0, 'GAME OVER', {
     color: '#f23a3a',
-    fontSize: '50px',
+    fontSize: '100px',
     fontFamily: INTERFACE_PIXEL_FONT,
+    padding: { bottom: 8 },
+    shadow: {
+      offsetX: 8,
+      offsetY: 8,
+      color: '#000000',
+      blur: 0,
+      fill: true,
+    },
   });
-  shift += title.height + CONTAINER_PADDING;
+  title.setOrigin(0.5, 0.0);
 
-  const line = this.add.rectangle(CONTAINER_SIZE / 2, shift, CONTAINER_SIZE, 2, 0x000000);
-  shift += CONTAINER_PADDING;
+  const shift = title.height + 80;
 
-  const text = this.add.text(CONTAINER_PADDING, shift, data, {
-    fontSize: '16px',
+  const text = this.add.text(0, shift, data, {
+    fixedWidth: CONTAINER_SIZE,
+    fontSize: '14px',
     fontFamily: INTERFACE_MONOSPACE_FONT,
     // @ts-ignore
-    lineSpacing: 6,
+    lineSpacing: 8,
+    padding: {
+      top: 20,
+      bottom: 20,
+      left: 20,
+      right: 20,
+    },
   });
-  shift += text.height + CONTAINER_PADDING;
 
-  body.setSize(CONTAINER_SIZE, shift);
+  const body = this.add.rectangle(0, shift, text.width, text.height, 0x000000, 0.5);
+  body.setOrigin(0.0, 0.0);
 
-  container.add([body, title, line, text]);
-  container.setPosition(container.x - CONTAINER_SIZE / 2, container.y - shift / 2);
-  container.setSize(CONTAINER_SIZE, shift);
+  container.add([body, title, text]);
+  container.setSize(body.width, shift + body.height);
+  container.setPosition(container.x - container.width / 2, container.y - container.height / 2);
 });
