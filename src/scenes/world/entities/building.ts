@@ -9,7 +9,8 @@ import World from '~scene/world';
 
 import { BiomeType, TileType } from '~type/level';
 import {
-  BuildingActionsParams, BuildingData, BuildingEvents, Resources, BuildingTexture, BuildingVariant,
+  BuildingActionsParams, BuildingData, BuildingEvents,
+  Resources, BuildingTexture, BuildingVariant,
 } from '~type/building';
 import { LiveEvents } from '~type/live';
 
@@ -305,17 +306,26 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(true);
 
-    this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, { x: 0, y: 0 }, {
-      building: this,
-      player: this.scene.player,
-    });
-
-    if (!wave.isGoing) {
+    const isCanUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing);
+    if (isCanUpgrade) {
       input.setDefaultCursor('pointer');
     }
-    input.keyboard.on('keyup-BACKSPACE', this.break, this);
 
-    // this.scene.screen.events.emit('building-info', this);
+    this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
+      x: this.x,
+      y: this.y - TILE_META.halfHeight,
+    }, {
+      origin: [0.5, 1.0],
+      player: this.scene.player,
+      data: () => ({
+        Name: this.getName(),
+        Label: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
+        Description: this.getInfo(),
+        Cost: isCanUpgrade ? this.getUpgradeLevelCost() : undefined,
+      }),
+    });
+
+    input.keyboard.on('keyup-BACKSPACE', this.break, this);
 
     this.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
     this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);

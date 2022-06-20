@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Component from '~lib/ui';
 import Player from '~scene/world/entities/player';
-import ComponentBuildingInfo from '~scene/screen/components/info-box';
+import ComponentBuildingInfo from '~scene/screen/components/building-info';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
 
@@ -27,40 +27,60 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   container.setPosition(container.x - ITEM_SIZE, container.y);
   container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
 
-  const infoBox = ComponentBuildingInfo.call(this, { x: 0, y: 0 }, {
+  const info = ComponentBuildingInfo.call(this, { x: 0, y: 0 }, {
+    origin: [1.0, 0.0],
     player,
-    params: (): BuildingInstance => (
+    data: (): BuildingInstance => (
       (hover.current !== null)
         ? BUILDINGS[BUILDING_VARIANTS[hover.current]]
         : undefined
     ),
   });
-  infoBox.setVisible(false);
-  container.add(infoBox);
+  info.setVisible(false);
+  container.add(info);
+
+  const focus = (item: Phaser.GameObjects.Container, index: number) => {
+    if (wave.isGoing) {
+      return;
+    }
+
+    this.input.setDefaultCursor('pointer');
+    info.setPositionWithOrigin(item.x - 10, item.y);
+    info.setVisible(true);
+    hover.current = index;
+  };
+
+  const unfocus = () => {
+    if (wave.isGoing) {
+      return;
+    }
+
+    this.input.setDefaultCursor('default');
+    info.setVisible(false);
+    hover.current = null;
+  };
+
+  const select = (index: number) => {
+    if (wave.isGoing) {
+      return;
+    }
+
+    builder.setBuildingVariant(
+      (builder.variantIndex === index) ? null : index,
+    );
+  };
 
   BUILDING_VARIANTS.forEach((variant: BuildingVariant, index: number) => {
     const item = this.add.container(0, (ITEM_SIZE + ITEMS_MARGIN) * index);
     item.setSize(ITEM_SIZE, ITEM_SIZE);
 
     const body = this.add.rectangle(0, 0, ITEM_SIZE, ITEM_SIZE);
+    body.setName('Body');
     body.setOrigin(0.0, 0.0);
     body.setInteractive();
-    body.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.input.setDefaultCursor('pointer');
-      infoBox.setPosition(item.x - infoBox.width - 10, item.y);
-      infoBox.setVisible(true);
-      hover.current = index;
-    });
-    body.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.input.setDefaultCursor('default');
-      infoBox.setVisible(false);
-      hover.current = null;
-    });
-    body.on(Phaser.Input.Events.POINTER_UP, () => {
-      builder.setBuildingVariant(
-        (builder.variantIndex === index) ? null : index,
-      );
-    });
+    body.on(Phaser.Input.Events.POINTER_OVER, () => focus(item, index));
+    body.on(Phaser.Input.Events.POINTER_OUT, () => unfocus());
+    body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
 
     const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
     preview.setScale(0.65);
@@ -72,25 +92,24 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   });
 
   wave.on(WaveEvents.START, () => {
-    container.setVisible(false);
-    this.input.setDefaultCursor('default');
+    container.setAlpha(0.25);
+    unfocus();
   });
 
   wave.on(WaveEvents.FINISH, () => {
-    container.setVisible(true);
+    container.setAlpha(1.0);
   });
 
   return {
     update: () => {
-      if (!container.visible) {
-        return;
-      }
-
       const itemsCount = container.getAll().length;
       for (let i = 1; i < itemsCount; i++) {
         const item = <Phaser.GameObjects.Container> container.getAt(i);
-        const body = <Phaser.GameObjects.Rectangle> item.getAt(0);
-        if (builder.variantIndex === i - 1) {
+        const body = <Phaser.GameObjects.Rectangle> item.getByName('Body');
+        if (wave.isGoing) {
+          body.setFillStyle(0x000000);
+          body.setAlpha(1.0);
+        } else if (builder.variantIndex === i - 1) {
           body.setFillStyle(INTERFACE_BOX_COLOR_PURPLE);
           body.setAlpha(1.0);
         } else if (hover.current === i - 1) {

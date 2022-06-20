@@ -93,12 +93,8 @@ export default class Wave extends EventEmitter {
       if (this.spawnedCount < this.maxSpawnedCount) {
         if (this.spawnPause < now) {
           this.spawn();
-          const pause = calcGrowth(
-            WAVE_ENEMIES_SPAWN_PAUSE,
-            WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
-            this.number,
-          );
-          this.spawnPause = now + pause;
+          const pause = calcGrowth(WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, this.number);
+          this.spawnPause = now + Math.max(pause, 500);
         }
       } else if (this.scene.getEnemies().getTotalUsed() === 0) {
         this.complete();
@@ -123,7 +119,7 @@ export default class Wave extends EventEmitter {
    * Start timeleft to next wave.
    */
   public runTimeleft() {
-    const pause = WAVE_PAUSE / this.scene.difficulty;
+    const pause = (WAVE_PAUSE + (this.number - 1) * 1000) / this.scene.difficulty;
     this.timeleft = this.scene.getTimerNow() + pause;
   }
 

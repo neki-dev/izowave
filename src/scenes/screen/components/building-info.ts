@@ -2,44 +2,50 @@ import Component from '~lib/ui';
 import { toEven } from '~lib/utils';
 import Player from '~scene/world/entities/player';
 import World from '~scene/world';
-import Building from '~scene/world/entities/building';
 import ComponentCost from '~scene/screen/components/cost';
+
+import { BuildingInstance } from '~type/building';
 
 import {
   INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL,
 } from '~const/interface';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import { TILE_META } from '~const/level';
 
 type Props = {
-  building: Building
+  origin: [number, number]
   player: Player
+  data: () => BuildingInstance & {
+    Label?: string
+  }
 };
 
 const CONTAINER_WIDTH = 220;
 const CONTAINER_PADDING = 14;
 
 export default Component(function ComponentBuildingInfo(this: World, container, {
-  building, player,
+  origin, player, data,
 }: Props) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, 0, INTERFACE_BOX_COLOR_PURPLE, 0.9);
   body.setOrigin(0, 0);
 
+  let position = { x: container.x, y: container.y };
   const shift = { x: CONTAINER_PADDING, y: CONTAINER_PADDING };
 
-  const name = this.add.text(shift.x, shift.y, building.getName(), {
+  const name = this.add.text(shift.x, shift.y, '', {
     fontSize: '18px',
     fontFamily: INTERFACE_FONT_PIXEL,
     color: INTERFACE_TEXT_COLOR_ACTIVE,
   });
   shift.y += toEven(name.height + CONTAINER_PADDING * 0.6);
 
-  const upgrade = this.add.text(shift.x, shift.y, '', {
-    fontSize: '10px',
-    fontFamily: INTERFACE_FONT_PIXEL,
-    padding: { bottom: 1 },
-  });
-  shift.y += toEven(upgrade.height + CONTAINER_PADDING * 0.6);
+  let label: Phaser.GameObjects.Text;
+  if (data()?.Label) {
+    label = this.add.text(shift.x, shift.y, '', {
+      fontSize: '10px',
+      fontFamily: INTERFACE_FONT_PIXEL,
+      padding: { bottom: 1 },
+    });
+    shift.y += toEven(label.height + CONTAINER_PADDING * 0.6);
+  }
 
   const description = this.add.text(shift.x, shift.y, '\n', {
     fontSize: '10px',
@@ -59,31 +65,47 @@ export default Component(function ComponentBuildingInfo(this: World, container, 
   }, {
     label: 'UPGRADE',
     size: [60, shift.y],
-    need: () => building.getUpgradeLevelCost(),
+    need: () => data()?.Cost,
     have: () => player.resources,
   });
   cost.setVisible(false);
 
-  container.add([body, name, upgrade, description, cost]);
+  container.add([body, name, description, cost]);
   container.setDepth(9999);
+
+  if (label) {
+    container.add(label);
+  }
 
   const refresh = () => {
     container.setSize(shift.x, shift.y);
     container.setPosition(
-      building.x - container.width / 2,
-      toEven(building.y - container.height - TILE_META.halfHeight),
+      toEven(position.x - (container.width * origin[0])),
+      toEven(position.y - (container.height * origin[1])),
     );
+  };
+
+  // @ts-ignore
+  // eslint-disable-next-line no-param-reassign
+  container.setPositionWithOrigin = (x: number, y: number) => {
+    position = { x, y };
+    refresh();
   };
 
   refresh();
 
   return {
     update: () => {
-      upgrade.setText(`UPGRADE ${building.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`);
-      description.setText(building.getInfo());
+      const values = data();
+      if (values) {
+        name.setText(values.Name);
+        description.setText(values.Description);
+        if (label) {
+          label.setText(values.Label);
+        }
+      }
 
-      const isCanUpgrade = (building.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.wave.isGoing);
-      if (isCanUpgrade) {
+      if (values?.Cost) {
         if (!cost.visible) {
           cost.setVisible(true);
           shift.x += cost.width;

@@ -52,9 +52,9 @@ export type BuildingData = {
 
 export interface BuildingInstance {
   Name: string
-  Description: string
-  Texture: BuildingTexture
+  Description: string | string[]
+  Texture?: BuildingTexture
   Cost: Resources
-  UpgradeCost: Resources
-  Health: number
+  UpgradeCost?: Resources
+  Health?: number
 }
