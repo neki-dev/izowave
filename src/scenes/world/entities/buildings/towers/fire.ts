@@ -22,7 +22,7 @@ export default class BuildingTowerFire extends BuildingTower {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_FIRE,
-      health: 1000,
+      health: 600,
       texture: BuildingTowerFire.Texture,
       upgradeCost: BuildingTowerFire.UpgradeCost,
       actions: {

@@ -22,7 +22,7 @@ export default class BuildingTowerFrozen extends BuildingTower {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_FROZEN,
-      health: 1200,
+      health: 900,
       texture: BuildingTowerFrozen.Texture,
       upgradeCost: BuildingTowerFrozen.UpgradeCost,
       actions: {

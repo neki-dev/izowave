@@ -22,7 +22,7 @@ export default class BuildingTowerLazer extends BuildingTower {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_LAZER,
-      health: 600,
+      health: 300,
       texture: BuildingTowerLazer.Texture,
       upgradeCost: BuildingTowerLazer.UpgradeCost,
       actions: {

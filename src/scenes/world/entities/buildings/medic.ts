@@ -23,7 +23,7 @@ export default class BuildingMedic extends Building {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.MEDIC,
-      health: 500,
+      health: 200,
       texture: BuildingMedic.Texture,
       upgradeCost: BuildingMedic.UpgradeCost,
       actions: {

@@ -21,7 +21,7 @@ export default class BuildingMineGold extends BuildingMine {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.MINE_GOLD,
-      health: 1000,
+      health: 500,
       texture: BuildingMineGold.Texture,
       upgradeCost: BuildingMineGold.UpgradeCost,
       actions: {
