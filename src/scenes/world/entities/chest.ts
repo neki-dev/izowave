@@ -63,9 +63,6 @@ export default class Chest extends Phaser.GameObjects.Image {
       return { ...curr, [type]: totalAmount };
     }, {});
     player.giveResources(resources);
-    player.addLabel(Object.entries(resources).map(([type, amount]) => (
-      `+${amount} ${type}`
-    )).join('\n'));
 
     // Give experience
     const experience = calcGrowth(CHEST_EXPERIENCE, CHEST_EXPERIENCE_GROWTH, waveNumber);

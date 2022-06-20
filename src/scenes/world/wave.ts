@@ -136,11 +136,11 @@ export default class Wave extends EventEmitter {
     }
 
     const now = this.scene.getTimerNow();
-    if (this.timeleft - now <= 1000) {
+    if (this.timeleft - now <= 3000) {
       return;
     }
 
-    this.timeleft = now + 1000;
+    this.timeleft = now + 3000;
   }
 
   /**

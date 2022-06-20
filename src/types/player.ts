@@ -1,5 +1,3 @@
-import { PLAYER_PHRASES } from '~const/player';
-
 export enum PlayerEvents {
   LEVEL_UP = 'levelup',
 }
@@ -14,8 +12,6 @@ export type PlayerStat = {
   level?: number
   lived?: number
 };
-
-export type PhraseGroup = keyof typeof PLAYER_PHRASES;
 
 export enum MovementDirectionValue {
   LEFT = -1,

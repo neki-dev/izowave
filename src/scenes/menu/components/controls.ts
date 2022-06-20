@@ -1,6 +1,6 @@
 import Component from '~lib/ui';
 
-import { INTERFACE_BOX_COLOR, INTERFACE_PIXEL_FONT } from '~const/interface';
+import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL } from '~const/interface';
 
 export default Component(function ComponentControls(container) {
   let shift = 0;
@@ -17,15 +17,15 @@ export default Component(function ComponentControls(container) {
 
     const textName = this.add.text(5, 5, item.name, {
       fontSize: '18px',
-      fontFamily: INTERFACE_PIXEL_FONT,
+      fontFamily: INTERFACE_FONT_PIXEL,
     });
 
-    const body = this.add.rectangle(0, 0, textName.width + 10, textName.height + 10, INTERFACE_BOX_COLOR);
+    const body = this.add.rectangle(0, 0, textName.width + 10, textName.height + 10, INTERFACE_BOX_COLOR_PURPLE);
     body.setOrigin(0, 0);
 
     const description = this.add.text(body.width + 10, 7, `-  ${item.description}`, {
       fontSize: '14px',
-      fontFamily: INTERFACE_PIXEL_FONT,
+      fontFamily: INTERFACE_FONT_PIXEL,
     });
 
     containerKey.add([body, textName, description]);

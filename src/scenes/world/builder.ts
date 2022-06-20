@@ -4,6 +4,7 @@ import Level from '~scene/world/level';
 import World from '~scene/world';
 
 import { BuildingVariant } from '~type/building';
+import { NoticeType } from '~type/notice';
 
 import BUILDINGS from '~const/buildings';
 import { BUILDING_BUILD_AREA, BUILDING_BUILD_AREA_GROWTH } from '~const/difficulty';
@@ -223,7 +224,10 @@ export default class Builder {
 
     const { player } = this.scene;
     if (!player.haveResources(BuildingInstance.Cost)) {
-      player.addLabel('NOT ENOUGH RESOURCES');
+      this.scene.screen.events.emit('notice', {
+        message: 'NOT ENOUGH RESOURCES',
+        type: NoticeType.ERROR,
+      });
       return;
     }
 

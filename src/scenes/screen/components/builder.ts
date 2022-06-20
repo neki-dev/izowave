@@ -1,16 +1,15 @@
 import Phaser from 'phaser';
 import Component from '~lib/ui';
-import { toEven } from '~lib/utils';
 import Player from '~scene/world/entities/player';
-import ComponentInfoBox from '~scene/screen/components/info-box';
+import ComponentBuildingInfo from '~scene/screen/components/info-box';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
 
-import { BuildingVariant } from '~type/building';
+import { BuildingInstance, BuildingVariant } from '~type/building';
 
-import { TILE_META } from '~const/level';
 import BUILDINGS from '~const/buildings';
 import { WaveEvents } from '~type/wave';
+import { INTERFACE_BOX_COLOR_PURPLE } from '~const/interface';
 
 type Props = {
   builder: Builder
@@ -19,54 +18,36 @@ type Props = {
 };
 
 const BUILDING_VARIANTS = Object.values(BuildingVariant);
-const ITEMS_PADDING = 30;
-const ITEMS_MARGIN_H = 15;
-const ITEMS_MARGIN_V = 10;
+const ITEM_SIZE = 50;
+const ITEMS_MARGIN = 5;
 
 export default Component(function ComponentBuilder(container, { builder, wave, player }: Props) {
-  const { width, height } = TILE_META;
-  const fullWidth = ((width + ITEMS_PADDING) * BUILDING_VARIANTS.length) + ITEMS_MARGIN_H * 2 - ITEMS_PADDING;
-  const fullHeight = height + ITEMS_MARGIN_V * 2;
   const hover = { current: null };
 
-  container.setPosition(container.x - fullWidth / 2, container.y - fullHeight);
-  container.setSize(fullWidth, fullHeight);
+  container.setPosition(container.x - ITEM_SIZE, container.y);
+  container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
 
-  const param = (name: string) => (
-    (hover.current !== null)
-      ? BUILDINGS[BUILDING_VARIANTS[hover.current]][name]
-      : undefined
-  );
-
-  const infoBox = ComponentInfoBox.call(this, {
-    x: 0,
-    y: 0,
-  }, {
-    label: () => param('Name'),
-    description: () => `${param('Description') || '\n\n'}`,
-    cost: () => param('Cost'),
-    costTitle: 'Build',
+  const infoBox = ComponentBuildingInfo.call(this, { x: 0, y: 0 }, {
     player,
+    params: (): BuildingInstance => (
+      (hover.current !== null)
+        ? BUILDINGS[BUILDING_VARIANTS[hover.current]]
+        : undefined
+    ),
   });
   infoBox.setVisible(false);
   container.add(infoBox);
 
   BUILDING_VARIANTS.forEach((variant: BuildingVariant, index: number) => {
-    const item = this.add.container(
-      ITEMS_MARGIN_H + (width + ITEMS_PADDING) * index,
-      ITEMS_MARGIN_V,
-    );
-    item.setSize(width, fullHeight);
+    const item = this.add.container(0, (ITEM_SIZE + ITEMS_MARGIN) * index);
+    item.setSize(ITEM_SIZE, ITEM_SIZE);
 
-    const body = this.add.rectangle(-ITEMS_PADDING / 2, -ITEMS_MARGIN_V, width + ITEMS_PADDING, fullHeight, 0x3b1954);
+    const body = this.add.rectangle(0, 0, ITEM_SIZE, ITEM_SIZE);
     body.setOrigin(0.0, 0.0);
     body.setInteractive();
     body.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
-      infoBox.setPosition(
-        item.x - infoBox.width / 2 + ITEMS_MARGIN_H,
-        toEven(item.y - infoBox.height - ITEMS_MARGIN_V - ITEMS_PADDING / 2),
-      );
+      infoBox.setPosition(item.x - infoBox.width - 10, item.y);
       infoBox.setVisible(true);
       hover.current = index;
     });
@@ -81,11 +62,10 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
       );
     });
 
-    const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);
-    preview.setOrigin(0.0, 0.0);
+    const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
+    preview.setScale(0.65);
 
-    const number = this.add.text(0, height, String(index + 1), { fontSize: '14px' });
-    number.setOrigin(0.0, 1.0);
+    const number = this.add.text(4, 4, String(index + 1), { fontSize: '12px' });
 
     item.add([body, preview, number]);
     container.add(item);
@@ -110,8 +90,16 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
       for (let i = 1; i < itemsCount; i++) {
         const item = <Phaser.GameObjects.Container> container.getAt(i);
         const body = <Phaser.GameObjects.Rectangle> item.getAt(0);
-        const isActive = (builder.variantIndex === i - 1) || (hover.current === i - 1);
-        body.setAlpha(isActive ? 1.0 : 0.4);
+        if (builder.variantIndex === i - 1) {
+          body.setFillStyle(INTERFACE_BOX_COLOR_PURPLE);
+          body.setAlpha(1.0);
+        } else if (hover.current === i - 1) {
+          body.setFillStyle(0x000000);
+          body.setAlpha(1.0);
+        } else {
+          body.setFillStyle(0x000000);
+          body.setAlpha(0.5);
+        }
       }
     },
   };

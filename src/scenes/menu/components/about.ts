@@ -1,6 +1,6 @@
 import Component from '~lib/ui';
 
-import { INTERFACE_MONOSPACE_FONT } from '~const/interface';
+import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
 
 export default Component(function ComponentAbout(container) {
   const about = this.add.text(0, 0, [
@@ -16,7 +16,7 @@ export default Component(function ComponentAbout(container) {
     'as not to yield to enemies.',
   ], {
     fontSize: '18px',
-    fontFamily: INTERFACE_MONOSPACE_FONT,
+    fontFamily: INTERFACE_FONT_MONOSPACE,
     // @ts-ignore
     lineSpacing: 6,
   });

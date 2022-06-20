@@ -3,18 +3,21 @@ import Player from '~scene/world/entities/player';
 import World from '~scene/world';
 
 import { BuildingVariant, BuildingTexture } from '~type/building';
+
 import { MEDIC_HEAL_AMOUNT } from '~const/difficulty';
 
 export default class BuildingMedic extends Building {
   static Name = 'Medic';
 
-  static Description = 'Heal player\nHP: 500';
+  static Description = 'Heal player';
 
   static Texture = BuildingTexture.MEDIC;
 
   static Cost = { bronze: 35, silver: 30, gold: 20 };
 
   static UpgradeCost = { bronze: 35, silver: 30, gold: 50 };
+
+  static Health = 200;
 
   /**
    * Building variant constructor.
@@ -23,7 +26,7 @@ export default class BuildingMedic extends Building {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.MEDIC,
-      health: 200,
+      health: BuildingMedic.Health,
       texture: BuildingMedic.Texture,
       upgradeCost: BuildingMedic.UpgradeCost,
       actions: {
@@ -81,6 +84,5 @@ export default class BuildingMedic extends Building {
   private heal(player: Player) {
     const health = this.getHealAmount();
     player.live.setHealth(player.live.health + health);
-    player.addLabel(`+${health} HP`);
   }
 }

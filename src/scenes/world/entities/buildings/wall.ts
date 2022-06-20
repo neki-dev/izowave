@@ -5,18 +5,18 @@ import {
   BuildingEvents, BuildingVariant, BuildingTexture,
 } from '~type/building';
 
-import { WALL_HEALTH_AMOUNT } from '~const/difficulty';
-
 export default class BuildingWall extends Building {
   static Name = 'Wall';
 
-  static Description = `Basic defence\nHP: ${WALL_HEALTH_AMOUNT}`;
+  static Description = 'Basic defence';
 
   static Texture = BuildingTexture.WALL;
 
   static Cost = { bronze: 10, silver: 10 };
 
   static UpgradeCost = { bronze: 5, silver: 5, gold: 10 };
+
+  static Health = 2000;
 
   /**
    * Building variant constructor.
@@ -25,7 +25,7 @@ export default class BuildingWall extends Building {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.WALL,
-      health: WALL_HEALTH_AMOUNT,
+      health: BuildingWall.Health,
       texture: BuildingWall.Texture,
       upgradeCost: BuildingWall.UpgradeCost,
     });
@@ -39,6 +39,6 @@ export default class BuildingWall extends Building {
    * @param level - Upgrade level
    */
   private upgradeHealth(level: number) {
-    this.live.setMaxHealth(WALL_HEALTH_AMOUNT * level);
+    this.live.setMaxHealth(BuildingWall.Health * level);
   }
 }

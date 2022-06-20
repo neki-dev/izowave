@@ -1,24 +1,23 @@
 import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
-import { calcGrowth, toEven } from '~lib/utils';
+import { calcGrowth } from '~lib/utils';
 import Chest from '~scene/world/entities/chest';
 import Enemy from '~scene/world/entities/enemy';
 import Sprite from '~scene/world/entities/sprite';
 import World from '~scene/world';
 
 import {
-  PhraseGroup, PlayerEvents, PlayerTexture,
+  PlayerEvents, PlayerTexture,
   MovementDirection, MovementDirectionValue, PlayerStat,
 } from '~type/player';
 import { WorldEffect } from '~type/world';
 import { BiomeType, TileType } from '~type/level';
 import { ResourceType, Resources } from '~type/building';
-import { WaveEvents } from '~type/wave';
 import { LiveEvents } from '~type/live';
+import { NoticeType } from '~type/notice';
 
 import { WORLD_CAMERA_ZOOM } from '~const/world';
 import {
-  PLAYER_PHRASES, PLAYER_PHRASE_PAUSE,
   PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS,
 } from '~const/player';
 import {
@@ -31,7 +30,6 @@ import {
   PLAYER_ATTACK_PAUSE,
 } from '~const/difficulty';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
-import { INTERFACE_PIXEL_FONT } from '~const/interface';
 
 export default class Player extends Sprite {
   /**
@@ -55,24 +53,16 @@ export default class Player extends Sprite {
   /**
    * Resourse amounts.
    */
-  private resources: Resources = PLAYER_START_RESOURCES;
+  private _resources: Resources = PLAYER_START_RESOURCES;
+
+  public get resources() { return this._resources; }
+
+  private set resources(v) { this._resources = v; }
 
   /**
    * Total number of enemies killed.
    */
   private kills: number = 0;
-
-  /**
-   * Phrase pause.
-   */
-  private phrasePause: {
-    [group in PhraseGroup]?: number
-  } = {};
-
-  /**
-   * Text labels.
-   */
-  private labels: Phaser.GameObjects.Text[] = [];
 
   /**
    * Keyboard keys.
@@ -128,12 +118,10 @@ export default class Player extends Sprite {
 
     this.makeAnimations();
     this.registerKeyboard();
-    this.addPhrase('SPAWN');
 
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
-    scene.wave.on(WaveEvents.FINISH, () => this.addPhrase('FINISH_WAVE'));
   }
 
   /**
@@ -272,14 +260,18 @@ export default class Player extends Sprite {
    */
   private nextLevel(count: number) {
     this.level += count;
-    this.addLabel('LEVEL UP');
+
+    this.emit(PlayerEvents.LEVEL_UP, this.level);
 
     // Update maximum player health by level
     const maxHealth = calcGrowth(PLAYER_HEALTH, PLAYER_HEALTH_GROWTH, this.level);
     this.live.setMaxHealth(maxHealth);
     this.live.heal();
 
-    this.emit(PlayerEvents.LEVEL_UP, this.level);
+    this.scene.screen.events.emit('notice', {
+      message: 'LEVEL UP',
+      type: NoticeType.INFO,
+    });
   }
 
   /**
@@ -310,8 +302,6 @@ export default class Player extends Sprite {
    * Player damage event.
    */
   private onDamage() {
-    this.addPhrase('DAMAGE');
-
     this.scene.effects.emit(WorldEffect.BLOOD, this, {
       follow: this,
       lifespan: { min: 100, max: 200 },
@@ -342,6 +332,10 @@ export default class Player extends Sprite {
    * and add effect.
    */
   private attack() {
+    if (this.live.isDead()) {
+      return;
+    }
+
     const now = this.scene.getTimerNow();
     if (this.attackPause > now) {
       return;
@@ -372,75 +366,6 @@ export default class Player extends Sprite {
     }, 300);
 
     this.attackPause = now + PLAYER_ATTACK_PAUSE;
-  }
-
-  /**
-   * Add random phrase as label.
-   *
-   * @param group - Phrases group
-   */
-  private addPhrase(group: PhraseGroup) {
-    if (this.live.isDead()) {
-      return;
-    }
-
-    const now = this.scene.getTimerNow();
-    if (this.phrasePause[group] > now) {
-      return;
-    }
-
-    const phrase = Phaser.Utils.Array.GetRandom(PLAYER_PHRASES[group]);
-    this.addLabel(phrase.toUpperCase());
-    this.phrasePause[group] = now + PLAYER_PHRASE_PAUSE;
-  }
-
-  /**
-   * Add label over entity.
-   *
-   * @param value - Text
-   */
-  public addLabel(value: string) {
-    const isExists = this.labels.some((label) => (label.text.replace(/\n$/, '') === value));
-    if (isExists) {
-      return;
-    }
-
-    const label = this.scene.add.text(0, 0, `${value}\n`, {
-      fontSize: '11px',
-      fontFamily: INTERFACE_PIXEL_FONT,
-      // @ts-ignore
-      lineSpacing: 6,
-    });
-    label.setOrigin(0.5, 1.0);
-    label.setAlpha(0.0);
-    this.scene.tweens.add({
-      targets: label,
-      alpha: 1.0,
-      duration: 500,
-      ease: 'Power2',
-      hold: 800,
-      yoyo: true,
-      onComplete: () => {
-        Phaser.Utils.Array.Remove(this.labels, label);
-        label.destroy();
-        this.updateLabels();
-      },
-    });
-
-    this.container.add(label);
-    this.labels.push(label);
-    this.updateLabels();
-  }
-
-  /**
-   * Update labels positions.
-   */
-  private updateLabels() {
-    let offset = 0;
-    for (const label of this.labels) {
-      label.setPosition(0, toEven(offset - 7));
-      offset -= label.height;
-    }
   }
 
   /**

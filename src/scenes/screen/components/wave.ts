@@ -3,8 +3,12 @@ import Component from '~lib/ui';
 import Wave from '~scene/world/wave';
 
 import { WaveEvents } from '~type/wave';
+import { NoticeType } from '~type/notice';
 
-import { INTERFACE_PIXEL_FONT } from '~const/interface';
+import {
+  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_PIXEL,
+  INTERFACE_BOX_COLOR_ERROR, INTERFACE_BOX_COLOR_INFO,
+} from '~const/interface';
 
 type Props = {
   wave: Wave
@@ -12,108 +16,106 @@ type Props = {
   y: number
 };
 
-const CONTAINER_WIDTH = 230;
-const CONTAINER_HEIGHT = 50;
+const CONTAINER_WIDTH = 130;
+const CONTAINER_HEIGHT = 36;
 
 export default Component(function ComponentWave(container, { wave }: Props) {
-  container.setX(container.x - CONTAINER_WIDTH / 2);
   container.setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
-  body.setOrigin(0, 0);
+  body.setOrigin(0.0, 0.0);
 
-  const numberBody = this.add.rectangle(10, 10, 0, CONTAINER_HEIGHT - 20, 0x83a81c);
-  numberBody.setOrigin(0, 0);
+  const numberBody = this.add.rectangle(2, 2, 0, CONTAINER_HEIGHT - 4, 0x83a81c);
+  numberBody.setOrigin(0.0, 0.0);
 
-  const number = this.add.text(0, CONTAINER_HEIGHT / 2, '', {
-    fontSize: '22px',
-    fontFamily: INTERFACE_PIXEL_FONT,
+  const number = this.add.text(1, CONTAINER_HEIGHT / 2 - 1, '', {
+    fontSize: '20px',
+    fontFamily: INTERFACE_FONT_PIXEL,
+    padding: {
+      bottom: 1,
+      left: 12,
+      right: 12,
+    },
+    shadow: {
+      offsetX: 2,
+      offsetY: 2,
+      color: '#000000',
+      blur: 0,
+      fill: true,
+    },
+  });
+  number.setOrigin(0.0, 0.5);
+
+  const counterLabel = this.add.text(0, 7, '', {
+    fontSize: '7px',
+    fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 1 },
   });
-  number.setOrigin(0.5, 0.5);
+  counterLabel.setAlpha(0.75);
+  counterLabel.setOrigin(0.0, 0.0);
 
-  const status = this.add.text(0, CONTAINER_HEIGHT / 2, '', {
-    fontSize: '11px',
-    fontFamily: INTERFACE_PIXEL_FONT,
-    // @ts-ignore
-    lineSpacing: 2,
-  });
-  status.setOrigin(0.0, 0.5);
-
-  const counterLabel = this.add.text(CONTAINER_WIDTH - 10, CONTAINER_HEIGHT / 2 - 9, '', {
-    fontSize: '8px',
-    fontFamily: INTERFACE_PIXEL_FONT,
+  const counter = this.add.text(0, CONTAINER_HEIGHT - 14, '', {
+    fontSize: '14px',
+    fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 1 },
   });
-  counterLabel.setOrigin(1.0, 0.5);
+  counter.setOrigin(0.0, 0.5);
 
-  const counter = this.add.text(CONTAINER_WIDTH - 10, CONTAINER_HEIGHT / 2 + 6, '', {
-    fontSize: '16px',
-    fontFamily: INTERFACE_PIXEL_FONT,
-    padding: { bottom: 1 },
-  });
-  counter.setOrigin(1.0, 0.5);
-
-  container.add([body, numberBody, number, status, counterLabel, counter]);
+  container.add([body, numberBody, number, counterLabel, counter]);
 
   const onNumberUpdate = () => {
     if (wave.isGoing) {
-      numberBody.fillColor = 0xdb2323;
+      numberBody.fillColor = INTERFACE_BOX_COLOR_ERROR;
       number.setText(String(wave.number));
       counterLabel.setText('ENEMIES');
-      status.setText('CURRENT\nWAVE');
     } else {
-      numberBody.fillColor = 0x83a81c;
+      numberBody.fillColor = INTERFACE_BOX_COLOR_INFO;
       number.setText(String(wave.number + 1));
       counterLabel.setText('TIMELEFT');
-      status.setText('NEXT\nWAVE');
     }
-    numberBody.width = number.width + 20;
-    number.setX(10 + numberBody.width / 2);
-    status.setX(numberBody.width + 20);
+    numberBody.width = number.width;
+    counterLabel.setX(2 + numberBody.width + 10);
+    counter.setX(2 + numberBody.width + 10);
   };
   onNumberUpdate();
 
   wave.on(WaveEvents.UPDATE, onNumberUpdate);
 
   wave.on(WaveEvents.START, () => {
-    const notify = this.add.text(this.sys.game.canvas.width / 2, -60, `WAVE ${wave.number} STARTED`, {
-      fontSize: '40px',
-      fontFamily: INTERFACE_PIXEL_FONT,
-      padding: { bottom: 6 },
-      shadow: {
-        offsetX: 6,
-        offsetY: 6,
-        color: '#000000',
-        blur: 0,
-        fill: true,
-      },
+    this.events.emit('notice', {
+      message: `WAVE ${wave.number} STARTED`,
+      type: NoticeType.INFO,
     });
-    notify.setOrigin(0.5, 0.5);
-    this.tweens.add({
-      targets: notify,
-      y: 200,
-      duration: 1000,
-      ease: 'Power2',
-      hold: 2000,
-      yoyo: true,
-      onComplete: () => {
-        notify.destroy();
-      },
+  });
+
+  wave.on(WaveEvents.FINISH, () => {
+    this.events.emit('notice', {
+      message: `WAVE ${wave.number} COMPLETED`,
+      type: NoticeType.INFO,
     });
   });
 
   return {
     update: () => {
-      let counterValue: string;
       if (wave.isGoing) {
         const killedCount = wave.spawnedCount - wave.scene.getEnemies().getTotalUsed();
-        counterValue = String(wave.maxSpawnedCount - killedCount);
+        counter.setText(String(wave.maxSpawnedCount - killedCount));
+        counter.setColor('#ffffff');
       } else {
-        const timeleft = wave.getTimeleft();
-        counterValue = formatTime(Math.ceil(timeleft / 1000));
+        const timeleft = Math.ceil(wave.getTimeleft() / 1000);
+        counter.setText(formatTime(timeleft));
+        if (timeleft <= 3 && counter.style.color === '#fff') {
+          counter.setColor(INTERFACE_TEXT_COLOR_ERROR);
+          this.tweens.add({
+            targets: counter,
+            scale: 0.9,
+            duration: 500,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: 3,
+          });
+        }
       }
-      counter.setText(counterValue);
     },
   };
 });

@@ -4,13 +4,6 @@ import { TILE_META } from '~const/level';
 
 export const PLAYER_TILE_SIZE = 16;
 
-export const PLAYER_PHRASE_PAUSE = 3000;
-export const PLAYER_PHRASES = {
-  SPAWN: ['let`s go', 'here goes!', 'i`m ready', 'okay, start'],
-  FINISH_WAVE: ['yeah!', 'nice', 'perfect', 'cool'],
-  DAMAGE: ['oh', 'aaa!', 'ouch', 'ahh'],
-};
-
 export const PLAYER_RECORD_KEY = 'BEST_GAME_RESULT';
 
 const anticollide = 1.00; // 0.95;

@@ -55,5 +55,6 @@ export interface BuildingInstance {
   Description: string
   Texture: BuildingTexture
   Cost: Resources
+  UpgradeCost: Resources
   Health: number
 }

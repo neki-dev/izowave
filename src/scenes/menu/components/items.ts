@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Component from '~lib/ui';
 
-import { INTERFACE_PIXEL_FONT, INTERFACE_PRIMARY_COLOR } from '~const/interface';
+import { INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_PRIMARY } from '~const/interface';
 
 export type MenuItem = {
   label: string
@@ -23,9 +23,9 @@ export default Component(function ComponentItems(container, { width, data, onSel
   for (const item of data) {
     const text = this.add.text(width, shift, item.label, {
       fixedWidth: width,
-      color: item.onClick ? INTERFACE_PRIMARY_COLOR : '#ffffff',
+      color: item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : '#ffffff',
       fontSize: '20px',
-      fontFamily: INTERFACE_PIXEL_FONT,
+      fontFamily: INTERFACE_FONT_PIXEL,
       align: 'right',
       padding: { bottom: 4 },
       shadow: {

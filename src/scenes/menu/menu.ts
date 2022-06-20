@@ -7,7 +7,7 @@ import ComponentControls from '~scene/menu/components/controls';
 import ComponentItems, { MenuItem } from '~scene/menu/components/items';
 
 import { SceneKey } from '~type/scene';
-import { INTERFACE_HEADER_COLOR, INTERFACE_MONOSPACE_FONT, INTERFACE_PIXEL_FONT } from '~const/interface';
+import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface';
 import { COPYRIGHT } from '~const/core';
 
 const CONTENT_MARGIN = 200;
@@ -40,12 +40,12 @@ export default class Menu extends Phaser.Scene {
 
     this.container = this.add.container(0, 0);
 
-    loadFontFace(INTERFACE_PIXEL_FONT, 'retro').finally(() => {
+    loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
       const shift = { x: 0, y: 0 };
       const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
-        color: INTERFACE_HEADER_COLOR,
+        color: '#a66cc0',
         fontSize: '50px',
-        fontFamily: INTERFACE_PIXEL_FONT,
+        fontFamily: INTERFACE_FONT_PIXEL,
         padding: { bottom: 6 },
         shadow: {
           offsetX: 6,
@@ -67,7 +67,7 @@ export default class Menu extends Phaser.Scene {
       const copyright = this.add.text(shift.x, shift.y, COPYRIGHT, {
         fixedWidth: logotype.width,
         fontSize: '12px',
-        fontFamily: INTERFACE_MONOSPACE_FONT,
+        fontFamily: INTERFACE_FONT_MONOSPACE,
         align: 'right',
       });
       copyright.setAlpha(0.5);
@@ -87,7 +87,7 @@ export default class Menu extends Phaser.Scene {
 
       const title = this.add.text(shift.x, shift.y, '', {
         fontSize: '50px',
-        fontFamily: INTERFACE_PIXEL_FONT,
+        fontFamily: INTERFACE_FONT_PIXEL,
         padding: { bottom: 6 },
         shadow: {
           offsetX: 6,

@@ -2,6 +2,7 @@ import Building from '~scene/world/entities/building';
 import World from '~scene/world';
 
 import { BuildingData, BuildingEvents, ResourceType } from '~type/building';
+import { NoticeType } from '~type/notice';
 
 import { MINE_RESOURCES_LIMIT } from '~const/difficulty';
 
@@ -55,6 +56,10 @@ export default class BuildingMine extends Building {
 
     this.generateResource();
     if (this.amountLeft <= 0) {
+      this.scene.screen.events.emit('notice', {
+        message: 'MINE RESOURCES ARE OVER',
+        type: NoticeType.WARN,
+      });
       this.destroy();
     } else {
       this.pauseActions();

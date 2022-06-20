@@ -44,5 +44,3 @@ export const TOWER_SHOT_FREEZE_GROWTH = 0.6; // Frozen duration growth by upgrad
 export const TOWER_SHOT_SPEED_GROWTH = 0.3; // Shot speed growth by upgrade
 
 export const MEDIC_HEAL_AMOUNT = 10; // Default meedic heal
-
-export const WALL_HEALTH_AMOUNT = 2000; // Default wall health

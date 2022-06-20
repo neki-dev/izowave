@@ -7,13 +7,15 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerFire extends BuildingTower {
   static Name = 'Fire tower';
 
-  static Description = 'Attack enemies\nHP: 1000\nDamage: 35';
+  static Description = 'Attack enemies\nDamage: 35';
 
   static Texture = BuildingTexture.TOWER_FIRE;
 
   static Cost = { bronze: 35, silver: 20 };
 
   static UpgradeCost = { bronze: 35, silver: 20, gold: 70 };
+
+  static Health = 600;
 
   /**
    * Building variant constructor.
@@ -22,7 +24,7 @@ export default class BuildingTowerFire extends BuildingTower {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_FIRE,
-      health: 600,
+      health: BuildingTowerFire.Health,
       texture: BuildingTowerFire.Texture,
       upgradeCost: BuildingTowerFire.UpgradeCost,
       actions: {

@@ -7,13 +7,15 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerFrozen extends BuildingTower {
   static Name = 'Frozen tower';
 
-  static Description = 'Stop enemies\nHP: 1200\nFreeze: 1.4 s';
+  static Description = 'Stop enemies\nFreeze: 1.4 s';
 
   static Texture = BuildingTexture.TOWER_FROZEN;
 
   static Cost = { bronze: 35, silver: 30 };
 
   static UpgradeCost = { bronze: 35, silver: 30, gold: 70 };
+
+  static Health = 900;
 
   /**
    * Building variant constructor.
@@ -22,7 +24,7 @@ export default class BuildingTowerFrozen extends BuildingTower {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_FROZEN,
-      health: 900,
+      health: BuildingTowerFrozen.Health,
       texture: BuildingTowerFrozen.Texture,
       upgradeCost: BuildingTowerFrozen.UpgradeCost,
       actions: {

@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import { registerAssets } from '~lib/assets';
-import { calcGrowth, toEven } from '~lib/utils';
+import { calcGrowth } from '~lib/utils';
 import Live from '~scene/world/entities/live';
-import ComponentInfoBox from '~scene/screen/components/info-box';
+import ComponentBuildingInfo from '~scene/screen/components/building-info';
 import Hexagon from '~lib/hexagon';
 import Level from '~scene/world/level';
 import World from '~scene/world';
@@ -20,6 +20,7 @@ import {
   BUILDING_ACTION_RADIUS_GROWTH,
   BUILDING_UPGRADE_EXPERIENCE,
 } from '~const/difficulty';
+import { NoticeType } from '~type/notice';
 
 export default class Building extends Phaser.GameObjects.Image {
   // @ts-ignore
@@ -113,7 +114,7 @@ export default class Building extends Phaser.GameObjects.Image {
 
     // Add events callbacks
     this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
-    this.live.on(LiveEvents.DEAD, () => this.destroy());
+    this.live.on(LiveEvents.DEAD, () => this.onDead());
   }
 
   /**
@@ -165,6 +166,13 @@ export default class Building extends Phaser.GameObjects.Image {
   }
 
   /**
+   * Get building variant name.
+   */
+  public getName() {
+    return this.variant.split('_').reverse().join(' ');
+  }
+
+  /**
    * Get building information labels.
    */
   public getInfo(): string[] {
@@ -176,7 +184,7 @@ export default class Building extends Phaser.GameObjects.Image {
   /**
    * Get next upgrade cost.
    */
-  public upgradeLevelCost(): Resources {
+  public getUpgradeLevelCost(): Resources {
     const multiply = 1 + ((this.upgradeLevel - 1) / 2);
     return Object.entries(this.upgradeCost).reduce((curr, [resource, cost]) => ({
       ...curr,
@@ -223,16 +231,19 @@ export default class Building extends Phaser.GameObjects.Image {
     }
 
     this.upgradeLevel++;
-    this.updateActionArea();
-    this.setFrame(this.upgradeLevel - 1);
 
     this.emit(BuildingEvents.UPGRADE, this.upgradeLevel);
 
+    this.updateActionArea();
+    this.setFrame(this.upgradeLevel - 1);
     this.live.heal();
 
-    const { player } = this.scene;
-    player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
-    player.addLabel('UPGRADED');
+    this.scene.player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
+
+    this.scene.screen.events.emit('notice', {
+      message: 'BUILDING UPGRADED',
+      type: NoticeType.INFO,
+    });
   }
 
   /**
@@ -269,6 +280,18 @@ export default class Building extends Phaser.GameObjects.Image {
   }
 
   /**
+   * Dead event.
+   */
+  private onDead() {
+    this.scene.screen.events.emit('notice', {
+      message: `${this.getName()} HAS BEEN DESTROYED BY ENEMY`,
+      type: NoticeType.WARN,
+    });
+
+    this.destroy();
+  }
+
+  /**
    * Focus event.
    */
   private onFocus() {
@@ -282,27 +305,17 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(true);
 
-    const isCanUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
-    this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentInfoBox.call(this.scene, {
-      x: 0,
-      y: 0,
-    }, {
-      label: () => this.variant.split('_').reverse().join(' '),
-      subLabel: () => `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
-      description: () => this.getInfo().join('\n'),
-      cost: isCanUpgrade ? () => this.upgradeLevelCost() : undefined,
-      costTitle: 'Upgrade',
+    this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, { x: 0, y: 0 }, {
+      building: this,
       player: this.scene.player,
     });
-    this.uiBuildingInfo.setPosition(
-      this.x - this.uiBuildingInfo.width / 2,
-      toEven(this.y - this.uiBuildingInfo.height - TILE_META.halfHeight),
-    );
 
     if (!wave.isGoing) {
       input.setDefaultCursor('pointer');
     }
     input.keyboard.on('keyup-BACKSPACE', this.break, this);
+
+    // this.scene.screen.events.emit('building-info', this);
 
     this.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
     this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
@@ -354,10 +367,13 @@ export default class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    const cost = this.upgradeLevelCost();
+    const cost = this.getUpgradeLevelCost();
     const { player } = this.scene;
     if (!player.haveResources(cost)) {
-      player.addLabel('NOT ENOUGH RESOURCES');
+      this.scene.screen.events.emit('notice', {
+        message: 'NOT ENOUGH RESOURCES',
+        type: NoticeType.ERROR,
+      });
       return;
     }
 

@@ -6,13 +6,15 @@ import { BuildingTexture, BuildingVariant, ResourceType } from '~type/building';
 export default class BuildingMineGold extends BuildingMine {
   static Name = 'Gold mine';
 
-  static Description = 'Generation gold\nHP: 1000';
+  static Description = 'Generation gold';
 
   static Texture = BuildingTexture.MINE_GOLD;
 
   static Cost = { bronze: 30, silver: 35 };
 
   static UpgradeCost = { bronze: 15, silver: 15, gold: 30 };
+
+  static Health = 500;
 
   /**
    * Building variant constructor.
@@ -21,7 +23,7 @@ export default class BuildingMineGold extends BuildingMine {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.MINE_GOLD,
-      health: 500,
+      health: BuildingMineGold.Health,
       texture: BuildingMineGold.Texture,
       upgradeCost: BuildingMineGold.UpgradeCost,
       actions: {

@@ -1,18 +1,29 @@
 import Component from '~lib/ui';
 
-import { INTERFACE_MONOSPACE_FONT, INTERFACE_PIXEL_FONT } from '~const/interface';
+import { PlayerStat } from '~type/player';
+
+import {
+  INTERFACE_TEXT_COLOR_ERROR_DARK, INTERFACE_FONT_MONOSPACE,
+  INTERFACE_FONT_PIXEL,
+} from '~const/interface';
 
 type Props = {
-  data: string[]
+  stat: PlayerStat
+  record: PlayerStat
 };
 
-const CONTAINER_SIZE = 400;
+export default Component(function ComponentGameOver(container, { stat, record }: Props) {
+  const { canvas } = this.sys;
 
-export default Component(function ComponentGameOver(container, { data }: Props) {
-  const title = this.add.text(CONTAINER_SIZE / 2, 0, 'GAME OVER', {
-    color: '#f23a3a',
+  const background = this.add.rectangle(0, 0, canvas.width, canvas.height, 0x000000, 0.75);
+  background.setOrigin(0.0, 0.0);
+
+  const box = this.add.container(canvas.width / 2, canvas.height / 2);
+
+  const title = this.add.text(0, -50, 'GAME OVER', {
+    color: INTERFACE_TEXT_COLOR_ERROR_DARK,
     fontSize: '100px',
-    fontFamily: INTERFACE_PIXEL_FONT,
+    fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 8 },
     shadow: {
       offsetX: 8,
@@ -22,28 +33,30 @@ export default Component(function ComponentGameOver(container, { data }: Props) 
       fill: true,
     },
   });
-  title.setOrigin(0.5, 0.0);
-
-  const shift = title.height + 80;
-
-  const text = this.add.text(0, shift, data, {
-    fixedWidth: CONTAINER_SIZE,
-    fontSize: '14px',
-    fontFamily: INTERFACE_MONOSPACE_FONT,
-    // @ts-ignore
-    lineSpacing: 8,
-    padding: {
-      top: 20,
-      bottom: 20,
-      left: 20,
-      right: 20,
-    },
+  title.setOrigin(0.5, 1.0);
+  this.tweens.add({
+    targets: title,
+    scale: 1.2,
+    duration: 1500,
+    ease: 'Linear',
+    yoyo: true,
   });
 
-  const body = this.add.rectangle(0, shift, text.width, text.height, 0x000000, 0.5);
-  body.setOrigin(0.0, 0.0);
+  const text = this.add.text(0, 50, [
+    `COMPLETED WAVES - ${stat.waves}${(record.waves < stat.waves) ? ' - NEW RECORD' : ''}`,
+    `KILLED ENEMIES - ${stat.kills}${(record.kills < stat.kills) ? ' - NEW RECORD' : ''}`,
+    `REACHED LEVEL - ${stat.level}${(record.level < stat.level) ? ' - NEW RECORD' : ''}`,
+    `LIVED MINUTES - ${stat.lived.toFixed(1)}${(record.lived < stat.lived) ? ' - NEW RECORD' : ''}`,
+  ], {
+    fontSize: '14px',
+    fontFamily: INTERFACE_FONT_MONOSPACE,
+    // @ts-ignore
+    lineSpacing: 8,
+  });
+  text.setAlpha(0.75);
+  text.setOrigin(0.5, 0.0);
 
-  container.add([body, title, text]);
-  container.setSize(body.width, shift + body.height);
-  container.setPosition(container.x - container.width / 2, container.y - container.height / 2);
+  box.add([title, text]);
+
+  container.add([background, box]);
 });

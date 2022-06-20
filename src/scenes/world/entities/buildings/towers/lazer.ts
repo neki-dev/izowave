@@ -7,13 +7,15 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerLazer extends BuildingTower {
   static Name = 'Lazer tower';
 
-  static Description = 'Attack enemies\nHP: 600\nDamage: 75';
+  static Description = 'Attack enemies\nDamage: 75';
 
   static Texture = BuildingTexture.TOWER_LAZER;
 
   static Cost = { bronze: 45, silver: 40, gold: 40 };
 
   static UpgradeCost = { bronze: 45, silver: 40, gold: 80 };
+
+  static Health = 300;
 
   /**
    * Building variant constructor.
@@ -22,7 +24,7 @@ export default class BuildingTowerLazer extends BuildingTower {
     super(scene, {
       positionAtMatrix,
       variant: BuildingVariant.TOWER_LAZER,
-      health: 300,
+      health: BuildingTowerLazer.Health,
       texture: BuildingTowerLazer.Texture,
       upgradeCost: BuildingTowerLazer.UpgradeCost,
       actions: {

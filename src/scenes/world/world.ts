@@ -56,6 +56,15 @@ export default class World extends Phaser.Scene {
   private enemySpawnPositions: Phaser.Types.Math.Vector2Like[] = [];
 
   /**
+   * Screen scene.
+   */
+  private _screen: Phaser.Scene;
+
+  public get screen() { return this._screen; }
+
+  private set screen(v) { this._screen = v; }
+
+  /**
    * Effects manager.
    */
   private _effects: Effects;
@@ -153,6 +162,8 @@ export default class World extends Phaser.Scene {
    * Create world and open menu.
    */
   public create() {
+    this.screen = this.scene.get(SceneKey.SCREEN);
+
     this.timer = this.time.addEvent({ loop: true });
 
     const difficulty = localStorage.getItem(WORLD_DIFFICULTY_KEY);
@@ -326,7 +337,7 @@ export default class World extends Phaser.Scene {
     camera.setZoom(WORLD_CAMERA_ZOOM * 1.3);
     camera.zoomTo(WORLD_CAMERA_ZOOM, 100);
 
-    this.scene.launch(SceneKey.SCREEN);
+    this.scene.launch(this.screen);
     this.input.keyboard.on('keyup-ESC', () => {
       if (this.player.live.isDead()) {
         window.location.reload();
