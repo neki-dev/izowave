@@ -74,7 +74,7 @@ export default class Building extends Phaser.GameObjects.Image {
   /**
    * Building info UI component.
    */
-  private uiBuildingInfo: Phaser.GameObjects.Container;
+  private info: Phaser.GameObjects.Container;
 
   /**
    * Pause for detect double click.
@@ -285,7 +285,7 @@ export default class Building extends Phaser.GameObjects.Image {
    */
   private onDead() {
     this.scene.screen.events.emit('notice', {
-      message: `${this.getName()} HAS BEEN DESTROYED BY ENEMY`,
+      message: `${this.getName()} HAS BEEN DESTROYED`,
       type: NoticeType.WARN,
     });
 
@@ -311,12 +311,12 @@ export default class Building extends Phaser.GameObjects.Image {
       input.setDefaultCursor('pointer');
     }
 
-    this.uiBuildingInfo = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
+    this.info = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
       x: this.x,
       y: this.y - TILE_META.halfHeight,
     }, {
       origin: [0.5, 1.0],
-      player: this.scene.player,
+      player,
       data: () => ({
         Name: this.getName(),
         Label: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
@@ -338,9 +338,9 @@ export default class Building extends Phaser.GameObjects.Image {
   private onUnfocus() {
     const { input } = this.scene;
 
-    if (this.uiBuildingInfo) {
-      this.uiBuildingInfo.destroy();
-      delete this.uiBuildingInfo;
+    if (this.info) {
+      this.info.destroy();
+      delete this.info;
     }
 
     this.actionsArea.setVisible(false);
