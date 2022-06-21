@@ -144,11 +144,10 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
 
   /**
    * Get body corners.
-   *
-   * @param count - Count of corners
    */
-  private getCorners(count: number = 12): Phaser.Types.Math.Vector2Like[] {
+  private getCorners(): Phaser.Types.Math.Vector2Like[] {
     const { position: { x, y }, width } = this.body;
+    const count = 8;
     const r = width / 2;
     const l = Phaser.Math.PI2 / count;
 
@@ -164,17 +163,21 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Add current health indicator above enemy.
+   * Add current health indicator above sprite.
    */
   private addHealthIndicator() {
     const width = this.displayWidth * 1.5;
-    this.healthIndicator = this.scene.add.container(-width / 2, -13);
+
     const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
-    body.setOrigin(0, 0);
-    const progress = this.scene.add.rectangle(1, 1, 0, 0, 0xe4372c);
-    progress.setOrigin(0, 0);
+    body.setOrigin(0.0, 0.0);
+
+    const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xe4372c);
+    bar.setOrigin(0.0, 0.0);
+
+    this.healthIndicator = this.scene.add.container(-width / 2, -13);
     this.healthIndicator.setSize(body.width, body.height);
-    this.healthIndicator.add([body, progress]);
+    this.healthIndicator.add([body, bar]);
+
     this.container.add(this.healthIndicator);
   }
 
@@ -182,9 +185,8 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
    * Update health indicator progress.
    */
   private updateHealthIndicator() {
-    const { width, height } = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(0);
-    const progress = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
     const value = this.live.health / this.live.maxHealth;
-    progress.setSize((width - 2) * value, height - 2);
+    const bar = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
+    bar.setSize((this.healthIndicator.width - 2) * value, this.healthIndicator.height - 2);
   }
 }

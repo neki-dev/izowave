@@ -20,6 +20,8 @@ export default class Menu extends Phaser.Scene {
   }
 
   public create({ asPause = false }) {
+    const { canvas } = this.sys;
+
     const menuItems = [{
       label: asPause ? 'Continue' : 'New game',
       onClick: () => this.startGame(asPause),
@@ -35,8 +37,8 @@ export default class Menu extends Phaser.Scene {
       content: () => ComponentControls.call(this, { x: 0, y: 0 }),
     }];
 
-    const background = this.add.rectangle(0, 0, this.sys.canvas.width, this.sys.canvas.height, 0x000000, 0.85);
-    background.setOrigin(0, 0);
+    const background = this.add.rectangle(0, 0, canvas.width, canvas.height, 0x000000, 0.85);
+    background.setOrigin(0.0, 0.0);
 
     this.container = this.add.container(0, 0);
 
@@ -75,13 +77,10 @@ export default class Menu extends Phaser.Scene {
       shift.x = logotype.width;
 
       this.container.setSize(shift.x + CONTENT_MARGIN + shift.x * 2, shift.y);
-      this.container.setPosition(
-        this.sys.canvas.width / 2 - this.container.width / 2,
-        this.sys.canvas.height / 2 - this.container.height / 2,
-      );
+      this.container.setPosition(canvas.width / 2 - this.container.width / 2, canvas.height / 2 - this.container.height / 2);
 
       const line = this.add.rectangle(shift.x + CONTENT_MARGIN / 2, -100, 1, shift.y + 200, 0xffffff, 0.3);
-      line.setOrigin(0, 0);
+      line.setOrigin(0.0, 0.0);
       shift.x += CONTENT_MARGIN;
       shift.y = 0;
 

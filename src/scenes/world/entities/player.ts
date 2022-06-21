@@ -157,6 +157,7 @@ export default class Player extends Sprite {
     }
 
     this.experience += amount;
+    this.emit(PlayerEvents.EXPERIENCE, amount);
 
     const calc = (level: number) => calcGrowth(
       EXPERIENCE_TO_NEXT_LEVEL,
@@ -190,7 +191,10 @@ export default class Player extends Sprite {
     }
 
     for (const [type, amount] of Object.entries(amounts)) {
-      this.resources[type] += amount;
+      if (amount > 0) {
+        this.resources[type] += amount;
+        this.emit(PlayerEvents.RESOURCE, type, amount);
+      }
     }
   }
 
@@ -216,7 +220,10 @@ export default class Player extends Sprite {
    */
   public takeResources(amounts: Resources): void {
     for (const [type, amount] of Object.entries(amounts)) {
-      this.resources[type] -= amount;
+      if (amount > 0) {
+        this.resources[type] -= amount;
+        this.emit(PlayerEvents.RESOURCE, type, -amount);
+      }
     }
   }
 

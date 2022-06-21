@@ -77,7 +77,11 @@ export default class Live extends EventEmmiter {
    * @param amount - Health amount
    */
   public setHealth(amount: number) {
+    const prevHealth = this.health;
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
+    if (this.health > prevHealth) {
+      this.emit(LiveEvents.HEAL, this.health - prevHealth);
+    }
   }
 
   /**

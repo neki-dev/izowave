@@ -11,6 +11,7 @@ import {
 } from '~const/interface';
 
 type Props = {
+  mode?: 'building' | 'builder'
   origin: [number, number]
   player: Player
   data: () => BuildingInstance & {
@@ -22,10 +23,10 @@ const CONTAINER_WIDTH = 220;
 const CONTAINER_PADDING = 14;
 
 export default Component(function ComponentBuildingInfo(this: World, container, {
-  origin, player, data,
+  origin, player, data, mode = 'building',
 }: Props) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, 0, INTERFACE_BOX_COLOR_PURPLE, 0.9);
-  body.setOrigin(0, 0);
+  body.setOrigin(0.0, 0.0);
 
   let position = { x: container.x, y: container.y };
   const shift = { x: CONTAINER_PADDING, y: CONTAINER_PADDING };
@@ -63,7 +64,7 @@ export default Component(function ComponentBuildingInfo(this: World, container, 
     x: shift.x,
     y: 0,
   }, {
-    label: 'UPGRADE',
+    label: (mode === 'building') ? 'UPGRADE' : 'BUILD',
     size: [60, shift.y],
     need: () => data()?.Cost,
     have: () => player.resources,

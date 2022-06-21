@@ -22,7 +22,7 @@ export default Component(function ComponentCost(container, {
   let offset = 10;
 
   const body = this.add.rectangle(0, 0, size[0], size[1], 0x000000, 0.9);
-  body.setOrigin(0, 0);
+  body.setOrigin(0.0, 0.0);
 
   const title = this.add.text(10, offset, label, {
     fontSize: '9px',

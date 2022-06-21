@@ -21,7 +21,7 @@ export default Component(function ComponentControls(container) {
     });
 
     const body = this.add.rectangle(0, 0, textName.width + 10, textName.height + 10, INTERFACE_BOX_COLOR_PURPLE);
-    body.setOrigin(0, 0);
+    body.setOrigin(0.0, 0.0);
 
     const description = this.add.text(body.width + 10, 7, `-  ${item.description}`, {
       fontSize: '14px',

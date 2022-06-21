@@ -28,6 +28,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
 
   const info = ComponentBuildingInfo.call(this, { x: 0, y: 0 }, {
+    mode: 'builder',
     origin: [1.0, 0.0],
     player,
     data: (): BuildingInstance => (

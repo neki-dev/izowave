@@ -31,6 +31,7 @@ export default Component(function ComponentNotices(container) {
         right: 10,
       },
     });
+    text.setName('Message');
     text.setOrigin(0.5, 0.0);
 
     const background = (() => {
@@ -52,7 +53,7 @@ export default Component(function ComponentNotices(container) {
 
   this.events.on('notice', (data: Notice) => {
     const existNotice = container.getAll().find((notice: Phaser.GameObjects.Container) => (
-      (<Phaser.GameObjects.Text> notice.getAt(1)).text === data.message
+      (<Phaser.GameObjects.Text> notice.getByName('Message')).text === data.message
     ));
     if (existNotice) {
       existNotice.destroy();

@@ -462,15 +462,17 @@ export default class World extends Phaser.Scene {
    * Create level and configure camera.
    */
   private makeLevel() {
+    const { canvas } = this.sys;
+
     this.level = new Level(this);
 
     const from = Level.ToWorldPosition({ x: 0, y: this.level.size - 1, z: 0 });
     const to = Level.ToWorldPosition({ x: this.level.size - 1, y: 0, z: 0 });
     const camera = this.cameras.main;
     camera.setZoom(1.8);
-    camera.pan(from.x + (this.sys.canvas.width / 2), from.y, 0);
+    camera.pan(from.x + (canvas.width / 2), from.y, 0);
     setTimeout(() => {
-      camera.pan(to.x - (this.sys.canvas.width / 2), to.y, 2 * 60 * 1000);
+      camera.pan(to.x - (canvas.width / 2), to.y, 2 * 60 * 1000);
     }, 0);
   }
 
