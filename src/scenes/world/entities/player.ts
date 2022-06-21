@@ -465,8 +465,9 @@ export default class Player extends Sprite {
    * Get current game stat.
    */
   private getStat(): PlayerStat {
+    const { wave } = this.scene;
     return {
-      waves: this.scene.wave.number,
+      waves: wave.isGoing ? wave.number - 1 : wave.number,
       kills: this.kills,
       level: this.level,
       lived: this.scene.getTimerNow() / 1000 / 60,
