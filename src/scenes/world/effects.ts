@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-import { WORLD_EFFECTS_MIN_FPS } from '~const/world';
 import World from '~scene/world';
 
 import { WorldEffect, WorldTexture } from '~type/world';
@@ -45,10 +44,6 @@ export default class Effects {
     params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig,
     duration?: number,
   ): Phaser.GameObjects.Particles.ParticleEmitter {
-    if (this.scene.sys.game.loop.actualFps < WORLD_EFFECTS_MIN_FPS) {
-      return null;
-    }
-
     if (!parent.effects) {
       parent.effects = {};
       parent.on(Phaser.GameObjects.Events.DESTROY, () => {
