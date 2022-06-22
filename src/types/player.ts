@@ -1,5 +1,4 @@
 export enum PlayerEvents {
-  LEVEL_UP = 'levelup',
   EXPERIENCE = 'experience',
   RESOURCE = 'resource',
 }

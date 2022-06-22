@@ -268,8 +268,6 @@ export default class Player extends Sprite {
   private nextLevel(count: number) {
     this.level += count;
 
-    this.emit(PlayerEvents.LEVEL_UP, this.level);
-
     // Update maximum player health by level
     const maxHealth = calcGrowth(PLAYER_HEALTH, PLAYER_HEALTH_GROWTH, this.level);
     this.live.setMaxHealth(maxHealth);
