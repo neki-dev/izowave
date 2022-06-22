@@ -73,7 +73,7 @@ export default class Wave extends EventEmitter {
 
     this.runTimeleft();
 
-    scene.input.keyboard.once('keyup-N', this.skipTimeleft, this);
+    scene.input.keyboard.on('keyup-N', this.skipTimeleft, this);
   }
 
   /**
