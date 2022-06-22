@@ -1,17 +1,17 @@
 export enum WorldEffect {
   BLOOD = 'BLOOD',
-  FROZE = 'FROZE',
   LAZER = 'LAZER',
-  FLARE = 'FLARE',
+  FIRE = 'FIRE',
   GLOW = 'GLOW',
+  SPAWN = 'SPAWN',
 }
 
 export enum WorldTexture {
-  BLOOD = 'effect/blood',
-  FROZE = 'effect/splash',
-  LAZER = 'effect/energy',
-  GLOW = 'effect/glow',
-  FLARE = 'effect/flare',
+  SPAWN = 'effect/red',
+  BLOOD = 'effect/red-px',
+  LAZER = 'effect/purple',
+  GLOW = 'effect/blue',
+  FIRE = 'effect/orange',
 }
 
 export enum WorldEvents {

@@ -16,8 +16,7 @@ export default Component(function ComponentAdditions(container, {
   const update = () => {
     let offset = 0;
     container.iterate((add: Phaser.GameObjects.Container) => {
-      // eslint-disable-next-line no-param-reassign
-      add.x = offset;
+      add.setX(offset);
       offset += toEven(add.width + 5);
     });
   };

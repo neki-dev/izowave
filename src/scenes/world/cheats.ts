@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    cheat: (code: string) => void;
+  }
+}
+
 const scheme = {
   _current: {},
 };
@@ -8,7 +14,6 @@ function setCheatsScheme(data: {
   scheme._current = data;
 }
 
-// @ts-ignore
 window.cheat = (code: string) => {
   scheme._current[code]?.();
 };

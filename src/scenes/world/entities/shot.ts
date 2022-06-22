@@ -74,7 +74,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
     this.damage = damage;
     this.freeze = freeze;
 
-    const effect = (this.tower.shotType === ShotType.FIRE) ? WorldEffect.FLARE : WorldEffect.GLOW;
+    const effect = (this.tower.shotType === ShotType.FIRE) ? WorldEffect.FIRE : WorldEffect.GLOW;
     this.effect = this.tower.scene.effects.emit(effect, this.tower, {
       follow: this,
       lifespan: { min: 100, max: 150 },

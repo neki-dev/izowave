@@ -83,9 +83,7 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
       const { x, y } = this.getTopCenter();
       this.container.setPosition(x, y);
       this.updateHealthIndicator();
-    }
 
-    if (this.visible) {
       const depth = Level.GetDepth(this.y, 1, this.displayHeight);
       this.setDepth(depth);
     }
