@@ -19,7 +19,7 @@ export function getAssetsPack() {
 }
 
 export async function loadFontFace(name: string, file?: string): Promise<void> {
-  const font = new FontFace(name, `url(assets/interface/fonts/${file || name}.ttf)`);
+  const font = new FontFace(name, `url(assets/fonts/${file || name}.ttf)`);
   const e = await font.load();
   document.fonts.add(e);
 }

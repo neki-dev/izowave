@@ -45,7 +45,7 @@ export default class Menu extends Phaser.Scene {
     loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
       const shift = { x: 0, y: 0 };
       const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
-        color: '#a66cc0',
+        color: '#8a53d4',
         fontSize: '50px',
         fontFamily: INTERFACE_FONT_PIXEL,
         padding: { bottom: 6 },
