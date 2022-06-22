@@ -306,8 +306,8 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(true);
 
-    const isCanUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing);
-    if (isCanUpgrade) {
+    const isCanUpgrade = () => (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing);
+    if (isCanUpgrade()) {
       input.setDefaultCursor('pointer');
     }
 
@@ -321,7 +321,7 @@ export default class Building extends Phaser.GameObjects.Image {
         Name: this.getName(),
         Label: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
         Description: this.getInfo(),
-        Cost: isCanUpgrade ? this.getUpgradeLevelCost() : undefined,
+        Cost: isCanUpgrade() ? this.getUpgradeLevelCost() : undefined,
       }),
     });
 
