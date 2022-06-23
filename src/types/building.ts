@@ -12,6 +12,7 @@ export enum BuildingVariant {
   MINE_BRONZE = 'MINE_BRONZE',
   MINE_SILVER = 'MINE_SILVER',
   MINE_GOLD = 'MINE_GOLD',
+  AMMUNITION = 'AMMUNITION',
   MEDIC = 'MEDIC',
 }
 
@@ -23,6 +24,7 @@ export enum BuildingTexture {
   MINE_BRONZE = 'build/mine_bronze',
   MINE_SILVER = 'build/mine_silver',
   MINE_GOLD = 'build/mine_gold',
+  AMMUNITION = 'build/ammunition',
   MEDIC = 'build/medic',
 }
 

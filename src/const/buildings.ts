@@ -6,6 +6,7 @@ import BuildingMineSilver from '~scene/world/entities/buildings/mines/silver';
 import BuildingMineGold from '~scene/world/entities/buildings/mines/gold';
 import BuildingMineBronze from '~scene/world/entities/buildings/mines/bronze';
 import BuildingWall from '~scene/world/entities/buildings/wall';
+import BuildingAmmunition from '~scene/world/entities/buildings/ammunition';
 
 import { BuildingVariant } from '~type/building';
 
@@ -19,6 +20,7 @@ const BUILDINGS: {
   [BuildingVariant.MINE_BRONZE]: BuildingMineBronze,
   [BuildingVariant.MINE_SILVER]: BuildingMineSilver,
   [BuildingVariant.MINE_GOLD]: BuildingMineGold,
+  [BuildingVariant.AMMUNITION]: BuildingAmmunition,
   [BuildingVariant.MEDIC]: BuildingMedic,
 };
 

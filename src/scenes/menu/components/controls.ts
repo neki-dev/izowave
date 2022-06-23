@@ -10,6 +10,7 @@ export default Component(function ComponentControls(container) {
     {},
     { name: 'CLICK', description: 'New build' },
     { name: 'U', description: 'Upgrade building' },
+    { name: 'R', description: 'Reload tower ammo' },
     { name: 'BACKSPACE', description: 'Destroy building' },
     {},
     { name: 'N', description: 'Skip wave timeleft' },
