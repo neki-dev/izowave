@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { getAssetsPack, registerAssets } from '~lib/assets';
+import { selectClosest } from '~lib/utils';
 import Effects from '~scene/world/effects';
 import Level from '~scene/world/level';
 import Builder from '~scene/world/builder';
@@ -26,7 +27,10 @@ import {
   WORLD_DIFFICULTY_KEY,
   WORLD_DIFFICULTY_POWERS,
 } from '~const/world';
-import { ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
+import {
+  ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING,
+  ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
+} from '~const/enemy';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 
 export default class World extends Phaser.Scene {
@@ -244,25 +248,18 @@ export default class World extends Phaser.Scene {
    */
   public spawnEnemy(variant: EnemyVariant): Enemy {
     const buildings = this.getBuildings().getChildren();
-    const positions = this.enemySpawnPositions
-      .filter((position) => (
-        !this.level.getTile({ ...position, z: 0 }).visible
-        && !buildings.some((building: Building) => (
-          Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) <= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
-        ))
+    const allowedPositions = this.enemySpawnPositions.filter((position) => (
+      Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
+      && buildings.every((building: Building) => (
+        Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
       ))
-      .map((position: Phaser.Types.Math.Vector2Like) => ({
-        position,
-        distance: Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix),
-      }))
-      .sort((a, b) => (a.distance - b.distance))
-      .slice(0, ENEMY_SPAWN_POSITIONS)
-      .map(({ position }) => position);
-
-    if (positions.length === 0) {
+    ));
+    if (allowedPositions.length === 0) {
       console.warn('Invalid enemy spawn positions');
       return null;
     }
+
+    const positions = selectClosest(allowedPositions, this.player.positionAtMatrix, ENEMY_SPAWN_POSITIONS);
 
     const EnemyInstance = ENEMIES[variant];
     return new EnemyInstance(this, {

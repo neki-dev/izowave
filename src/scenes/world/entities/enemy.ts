@@ -86,6 +86,21 @@ export default class Enemy extends Sprite {
     this.setPushable(false);
 
     this.setVisible(this.atVisibleTile());
+    this.calm(1000);
+
+    // Add spawn effect
+    if (this.visible) {
+      this.scene.effects.emit(WorldEffect.SPAWN, this, {
+        x: this.x,
+        y: this.y,
+        lifespan: { min: 100, max: 250 },
+        scale: { start: 0.5, end: 0.0 },
+        frequency: 2,
+        speed: 120,
+        quantity: 2,
+        blendMode: 'ADD',
+      }, 500);
+    }
 
     // Add animations
     this.anims.create({
@@ -146,13 +161,12 @@ export default class Enemy extends Sprite {
       return;
     }
 
-    this.scene.effects.emit(WorldEffect.FROZE, this, {
+    this.scene.effects.emit(WorldEffect.GLOW, this, {
       follow: this,
-      lifespan: { min: 100, max: 250 },
-      scale: { start: 1.0, end: 0.5 },
+      lifespan: { min: 100, max: 150 },
+      scale: { start: 0.2, end: 0.1 },
       frequency: 2,
-      speed: 100,
-      maxParticles: 6,
+      speed: 80,
     }, 250);
 
     if (this.timerTint) {
