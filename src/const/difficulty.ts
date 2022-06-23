@@ -6,7 +6,7 @@ export const PLAYER_DAMAGE_GROWTH = 0.25; // Player damage growth by level
 export const PLAYER_ATTACK_DISTANCE = 30; // Player maximum attack distance
 export const PLAYER_ATTACK_DISTANCE_GROWTH = 0.03; // Attack distance growth
 export const PLAYER_ATTACK_PAUSE = 700; // Player attack pause
-export const PLAYER_START_RESOURCES = { bronze: 90, silver: 90, gold: 0 }; // Player start resources
+export const PLAYER_START_RESOURCES = { bronze: 100, silver: 100, gold: 0 }; // Player start resources
 
 export const WAVE_PAUSE = 30000; // Pause in milliseconds between waves
 export const WAVE_ENEMIES_COUNT = 8; // Enemies count on first wave

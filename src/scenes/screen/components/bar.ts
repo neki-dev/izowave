@@ -12,7 +12,7 @@ type Props = {
 };
 
 const CONTAINER_WIDTH = 100;
-const CONTAINER_HEIGHT = 30;
+const CONTAINER_HEIGHT = 28;
 
 export default Component(function ComponentBar(container, {
   display, value, maxValue, event, color,
@@ -26,6 +26,7 @@ export default Component(function ComponentBar(container, {
   const label = this.add.text(CONTAINER_WIDTH / 2, CONTAINER_HEIGHT / 2, display(), {
     fontSize: '11px',
     fontFamily: INTERFACE_FONT_PIXEL,
+    padding: { bottom: 1 },
   });
   label.setOrigin(0.5, 0.5);
 

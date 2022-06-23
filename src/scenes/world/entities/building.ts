@@ -112,6 +112,7 @@ export default class Building extends Phaser.GameObjects.Image {
     this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     scene.input.keyboard.on('keyup-BACKSPACE', this.break, this);
+    scene.input.keyboard.on('keyup-U', this.nextUpgrade, this);
   }
 
   /**
@@ -227,27 +228,6 @@ export default class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Upgrade building to next level.
-   */
-  private nextUpgrade() {
-    if (this.upgradeLevel === BUILDING_MAX_UPGRADE_LEVEL) {
-      return;
-    }
-
-    this.upgradeLevel++;
-
-    this.emit(BuildingEvents.UPGRADE, this.upgradeLevel);
-
-    this.updateActionArea();
-    this.setFrame(this.upgradeLevel - 1);
-    this.live.heal();
-
-    this.scene.player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
-
-    this.scene.screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
-  }
-
-  /**
    * Create action area.
    */
   private makeActionArea() {
@@ -319,7 +299,6 @@ export default class Building extends Phaser.GameObjects.Image {
 
     input.setDefaultCursor('pointer');
 
-    this.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
     this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
     this.on(Phaser.GameObjects.Events.DESTROY, this.onUnfocus, this);
   }
@@ -339,31 +318,41 @@ export default class Building extends Phaser.GameObjects.Image {
 
     input.setDefaultCursor('default');
 
-    this.off(Phaser.Input.Events.POINTER_DOWN, this.onClick);
     this.off(Phaser.Input.Events.POINTER_OUT, this.onUnfocus);
     this.off(Phaser.GameObjects.Events.DESTROY, this.onUnfocus);
   }
 
   /**
-   * Click event.
+   * Upgrade building to next level.
    */
-  private onClick() {
+  private nextUpgrade() {
     if (
-      this.upgradeLevel === BUILDING_MAX_UPGRADE_LEVEL
+      !this.isSelected()
+      || this.upgradeLevel === BUILDING_MAX_UPGRADE_LEVEL
       || this.scene.wave.isGoing
     ) {
       return;
     }
 
     const cost = this.getUpgradeLevelCost();
-    const { player } = this.scene;
+    const { player, screen } = this.scene;
     if (!player.haveResources(cost)) {
-      this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
       return;
     }
 
+    this.upgradeLevel++;
+
+    this.emit(BuildingEvents.UPGRADE, this.upgradeLevel);
+
+    this.updateActionArea();
+    this.setFrame(this.upgradeLevel - 1);
+    this.live.heal();
+
     player.takeResources(cost);
-    this.nextUpgrade();
+    player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
+
+    screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
   }
 
   /**
