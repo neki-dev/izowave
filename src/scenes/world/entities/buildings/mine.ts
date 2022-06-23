@@ -4,7 +4,7 @@ import World from '~scene/world';
 import { BuildingData, BuildingEvents, ResourceType } from '~type/building';
 import { NoticeType } from '~type/notice';
 
-import { MINE_RESOURCES_LIMIT } from '~const/difficulty';
+import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty';
 
 type BuildingMineData = BuildingData & {
   resourceType: ResourceType
@@ -76,6 +76,6 @@ export default class BuildingMine extends Building {
    * Update amount left.
    */
   private upgradeAmount() {
-    this.amountLeft += Math.round(MINE_RESOURCES_LIMIT / 2);
+    this.amountLeft += MINE_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
   }
 }

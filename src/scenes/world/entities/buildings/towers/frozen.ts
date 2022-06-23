@@ -7,7 +7,7 @@ import { ShotType } from '~type/shot';
 export default class BuildingTowerFrozen extends BuildingTower {
   static Name = 'Frozen tower';
 
-  static Description = 'Stop enemies\nFreeze: 1.4 s';
+  static Description = 'Stop enemies\nFreeze: 1.0 s';
 
   static Texture = BuildingTexture.TOWER_FROZEN;
 
@@ -33,7 +33,7 @@ export default class BuildingTowerFrozen extends BuildingTower {
       },
       shotType: ShotType.FROZEN,
       shotData: {
-        freeze: 1400,
+        freeze: 1000,
         speed: 550,
       },
     });

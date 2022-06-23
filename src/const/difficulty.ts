@@ -38,9 +38,10 @@ export const BUILDING_BUILD_AREA = 180; // Default radius of build area
 export const BUILDING_BUILD_AREA_GROWTH = 0.05; // Radius growth by level
 
 export const MINE_RESOURCES_LIMIT = 150; // Maximum amount of resources that mine can
+export const MINE_RESOURCES_UPGRADE = 20; // Amount of resources added per upgrade
 
 export const TOWER_SHOT_DAMAGE_GROWTH = 0.6; // Shot damage growth by upgrade
 export const TOWER_SHOT_FREEZE_GROWTH = 0.6; // Frozen duration growth by upgrade
 export const TOWER_SHOT_SPEED_GROWTH = 0.3; // Shot speed growth by upgrade
 
-export const MEDIC_HEAL_AMOUNT = 10; // Default meedic heal
+export const MEDIC_HEAL_AMOUNT = 10; // Default medic heal

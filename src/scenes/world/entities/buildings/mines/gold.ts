@@ -12,7 +12,7 @@ export default class BuildingMineGold extends BuildingMine {
 
   static Cost = { bronze: 30, silver: 35 };
 
-  static UpgradeCost = { bronze: 15, silver: 15, gold: 30 };
+  static UpgradeCost = { bronze: 10, silver: 10, gold: 20 };
 
   static Health = 500;
 
