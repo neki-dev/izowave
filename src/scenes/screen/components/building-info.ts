@@ -1,7 +1,6 @@
 import Component from '~lib/ui';
 import { toEven } from '~lib/utils';
 import Player from '~scene/world/entities/player';
-import World from '~scene/world';
 import ComponentCost from '~scene/screen/components/cost';
 
 import { BuildingInstance } from '~type/building';
@@ -23,7 +22,7 @@ type Props = {
 const CONTAINER_WIDTH = 220;
 const CONTAINER_PADDING = 14;
 
-export default Component(function ComponentBuildingInfo(this: World, container, {
+export default Component(function ComponentBuildingInfo(container, {
   origin, player, data, mode = 'building',
 }: Props) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, 0, INTERFACE_BOX_COLOR_PURPLE, 0.9);

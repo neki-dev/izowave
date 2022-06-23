@@ -85,9 +85,7 @@ export default class Enemy extends Sprite {
     this.setScale(scale);
     this.setPushable(false);
 
-    // Hide, since initially enemy
-    // spawn in an invisible place
-    this.setVisible(false);
+    this.setVisible(this.atVisibleTile());
 
     // Add animations
     this.anims.create({
@@ -115,9 +113,7 @@ export default class Enemy extends Sprite {
   public update() {
     super.update();
 
-    // Update visible state
-    const tile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
-    this.setVisible(tile ? tile.visible : false);
+    this.setVisible(this.atVisibleTile());
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
@@ -315,6 +311,13 @@ export default class Enemy extends Sprite {
    */
   private isCalm() {
     return (this.calmPause > this.scene.getTimerNow());
+  }
+
+  /**
+   * Check if current ground tile is visible.
+   */
+  private atVisibleTile(): boolean {
+    return this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 })?.visible || false;
   }
 
   /**

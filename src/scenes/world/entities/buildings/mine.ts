@@ -56,10 +56,7 @@ export default class BuildingMine extends Building {
 
     this.generateResource();
     if (this.amountLeft <= 0) {
-      this.scene.screen.events.emit('notice', {
-        message: `${this.getName()} RESOURCES ARE OVER`,
-        type: NoticeType.WARN,
-      });
+      this.scene.screen.message(NoticeType.WARN, `${this.getName()} RESOURCES ARE OVER`);
       this.destroy();
     } else {
       this.pauseActions();
