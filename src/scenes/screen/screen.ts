@@ -13,7 +13,7 @@ import { WorldEvents } from '~type/world';
 import { SceneKey } from '~type/scene';
 import { PlayerEvents, PlayerStat } from '~type/player';
 import { LiveEvents } from '~type/live';
-import { Notice } from '~type/notice';
+import { Notice, NoticeType } from '~type/notice';
 
 import { INTERFACE_PADDING } from '~const/interface';
 import { EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH } from '~const/difficulty';
@@ -88,5 +88,9 @@ export default class Screen extends Phaser.Scene {
 
       ComponentGameOver.call(this, { x: 0, y: 0 }, { stat, record });
     });
+  }
+
+  public message(type: NoticeType, message: string) {
+    this.events.emit('notice', { type, message });
   }
 }

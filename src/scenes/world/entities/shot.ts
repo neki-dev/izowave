@@ -3,11 +3,15 @@ import { registerAssets } from '~lib/assets';
 import Level from '~scene/world/level';
 import Enemy from '~scene/world/entities/enemy';
 import BuildingTower from '~scene/world/entities/buildings/tower';
+import World from '~scene/world';
 
 import { ShotParams, ShotType, ShotTexture } from '~type/shot';
 import { WorldEffect } from '~type/world';
 
 export default class Shot extends Phaser.Physics.Arcade.Image {
+  // @ts-ignore
+  readonly scene: World;
+
   // @ts-ignore
   readonly body: Phaser.Physics.Arcade.Body;
 
@@ -46,7 +50,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
   }
 
   /**
-   * Update depth and check shot fly distance.
+   * Check shoot area and update visible state and depth.
    */
   public update() {
     if (!this.tower.actionsAreaContains(this)) {
@@ -56,8 +60,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
 
     this.setDepth(Level.GetDepth(this.y, 1, this.displayHeight));
 
-    const tilePosition = { ...Level.ToMatrixPosition(this), z: 0 };
-    const tileGround = this.tower.scene.level.getTile(tilePosition);
+    const tileGround = this.scene.level.getTile({ ...Level.ToMatrixPosition(this), z: 0 });
     this.setVisible(tileGround?.visible || false);
     this.effect.setVisible(this.visible);
   }
@@ -75,7 +78,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
     this.freeze = freeze;
 
     const effect = (this.tower.shotType === ShotType.FIRE) ? WorldEffect.FIRE : WorldEffect.GLOW;
-    this.effect = this.tower.scene.effects.emit(effect, this.tower, {
+    this.effect = this.scene.effects.emit(effect, this.tower, {
       follow: this,
       lifespan: { min: 100, max: 150 },
       frequency: 2,

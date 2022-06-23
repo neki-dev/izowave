@@ -9,6 +9,7 @@ import { BuildingInstance } from '~type/building';
 import {
   INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL,
 } from '~const/interface';
+import { WORLD_DEPTH_UI } from '~const/world';
 
 type Props = {
   mode?: 'building' | 'builder'
@@ -45,10 +46,11 @@ export default Component(function ComponentBuildingInfo(this: World, container, 
       fontFamily: INTERFACE_FONT_PIXEL,
       padding: { bottom: 1 },
     });
+    label.setAlpha(0.75);
     shift.y += toEven(label.height + CONTAINER_PADDING * 0.6);
   }
 
-  const description = this.add.text(shift.x, shift.y, '\n', {
+  const description = this.add.text(shift.x, shift.y, '', {
     fontSize: '10px',
     fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 1 },
@@ -58,28 +60,32 @@ export default Component(function ComponentBuildingInfo(this: World, container, 
   shift.y += description.height + CONTAINER_PADDING;
 
   body.height = shift.y;
-  shift.x += body.width - CONTAINER_PADDING;
 
   const cost = ComponentCost.call(this, {
-    x: shift.x,
+    x: body.width,
     y: 0,
   }, {
     label: (mode === 'building') ? 'UPGRADE' : 'BUILD',
-    size: [60, shift.y],
+    size: [60, body.height],
     need: () => data()?.Cost,
     have: () => player.resources,
   });
   cost.setVisible(false);
 
   container.add([body, name, description, cost]);
-  container.setDepth(9999);
+  container.setDepth(WORLD_DEPTH_UI);
 
   if (label) {
     container.add(label);
   }
 
   const refresh = () => {
-    container.setSize(shift.x, shift.y);
+    const width = body.width + (cost.visible ? cost.width : 0);
+    const height = Math.max(description.y + description.height + CONTAINER_PADDING, 77);
+    body.height = height;
+    cost.height = height;
+
+    container.setSize(width, height);
     container.setPosition(
       toEven(position.x - (container.width * origin[0])),
       toEven(position.y - (container.height * origin[1])),
@@ -100,21 +106,23 @@ export default Component(function ComponentBuildingInfo(this: World, container, 
       const values = data();
       if (values) {
         name.setText(values.Name);
-        description.setText(values.Description);
         if (label) {
           label.setText(values.Label);
+        }
+        const newDescription = Array.isArray(values.Description) ? values.Description.join('\n') : values.Description;
+        if (description.text !== newDescription) {
+          description.setText(newDescription);
+          refresh();
         }
       }
 
       if (values?.Cost) {
         if (!cost.visible) {
           cost.setVisible(true);
-          shift.x += cost.width;
           refresh();
         }
       } else if (cost.visible) {
         cost.setVisible(false);
-        shift.x -= cost.width;
         refresh();
       }
     },

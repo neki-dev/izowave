@@ -21,7 +21,9 @@ export default Component(function ComponentCost(container, {
   const items = [];
   let offset = 10;
 
-  const body = this.add.rectangle(0, 0, size[0], size[1], 0x000000, 0.9);
+  container.setSize(size[0], size[1]);
+
+  const body = this.add.rectangle(0, 0, container.width, container.height, 0x000000, 0.9);
   body.setOrigin(0.0, 0.0);
 
   const title = this.add.text(10, offset, label, {
@@ -46,13 +48,13 @@ export default Component(function ComponentCost(container, {
     items.push({ type, text });
   }
 
-  container.setSize(size[0], size[1]);
-
   return {
     update: () => {
       if (!container.visible) {
         return;
       }
+
+      body.setSize(container.width, container.height);
 
       const needAmounts = need();
       if (!needAmounts) {

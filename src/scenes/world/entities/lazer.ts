@@ -1,11 +1,17 @@
 import Phaser from 'phaser';
 import BuildingTower from '~scene/world/entities/buildings/tower';
 import Enemy from '~scene/world/entities/enemy';
+import World from '~scene/world';
 
 import { ShotParams } from '~type/shot';
 import { WorldEffect } from '~type/world';
 
+import { WORLD_DEPTH_EFFECT } from '~const/world';
+
 export default class Lazer extends Phaser.GameObjects.Line {
+  // @ts-ignore
+  readonly scene: World;
+
   /**
    * Parent tower.
    */
@@ -38,7 +44,7 @@ export default class Lazer extends Phaser.GameObjects.Line {
 
     this.setVisible(false);
     this.setStrokeStyle(2, 0xb136ff, 0.5);
-    this.setDepth(9998);
+    this.setDepth(WORLD_DEPTH_EFFECT);
     this.setOrigin(0.0, 0.0);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
@@ -71,7 +77,7 @@ export default class Lazer extends Phaser.GameObjects.Line {
     this.target = target;
     this.damage = damage;
 
-    this.timer = this.tower.scene.time.addEvent({
+    this.timer = this.scene.time.addEvent({
       delay: 80,
       repeat: 5,
       callback: () => this.processing(),
@@ -96,7 +102,7 @@ export default class Lazer extends Phaser.GameObjects.Line {
    */
   private hit() {
     this.target.live.damage(this.damage);
-    this.tower.scene.effects.emit(WorldEffect.LAZER, this.target, {
+    this.scene.effects.emit(WorldEffect.LAZER, this.target, {
       follow: this.target,
       lifespan: { min: 100, max: 150 },
       scale: { start: 0.2, end: 0.1 },

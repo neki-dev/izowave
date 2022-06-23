@@ -224,10 +224,7 @@ export default class Builder {
 
     const { player } = this.scene;
     if (!player.haveResources(BuildingInstance.Cost)) {
-      this.scene.screen.events.emit('notice', {
-        message: 'NOT ENOUGH RESOURCES',
-        type: NoticeType.ERROR,
-      });
+      this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
       return;
     }
 

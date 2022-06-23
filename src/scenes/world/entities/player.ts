@@ -273,10 +273,7 @@ export default class Player extends Sprite {
     this.live.setMaxHealth(maxHealth);
     this.live.heal();
 
-    this.scene.screen.events.emit('notice', {
-      message: 'LEVEL UP',
-      type: NoticeType.INFO,
-    });
+    this.scene.screen.message(NoticeType.INFO, 'LEVEL UP');
   }
 
   /**

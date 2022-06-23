@@ -4,6 +4,8 @@ import World from '~scene/world';
 
 import { WorldEffect, WorldTexture } from '~type/world';
 
+import { WORLD_DEPTH_EFFECT } from '~const/world';
+
 export default class Effects {
   /**
    * Parent scene.
@@ -25,7 +27,7 @@ export default class Effects {
 
     for (const effect of Object.values(WorldEffect)) {
       const particle = scene.add.particles(WorldTexture[effect]);
-      particle.setDepth(9998);
+      particle.setDepth(WORLD_DEPTH_EFFECT);
       this.particles[effect] = particle;
     }
   }

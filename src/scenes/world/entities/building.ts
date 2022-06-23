@@ -77,11 +77,6 @@ export default class Building extends Phaser.GameObjects.Image {
   private info: Phaser.GameObjects.Container;
 
   /**
-   * Pause for detect double click.
-   */
-  private doubleClickPause: number = 0;
-
-  /**
    * Building constructor.
    */
   constructor(scene: World, {
@@ -116,6 +111,7 @@ export default class Building extends Phaser.GameObjects.Image {
     // Add events callbacks
     this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
     this.live.on(LiveEvents.DEAD, () => this.onDead());
+    scene.input.keyboard.on('keyup-BACKSPACE', this.break, this);
   }
 
   /**
@@ -183,6 +179,13 @@ export default class Building extends Phaser.GameObjects.Image {
   }
 
   /**
+   * Check is cursor on building.
+   */
+  public isSelected(): boolean {
+    return this.actionsArea.visible;
+  }
+
+  /**
    * Get next upgrade cost.
    */
   public getUpgradeLevelCost(): Resources {
@@ -241,10 +244,7 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.scene.player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
-    this.scene.screen.events.emit('notice', {
-      message: 'BUILDING UPGRADED',
-      type: NoticeType.INFO,
-    });
+    this.scene.screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
   }
 
   /**
@@ -284,10 +284,7 @@ export default class Building extends Phaser.GameObjects.Image {
    * Dead event.
    */
   private onDead() {
-    this.scene.screen.events.emit('notice', {
-      message: `${this.getName()} HAS BEEN DESTROYED`,
-      type: NoticeType.WARN,
-    });
+    this.scene.screen.message(NoticeType.WARN, `${this.getName()} HAS BEEN DESTROYED`);
 
     this.destroy();
   }
@@ -306,11 +303,6 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(true);
 
-    const isCanUpgrade = () => (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing);
-    if (isCanUpgrade()) {
-      input.setDefaultCursor('pointer');
-    }
-
     this.info = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
       x: this.x,
       y: this.y - TILE_META.halfHeight,
@@ -321,11 +313,11 @@ export default class Building extends Phaser.GameObjects.Image {
         Name: this.getName(),
         Label: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
         Description: this.getInfo(),
-        Cost: isCanUpgrade() ? this.getUpgradeLevelCost() : undefined,
+        Cost: (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing) ? this.getUpgradeLevelCost() : undefined,
       }),
     });
 
-    input.keyboard.on('keyup-BACKSPACE', this.break, this);
+    input.setDefaultCursor('pointer');
 
     this.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
     this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
@@ -346,18 +338,10 @@ export default class Building extends Phaser.GameObjects.Image {
     this.actionsArea.setVisible(false);
 
     input.setDefaultCursor('default');
-    input.keyboard.off('keyup-BACKSPACE', this.break);
 
     this.off(Phaser.Input.Events.POINTER_DOWN, this.onClick);
     this.off(Phaser.Input.Events.POINTER_OUT, this.onUnfocus);
     this.off(Phaser.GameObjects.Events.DESTROY, this.onUnfocus);
-  }
-
-  /**
-   * Destroy building by keyboard.
-   */
-  private break() {
-    this.destroy();
   }
 
   /**
@@ -371,24 +355,26 @@ export default class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    const now = this.scene.getTimerNow();
-    if (this.doubleClickPause <= now) {
-      this.doubleClickPause = now + 300;
-      return;
-    }
-
     const cost = this.getUpgradeLevelCost();
     const { player } = this.scene;
     if (!player.haveResources(cost)) {
-      this.scene.screen.events.emit('notice', {
-        message: 'NOT ENOUGH RESOURCES',
-        type: NoticeType.ERROR,
-      });
+      this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
       return;
     }
 
     player.takeResources(cost);
     this.nextUpgrade();
+  }
+
+  /**
+   * Break building.
+   */
+  private break() {
+    if (!this.isSelected()) {
+      return;
+    }
+
+    this.destroy();
   }
 }
 

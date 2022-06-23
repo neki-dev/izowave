@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
+import Screen from '~scene/screen';
 
 type ComponentInstance = (
-  this: Phaser.Scene,
+  this: Screen,
   container: Phaser.GameObjects.Container,
   props?: any
 ) => ({
@@ -11,7 +12,7 @@ type ComponentInstance = (
 
 export default function Component(component: ComponentInstance) {
   return function create(
-    this: Phaser.Scene,
+    this: Screen,
     position: Phaser.Types.Math.Vector2Like,
     props?: any,
   ): Phaser.GameObjects.Container {

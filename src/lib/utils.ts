@@ -32,7 +32,7 @@ export function equalPositions(
 /**
  * Format timestamp to string time.
  *
- * @param value - Timestamp
+ * @param value - Timestamp in seconds
  */
 export function formatTime(value: number): string {
   const h = Math.floor(value / 60);
@@ -51,4 +51,34 @@ export function toEven(value: number, shift: (-1 | 1) = 1): number {
     return value;
   }
   return value + shift;
+}
+
+/**
+ * Select closest positions to target.
+ *
+ * @param positions - Positions list
+ * @param target - Target position
+ * @param count - Count return positions
+ */
+export function selectClosest<T = Phaser.Types.Math.Vector2Like>(
+  positions: T[],
+  target: Phaser.Types.Math.Vector2Like,
+  count: number = 1,
+): T[] {
+  let meta = positions.map((position: T) => {
+    // @ts-ignore
+    const dx = position.x - target.x;
+    // @ts-ignore
+    const dy = position.y - target.y;
+    return {
+      position,
+      distance: Math.sqrt(dx * dx + dy * dy),
+    };
+  });
+
+  // Sort by distance to target
+  meta = meta.sort((a, b) => (a.distance - b.distance))
+    .slice(0, count);
+
+  return meta.map(({ position }) => position);
 }

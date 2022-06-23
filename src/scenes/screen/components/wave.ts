@@ -80,19 +80,11 @@ export default Component(function ComponentWave(container, { wave }: Props) {
   onNumberUpdate();
 
   wave.on(WaveEvents.UPDATE, onNumberUpdate);
-
   wave.on(WaveEvents.START, () => {
-    this.events.emit('notice', {
-      message: `WAVE ${wave.number} STARTED`,
-      type: NoticeType.INFO,
-    });
+    this.message(NoticeType.INFO, `WAVE ${wave.number} STARTED`);
   });
-
   wave.on(WaveEvents.FINISH, () => {
-    this.events.emit('notice', {
-      message: `WAVE ${wave.number} COMPLETED`,
-      type: NoticeType.INFO,
-    });
+    this.message(NoticeType.INFO, `WAVE ${wave.number} COMPLETED`);
   });
 
   return {

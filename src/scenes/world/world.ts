@@ -10,6 +10,7 @@ import Shot from '~scene/world/entities/shot';
 import Building from '~scene/world/entities/building';
 import Enemy from '~scene/world/entities/enemy';
 import setCheatsScheme from '~scene/world/cheats';
+import Screen from '~scene/screen';
 
 import { WaveEvents } from '~type/wave';
 import { EnemyVariant } from '~type/enemy';
@@ -58,7 +59,7 @@ export default class World extends Phaser.Scene {
   /**
    * Screen scene.
    */
-  private _screen: Phaser.Scene;
+  private _screen: Screen;
 
   public get screen() { return this._screen; }
 
@@ -162,7 +163,7 @@ export default class World extends Phaser.Scene {
    * Create world and open menu.
    */
   public create() {
-    this.screen = this.scene.get(SceneKey.SCREEN);
+    this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
 
     this.timer = this.time.addEvent({ loop: true });
 

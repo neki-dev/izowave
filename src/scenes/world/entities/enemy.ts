@@ -80,11 +80,8 @@ export default class Enemy extends Sprite {
     this.experienceMultiply = experienceMultiply;
 
     // Configure physics
-    this.body.setCircle(
-      (this.width / 2) - (2 * scale),
-      2 * scale,
-      2 * scale,
-    );
+    const offset = scale * 2;
+    this.body.setCircle((this.width / 2) - offset, offset, offset);
     this.setScale(scale);
     this.setPushable(false);
 
