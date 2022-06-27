@@ -3,7 +3,7 @@ import Component from '~lib/ui';
 import Wave from '~scene/world/wave';
 
 import { WaveEvents } from '~type/wave';
-import { NoticeType } from '~type/notice';
+import { NoticeType } from '~type/interface';
 
 import {
   INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_PIXEL,
@@ -39,7 +39,7 @@ export default Component(function ComponentWave(container, { wave }: Props) {
     shadow: {
       offsetX: 2,
       offsetY: 2,
-      color: '#000000',
+      color: '#000',
       blur: 0,
       fill: true,
     },
@@ -92,11 +92,11 @@ export default Component(function ComponentWave(container, { wave }: Props) {
       if (wave.isGoing) {
         const killedCount = wave.spawnedCount - wave.scene.getEnemies().getTotalUsed();
         counter.setText(String(wave.maxSpawnedCount - killedCount));
-        counter.setColor('#ffffff');
+        counter.setColor('#fff');
       } else {
         const timeleft = Math.ceil(wave.getTimeleft() / 1000);
         counter.setText(formatTime(timeleft));
-        if (timeleft <= 3 && counter.style.color === '#fff') {
+        if (timeleft <= 3 && counter.style.color !== INTERFACE_TEXT_COLOR_ERROR) {
           counter.setColor(INTERFACE_TEXT_COLOR_ERROR);
           this.tweens.add({
             targets: counter,

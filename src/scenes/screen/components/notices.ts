@@ -1,7 +1,7 @@
 import Component from '~lib/ui';
 import { toEven } from '~lib/utils';
 
-import { Notice, NoticeType } from '~type/notice';
+import { Notice, NoticeType } from '~type/interface';
 
 import {
   INTERFACE_BOX_COLOR_ERROR, INTERFACE_BOX_COLOR_INFO,

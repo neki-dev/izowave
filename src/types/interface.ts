@@ -9,3 +9,8 @@ export type Notice = {
   message: string
   type: NoticeType
 };
+
+export enum ScreenTexture {
+  ICON = 'icons',
+  ALERT = 'alert',
+}

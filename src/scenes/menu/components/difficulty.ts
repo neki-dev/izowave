@@ -15,7 +15,7 @@ export default Component(function ComponentDifficulty(container, { disabled }: P
   let shift = 0;
   for (const type of Object.keys(WORLD_DIFFICULTY_POWERS)) {
     const text = this.add.text(0, shift, type, {
-      color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR_ACTIVE : '#ffffff',
+      color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR_ACTIVE : '#fff',
       fontSize: '18px',
       fontFamily: INTERFACE_FONT_PIXEL,
     });
@@ -30,14 +30,14 @@ export default Component(function ComponentDifficulty(container, { disabled }: P
       text.on(Phaser.Input.Events.POINTER_OUT, () => {
         this.input.setDefaultCursor('default');
         if (difficulty.current !== type) {
-          text.setColor('#ffffff');
+          text.setColor('#fff');
         }
       });
       text.on(Phaser.Input.Events.POINTER_UP, () => {
         difficulty.current = type;
         localStorage.setItem(WORLD_DIFFICULTY_KEY, type);
         container.each((child: Phaser.GameObjects.Text) => {
-          child.setColor('#ffffff');
+          child.setColor('#fff');
         });
         text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
       });

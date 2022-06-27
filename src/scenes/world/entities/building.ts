@@ -10,7 +10,7 @@ import World from '~scene/world';
 import { BiomeType, TileType } from '~type/level';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents,
-  Resources, BuildingTexture, BuildingVariant,
+  Resources, BuildingTexture, BuildingVariant, BuildingDescriptionItem,
 } from '~type/building';
 import { LiveEvents } from '~type/live';
 
@@ -21,7 +21,8 @@ import {
   BUILDING_ACTION_RADIUS_GROWTH,
   BUILDING_UPGRADE_EXPERIENCE,
 } from '~const/difficulty';
-import { NoticeType } from '~type/notice';
+import { NoticeType } from '~type/interface';
+import { WorldEvents } from '~type/world';
 
 export default class Building extends Phaser.GameObjects.Image {
   // @ts-ignore
@@ -110,6 +111,9 @@ export default class Building extends Phaser.GameObjects.Image {
 
     // Add events callbacks
     this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
+    this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
+    this.on(Phaser.GameObjects.Events.DESTROY, this.onUnfocus, this);
+    this.scene.events.on(WorldEvents.GAMEOVER, () => this.onUnfocus());
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     scene.input.keyboard.on('keyup-BACKSPACE', this.break, this);
     scene.input.keyboard.on('keyup-U', this.nextUpgrade, this);
@@ -148,8 +152,7 @@ export default class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    const pause = calcGrowth(this.actions.pause, BUILDING_ACTION_PAUSE_GROWTH, this.upgradeLevel);
-    this.actionPause = this.scene.getTimerNow() + pause;
+    this.actionPause = this.scene.getTimerNow() + this.getActionsPause();
   }
 
   /**
@@ -173,10 +176,40 @@ export default class Building extends Phaser.GameObjects.Image {
   /**
    * Get building information labels.
    */
-  public getInfo(): string[] {
-    return [
-      `HP: ${this.live.health}`,
+  public getInfo(): BuildingDescriptionItem[] {
+    const info: BuildingDescriptionItem[] = [
+      { text: `Upgrade ${this.upgradeLevel} of ${BUILDING_MAX_UPGRADE_LEVEL}`, type: 'text' },
+      { text: `Health: ${this.live.health}`, icon: 0 },
     ];
+    const radius = this.getActionsRadius();
+    if (radius) {
+      const nextRadius = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+        ? calcGrowth(this.actions.radius, BUILDING_ACTION_RADIUS_GROWTH, this.upgradeLevel + 1) / 2
+        : null;
+      info.push({
+        text: `Radius: ${Math.round(radius / 2)}`,
+        post: nextRadius && `→ ${Math.round(nextRadius)}`,
+        icon: 1,
+      });
+    }
+    const pause = this.getActionsPause();
+    if (pause) {
+      const nextPause = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+        ? calcGrowth(this.actions.pause, BUILDING_ACTION_PAUSE_GROWTH, this.upgradeLevel + 1) / 1000
+        : null;
+      info.push({
+        text: `Pause: ${(pause / 1000).toFixed(1)} s`,
+        post: nextPause && `→ ${nextPause.toFixed(1)} s`,
+        icon: 6,
+      });
+    }
+    if (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing) {
+      info.push({
+        text: 'PRESS < U > TO UPGRADE',
+        type: 'hint',
+      });
+    }
+    return info;
   }
 
   /**
@@ -257,7 +290,16 @@ export default class Building extends Phaser.GameObjects.Image {
   private getActionsRadius(): number {
     return this.actions?.radius
       ? calcGrowth(this.actions.radius, BUILDING_ACTION_RADIUS_GROWTH, this.upgradeLevel)
-      : 64;
+      : 0;
+  }
+
+  /**
+   * Get actions pause.
+   */
+  private getActionsPause(): number {
+    return this.actions?.pause
+      ? calcGrowth(this.actions.pause, BUILDING_ACTION_PAUSE_GROWTH, this.upgradeLevel)
+      : 0;
   }
 
   /**
@@ -291,23 +333,21 @@ export default class Building extends Phaser.GameObjects.Image {
       player,
       data: () => ({
         Name: this.getName(),
-        Label: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`,
         Description: this.getInfo(),
         Cost: (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing) ? this.getUpgradeLevelCost() : undefined,
       }),
     });
 
     input.setDefaultCursor('pointer');
-
-    this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
-    this.on(Phaser.GameObjects.Events.DESTROY, this.onUnfocus, this);
   }
 
   /**
    * Unfocus event.
    */
   private onUnfocus() {
-    const { input } = this.scene;
+    if (!this.actionsArea.visible) {
+      return;
+    }
 
     if (this.info) {
       this.info.destroy();
@@ -316,10 +356,7 @@ export default class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(false);
 
-    input.setDefaultCursor('default');
-
-    this.off(Phaser.Input.Events.POINTER_OUT, this.onUnfocus);
-    this.off(Phaser.GameObjects.Events.DESTROY, this.onUnfocus);
+    this.scene.input.setDefaultCursor('default');
   }
 
   /**

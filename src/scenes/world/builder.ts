@@ -4,7 +4,7 @@ import Level from '~scene/world/level';
 import World from '~scene/world';
 
 import { BuildingVariant } from '~type/building';
-import { NoticeType } from '~type/notice';
+import { NoticeType } from '~type/interface';
 
 import BUILDINGS from '~const/buildings';
 import { BUILDING_BUILD_AREA, BUILDING_BUILD_AREA_GROWTH } from '~const/difficulty';

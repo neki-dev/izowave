@@ -52,9 +52,16 @@ export type BuildingData = {
   upgradeCost: Resources
 };
 
+export type BuildingDescriptionItem = {
+  text: string
+  icon?: number
+  type?: 'text' | 'param' | 'hint'
+  post?: string
+};
+
 export interface BuildingInstance {
   Name: string
-  Description: string | string[]
+  Description: BuildingDescriptionItem[]
   Texture?: BuildingTexture
   Cost: Resources
   UpgradeCost?: Resources

@@ -1,13 +1,22 @@
 import BuildingTower from '~scene/world/entities/buildings/tower';
 import World from '~scene/world';
 
-import { BuildingTexture, BuildingVariant } from '~type/building';
+import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/building';
 import { ShotType } from '~type/shot';
+
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 export default class BuildingTowerFrozen extends BuildingTower {
   static Name = 'Frozen tower';
 
-  static Description = 'Stop enemies\nFreeze: 1.0 s';
+  static Description = [
+    { text: 'Freeze and stop enemies\nfor some time.', type: 'text' },
+    { text: 'Health: 700', icon: 0 },
+    { text: 'Radius: 210', icon: 1 },
+    { text: 'Pause: 1.4 s', icon: 6 },
+    { text: 'Speed: 55', icon: 7 },
+    { text: 'Freeze: 1.0 s', icon: 4 },
+  ];
 
   static Texture = BuildingTexture.TOWER_FROZEN;
 
@@ -28,7 +37,7 @@ export default class BuildingTowerFrozen extends BuildingTower {
       texture: BuildingTowerFrozen.Texture,
       upgradeCost: BuildingTowerFrozen.UpgradeCost,
       actions: {
-        radius: 220, // Attack radius
+        radius: 210, // Attack radius
         pause: 1400, // Pause between shoots
       },
       shotType: ShotType.FROZEN,
@@ -42,10 +51,16 @@ export default class BuildingTowerFrozen extends BuildingTower {
   /**
    * Add freeze to building info.
    */
-  public getInfo(): string[] {
+  public getInfo(): BuildingDescriptionItem[] {
+    const nextFreeze = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+      ? this.getShotParams(this.upgradeLevel + 1).freeze / 1000
+      : null;
     return [
-      ...super.getInfo(),
-      `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
+      ...super.getInfo(), {
+        text: `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
+        post: nextFreeze && `→ ${nextFreeze.toFixed(1)} s`,
+        icon: 4,
+      },
     ];
   }
 }

@@ -3,10 +3,17 @@ import World from '~scene/world';
 
 import { BuildingVariant, BuildingTexture, ResourceType } from '~type/building';
 
+import { MINE_RESOURCES_LIMIT } from '~const/difficulty';
+
 export default class BuildingMineSilver extends BuildingMine {
   static Name = 'Silver mine';
 
-  static Description = 'Generation silver';
+  static Description = [
+    { text: 'Silver resource generation\nfor builds and upgrades.', type: 'text' },
+    { text: 'Health: 400', icon: 0 },
+    { text: 'Pause: 2.0 s', icon: 6 },
+    { text: `Limit: ${MINE_RESOURCES_LIMIT}`, icon: 5 },
+  ];
 
   static Texture = BuildingTexture.MINE_SILVER;
 
@@ -14,7 +21,7 @@ export default class BuildingMineSilver extends BuildingMine {
 
   static UpgradeCost = { bronze: 10, silver: 20, gold: 10 };
 
-  static Health = 500;
+  static Health = 400;
 
   /**
    * Building variant constructor.

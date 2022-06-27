@@ -1,10 +1,13 @@
 import Building from '~scene/world/entities/building';
 import World from '~scene/world';
 
-import { BuildingData, BuildingEvents, ResourceType } from '~type/building';
-import { NoticeType } from '~type/notice';
+import {
+  BuildingData, BuildingDescriptionItem, BuildingEvents, ResourceType,
+} from '~type/building';
+import { NoticeType } from '~type/interface';
 
 import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty';
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 type BuildingMineData = BuildingData & {
   resourceType: ResourceType
@@ -37,10 +40,13 @@ export default class BuildingMine extends Building {
   /**
    * Add amount left to building info.
    */
-  public getInfo(): string[] {
+  public getInfo(): BuildingDescriptionItem[] {
+    const nextLeft = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+      ? this.amountLeft + (MINE_RESOURCES_UPGRADE * this.upgradeLevel)
+      : null;
     return [
       ...super.getInfo(),
-      `Left: ${this.amountLeft}`,
+      { text: `Left: ${this.amountLeft}`, post: nextLeft && `→ ${nextLeft}`, icon: 5 },
     ];
   }
 

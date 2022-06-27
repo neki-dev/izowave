@@ -7,10 +7,11 @@ import Enemy from '~scene/world/entities/enemy';
 import Lazer from '~scene/world/entities/lazer';
 import BuildingAmmunition from '~scene/world/entities/buildings/ammunition';
 
-import { NoticeType } from '~type/notice';
-import { BuildingData, BuildingVariant } from '~type/building';
+import { NoticeType, ScreenTexture } from '~type/interface';
+import {
+  BuildingData, BuildingDescriptionItem, BuildingEvents, BuildingVariant,
+} from '~type/building';
 import { ShotParams, ShotType } from '~type/shot';
-import { WorldTexture } from '~type/world';
 
 import { TILE_META } from '~const/level';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
@@ -18,6 +19,7 @@ import {
   TOWER_SHOT_DAMAGE_GROWTH, TOWER_SHOT_FREEZE_GROWTH,
   TOWER_SHOT_SPEED_GROWTH, TOWER_AMMO_AMOUNT,
 } from '~const/difficulty';
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 type BuildingTowerData = BuildingData & {
   shotType: ShotType
@@ -68,7 +70,7 @@ export default class BuildingTower extends Building {
     }
 
     scene.input.keyboard.on('keyup-R', this.reload, this);
-
+    this.on(BuildingEvents.UPGRADE, this.upgradeAmmo, this);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.shot.destroy();
       if (this.alert) {
@@ -80,13 +82,27 @@ export default class BuildingTower extends Building {
   /**
    * Add ammo left and reload to building info.
    */
-  public getInfo(): string[] {
+  public getInfo(): BuildingDescriptionItem[] {
+    const nextAmmo = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+      ? TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
+      : null;
+    const nextSpeed = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+      ? this.getShotParams(this.upgradeLevel + 1).speed / 10
+      : null;
     const info = [
       ...super.getInfo(),
-      `Ammo: ${this.ammoLeft}`,
+      { text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`, post: nextAmmo && `→ ${nextAmmo}`, icon: 2 },
     ];
     if (this.ammoLeft < this.getMaxAmmo()) {
-      info.unshift('Press R to reload!');
+      info.push({ text: 'PRESS < R > TO RELOAD', type: 'hint' });
+    }
+    const { speed } = this.getShotParams();
+    if (speed) {
+      info.push({
+        text: `Speed: ${speed / 10}`,
+        post: nextSpeed && `→ ${Math.round(nextSpeed)}`,
+        icon: 7,
+      });
     }
     return info;
   }
@@ -125,16 +141,16 @@ export default class BuildingTower extends Building {
   /**
    * Get shot params.
    */
-  public getShotParams() {
+  public getShotParams(level?: number) {
     const data: ShotParams = {};
     if (this.shotData.speed) {
-      data.speed = calcGrowth(this.shotData.speed, TOWER_SHOT_SPEED_GROWTH, this.upgradeLevel);
+      data.speed = calcGrowth(this.shotData.speed, TOWER_SHOT_SPEED_GROWTH, level || this.upgradeLevel);
     }
     if (this.shotData.damage) {
-      data.damage = calcGrowth(this.shotData.damage, TOWER_SHOT_DAMAGE_GROWTH, this.upgradeLevel);
+      data.damage = calcGrowth(this.shotData.damage, TOWER_SHOT_DAMAGE_GROWTH, level || this.upgradeLevel);
     }
     if (this.shotData.freeze) {
-      data.freeze = calcGrowth(this.shotData.freeze, TOWER_SHOT_FREEZE_GROWTH, this.upgradeLevel);
+      data.freeze = calcGrowth(this.shotData.freeze, TOWER_SHOT_FREEZE_GROWTH, level || this.upgradeLevel);
     }
     return data;
   }
@@ -178,8 +194,8 @@ export default class BuildingTower extends Building {
       return;
     }
 
-    const value = ammunition.use(needAmmo);
-    this.ammoLeft += value;
+    const ammo = ammunition.use(needAmmo);
+    this.ammoLeft += ammo;
 
     if (this.alert) {
       this.alert.destroy();
@@ -188,10 +204,17 @@ export default class BuildingTower extends Building {
   }
 
   /**
-   *
+   * Get maximum ammo in clip.
    */
   private getMaxAmmo(): number {
     return TOWER_AMMO_AMOUNT * this.upgradeLevel;
+  }
+
+  /**
+   * Update ammo left.
+   */
+  private upgradeAmmo() {
+    this.ammoLeft = this.getMaxAmmo();
   }
 
   /**
@@ -233,7 +256,7 @@ export default class BuildingTower extends Building {
    * Add alert sign.
    */
   private addAlert() {
-    this.alert = this.scene.add.image(this.x, this.y + TILE_META.halfHeight, WorldTexture.ALERT);
+    this.alert = this.scene.add.image(this.x, this.y + TILE_META.halfHeight, ScreenTexture.ALERT);
     this.alert.setDepth(WORLD_DEPTH_EFFECT);
     this.alert.setVisible(this.visible);
     this.scene.tweens.add({

@@ -1,13 +1,21 @@
 import BuildingTower from '~scene/world/entities/buildings/tower';
 import World from '~scene/world';
 
-import { BuildingTexture, BuildingVariant } from '~type/building';
+import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/building';
 import { ShotType } from '~type/shot';
+
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 export default class BuildingTowerLazer extends BuildingTower {
   static Name = 'Lazer tower';
 
-  static Description = 'Attack enemies\nDamage: 75';
+  static Description = [
+    { text: 'Instant and continuous\nlaser attack of enemy.', type: 'text' },
+    { text: 'Health: 300', icon: 0 },
+    { text: 'Radius: 180', icon: 1 },
+    { text: 'Pause: 1.6 s', icon: 6 },
+    { text: 'Damage: 75', icon: 4 },
+  ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
 
@@ -41,10 +49,13 @@ export default class BuildingTowerLazer extends BuildingTower {
   /**
    * Add damage to building info.
    */
-  public getInfo(): string[] {
+  public getInfo(): BuildingDescriptionItem[] {
+    const nextDamage = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+      ? this.getShotParams(this.upgradeLevel + 1).damage * 5
+      : null;
     return [
       ...super.getInfo(),
-      `Damage: ${this.getShotParams().damage * 5}`,
+      { text: `Damage: ${this.getShotParams().damage * 5}`, post: nextDamage && `→ ${nextDamage}`, icon: 4 },
     ];
   }
 }

@@ -71,7 +71,7 @@ export default Component(function ComponentCost(container, {
         } else if (haveAmount < needAmount) {
           text.setColor(INTERFACE_TEXT_COLOR_ERROR);
         } else {
-          text.setColor('#ffffff');
+          text.setColor('#fff');
         }
       }
     },

@@ -52,7 +52,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   };
 
   const unfocus = () => {
-    if (wave.isGoing) {
+    if (hover.current === null) {
       return;
     }
 

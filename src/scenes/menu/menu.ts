@@ -52,7 +52,7 @@ export default class Menu extends Phaser.Scene {
         shadow: {
           offsetX: 6,
           offsetY: 6,
-          color: '#000000',
+          color: '#000',
           blur: 0,
           fill: true,
         },
@@ -91,7 +91,7 @@ export default class Menu extends Phaser.Scene {
         shadow: {
           offsetX: 6,
           offsetY: 6,
-          color: '#000000',
+          color: '#000',
           blur: 0,
           fill: true,
         },

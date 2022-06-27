@@ -13,10 +13,11 @@ import { WorldEvents } from '~type/world';
 import { SceneKey } from '~type/scene';
 import { PlayerEvents, PlayerStat } from '~type/player';
 import { LiveEvents } from '~type/live';
-import { Notice, NoticeType } from '~type/notice';
+import { Notice, NoticeType, ScreenTexture } from '~type/interface';
 
 import { INTERFACE_PADDING } from '~const/interface';
 import { EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH } from '~const/difficulty';
+import { registerAssets } from '~lib/assets';
 
 export default class Screen extends Phaser.Scene {
   readonly notices: Notice[] = [];
@@ -94,3 +95,18 @@ export default class Screen extends Phaser.Scene {
     this.events.emit('notice', { type, message });
   }
 }
+
+registerAssets([{
+  key: ScreenTexture.ICON,
+  type: 'spritesheet',
+  url: `assets/sprites/${ScreenTexture.ICON}.png`,
+  // @ts-ignore
+  frameConfig: {
+    frameWidth: 10,
+    frameHeight: 10,
+  },
+}, {
+  key: ScreenTexture.ALERT,
+  type: 'image',
+  url: `assets/sprites/${ScreenTexture.ALERT}.png`,
+}]);

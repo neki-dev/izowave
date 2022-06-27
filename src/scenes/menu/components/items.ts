@@ -23,7 +23,7 @@ export default Component(function ComponentItems(container, { width, data, onSel
   for (const item of data) {
     const text = this.add.text(width, shift, item.label, {
       fixedWidth: width,
-      color: item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : '#ffffff',
+      color: item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : '#fff',
       fontSize: '20px',
       fontFamily: INTERFACE_FONT_PIXEL,
       align: 'right',
@@ -31,7 +31,7 @@ export default Component(function ComponentItems(container, { width, data, onSel
       shadow: {
         offsetX: 4,
         offsetY: 4,
-        color: '#000000',
+        color: '#000',
         blur: 0,
         fill: true,
       },

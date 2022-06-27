@@ -12,7 +12,6 @@ export enum WorldTexture {
   LAZER = 'effect/purple',
   GLOW = 'effect/blue',
   FIRE = 'effect/orange',
-  ALERT = 'alert',
 }
 
 export enum WorldEvents {

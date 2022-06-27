@@ -14,7 +14,7 @@ import { WorldEffect } from '~type/world';
 import { BiomeType, TileType } from '~type/level';
 import { ResourceType, Resources } from '~type/building';
 import { LiveEvents } from '~type/live';
-import { NoticeType } from '~type/notice';
+import { NoticeType } from '~type/interface';
 
 import { WORLD_CAMERA_ZOOM } from '~const/world';
 import {

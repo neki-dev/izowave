@@ -8,7 +8,10 @@ import {
 export default class BuildingWall extends Building {
   static Name = 'Wall';
 
-  static Description = 'Basic defence';
+  static Description = [
+    { text: 'Wall with more health to\ndefend other buildings.', type: 'text' },
+    { text: 'Health: 2000', icon: 0 },
+  ];
 
   static Texture = BuildingTexture.WALL;
 

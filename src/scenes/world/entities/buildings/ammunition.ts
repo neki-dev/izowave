@@ -1,15 +1,23 @@
 import Building from '~scene/world/entities/building';
 import World from '~scene/world';
 
-import { BuildingEvents, BuildingTexture, BuildingVariant } from '~type/building';
-import { NoticeType } from '~type/notice';
+import {
+  BuildingDescriptionItem, BuildingEvents, BuildingTexture, BuildingVariant,
+} from '~type/building';
+import { NoticeType } from '~type/interface';
 
 import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE } from '~const/difficulty';
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 export default class BuildingAmmunition extends Building {
   static Name = 'Ammunition';
 
-  static Description = 'Ammo for towers';
+  static Description = [
+    { text: 'Ammo for towers.\nTo reload tower must\nbe inside radius.', type: 'text' },
+    { text: 'Health: 300', icon: 0 },
+    { text: 'Radius: 160', icon: 1 },
+    { text: `Amount: ${AMMUNITION_AMMO_LIMIT}`, icon: 2 },
+  ];
 
   static Texture = BuildingTexture.AMMUNITION;
 
@@ -49,10 +57,13 @@ export default class BuildingAmmunition extends Building {
   /**
    * Add amount left to building info.
    */
-  public getInfo(): string[] {
+  public getInfo(): BuildingDescriptionItem[] {
+    const nextLeft = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+      ? this.amountLeft + (AMMUNITION_AMMO_UPGRADE * this.upgradeLevel)
+      : null;
     return [
       ...super.getInfo(),
-      `Left: ${this.amountLeft}`,
+      { text: `Left: ${this.amountLeft}`, post: nextLeft && `→ ${nextLeft}`, icon: 2 },
     ];
   }
 

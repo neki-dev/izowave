@@ -15,7 +15,7 @@ type Props = {
 export default Component(function ComponentGameOver(container, { stat, record }: Props) {
   const { canvas } = this.sys;
 
-  const background = this.add.rectangle(0, 0, canvas.width, canvas.height, 0x000000, 0.75);
+  const background = this.add.rectangle(0, 0, canvas.width, canvas.height, 0x000000, 0.85);
   background.setOrigin(0.0, 0.0);
 
   const box = this.add.container(canvas.width / 2, canvas.height / 2);
@@ -28,7 +28,7 @@ export default Component(function ComponentGameOver(container, { stat, record }:
     shadow: {
       offsetX: 8,
       offsetY: 8,
-      color: '#000000',
+      color: '#000',
       blur: 0,
       fill: true,
     },
