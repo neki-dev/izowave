@@ -7,7 +7,7 @@ import Live from '~scene/world/entities/live';
 import { SpriteData } from '~type/sprite';
 import { BiomeType, TileType } from '~type/level';
 
-import { WORLD_COLLIDE_LOOK, WORLD_DEPTH_EFFECT } from '~const/world';
+import { WORLD_COLLIDE_LOOK } from '~const/world';
 
 export default class Sprite extends Phaser.Physics.Arcade.Sprite {
   // @ts-ignore
@@ -61,7 +61,6 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
 
     this.container = scene.add.container(this.x, this.y);
-    this.container.setDepth(WORLD_DEPTH_EFFECT);
     this.container.setVisible(this.visible);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
@@ -82,10 +81,11 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     if (this.visible) {
       const { x, y } = this.getTopCenter();
       this.container.setPosition(x, y);
-      this.updateHealthIndicator();
-
       const depth = Level.GetDepth(this.y, 1, this.displayHeight);
       this.setDepth(depth);
+      this.container.setDepth(depth);
+
+      this.updateHealthIndicator();
     }
   }
 
