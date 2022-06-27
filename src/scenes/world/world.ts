@@ -447,6 +447,8 @@ export default class World extends Phaser.Scene {
    * Add colliders to entities.
    */
   private addEntityColliders() {
+    this.physics.add.collider(this.enemies, this.enemies);
+
     this.physics.add.collider(this.shots, this.enemies, (shot: Shot, enemy: Enemy) => {
       shot.hit(enemy);
     });
