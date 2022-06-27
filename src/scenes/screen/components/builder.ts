@@ -9,7 +9,7 @@ import { BuildingInstance, BuildingVariant } from '~type/building';
 
 import BUILDINGS from '~const/buildings';
 import { WaveEvents } from '~type/wave';
-import { INTERFACE_BOX_COLOR_PURPLE } from '~const/interface';
+import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_MONOSPACE } from '~const/interface';
 
 type Props = {
   builder: Builder
@@ -86,7 +86,11 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
     const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
     preview.setScale(0.65);
 
-    const number = this.add.text(4, 4, String(index + 1), { fontSize: '12px' });
+    const number = this.add.text(ITEM_SIZE - 4, 4, String(index + 1), {
+      fontSize: '12px',
+      fontFamily: INTERFACE_FONT_MONOSPACE,
+    });
+    number.setOrigin(1.0, 0.0);
 
     item.add([body, preview, number]);
     container.add(item);

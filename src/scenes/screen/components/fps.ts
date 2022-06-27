@@ -13,7 +13,8 @@ export default Component(function ComponentFPS(container) {
 
   return {
     update: () => {
-      fps.setText(`${Math.round(this.sys.game.loop.actualFps)} FPS`);
+      const count = Math.round(this.sys.game.loop.actualFps);
+      fps.setText(`${count} FPS`);
     },
   };
 });

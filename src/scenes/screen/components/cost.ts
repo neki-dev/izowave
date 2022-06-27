@@ -4,8 +4,7 @@ import { toEven } from '~lib/utils';
 import { Resources, ResourceType } from '~type/building';
 
 import {
-  INTERFACE_TEXT_COLOR_ERROR,
-  INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL, RESOURCE_COLOR,
+  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR,
 } from '~const/interface';
 
 type Props = {
@@ -38,12 +37,11 @@ export default Component(function ComponentCost(container, {
     const type = ResourceType[resource];
     const icon = this.add.rectangle(10, offset, 8, 8, RESOURCE_COLOR[type]);
     icon.setOrigin(0.0, 0.0);
-    const text = this.add.text(10 + icon.width + 5, offset - 1, '0', {
-      fontSize: '9px',
-      fontFamily: INTERFACE_FONT_PIXEL,
-      padding: { bottom: 1 },
+    const text = this.add.text(10 + icon.width + 5, offset - 2, '0', {
+      fontSize: '11px',
+      fontFamily: INTERFACE_FONT_MONOSPACE,
     });
-    offset += toEven(icon.height + 6);
+    offset += icon.height + 6;
     container.add([icon, text]);
     items.push({ type, text });
   }
@@ -67,7 +65,7 @@ export default Component(function ComponentCost(container, {
         const needAmount = needAmounts[type] || 0;
         text.setText(String(needAmount));
         if (needAmount === 0) {
-          text.setColor('#aaaaaa');
+          text.setColor('#aaa');
         } else if (haveAmount < needAmount) {
           text.setColor(INTERFACE_TEXT_COLOR_ERROR);
         } else {
