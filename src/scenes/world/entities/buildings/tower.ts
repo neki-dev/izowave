@@ -86,24 +86,26 @@ export default class BuildingTower extends Building {
     const nextAmmo = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
       ? TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
       : null;
-    const nextSpeed = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-      ? this.getShotParams(this.upgradeLevel + 1).speed / 10
-      : null;
     const info = [
       ...super.getInfo(),
       { text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`, post: nextAmmo && `→ ${nextAmmo}`, icon: 2 },
     ];
     if (this.ammoLeft < this.getMaxAmmo()) {
-      info.push({ text: 'PRESS < R > TO RELOAD', type: 'hint' });
+      info.push({ text: 'PRESS |R| TO RELOAD', type: 'hint' });
     }
+
     const { speed } = this.getShotParams();
     if (speed) {
+      const nextSpeed = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+        ? this.getShotParams(this.upgradeLevel + 1).speed / 10
+        : null;
       info.push({
         text: `Speed: ${speed / 10}`,
         post: nextSpeed && `→ ${Math.round(nextSpeed)}`,
         icon: 7,
       });
     }
+
     return info;
   }
 

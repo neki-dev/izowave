@@ -1,15 +1,15 @@
 import Component from '~lib/ui';
 import { toEven } from '~lib/utils';
 import Player from '~scene/world/entities/player';
+import ComponentParams from '~scene/screen/components/params';
 import ComponentCost from '~scene/screen/components/cost';
 
 import { BuildingInstance } from '~type/building';
 
 import { WORLD_DEPTH_UI } from '~const/world';
 import {
-  INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL, INTERFACE_FONT_MONOSPACE,
+  INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL,
 } from '~const/interface';
-import { ScreenTexture } from '~type/interface';
 
 type Props = {
   mode?: 'building' | 'builder'
@@ -19,12 +19,13 @@ type Props = {
 };
 
 const CONTAINER_WIDTH = 220;
+const CONTAINER_MIN_HEIGHT = 77;
 const CONTAINER_PADDING = 16;
 
 export default Component(function ComponentBuildingInfo(container, {
   origin, player, data, mode = 'building',
 }: Props) {
-  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, 77, INTERFACE_BOX_COLOR_PURPLE, 0.9);
+  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_PURPLE, 0.9);
   body.setOrigin(0.0, 0.0);
 
   let position = { x: container.x, y: container.y };
@@ -37,17 +38,16 @@ export default Component(function ComponentBuildingInfo(container, {
   });
   shift.y += toEven(name.height + CONTAINER_PADDING);
 
-  const description = this.add.container(shift.x, shift.y);
-  // shift.y += CONTAINER_PADDING;
-
-  // body.height = shift.y;
+  const description = ComponentParams.call(this, shift, {
+    data: () => data()?.Description,
+  });
 
   const cost = ComponentCost.call(this, {
     x: body.width,
     y: 0,
   }, {
     label: (mode === 'building') ? 'UPGRADE' : 'BUILD',
-    size: [60, 77],
+    size: [60, CONTAINER_MIN_HEIGHT],
     need: () => data()?.Cost,
     have: () => player.resources,
   });
@@ -55,7 +55,7 @@ export default Component(function ComponentBuildingInfo(container, {
 
   let point: Phaser.GameObjects.Triangle;
   if (mode === 'building') {
-    point = this.add.triangle(0, 0, -10, 0, 10, 0, 0, 10, INTERFACE_BOX_COLOR_PURPLE, 0.9);
+    point = this.add.triangle(0, 0, -10, 0, 10, 0, 0, 10, body.fillColor, body.fillAlpha);
     point.setOrigin(0.0, 0.0);
   }
 
@@ -67,7 +67,7 @@ export default Component(function ComponentBuildingInfo(container, {
 
   const refresh = () => {
     const width = body.width + (cost.visible ? cost.width : 0);
-    const height = Math.max(description.y + description.height + CONTAINER_PADDING, 77);
+    const height = Math.max(description.y + description.height + CONTAINER_PADDING, CONTAINER_MIN_HEIGHT);
     body.height = height;
     cost.height = height;
 
@@ -91,55 +91,20 @@ export default Component(function ComponentBuildingInfo(container, {
 
   refresh();
 
-  const current = {
-    text: null,
-  };
+  let prevLines = 0;
 
   return {
     update: () => {
       const values = data();
-      if (values) {
+
+      if (values?.Name) {
         name.setText(values.Name);
-        const newDescription = values.Description.map((item) => item.text).join('\n');
-        if (current.text !== newDescription) {
-          current.text = newDescription;
-          description.removeAll(true);
-          let offset = 0;
-          const items = values.Description.sort((a, b) => (b.type || 'param').localeCompare((a.type || 'param')));
-          items.forEach((item, index) => {
-            if (item.type === 'hint') {
-              offset += 6;
-            }
-            if (item.icon !== undefined) {
-              const icon = this.add.image(0, offset, ScreenTexture.ICON, item.icon);
-              icon.setOrigin(0.0, 0.0);
-              description.add(icon);
-            }
-            const text = this.add.text((item.icon !== undefined) ? 15 : 0, offset - 1, item.text, {
-              color: (item.type === 'hint') ? '#ffd800' : '#fff',
-              fontSize: (item.type === 'hint') ? '10px' : '12px',
-              fontFamily: INTERFACE_FONT_MONOSPACE,
-              padding: { bottom: 1 },
-            });
-            text.setOrigin(0.0, 0.0);
-            text.setAlpha(0.9);
-            description.add(text);
-            if (item.post) {
-              const post = this.add.text(text.x + text.width + 5, offset, item.post, {
-                fontSize: '9px',
-                fontFamily: INTERFACE_FONT_MONOSPACE,
-                padding: { bottom: 1 },
-              });
-              post.setOrigin(0.0, 0.0);
-              post.setAlpha(0.5);
-              description.add(post);
-            }
-            offset += text.height;
-            if (index + 1 !== items.length) {
-              offset += (item.type === 'text') ? 8 : 2;
-            }
-          });
-          description.setSize(100, offset);
+      }
+
+      if (values?.Description) {
+        const lines = values?.Description.map((item) => item.text.split('\n')).flat();
+        if (prevLines !== lines.length) {
+          prevLines = lines.length;
           refresh();
         }
       }

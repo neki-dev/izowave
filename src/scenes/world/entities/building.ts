@@ -205,7 +205,7 @@ export default class Building extends Phaser.GameObjects.Image {
     }
     if (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing) {
       info.push({
-        text: 'PRESS < U > TO UPGRADE',
+        text: 'PRESS |U| TO UPGRADE',
         type: 'hint',
       });
     }

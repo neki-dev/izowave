@@ -14,6 +14,8 @@ export default class BuildingMedic extends Building {
     { text: 'Healing a player while\ninside radius.', type: 'text' },
     { text: 'Health: 200', icon: 0 },
     { text: 'Radius: 200', icon: 1 },
+    { text: 'Pause: 3.0 s', icon: 6 },
+    { text: `Heal: ${MEDIC_HEAL_AMOUNT}`, icon: 3 },
   ];
 
   static Texture = BuildingTexture.MEDIC;
