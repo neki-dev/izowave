@@ -7,19 +7,18 @@ import Enemy from '~scene/world/entities/enemy';
 import Lazer from '~scene/world/entities/lazer';
 import BuildingAmmunition from '~scene/world/entities/buildings/ammunition';
 
-import { NoticeType, ScreenTexture } from '~type/interface';
+import { NoticeType } from '~type/interface';
 import {
   BuildingData, BuildingDescriptionItem, BuildingEvents, BuildingVariant,
 } from '~type/building';
 import { ShotParams, ShotType } from '~type/shot';
 
-import { TILE_META } from '~const/level';
-import { WORLD_DEPTH_EFFECT } from '~const/world';
 import {
   TOWER_SHOT_DAMAGE_GROWTH, TOWER_SHOT_FREEZE_GROWTH,
   TOWER_SHOT_SPEED_GROWTH, TOWER_AMMO_AMOUNT,
 } from '~const/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { INPUT_KEY } from '~const/keyboard';
 
 type BuildingTowerData = BuildingData & {
   shotType: ShotType
@@ -48,11 +47,6 @@ export default class BuildingTower extends Building {
   private ammoLeft: number = TOWER_AMMO_AMOUNT;
 
   /**
-   * Reload alert.
-   */
-  private alert: Phaser.GameObjects.Image;
-
-  /**
    * Building variant constructor.
    */
   constructor(scene: World, {
@@ -69,13 +63,13 @@ export default class BuildingTower extends Building {
       this.shot = new Shot(this);
     }
 
-    scene.input.keyboard.on('keyup-R', this.reload, this);
+    // Add keyboard events
+    scene.input.keyboard.on(INPUT_KEY.BUILDING_RELOAD, this.reload, this);
+
+    // Add events callbacks
     this.on(BuildingEvents.UPGRADE, this.upgradeAmmo, this);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.shot.destroy();
-      if (this.alert) {
-        this.alert.destroy();
-      }
     });
   }
 
@@ -114,10 +108,6 @@ export default class BuildingTower extends Building {
    */
   public update() {
     super.update();
-
-    if (this.alert) {
-      this.alert.setVisible(this.visible);
-    }
 
     if (
       this.ammoLeft === 0
@@ -199,10 +189,7 @@ export default class BuildingTower extends Building {
     const ammo = ammunition.use(needAmmo);
     this.ammoLeft += ammo;
 
-    if (this.alert) {
-      this.alert.destroy();
-      delete this.alert;
-    }
+    this.removeAlert();
   }
 
   /**
@@ -252,22 +239,5 @@ export default class BuildingTower extends Building {
       data.freeze = calcGrowth(this.shotData.freeze, TOWER_SHOT_FREEZE_GROWTH, this.upgradeLevel);
     }
     this.shot.shoot(target, data);
-  }
-
-  /**
-   * Add alert sign.
-   */
-  private addAlert() {
-    this.alert = this.scene.add.image(this.x, this.y + TILE_META.halfHeight, ScreenTexture.ALERT);
-    this.alert.setDepth(WORLD_DEPTH_EFFECT);
-    this.alert.setVisible(this.visible);
-    this.scene.tweens.add({
-      targets: this.alert,
-      scale: 0.8,
-      duration: 500,
-      ease: 'Linear',
-      yoyo: true,
-      repeat: -1,
-    });
   }
 }

@@ -7,7 +7,9 @@ import Hexagon from '~lib/hexagon';
 import Level from '~scene/world/level';
 import World from '~scene/world';
 
-import { BiomeType, TileType } from '~type/level';
+import { NoticeType, ScreenTexture } from '~type/interface';
+import { WorldEvents } from '~type/world';
+import { TileType } from '~type/level';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents,
   Resources, BuildingTexture, BuildingVariant, BuildingDescriptionItem,
@@ -21,8 +23,8 @@ import {
   BUILDING_ACTION_RADIUS_GROWTH,
   BUILDING_UPGRADE_EXPERIENCE,
 } from '~const/difficulty';
-import { NoticeType } from '~type/interface';
-import { WorldEvents } from '~type/world';
+import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { INPUT_KEY } from '~const/keyboard';
 
 export default class Building extends Phaser.GameObjects.Image {
   // @ts-ignore
@@ -78,6 +80,11 @@ export default class Building extends Phaser.GameObjects.Image {
   private info: Phaser.GameObjects.Container;
 
   /**
+   * Alert.
+   */
+  private alert: Phaser.GameObjects.Image;
+
+  /**
    * Building constructor.
    */
   constructor(scene: World, {
@@ -106,17 +113,22 @@ export default class Building extends Phaser.GameObjects.Image {
     });
 
     this.setInteractive();
-    this.addFoundation();
     this.makeActionArea();
+    scene.builder.addFoundation(positionAtMatrix);
+
+    // Add keyboard events
+    scene.input.keyboard.on(INPUT_KEY.BUILDING_DESTROY, this.break, this);
+    scene.input.keyboard.on(INPUT_KEY.BUILDING_UPGRADE, this.nextUpgrade, this);
 
     // Add events callbacks
+    this.live.on(LiveEvents.DEAD, () => this.onDead());
+    this.scene.events.on(WorldEvents.GAMEOVER, () => this.onUnfocus());
     this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
     this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
-    this.on(Phaser.GameObjects.Events.DESTROY, this.onUnfocus, this);
-    this.scene.events.on(WorldEvents.GAMEOVER, () => this.onUnfocus());
-    this.live.on(LiveEvents.DEAD, () => this.onDead());
-    scene.input.keyboard.on('keyup-BACKSPACE', this.break, this);
-    scene.input.keyboard.on('keyup-U', this.nextUpgrade, this);
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.onUnfocus();
+      this.removeAlert();
+    });
   }
 
   /**
@@ -125,6 +137,15 @@ export default class Building extends Phaser.GameObjects.Image {
   public setInteractive() {
     const shape = new Hexagon(0, 0, TILE_META.halfHeight);
     return super.setInteractive(shape, Hexagon.Contains);
+  }
+
+  /**
+   * Update event.
+   */
+  public update() {
+    if (this.alert) {
+      this.alert.setVisible(this.visible);
+    }
   }
 
   /**
@@ -137,7 +158,7 @@ export default class Building extends Phaser.GameObjects.Image {
   /**
    * Check if position inside action area.
    *
-   * @param position - Position at world.
+   * @param position - Position at world
    */
   public actionsAreaContains(position: Phaser.Types.Math.Vector2Like): boolean {
     const offset = this.actionsArea.getTopLeft();
@@ -231,33 +252,36 @@ export default class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Add rubble foundation around building.
+   * Add alert sign.
    */
-  private addFoundation() {
-    const { level } = this.scene;
-    const { x, y } = this.positionAtMatrix;
-    for (let iy = y - 1; iy <= y + 1; iy++) {
-      for (let ix = x - 1; ix <= x + 1; ix++) {
-        const tileGround = level.getTile({ x: ix, y: iy, z: 0 });
-        if (tileGround && tileGround.biome.solid) {
-          // Replace biome
-          const newBiome = Level.GetBiome(BiomeType.RUBBLE);
-          tileGround.biome = newBiome;
-          tileGround.clearTint();
-          const frame = Array.isArray(newBiome.tileIndex)
-            ? Phaser.Math.Between(...newBiome.tileIndex)
-            : newBiome.tileIndex;
-          tileGround.setFrame(frame);
-          // Remove trees
-          const tilePosition = { x: ix, y: iy, z: 1 };
-          const tile = level.getTileWithType(tilePosition, TileType.TREE);
-          if (tile) {
-            level.removeTile(tilePosition);
-            tile.destroy();
-          }
-        }
-      }
+  public addAlert() {
+    if (this.alert) {
+      return;
     }
+
+    this.alert = this.scene.add.image(this.x, this.y + TILE_META.halfHeight, ScreenTexture.ALERT);
+    this.alert.setDepth(WORLD_DEPTH_EFFECT);
+    this.alert.setVisible(this.visible);
+    this.scene.tweens.add({
+      targets: this.alert,
+      scale: 0.8,
+      duration: 500,
+      ease: 'Linear',
+      yoyo: true,
+      repeat: -1,
+    });
+  }
+
+  /**
+   * Remove alert sign.
+   */
+  public removeAlert() {
+    if (!this.alert) {
+      return;
+    }
+
+    this.alert.destroy();
+    delete this.alert;
   }
 
   /**

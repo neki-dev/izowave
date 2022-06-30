@@ -13,6 +13,7 @@ import {
   WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH,
   WAVE_PAUSE,
 } from '~const/difficulty';
+import { INPUT_KEY } from '~const/keyboard';
 
 export default class Wave extends EventEmitter {
   readonly scene: World;
@@ -73,7 +74,8 @@ export default class Wave extends EventEmitter {
 
     this.runTimeleft();
 
-    scene.input.keyboard.on('keyup-N', this.skipTimeleft, this);
+    // Add keyboard events
+    scene.input.keyboard.on(INPUT_KEY.WAVE_SKIP_TIMELEFT, this.skipTimeleft, this);
   }
 
   /**

@@ -61,11 +61,16 @@ export default class BuildingMine extends Building {
     }
 
     this.generateResource();
-    if (this.amountLeft <= 0) {
+
+    if (this.amountLeft === 0) {
       this.scene.screen.message(NoticeType.WARN, `${this.getName()} RESOURCES ARE OVER`);
       this.destroy();
     } else {
       this.pauseActions();
+
+      if (this.amountLeft === 10) {
+        this.addAlert();
+      }
     }
   }
 
@@ -83,5 +88,7 @@ export default class BuildingMine extends Building {
    */
   private upgradeAmount() {
     this.amountLeft += MINE_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
+
+    this.removeAlert();
   }
 }

@@ -30,6 +30,7 @@ import {
   PLAYER_ATTACK_PAUSE,
 } from '~const/difficulty';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
+import { INPUT_KEY } from '~const/keyboard';
 
 export default class Player extends Sprite {
   /**
@@ -325,8 +326,9 @@ export default class Player extends Sprite {
       [key: string]: Phaser.Input.Keyboard.Key
     }> keyboard.addKeys(movementKeys);
 
-    keyboard.on('keydown-CTRL', this.attack, this);
-    keyboard.on('keydown-SPACE', this.attack, this);
+    for (const KEY of INPUT_KEY.PLAYER_ATTACK) {
+      keyboard.on(KEY, this.attack, this);
+    }
   }
 
   /**

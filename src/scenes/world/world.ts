@@ -32,6 +32,7 @@ import {
   ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/enemy';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
+import { INPUT_KEY } from '~const/keyboard';
 
 export default class World extends Phaser.Scene {
   /**
@@ -336,7 +337,7 @@ export default class World extends Phaser.Scene {
     camera.zoomTo(WORLD_CAMERA_ZOOM, 100);
 
     this.scene.launch(this.screen);
-    this.input.keyboard.on('keyup-ESC', () => {
+    this.input.keyboard.on(INPUT_KEY.PAUSE, () => {
       if (this.player.live.isDead()) {
         window.location.reload();
       } else {

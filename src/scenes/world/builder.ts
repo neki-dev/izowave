@@ -3,6 +3,7 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import Level from '~scene/world/level';
 import World from '~scene/world';
 
+import { BiomeType, TileType } from '~type/level';
 import { BuildingVariant } from '~type/building';
 import { NoticeType } from '~type/interface';
 
@@ -97,6 +98,38 @@ export default class Builder {
    */
   public isVariantSelected() {
     return (this.variantIndex !== null);
+  }
+
+  /**
+   * Add rubble foundation on position.
+   *
+   * @param position - Position at matrix
+   */
+  public addFoundation(position: Phaser.Types.Math.Vector2Like) {
+    const { level } = this.scene;
+    for (let y = position.y - 1; y <= position.y + 1; y++) {
+      for (let x = position.x - 1; x <= position.x + 1; x++) {
+        const tileGround = level.getTile({ x, y, z: 0 });
+        if (tileGround && tileGround.biome.solid) {
+          // Replace biome
+          const newBiome = Level.GetBiome(BiomeType.RUBBLE);
+          tileGround.biome = newBiome;
+          tileGround.clearTint();
+          const frame = Array.isArray(newBiome.tileIndex)
+            ? Phaser.Math.Between(...newBiome.tileIndex)
+            : newBiome.tileIndex;
+          tileGround.setFrame(frame);
+
+          // Remove trees
+          const tilePosition = { x, y, z: 1 };
+          const tile = level.getTileWithType(tilePosition, TileType.TREE);
+          if (tile) {
+            level.removeTile(tilePosition);
+            tile.destroy();
+          }
+        }
+      }
+    }
   }
 
   /**

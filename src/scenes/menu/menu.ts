@@ -7,8 +7,10 @@ import ComponentControls from '~scene/menu/components/controls';
 import ComponentItems, { MenuItem } from '~scene/menu/components/items';
 
 import { SceneKey } from '~type/scene';
+
 import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface';
 import { COPYRIGHT } from '~const/core';
+import { INPUT_KEY } from '~const/keyboard';
 
 const CONTENT_MARGIN = 200;
 
@@ -112,11 +114,11 @@ export default class Menu extends Phaser.Scene {
       }
     });
 
-    this.input.keyboard.once('keyup-ENTER', () => {
+    this.input.keyboard.once(INPUT_KEY.START, () => {
       this.startGame(asPause);
     });
     if (asPause) {
-      this.input.keyboard.once('keyup-ESC', () => {
+      this.input.keyboard.once(INPUT_KEY.PAUSE, () => {
         this.startGame(true);
       });
     }
