@@ -61,7 +61,6 @@ export default class Sprite extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
 
     this.container = scene.add.container(this.x, this.y);
-    this.container.setVisible(this.visible);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
     });

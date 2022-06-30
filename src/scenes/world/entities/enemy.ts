@@ -86,19 +86,29 @@ export default class Enemy extends Sprite {
     this.setPushable(false);
 
     this.setVisible(this.atVisibleTile());
-    this.calm(1000);
 
     // Add spawn effect
     if (this.visible) {
-      this.scene.effects.emit(WorldEffect.SPAWN, this, {
+      this.container.setAlpha(0.0);
+      this.calm(1000);
+      this.setScale(0.1);
+      this.scene.tweens.add({
+        targets: this,
+        scale,
+        duration: 1000,
+        onComplete: () => {
+          this.container.setAlpha(1.0);
+        },
+      });
+      this.scene.effects.emit(WorldEffect.GLOW, this, {
         x: this.x,
         y: this.y,
-        lifespan: { min: 100, max: 250 },
-        scale: { start: 0.5, end: 0.0 },
+        lifespan: { min: 150, max: 250 },
+        scale: { start: 0.25, end: 0.0 },
         frequency: 2,
-        speed: 120,
+        speed: 100,
         quantity: 2,
-        blendMode: 'ADD',
+        tint: 0x000,
       }, 500);
     }
 

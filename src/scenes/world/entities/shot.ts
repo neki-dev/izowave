@@ -77,15 +77,14 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
     this.damage = damage;
     this.freeze = freeze;
 
-    const effect = (this.tower.shotType === ShotType.FIRE) ? WorldEffect.FIRE : WorldEffect.GLOW;
-    this.effect = this.scene.effects.emit(effect, this.tower, {
+    this.effect = this.scene.effects.emit(WorldEffect.GLOW, this.tower, {
       follow: this,
-      lifespan: { min: 100, max: 150 },
+      lifespan: { min: 100, max: 200 },
+      scale: { start: 0.25, end: 0.0 },
       frequency: 2,
-      scale: { start: 0.1, end: 0.0 },
       quantity: 2,
-      speed: 200,
       blendMode: 'ADD',
+      tint: (this.tower.shotType === ShotType.FIRE) ? 0xff5400 : 0x00a1ff,
     });
 
     this.setPosition(this.tower.x, this.tower.y);
@@ -93,7 +92,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
     this.setVisible(true);
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.scene.physics.moveToObject(this, target, speed);
+    this.scene.physics.moveTo(this, target.x, target.y, speed);
   }
 
   /**
@@ -103,7 +102,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
     this.setActive(false);
     this.setVisible(false);
 
-    this.tower.scene.effects.stop(this.tower, this.effect);
+    this.scene.effects.stop(this.tower, this.effect);
 
     this.scene.physics.world.disable(this);
   }

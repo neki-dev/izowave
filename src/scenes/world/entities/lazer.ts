@@ -102,12 +102,13 @@ export default class Lazer extends Phaser.GameObjects.Line {
    */
   private hit() {
     this.target.live.damage(this.damage);
-    this.scene.effects.emit(WorldEffect.LAZER, this.target, {
+    this.scene.effects.emit(WorldEffect.GLOW, this.target, {
       follow: this.target,
       lifespan: { min: 100, max: 150 },
       scale: { start: 0.2, end: 0.1 },
       frequency: 2,
       speed: 80,
+      tint: 0xb136ff,
     }, 150);
   }
 
