@@ -4,12 +4,15 @@ import Player from '~scene/world/entities/player';
 import ComponentBuildingInfo from '~scene/screen/components/building-info';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
+import World from '~scene/world';
 
+import { SceneKey } from '~type/scene';
 import { BuildingInstance, BuildingVariant } from '~type/building';
 
 import BUILDINGS from '~const/buildings';
 import { WaveEvents } from '~type/wave';
-import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_ERROR } from '~const/interface';
+import Building from '~scene/world/entities/building';
 
 type Props = {
   builder: Builder
@@ -27,15 +30,39 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   container.setPosition(container.x - ITEM_SIZE, container.y);
   container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
 
+  const getData = (): BuildingInstance => {
+    if (hover.current === null) {
+      return undefined;
+    }
+
+    const variant = BUILDING_VARIANTS[hover.current];
+    const data = { ...BUILDINGS[variant] };
+
+    if (data.Limit) {
+      const world = <World> this.scene.get(SceneKey.WORLD);
+      const sameCount = world.getBuildings().getChildren().filter((building: Building) => (
+        building.variant === variant
+      )).length;
+      const limit = data.Limit * (Math.floor(world.wave.number / 5) + 1);
+      data.Description = [
+        ...data.Description, {
+          text: `You have ${sameCount} of ${limit}`,
+          type: 'text',
+          color: (sameCount >= limit)
+            ? INTERFACE_TEXT_COLOR_ERROR
+            : undefined,
+        },
+      ];
+    }
+
+    return data;
+  };
+
   const info = ComponentBuildingInfo.call(this, { x: 0, y: 0 }, {
     mode: 'builder',
     origin: [1.0, 0.0],
     player,
-    data: (): BuildingInstance => (
-      (hover.current !== null)
-        ? BUILDINGS[BUILDING_VARIANTS[hover.current]]
-        : undefined
-    ),
+    data: getData,
   });
   info.setVisible(false);
   container.add(info);

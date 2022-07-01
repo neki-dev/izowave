@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { calcGrowth, equalPositions } from '~lib/utils';
 import Level from '~scene/world/level';
+import Building from '~scene/world/entities/building';
 import World from '~scene/world';
 
 import { BiomeType, TileType } from '~type/level';
@@ -259,6 +260,17 @@ export default class Builder {
     if (!player.haveResources(BuildingInstance.Cost)) {
       this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
       return;
+    }
+
+    if (BuildingInstance.Limit) {
+      const sameCount = this.scene.getBuildings().getChildren().filter((building: Building) => (
+        building.variant === variant
+      )).length;
+      const limit = BuildingInstance.Limit * (Math.floor(this.scene.wave.number / 5) + 1);
+      if (sameCount >= limit) {
+        this.scene.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name.toUpperCase()}`);
+        return;
+      }
     }
 
     player.takeResources(BuildingInstance.Cost);

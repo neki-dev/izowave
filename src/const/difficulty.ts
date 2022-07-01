@@ -39,12 +39,14 @@ export const BUILDING_BUILD_AREA_GROWTH = 0.05; // Radius growth by level
 
 export const AMMUNITION_AMMO_LIMIT = 200; // Maximum amount of ammo
 export const AMMUNITION_AMMO_UPGRADE = 50; // Amount of ammo added per upgrade
+export const AMMUNITION_LIMIT = 6; // Maximum count ammunition on world (N * (wave / 5))
 
 export const MINE_RESOURCES_LIMIT = 150; // Maximum amount of resources that mine can
 export const MINE_RESOURCES_UPGRADE = 20; // Amount of resources added per upgrade
+export const MINE_LIMIT = 4; // Maximum count mines on world (N * (wave / 5))
 
 export const TOWER_SHOT_DAMAGE_GROWTH = 0.6; // Shot damage growth by upgrade
-export const TOWER_SHOT_FREEZE_GROWTH = 0.6; // Frozen duration growth by upgrade
+export const TOWER_SHOT_FREEZE_GROWTH = 0.5; // Frozen duration growth by upgrade
 export const TOWER_SHOT_SPEED_GROWTH = 0.3; // Shot speed growth by upgrade
 export const TOWER_AMMO_AMOUNT = 20; // Default shoots in clip
 

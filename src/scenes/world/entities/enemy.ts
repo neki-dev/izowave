@@ -90,12 +90,12 @@ export default class Enemy extends Sprite {
     // Add spawn effect
     if (this.visible) {
       this.container.setAlpha(0.0);
-      this.calm(1000);
+      this.calm(750);
       this.setScale(0.1);
       this.scene.tweens.add({
         targets: this,
         scale,
-        duration: 1000,
+        duration: 750,
         onComplete: () => {
           this.container.setAlpha(1.0);
         },

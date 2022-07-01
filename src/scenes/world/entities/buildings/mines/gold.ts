@@ -3,7 +3,7 @@ import World from '~scene/world';
 
 import { BuildingTexture, BuildingVariant, ResourceType } from '~type/building';
 
-import { MINE_RESOURCES_LIMIT } from '~const/difficulty';
+import { MINE_LIMIT, MINE_RESOURCES_LIMIT } from '~const/difficulty';
 
 export default class BuildingMineGold extends BuildingMine {
   static Name = 'Gold mine';
@@ -22,6 +22,8 @@ export default class BuildingMineGold extends BuildingMine {
   static UpgradeCost = { bronze: 10, silver: 10, gold: 20 };
 
   static Health = 400;
+
+  static Limit = MINE_LIMIT;
 
   /**
    * Building variant constructor.

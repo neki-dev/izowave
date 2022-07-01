@@ -24,7 +24,7 @@ export default Component(function ComponentParams(container, {
     }
 
     const text = this.add.text((item.icon !== undefined) ? 15 : 0, offset - 1, item.text, {
-      color: (item.type === 'hint') ? '#ffd800' : '#fff',
+      color: (item.type === 'hint') ? '#ffd800' : (item.color || '#fff'),
       fontSize: (item.type === 'hint') ? '10px' : '12px',
       fontFamily: INTERFACE_FONT_MONOSPACE,
       padding: { bottom: 1 },

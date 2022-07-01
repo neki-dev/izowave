@@ -57,6 +57,7 @@ export type BuildingDescriptionItem = {
   icon?: number
   type?: 'text' | 'param' | 'hint'
   post?: string
+  color?: string
 };
 
 export interface BuildingInstance {
@@ -66,4 +67,5 @@ export interface BuildingInstance {
   Cost: Resources
   UpgradeCost?: Resources
   Health?: number
+  Limit?: number
 }

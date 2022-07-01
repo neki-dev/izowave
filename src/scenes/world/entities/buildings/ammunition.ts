@@ -6,7 +6,7 @@ import {
 } from '~type/building';
 import { NoticeType } from '~type/interface';
 
-import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE } from '~const/difficulty';
+import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE, AMMUNITION_LIMIT } from '~const/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 export default class BuildingAmmunition extends Building {
@@ -26,6 +26,8 @@ export default class BuildingAmmunition extends Building {
   static UpgradeCost = { bronze: 30, silver: 30, gold: 40 };
 
   static Health = 300;
+
+  static Limit = AMMUNITION_LIMIT;
 
   /**
    * Ammo amount left.
