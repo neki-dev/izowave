@@ -63,9 +63,9 @@ export type BuildingDescriptionItem = {
 export interface BuildingInstance {
   Name: string
   Description: BuildingDescriptionItem[]
-  Texture?: BuildingTexture
+  Texture: BuildingTexture
   Cost: Resources
-  UpgradeCost?: Resources
-  Health?: number
+  UpgradeCost: Resources
+  Health: number
   Limit?: number
 }

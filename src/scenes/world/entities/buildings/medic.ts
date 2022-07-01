@@ -4,7 +4,7 @@ import World from '~scene/world';
 
 import { BuildingVariant, BuildingTexture, BuildingDescriptionItem } from '~type/building';
 
-import { MEDIC_HEAL_AMOUNT } from '~const/difficulty';
+import { MEDIC_HEAL_AMOUNT, MEDIC_LIMIT } from '~const/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 
 export default class BuildingMedic extends Building {
@@ -25,6 +25,8 @@ export default class BuildingMedic extends Building {
   static UpgradeCost = { bronze: 35, silver: 30, gold: 50 };
 
   static Health = 200;
+
+  static Limit = MEDIC_LIMIT;
 
   /**
    * Building variant constructor.
