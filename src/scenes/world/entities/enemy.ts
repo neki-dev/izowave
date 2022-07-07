@@ -13,7 +13,7 @@ import { WorldEffect } from '~type/world';
 import { LiveEvents } from '~type/live';
 import { EnemyData, EnemyTexture } from '~type/enemy';
 
-import { ENEMY_PATH_BREAKPOINT, ENEMY_SPECIE_PARAMS } from '~const/enemy';
+import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
 import {
   ENEMY_DAMAGE_GROWTH, ENEMY_HEALTH_GROWTH, ENEMY_SPEED_GROWTH,
   ENEMY_KILL_EXPERIENCE, ENEMY_KILL_EXPERIENCE_GROWTH,
@@ -116,7 +116,7 @@ export default class Enemy extends Sprite {
     this.anims.create({
       key: 'idle',
       frames: this.anims.generateFrameNumbers(texture, {}),
-      frameRate: ENEMY_SPECIE_PARAMS[texture].frameRate,
+      frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       repeat: -1,
       delay: Math.random() * 500,
     });
@@ -389,7 +389,7 @@ registerAssets(Object.values(EnemyTexture).map((texture) => ({
   type: 'spritesheet',
   url: `assets/sprites/${texture}.png`,
   frameConfig: {
-    frameWidth: ENEMY_SPECIE_PARAMS[texture].size,
-    frameHeight: ENEMY_SPECIE_PARAMS[texture].size,
+    frameWidth: ENEMY_TEXTURE_META[texture].size,
+    frameHeight: ENEMY_TEXTURE_META[texture].size,
   },
 })));
