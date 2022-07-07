@@ -1,14 +1,13 @@
 import Phaser from 'phaser';
 import { calcGrowth, equalPositions } from '~lib/utils';
 import Level from '~scene/world/level';
-import Building from '~scene/world/entities/building';
 import World from '~scene/world';
+import Buildings from '~scene/world/entities/buildings';
 
 import { BiomeType, TileType } from '~type/level';
 import { BuildingVariant } from '~type/building';
 import { NoticeType } from '~type/interface';
 
-import BUILDINGS from '~const/buildings';
 import { BUILDING_BUILD_AREA, BUILDING_BUILD_AREA_GROWTH } from '~const/difficulty';
 import { TILE_META } from '~const/level';
 
@@ -80,7 +79,7 @@ export default class Builder {
     }
 
     const variant = BUILDING_VARIANTS[this.variantIndex];
-    return BUILDINGS[variant][param];
+    return Buildings[variant][param];
   }
 
   /**
@@ -99,6 +98,15 @@ export default class Builder {
    */
   public isVariantSelected() {
     return (this.variantIndex !== null);
+  }
+
+  /**
+   * Get build limit on current wave.
+   *
+   * @param limit - Default limit
+   */
+  public getBuildCurrentLimit(limit: number): number {
+    return limit * (Math.floor(this.scene.wave.number / 5) + 1);
   }
 
   /**
@@ -254,7 +262,7 @@ export default class Builder {
     }
 
     const variant = BUILDING_VARIANTS[this.variantIndex];
-    const BuildingInstance = BUILDINGS[variant];
+    const BuildingInstance = Buildings[variant];
 
     const { player } = this.scene;
     if (!player.haveResources(BuildingInstance.Cost)) {
@@ -263,11 +271,9 @@ export default class Builder {
     }
 
     if (BuildingInstance.Limit) {
-      const sameCount = this.scene.getBuildings().getChildren().filter((building: Building) => (
-        building.variant === variant
-      )).length;
-      const limit = BuildingInstance.Limit * (Math.floor(this.scene.wave.number / 5) + 1);
-      if (sameCount >= limit) {
+      const count = this.scene.selectBuildings(variant).length;
+      const limit = this.getBuildCurrentLimit(BuildingInstance.Limit);
+      if (count >= limit) {
         this.scene.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name.toUpperCase()}`);
         return;
       }

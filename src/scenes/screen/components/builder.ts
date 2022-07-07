@@ -5,14 +5,13 @@ import ComponentBuildingInfo from '~scene/screen/components/building-info';
 import Wave from '~scene/world/wave';
 import Builder from '~scene/world/builder';
 import World from '~scene/world';
+import Buildings from '~scene/world/entities/buildings';
 
 import { SceneKey } from '~type/scene';
 import { BuildingInstance, BuildingVariant } from '~type/building';
 
-import BUILDINGS from '~const/buildings';
 import { WaveEvents } from '~type/wave';
 import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_ERROR } from '~const/interface';
-import Building from '~scene/world/entities/building';
 
 type Props = {
   builder: Builder
@@ -27,7 +26,6 @@ const ITEMS_MARGIN = 5;
 export default Component(function ComponentBuilder(container, { builder, wave, player }: Props) {
   const hover = { current: null };
 
-  container.setPosition(container.x - ITEM_SIZE, container.y);
   container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
 
   const getData = (): BuildingInstance => {
@@ -36,21 +34,17 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
     }
 
     const variant = BUILDING_VARIANTS[hover.current];
-    const data = { ...BUILDINGS[variant] };
+    const data = { ...Buildings[variant] };
 
     if (data.Limit) {
       const world = <World> this.scene.get(SceneKey.WORLD);
-      const sameCount = world.getBuildings().getChildren().filter((building: Building) => (
-        building.variant === variant
-      )).length;
-      const limit = data.Limit * (Math.floor(world.wave.number / 5) + 1);
+      const count = world.selectBuildings(variant).length;
+      const limit = builder.getBuildCurrentLimit(data.Limit);
       data.Description = [
         ...data.Description, {
-          text: `You have ${sameCount} of ${limit}`,
+          text: `You have ${count} of ${limit}`,
           type: 'text',
-          color: (sameCount >= limit)
-            ? INTERFACE_TEXT_COLOR_ERROR
-            : undefined,
+          color: (count >= limit) ? INTERFACE_TEXT_COLOR_ERROR : undefined,
         },
       ];
     }
@@ -99,7 +93,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
   };
 
   BUILDING_VARIANTS.forEach((variant: BuildingVariant, index: number) => {
-    const item = this.add.container(0, (ITEM_SIZE + ITEMS_MARGIN) * index);
+    const item = this.add.container(-ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * index);
     item.setSize(ITEM_SIZE, ITEM_SIZE);
 
     const body = this.add.rectangle(0, 0, ITEM_SIZE, ITEM_SIZE);
@@ -110,7 +104,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
     body.on(Phaser.Input.Events.POINTER_OUT, () => unfocus());
     body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
 
-    const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
+    const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, Buildings[variant].Texture);
     preview.setScale(0.65);
 
     const number = this.add.text(ITEM_SIZE - 4, 4, String(index + 1), {

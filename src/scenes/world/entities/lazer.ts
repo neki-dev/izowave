@@ -38,7 +38,7 @@ export default class Lazer extends Phaser.GameObjects.Line {
   constructor(tower: BuildingTower) {
     super(tower.scene);
     tower.scene.add.existing(this);
-    tower.scene.getShots().add(this);
+    tower.scene.shots.add(this);
 
     this.tower = tower;
 

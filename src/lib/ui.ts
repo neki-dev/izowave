@@ -44,7 +44,10 @@ export function adaptiveSize(callback: (width: number, height: number) => void) 
   refresh();
   window.addEventListener('resize', refresh);
 
-  return () => {
-    window.removeEventListener('resize', refresh);
+  return {
+    refresh,
+    cancel: () => {
+      window.removeEventListener('resize', refresh);
+    },
   };
 }

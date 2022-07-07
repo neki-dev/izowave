@@ -98,7 +98,7 @@ export default class Wave extends EventEmitter {
           const pause = calcGrowth(WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, this.number);
           this.spawnPause = now + Math.max(pause, 500);
         }
-      } else if (this.scene.getEnemies().getTotalUsed() === 0) {
+      } else if (this.scene.enemies.getTotalUsed() === 0) {
         this.complete();
       }
     } else if (this.timeleft < now) {

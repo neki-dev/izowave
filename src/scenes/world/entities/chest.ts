@@ -31,7 +31,7 @@ export default class Chest extends Phaser.GameObjects.Image {
     const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
     super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.DEFAULT, variant);
     scene.add.existing(this);
-    scene.getChests().add(this);
+    scene.chests.add(this);
 
     this.positionAtMatrix = positionAtMatrix;
 

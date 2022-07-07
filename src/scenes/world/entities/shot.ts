@@ -41,7 +41,7 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
   constructor(tower: BuildingTower) {
     super(tower.scene, tower.x, tower.y, ShotTexture[tower.shotType]);
     tower.scene.add.existing(this);
-    tower.scene.getShots().add(this);
+    tower.scene.shots.add(this);
 
     this.tower = tower;
 

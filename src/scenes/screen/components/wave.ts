@@ -90,7 +90,7 @@ export default Component(function ComponentWave(container, { wave }: Props) {
   return {
     update: () => {
       if (wave.isGoing) {
-        const killedCount = wave.spawnedCount - wave.scene.getEnemies().getTotalUsed();
+        const killedCount = wave.spawnedCount - wave.scene.enemies.getTotalUsed();
         counter.setText(String(wave.maxSpawnedCount - killedCount));
         counter.setColor('#fff');
       } else {

@@ -148,18 +148,16 @@ export default class BuildingTower extends Building {
   }
 
   /**
-   *
+   * Get nearby ammunition.
    */
   private getAmmunition(): BuildingAmmunition {
-    const ammunitions = <BuildingAmmunition[]> this.scene.getBuildings().getChildren().filter((building: Building) => (
-      building.variant === BuildingVariant.AMMUNITION
-      && building.actionsAreaContains(this)
-    ));
-    if (ammunitions.length === 0) {
+    const ammunitions = <BuildingAmmunition[]> this.scene.selectBuildings(BuildingVariant.AMMUNITION);
+    const nearby = ammunitions.filter((building: Building) => building.actionsAreaContains(this));
+    if (nearby.length === 0) {
       return null;
     }
 
-    const ammunition = ammunitions.sort((a, b) => (b.amountLeft - a.amountLeft))[0];
+    const ammunition = nearby.sort((a, b) => (b.amountLeft - a.amountLeft))[0];
     if (ammunition.amountLeft === 0) {
       return null;
     }
@@ -210,7 +208,7 @@ export default class BuildingTower extends Building {
    * Find nearby enemy for shoot.
    */
   private getTarget(): Enemy {
-    const enemies = (<Enemy[]> this.scene.getEnemies().getChildren()).filter((enemy) => (
+    const enemies = (<Enemy[]> this.scene.enemies.getChildren()).filter((enemy) => (
       !enemy.live.isDead()
       && this.actionsAreaContains(enemy)
     ));

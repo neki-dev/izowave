@@ -73,7 +73,7 @@ export default class Enemy extends Sprite {
       health: calcGrowth(health * scene.difficulty, ENEMY_HEALTH_GROWTH, scene.wave.number),
     });
     scene.add.existing(this);
-    scene.getEnemies().add(this);
+    scene.enemies.add(this);
 
     this.damage = calcGrowth(damage * scene.difficulty, ENEMY_DAMAGE_GROWTH, scene.wave.number);
     this.speed = calcGrowth(speed, ENEMY_SPEED_GROWTH, scene.wave.number);

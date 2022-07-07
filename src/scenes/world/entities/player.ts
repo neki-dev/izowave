@@ -349,7 +349,7 @@ export default class Player extends Sprite {
     const distance = calcGrowth(PLAYER_ATTACK_DISTANCE, PLAYER_ATTACK_DISTANCE_GROWTH, this.level);
     const offset = this.scene.physics.velocityFromAngle(this.direction, distance);
     const area = new Phaser.Geom.Circle(this.x + offset.x, this.y + offset.y, distance);
-    this.scene.getEnemies().children.iterate((enemy: Enemy) => {
+    this.scene.enemies.children.iterate((enemy: Enemy) => {
       if (area.contains(enemy.x, enemy.y)) {
         enemy.live.damage(damage);
       }

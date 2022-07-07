@@ -84,15 +84,14 @@ export default class Screen extends Phaser.Scene {
     const fps = ComponentFPS.call(this, { x: INTERFACE_PADDING });
     components.add(fps);
 
-    const stopAdaptive = adaptiveSize((width, height) => {
+    const adaptive = adaptiveSize((width, height) => {
       notices.setX(width / 2);
       builder.setX(width - INTERFACE_PADDING);
       fps.setY(height - INTERFACE_PADDING);
     });
 
     world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
-      stopAdaptive();
-
+      adaptive.cancel();
       components.destroy(true);
 
       ComponentGameOver.call(this, { x: 0, y: 0 }, { stat, record });

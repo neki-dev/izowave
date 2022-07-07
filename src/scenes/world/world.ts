@@ -6,6 +6,7 @@ import Level from '~scene/world/level';
 import Builder from '~scene/world/builder';
 import Wave from '~scene/world/wave';
 import Player from '~scene/world/entities/player';
+import Enemies from '~scene/world/entities/enemies';
 import Chest from '~scene/world/entities/chest';
 import Shot from '~scene/world/entities/shot';
 import Building from '~scene/world/entities/building';
@@ -20,7 +21,6 @@ import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
 import { PlayerStat } from '~type/player';
 import { SpawnTarget } from '~type/level';
 
-import ENEMIES from '~const/enemies';
 import {
   WORLD_CAMERA_ZOOM,
   WORLD_DEFAULT_BUILDINGS,
@@ -33,28 +33,45 @@ import {
 } from '~const/enemy';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import { INPUT_KEY } from '~const/keyboard';
+import { BuildingVariant } from '~type/building';
 
 export default class World extends Phaser.Scene {
   /**
    * Group of all enemies.
    */
-  private enemies: Phaser.GameObjects.Group;
+  private _enemies: Phaser.GameObjects.Group;
+
+  public get enemies() { return this._enemies; }
+
+  private set enemies(v) { this._enemies = v; }
 
   /**
    * Group of all buildings.
    */
 
-  private buildings: Phaser.GameObjects.Group;
+  private _buildings: Phaser.GameObjects.Group;
+
+  public get buildings() { return this._buildings; }
+
+  private set buildings(v) { this._buildings = v; }
 
   /**
    * Group of all chests.
    */
-  private chests: Phaser.GameObjects.Group;
+  private _chests: Phaser.GameObjects.Group;
+
+  public get chests() { return this._chests; }
+
+  private set chests(v) { this._chests = v; }
 
   /**
    * Group of all shots.
    */
-  private shots: Phaser.GameObjects.Group;
+  private _shots: Phaser.GameObjects.Group;
+
+  public get shots() { return this._shots; }
+
+  private set shots(v) { this._shots = v; }
 
   /**
    * Enemies positions for spawn.
@@ -190,34 +207,6 @@ export default class World extends Phaser.Scene {
   }
 
   /**
-   * Get chests group.
-   */
-  public getChests(): Phaser.GameObjects.Group {
-    return this.chests;
-  }
-
-  /**
-   * Get enemies group.
-   */
-  public getEnemies(): Phaser.GameObjects.Group {
-    return this.enemies;
-  }
-
-  /**
-   * Get buildings group.
-   */
-  public getBuildings(): Phaser.GameObjects.Group {
-    return this.buildings;
-  }
-
-  /**
-   * Get shots group.
-   */
-  public getShots(): Phaser.GameObjects.Group {
-    return this.shots;
-  }
-
-  /**
    * Get current game time.
    */
   public getTimerNow(): number {
@@ -245,10 +234,20 @@ export default class World extends Phaser.Scene {
   }
 
   /**
+   * Get list of buildings with a specific variant.
+   *
+   * @param variant - Varaint
+   */
+  public selectBuildings(variant: BuildingVariant): Building[] {
+    const buildings = (<Building[]> this.buildings.getChildren());
+    return buildings.filter((building) => (building.variant === variant));
+  }
+
+  /**
    * Spawn enemy in random position.
    */
   public spawnEnemy(variant: EnemyVariant): Enemy {
-    const buildings = this.getBuildings().getChildren();
+    const buildings = this.buildings.getChildren();
     const allowedPositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building: Building) => (
@@ -262,7 +261,7 @@ export default class World extends Phaser.Scene {
 
     const positions = selectClosest(allowedPositions, this.player.positionAtMatrix, ENEMY_SPAWN_POSITIONS);
 
-    const EnemyInstance = ENEMIES[variant];
+    const EnemyInstance = Enemies[variant];
     return new EnemyInstance(this, {
       positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
@@ -292,7 +291,7 @@ export default class World extends Phaser.Scene {
       }
     }
 
-    this.getBuildings().children.iterate((building: Building) => {
+    this.buildings.children.iterate((building: Building) => {
       const { x, y } = building.positionAtMatrix;
 
       navigator.setPointCost(x, y, LEVEL_BUILDING_PATH_COST);
@@ -401,7 +400,7 @@ export default class World extends Phaser.Scene {
       return;
     }
 
-    this.getEnemies().children.iterate((enemy: Enemy) => {
+    this.enemies.children.iterate((enemy: Enemy) => {
       enemy.updatePath();
     });
 
@@ -496,7 +495,7 @@ export default class World extends Phaser.Scene {
 
     this.wave.on(WaveEvents.FINISH, () => {
       // Get missing count of chests
-      const newCount = maxCount - this.getChests().getTotalUsed();
+      const newCount = maxCount - this.chests.getTotalUsed();
       if (newCount < 1) {
         return;
       }
@@ -553,7 +552,7 @@ export default class World extends Phaser.Scene {
         this.player.giveExperience(9999);
       },
       GODHAND: () => {
-        this.getEnemies().children.iterate((enemy: Enemy) => {
+        this.enemies.children.iterate((enemy: Enemy) => {
           enemy.live.kill();
         });
       },

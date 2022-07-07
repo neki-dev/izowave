@@ -43,6 +43,17 @@ export default class Menu extends Phaser.Scene {
 
     this.container = this.add.container(0, 0);
 
+    const adaptive = adaptiveSize((width, height) => {
+      background.setSize(width, height);
+      if (this.container.width && this.container.height) {
+        this.container.setPosition(width / 2 - this.container.width / 2, height / 2 - this.container.height / 2);
+      }
+    });
+
+    this.container.on(Phaser.GameObjects.Events.DESTROY, () => {
+      adaptive.cancel();
+    });
+
     loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
       const shift = { x: 0, y: 0 };
       const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
@@ -78,15 +89,7 @@ export default class Menu extends Phaser.Scene {
       shift.x = logotype.width;
 
       this.container.setSize(shift.x + CONTENT_MARGIN + shift.x * 2, shift.y);
-
-      const stopAdaptive = adaptiveSize((width, height) => {
-        background.setSize(width, height);
-        this.container.setPosition(width / 2 - this.container.width / 2, height / 2 - this.container.height / 2);
-      });
-
-      this.container.on(Phaser.GameObjects.Events.DESTROY, () => {
-        stopAdaptive();
-      });
+      adaptive.refresh();
 
       const line = this.add.rectangle(shift.x + CONTENT_MARGIN / 2, -100, 1, shift.y + 200, 0xffffff, 0.3);
       line.setOrigin(0.0, 0.0);

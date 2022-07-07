@@ -94,7 +94,7 @@ export default class Building extends Phaser.GameObjects.Image {
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.add.existing(this);
-    scene.getBuildings().add(this);
+    scene.buildings.add(this);
 
     this.live = new Live(health);
     this.actions = actions;
