@@ -1,21 +1,10 @@
-declare global {
-  interface Window {
-    cheat: (code: string) => void;
-  }
-}
-
-const scheme = {
-  _current: {},
-};
-
-function setCheatsScheme(data: {
+export default function setCheatsScheme(data: {
   [code in string]: () => void
 }) {
-  scheme._current = data;
+  for (const [cheat, callback] of Object.entries(data)) {
+    window[cheat] = () => {
+      callback();
+      return 'Cheat activated';
+    };
+  }
 }
-
-window.cheat = (code: string) => {
-  scheme._current[code]?.();
-};
-
-export default setCheatsScheme;
