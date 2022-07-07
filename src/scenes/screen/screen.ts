@@ -18,6 +18,7 @@ import { Notice, NoticeType, ScreenTexture } from '~type/interface';
 import { INTERFACE_PADDING } from '~const/interface';
 import { EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH } from '~const/difficulty';
 import { registerAssets } from '~lib/assets';
+import { adaptiveSize } from '~lib/ui';
 
 export default class Screen extends Phaser.Scene {
   readonly notices: Notice[] = [];
@@ -27,7 +28,6 @@ export default class Screen extends Phaser.Scene {
   }
 
   create() {
-    const { canvas } = this.sys;
     const world = <World> this.scene.get(SceneKey.WORLD);
     const components = this.add.group();
 
@@ -69,11 +69,11 @@ export default class Screen extends Phaser.Scene {
     components.add(resources);
 
     // Component notices
-    const notices = ComponentNotices.call(this, { x: canvas.width / 2, y: INTERFACE_PADDING });
+    const notices = ComponentNotices.call(this, { y: INTERFACE_PADDING });
     components.add(notices);
 
     // Component builder
-    const builder = ComponentBuilder.call(this, { x: canvas.width - INTERFACE_PADDING, y: INTERFACE_PADDING }, {
+    const builder = ComponentBuilder.call(this, { y: INTERFACE_PADDING }, {
       builder: world.builder,
       wave: world.wave,
       player: world.player,
@@ -81,10 +81,18 @@ export default class Screen extends Phaser.Scene {
     components.add(builder);
 
     // Component fps
-    const fps = ComponentFPS.call(this, { x: INTERFACE_PADDING, y: canvas.height - INTERFACE_PADDING });
+    const fps = ComponentFPS.call(this, { x: INTERFACE_PADDING });
     components.add(fps);
 
+    const stopAdaptive = adaptiveSize((width, height) => {
+      notices.setX(width / 2);
+      builder.setX(width - INTERFACE_PADDING);
+      fps.setY(height - INTERFACE_PADDING);
+    });
+
     world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
+      stopAdaptive();
+
       components.destroy(true);
 
       ComponentGameOver.call(this, { x: 0, y: 0 }, { stat, record });

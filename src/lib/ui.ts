@@ -38,3 +38,13 @@ export default function Component(component: ComponentInstance) {
     return container;
   };
 }
+
+export function adaptiveSize(callback: (width: number, height: number) => void) {
+  const refresh = () => callback(window.innerWidth, window.innerHeight);
+  refresh();
+  window.addEventListener('resize', refresh);
+
+  return () => {
+    window.removeEventListener('resize', refresh);
+  };
+}

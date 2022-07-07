@@ -133,8 +133,8 @@ export default class Level extends TileMatrix {
    * Update area of visible tiles.
    */
   private updateVisibleTiles() {
-    const { player, level, sys: { canvas } } = this.scene;
-    const d = canvas.width * LEVEL_MAP_VISIBLE_PART;
+    const { player, level } = this.scene;
+    const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
     const center = player.getBottomCenter();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
 
