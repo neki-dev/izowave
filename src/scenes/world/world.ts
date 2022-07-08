@@ -10,6 +10,7 @@ import Enemies from '~scene/world/entities/enemies';
 import Chest from '~scene/world/entities/chest';
 import Shot from '~scene/world/entities/shot';
 import Building from '~scene/world/entities/building';
+import Buildings from '~scene/world/entities/buildings';
 import Enemy from '~scene/world/entities/enemy';
 import setCheatsScheme from '~scene/world/cheats';
 import Screen from '~scene/screen';
@@ -22,10 +23,7 @@ import { PlayerStat } from '~type/player';
 import { SpawnTarget } from '~type/level';
 
 import {
-  WORLD_CAMERA_ZOOM,
-  WORLD_DEFAULT_BUILDINGS,
-  WORLD_DIFFICULTY_KEY,
-  WORLD_DIFFICULTY_POWERS,
+  WORLD_CAMERA_ZOOM, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS,
 } from '~const/world';
 import {
   ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING,
@@ -521,14 +519,26 @@ export default class World extends Phaser.Scene {
       { x: x - shift, y },
       { x: x + shift, y },
     ];
-    for (const instances of WORLD_DEFAULT_BUILDINGS) {
+
+    const buildingsVariants = [
+      [BuildingVariant.TOWER_FIRE],
+    ];
+    if (this.difficultyType === GameDifficulty.EASY) {
+      buildingsVariants.push([BuildingVariant.AMMUNITION]);
+    }
+    if (this.difficultyType !== GameDifficulty.UNREAL) {
+      buildingsVariants.push([BuildingVariant.MINE_BRONZE, BuildingVariant.MINE_SILVER]);
+    }
+
+    for (const variant of buildingsVariants) {
       const index = Phaser.Math.Between(0, spawns.length - 1);
       const positionAtMatrix = spawns[index];
       const tileGround = this.level.getTile({ ...positionAtMatrix, z: 0 });
       if (tileGround?.biome.solid) {
-        const BuildingInstance = Phaser.Utils.Array.GetRandom(instances);
+        const BuildingInstance = Buildings[Phaser.Utils.Array.GetRandom(variant)];
         new BuildingInstance(this, positionAtMatrix);
       }
+
       // Remove occupied position from spawns
       spawns.splice(index, 1);
       if (spawns.length === 0) {
