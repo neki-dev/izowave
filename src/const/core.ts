@@ -2,5 +2,5 @@
 
 export const COPYRIGHT = [
   'Copyright © 2022, Nikita Galadiy',
-  'Version 0.15.2 beta',
+  'Version 0.15.3 beta',
 ];
