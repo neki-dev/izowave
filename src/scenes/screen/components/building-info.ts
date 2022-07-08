@@ -8,7 +8,7 @@ import { BuildingInstance } from '~type/building';
 
 import { WORLD_DEPTH_UI } from '~const/world';
 import {
-  INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL,
+  INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_PRIMARY,
 } from '~const/interface';
 
 type Props = {
@@ -25,7 +25,7 @@ const CONTAINER_PADDING = 16;
 export default Component(function ComponentBuildingInfo(container, {
   origin, player, data, mode = 'building',
 }: Props) {
-  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_PURPLE, 0.9);
+  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_BLUE, 0.75);
   body.setOrigin(0.0, 0.0);
 
   let position = { x: container.x, y: container.y };
@@ -34,7 +34,15 @@ export default Component(function ComponentBuildingInfo(container, {
   const name = this.add.text(shift.x, shift.y, '', {
     fontSize: '18px',
     fontFamily: INTERFACE_FONT_PIXEL,
-    color: INTERFACE_TEXT_COLOR_ACTIVE,
+    color: INTERFACE_TEXT_COLOR_PRIMARY,
+    padding: { bottom: 2 },
+    shadow: {
+      offsetX: 2,
+      offsetY: 2,
+      color: '#624318',
+      blur: 0,
+      fill: true,
+    },
   });
   shift.y += toEven(name.height + CONTAINER_PADDING);
 

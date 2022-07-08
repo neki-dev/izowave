@@ -2,7 +2,7 @@ import Component from '~lib/ui';
 
 import { BuildingDescriptionItem } from '~type/building';
 
-import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_BLUE_DARK } from '~const/interface';
 import { ScreenTexture } from '~type/interface';
 
 type Props = {
@@ -23,13 +23,22 @@ export default Component(function ComponentParams(container, {
       container.add(icon);
     }
 
-    const text = this.add.text((item.icon !== undefined) ? 15 : 0, offset - 1, item.text, {
-      color: (item.type === 'hint') ? '#ffd800' : (item.color || '#fff'),
-      fontSize: (item.type === 'hint') ? '10px' : '12px',
+    const text = this.add.text((item.icon !== undefined) ? 15 : 0, offset - 1, item.text, (item.type === 'hint') ? {
+      color: '#fff',
+      fontSize: '10px',
+      fontFamily: INTERFACE_FONT_MONOSPACE,
+      backgroundColor: INTERFACE_TEXT_COLOR_BLUE_DARK,
+      padding: { top: 1, left: 2, right: 2 },
+    } : {
+      color: item.color || '#fff',
+      fontSize: '12px',
       fontFamily: INTERFACE_FONT_MONOSPACE,
       padding: { bottom: 1 },
     });
     text.setOrigin(0.0, 0.0);
+    if (item.type === 'hint') {
+      text.setAlpha(0.75);
+    }
     container.add(text);
 
     if (item.post) {
@@ -39,7 +48,7 @@ export default Component(function ComponentParams(container, {
         padding: { bottom: 1 },
       });
       post.setOrigin(0.0, 0.0);
-      post.setAlpha(0.5);
+      post.setAlpha(0.75);
       container.add(post);
     }
 

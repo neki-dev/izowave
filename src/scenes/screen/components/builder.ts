@@ -11,7 +11,7 @@ import { SceneKey } from '~type/scene';
 import { BuildingInstance, BuildingVariant } from '~type/building';
 
 import { WaveEvents } from '~type/wave';
-import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_ERROR } from '~const/interface';
+import { INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_ERROR } from '~const/interface';
 
 type Props = {
   builder: Builder
@@ -136,7 +136,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
           body.setFillStyle(0x000000);
           body.setAlpha(1.0);
         } else if (builder.variantIndex === i - 1) {
-          body.setFillStyle(INTERFACE_BOX_COLOR_PURPLE);
+          body.setFillStyle(INTERFACE_BOX_COLOR_BLUE);
           body.setAlpha(1.0);
         } else if (hover.current === i - 1) {
           body.setFillStyle(0x000000);

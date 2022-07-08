@@ -1,6 +1,6 @@
 import Component from '~lib/ui';
 
-import { INTERFACE_BOX_COLOR_PURPLE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_PIXEL } from '~const/interface';
 
 export default Component(function ComponentControls(container) {
   let shift = 0;
@@ -30,7 +30,7 @@ export default Component(function ComponentControls(container) {
         },
       });
 
-      const body = this.add.rectangle(0, 0, textName.width, textName.height, INTERFACE_BOX_COLOR_PURPLE);
+      const body = this.add.rectangle(0, 0, textName.width, textName.height, INTERFACE_BOX_COLOR_BLUE);
       body.setOrigin(0.0, 0.0);
 
       const description = this.add.text(body.width + 10, 6, `-  ${item.description}`, {

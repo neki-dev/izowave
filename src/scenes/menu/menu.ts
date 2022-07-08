@@ -8,7 +8,7 @@ import ComponentItems, { MenuItem } from '~scene/menu/components/items';
 
 import { SceneKey } from '~type/scene';
 
-import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_BLUE } from '~const/interface';
 import { COPYRIGHT } from '~const/core';
 import { INPUT_KEY } from '~const/keyboard';
 
@@ -45,7 +45,7 @@ export default class Menu extends Phaser.Scene {
 
     const shift = { x: 0, y: 0 };
     const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
-      color: '#8a53d4',
+      color: INTERFACE_TEXT_COLOR_BLUE,
       fontSize: '50px',
       fontFamily: INTERFACE_FONT_PIXEL,
       padding: { bottom: 6 },

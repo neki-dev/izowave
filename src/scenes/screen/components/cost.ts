@@ -4,7 +4,7 @@ import { toEven } from '~lib/utils';
 import { Resources, ResourceType } from '~type/building';
 
 import {
-  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR,
+  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR, INTERFACE_BOX_COLOR_BLUE_DARK,
 } from '~const/interface';
 
 type Props = {
@@ -22,7 +22,7 @@ export default Component(function ComponentCost(container, {
 
   container.setSize(size[0], size[1]);
 
-  const body = this.add.rectangle(0, 0, container.width, container.height, 0x000000, 0.9);
+  const body = this.add.rectangle(0, 0, container.width, container.height, INTERFACE_BOX_COLOR_BLUE_DARK, 0.9);
   body.setOrigin(0.0, 0.0);
 
   const title = this.add.text(10, offset, label, {
