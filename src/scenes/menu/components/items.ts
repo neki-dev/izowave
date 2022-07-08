@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import Component from '~lib/ui';
 
-import { INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_PRIMARY } from '~const/interface';
+import { INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_TEXT_COLOR_PRIMARY } from '~const/interface';
 
 export type MenuItem = {
   label: string
@@ -20,10 +20,11 @@ const MENU_ITEMS_MARGIN = 40;
 
 export default Component(function ComponentItems(container, { width, data, onSelect }: Props) {
   let shift = 0;
+  const active = { current: null };
+
   for (const item of data) {
     const text = this.add.text(width, shift, item.label, {
-      fixedWidth: width,
-      color: item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : '#fff',
+      color: '#fff',
       fontSize: '20px',
       fontFamily: INTERFACE_FONT_PIXEL,
       align: 'right',
@@ -40,21 +41,32 @@ export default Component(function ComponentItems(container, { width, data, onSel
     text.setInteractive();
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
-      text.setScale(1.15);
+      text.setColor(item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : INTERFACE_TEXT_COLOR_ACTIVE);
     });
     text.on(Phaser.Input.Events.POINTER_OUT, () => {
       this.input.setDefaultCursor('default');
-      text.setScale(1.0);
+      if (active.current !== text) {
+        text.setColor('#fff');
+      }
     });
     text.on(Phaser.Input.Events.POINTER_UP, () => {
       if (item.onClick) {
         item.onClick();
       } else if (item.content) {
         onSelect(item);
+        if (active.current) {
+          active.current.setColor('#fff');
+        }
+        text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
+        active.current = text;
       }
     });
     container.add(text);
     shift += text.height + MENU_ITEMS_MARGIN;
+    if (item.default) {
+      active.current = text;
+      text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
+    }
   }
 
   container.setSize(width, shift - MENU_ITEMS_MARGIN);

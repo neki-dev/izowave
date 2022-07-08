@@ -27,7 +27,7 @@ new Game({
   height: window.innerHeight,
   pixelArt: true,
   disableContextMenu: true,
-  backgroundColor: '#222222',
+  backgroundColor: '#222',
   scale: {
     mode: Phaser.Scale.RESIZE,
   },

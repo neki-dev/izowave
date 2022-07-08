@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { getAssetsPack, registerAssets } from '~lib/assets';
+import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
 import { selectClosest } from '~lib/utils';
 import Effects from '~scene/world/effects';
 import Level from '~scene/world/level';
@@ -21,6 +21,7 @@ import { SceneKey } from '~type/scene';
 import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
 import { PlayerStat } from '~type/player';
 import { SpawnTarget } from '~type/level';
+import { BuildingVariant } from '~type/building';
 
 import {
   WORLD_CAMERA_ZOOM, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS,
@@ -31,7 +32,7 @@ import {
 } from '~const/enemy';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import { INPUT_KEY } from '~const/keyboard';
-import { BuildingVariant } from '~type/building';
+import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface';
 
 export default class World extends Phaser.Scene {
   /**
@@ -164,6 +165,11 @@ export default class World extends Phaser.Scene {
   private pathFindingPause: number = 0;
 
   /**
+   * Loading indicator.
+   */
+  private loading?: Phaser.GameObjects.Text;
+
+  /**
    * World constructor.
    */
   constructor() {
@@ -180,28 +186,28 @@ export default class World extends Phaser.Scene {
   }
 
   /**
+   * Preload scene.
+   */
+  public preload() {
+    this.toggleLoading(true);
+  }
+
+  /**
    * Create world and open menu.
    */
   public create() {
     this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
-
-    this.timer = this.time.addEvent({ loop: true });
 
     const difficulty = localStorage.getItem(WORLD_DIFFICULTY_KEY);
     if (!difficulty) {
       localStorage.setItem(WORLD_DIFFICULTY_KEY, GameDifficulty.NORMAL);
     }
 
-    this.effects = new Effects(this);
-
-    this.makeLevel();
-    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
-
-    this.makeChestsGroup();
-    this.makeBuildingsGroups();
-    this.makeEnemiesGroup();
-
-    this.scene.launch(SceneKey.MENU);
+    loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
+      this.prepareGame();
+      this.scene.launch(SceneKey.MENU);
+      this.toggleLoading(false);
+    });
   }
 
   /**
@@ -228,6 +234,28 @@ export default class World extends Phaser.Scene {
       this.updateEnemiesPath();
     } catch (e) {
       console.error(e);
+    }
+  }
+
+  /**
+   * Toggle loading indicator.
+   *
+   * @param state - State
+   */
+  public toggleLoading(state: boolean) {
+    if (Boolean(this.loading) === state) {
+      return;
+    }
+
+    if (state) {
+      this.loading = this.add.text(window.innerWidth / 2, window.innerHeight / 2, 'L O A D I N G', {
+        fontSize: '18px',
+        fontFamily: INTERFACE_FONT_MONOSPACE,
+      });
+      this.loading.setOrigin(0.5, 0.5);
+    } else {
+      this.loading.destroy();
+      delete this.loading;
     }
   }
 
@@ -387,6 +415,21 @@ export default class World extends Phaser.Scene {
       this.scene.stop(SceneKey.MENU);
       this.scene.resume();
     }
+  }
+
+  /**
+   * Prepare game to start.
+   */
+  private prepareGame() {
+    this.timer = this.time.addEvent({ loop: true });
+    this.effects = new Effects(this);
+
+    this.makeLevel();
+    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
+
+    this.makeChestsGroup();
+    this.makeBuildingsGroups();
+    this.makeEnemiesGroup();
   }
 
   /**

@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { loadFontFace } from '~lib/assets';
 import { adaptiveSize } from '~lib/ui';
 import World from '~scene/world';
 import ComponentAbout from '~scene/menu/components/about';
@@ -13,6 +12,7 @@ import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface
 import { COPYRIGHT } from '~const/core';
 import { INPUT_KEY } from '~const/keyboard';
 
+const CONTENT_WIDTH = 500;
 const CONTENT_MARGIN = 200;
 
 export default class Menu extends Phaser.Scene {
@@ -43,86 +43,81 @@ export default class Menu extends Phaser.Scene {
 
     this.container = this.add.container(0, 0);
 
+    const shift = { x: 0, y: 0 };
+    const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
+      color: '#8a53d4',
+      fontSize: '50px',
+      fontFamily: INTERFACE_FONT_PIXEL,
+      padding: { bottom: 6 },
+      shadow: {
+        offsetX: 6,
+        offsetY: 6,
+        color: '#000',
+        blur: 0,
+        fill: true,
+      },
+    });
+    shift.y += logotype.height + 80;
+
+    const items = ComponentItems.call(this, shift, {
+      width: logotype.width,
+      data: menuItems,
+      onSelect: (item: MenuItem) => this.updateContent(item),
+    });
+    shift.y += items.height + 100;
+
+    const copyright = this.add.text(shift.x, shift.y, COPYRIGHT, {
+      fixedWidth: logotype.width,
+      fontSize: '12px',
+      fontFamily: INTERFACE_FONT_MONOSPACE,
+      align: 'right',
+    });
+    copyright.setAlpha(0.5);
+    shift.y += copyright.height;
+    shift.x = logotype.width;
+
+    this.container.setSize(shift.x + CONTENT_MARGIN + CONTENT_WIDTH, shift.y);
+
+    const line = this.add.rectangle(shift.x + CONTENT_MARGIN / 2, -100, 1, shift.y + 200, 0xffffff, 0.3);
+    line.setOrigin(0.0, 0.0);
+    shift.x += CONTENT_MARGIN;
+    shift.y = 0;
+
+    const title = this.add.text(shift.x, shift.y, '', {
+      fontSize: '50px',
+      fontFamily: INTERFACE_FONT_PIXEL,
+      padding: { bottom: 6 },
+      shadow: {
+        offsetX: 6,
+        offsetY: 6,
+        color: '#000',
+        blur: 0,
+        fill: true,
+      },
+    });
+    title.setAlpha(0.3);
+    title.setName('Title');
+
+    shift.y += title.height + 80;
+
+    const content = this.add.container(shift.x, shift.y);
+    content.setName('Content');
+
+    this.container.add([logotype, items, copyright, line, title, content]);
+
     const adaptive = adaptiveSize((width, height) => {
       background.setSize(width, height);
-      if (this.container.width && this.container.height) {
-        this.container.setPosition(width / 2 - this.container.width / 2, height / 2 - this.container.height / 2);
-      }
+      this.container.setPosition(width / 2 - this.container.width / 2, height / 2 - this.container.height / 2);
     });
 
     this.container.on(Phaser.GameObjects.Events.DESTROY, () => {
       adaptive.cancel();
     });
 
-    loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
-      const shift = { x: 0, y: 0 };
-      const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
-        color: '#8a53d4',
-        fontSize: '50px',
-        fontFamily: INTERFACE_FONT_PIXEL,
-        padding: { bottom: 6 },
-        shadow: {
-          offsetX: 6,
-          offsetY: 6,
-          color: '#000',
-          blur: 0,
-          fill: true,
-        },
-      });
-      shift.y += logotype.height + 80;
-
-      const items = ComponentItems.call(this, shift, {
-        width: logotype.width,
-        data: menuItems,
-        onSelect: (item: MenuItem) => this.updateContent(item),
-      });
-      shift.y += items.height + 100;
-
-      const copyright = this.add.text(shift.x, shift.y, COPYRIGHT, {
-        fixedWidth: logotype.width,
-        fontSize: '12px',
-        fontFamily: INTERFACE_FONT_MONOSPACE,
-        align: 'right',
-      });
-      copyright.setAlpha(0.5);
-      shift.y += copyright.height;
-      shift.x = logotype.width;
-
-      this.container.setSize(shift.x + CONTENT_MARGIN + shift.x * 2, shift.y);
-      adaptive.refresh();
-
-      const line = this.add.rectangle(shift.x + CONTENT_MARGIN / 2, -100, 1, shift.y + 200, 0xffffff, 0.3);
-      line.setOrigin(0.0, 0.0);
-      shift.x += CONTENT_MARGIN;
-      shift.y = 0;
-
-      const title = this.add.text(shift.x, shift.y, '', {
-        fontSize: '50px',
-        fontFamily: INTERFACE_FONT_PIXEL,
-        padding: { bottom: 6 },
-        shadow: {
-          offsetX: 6,
-          offsetY: 6,
-          color: '#000',
-          blur: 0,
-          fill: true,
-        },
-      });
-      title.setAlpha(0.3);
-      title.setName('Title');
-
-      shift.y += title.height + 80;
-
-      const content = this.add.container(shift.x, shift.y);
-      content.setName('Content');
-
-      this.container.add([logotype, items, copyright, line, title, content]);
-
-      const defaultItem = menuItems.find((item) => item.default);
-      if (defaultItem) {
-        this.updateContent(defaultItem);
-      }
-    });
+    const defaultItem = menuItems.find((item) => item.default);
+    if (defaultItem) {
+      this.updateContent(defaultItem);
+    }
 
     this.input.keyboard.once(INPUT_KEY.START, () => {
       this.startGame(asPause);
