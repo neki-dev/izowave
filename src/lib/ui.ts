@@ -23,7 +23,11 @@ export default function Component(component: ComponentInstance) {
       const { update, destroy } = result;
 
       if (update) {
-        update();
+        try {
+          update();
+        } catch (error) {
+          console.log('Error on update UI component:', error.message);
+        }
         this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
         container.on(Phaser.Scenes.Events.DESTROY, () => {
           this.events.off(Phaser.Scenes.Events.UPDATE, update);
