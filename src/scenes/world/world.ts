@@ -208,6 +208,8 @@ export default class World extends Phaser.Scene {
       this.scene.launch(SceneKey.MENU);
       this.toggleLoading(false);
     });
+
+    this.registerOptimizations();
   }
 
   /**
@@ -618,6 +620,35 @@ export default class World extends Phaser.Scene {
         this.wave.runTimeleft();
       },
     };
+  }
+
+  private registerOptimizations(){
+    this.visibleChildrenOptimization();
+    this.sortDepthOptimization();
+  }
+
+  /*
+  * https://github.com/photonstorm/phaser/pull/6216
+  */
+  private visibleChildrenOptimization(){
+    this.screen.cameras.main.cameraManager.getVisibleChildren = (children, camera) => {
+      return children.filter(function (child) { return child.willRender(camera); });
+    }
+  }
+
+  /*
+  * https://github.com/photonstorm/phaser/pull/6217
+  */
+  private sortDepthOptimization(){
+    let ref = this.scene.systems.displayList;
+    ref.depthSort = ()=>{
+      if (ref.sortChildrenFlag)
+      {
+        ref.list.sort(ref.sortByDepth);
+
+        ref.sortChildrenFlag = false;
+      }
+    }
   }
 }
 
