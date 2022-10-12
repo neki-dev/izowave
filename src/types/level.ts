@@ -33,7 +33,7 @@ export type LevelBiome = {
 };
 
 export enum LevelTexture {
-  TILES = 'level/tileset',
+  TILESET = 'level/tileset',
   TREE = 'level/tree',
 }
 

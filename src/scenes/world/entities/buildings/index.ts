@@ -1,16 +1,12 @@
-import BuildingMedic from './medic';
-import BuildingTowerFire from './towers/fire';
-import BuildingTowerFrozen from './towers/frozen';
-import BuildingTowerLazer from './towers/lazer';
-import BuildingMineSilver from './mines/silver';
-import BuildingMineGold from './mines/gold';
-import BuildingMineBronze from './mines/bronze';
-import BuildingWall from './wall';
-import BuildingAmmunition from './ammunition';
-
 import { BuildingVariant } from '~type/building';
 
-const BUILDINGS: {
+import { BuildingAmmunition } from './ammunition';
+import { BuildingMedic } from './medic';
+import { BuildingMineBronze, BuildingMineGold, BuildingMineSilver } from './mines';
+import { BuildingTowerFire, BuildingTowerFrozen, BuildingTowerLazer } from './towers';
+import { BuildingWall } from './wall';
+
+export const BUILDINGS: {
   [value in BuildingVariant]: any
 } = {
   [BuildingVariant.WALL]: BuildingWall,
@@ -24,4 +20,10 @@ const BUILDINGS: {
   [BuildingVariant.MEDIC]: BuildingMedic,
 };
 
-export default BUILDINGS;
+// export * from './ammunition';
+// export * from './medic';
+// export * from './mine';
+// export * from './mines';
+// export * from './tower';
+// export * from './towers';
+// export * from './wall';

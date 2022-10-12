@@ -1,8 +1,7 @@
-import Component from '~lib/ui';
-
 import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { Component } from '~lib/ui';
 
-export default Component(function ComponentFPS(container) {
+export const ComponentFPS = Component(function (container) {
   const fps = this.add.text(0, 0, '', {
     fontSize: '12px',
     fontFamily: INTERFACE_FONT_MONOSPACE,

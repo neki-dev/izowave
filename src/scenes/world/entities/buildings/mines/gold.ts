@@ -1,11 +1,9 @@
-import BuildingMine from '~scene/world/entities/buildings/mine';
-import World from '~scene/world';
-
+import { MINE_LIMIT, MINE_RESOURCES_LIMIT } from '~const/difficulty';
+import { World } from '~scene/world';
+import { BuildingMine } from '~scene/world/entities/buildings/mine';
 import { BuildingTexture, BuildingVariant, ResourceType } from '~type/building';
 
-import { MINE_LIMIT, MINE_RESOURCES_LIMIT } from '~const/difficulty';
-
-export default class BuildingMineGold extends BuildingMine {
+export class BuildingMineGold extends BuildingMine {
   static Name = 'Gold mine';
 
   static Description = [

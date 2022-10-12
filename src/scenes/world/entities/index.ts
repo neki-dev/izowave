@@ -1,0 +1,10 @@
+// export * from './building';
+// export * from './buildings';
+// export * from './chest';
+// export * from './enemy';
+// export * from './enemies';
+// export * from './lazer';
+// export * from './live';
+// export * from './player';
+// export * from './shot';
+// export * from './sprite';

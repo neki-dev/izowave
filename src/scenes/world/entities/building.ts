@@ -1,32 +1,31 @@
 import Phaser from 'phaser';
-import { registerAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
-import Live from '~scene/world/entities/live';
-import ComponentBuildingInfo from '~scene/screen/components/building-info';
-import Hexagon from '~lib/hexagon';
-import Level from '~scene/world/level';
-import World from '~scene/world';
 
-import { NoticeType, ScreenTexture } from '~type/interface';
-import { WorldEvents } from '~type/world';
-import { TileType } from '~type/level';
-import {
-  BuildingActionsParams, BuildingData, BuildingEvents,
-  Resources, BuildingTexture, BuildingVariant, BuildingDescriptionItem,
-} from '~type/building';
-import { LiveEvents } from '~type/live';
-
-import { TILE_META } from '~const/level';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import {
   BUILDING_ACTION_PAUSE_GROWTH,
   BUILDING_ACTION_RADIUS_GROWTH,
   BUILDING_UPGRADE_EXPERIENCE,
 } from '~const/difficulty';
-import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { INPUT_KEY } from '~const/keyboard';
+import { TILE_META } from '~const/level';
+import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { registerAssets } from '~lib/assets';
+import { Hexagon } from '~lib/hexagon';
+import { calcGrowth } from '~lib/utils';
+import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
+import { World } from '~scene/world';
+import { Live } from '~scene/world/entities/live';
+import { Level } from '~scene/world/level';
+import {
+  BuildingActionsParams, BuildingData, BuildingEvents,
+  Resources, BuildingTexture, BuildingVariant, BuildingDescriptionItem,
+} from '~type/building';
+import { NoticeType, ScreenTexture } from '~type/interface';
+import { TileType } from '~type/level';
+import { LiveEvents } from '~type/live';
+import { WorldEvents } from '~type/world';
 
-export default class Building extends Phaser.GameObjects.Image {
+export class Building extends Phaser.GameObjects.Image {
   // @ts-ignore
   readonly scene: World;
 

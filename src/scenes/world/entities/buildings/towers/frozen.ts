@@ -1,12 +1,10 @@
-import BuildingTower from '~scene/world/entities/buildings/tower';
-import World from '~scene/world';
-
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { World } from '~scene/world';
+import { BuildingTower } from '~scene/world/entities/buildings/tower';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/building';
 import { ShotType } from '~type/shot';
 
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-
-export default class BuildingTowerFrozen extends BuildingTower {
+export class BuildingTowerFrozen extends BuildingTower {
   static Name = 'Frozen tower';
 
   static Description = [

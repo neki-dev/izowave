@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { TileType } from '~type/level';
 
-export default class TileMatrix {
+export class TileMatrix {
   /**
    * Level tiles matrix.
    * Indexes: z, y, x

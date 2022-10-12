@@ -1,11 +1,10 @@
-import Building from '~scene/world/entities/building';
-import World from '~scene/world';
-
+import { World } from '~scene/world';
+import { Building } from '~scene/world/entities/building';
 import {
   BuildingEvents, BuildingVariant, BuildingTexture,
 } from '~type/building';
 
-export default class BuildingWall extends Building {
+export class BuildingWall extends Building {
   static Name = 'Wall';
 
   static Description = [

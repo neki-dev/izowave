@@ -1,11 +1,9 @@
-import Component from '~lib/ui';
-import { toEven } from '~lib/utils';
-
-import { Resources, ResourceType } from '~type/building';
-
 import {
   INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR, INTERFACE_BOX_COLOR_BLUE_DARK,
 } from '~const/interface';
+import { Component } from '~lib/ui';
+import { toEven } from '~lib/utils';
+import { Resources, ResourceType } from '~type/building';
 
 type Props = {
   label: string
@@ -14,9 +12,9 @@ type Props = {
   have: () => Resources
 };
 
-export default Component(function ComponentCost(container, {
+export const ComponentCost = Component<Props>(function (container, {
   label, size, need, have,
-}: Props) {
+}) {
   const items = [];
   let offset = 10;
 

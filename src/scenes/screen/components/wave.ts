@@ -1,14 +1,12 @@
-import { formatTime } from '~lib/utils';
-import Component from '~lib/ui';
-import Wave from '~scene/world/wave';
-
-import { WaveEvents } from '~type/wave';
-import { NoticeType } from '~type/interface';
-
 import {
   INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_PIXEL,
   INTERFACE_BOX_COLOR_ERROR, INTERFACE_BOX_COLOR_INFO,
 } from '~const/interface';
+import { Component } from '~lib/ui';
+import { formatTime } from '~lib/utils';
+import { Wave } from '~scene/world/wave';
+import { NoticeType } from '~type/interface';
+import { WaveEvents } from '~type/wave';
 
 type Props = {
   wave: Wave
@@ -19,7 +17,9 @@ type Props = {
 const CONTAINER_WIDTH = 130;
 const CONTAINER_HEIGHT = 36;
 
-export default Component(function ComponentWave(container, { wave }: Props) {
+export const ComponentWave = Component<Props>(function (container, {
+  wave,
+}) {
   container.setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);

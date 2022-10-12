@@ -1,18 +1,18 @@
-import Component from '~lib/ui';
-
-import { PlayerStat } from '~type/player';
-
 import {
   INTERFACE_TEXT_COLOR_ERROR_DARK, INTERFACE_FONT_MONOSPACE,
   INTERFACE_FONT_PIXEL,
 } from '~const/interface';
+import { Component } from '~lib/ui';
+import { PlayerStat } from '~type/player';
 
 type Props = {
   stat: PlayerStat
   record: PlayerStat
 };
 
-export default Component(function ComponentGameOver(container, { stat, record }: Props) {
+export const ComponentGameOver = Component<Props>(function (container, {
+  stat, record,
+}) {
   const { canvas } = this.sys;
 
   const background = this.add.rectangle(0, 0, canvas.width, canvas.height, 0x000000, 0.85);

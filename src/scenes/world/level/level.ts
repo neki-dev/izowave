@@ -1,24 +1,20 @@
-import Phaser from 'phaser';
 import GenBiome from 'gen-biome';
-import { registerAssets } from '~lib/assets';
-import TileMatrix from '~scene/world/level/tile-matrix';
-import Navigator from '~scene/world/level/navigator';
-import World from '~scene/world';
+import Phaser from 'phaser';
 
+import {
+  TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP,
+  LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT, LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS,
+} from '~const/level';
+import { registerAssets } from '~lib/assets';
+import { World } from '~scene/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType,
 } from '~type/level';
 
-import {
-  TILE_META,
-  LEVEL_BIOME_LAYERS, LEVEL_BIOMES,
-  LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
-  LEVEL_MAP_TREES_COUNT,
-  LEVEL_SPAWN_POSITIONS_STEP,
-  LEVEL_MAP_VISIBLE_PART,
-} from '~const/level';
+import { Navigator } from './navigator';
+import { TileMatrix } from './tile-matrix';
 
-export default class Level extends TileMatrix {
+export class Level extends TileMatrix {
   readonly scene: World;
 
   /**
@@ -63,7 +59,10 @@ export default class Level extends TileMatrix {
     const map = new GenBiome<LevelBiome>({
       width: LEVEL_MAP_SIZE,
       height: LEVEL_MAP_SIZE,
-      layers: LEVEL_BIOME_LAYERS,
+      layers: [{
+        parameters: LEVEL_BIOME_PARAMETERS,
+        biomes: LEVEL_BIOMES,
+      }],
     });
     map.generate();
     this.matrix = map.getMatrix();
@@ -98,7 +97,7 @@ export default class Level extends TileMatrix {
   public readSpawnPositions(target: SpawnTarget): Phaser.Types.Math.Vector2Like[] {
     const positions = [];
     const step = LEVEL_SPAWN_POSITIONS_STEP;
-    const rand = Math.floor(LEVEL_SPAWN_POSITIONS_STEP / 2);
+    const rand = Math.floor(step / 2);
     for (let sY = step; sY < this.size - step; sY += step) {
       for (let sX = step; sX < this.size - step; sX += step) {
         const x = sX + Phaser.Math.Between(-rand, rand);
@@ -168,7 +167,7 @@ export default class Level extends TileMatrix {
         : biome.tileIndex;
       const tilePosition = { x, y, z: biome.z };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
-      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILES, variant);
+      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant);
       tile.setOrigin(0.5, TILE_META.origin);
       tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
       tile.biome = biome;
@@ -200,7 +199,7 @@ export default class Level extends TileMatrix {
     this.treesTiles = this.scene.add.group();
 
     const positions = this.readSpawnPositions(SpawnTarget.TREE);
-    for (let i = 0; i < LEVEL_MAP_TREES_COUNT; i++) {
+    for (let i = 0; i < this.size * 2; i++) {
       const positionAtMatrix = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition = { ...positionAtMatrix, z: 1 };
       if (!this.getTile(tilePosition)) {
@@ -291,9 +290,9 @@ export default class Level extends TileMatrix {
 }
 
 registerAssets([{
-  key: LevelTexture.TILES,
+  key: LevelTexture.TILESET,
   type: 'spritesheet',
-  url: `assets/sprites/${LevelTexture.TILES}.png`,
+  url: `assets/sprites/${LevelTexture.TILESET}.png`,
   // @ts-ignore
   frameConfig: {
     frameWidth: TILE_META.width,

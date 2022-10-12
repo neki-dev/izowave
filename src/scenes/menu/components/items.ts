@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import Component from '~lib/ui';
 
 import { INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_TEXT_COLOR_PRIMARY } from '~const/interface';
+import { Component } from '~lib/ui';
 
 export type MenuItem = {
   label: string
@@ -18,7 +18,9 @@ type Props = {
 
 const MENU_ITEMS_MARGIN = 40;
 
-export default Component(function ComponentItems(container, { width, data, onSelect }: Props) {
+export const ComponentItems = Component<Props>(function (container, {
+  width, data, onSelect,
+}) {
   let shift = 0;
   const active = { current: null };
 

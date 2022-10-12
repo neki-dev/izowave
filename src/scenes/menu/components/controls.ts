@@ -1,8 +1,7 @@
-import Component from '~lib/ui';
-
 import { INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { Component } from '~lib/ui';
 
-export default Component(function ComponentControls(container) {
+export const ComponentControls = Component(function (container) {
   let shift = 0;
   for (const item of [
     { name: 'W A S D', description: 'Move player' },

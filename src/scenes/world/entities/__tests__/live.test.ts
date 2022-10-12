@@ -1,5 +1,6 @@
 import assert from 'assert';
-import Live from '../live';
+
+import { Live } from '../live';
 
 let live: Live;
 

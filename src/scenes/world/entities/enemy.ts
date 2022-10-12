@@ -1,25 +1,24 @@
 import Phaser from 'phaser';
-import { registerAssets } from '~lib/assets';
-import NavigatorTask from '~scene/world/level/navigator/task';
-import { calcGrowth, equalPositions } from '~lib/utils';
-import Player from '~scene/world/entities/player';
-import Building from '~scene/world/entities/building';
-import Level from '~scene/world/level';
-import Sprite from '~scene/world/entities/sprite';
-import World from '~scene/world';
 
-import { TileType } from '~type/level';
-import { WorldEffect } from '~type/world';
-import { LiveEvents } from '~type/live';
-import { EnemyData, EnemyTexture } from '~type/enemy';
-
-import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
 import {
   ENEMY_DAMAGE_GROWTH, ENEMY_HEALTH_GROWTH, ENEMY_SPEED_GROWTH,
   ENEMY_KILL_EXPERIENCE, ENEMY_KILL_EXPERIENCE_GROWTH,
 } from '~const/difficulty';
+import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
+import { registerAssets } from '~lib/assets';
+import { calcGrowth, equalPositions } from '~lib/utils';
+import { World } from '~scene/world';
+import { Building } from '~scene/world/entities/building';
+import { Player } from '~scene/world/entities/player';
+import { Sprite } from '~scene/world/entities/sprite';
+import { Level } from '~scene/world/level';
+import { NavigatorTask } from '~scene/world/level/navigator/task';
+import { EnemyData, EnemyTexture } from '~type/enemy';
+import { TileType } from '~type/level';
+import { LiveEvents } from '~type/live';
+import { WorldEffect } from '~type/world';
 
-export default class Enemy extends Sprite {
+export class Enemy extends Sprite {
   /**
    * Damage power.
    */
@@ -105,7 +104,6 @@ export default class Enemy extends Sprite {
         y: this.y,
         lifespan: { min: 150, max: 250 },
         scale: { start: 0.25, end: 0.0 },
-        frequency: 2,
         speed: 100,
         quantity: 2,
         tint: 0x000,
@@ -175,7 +173,6 @@ export default class Enemy extends Sprite {
       follow: this,
       lifespan: { min: 100, max: 150 },
       scale: { start: 0.2, end: 0.1 },
-      frequency: 2,
       speed: 80,
     }, 250);
 
@@ -377,7 +374,6 @@ export default class Enemy extends Sprite {
       follow: this,
       lifespan: { min: 100, max: 250 },
       scale: { start: 1.0, end: 0.5 },
-      frequency: 2,
       speed: 100,
       maxParticles: 6,
     }, 250);

@@ -1,19 +1,18 @@
 import Phaser from 'phaser';
-import { calcGrowth, equalPositions } from '~lib/utils';
-import Level from '~scene/world/level';
-import World from '~scene/world';
-import Buildings from '~scene/world/entities/buildings';
-
-import { BiomeType, TileType } from '~type/level';
-import { BuildingVariant } from '~type/building';
-import { NoticeType } from '~type/interface';
 
 import { BUILDING_BUILD_AREA, BUILDING_BUILD_AREA_GROWTH } from '~const/difficulty';
 import { TILE_META } from '~const/level';
+import { calcGrowth, equalPositions } from '~lib/utils';
+import { World } from '~scene/world';
+import { BUILDINGS } from '~scene/world/entities/buildings';
+import { Level } from '~scene/world/level';
+import { BuildingVariant } from '~type/building';
+import { NoticeType } from '~type/interface';
+import { BiomeType, TileType } from '~type/level';
 
 const BUILDING_VARIANTS = Object.values(BuildingVariant);
 
-export default class Builder {
+export class Builder {
   readonly scene: World;
 
   /**
@@ -79,7 +78,7 @@ export default class Builder {
     }
 
     const variant = BUILDING_VARIANTS[this.variantIndex];
-    return Buildings[variant][param];
+    return BUILDINGS[variant][param];
   }
 
   /**
@@ -262,7 +261,7 @@ export default class Builder {
     }
 
     const variant = BUILDING_VARIANTS[this.variantIndex];
-    const BuildingInstance = Buildings[variant];
+    const BuildingInstance = BUILDINGS[variant];
 
     const { player } = this.scene;
     if (!player.haveResources(BuildingInstance.Cost)) {

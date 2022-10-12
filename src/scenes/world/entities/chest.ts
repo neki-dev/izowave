@@ -1,18 +1,17 @@
 import Phaser from 'phaser';
-import { registerAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
-import Level from '~scene/world/level';
-import World from '~scene/world';
-
-import { ChestTexture, ChestData } from '~type/chest';
-import { TileType } from '~type/level';
 
 import {
   CHEST_EXPERIENCE, CHEST_EXPERIENCE_GROWTH,
   CHEST_RESOURCES, CHEST_RESOURCES_GROWTH,
 } from '~const/difficulty';
+import { registerAssets } from '~lib/assets';
+import { calcGrowth } from '~lib/utils';
+import { World } from '~scene/world';
+import { Level } from '~scene/world/level';
+import { ChestTexture, ChestData } from '~type/chest';
+import { TileType } from '~type/level';
 
-export default class Chest extends Phaser.GameObjects.Image {
+export class Chest extends Phaser.GameObjects.Image {
   // @ts-ignore
   readonly scene: World;
 

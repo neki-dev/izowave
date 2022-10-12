@@ -1,5 +1,3 @@
-/* eslint-disable import/prefer-default-export */
-
 export const INPUT_KEY = {
   PAUSE: 'keyup-ESC',
   START: 'keyup-ENTER',

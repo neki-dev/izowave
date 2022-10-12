@@ -1,40 +1,39 @@
 import Phaser from 'phaser';
-import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
-import { selectClosest } from '~lib/utils';
-import Effects from '~scene/world/effects';
-import Level from '~scene/world/level';
-import Builder from '~scene/world/builder';
-import Wave from '~scene/world/wave';
-import Player from '~scene/world/entities/player';
-import Enemies from '~scene/world/entities/enemies';
-import Chest from '~scene/world/entities/chest';
-import Shot from '~scene/world/entities/shot';
-import Building from '~scene/world/entities/building';
-import Buildings from '~scene/world/entities/buildings';
-import Enemy from '~scene/world/entities/enemy';
-import setCheatsScheme from '~scene/world/cheats';
-import Screen from '~scene/screen';
 
-import { WaveEvents } from '~type/wave';
-import { EnemyVariant } from '~type/enemy';
-import { SceneKey } from '~type/scene';
-import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
-import { PlayerStat } from '~type/player';
-import { SpawnTarget } from '~type/level';
-import { BuildingVariant } from '~type/building';
-
-import {
-  WORLD_CAMERA_ZOOM, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS,
-} from '~const/world';
 import {
   ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING,
   ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/enemy';
-import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
-import { INPUT_KEY } from '~const/keyboard';
 import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INPUT_KEY } from '~const/keyboard';
+import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
+import {
+  WORLD_CAMERA_ZOOM, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS,
+} from '~const/world';
+import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
+import { setCheatsScheme } from '~lib/cheats';
+import { selectClosest } from '~lib/utils';
+import { Screen } from '~scene/screen';
+import { Builder } from '~scene/world/builder';
+import { Effects } from '~scene/world/effects';
+import { Building } from '~scene/world/entities/building';
+import { BUILDINGS } from '~scene/world/entities/buildings';
+import { Chest } from '~scene/world/entities/chest';
+import { ENEMIES } from '~scene/world/entities/enemies';
+import { Enemy } from '~scene/world/entities/enemy';
+import { Player } from '~scene/world/entities/player';
+import { Shot } from '~scene/world/entities/shot';
+import { Level } from '~scene/world/level';
+import { Wave } from '~scene/world/wave';
+import { BuildingVariant } from '~type/building';
+import { EnemyVariant } from '~type/enemy';
+import { SpawnTarget } from '~type/level';
+import { PlayerStat } from '~type/player';
+import { SceneKey } from '~type/scene';
+import { WaveEvents } from '~type/wave';
+import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
 
-export default class World extends Phaser.Scene {
+export class World extends Phaser.Scene {
   /**
    * Group of all enemies.
    */
@@ -287,7 +286,7 @@ export default class World extends Phaser.Scene {
 
     const positions = selectClosest(allowedPositions, this.player.positionAtMatrix, ENEMY_SPAWN_POSITIONS);
 
-    const EnemyInstance = Enemies[variant];
+    const EnemyInstance = ENEMIES[variant];
     return new EnemyInstance(this, {
       positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
@@ -578,7 +577,7 @@ export default class World extends Phaser.Scene {
       const positionAtMatrix = spawns[index];
       const tileGround = this.level.getTile({ ...positionAtMatrix, z: 0 });
       if (tileGround?.biome.solid) {
-        const BuildingInstance = Buildings[Phaser.Utils.Array.GetRandom(variant)];
+        const BuildingInstance = BUILDINGS[Phaser.Utils.Array.GetRandom(variant)];
         new BuildingInstance(this, positionAtMatrix);
       }
 

@@ -1,15 +1,13 @@
-import Building from '~scene/world/entities/building';
-import World from '~scene/world';
-
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE, AMMUNITION_LIMIT } from '~const/difficulty';
+import { World } from '~scene/world';
+import { Building } from '~scene/world/entities/building';
 import {
   BuildingDescriptionItem, BuildingEvents, BuildingTexture, BuildingVariant,
 } from '~type/building';
 import { NoticeType } from '~type/interface';
 
-import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE, AMMUNITION_LIMIT } from '~const/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-
-export default class BuildingAmmunition extends Building {
+export class BuildingAmmunition extends Building {
   static Name = 'Ammunition';
 
   static Description = [

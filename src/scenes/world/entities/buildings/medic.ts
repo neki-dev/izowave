@@ -1,13 +1,11 @@
-import Building from '~scene/world/entities/building';
-import Player from '~scene/world/entities/player';
-import World from '~scene/world';
-
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { MEDIC_HEAL_AMOUNT, MEDIC_LIMIT } from '~const/difficulty';
+import { World } from '~scene/world';
+import { Building } from '~scene/world/entities/building';
+import { Player } from '~scene/world/entities/player';
 import { BuildingVariant, BuildingTexture, BuildingDescriptionItem } from '~type/building';
 
-import { MEDIC_HEAL_AMOUNT, MEDIC_LIMIT } from '~const/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-
-export default class BuildingMedic extends Building {
+export class BuildingMedic extends Building {
   static Name = 'Medic';
 
   static Description = [

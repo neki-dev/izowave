@@ -1,8 +1,9 @@
 import { Game } from 'phaser';
+
 import { COPYRIGHT } from '~const/core';
-import MenuScene from '~scene/menu';
-import InterfaceScene from '~scene/screen';
-import WorldScene from '~scene/world';
+import { Menu } from '~scene/menu';
+import { Screen } from '~scene/screen';
+import { World } from '~scene/world';
 
 declare global {
   const IS_DEV_MODE: boolean;
@@ -14,7 +15,7 @@ console.log([
 ].join('\n'));
 
 new Game({
-  scene: [WorldScene, InterfaceScene, MenuScene],
+  scene: [World, Screen, Menu],
   parent: 'game-screen',
   physics: {
     default: 'arcade',

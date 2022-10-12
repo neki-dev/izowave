@@ -1,12 +1,10 @@
 /* eslint-disable no-param-reassign */
 
-import World from '~scene/world';
-
+import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { World } from '~scene/world';
 import { WorldEffect, WorldTexture } from '~type/world';
 
-import { WORLD_DEPTH_EFFECT } from '~const/world';
-
-export default class Effects {
+export class Effects {
   /**
    * Parent scene.
    */

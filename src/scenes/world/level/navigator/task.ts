@@ -1,10 +1,11 @@
-import Phaser from 'phaser';
 import Heap from 'heap';
-import PathNode from './node';
+import Phaser from 'phaser';
 
 import { NavigatorTaskState } from '~type/navigator';
 
-export default class NavigatorTask {
+import { PathNode } from './node';
+
+export class NavigatorTask {
   readonly from: Phaser.Types.Math.Vector2Like;
 
   readonly to: Phaser.Types.Math.Vector2Like;

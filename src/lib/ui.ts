@@ -1,20 +1,21 @@
 import Phaser from 'phaser';
-import Screen from '~scene/screen';
 
-type ComponentInstance = (
+import { Screen } from '~scene/screen';
+
+type ComponentInstance<T> = (
   this: Screen,
   container: Phaser.GameObjects.Container,
-  props?: any
+  props?: T
 ) => ({
   update?: () => void
   destroy?: () => void
 }) | void;
 
-export default function Component(component: ComponentInstance) {
+export function Component<T = any>(component: ComponentInstance<T>) {
   return function create(
     this: Screen,
     position: Phaser.Types.Math.Vector2Like,
-    props?: any,
+    props?: T,
   ): Phaser.GameObjects.Container {
     const container = this.add.container(position.x, position.y);
 

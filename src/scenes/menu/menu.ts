@@ -1,21 +1,20 @@
 import Phaser from 'phaser';
-import { adaptiveSize } from '~lib/ui';
-import World from '~scene/world';
-import ComponentAbout from '~scene/menu/components/about';
-import ComponentDifficulty from '~scene/menu/components/difficulty';
-import ComponentControls from '~scene/menu/components/controls';
-import ComponentItems, { MenuItem } from '~scene/menu/components/items';
 
-import { SceneKey } from '~type/scene';
-
-import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_BLUE } from '~const/interface';
 import { COPYRIGHT } from '~const/core';
+import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_BLUE } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
+import { adaptiveSize } from '~lib/ui';
+import { ComponentAbout } from '~scene/menu/components/about';
+import { ComponentControls } from '~scene/menu/components/controls';
+import { ComponentDifficulty } from '~scene/menu/components/difficulty';
+import { ComponentItems, MenuItem } from '~scene/menu/components/items';
+import { World } from '~scene/world';
+import { SceneKey } from '~type/scene';
 
 const CONTENT_WIDTH = 500;
 const CONTENT_MARGIN = 200;
 
-export default class Menu extends Phaser.Scene {
+export class Menu extends Phaser.Scene {
   private container: Phaser.GameObjects.Container;
 
   constructor() {

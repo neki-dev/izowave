@@ -1,8 +1,10 @@
-import { Biome, BiomeLayer } from 'gen-biome';
+import { Biome, LayerParameters } from 'gen-biome';
 
+import { getPerformance } from '~lib/optimize';
 import {
   BiomeType, LevelBiome, SpawnTarget, TileMeta,
 } from '~type/level';
+import { PerformanceLevel } from '~type/optimize';
 
 export const TILE_META: TileMeta = {
   width: 42,
@@ -14,18 +16,14 @@ export const TILE_META: TileMeta = {
   deg: 29.726,
 };
 
-// Get level size by max browser memory usage.
-// @ts-ignore
-const maxMem = Math.round((window.performance?.memory?.jsHeapSizeLimit || 0) / 1024 / 1024);
-let MAP_SIZE = 110;
-if (maxMem <= 1024) {
-  MAP_SIZE = 90;
-} else if (maxMem <= 2048) {
-  MAP_SIZE = 100;
-}
-export const LEVEL_MAP_SIZE = MAP_SIZE;
+export const LEVEL_MAP_SIZE = (() => {
+  switch (getPerformance()) {
+    case PerformanceLevel.LOW: return 90;
+    case PerformanceLevel.MEDIUM: return 100;
+    default: return 110;
+  }
+})();
 export const LEVEL_MAP_HEIGHT = 4;
-export const LEVEL_MAP_TREES_COUNT = MAP_SIZE * 2;
 export const LEVEL_MAP_VISIBLE_PART = 0.75;
 export const LEVEL_MAP_VISITED_TILE_TINT = 0xDDDDDD;
 
@@ -179,11 +177,8 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
   },
 }];
 
-export const LEVEL_BIOME_LAYERS: BiomeLayer[] = [{
-  parameters: {
-    frequencyChange: 8,
-    sizeDifference: 1.2,
-    bordersPuriry: 10,
-  },
-  biomes: LEVEL_BIOMES,
-}];
+export const LEVEL_BIOME_PARAMETERS: LayerParameters = {
+  frequencyChange: 8,
+  sizeDifference: 1.2,
+  bordersPuriry: 10,
+};

@@ -2,7 +2,7 @@ import EventEmmiter from 'events';
 
 import { LiveEvents } from '~type/live';
 
-export default class Live extends EventEmmiter {
+export class Live extends EventEmmiter {
   /**
    * Health amount.
    */

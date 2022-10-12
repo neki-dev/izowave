@@ -1,14 +1,13 @@
 import Phaser from 'phaser';
-import BuildingTower from '~scene/world/entities/buildings/tower';
-import Enemy from '~scene/world/entities/enemy';
-import World from '~scene/world';
 
+import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { World } from '~scene/world';
+import { BuildingTower } from '~scene/world/entities/buildings/tower';
+import { Enemy } from '~scene/world/entities/enemy';
 import { ShotParams } from '~type/shot';
 import { WorldEffect } from '~type/world';
 
-import { WORLD_DEPTH_EFFECT } from '~const/world';
-
-export default class Lazer extends Phaser.GameObjects.Line {
+export class Lazer extends Phaser.GameObjects.Line {
   // @ts-ignore
   readonly scene: World;
 
@@ -106,7 +105,6 @@ export default class Lazer extends Phaser.GameObjects.Line {
       follow: this.target,
       lifespan: { min: 100, max: 150 },
       scale: { start: 0.2, end: 0.1 },
-      frequency: 2,
       speed: 80,
       tint: 0xb136ff,
     }, 150);

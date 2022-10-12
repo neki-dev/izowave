@@ -1,4 +1,4 @@
-export default function setCheatsScheme(data: {
+export function setCheatsScheme(data: {
   [code in string]: () => void
 }) {
   for (const [cheat, callback] of Object.entries(data)) {

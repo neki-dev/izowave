@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-class Hexagon extends Phaser.Geom.Polygon {
+export class Hexagon extends Phaser.Geom.Polygon {
   public x: number;
 
   public y: number;
@@ -55,5 +55,3 @@ class Hexagon extends Phaser.Geom.Polygon {
     return Phaser.Geom.Polygon.Contains(hexagon, x, y);
   }
 }
-
-export default Hexagon;

@@ -1,15 +1,13 @@
-import Component from '~lib/ui';
-import { toEven } from '~lib/utils';
-import Player from '~scene/world/entities/player';
-import ComponentParams from '~scene/screen/components/params';
-import ComponentCost from '~scene/screen/components/cost';
-
-import { BuildingInstance } from '~type/building';
-
-import { WORLD_DEPTH_UI } from '~const/world';
 import {
   INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_PRIMARY,
 } from '~const/interface';
+import { WORLD_DEPTH_UI } from '~const/world';
+import { Component } from '~lib/ui';
+import { toEven } from '~lib/utils';
+import { ComponentCost } from '~scene/screen/components/cost';
+import { ComponentParams } from '~scene/screen/components/params';
+import { Player } from '~scene/world/entities/player';
+import { BuildingInstance } from '~type/building';
 
 type Props = {
   mode?: 'building' | 'builder'
@@ -22,9 +20,9 @@ const CONTAINER_WIDTH = 220;
 const CONTAINER_MIN_HEIGHT = 77;
 const CONTAINER_PADDING = 16;
 
-export default Component(function ComponentBuildingInfo(container, {
+export const ComponentBuildingInfo = Component<Props>(function (container, {
   origin, player, data, mode = 'building',
-}: Props) {
+}) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_BLUE, 0.75);
   body.setOrigin(0.0, 0.0);
 

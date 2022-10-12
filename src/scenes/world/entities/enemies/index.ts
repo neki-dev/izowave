@@ -1,14 +1,14 @@
-import EnemyBat from './bat';
-import EnemyDemon from './demon';
-import EnemyOverlord from './overlord';
-import EnemyBoss from './boss';
-import EnemyUndead from './undead';
-import EnemyImpure from './impure';
-import EnemyBouche from './bouche';
-
 import { EnemyVariant } from '~type/enemy';
 
-const ENEMIES: {
+import { EnemyBat } from './bat';
+import { EnemyBoss } from './boss';
+import { EnemyBouche } from './bouche';
+import { EnemyDemon } from './demon';
+import { EnemyImpure } from './impure';
+import { EnemyOverlord } from './overlord';
+import { EnemyUndead } from './undead';
+
+export const ENEMIES: {
   [value in EnemyVariant]: any
 } = {
   [EnemyVariant.BAT]: EnemyBat,
@@ -20,4 +20,10 @@ const ENEMIES: {
   [EnemyVariant.BOUCHE]: EnemyBouche,
 };
 
-export default ENEMIES;
+// export * from './bat';
+// export * from './boss';
+// export * from './bouche';
+// export * from './demon';
+// export * from './impure';
+// export * from './overlord';
+// export * from './undead';

@@ -1,9 +1,8 @@
-import Enemy from '~scene/world/entities/enemy';
-import World from '~scene/world';
-
+import { World } from '~scene/world';
+import { Enemy } from '~scene/world/entities/enemy';
 import { EnemyVariantData, EnemyTexture } from '~type/enemy';
 
-export default class EnemyDemon extends Enemy {
+export class EnemyDemon extends Enemy {
   constructor(scene: World, data: EnemyVariantData) {
     super(scene, {
       ...data,

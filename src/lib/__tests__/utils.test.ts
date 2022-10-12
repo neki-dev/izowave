@@ -1,4 +1,5 @@
 import assert from 'assert';
+
 import {
   calcGrowth, equalPositions, formatTime, selectClosest,
 } from '../utils';

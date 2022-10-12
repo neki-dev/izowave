@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
-import { registerAssets } from '~lib/assets';
-import Level from '~scene/world/level';
-import Enemy from '~scene/world/entities/enemy';
-import BuildingTower from '~scene/world/entities/buildings/tower';
-import World from '~scene/world';
 
+import { registerAssets } from '~lib/assets';
+import { World } from '~scene/world';
+import { BuildingTower } from '~scene/world/entities/buildings/tower';
+import { Enemy } from '~scene/world/entities/enemy';
+import { Level } from '~scene/world/level';
 import { ShotParams, ShotType, ShotTexture } from '~type/shot';
 import { WorldEffect } from '~type/world';
 
-export default class Shot extends Phaser.Physics.Arcade.Image {
+export class Shot extends Phaser.Physics.Arcade.Image {
   // @ts-ignore
   readonly scene: World;
 
@@ -81,7 +81,6 @@ export default class Shot extends Phaser.Physics.Arcade.Image {
       follow: this,
       lifespan: { min: 100, max: 200 },
       scale: { start: 0.25, end: 0.0 },
-      frequency: 2,
       quantity: 2,
       blendMode: 'ADD',
       tint: (this.tower.shotType === ShotType.FIRE) ? 0xff5400 : 0x00a1ff,

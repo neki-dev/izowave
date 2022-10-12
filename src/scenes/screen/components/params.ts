@@ -1,17 +1,15 @@
-import Component from '~lib/ui';
-
-import { BuildingDescriptionItem } from '~type/building';
-
 import { INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_BLUE_DARK } from '~const/interface';
+import { Component } from '~lib/ui';
+import { BuildingDescriptionItem } from '~type/building';
 import { ScreenTexture } from '~type/interface';
 
 type Props = {
   data: () => BuildingDescriptionItem[]
 };
 
-export default Component(function ComponentParams(container, {
+export const ComponentParams = Component<Props>(function (container, {
   data,
-}: Props) {
+}) {
   const current = {
     text: null,
   };

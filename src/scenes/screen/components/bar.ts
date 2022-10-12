@@ -1,7 +1,6 @@
-import Component from '~lib/ui';
-import ComponentAdditions from '~scene/screen/components/additions';
-
 import { INTERFACE_FONT_PIXEL } from '~const/interface';
+import { Component } from '~lib/ui';
+import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {
   display: () => string
@@ -14,9 +13,9 @@ type Props = {
 const CONTAINER_WIDTH = 100;
 const CONTAINER_HEIGHT = 28;
 
-export default Component(function ComponentBar(container, {
+export const ComponentBar = Component<Props>(function (container, {
   display, value, maxValue, event, color,
-}: Props) {
+}) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
   body.setOrigin(0.0, 0.0);
 

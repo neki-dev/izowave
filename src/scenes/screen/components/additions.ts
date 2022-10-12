@@ -1,6 +1,5 @@
-import Component from '~lib/ui';
-
 import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
 
 type Props = {
@@ -10,9 +9,9 @@ type Props = {
 
 const formatAmount = (amount: number): string => `${(amount > 0) ? '+' : ''}${amount}`;
 
-export default Component(function ComponentAdditions(container, {
+export const ComponentAdditions = Component<Props>(function (container, {
   event, combine = false,
-}: Props) {
+}) {
   const update = () => {
     let offset = 0;
     container.iterate((add: Phaser.GameObjects.Container) => {

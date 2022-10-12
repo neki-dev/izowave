@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { PathNodeParams } from '~type/navigator';
 
-export default class PathNode {
+export class PathNode {
   readonly x: number;
 
   readonly y: number;

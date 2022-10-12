@@ -1,1 +1,1 @@
-export { default } from './world';
+export * from './world';

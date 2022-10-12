@@ -1,19 +1,17 @@
-import Building from '~scene/world/entities/building';
-import World from '~scene/world';
-
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty';
+import { World } from '~scene/world';
+import { Building } from '~scene/world/entities/building';
 import {
   BuildingData, BuildingDescriptionItem, BuildingEvents, ResourceType,
 } from '~type/building';
 import { NoticeType } from '~type/interface';
 
-import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-
 type BuildingMineData = BuildingData & {
   resourceType: ResourceType
 };
 
-export default class BuildingMine extends Building {
+export class BuildingMine extends Building {
   /**
    * Resource amount left.
    */

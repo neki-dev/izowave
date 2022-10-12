@@ -1,6 +1,6 @@
-/* eslint-disable import/prefer-default-export */
+import pkg from '../../package.json';
 
 export const COPYRIGHT = [
   'Copyright © 2022, Nikita Galadiy',
-  'Version 0.15.3 beta',
+  `Version ${pkg.version} beta`,
 ];

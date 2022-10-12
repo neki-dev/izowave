@@ -1,31 +1,30 @@
 import Phaser from 'phaser';
-import { calcGrowth, selectClosest } from '~lib/utils';
-import World from '~scene/world';
-import Shot from '~scene/world/entities/shot';
-import Building from '~scene/world/entities/building';
-import Enemy from '~scene/world/entities/enemy';
-import Lazer from '~scene/world/entities/lazer';
-import BuildingAmmunition from '~scene/world/entities/buildings/ammunition';
 
-import { NoticeType } from '~type/interface';
-import {
-  BuildingData, BuildingDescriptionItem, BuildingEvents, BuildingVariant,
-} from '~type/building';
-import { ShotParams, ShotType } from '~type/shot';
-
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import {
   TOWER_SHOT_DAMAGE_GROWTH, TOWER_SHOT_FREEZE_GROWTH,
   TOWER_SHOT_SPEED_GROWTH, TOWER_AMMO_AMOUNT,
 } from '~const/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { INPUT_KEY } from '~const/keyboard';
+import { calcGrowth, selectClosest } from '~lib/utils';
+import { World } from '~scene/world';
+import { Building } from '~scene/world/entities/building';
+import { BuildingAmmunition } from '~scene/world/entities/buildings/ammunition';
+import { Enemy } from '~scene/world/entities/enemy';
+import { Lazer } from '~scene/world/entities/lazer';
+import { Shot } from '~scene/world/entities/shot';
+import {
+  BuildingData, BuildingDescriptionItem, BuildingEvents, BuildingVariant,
+} from '~type/building';
+import { NoticeType } from '~type/interface';
+import { ShotParams, ShotType } from '~type/shot';
 
 type BuildingTowerData = BuildingData & {
   shotType: ShotType
   shotData: ShotParams
 };
 
-export default class BuildingTower extends Building {
+export class BuildingTower extends Building {
   /**
    * Shot type.
    */

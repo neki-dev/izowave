@@ -1,1 +1,1 @@
-export { default } from './navigator';
+export * from './navigator';

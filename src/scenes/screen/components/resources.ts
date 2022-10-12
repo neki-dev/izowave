@@ -1,11 +1,9 @@
-import Component from '~lib/ui';
-import Player from '~scene/world/entities/player';
-import ComponentAdditions from '~scene/screen/components/additions';
-
+import { INTERFACE_FONT_PIXEL, RESOURCE_COLOR } from '~const/interface';
+import { Component } from '~lib/ui';
+import { ComponentAdditions } from '~scene/screen/components/additions';
+import { Player } from '~scene/world/entities/player';
 import { ResourceType } from '~type/building';
 import { PlayerEvents } from '~type/player';
-
-import { INTERFACE_FONT_PIXEL, RESOURCE_COLOR } from '~const/interface';
 
 type Props = {
   player: Player
@@ -16,7 +14,9 @@ const ITEM_HEIGHT = 38;
 const ITEM_MARGIN = 8;
 const ITEM_PADDING = 8;
 
-export default Component(function ComponentResouces(container, { player }: Props) {
+export const ComponentResources = Component<Props>(function (container, {
+  player,
+}) {
   Object.values(ResourceType).forEach((type, index) => {
     const item = this.add.container(0, ((ITEM_HEIGHT + ITEM_MARGIN) * index));
 

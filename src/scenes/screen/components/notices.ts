@@ -1,14 +1,12 @@
-import Component from '~lib/ui';
-import { toEven } from '~lib/utils';
-
-import { Notice, NoticeType } from '~type/interface';
-
 import {
   INTERFACE_BOX_COLOR_ERROR, INTERFACE_BOX_COLOR_INFO,
   INTERFACE_BOX_COLOR_WARN, INTERFACE_FONT_PIXEL,
 } from '~const/interface';
+import { Component } from '~lib/ui';
+import { toEven } from '~lib/utils';
+import { Notice, NoticeType } from '~type/interface';
 
-export default Component(function ComponentNotices(container) {
+export const ComponentNotices = Component(function (container) {
   const update = () => {
     let offset = 0;
     container.iterate((notice: Phaser.GameObjects.Container) => {

@@ -1,26 +1,25 @@
 import Phaser from 'phaser';
-import { calcGrowth } from '~lib/utils';
-import ComponentWave from '~scene/screen/components/wave';
-import ComponentResources from '~scene/screen/components/resources';
-import ComponentFPS from '~scene/screen/components/fps';
-import ComponentBuilder from '~scene/screen/components/builder';
-import ComponentGameOver from '~scene/screen/components/gameover';
-import ComponentNotices from '~scene/screen/components/notices';
-import ComponentBar from '~scene/screen/components/bar';
-import World from '~scene/world';
 
-import { WorldEvents } from '~type/world';
-import { SceneKey } from '~type/scene';
-import { PlayerEvents, PlayerStat } from '~type/player';
-import { LiveEvents } from '~type/live';
-import { Notice, NoticeType, ScreenTexture } from '~type/interface';
-
-import { INTERFACE_PADDING } from '~const/interface';
 import { EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH } from '~const/difficulty';
+import { INTERFACE_PADDING } from '~const/interface';
 import { registerAssets } from '~lib/assets';
 import { adaptiveSize } from '~lib/ui';
+import { calcGrowth } from '~lib/utils';
+import { ComponentBar } from '~scene/screen/components/bar';
+import { ComponentBuilder } from '~scene/screen/components/builder';
+import { ComponentFPS } from '~scene/screen/components/fps';
+import { ComponentGameOver } from '~scene/screen/components/gameover';
+import { ComponentNotices } from '~scene/screen/components/notices';
+import { ComponentResources } from '~scene/screen/components/resources';
+import { ComponentWave } from '~scene/screen/components/wave';
+import { World } from '~scene/world';
+import { Notice, NoticeType, ScreenTexture } from '~type/interface';
+import { LiveEvents } from '~type/live';
+import { PlayerEvents, PlayerStat } from '~type/player';
+import { SceneKey } from '~type/scene';
+import { WorldEvents } from '~type/world';
 
-export default class Screen extends Phaser.Scene {
+export class Screen extends Phaser.Scene {
   readonly notices: Notice[] = [];
 
   constructor() {

@@ -1,26 +1,23 @@
 {
-  "root": true,
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
-  },
-  "extends": [
-    "airbnb-base",
-    "airbnb-typescript/base"
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
+  "extends": ["neki/ts"],
   "rules": {
-    "max-len": ["error", { "code": 128 }],
-    "import/extensions": "off",
-    "no-plusplus": "off",
-    "no-underscore-dangle": "off",
+    "max-len": ["warn", { "code": 128 }],
     "no-new": "off",
     "no-console": "off",
-    "no-restricted-syntax": "off",
-    "no-restricted-exports": "off"
+    "func-names": "off",
+    "import/order": ["warn", {
+      "newlines-between": "always",
+      "groups": ["builtin", "external", "parent", "sibling", "index"],
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      },
+      "pathGroups": [
+        {
+          "pattern": "~**/**",
+          "group": "parent"
+        }
+      ]
+    }]
   }
 }

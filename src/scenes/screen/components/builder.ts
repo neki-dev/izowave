@@ -1,17 +1,16 @@
 import Phaser from 'phaser';
-import Component from '~lib/ui';
-import Player from '~scene/world/entities/player';
-import ComponentBuildingInfo from '~scene/screen/components/building-info';
-import Wave from '~scene/world/wave';
-import Builder from '~scene/world/builder';
-import World from '~scene/world';
-import Buildings from '~scene/world/entities/buildings';
 
-import { SceneKey } from '~type/scene';
-import { BuildingInstance, BuildingVariant } from '~type/building';
-
-import { WaveEvents } from '~type/wave';
 import { INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_ERROR } from '~const/interface';
+import { Component } from '~lib/ui';
+import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
+import { World } from '~scene/world';
+import { Builder } from '~scene/world/builder';
+import { BUILDINGS } from '~scene/world/entities/buildings';
+import { Player } from '~scene/world/entities/player';
+import { Wave } from '~scene/world/wave';
+import { BuildingInstance, BuildingVariant } from '~type/building';
+import { SceneKey } from '~type/scene';
+import { WaveEvents } from '~type/wave';
 
 type Props = {
   builder: Builder
@@ -23,7 +22,9 @@ const BUILDING_VARIANTS = Object.values(BuildingVariant);
 const ITEM_SIZE = 50;
 const ITEMS_MARGIN = 5;
 
-export default Component(function ComponentBuilder(container, { builder, wave, player }: Props) {
+export const ComponentBuilder = Component<Props>(function (container, {
+  builder, wave, player,
+}) {
   const hover = { current: null };
 
   container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
@@ -34,7 +35,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
     }
 
     const variant = BUILDING_VARIANTS[hover.current];
-    const data = { ...Buildings[variant] };
+    const data = { ...BUILDINGS[variant] };
 
     if (data.Limit) {
       const world = <World> this.scene.get(SceneKey.WORLD);
@@ -104,7 +105,7 @@ export default Component(function ComponentBuilder(container, { builder, wave, p
     body.on(Phaser.Input.Events.POINTER_OUT, () => unfocus());
     body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
 
-    const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, Buildings[variant].Texture);
+    const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
     preview.setScale(0.65);
 
     const number = this.add.text(ITEM_SIZE - 4, 4, String(index + 1), {

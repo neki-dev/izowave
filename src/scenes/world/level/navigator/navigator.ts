@@ -1,10 +1,10 @@
 /* eslint-disable no-continue */
 
 import { equalPositions } from '~lib/utils';
-import PathNode from './node';
-import NavigatorTask from './task';
-
 import { NavigatorTaskState } from '~type/navigator';
+
+import { PathNode } from './node';
+import { NavigatorTask } from './task';
 
 const ADJACENT_DIRECTIONS = [
   { x: 0, y: 1 }, { x: 1, y: 0 },
@@ -13,7 +13,7 @@ const ADJACENT_DIRECTIONS = [
   { x: -1, y: 1 }, { x: -1, y: -1 },
 ];
 
-export default class Navigator {
+export class Navigator {
   readonly matrix: number[][];
 
   private pointsToCost: number[][] = [];

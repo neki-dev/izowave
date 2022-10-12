@@ -1,13 +1,14 @@
-import Component from '~lib/ui';
-
 import { INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_FONT_PIXEL } from '~const/interface';
 import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
+import { Component } from '~lib/ui';
 
 type Props = {
   disabled: boolean
 };
 
-export default Component(function ComponentDifficulty(container, { disabled }: Props) {
+export const ComponentDifficulty = Component<Props>(function (container, {
+  disabled,
+}) {
   const difficulty = {
     current: localStorage.getItem(WORLD_DIFFICULTY_KEY),
   };

@@ -1,11 +1,5 @@
 import EventEmitter from 'events';
-import { calcGrowth } from '~lib/utils';
-import World from '~scene/world';
 
-import { WaveEvents } from '~type/wave';
-import { EnemyVariant } from '~type/enemy';
-
-import { ENEMY_VARIANTS_BY_WAVE } from '~const/enemy';
 import {
   WAVE_BOSS_SPAWN_RATE,
   WAVE_ENEMIES_COUNT, WAVE_ENEMIES_COUNT_GROWTH,
@@ -13,9 +7,14 @@ import {
   WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH,
   WAVE_PAUSE,
 } from '~const/difficulty';
+import { ENEMY_VARIANTS_BY_WAVE } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
+import { calcGrowth } from '~lib/utils';
+import { World } from '~scene/world';
+import { EnemyVariant } from '~type/enemy';
+import { WaveEvents } from '~type/wave';
 
-export default class Wave extends EventEmitter {
+export class Wave extends EventEmitter {
   readonly scene: World;
 
   /**

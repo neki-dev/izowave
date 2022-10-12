@@ -1,25 +1,5 @@
 import Phaser from 'phaser';
-import { registerAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
-import Chest from '~scene/world/entities/chest';
-import Enemy from '~scene/world/entities/enemy';
-import Sprite from '~scene/world/entities/sprite';
-import World from '~scene/world';
 
-import {
-  PlayerEvents, PlayerTexture,
-  MovementDirection, MovementDirectionValue, PlayerStat,
-} from '~type/player';
-import { WorldEffect } from '~type/world';
-import { BiomeType, TileType } from '~type/level';
-import { ResourceType, Resources } from '~type/building';
-import { LiveEvents } from '~type/live';
-import { NoticeType } from '~type/interface';
-
-import { WORLD_CAMERA_ZOOM } from '~const/world';
-import {
-  PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS,
-} from '~const/player';
 import {
   EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
   PLAYER_HEALTH, PLAYER_HEALTH_GROWTH,
@@ -29,10 +9,29 @@ import {
   PLAYER_ATTACK_DISTANCE, PLAYER_ATTACK_DISTANCE_GROWTH,
   PLAYER_ATTACK_PAUSE,
 } from '~const/difficulty';
-import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import { INPUT_KEY } from '~const/keyboard';
+import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
+import {
+  PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS,
+} from '~const/player';
+import { WORLD_CAMERA_ZOOM } from '~const/world';
+import { registerAssets } from '~lib/assets';
+import { calcGrowth } from '~lib/utils';
+import { World } from '~scene/world';
+import { Chest } from '~scene/world/entities/chest';
+import { Enemy } from '~scene/world/entities/enemy';
+import { Sprite } from '~scene/world/entities/sprite';
+import { ResourceType, Resources } from '~type/building';
+import { NoticeType } from '~type/interface';
+import { BiomeType, TileType } from '~type/level';
+import { LiveEvents } from '~type/live';
+import {
+  PlayerEvents, PlayerTexture,
+  MovementDirection, MovementDirectionValue, PlayerStat,
+} from '~type/player';
+import { WorldEffect } from '~type/world';
 
-export default class Player extends Sprite {
+export class Player extends Sprite {
   /**
    * Player level.
    */
@@ -309,7 +308,6 @@ export default class Player extends Sprite {
       follow: this,
       lifespan: { min: 100, max: 200 },
       scale: { start: 1.0, end: 0.5 },
-      frequency: 2,
       speed: 100,
       maxParticles: 6,
     }, 200);
@@ -362,7 +360,6 @@ export default class Player extends Sprite {
       angle: this.direction + 180,
       lifespan: { min: 100, max: 300 },
       speed: { min: 150, max: 300 },
-      frequency: 2,
       quantity: 2,
       maxParticles: 16,
       blendMode: 'ADD',

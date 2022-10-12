@@ -1,8 +1,7 @@
-import Component from '~lib/ui';
-
 import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { Component } from '~lib/ui';
 
-export default Component(function ComponentAbout(container) {
+export const ComponentAbout = Component(function (container) {
   const about = this.add.text(0, -4, [
     'Your task is to survive as many waves as possible.',
     'With each wave, the number of enemies and their',
