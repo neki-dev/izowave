@@ -1,5 +1,5 @@
 import {
-  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR, INTERFACE_BOX_COLOR_BLUE_DARK,
+  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR,
 } from '~const/interface';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
@@ -20,7 +20,7 @@ export const ComponentCost = Component<Props>(function (container, {
 
   container.setSize(size[0], size[1]);
 
-  const body = this.add.rectangle(0, 0, container.width, container.height, INTERFACE_BOX_COLOR_BLUE_DARK, 0.9);
+  const body = this.add.rectangle(0, 0, container.width, container.height, 0x000000, 0.9);
   body.setOrigin(0.0, 0.0);
 
   const title = this.add.text(10, offset, label, {

@@ -23,7 +23,7 @@ const CONTAINER_PADDING = 16;
 export const ComponentBuildingInfo = Component<Props>(function (container, {
   origin, player, data, mode = 'building',
 }) {
-  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_BLUE, 0.75);
+  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_BLUE, 0.9);
   body.setOrigin(0.0, 0.0);
 
   let position = { x: container.x, y: container.y };
@@ -37,7 +37,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     shadow: {
       offsetX: 2,
       offsetY: 2,
-      color: '#624318',
+      color: '#332717',
       blur: 0,
       fill: true,
     },
