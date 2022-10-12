@@ -1,7 +1,7 @@
 {
   "name": "izowave",
   "description": "Isometric game. Build and defence",
-  "version": "0.15.4",
+  "version": "0.15.5",
   "keywords": [],
   "license": "MIT",
   "author": {
@@ -9,7 +9,7 @@
     "email": "dev@neki.guru",
     "url": "https://neki.guru/"
   },
-  "main": "./dist/index.js",
+  "main": "./app/index.html",
   "scripts": {
     "lint": "eslint ./src --ext .ts --fix",
     "test": "ts-mocha -r tsconfig-paths/register ./src/**/*.test.ts",

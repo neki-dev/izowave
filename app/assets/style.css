@@ -7,3 +7,30 @@ body {
   overflow: hidden;
   background: #222;
 }
+
+#loading-screen {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#loading-screen .animation {
+  width: 64px;
+  height: 64px;
+  background: url('./loading.gif') center center no-repeat;
+}
+
+#loading-screen #loading-status {
+  margin-top: 30px;
+  font-family: 'Verdana';
+  font-size: 10pt;
+  letter-spacing: 2px;
+  color: #aaa;
+}

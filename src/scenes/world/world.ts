@@ -4,7 +4,7 @@ import {
   ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING,
   ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/enemy';
-import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_FONT_PIXEL } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import {
@@ -164,11 +164,6 @@ export class World extends Phaser.Scene {
   private pathFindingPause: number = 0;
 
   /**
-   * Loading indicator.
-   */
-  private loading?: Phaser.GameObjects.Text;
-
-  /**
    * World constructor.
    */
   constructor() {
@@ -182,13 +177,11 @@ export class World extends Phaser.Scene {
       // @ts-ignore
       window.WORLD = this;
     }
-  }
 
-  /**
-   * Preload scene.
-   */
-  public preload() {
-    this.toggleLoading(true);
+    const loadingStatus = document.getElementById('loading-status');
+    if (loadingStatus) {
+      loadingStatus.innerText = 'ASSETS LOADING';
+    }
   }
 
   /**
@@ -205,7 +198,11 @@ export class World extends Phaser.Scene {
     loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
       this.prepareGame();
       this.scene.launch(SceneKey.MENU);
-      this.toggleLoading(false);
+
+      const loadingScreen = document.getElementById('loading-screen');
+      if (loadingScreen) {
+        loadingScreen.remove();
+      }
     });
   }
 
@@ -233,28 +230,6 @@ export class World extends Phaser.Scene {
       this.updateEnemiesPath();
     } catch (e) {
       console.error(e);
-    }
-  }
-
-  /**
-   * Toggle loading indicator.
-   *
-   * @param state - State
-   */
-  public toggleLoading(state: boolean) {
-    if (Boolean(this.loading) === state) {
-      return;
-    }
-
-    if (state) {
-      this.loading = this.add.text(window.innerWidth / 2, window.innerHeight / 2, 'L O A D I N G', {
-        fontSize: '18px',
-        fontFamily: INTERFACE_FONT_MONOSPACE,
-      });
-      this.loading.setOrigin(0.5, 0.5);
-    } else {
-      this.loading.destroy();
-      delete this.loading;
     }
   }
 
