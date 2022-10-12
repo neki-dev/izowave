@@ -11,10 +11,7 @@ module.exports = (_, { mode }) => ({
       .toWebpack(),
   },
   target: 'web',
-  entry: [
-    'babel-polyfill',
-    path.resolve(__dirname, 'src/index.ts'),
-  ],
+  entry: path.join(__dirname, 'src/index.ts'),
   output: {
     path: path.resolve(__dirname, tsconfig.compilerOptions.outDir, 'dist'),
     filename: 'bundle.js',
@@ -22,7 +19,7 @@ module.exports = (_, { mode }) => ({
   module: {
     rules: [{
       test: /\.ts$/,
-      use: 'babel-loader',
+      use: 'ts-loader',
     }],
   },
   devServer: {
@@ -32,6 +29,7 @@ module.exports = (_, { mode }) => ({
     compress: true,
     port: 9000,
   },
+  devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
       'IS_DEV_MODE': JSON.stringify(mode === 'development')

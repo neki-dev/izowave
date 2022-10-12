@@ -4,7 +4,7 @@
     "module": "commonjs",
     "target": "esnext",
     "esModuleInterop": true,
-    "declaration": true,
+    "resolveJsonModule": true,
     "paths": {
       "~scene/*": ["./src/scenes/*"],
       "~type/*": ["./src/types/*"],

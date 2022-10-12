@@ -2,6 +2,5 @@
 .idea
 node_modules/
 .DS_Store
-package-lock.json
 .psd
-*.LICENSE.txt
+app/dist
