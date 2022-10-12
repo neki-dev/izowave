@@ -169,7 +169,6 @@ export class World extends Phaser.Scene {
   constructor() {
     super({
       key: SceneKey.WORLD,
-      // @ts-ignore
       pack: getAssetsPack(),
     });
 

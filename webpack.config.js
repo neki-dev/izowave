@@ -6,25 +6,25 @@ const tsconfig = require('./tsconfig.json');
 module.exports = (_, { mode }) => ({
   resolve: {
     extensions: ['.js', '.ts'],
-    alias: alias(path.resolve(__dirname))
+    alias: alias(path.join(__dirname))
       .fromTsconfig()
       .toWebpack(),
   },
   target: 'web',
   entry: path.join(__dirname, 'src/index.ts'),
   output: {
-    path: path.resolve(__dirname, tsconfig.compilerOptions.outDir, 'dist'),
+    path: path.join(__dirname, tsconfig.compilerOptions.outDir, 'dist'),
     filename: 'bundle.js',
   },
   module: {
     rules: [{
       test: /\.ts$/,
-      use: 'ts-loader',
+      use: 'babel-loader',
     }],
   },
   devServer: {
     static: {
-      directory: path.resolve(__dirname, 'app'),
+      directory: path.join(__dirname, 'app'),
     },
     compress: true,
     port: 9000,
