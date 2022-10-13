@@ -1,4 +1,4 @@
-import { BuildingVariant } from '~type/building';
+import { BuildingVariant } from '~type/world/entities/building';
 
 import { BuildingAmmunition } from './ammunition';
 import { BuildingMedic } from './medic';

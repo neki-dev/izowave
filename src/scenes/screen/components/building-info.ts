@@ -7,7 +7,7 @@ import { toEven } from '~lib/utils';
 import { ComponentCost } from '~scene/screen/components/cost';
 import { ComponentParams } from '~scene/screen/components/params';
 import { Player } from '~scene/world/entities/player';
-import { BuildingInstance } from '~type/building';
+import { BuildingInstance } from '~type/world/entities/building';
 
 type Props = {
   mode?: 'building' | 'builder'

@@ -1,7 +1,7 @@
 import Heap from 'heap';
 import Phaser from 'phaser';
 
-import { NavigatorTaskState } from '~type/navigator';
+import { NavigatorTaskState } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 

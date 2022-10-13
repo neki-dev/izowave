@@ -60,15 +60,13 @@ export function toEven(value: number, shift: (-1 | 1) = 1): number {
  * @param target - Target position
  * @param count - Count return positions
  */
-export function selectClosest<T = Phaser.Types.Math.Vector2Like>(
+export function selectClosest<T extends Phaser.Types.Math.Vector2Like>(
   positions: T[],
   target: Phaser.Types.Math.Vector2Like,
   count: number = 1,
 ): T[] {
   let meta = positions.map((position: T) => {
-    // @ts-ignore
     const dx = position.x - target.x;
-    // @ts-ignore
     const dy = position.y - target.y;
     return {
       position,

@@ -1,6 +1,6 @@
 import EventEmmiter from 'events';
 
-import { LiveEvents } from '~type/live';
+import { LiveEvents } from '~type/world/entities/live';
 
 export class Live extends EventEmmiter {
   /**

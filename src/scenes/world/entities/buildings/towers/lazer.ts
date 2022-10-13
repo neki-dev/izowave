@@ -1,8 +1,8 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { World } from '~scene/world';
 import { BuildingTower } from '~scene/world/entities/buildings/tower';
-import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/building';
-import { ShotType } from '~type/shot';
+import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
+import { ShotType } from '~type/world/entities/shot';
 
 export class BuildingTowerLazer extends BuildingTower {
   static Name = 'Lazer tower';

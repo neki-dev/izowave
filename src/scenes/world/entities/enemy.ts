@@ -13,10 +13,10 @@ import { Player } from '~scene/world/entities/player';
 import { Sprite } from '~scene/world/entities/sprite';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
-import { EnemyData, EnemyTexture } from '~type/enemy';
-import { TileType } from '~type/level';
-import { LiveEvents } from '~type/live';
-import { WorldEffect } from '~type/world';
+import { WorldEffect } from '~type/world/effects';
+import { EnemyData, EnemyTexture } from '~type/world/entities/enemy';
+import { LiveEvents } from '~type/world/entities/live';
+import { TileType } from '~type/world/level';
 
 export class Enemy extends Sprite {
   /**

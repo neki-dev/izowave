@@ -3,7 +3,7 @@ import {
   INTERFACE_FONT_PIXEL,
 } from '~const/interface';
 import { Component } from '~lib/ui';
-import { PlayerStat } from '~type/player';
+import { PlayerStat } from '~type/world/entities/player';
 
 type Props = {
   stat: PlayerStat

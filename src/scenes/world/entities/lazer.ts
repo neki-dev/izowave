@@ -4,8 +4,8 @@ import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { World } from '~scene/world';
 import { BuildingTower } from '~scene/world/entities/buildings/tower';
 import { Enemy } from '~scene/world/entities/enemy';
-import { ShotParams } from '~type/shot';
-import { WorldEffect } from '~type/world';
+import { WorldEffect } from '~type/world/effects';
+import { ShotParams } from '~type/world/entities/shot';
 
 export class Lazer extends Phaser.GameObjects.Line {
   // @ts-ignore

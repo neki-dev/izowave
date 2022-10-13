@@ -13,11 +13,12 @@ import { ComponentNotices } from '~scene/screen/components/notices';
 import { ComponentResources } from '~scene/screen/components/resources';
 import { ComponentWave } from '~scene/screen/components/wave';
 import { World } from '~scene/world';
-import { Notice, NoticeType, ScreenTexture } from '~type/interface';
-import { LiveEvents } from '~type/live';
-import { PlayerEvents, PlayerStat } from '~type/player';
 import { SceneKey } from '~type/scene';
+import { ScreenTexture } from '~type/screen';
+import { Notice, NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
+import { LiveEvents } from '~type/world/entities/live';
+import { PlayerEvents, PlayerStat } from '~type/world/entities/player';
 
 export class Screen extends Phaser.Scene {
   readonly notices: Notice[] = [];

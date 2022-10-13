@@ -5,8 +5,8 @@ import {
 import { Component } from '~lib/ui';
 import { formatTime } from '~lib/utils';
 import { Wave } from '~scene/world/wave';
-import { NoticeType } from '~type/interface';
-import { WaveEvents } from '~type/wave';
+import { NoticeType } from '~type/screen/notice';
+import { WaveEvents } from '~type/world/wave';
 
 type Props = {
   wave: Wave

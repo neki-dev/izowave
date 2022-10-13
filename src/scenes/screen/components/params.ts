@@ -1,7 +1,7 @@
 import { INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_BLUE_DARK } from '~const/interface';
 import { Component } from '~lib/ui';
-import { BuildingDescriptionItem } from '~type/building';
-import { ScreenTexture } from '~type/interface';
+import { ScreenTexture } from '~type/screen';
+import { BuildingDescriptionItem } from '~type/world/entities/building';
 
 type Props = {
   data: () => BuildingDescriptionItem[]

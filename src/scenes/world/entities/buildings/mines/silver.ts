@@ -1,7 +1,8 @@
 import { MINE_LIMIT, MINE_RESOURCES_LIMIT } from '~const/difficulty';
 import { World } from '~scene/world';
 import { BuildingMine } from '~scene/world/entities/buildings/mine';
-import { BuildingVariant, BuildingTexture, ResourceType } from '~type/building';
+import { BuildingVariant, BuildingTexture } from '~type/world/entities/building';
+import { ResourceType } from '~type/world/resources';
 
 export class BuildingMineSilver extends BuildingMine {
   static Name = 'Silver mine';

@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { Resources } from '~type/world/resources';
+
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
 }
@@ -27,16 +29,6 @@ export enum BuildingTexture {
   AMMUNITION = 'build/ammunition',
   MEDIC = 'build/medic',
 }
-
-export enum ResourceType {
-  BRONZE = 'bronze',
-  SILVER = 'silver',
-  GOLD = 'gold',
-}
-
-export type Resources = {
-  [value in ResourceType]?: number
-};
 
 export type BuildingActionsParams = {
   radius?: number

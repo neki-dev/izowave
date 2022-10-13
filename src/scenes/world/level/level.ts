@@ -9,7 +9,7 @@ import { registerAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType,
-} from '~type/level';
+} from '~type/world/level';
 
 import { Navigator } from './navigator';
 import { TileMatrix } from './tile-matrix';

@@ -2,7 +2,7 @@ import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import {
   BuildingEvents, BuildingVariant, BuildingTexture,
-} from '~type/building';
+} from '~type/world/entities/building';
 
 export class BuildingWall extends Building {
   static Name = 'Wall';

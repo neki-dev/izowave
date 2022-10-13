@@ -10,6 +10,11 @@ export enum EnemyTexture {
   BOUCHE = 'enemy/bouche',
 }
 
+export type EnemyTexturesMeta = Record<EnemyTexture, {
+  frameRate: number
+  size: number
+}>;
+
 export enum EnemyVariant {
   BAT = 'BAT',
   DEMON = 'DEMON',
@@ -19,6 +24,11 @@ export enum EnemyVariant {
   UNDEAD = 'UNDEAD',
   BOUCHE = 'BOUCHE',
 }
+
+export type EnemyVariantsMeta = Partial<Record<EnemyVariant, {
+  spawnMinWave: number
+  spawnFrequency: number
+}>>;
 
 export type EnemyData = {
   positionAtMatrix: Phaser.Types.Math.Vector2Like

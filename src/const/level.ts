@@ -1,10 +1,10 @@
 import { Biome, LayerParameters } from 'gen-biome';
 
 import { getPerformance } from '~lib/optimize';
+import { PerformanceLevel } from '~type/optimize';
 import {
   BiomeType, LevelBiome, SpawnTarget, TileMeta,
-} from '~type/level';
-import { PerformanceLevel } from '~type/optimize';
+} from '~type/world/level';
 
 export const TILE_META: TileMeta = {
   width: 42,

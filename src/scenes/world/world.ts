@@ -25,13 +25,13 @@ import { Player } from '~scene/world/entities/player';
 import { Shot } from '~scene/world/entities/shot';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
-import { BuildingVariant } from '~type/building';
-import { EnemyVariant } from '~type/enemy';
-import { SpawnTarget } from '~type/level';
-import { PlayerStat } from '~type/player';
 import { SceneKey } from '~type/scene';
-import { WaveEvents } from '~type/wave';
-import { GameDifficulty, WorldEvents, WorldTexture } from '~type/world';
+import { WorldDifficulty, WorldEvents, WorldTexture } from '~type/world';
+import { BuildingVariant } from '~type/world/entities/building';
+import { EnemyVariant } from '~type/world/entities/enemy';
+import { PlayerStat } from '~type/world/entities/player';
+import { SpawnTarget } from '~type/world/level';
+import { WaveEvents } from '~type/world/wave';
 
 export class World extends Phaser.Scene {
   /**
@@ -97,7 +97,7 @@ export class World extends Phaser.Scene {
   /**
    * Game difficulty type.
    */
-  private _difficultyType: GameDifficulty;
+  private _difficultyType: WorldDifficulty;
 
   public get difficultyType() { return this._difficultyType; }
 
@@ -173,7 +173,6 @@ export class World extends Phaser.Scene {
     });
 
     if (IS_DEV_MODE) {
-      // @ts-ignore
       window.WORLD = this;
     }
 
@@ -191,7 +190,7 @@ export class World extends Phaser.Scene {
 
     const difficulty = localStorage.getItem(WORLD_DIFFICULTY_KEY);
     if (!difficulty) {
-      localStorage.setItem(WORLD_DIFFICULTY_KEY, GameDifficulty.NORMAL);
+      localStorage.setItem(WORLD_DIFFICULTY_KEY, WorldDifficulty.NORMAL);
     }
 
     loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
@@ -311,7 +310,7 @@ export class World extends Phaser.Scene {
   public startGame() {
     this.scene.stop(SceneKey.MENU);
 
-    this.difficultyType = <GameDifficulty> localStorage.getItem(WORLD_DIFFICULTY_KEY);
+    this.difficultyType = <WorldDifficulty> localStorage.getItem(WORLD_DIFFICULTY_KEY);
     this.difficulty = WORLD_DIFFICULTY_POWERS[this.difficultyType];
 
     this.wave = new Wave(this);
@@ -539,10 +538,10 @@ export class World extends Phaser.Scene {
     const buildingsVariants = [
       [BuildingVariant.TOWER_FIRE],
     ];
-    if (this.difficultyType === GameDifficulty.EASY) {
+    if (this.difficultyType === WorldDifficulty.EASY) {
       buildingsVariants.push([BuildingVariant.AMMUNITION]);
     }
-    if (this.difficultyType !== GameDifficulty.UNREAL) {
+    if (this.difficultyType !== WorldDifficulty.UNREAL) {
       buildingsVariants.push([BuildingVariant.MINE_BRONZE, BuildingVariant.MINE_SILVER]);
     }
 

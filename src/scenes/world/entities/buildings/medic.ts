@@ -3,7 +3,7 @@ import { MEDIC_HEAL_AMOUNT, MEDIC_LIMIT } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import { Player } from '~scene/world/entities/player';
-import { BuildingVariant, BuildingTexture, BuildingDescriptionItem } from '~type/building';
+import { BuildingVariant, BuildingTexture, BuildingDescriptionItem } from '~type/world/entities/building';
 
 export class BuildingMedic extends Building {
   static Name = 'Medic';

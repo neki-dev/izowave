@@ -6,9 +6,9 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { BUILDINGS } from '~scene/world/entities/buildings';
 import { Level } from '~scene/world/level';
-import { BuildingVariant } from '~type/building';
-import { NoticeType } from '~type/interface';
-import { BiomeType, TileType } from '~type/level';
+import { NoticeType } from '~type/screen/notice';
+import { BuildingVariant } from '~type/world/entities/building';
+import { BiomeType, TileType } from '~type/world/level';
 
 const BUILDING_VARIANTS = Object.values(BuildingVariant);
 

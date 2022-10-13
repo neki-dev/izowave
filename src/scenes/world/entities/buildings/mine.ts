@@ -2,10 +2,10 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
+import { NoticeType } from '~type/screen/notice';
 import {
   BuildingData, BuildingDescriptionItem, BuildingEvents, ResourceType,
-} from '~type/building';
-import { NoticeType } from '~type/interface';
+} from '~type/world/entities/building';
 
 type BuildingMineData = BuildingData & {
   resourceType: ResourceType

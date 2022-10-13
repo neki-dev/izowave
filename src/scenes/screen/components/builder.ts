@@ -8,9 +8,9 @@ import { Builder } from '~scene/world/builder';
 import { BUILDINGS } from '~scene/world/entities/buildings';
 import { Player } from '~scene/world/entities/player';
 import { Wave } from '~scene/world/wave';
-import { BuildingInstance, BuildingVariant } from '~type/building';
 import { SceneKey } from '~type/scene';
-import { WaveEvents } from '~type/wave';
+import { BuildingInstance, BuildingVariant } from '~type/world/entities/building';
+import { WaveEvents } from '~type/world/wave';
 
 type Props = {
   builder: Builder

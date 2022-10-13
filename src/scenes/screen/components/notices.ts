@@ -4,7 +4,7 @@ import {
 } from '~const/interface';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
-import { Notice, NoticeType } from '~type/interface';
+import { Notice, NoticeType } from '~type/screen/notice';
 
 export const ComponentNotices = Component(function (container) {
   const update = () => {

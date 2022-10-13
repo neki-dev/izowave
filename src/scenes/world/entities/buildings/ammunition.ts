@@ -2,10 +2,10 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE, AMMUNITION_LIMIT } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
+import { NoticeType } from '~type/screen/notice';
 import {
   BuildingDescriptionItem, BuildingEvents, BuildingTexture, BuildingVariant,
-} from '~type/building';
-import { NoticeType } from '~type/interface';
+} from '~type/world/entities/building';
 
 export class BuildingAmmunition extends Building {
   static Name = 'Ammunition';

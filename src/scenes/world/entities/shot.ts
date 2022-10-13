@@ -5,8 +5,8 @@ import { World } from '~scene/world';
 import { BuildingTower } from '~scene/world/entities/buildings/tower';
 import { Enemy } from '~scene/world/entities/enemy';
 import { Level } from '~scene/world/level';
-import { ShotParams, ShotType, ShotTexture } from '~type/shot';
-import { WorldEffect } from '~type/world';
+import { WorldEffect } from '~type/world/effects';
+import { ShotParams, ShotType, ShotTexture } from '~type/world/entities/shot';
 
 export class Shot extends Phaser.Physics.Arcade.Image {
   // @ts-ignore

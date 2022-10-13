@@ -2,7 +2,8 @@
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { World } from '~scene/world';
-import { WorldEffect, WorldTexture } from '~type/world';
+import { WorldTexture } from '~type/world';
+import { WorldEffect, WorldEffectParticles } from '~type/world/effects';
 
 export class Effects {
   /**
@@ -13,9 +14,7 @@ export class Effects {
   /**
    * Particles instances.
    */
-  private particles: {
-    [key in WorldEffect]?: Phaser.GameObjects.Particles.ParticleEmitterManager
-  } = {};
+  private particles: WorldEffectParticles = {};
 
   /**
    * Effects constructor.

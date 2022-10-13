@@ -13,11 +13,11 @@ import { BuildingAmmunition } from '~scene/world/entities/buildings/ammunition';
 import { Enemy } from '~scene/world/entities/enemy';
 import { Lazer } from '~scene/world/entities/lazer';
 import { Shot } from '~scene/world/entities/shot';
+import { NoticeType } from '~type/screen/notice';
 import {
   BuildingData, BuildingDescriptionItem, BuildingEvents, BuildingVariant,
-} from '~type/building';
-import { NoticeType } from '~type/interface';
-import { ShotParams, ShotType } from '~type/shot';
+} from '~type/world/entities/building';
+import { ShotParams, ShotType } from '~type/world/entities/shot';
 
 type BuildingTowerData = BuildingData & {
   shotType: ShotType

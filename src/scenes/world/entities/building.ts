@@ -16,14 +16,15 @@ import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
 import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
+import { ScreenTexture } from '~type/screen';
+import { NoticeType } from '~type/screen/notice';
+import { WorldEvents } from '~type/world';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents,
   Resources, BuildingTexture, BuildingVariant, BuildingDescriptionItem,
-} from '~type/building';
-import { NoticeType, ScreenTexture } from '~type/interface';
-import { TileType } from '~type/level';
-import { LiveEvents } from '~type/live';
-import { WorldEvents } from '~type/world';
+} from '~type/world/entities/building';
+import { LiveEvents } from '~type/world/entities/live';
+import { TileType } from '~type/world/level';
 
 export class Building extends Phaser.GameObjects.Image {
   // @ts-ignore

@@ -1,4 +1,4 @@
-import { EnemyVariant } from '~type/enemy';
+import { EnemyVariant } from '~type/world/entities/enemy';
 
 import { EnemyBat } from './bat';
 import { EnemyBoss } from './boss';

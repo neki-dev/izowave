@@ -1,7 +1,7 @@
 /* eslint-disable no-continue */
 
 import { equalPositions } from '~lib/utils';
-import { NavigatorTaskState } from '~type/navigator';
+import { NavigatorTaskState } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 import { NavigatorTask } from './task';

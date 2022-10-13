@@ -1,4 +1,6 @@
-import { EnemyVariant, EnemyTexture } from '~type/enemy';
+import {
+  EnemyVariant, EnemyTexture, EnemyTexturesMeta, EnemyVariantsMeta,
+} from '~type/world/entities/enemy';
 
 export const ENEMY_SPAWN_POSITIONS = 10;
 export const ENEMY_SPAWN_DISTANCE_FROM_PLAYER = 16;
@@ -7,12 +9,7 @@ export const ENEMY_SPAWN_DISTANCE_FROM_BUILDING = 8;
 export const ENEMY_PATH_BREAKPOINT = 32;
 export const ENEMY_PATH_RATE = 300;
 
-export const ENEMY_TEXTURE_META: {
-  [value in EnemyTexture]: {
-    frameRate: number
-    size: number
-  }
-} = {
+export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
   [EnemyTexture.BAT]: {
     frameRate: 4,
     size: 16,
@@ -39,16 +36,29 @@ export const ENEMY_TEXTURE_META: {
   },
 };
 
-export const ENEMY_VARIANTS_BY_WAVE: {
-  [value in EnemyVariant]?: [
-    number, // Minimal wave number
-    number, // Frequency
-  ]
-} = {
-  [EnemyVariant.BAT]: [1, 3],
-  [EnemyVariant.DEMON]: [1, 5],
-  [EnemyVariant.OVERLORD]: [3, 3],
-  [EnemyVariant.UNDEAD]: [5, 2],
-  [EnemyVariant.IMPURE]: [7, 3],
-  [EnemyVariant.BOUCHE]: [11, 2],
+export const ENEMY_VARIANTS_META: EnemyVariantsMeta = {
+  [EnemyVariant.BAT]: {
+    spawnMinWave: 1,
+    spawnFrequency: 3,
+  },
+  [EnemyVariant.DEMON]: {
+    spawnMinWave: 1,
+    spawnFrequency: 5,
+  },
+  [EnemyVariant.OVERLORD]: {
+    spawnMinWave: 3,
+    spawnFrequency: 3,
+  },
+  [EnemyVariant.UNDEAD]: {
+    spawnMinWave: 5,
+    spawnFrequency: 2,
+  },
+  [EnemyVariant.IMPURE]: {
+    spawnMinWave: 7,
+    spawnFrequency: 3,
+  },
+  [EnemyVariant.BOUCHE]: {
+    spawnMinWave: 11,
+    spawnFrequency: 2,
+  },
 };

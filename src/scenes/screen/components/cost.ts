@@ -3,7 +3,7 @@ import {
 } from '~const/interface';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
-import { Resources, ResourceType } from '~type/building';
+import { Resources, ResourceType } from '~type/world/resources';
 
 type Props = {
   label: string

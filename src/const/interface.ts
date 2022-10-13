@@ -1,4 +1,4 @@
-import { ResourceType } from '~type/building';
+import { ResourceType, ResourceColor } from '~type/world/resources';
 
 export const INTERFACE_TEXT_COLOR_PRIMARY = '#ff9600';
 export const INTERFACE_TEXT_COLOR_BLUE = '#0076ad';
@@ -17,9 +17,7 @@ export const INTERFACE_FONT_MONOSPACE = 'Monospace';
 
 export const INTERFACE_PADDING = 40;
 
-export const RESOURCE_COLOR: {
-  [value in ResourceType]: number
-} = {
+export const RESOURCE_COLOR: ResourceColor = {
   [ResourceType.BRONZE]: 0xfc9547,
   [ResourceType.SILVER]: 0xdadada,
   [ResourceType.GOLD]: 0xfdca52,

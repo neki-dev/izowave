@@ -1,5 +1,5 @@
 import { TILE_META } from '~const/level';
-import { MovementDirectionValue } from '~type/player';
+import { MovementDirectionValue } from '~type/world/entities/player';
 
 export const PLAYER_TILE_SIZE = 16;
 

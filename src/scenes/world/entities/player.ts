@@ -21,15 +21,15 @@ import { World } from '~scene/world';
 import { Chest } from '~scene/world/entities/chest';
 import { Enemy } from '~scene/world/entities/enemy';
 import { Sprite } from '~scene/world/entities/sprite';
-import { ResourceType, Resources } from '~type/building';
-import { NoticeType } from '~type/interface';
-import { BiomeType, TileType } from '~type/level';
-import { LiveEvents } from '~type/live';
+import { NoticeType } from '~type/screen/notice';
+import { WorldEffect } from '~type/world/effects';
+import { ResourceType, Resources } from '~type/world/entities/building';
+import { LiveEvents } from '~type/world/entities/live';
 import {
   PlayerEvents, PlayerTexture,
   MovementDirection, MovementDirectionValue, PlayerStat,
-} from '~type/player';
-import { WorldEffect } from '~type/world';
+} from '~type/world/entities/player';
+import { BiomeType, TileType } from '~type/world/level';
 
 export class Player extends Sprite {
   /**

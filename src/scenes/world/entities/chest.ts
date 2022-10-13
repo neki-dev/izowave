@@ -8,8 +8,8 @@ import { registerAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
-import { ChestTexture, ChestData } from '~type/chest';
-import { TileType } from '~type/level';
+import { ChestTexture, ChestData } from '~type/world/entities/chest';
+import { TileType } from '~type/world/level';
 
 export class Chest extends Phaser.GameObjects.Image {
   // @ts-ignore

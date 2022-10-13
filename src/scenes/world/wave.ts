@@ -7,12 +7,12 @@ import {
   WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH,
   WAVE_PAUSE,
 } from '~const/difficulty';
-import { ENEMY_VARIANTS_BY_WAVE } from '~const/enemy';
+import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
-import { EnemyVariant } from '~type/enemy';
-import { WaveEvents } from '~type/wave';
+import { EnemyVariant } from '~type/world/entities/enemy';
+import { WaveEvents } from '~type/world/wave';
 
 export class Wave extends EventEmitter {
   readonly scene: World;
@@ -188,9 +188,9 @@ export class Wave extends EventEmitter {
       variant = EnemyVariant.BOSS;
     } else {
       const variants: EnemyVariant[] = [];
-      for (const [type, [wave, frequency]] of Object.entries(ENEMY_VARIANTS_BY_WAVE)) {
-        if (wave <= this.number) {
-          for (let k = 0; k < frequency; k++) {
+      for (const [type, meta] of Object.entries(ENEMY_VARIANTS_META)) {
+        if (meta.spawnMinWave <= this.number) {
+          for (let k = 0; k < meta.spawnFrequency; k++) {
             variants.push(<EnemyVariant> type);
           }
         }
