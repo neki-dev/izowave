@@ -1,7 +1,7 @@
 import assert from 'assert';
 
 import { TileMatrix } from '../tile-matrix';
-import { TileType } from '~type/level';
+import { TileType } from '~type/world/level';
 
 let matrix: TileMatrix;
 
