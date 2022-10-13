@@ -1,23 +1,15 @@
 import Phaser from 'phaser';
 
 import { Screen } from '~scene/screen';
-
-type ComponentInstance<T> = (
-  this: Screen,
-  container: Phaser.GameObjects.Container,
-  props?: T
-) => ({
-  update?: () => void
-  destroy?: () => void
-}) | void;
+import { ComponentInstance, ComponentResizeCallback } from '~type/screen/component';
 
 export function Component<T = any>(component: ComponentInstance<T>) {
   return function create(
     this: Screen,
-    position: Phaser.Types.Math.Vector2Like,
+    position?: Phaser.Types.Math.Vector2Like,
     props?: T,
   ): Phaser.GameObjects.Container {
-    const container = this.add.container(position.x, position.y);
+    const container = this.add.container(position?.x || 0, position?.y || 0);
 
     const result = component.call(this, container, props);
     if (result) {
@@ -29,6 +21,7 @@ export function Component<T = any>(component: ComponentInstance<T>) {
         } catch (error) {
           console.log('Error on update UI component:', error.message);
         }
+
         this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
         container.on(Phaser.Scenes.Events.DESTROY, () => {
           this.events.off(Phaser.Scenes.Events.UPDATE, update);
@@ -44,7 +37,7 @@ export function Component<T = any>(component: ComponentInstance<T>) {
   };
 }
 
-export function adaptiveSize(callback: (width: number, height: number) => void) {
+export function adaptiveSize(callback: ComponentResizeCallback) {
   const refresh = () => callback(window.innerWidth, window.innerHeight);
   refresh();
   window.addEventListener('resize', refresh);
