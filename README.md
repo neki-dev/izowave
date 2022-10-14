@@ -8,6 +8,10 @@ You will spawn in a random place. Can start to build here, or can look for a pla
 
 ### __[Play now](https://izowave.neki.guru)__
 
+|   |   |   |
+|---|---|---|
+| ![Preview 1](./docs/preview/1.png) | ![Preview 1](./docs/preview/2.png) | ![Preview 1](./docs/preview/3.png) |
+
 
 ---
 
