@@ -10,10 +10,10 @@ import { INPUT_KEY } from '~const/keyboard';
 import { TILE_META } from '~const/level';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { registerAssets } from '~lib/assets';
-import { Hexagon } from '~lib/hexagon';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
+import { Hexagon } from '~scene/world/entities/hexagon';
 import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { ScreenTexture } from '~type/screen';
@@ -21,10 +21,11 @@ import { NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents,
-  Resources, BuildingTexture, BuildingVariant, BuildingDescriptionItem,
+  BuildingTexture, BuildingVariant, BuildingDescriptionItem,
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { TileType } from '~type/world/level';
+import { Resources } from '~type/world/resources';
 
 export class Building extends Phaser.GameObjects.Image {
   // @ts-ignore

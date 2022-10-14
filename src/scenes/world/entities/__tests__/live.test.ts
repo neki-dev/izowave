@@ -1,32 +1,37 @@
-import assert from 'assert';
-
 import { Live } from '../live';
 
-let live: Live;
-
 describe('live.ts', () => {
-  before(() => {
+  let live: Live;
+
+  beforeAll(() => {
     live = new Live(100);
   });
 
   it('should set default max health by health', () => {
-    assert.equal(live.maxHealth, live.health);
+    expect(live.maxHealth).toEqual(live.health);
   });
 
   it('should take gamage', () => {
     live.damage(10);
-    assert.equal(live.isMaxHealth(), false);
-    assert.equal(live.health, 90);
+    expect(live.isMaxHealth()).toEqual(false);
+    expect(live.health).toEqual(90);
   });
 
   it('should reestablish health', () => {
     live.heal();
-    assert.equal(live.isMaxHealth(), true);
+    expect(live.isMaxHealth()).toEqual(true);
   });
 
-  it('should dead', () => {
+  it('should dead after damage', () => {
     live.damage(999);
-    assert.equal(live.isDead(), true);
-    assert.equal(live.health, 0);
+    expect(live.isDead()).toEqual(true);
+    expect(live.health).toEqual(0);
+  });
+
+  it('should dead after kill', () => {
+    live.heal();
+    live.kill();
+    expect(live.isDead()).toEqual(true);
+    expect(live.health).toEqual(0);
   });
 });

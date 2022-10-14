@@ -1,10 +1,19 @@
 import Phaser from 'phaser';
 
 export class Hexagon extends Phaser.Geom.Polygon {
+  /**
+   * Position X of shape center.
+   */
   public x: number;
 
+  /**
+   * Position Y of shape center.
+   */
   public y: number;
 
+  /**
+   * Distance between center and points.
+   */
   public size: number;
 
   constructor(x: number, y: number, size: number) {
