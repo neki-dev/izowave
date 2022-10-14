@@ -7,11 +7,13 @@ type Props = {
   combine?: boolean
 };
 
-const formatAmount = (amount: number): string => `${(amount > 0) ? '+' : ''}${amount}`;
-
 export const ComponentAdditions = Component<Props>(function (container, {
   event, combine = false,
 }) {
+  const formatAmount = (amount: number): string => (
+    `${(amount > 0) ? '+' : ''}${amount}`
+  );
+
   const update = () => {
     let offset = 0;
     container.iterate((add: Phaser.GameObjects.Container) => {
@@ -30,25 +32,26 @@ export const ComponentAdditions = Component<Props>(function (container, {
       }
     }
 
-    const add = this.add.text(0, 0, formatAmount(amount), {
+    const addition = this.add.text(0, 0, formatAmount(amount), {
       fontSize: '14px',
       fontFamily: INTERFACE_FONT_MONOSPACE,
     });
-    add.setOrigin(0.0, 0.5);
-    add.setAlpha(0.0);
+    addition.setOrigin(0.0, 0.5);
+    addition.setAlpha(0.0);
 
-    container.add(add);
+    container.add(addition);
+
     update();
 
     this.tweens.add({
-      targets: add,
+      targets: addition,
       alpha: 0.75,
       duration: 250,
       hold: 1000,
       yoyo: true,
       ease: 'Linear',
       onComplete: () => {
-        add.destroy();
+        addition.destroy();
         update();
       },
     });

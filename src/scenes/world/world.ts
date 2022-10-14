@@ -380,7 +380,9 @@ export class World extends Phaser.Scene {
       this.timer.paused = true;
 
       this.scene.pause();
-      this.scene.launch(SceneKey.MENU, { asPause: true });
+      this.scene.launch(SceneKey.MENU, {
+        pauseMode: true,
+      });
     } else {
       this.timer.paused = false;
 

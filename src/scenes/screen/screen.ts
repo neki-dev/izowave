@@ -30,7 +30,6 @@ export class Screen extends Phaser.Scene {
   create() {
     const world = <World> this.scene.get(SceneKey.WORLD);
     const components = this.add.group();
-
     const shift = { x: INTERFACE_PADDING, y: INTERFACE_PADDING };
 
     // Component wave

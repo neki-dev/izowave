@@ -2,13 +2,7 @@ import Phaser from 'phaser';
 
 import { INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_TEXT_COLOR_PRIMARY } from '~const/interface';
 import { Component } from '~lib/ui';
-
-export type MenuItem = {
-  label: string
-  default?: boolean
-  content?: () => any
-  onClick?: () => void
-};
+import { MenuItem } from '~type/menu';
 
 type Props = {
   width: number
@@ -39,18 +33,22 @@ export const ComponentItems = Component<Props>(function (container, {
         fill: true,
       },
     });
+    shift += text.height + MENU_ITEMS_MARGIN;
     text.setOrigin(1.0, 0.0);
     text.setInteractive();
+
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
       text.setColor(item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : INTERFACE_TEXT_COLOR_ACTIVE);
     });
+
     text.on(Phaser.Input.Events.POINTER_OUT, () => {
       this.input.setDefaultCursor('default');
       if (active.current !== text) {
         text.setColor('#fff');
       }
     });
+
     text.on(Phaser.Input.Events.POINTER_UP, () => {
       if (item.onClick) {
         item.onClick();
@@ -63,8 +61,9 @@ export const ComponentItems = Component<Props>(function (container, {
         active.current = text;
       }
     });
+
     container.add(text);
-    shift += text.height + MENU_ITEMS_MARGIN;
+
     if (item.default) {
       active.current = text;
       text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
