@@ -8,6 +8,8 @@ import {
   PLAYER_DAMAGE, PLAYER_DAMAGE_GROWTH,
   PLAYER_ATTACK_DISTANCE, PLAYER_ATTACK_DISTANCE_GROWTH,
   PLAYER_ATTACK_PAUSE,
+  WAVE_EXPERIENCE,
+  WAVE_EXPERIENCE_GROWTH,
 } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
@@ -23,13 +25,14 @@ import { Enemy } from '~scene/world/entities/enemy';
 import { Sprite } from '~scene/world/entities/sprite';
 import { NoticeType } from '~type/screen/notice';
 import { WorldEffect } from '~type/world/effects';
-import { ResourceType, Resources } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import {
   PlayerEvents, PlayerTexture,
   MovementDirection, MovementDirectionValue, PlayerStat,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
+import { ResourceType, Resources } from '~type/world/resources';
+import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite {
   /**
@@ -122,6 +125,10 @@ export class Player extends Sprite {
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
+    this.live.on(WaveEvents.FINISH, (waveNumber: number) => {
+      const experience = calcGrowth(WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH, waveNumber);
+      this.giveExperience(experience);
+    });
   }
 
   /**

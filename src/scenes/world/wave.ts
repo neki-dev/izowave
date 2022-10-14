@@ -1,11 +1,8 @@
 import EventEmitter from 'events';
 
 import {
-  WAVE_BOSS_SPAWN_RATE,
-  WAVE_ENEMIES_COUNT, WAVE_ENEMIES_COUNT_GROWTH,
-  WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
-  WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH,
-  WAVE_PAUSE,
+  WAVE_BOSS_SPAWN_RATE, WAVE_ENEMIES_COUNT, WAVE_ENEMIES_COUNT_GROWTH,
+  WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, WAVE_PAUSE,
 } from '~const/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
@@ -90,12 +87,11 @@ export class Wave extends EventEmitter {
    */
   public update() {
     const now = this.scene.getTimerNow();
+
     if (this.isGoing) {
       if (this.spawnedCount < this.maxSpawnedCount) {
         if (this.spawnPause < now) {
-          this.spawn();
-          const pause = calcGrowth(WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, this.number);
-          this.spawnPause = now + Math.max(pause, 500);
+          this.spawnEnemy();
         }
       } else if (this.scene.enemies.getTotalUsed() === 0) {
         this.complete();
@@ -162,7 +158,7 @@ export class Wave extends EventEmitter {
 
   /**
    * Complete wave.
-   * Start timeleft to next wave and give player experience.
+   * Start timeleft to next wave.
    */
   public complete() {
     this.isGoing = false;
@@ -170,35 +166,42 @@ export class Wave extends EventEmitter {
 
     this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.FINISH, this.number);
-
-    const experience = calcGrowth(WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH, this.number);
-    this.scene.player.giveExperience(experience);
   }
 
   /**
    * Spawn enemy with random variant.
+   */
+  private spawnEnemy() {
+    const variant = this.getEnemyVariant();
+    this.scene.spawnEnemy(variant);
+
+    const now = this.scene.getTimerNow();
+    const pause = calcGrowth(WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, this.number);
+    this.spawnPause = now + Math.max(pause, 500);
+    this.spawnedCount++;
+  }
+
+  /**
+   * Get random enemy variant by wave.
    * Boss will spawn every `WAVE_BOSS_SPAWN_RATE`th wave.
    */
-  private spawn() {
-    let variant: EnemyVariant;
+  private getEnemyVariant(): EnemyVariant {
     if (
       this.number % WAVE_BOSS_SPAWN_RATE === 0
       && this.spawnedCount < Math.ceil(this.number / WAVE_BOSS_SPAWN_RATE)
     ) {
-      variant = EnemyVariant.BOSS;
-    } else {
-      const variants: EnemyVariant[] = [];
-      for (const [type, meta] of Object.entries(ENEMY_VARIANTS_META)) {
-        if (meta.spawnMinWave <= this.number) {
-          for (let k = 0; k < meta.spawnFrequency; k++) {
-            variants.push(<EnemyVariant> type);
-          }
-        }
-      }
-      variant = Phaser.Utils.Array.GetRandom(variants);
+      return EnemyVariant.BOSS;
     }
 
-    this.scene.spawnEnemy(variant);
-    this.spawnedCount++;
+    const variants: EnemyVariant[] = [];
+    for (const [type, meta] of Object.entries(ENEMY_VARIANTS_META)) {
+      if (meta.spawnMinWave <= this.number) {
+        for (let k = 0; k < meta.spawnFrequency; k++) {
+          variants.push(<EnemyVariant> type);
+        }
+      }
+    }
+
+    return Phaser.Utils.Array.GetRandom(variants);
   }
 }
