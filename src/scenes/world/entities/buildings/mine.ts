@@ -3,9 +3,8 @@ import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty'
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import { NoticeType } from '~type/screen/notice';
-import {
-  BuildingData, BuildingDescriptionItem, BuildingEvents, ResourceType,
-} from '~type/world/entities/building';
+import { BuildingData, BuildingDescriptionItem, BuildingEvents } from '~type/world/entities/building';
+import { ResourceType } from '~type/world/resources';
 
 type BuildingMineData = BuildingData & {
   resourceType: ResourceType

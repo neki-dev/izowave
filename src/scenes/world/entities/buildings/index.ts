@@ -19,11 +19,3 @@ export const BUILDINGS: {
   [BuildingVariant.AMMUNITION]: BuildingAmmunition,
   [BuildingVariant.MEDIC]: BuildingMedic,
 };
-
-// export * from './ammunition';
-// export * from './medic';
-// export * from './mine';
-// export * from './mines';
-// export * from './tower';
-// export * from './towers';
-// export * from './wall';

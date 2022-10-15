@@ -552,7 +552,8 @@ export class World extends Phaser.Scene {
       const positionAtMatrix = spawns[index];
       const tileGround = this.level.getTile({ ...positionAtMatrix, z: 0 });
       if (tileGround?.biome.solid) {
-        const BuildingInstance = BUILDINGS[Phaser.Utils.Array.GetRandom(variant)];
+        const randomVariant: BuildingVariant = Phaser.Utils.Array.GetRandom(variant);
+        const BuildingInstance = BUILDINGS[randomVariant];
         new BuildingInstance(this, positionAtMatrix);
       }
 

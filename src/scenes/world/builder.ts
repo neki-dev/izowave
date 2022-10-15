@@ -188,7 +188,7 @@ export class Builder {
   /**
    * Switch current building variant.
    */
-  private switchBuildingVariant(e) {
+  private switchBuildingVariant(e: KeyboardEvent) {
     if (!Number(e.key)) {
       return;
     }

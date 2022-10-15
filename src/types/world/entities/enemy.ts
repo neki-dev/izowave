@@ -32,7 +32,7 @@ export type EnemyVariantsMeta = Partial<Record<EnemyVariant, {
 
 export type EnemyData = {
   positionAtMatrix: Phaser.Types.Math.Vector2Like
-  texture: string
+  texture: EnemyTexture
   speed: number
   damage: number
   health: number

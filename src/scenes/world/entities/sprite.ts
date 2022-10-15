@@ -5,7 +5,7 @@ import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
-import { SpriteData } from '~type/sprite';
+import { SpriteData } from '~type/world/entities/sprite';
 import { BiomeType, TileType } from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite {

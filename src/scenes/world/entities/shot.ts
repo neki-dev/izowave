@@ -39,7 +39,8 @@ export class Shot extends Phaser.Physics.Arcade.Image {
    * Shot constructor.
    */
   constructor(tower: BuildingTower) {
-    super(tower.scene, tower.x, tower.y, ShotTexture[tower.shotType]);
+    const texture = <keyof typeof ShotTexture> tower.shotType;
+    super(tower.scene, tower.x, tower.y, ShotTexture[texture]);
     tower.scene.add.existing(this);
     tower.scene.shots.add(this);
 

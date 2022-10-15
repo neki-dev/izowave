@@ -18,6 +18,7 @@ import {
 } from '~const/player';
 import { WORLD_CAMERA_ZOOM } from '~const/world';
 import { registerAssets } from '~lib/assets';
+import { entries, keys } from '~lib/core';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { Chest } from '~scene/world/entities/chest';
@@ -197,7 +198,7 @@ export class Player extends Sprite {
       return;
     }
 
-    for (const [type, amount] of Object.entries(amounts)) {
+    for (const [type, amount] of entries(amounts)) {
       if (amount > 0) {
         this.resources[type] += amount;
         this.emit(PlayerEvents.RESOURCE, type, amount);
@@ -211,8 +212,8 @@ export class Player extends Sprite {
    * @param amounts - Resources amounts
    */
   public haveResources(amounts: Resources): boolean {
-    for (const type in amounts) {
-      if (this.resources[type] < amounts[type]) {
+    for (const [type, amount] of entries(amounts)) {
+      if (this.resources[type] < amount) {
         return false;
       }
     }
@@ -226,7 +227,7 @@ export class Player extends Sprite {
    * @param amounts - Resources amounts
    */
   public takeResources(amounts: Resources): void {
-    for (const [type, amount] of Object.entries(amounts)) {
+    for (const [type, amount] of entries(amounts)) {
       if (amount > 0) {
         this.resources[type] -= amount;
         this.emit(PlayerEvents.RESOURCE, type, -amount);
@@ -408,7 +409,7 @@ export class Player extends Sprite {
    * Update move direction and animation.
    */
   private updateDirection() {
-    const animation = [];
+    const animation: string[] = [];
     const x = this.getSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']], animation);
     const y = this.getSingleDirection([['UP', 'W'], ['DOWN', 'S']], animation);
 
@@ -447,12 +448,14 @@ export class Player extends Sprite {
   /**
    * Get single move direction by keys state.
    *
-   * @param keys - Positive and negative keys
+   * @param controls - Positive and negative keyboard keys
    * @param animation - Animation buffer
    */
-  private getSingleDirection(keys: string[][], animation: string[]): MovementDirectionValue {
-    for (const dir of keys) {
-      const [core, alias] = dir;
+  private getSingleDirection(
+    controls: [keyof typeof MovementDirectionValue, string][],
+    animation: string[],
+  ): MovementDirectionValue {
+    for (const [core, alias] of controls) {
       if (this.cursors[core].isDown || this.cursors[alias].isDown) {
         animation?.push(core);
         return MovementDirectionValue[core];
@@ -488,7 +491,7 @@ export class Player extends Sprite {
    */
   private writeBestStat(stat: PlayerStat, record: PlayerStat) {
     localStorage.setItem(`${PLAYER_RECORD_KEY}.${this.scene.difficultyType}`, JSON.stringify(
-      Object.keys(stat).reduce((curr, param) => ({
+      keys(stat).reduce((curr, param) => ({
         ...curr,
         [param]: Math.max(stat[param], record[param] || 0),
       }), {}),

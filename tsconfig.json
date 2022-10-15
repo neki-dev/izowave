@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "outDir": "./app",
-    "module": "commonjs",
-    "target": "esnext",
-    "esModuleInterop": true,
+    "module": "es6",
+    "target": "es6",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
     "resolveJsonModule": true,
     "paths": {
       "~scene/*": ["./src/scenes/*"],
@@ -13,5 +15,5 @@
       "~ui/*": ["./src/ui/*"]
     }
   },
-  "include": ["./src/**/*.ts"]
+  "include": ["./src"]
 }

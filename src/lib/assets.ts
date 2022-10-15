@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 
-const ASSETS_PACK = {
+const ASSETS_PACK: {
+  files: Phaser.Types.Loader.FileConfig[]
+} = {
   files: [],
 };
 

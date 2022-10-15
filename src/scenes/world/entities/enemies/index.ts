@@ -19,11 +19,3 @@ export const ENEMIES: {
   [EnemyVariant.IMPURE]: EnemyImpure,
   [EnemyVariant.BOUCHE]: EnemyBouche,
 };
-
-// export * from './bat';
-// export * from './boss';
-// export * from './bouche';
-// export * from './demon';
-// export * from './impure';
-// export * from './overlord';
-// export * from './undead';
