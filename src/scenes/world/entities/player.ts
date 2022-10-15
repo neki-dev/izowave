@@ -126,7 +126,7 @@ export class Player extends Sprite {
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
-    this.live.on(WaveEvents.FINISH, (waveNumber: number) => {
+    this.scene.wave.on(WaveEvents.FINISH, (waveNumber: number) => {
       const experience = calcGrowth(WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH, waveNumber);
       this.giveExperience(experience);
     });
