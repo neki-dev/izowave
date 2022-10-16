@@ -193,6 +193,8 @@ export class World extends Phaser.Scene {
       localStorage.setItem(WORLD_DIFFICULTY_KEY, WorldDifficulty.NORMAL);
     }
 
+    this.registerOptimizations();
+
     loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
       this.prepareGame();
       this.scene.launch(SceneKey.MENU);
@@ -592,6 +594,33 @@ export class World extends Phaser.Scene {
         this.wave.setNumber(waveNumber);
         this.wave.runTimeleft();
       },
+    };
+  }
+
+  private registerOptimizations() {
+    this.visibleChildrenOptimization();
+    this.sortDepthOptimization();
+  }
+
+  /**
+   * https://github.com/photonstorm/phaser/pull/6216
+   */
+  private visibleChildrenOptimization() {
+    this.screen.cameras.main.cameraManager.getVisibleChildren = (children, camera) => (
+      children.filter((child) => child.willRender(camera))
+    );
+  }
+
+  /**
+   * https://github.com/photonstorm/phaser/pull/6217
+   */
+  private sortDepthOptimization() {
+    const ref = this.scene.systems.displayList;
+    ref.depthSort = () => {
+      if (ref.sortChildrenFlag) {
+        ref.list.sort(ref.sortByDepth);
+        ref.sortChildrenFlag = false;
+      }
     };
   }
 }
