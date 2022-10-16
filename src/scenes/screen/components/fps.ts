@@ -1,10 +1,10 @@
-import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 
 export const ComponentFPS = Component(function (container) {
   const fps = this.add.text(0, 0, '', {
     fontSize: '12px',
-    fontFamily: INTERFACE_FONT_MONOSPACE,
+    fontFamily: INTERFACE_FONT.MONOSPACE,
   });
 
   fps.setAlpha(0.4);

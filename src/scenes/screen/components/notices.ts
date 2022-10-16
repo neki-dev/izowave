@@ -1,7 +1,4 @@
-import {
-  INTERFACE_BOX_COLOR_ERROR, INTERFACE_BOX_COLOR_INFO,
-  INTERFACE_BOX_COLOR_WARN, INTERFACE_FONT_PIXEL,
-} from '~const/interface';
+import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
 import { Notice, NoticeType } from '~type/screen/notice';
@@ -23,7 +20,7 @@ export const ComponentNotices = Component(function (container) {
 
     const text = this.add.text(0, 0, message, {
       fontSize: '16px',
-      fontFamily: INTERFACE_FONT_PIXEL,
+      fontFamily: INTERFACE_FONT.PIXEL,
       padding: {
         top: 9,
         bottom: 10,
@@ -37,9 +34,9 @@ export const ComponentNotices = Component(function (container) {
 
     const background = (() => {
       switch (type) {
-        case NoticeType.INFO: return INTERFACE_BOX_COLOR_INFO;
-        case NoticeType.WARN: return INTERFACE_BOX_COLOR_WARN;
-        case NoticeType.ERROR: return INTERFACE_BOX_COLOR_ERROR;
+        case NoticeType.INFO: return INTERFACE_BOX_COLOR.INFO;
+        case NoticeType.WARN: return INTERFACE_BOX_COLOR.WARN;
+        case NoticeType.ERROR: return INTERFACE_BOX_COLOR.ERROR;
         default: return 0x000000;
       }
     })();

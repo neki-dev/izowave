@@ -11,7 +11,7 @@ export class BuildingMineSilver extends BuildingMine {
     { text: 'Silver resource generation\nfor builds and upgrades.', type: 'text' },
     { text: 'Health: 400', icon: 0 },
     { text: 'Pause: 2.0 s', icon: 6 },
-    { text: `Limit: ${DIFFICULTY.MINE_RESOURCES}`, icon: 5 },
+    { text: `Resources: ${DIFFICULTY.MINE_RESOURCES}`, icon: 5 },
   ];
 
   static Texture = BuildingTexture.MINE_SILVER;

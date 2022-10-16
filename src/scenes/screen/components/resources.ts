@@ -1,4 +1,4 @@
-import { INTERFACE_FONT_PIXEL, RESOURCE_COLOR } from '~const/interface';
+import { INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 import { Player } from '~scene/world/entities/player';
@@ -31,13 +31,13 @@ export const ComponentResources = Component<Props>(function (container, {
 
     const text = this.add.text(icon.width + 16, ITEM_PADDING, type, {
       fontSize: '7px',
-      fontFamily: INTERFACE_FONT_PIXEL,
+      fontFamily: INTERFACE_FONT.PIXEL,
       color: '#dddddd',
     });
 
     const amount = this.add.text(icon.width + 16, ITEM_HEIGHT - ITEM_PADDING - 1, type, {
       fontSize: '14px',
-      fontFamily: INTERFACE_FONT_PIXEL,
+      fontFamily: INTERFACE_FONT.PIXEL,
     });
 
     amount.setName('Amount');

@@ -1,7 +1,4 @@
-import {
-  INTERFACE_TEXT_COLOR_ERROR_DARK, INTERFACE_FONT_MONOSPACE,
-  INTERFACE_FONT_PIXEL,
-} from '~const/interface';
+import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 import { PlayerStat } from '~type/world/entities/player';
 
@@ -22,9 +19,9 @@ export const ComponentGameOver = Component<Props>(function (container, {
   const box = this.add.container(canvas.width / 2, canvas.height / 2);
 
   const title = this.add.text(0, -50, 'GAME OVER', {
-    color: INTERFACE_TEXT_COLOR_ERROR_DARK,
+    color: INTERFACE_TEXT_COLOR.ERROR_DARK,
     fontSize: '100px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: { bottom: 8 },
     shadow: {
       offsetX: 8,
@@ -51,7 +48,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
     `LIVED MINUTES - ${stat.lived.toFixed(1)}${(record.lived < stat.lived) ? ' - NEW RECORD' : ''}`,
   ], {
     fontSize: '14px',
-    fontFamily: INTERFACE_FONT_MONOSPACE,
+    fontFamily: INTERFACE_FONT.MONOSPACE,
     // @ts-ignore
     lineSpacing: 8,
   });

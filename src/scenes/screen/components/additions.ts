@@ -1,4 +1,4 @@
-import { INTERFACE_FONT_MONOSPACE } from '~const/interface';
+import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
 
@@ -25,12 +25,12 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
   event((amount) => {
     if (combine) {
-      const add = <Phaser.GameObjects.Text> container.getAt(0);
+      const addition = <Phaser.GameObjects.Text> container.getAt(0);
 
-      if (add) {
-        const current = Number(add.text.replace('+', ''));
+      if (addition) {
+        const current = Number(addition.text.replace('+', ''));
 
-        add.setText(formatAmount(current + amount));
+        addition.setText(formatAmount(current + amount));
 
         return;
       }
@@ -38,7 +38,7 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
     const addition = this.add.text(0, 0, formatAmount(amount), {
       fontSize: '14px',
-      fontFamily: INTERFACE_FONT_MONOSPACE,
+      fontFamily: INTERFACE_FONT.MONOSPACE,
     });
 
     addition.setOrigin(0.0, 0.5);

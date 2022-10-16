@@ -1,4 +1,4 @@
-import { INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
 import { Component } from '~lib/ui';
 
@@ -17,9 +17,9 @@ export const ComponentDifficulty = Component<Props>(function (container, {
 
   for (const type of Object.keys(WORLD_DIFFICULTY_POWERS)) {
     const text = this.add.text(0, shift, type, {
-      color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR_ACTIVE : '#fff',
+      color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR.ACTIVE : '#fff',
       fontSize: '18px',
-      fontFamily: INTERFACE_FONT_PIXEL,
+      fontFamily: INTERFACE_FONT.PIXEL,
     });
 
     text.setAlpha(disabled ? 0.5 : 1.0);
@@ -28,7 +28,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
       text.setInteractive();
       text.on(Phaser.Input.Events.POINTER_OVER, () => {
         this.input.setDefaultCursor('pointer');
-        text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
+        text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
       });
       text.on(Phaser.Input.Events.POINTER_OUT, () => {
         this.input.setDefaultCursor('default');
@@ -42,7 +42,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
         container.each((child: Phaser.GameObjects.Text) => {
           child.setColor('#fff');
         });
-        text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
+        text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
       });
     }
 

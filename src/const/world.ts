@@ -1,7 +1,5 @@
 import { WorldDifficultyPowers } from '~type/world';
 
-export const WORLD_CAMERA_ZOOM = 1.0;
-
 export const WORLD_COLLIDE_LOOK = 4.0;
 
 export const WORLD_DEPTH_UI = 9999;

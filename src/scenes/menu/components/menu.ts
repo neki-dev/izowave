@@ -1,5 +1,5 @@
 import { COPYRIGHT } from '~const/core';
-import { INTERFACE_FONT_MONOSPACE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_BLUE } from '~const/interface';
+import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
@@ -40,9 +40,9 @@ export const ComponentMenu = Component<Props>(function (container, {
   background.setOrigin(0.0, 0.0);
 
   const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
-    color: INTERFACE_TEXT_COLOR_BLUE,
+    color: INTERFACE_TEXT_COLOR.BLUE,
     fontSize: '50px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: { bottom: 6 },
     shadow: {
       offsetX: 6,
@@ -66,7 +66,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   const copyright = this.add.text(shift.x, shift.y, COPYRIGHT, {
     fixedWidth: logotype.width,
     fontSize: '12px',
-    fontFamily: INTERFACE_FONT_MONOSPACE,
+    fontFamily: INTERFACE_FONT.MONOSPACE,
     align: 'right',
   });
 
@@ -84,7 +84,7 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   const title = this.add.text(shift.x, shift.y, '', {
     fontSize: '50px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: { bottom: 6 },
     shadow: {
       offsetX: 6,

@@ -1,6 +1,4 @@
-import {
-  INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_PRIMARY,
-} from '~const/interface';
+import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { WORLD_DEPTH_UI } from '~const/world';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
@@ -23,7 +21,7 @@ const CONTAINER_PADDING = 16;
 export const ComponentBuildingInfo = Component<Props>(function (container, {
   origin, player, data, mode = 'building',
 }) {
-  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_BLUE, 0.9);
+  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR.BLUE, 0.9);
 
   body.setOrigin(0.0, 0.0);
 
@@ -32,8 +30,8 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
 
   const name = this.add.text(shift.x, shift.y, '', {
     fontSize: '18px',
-    fontFamily: INTERFACE_FONT_PIXEL,
-    color: INTERFACE_TEXT_COLOR_PRIMARY,
+    fontFamily: INTERFACE_FONT.PIXEL,
+    color: INTERFACE_TEXT_COLOR.PRIMARY,
     padding: { bottom: 2 },
     shadow: {
       offsetX: 2,

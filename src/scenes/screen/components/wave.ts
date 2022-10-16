@@ -1,6 +1,5 @@
 import {
-  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_PIXEL,
-  INTERFACE_BOX_COLOR_ERROR, INTERFACE_BOX_COLOR_INFO,
+  INTERFACE_TEXT_COLOR, INTERFACE_FONT, INTERFACE_BOX_COLOR,
 } from '~const/interface';
 import { Component } from '~lib/ui';
 import { formatTime } from '~lib/utils';
@@ -10,8 +9,6 @@ import { WaveEvents } from '~type/world/wave';
 
 type Props = {
   wave: Wave
-  x: number
-  y: number
 };
 
 const CONTAINER_WIDTH = 130;
@@ -32,7 +29,7 @@ export const ComponentWave = Component<Props>(function (container, {
 
   const number = this.add.text(1, CONTAINER_HEIGHT / 2 - 1, '', {
     fontSize: '20px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: {
       bottom: 1,
       left: 12,
@@ -51,7 +48,7 @@ export const ComponentWave = Component<Props>(function (container, {
 
   const counterLabel = this.add.text(0, 7, '', {
     fontSize: '7px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: { bottom: 1 },
   });
 
@@ -60,7 +57,7 @@ export const ComponentWave = Component<Props>(function (container, {
 
   const counter = this.add.text(0, CONTAINER_HEIGHT - 14, '', {
     fontSize: '14px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: { bottom: 1 },
   });
 
@@ -70,11 +67,11 @@ export const ComponentWave = Component<Props>(function (container, {
 
   const onNumberUpdate = () => {
     if (wave.isGoing) {
-      numberBody.fillColor = INTERFACE_BOX_COLOR_ERROR;
+      numberBody.fillColor = INTERFACE_BOX_COLOR.ERROR;
       number.setText(String(wave.number));
       counterLabel.setText('ENEMIES');
     } else {
-      numberBody.fillColor = INTERFACE_BOX_COLOR_INFO;
+      numberBody.fillColor = INTERFACE_BOX_COLOR.INFO;
       number.setText(String(wave.number + 1));
       counterLabel.setText('TIMELEFT');
     }
@@ -104,8 +101,8 @@ export const ComponentWave = Component<Props>(function (container, {
         const timeleft = Math.ceil(wave.getTimeleft() / 1000);
 
         counter.setText(formatTime(timeleft));
-        if (timeleft <= 3 && counter.style.color !== INTERFACE_TEXT_COLOR_ERROR) {
-          counter.setColor(INTERFACE_TEXT_COLOR_ERROR);
+        if (timeleft <= 3 && counter.style.color !== INTERFACE_TEXT_COLOR.ERROR) {
+          counter.setColor(INTERFACE_TEXT_COLOR.ERROR);
           this.tweens.add({
             targets: counter,
             scale: 0.9,

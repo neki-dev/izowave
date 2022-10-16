@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { INTERFACE_FONT_PIXEL, INTERFACE_TEXT_COLOR_ACTIVE, INTERFACE_TEXT_COLOR_PRIMARY } from '~const/interface';
+import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
@@ -16,13 +16,15 @@ export const ComponentItems = Component<Props>(function (container, {
   width, data, onSelect,
 }) {
   let shift = 0;
-  const active = { current: null };
+  const active: {
+    current: Phaser.GameObjects.Text
+  } = { current: null };
 
   for (const item of data) {
     const text = this.add.text(width, shift, item.label, {
       color: '#fff',
       fontSize: '20px',
-      fontFamily: INTERFACE_FONT_PIXEL,
+      fontFamily: INTERFACE_FONT.PIXEL,
       align: 'right',
       padding: { bottom: 4 },
       shadow: {
@@ -40,7 +42,7 @@ export const ComponentItems = Component<Props>(function (container, {
 
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
-      text.setColor(item.onClick ? INTERFACE_TEXT_COLOR_PRIMARY : INTERFACE_TEXT_COLOR_ACTIVE);
+      text.setColor(item.onClick ? INTERFACE_TEXT_COLOR.PRIMARY : INTERFACE_TEXT_COLOR.ACTIVE);
     });
 
     text.on(Phaser.Input.Events.POINTER_OUT, () => {
@@ -58,7 +60,7 @@ export const ComponentItems = Component<Props>(function (container, {
         if (active.current) {
           active.current.setColor('#fff');
         }
-        text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
+        text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
         active.current = text;
       }
     });
@@ -67,7 +69,7 @@ export const ComponentItems = Component<Props>(function (container, {
 
     if (item.default) {
       active.current = text;
-      text.setColor(INTERFACE_TEXT_COLOR_ACTIVE);
+      text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
     }
   }
 

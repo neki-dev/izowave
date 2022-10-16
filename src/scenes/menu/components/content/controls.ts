@@ -1,4 +1,4 @@
-import { INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 
 export const ComponentControls = Component(function (container) {
@@ -21,7 +21,7 @@ export const ComponentControls = Component(function (container) {
 
       const textName = this.add.text(0, 0, item.name, {
         fontSize: '16px',
-        fontFamily: INTERFACE_FONT_PIXEL,
+        fontFamily: INTERFACE_FONT.PIXEL,
         padding: {
           top: 3,
           bottom: 7,
@@ -30,13 +30,13 @@ export const ComponentControls = Component(function (container) {
         },
       });
 
-      const body = this.add.rectangle(0, 0, textName.width, textName.height, INTERFACE_BOX_COLOR_BLUE);
+      const body = this.add.rectangle(0, 0, textName.width, textName.height, INTERFACE_BOX_COLOR.BLUE);
 
       body.setOrigin(0.0, 0.0);
 
       const description = this.add.text(body.width + 10, 6, `-  ${item.description}`, {
         fontSize: '13px',
-        fontFamily: INTERFACE_FONT_PIXEL,
+        fontFamily: INTERFACE_FONT.PIXEL,
       });
 
       containerKey.add([body, textName, description]);

@@ -1,6 +1,5 @@
-import {
-  INTERFACE_TEXT_COLOR_ERROR, INTERFACE_FONT_MONOSPACE, RESOURCE_COLOR,
-} from '~const/interface';
+import { INTERFACE_TEXT_COLOR, INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
+import { keys } from '~lib/core';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
 import { Resources, ResourceType } from '~type/world/resources';
@@ -15,7 +14,10 @@ type Props = {
 export const ComponentCost = Component<Props>(function (container, {
   label, size, need, have,
 }) {
-  const items = [];
+  const items: {
+    type: ResourceType
+    text: Phaser.GameObjects.Text
+  }[] = [];
   let offset = 10;
 
   container.setSize(size[0], size[1]);
@@ -26,21 +28,21 @@ export const ComponentCost = Component<Props>(function (container, {
 
   const title = this.add.text(10, offset, label, {
     fontSize: '9px',
-    fontFamily: INTERFACE_FONT_MONOSPACE,
+    fontFamily: INTERFACE_FONT.MONOSPACE,
   });
 
   offset += toEven(title.height + 6);
 
   container.add([body, title]);
 
-  for (const resource of Object.keys(ResourceType)) {
+  for (const resource of keys(ResourceType)) {
     const type = ResourceType[resource];
     const icon = this.add.rectangle(10, offset, 8, 8, RESOURCE_COLOR[type]);
 
     icon.setOrigin(0.0, 0.0);
     const text = this.add.text(10 + icon.width + 5, offset - 2, '0', {
       fontSize: '11px',
-      fontFamily: INTERFACE_FONT_MONOSPACE,
+      fontFamily: INTERFACE_FONT.MONOSPACE,
     });
 
     offset += icon.height + 6;
@@ -72,7 +74,7 @@ export const ComponentCost = Component<Props>(function (container, {
         if (needAmount === 0) {
           text.setColor('#aaa');
         } else if (haveAmount < needAmount) {
-          text.setColor(INTERFACE_TEXT_COLOR_ERROR);
+          text.setColor(INTERFACE_TEXT_COLOR.ERROR);
         } else {
           text.setColor('#fff');
         }

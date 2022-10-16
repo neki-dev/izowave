@@ -4,12 +4,10 @@ import {
   ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING,
   ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/enemy';
-import { INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_FONT } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
-import {
-  WORLD_CAMERA_ZOOM, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS,
-} from '~const/world';
+import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
 import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
 import { selectClosest } from '~lib/utils';
@@ -197,7 +195,7 @@ export class World extends Phaser.Scene {
 
     this.registerOptimizations();
 
-    loadFontFace(INTERFACE_FONT_PIXEL, 'retro').finally(() => {
+    loadFontFace(INTERFACE_FONT.PIXEL, 'retro').finally(() => {
       this.prepareGame();
       this.scene.launch(SceneKey.MENU);
 
@@ -342,8 +340,8 @@ export class World extends Phaser.Scene {
 
     camera.resetFX();
     camera.startFollow(this.player);
-    camera.setZoom(WORLD_CAMERA_ZOOM * 1.3);
-    camera.zoomTo(WORLD_CAMERA_ZOOM, 100);
+    camera.setZoom(1.3);
+    camera.zoomTo(1.0, 100);
 
     this.scene.launch(this.screen);
     this.input.keyboard.on(INPUT_KEY.PAUSE, () => {

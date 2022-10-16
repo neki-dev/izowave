@@ -1,4 +1,4 @@
-import { INTERFACE_FONT_PIXEL } from '~const/interface';
+import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 
@@ -26,7 +26,7 @@ export const ComponentBar = Component<Props>(function (container, {
 
   const label = this.add.text(CONTAINER_WIDTH / 2, CONTAINER_HEIGHT / 2, display(), {
     fontSize: '11px',
-    fontFamily: INTERFACE_FONT_PIXEL,
+    fontFamily: INTERFACE_FONT.PIXEL,
     padding: { bottom: 1 },
   });
 

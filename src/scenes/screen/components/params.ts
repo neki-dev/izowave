@@ -1,4 +1,4 @@
-import { INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_BLUE_DARK } from '~const/interface';
+import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 import { ScreenTexture } from '~type/screen';
 import { BuildingDescriptionItem } from '~type/world/entities/building';
@@ -10,9 +10,9 @@ type Props = {
 export const ComponentParams = Component<Props>(function (container, {
   data,
 }) {
-  const current = {
-    text: null,
-  };
+  const value: {
+    current: string
+  } = { current: null };
 
   const create = (item: BuildingDescriptionItem, offset: number) => {
     if (item.icon !== undefined) {
@@ -23,28 +23,25 @@ export const ComponentParams = Component<Props>(function (container, {
     }
 
     const text = this.add.text((item.icon !== undefined) ? 15 : 0, offset - 1, item.text, (item.type === 'hint') ? {
-      color: '#fff',
+      color: INTERFACE_TEXT_COLOR.BLUE_LIGHT,
       fontSize: '10px',
-      fontFamily: INTERFACE_FONT_MONOSPACE,
-      backgroundColor: INTERFACE_TEXT_COLOR_BLUE_DARK,
-      padding: { top: 1, left: 2, right: 2 },
+      fontFamily: INTERFACE_FONT.MONOSPACE,
+      backgroundColor: INTERFACE_TEXT_COLOR.BLUE_DARK,
+      padding: { top: 2, left: 3, right: 3 },
     } : {
       color: item.color || '#fff',
       fontSize: '12px',
-      fontFamily: INTERFACE_FONT_MONOSPACE,
+      fontFamily: INTERFACE_FONT.MONOSPACE,
       padding: { bottom: 1 },
     });
 
     text.setOrigin(0.0, 0.0);
-    if (item.type === 'hint') {
-      text.setAlpha(0.75);
-    }
     container.add(text);
 
     if (item.post) {
       const post = this.add.text(text.x + text.width + 5, offset - 1, item.post, {
         fontSize: '10px',
-        fontFamily: INTERFACE_FONT_MONOSPACE,
+        fontFamily: INTERFACE_FONT.MONOSPACE,
         padding: { bottom: 1 },
       });
 
@@ -70,12 +67,11 @@ export const ComponentParams = Component<Props>(function (container, {
 
       const newValue = items.map((item) => item.text).join('\n');
 
-      if (current.text === newValue) {
+      if (value.current === newValue) {
         return;
       }
 
-      current.text = newValue;
-
+      value.current = newValue;
       container.removeAll(true);
 
       let offset = 0;
@@ -85,6 +81,7 @@ export const ComponentParams = Component<Props>(function (container, {
         if (item.type === 'hint') {
           offset += 6;
         }
+
         const text = create(item, offset);
 
         offset += text.height;

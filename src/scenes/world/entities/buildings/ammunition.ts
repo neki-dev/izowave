@@ -14,7 +14,7 @@ export class BuildingAmmunition extends Building {
     { text: 'Ammo for towers.\nTo reload tower must\nbe inside radius.', type: 'text' },
     { text: 'Health: 300', icon: 0 },
     { text: 'Radius: 160', icon: 1 },
-    { text: `Amount: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: 2 },
+    { text: `Ammo: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: 2 },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;

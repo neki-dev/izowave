@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { INTERFACE_BOX_COLOR_BLUE, INTERFACE_FONT_MONOSPACE, INTERFACE_TEXT_COLOR_ERROR } from '~const/interface';
+import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
@@ -25,7 +25,9 @@ const ITEMS_MARGIN = 5;
 export const ComponentBuilder = Component<Props>(function (container, {
   builder, wave, player,
 }) {
-  const hover = { current: null };
+  const hover: {
+    current: number
+  } = { current: null };
 
   container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
 
@@ -46,7 +48,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
         ...data.Description, {
           text: `You have ${count} of ${limit}`,
           type: 'text',
-          color: (count >= limit) ? INTERFACE_TEXT_COLOR_ERROR : undefined,
+          color: (count >= limit) ? INTERFACE_TEXT_COLOR.ERROR : undefined,
         },
       ];
     }
@@ -115,7 +117,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
 
     const number = this.add.text(ITEM_SIZE - 4, 4, String(index + 1), {
       fontSize: '12px',
-      fontFamily: INTERFACE_FONT_MONOSPACE,
+      fontFamily: INTERFACE_FONT.MONOSPACE,
     });
 
     number.setOrigin(1.0, 0.0);
@@ -145,7 +147,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
           body.setFillStyle(0x000000);
           body.setAlpha(1.0);
         } else if (builder.variantIndex === i - 1) {
-          body.setFillStyle(INTERFACE_BOX_COLOR_BLUE);
+          body.setFillStyle(INTERFACE_BOX_COLOR.BLUE);
           body.setAlpha(1.0);
         } else if (hover.current === i - 1) {
           body.setFillStyle(0x000000);
