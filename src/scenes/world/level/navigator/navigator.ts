@@ -107,8 +107,8 @@ export class Navigator {
       return;
     }
 
-    const C = (Math.abs(shift.x) + Math.abs(shift.y) === 1) ? 1.0 : 1.4;
-    const cost = currentNode.getCost() + (this.getPointCost(x, y) * C);
+    const c = (Math.abs(shift.x) + Math.abs(shift.y) === 1) ? 1.0 : 1.4;
+    const cost = currentNode.getCost() + (this.getPointCost(x, y) * c);
 
     const existNode = task.pickNode(x, y);
 

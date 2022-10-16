@@ -143,6 +143,8 @@ export class Level extends TileMatrix {
 
     this.visibleTiles.children.iterate((tile: Phaser.GameObjects.Image) => {
       tile.setVisible(false);
+
+      return true;
     });
     this.visibleTiles.clear();
 

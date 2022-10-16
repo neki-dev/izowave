@@ -12,7 +12,7 @@ export class NavigatorTask {
 
   private callback: (path: Phaser.Types.Math.Vector2Like[] | null) => void;
 
-  private tree = {};
+  private tree: PathNode[][] = [];
 
   private nodes: Heap<PathNode>;
 

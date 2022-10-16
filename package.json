@@ -1,7 +1,7 @@
 {
   "name": "izowave",
   "description": "Isometric game. Build and defence",
-  "version": "0.16.4",
+  "version": "0.16.5",
   "keywords": [],
   "license": "MIT",
   "author": {
@@ -40,7 +40,7 @@
   "dependencies": {
     "gen-biome": "^1.2.2",
     "heap": "^0.2.7",
-    "phaser": "^3.55.2"
+    "phaser": "^3.60.0-beta.12"
   },
   "repository": {
     "type": "git",

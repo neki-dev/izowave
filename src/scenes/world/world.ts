@@ -193,7 +193,7 @@ export class World extends Phaser.Scene {
       localStorage.setItem(WORLD_DIFFICULTY_KEY, WorldDifficulty.NORMAL);
     }
 
-    this.registerOptimizations();
+    this.sortDepthOptimization();
 
     loadFontFace(INTERFACE_FONT.PIXEL, 'retro').finally(() => {
       this.prepareGame();
@@ -279,7 +279,6 @@ export class World extends Phaser.Scene {
     }
 
     const positions = selectClosest(allowedPositions, this.player.positionAtMatrix, ENEMY_SPAWN_POSITIONS);
-
     const EnemyInstance = ENEMIES[variant];
 
     return new EnemyInstance(this, {
@@ -324,6 +323,8 @@ export class World extends Phaser.Scene {
           }
         }
       }
+
+      return true;
     });
   }
 
@@ -420,7 +421,10 @@ export class World extends Phaser.Scene {
    * Prepare game to start.
    */
   private prepareGame() {
-    this.timer = this.time.addEvent({ loop: true });
+    this.timer = this.time.addEvent({
+      loop: true,
+      delay: 1000,
+    });
     this.effects = new Effects(this);
 
     this.makeLevel();
@@ -447,6 +451,8 @@ export class World extends Phaser.Scene {
       } catch (e) {
         console.error('Error on update enemy path:', e);
       }
+
+      return true;
     });
 
     this.level.navigator.processing();
@@ -619,6 +625,8 @@ export class World extends Phaser.Scene {
       GODHAND: () => {
         this.enemies.children.iterate((enemy: Enemy) => {
           enemy.live.kill();
+
+          return true;
         });
       },
       FUTURE: () => {
@@ -631,20 +639,6 @@ export class World extends Phaser.Scene {
         this.wave.runTimeleft();
       },
     };
-  }
-
-  private registerOptimizations() {
-    this.visibleChildrenOptimization();
-    this.sortDepthOptimization();
-  }
-
-  /**
-   * https://github.com/photonstorm/phaser/pull/6216
-   */
-  private visibleChildrenOptimization() {
-    this.screen.cameras.main.cameraManager.getVisibleChildren = (children, camera) => (
-      children.filter((child) => child.willRender(camera))
-    );
   }
 
   /**

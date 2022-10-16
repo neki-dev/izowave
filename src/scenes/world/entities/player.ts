@@ -368,6 +368,8 @@ export class Player extends Sprite {
       if (area.contains(enemy.x, enemy.y)) {
         enemy.live.damage(damage);
       }
+
+      return true;
     });
 
     this.scene.effects.emit(WorldEffect.GLOW, this, {
