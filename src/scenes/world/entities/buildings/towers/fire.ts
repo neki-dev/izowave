@@ -1,6 +1,7 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { World } from '~scene/world';
 import { BuildingTower } from '~scene/world/entities/buildings/tower';
+import { ScreenIcon } from '~type/screen';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 import { ShotType } from '~type/world/entities/shot';
 
@@ -9,11 +10,11 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Description = [
     { text: 'Basic attack of enemy\nwith a fireball.', type: 'text' },
-    { text: 'Health: 600', icon: 0 },
-    { text: 'Radius: 215', icon: 1 },
-    { text: 'Pause: 1.4 s', icon: 6 },
-    { text: 'Speed: 55', icon: 7 },
-    { text: 'Damage: 35', icon: 4 },
+    { text: 'Health: 600', icon: ScreenIcon.HEALTH },
+    { text: 'Radius: 215', icon: ScreenIcon.RADIUS },
+    { text: 'Pause: 1.4 s', icon: ScreenIcon.PAUSE },
+    { text: 'Speed: 55', icon: ScreenIcon.SPEED },
+    { text: 'Damage: 35', icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_FIRE;
@@ -58,7 +59,7 @@ export class BuildingTowerFire extends BuildingTower {
       ...super.getInfo(), {
         text: `Damage: ${this.getShotParams().damage}`,
         post: nextDamage && `→ ${nextDamage}`,
-        icon: 4,
+        icon: ScreenIcon.DAMAGE,
       },
     ];
   }

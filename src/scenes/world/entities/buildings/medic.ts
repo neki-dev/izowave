@@ -3,6 +3,7 @@ import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import { Player } from '~scene/world/entities/player';
+import { ScreenIcon } from '~type/screen';
 import { BuildingVariant, BuildingTexture, BuildingDescriptionItem } from '~type/world/entities/building';
 
 export class BuildingMedic extends Building {
@@ -10,10 +11,10 @@ export class BuildingMedic extends Building {
 
   static Description = [
     { text: 'Healing a player while\ninside radius.', type: 'text' },
-    { text: 'Health: 200', icon: 0 },
-    { text: 'Radius: 200', icon: 1 },
-    { text: 'Pause: 3.0 s', icon: 6 },
-    { text: `Heal: ${DIFFICULTY.MEDIC_HEAL_AMOUNT}`, icon: 3 },
+    { text: 'Health: 200', icon: ScreenIcon.HEALTH },
+    { text: 'Radius: 200', icon: ScreenIcon.RADIUS },
+    { text: 'Pause: 3.0 s', icon: ScreenIcon.PAUSE },
+    { text: `Heal: ${DIFFICULTY.MEDIC_HEAL_AMOUNT}`, icon: ScreenIcon.HEAL },
   ];
 
   static Texture = BuildingTexture.MEDIC;
@@ -76,8 +77,11 @@ export class BuildingMedic extends Building {
       : null;
 
     return [
-      ...super.getInfo(),
-      { text: `Heal: ${this.getHealAmount()}`, post: nextHeal && `→ ${nextHeal}`, icon: 3 },
+      ...super.getInfo(), {
+        text: `Heal: ${this.getHealAmount()}`,
+        post: nextHeal && `→ ${nextHeal}`,
+        icon: ScreenIcon.HEAL,
+      },
     ];
   }
 

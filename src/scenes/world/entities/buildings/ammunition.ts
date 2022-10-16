@@ -2,6 +2,7 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
+import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
   BuildingDescriptionItem, BuildingEvents, BuildingTexture, BuildingVariant,
@@ -12,9 +13,9 @@ export class BuildingAmmunition extends Building {
 
   static Description = [
     { text: 'Ammo for towers.\nTo reload tower must\nbe inside radius.', type: 'text' },
-    { text: 'Health: 300', icon: 0 },
-    { text: 'Radius: 160', icon: 1 },
-    { text: `Ammo: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: 2 },
+    { text: 'Health: 300', icon: ScreenIcon.HEALTH },
+    { text: 'Radius: 160', icon: ScreenIcon.RADIUS },
+    { text: `Ammo: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: ScreenIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -63,8 +64,11 @@ export class BuildingAmmunition extends Building {
       : null;
 
     return [
-      ...super.getInfo(),
-      { text: `Left: ${this.amountLeft}`, post: nextLeft && `→ ${nextLeft}`, icon: 2 },
+      ...super.getInfo(), {
+        text: `Left: ${this.amountLeft}`,
+        post: nextLeft && `→ ${nextLeft}`,
+        icon: ScreenIcon.AMMO,
+      },
     ];
   }
 

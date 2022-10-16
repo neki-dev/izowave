@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { BuildingMine } from '~scene/world/entities/buildings/mine';
+import { ScreenIcon } from '~type/screen';
 import { BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 import { ResourceType } from '~type/world/resources';
 
@@ -9,9 +10,9 @@ export class BuildingMineBronze extends BuildingMine {
 
   static Description = [
     { text: 'Bronze resource generation\nfor builds and upgrades.', type: 'text' },
-    { text: 'Health: 400', icon: 0 },
-    { text: 'Pause: 2.0 s', icon: 6 },
-    { text: `Resources: ${DIFFICULTY.MINE_RESOURCES}`, icon: 5 },
+    { text: 'Health: 400', icon: ScreenIcon.HEALTH },
+    { text: 'Pause: 2.0 s', icon: ScreenIcon.PAUSE },
+    { text: `Resources: ${DIFFICULTY.MINE_RESOURCES}`, icon: ScreenIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.MINE_BRONZE;

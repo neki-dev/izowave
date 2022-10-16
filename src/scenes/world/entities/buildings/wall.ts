@@ -1,5 +1,6 @@
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
+import { ScreenIcon } from '~type/screen';
 import {
   BuildingEvents, BuildingVariant, BuildingTexture,
 } from '~type/world/entities/building';
@@ -9,7 +10,7 @@ export class BuildingWall extends Building {
 
   static Description = [
     { text: 'Wall with more health to\ndefend other buildings.', type: 'text' },
-    { text: 'Health: 2000', icon: 0 },
+    { text: 'Health: 2000', icon: ScreenIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;

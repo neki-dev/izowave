@@ -1,6 +1,7 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { World } from '~scene/world';
 import { BuildingTower } from '~scene/world/entities/buildings/tower';
+import { ScreenIcon } from '~type/screen';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 import { ShotType } from '~type/world/entities/shot';
 
@@ -9,11 +10,11 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Description = [
     { text: 'Freeze and stop enemies\nfor some time.', type: 'text' },
-    { text: 'Health: 700', icon: 0 },
-    { text: 'Radius: 210', icon: 1 },
-    { text: 'Pause: 1.4 s', icon: 6 },
-    { text: 'Speed: 55', icon: 7 },
-    { text: 'Freeze: 1.0 s', icon: 4 },
+    { text: 'Health: 700', icon: ScreenIcon.HEALTH },
+    { text: 'Radius: 210', icon: ScreenIcon.RADIUS },
+    { text: 'Pause: 1.4 s', icon: ScreenIcon.PAUSE },
+    { text: 'Speed: 55', icon: ScreenIcon.SPEED },
+    { text: 'Freeze: 1.0 s', icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_FROZEN;
@@ -58,7 +59,7 @@ export class BuildingTowerFrozen extends BuildingTower {
       ...super.getInfo(), {
         text: `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
         post: nextFreeze && `→ ${nextFreeze.toFixed(1)} s`,
-        icon: 4,
+        icon: ScreenIcon.DAMAGE,
       },
     ];
   }

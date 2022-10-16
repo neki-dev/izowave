@@ -2,6 +2,7 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
+import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { BuildingData, BuildingDescriptionItem, BuildingEvents } from '~type/world/entities/building';
 import { ResourceType } from '~type/world/resources';
@@ -43,8 +44,11 @@ export class BuildingMine extends Building {
       : null;
 
     return [
-      ...super.getInfo(),
-      { text: `Left: ${this.amountLeft}`, post: nextLeft && `→ ${nextLeft}`, icon: 5 },
+      ...super.getInfo(), {
+        text: `Left: ${this.amountLeft}`,
+        post: nextLeft && `→ ${nextLeft}`,
+        icon: ScreenIcon.RESOURCES,
+      },
     ];
   }
 

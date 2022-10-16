@@ -10,6 +10,7 @@ import { BuildingAmmunition } from '~scene/world/entities/buildings/ammunition';
 import { Enemy } from '~scene/world/entities/enemy';
 import { Lazer } from '~scene/world/entities/lazer';
 import { Shot } from '~scene/world/entities/shot';
+import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
   BuildingData, BuildingDescriptionItem, BuildingEvents, BuildingVariant,
@@ -77,8 +78,11 @@ export class BuildingTower extends Building {
       ? DIFFICULTY.TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
       : null;
     const info = [
-      ...super.getInfo(),
-      { text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`, post: nextAmmo && `→ ${nextAmmo}`, icon: 2 },
+      ...super.getInfo(), {
+        text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`,
+        post: nextAmmo && `→ ${nextAmmo}`,
+        icon: ScreenIcon.AMMO,
+      },
     ];
 
     if (this.ammoLeft < this.getMaxAmmo()) {
@@ -95,7 +99,7 @@ export class BuildingTower extends Building {
       info.push({
         text: `Speed: ${speed / 10}`,
         post: nextSpeed && `→ ${Math.round(nextSpeed)}`,
-        icon: 7,
+        icon: ScreenIcon.SPEED,
       });
     }
 

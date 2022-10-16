@@ -12,7 +12,7 @@ import { World } from '~scene/world';
 import { Hexagon } from '~scene/world/entities/hexagon';
 import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
-import { ScreenTexture } from '~type/screen';
+import { ScreenIcon, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
 import {
@@ -200,7 +200,7 @@ export class Building extends Phaser.GameObjects.Image {
   public getInfo(): BuildingDescriptionItem[] {
     const info: BuildingDescriptionItem[] = [
       { text: `Upgrade ${this.upgradeLevel} of ${BUILDING_MAX_UPGRADE_LEVEL}`, type: 'text' },
-      { text: `Health: ${this.live.health}`, icon: 0 },
+      { text: `Health: ${this.live.health}`, icon: ScreenIcon.HEALTH },
     ];
     const radius = this.getActionsRadius();
     const pause = this.getActionsPause();
@@ -211,12 +211,12 @@ export class Building extends Phaser.GameObjects.Image {
         this.actions.radius,
         DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
         this.upgradeLevel + 1,
-      ) / 2;
+      );
 
       info.push({
         text: `Radius: ${Math.round(radius / 2)}`,
-        post: nextRadius && `→ ${Math.round(nextRadius)}`,
-        icon: 1,
+        post: nextRadius && `→ ${Math.round(nextRadius / 2)}`,
+        icon: ScreenIcon.RADIUS,
       });
     }
 
@@ -225,12 +225,12 @@ export class Building extends Phaser.GameObjects.Image {
         this.actions.pause,
         DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         this.upgradeLevel + 1,
-      ) / 1000;
+      );
 
       info.push({
         text: `Pause: ${(pause / 1000).toFixed(1)} s`,
-        post: nextPause && `→ ${nextPause.toFixed(1)} s`,
-        icon: 6,
+        post: nextPause && `→ ${(nextPause / 1000).toFixed(1)} s`,
+        icon: ScreenIcon.PAUSE,
       });
     }
 
