@@ -14,7 +14,7 @@ import {
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import {
-  PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS,
+  PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS,
 } from '~const/player';
 import { WORLD_CAMERA_ZOOM } from '~const/world';
 import { registerAssets } from '~lib/assets';
@@ -28,8 +28,7 @@ import { NoticeType } from '~type/screen/notice';
 import { WorldEffect } from '~type/world/effects';
 import { LiveEvents } from '~type/world/entities/live';
 import {
-  PlayerEvents, PlayerTexture,
-  MovementDirection, MovementDirectionValue, PlayerStat,
+  PlayerEvents, PlayerTexture, MovementDirection, PlayerStat,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { ResourceType, Resources } from '~type/world/resources';
@@ -81,12 +80,9 @@ export class Player extends Sprite {
   private direction: number = 0;
 
   /**
-   * Move direction.
+   * Player is movement.
    */
-  private moveDirection: MovementDirection = {
-    x: MovementDirectionValue.NONE,
-    y: MovementDirectionValue.NONE,
-  };
+  private movement: boolean = false;
 
   /**
    * State of move blocking.
@@ -389,8 +385,7 @@ export class Player extends Sprite {
    * Update player velocity.
    */
   private updateVelocity() {
-    const { x: dX, y: dY } = this.moveDirection;
-    if (dX === 0 && dY === 0) {
+    if (!this.movement) {
       this.setVelocity(0, 0);
       return;
     }
@@ -409,19 +404,23 @@ export class Player extends Sprite {
    * Update move direction and animation.
    */
   private updateDirection() {
-    const animation: string[] = [];
-    const x = this.getSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']], animation);
-    const y = this.getSingleDirection([['UP', 'W'], ['DOWN', 'S']], animation);
+    const x = this.getSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']]);
+    const y = this.getSingleDirection([['UP', 'W'], ['DOWN', 'S']]);
+    const dirKey = `${x}|${y}`;
 
+    const oldMovement = this.movement;
+    const oldDirection = this.direction;
     if (x !== 0 || y !== 0) {
-      this.direction = PLAYER_MOVE_DIRECTIONS[`${x}|${y}`];
+      this.movement = true;
+      this.direction = PLAYER_MOVE_DIRECTIONS[dirKey];
+    } else {
+      this.movement = false;
     }
 
-    if (this.moveDirection.x !== x || this.moveDirection.y !== y) {
-      this.moveDirection = { x, y };
-
-      if (animation.length > 0) {
-        this.play(`run_${animation.join('_')}`);
+    if (oldMovement !== this.movement || oldDirection !== this.direction) {
+      if (this.movement) {
+        const animation = PLAYER_MOVE_ANIMATIONS[dirKey];
+        this.play(animation);
       } else {
         this.stop();
       }
@@ -448,21 +447,18 @@ export class Player extends Sprite {
   /**
    * Get single move direction by keys state.
    *
-   * @param controls - Positive and negative keyboard keys
-   * @param animation - Animation buffer
+   * @param controls - Keyboard keys
    */
   private getSingleDirection(
-    controls: [keyof typeof MovementDirectionValue, string][],
-    animation: string[],
-  ): MovementDirectionValue {
+    controls: [keyof typeof MovementDirection, string][],
+  ): MovementDirection {
     for (const [core, alias] of controls) {
       if (this.cursors[core].isDown || this.cursors[alias].isDown) {
-        animation?.push(core);
-        return MovementDirectionValue[core];
+        return MovementDirection[core];
       }
     }
 
-    return MovementDirectionValue.NONE;
+    return MovementDirection.NONE;
   }
 
   /**
@@ -505,21 +501,17 @@ export class Player extends Sprite {
     const { anims } = this.scene;
 
     let frameIndex = 0;
-    for (const dirH of ['LEFT', '', 'RIGHT']) {
-      for (const dirV of ['UP', '', 'DOWN']) {
-        if (dirH || dirV) {
-          anims.create({
-            key: `run_${[dirH, dirV].filter((d) => d).join('_')}`,
-            frames: anims.generateFrameNumbers(PlayerTexture.PLAYER, {
-              start: frameIndex * 4,
-              end: (frameIndex + 1) * 4 - 1,
-            }),
-            frameRate: 8,
-            repeat: -1,
-          });
-          frameIndex++;
-        }
-      }
+    for (const key of Object.values(PLAYER_MOVE_ANIMATIONS)) {
+      anims.create({
+        key,
+        frames: anims.generateFrameNumbers(PlayerTexture.PLAYER, {
+          start: frameIndex * 4,
+          end: (frameIndex + 1) * 4 - 1,
+        }),
+        frameRate: 8,
+        repeat: -1,
+      });
+      frameIndex++;
     }
   }
 }
