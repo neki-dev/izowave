@@ -1,7 +1,5 @@
-/* eslint-disable import/prefer-default-export */
-
 export enum LiveEvents {
+  UPDATE_HEALTH = 'update_health',
   DEAD = 'dead',
   DAMAGE = 'damage',
-  HEAL = 'heal',
 }

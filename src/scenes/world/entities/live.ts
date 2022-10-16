@@ -37,33 +37,14 @@ export class Live extends EventEmmiter {
    * @param amount - Damage amount
    */
   public damage(amount: number) {
-    if (this.isDead()) {
-      return;
-    }
-
-    const damage = Math.min(amount, this.health);
-
-    this.health -= damage;
-    this.emit(LiveEvents.DAMAGE, damage);
-
-    if (this.health === 0) {
-      this.emit(LiveEvents.DEAD);
-    }
+    this.setHealth(this.health - amount);
   }
 
   /**
-   * Kill.
+   * Kill entity.
    */
   public kill() {
-    if (this.isDead()) {
-      return;
-    }
-
-    const prevHealth = this.health;
-
-    this.health = 0;
-    this.emit(LiveEvents.DAMAGE, prevHealth);
-    this.emit(LiveEvents.DEAD);
+    this.setHealth(0);
   }
 
   /**
@@ -82,8 +63,19 @@ export class Live extends EventEmmiter {
     const prevHealth = this.health;
 
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
-    if (this.health > prevHealth) {
-      this.emit(LiveEvents.HEAL, this.health - prevHealth);
+
+    if (this.health === prevHealth) {
+      return;
+    }
+
+    this.emit(LiveEvents.UPDATE_HEALTH, this.health - prevHealth);
+
+    if (this.health < prevHealth) {
+      this.emit(LiveEvents.DAMAGE);
+
+      if (this.health === 0) {
+        this.emit(LiveEvents.DEAD);
+      }
     }
   }
 

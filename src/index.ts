@@ -20,6 +20,7 @@ new Game({
   physics: {
     default: 'arcade',
     arcade: {
+      // debug: IS_DEV_MODE,
       fps: 60,
       gravity: { y: 0 },
     },

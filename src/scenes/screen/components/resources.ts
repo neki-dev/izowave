@@ -48,9 +48,9 @@ export const ComponentResources = Component<Props>(function (container, {
       y: ITEM_HEIGHT / 2,
     }, {
       combine: true,
-      event: (callback: (amount: number) => void) => {
-        player.on(PlayerEvents.RESOURCE, (resourceType: ResourceType, value: number) => {
-          if (resourceType === type && value > 0) {
+      event: (callback: (value: number) => void) => {
+        player.on(PlayerEvents.UPDATE_RESOURCE, (resourceType: ResourceType, value: number) => {
+          if (resourceType === type) {
             callback(value);
           }
         });

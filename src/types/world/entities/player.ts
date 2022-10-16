@@ -1,6 +1,6 @@
 export enum PlayerEvents {
-  EXPERIENCE = 'experience',
-  RESOURCE = 'resource',
+  UPDATE_EXPERIENCE = 'update_experience',
+  UPDATE_RESOURCE = 'update_resource',
 }
 
 export enum PlayerTexture {
