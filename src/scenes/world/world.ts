@@ -211,7 +211,7 @@ export class World extends Phaser.Scene {
    * Get current game time.
    */
   public getTimerNow(): number {
-    return this.timer.getElapsedSeconds() * 1000;
+    return Math.floor(this.timer.getElapsed());
   }
 
   /**
@@ -422,8 +422,7 @@ export class World extends Phaser.Scene {
    */
   private prepareGame() {
     this.timer = this.time.addEvent({
-      loop: true,
-      delay: 1000,
+      delay: Number.MAX_SAFE_INTEGER,
     });
     this.effects = new Effects(this);
 
