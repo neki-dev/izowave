@@ -1,5 +1,5 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import { MINE_RESOURCES_LIMIT, MINE_RESOURCES_UPGRADE } from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import { NoticeType } from '~type/screen/notice';
@@ -14,7 +14,7 @@ export class BuildingMine extends Building {
   /**
    * Resource amount left.
    */
-  private amountLeft: number = MINE_RESOURCES_LIMIT;
+  private amountLeft: number = DIFFICULTY.MINE_RESOURCES;
 
   /**
    * Generation resource type.
@@ -39,8 +39,9 @@ export class BuildingMine extends Building {
    */
   public getInfo(): BuildingDescriptionItem[] {
     const nextLeft = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-      ? this.amountLeft + (MINE_RESOURCES_UPGRADE * this.upgradeLevel)
+      ? this.amountLeft + (DIFFICULTY.MINE_RESOURCES_UPGRADE * this.upgradeLevel)
       : null;
+
     return [
       ...super.getInfo(),
       { text: `Left: ${this.amountLeft}`, post: nextLeft && `→ ${nextLeft}`, icon: 5 },
@@ -76,6 +77,7 @@ export class BuildingMine extends Building {
    */
   private generateResource() {
     const { player } = this.scene;
+
     player.giveResources({ [this.resourceType]: 1 });
     this.amountLeft--;
   }
@@ -84,7 +86,7 @@ export class BuildingMine extends Building {
    * Update amount left.
    */
   private upgradeAmount() {
-    this.amountLeft += MINE_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
+    this.amountLeft += DIFFICULTY.MINE_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
 
     this.removeAlert();
   }

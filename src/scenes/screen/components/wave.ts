@@ -23,9 +23,11 @@ export const ComponentWave = Component<Props>(function (container, {
   container.setSize(CONTAINER_WIDTH, CONTAINER_HEIGHT);
 
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
+
   body.setOrigin(0.0, 0.0);
 
   const numberBody = this.add.rectangle(2, 2, 0, CONTAINER_HEIGHT - 4, 0x83a81c);
+
   numberBody.setOrigin(0.0, 0.0);
 
   const number = this.add.text(1, CONTAINER_HEIGHT / 2 - 1, '', {
@@ -44,6 +46,7 @@ export const ComponentWave = Component<Props>(function (container, {
       fill: true,
     },
   });
+
   number.setOrigin(0.0, 0.5);
 
   const counterLabel = this.add.text(0, 7, '', {
@@ -51,6 +54,7 @@ export const ComponentWave = Component<Props>(function (container, {
     fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 1 },
   });
+
   counterLabel.setAlpha(0.75);
   counterLabel.setOrigin(0.0, 0.0);
 
@@ -59,6 +63,7 @@ export const ComponentWave = Component<Props>(function (container, {
     fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 1 },
   });
+
   counter.setOrigin(0.0, 0.5);
 
   container.add([body, numberBody, number, counterLabel, counter]);
@@ -77,6 +82,7 @@ export const ComponentWave = Component<Props>(function (container, {
     counterLabel.setX(2 + numberBody.width + 10);
     counter.setX(2 + numberBody.width + 10);
   };
+
   onNumberUpdate();
 
   wave.on(WaveEvents.UPDATE, onNumberUpdate);
@@ -91,10 +97,12 @@ export const ComponentWave = Component<Props>(function (container, {
     update: () => {
       if (wave.isGoing) {
         const killedCount = wave.spawnedCount - wave.scene.enemies.getTotalUsed();
+
         counter.setText(String(wave.maxSpawnedCount - killedCount));
         counter.setColor('#fff');
       } else {
         const timeleft = Math.ceil(wave.getTimeleft() / 1000);
+
         counter.setText(formatTime(timeleft));
         if (timeleft <= 3 && counter.style.color !== INTERFACE_TEXT_COLOR_ERROR) {
           counter.setColor(INTERFACE_TEXT_COLOR_ERROR);

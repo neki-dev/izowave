@@ -17,6 +17,7 @@ export const ComponentParams = Component<Props>(function (container, {
   const create = (item: BuildingDescriptionItem, offset: number) => {
     if (item.icon !== undefined) {
       const icon = this.add.image(0, offset, ScreenTexture.ICON, item.icon);
+
       icon.setOrigin(0.0, 0.0);
       container.add(icon);
     }
@@ -33,6 +34,7 @@ export const ComponentParams = Component<Props>(function (container, {
       fontFamily: INTERFACE_FONT_MONOSPACE,
       padding: { bottom: 1 },
     });
+
     text.setOrigin(0.0, 0.0);
     if (item.type === 'hint') {
       text.setAlpha(0.75);
@@ -45,6 +47,7 @@ export const ComponentParams = Component<Props>(function (container, {
         fontFamily: INTERFACE_FONT_MONOSPACE,
         padding: { bottom: 1 },
       });
+
       post.setOrigin(0.0, 0.0);
       post.setAlpha(0.75);
       container.add(post);
@@ -60,11 +63,13 @@ export const ComponentParams = Component<Props>(function (container, {
       }
 
       let items = data();
+
       if (!items) {
         return;
       }
 
       const newValue = items.map((item) => item.text).join('\n');
+
       if (current.text === newValue) {
         return;
       }
@@ -74,12 +79,14 @@ export const ComponentParams = Component<Props>(function (container, {
       container.removeAll(true);
 
       let offset = 0;
+
       items = items.sort((a, b) => (b.type || 'param').localeCompare((a.type || 'param')));
       items.forEach((item, index) => {
         if (item.type === 'hint') {
           offset += 6;
         }
         const text = create(item, offset);
+
         offset += text.height;
         if (index + 1 !== items.length) {
           offset += (item.type === 'text') ? 8 : 2;

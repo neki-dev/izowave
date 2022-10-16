@@ -16,6 +16,7 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
   const update = () => {
     let offset = 0;
+
     container.iterate((add: Phaser.GameObjects.Container) => {
       add.setX(offset);
       offset += toEven(add.width + 5);
@@ -25,9 +26,12 @@ export const ComponentAdditions = Component<Props>(function (container, {
   event((amount) => {
     if (combine) {
       const add = <Phaser.GameObjects.Text> container.getAt(0);
+
       if (add) {
         const current = Number(add.text.replace('+', ''));
+
         add.setText(formatAmount(current + amount));
+
         return;
       }
     }
@@ -36,6 +40,7 @@ export const ComponentAdditions = Component<Props>(function (container, {
       fontSize: '14px',
       fontFamily: INTERFACE_FONT_MONOSPACE,
     });
+
     addition.setOrigin(0.0, 0.5);
     addition.setAlpha(0.0);
 

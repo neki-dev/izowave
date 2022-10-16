@@ -41,6 +41,7 @@ export class TileMatrix {
    */
   public getTile(position: Phaser.Types.Math.Vector3Like): Phaser.GameObjects.Image {
     const { x, y, z } = position;
+
     return this.tiles[z]?.[y]?.[x] || null;
   }
 
@@ -72,6 +73,7 @@ export class TileMatrix {
     type: TileType | TileType[],
   ): boolean {
     const tile = this.getTile(position);
+
     if (!tile) {
       return false;
     }
@@ -96,6 +98,7 @@ export class TileMatrix {
     position: Phaser.Types.Math.Vector3Like,
   ) {
     const existsTile = this.getTile(position);
+
     if (existsTile) {
       existsTile.destroy();
     }
@@ -104,6 +107,7 @@ export class TileMatrix {
     tile.tileType = type;
 
     const { x, y, z } = position;
+
     this.tiles[z][y][x] = tile;
   }
 
@@ -114,11 +118,13 @@ export class TileMatrix {
    */
   public removeTile(position: Phaser.Types.Math.Vector3Like) {
     const tile = this.getTile(position);
+
     if (!tile) {
       return;
     }
 
     const { x, y, z } = position;
+
     delete this.tiles[z][y][x];
   }
 }

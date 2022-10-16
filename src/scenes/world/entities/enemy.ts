@@ -1,9 +1,6 @@
 import Phaser from 'phaser';
 
-import {
-  ENEMY_DAMAGE_GROWTH, ENEMY_HEALTH_GROWTH, ENEMY_SPEED_GROWTH,
-  ENEMY_KILL_EXPERIENCE, ENEMY_KILL_EXPERIENCE_GROWTH,
-} from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
 import { registerAssets } from '~lib/assets';
 import { calcGrowth, equalPositions } from '~lib/utils';
@@ -69,17 +66,30 @@ export class Enemy extends Sprite {
     super(scene, {
       texture,
       positionAtMatrix,
-      health: calcGrowth(health * scene.difficulty, ENEMY_HEALTH_GROWTH, scene.wave.number),
+      health: calcGrowth(
+        health * scene.difficulty,
+        DIFFICULTY.ENEMY_HEALTH_GROWTH,
+        scene.wave.number,
+      ),
     });
     scene.add.existing(this);
     scene.enemies.add(this);
 
-    this.damage = calcGrowth(damage * scene.difficulty, ENEMY_DAMAGE_GROWTH, scene.wave.number);
-    this.speed = calcGrowth(speed, ENEMY_SPEED_GROWTH, scene.wave.number);
+    this.damage = calcGrowth(
+      damage * scene.difficulty,
+      DIFFICULTY.ENEMY_DAMAGE_GROWTH,
+      scene.wave.number,
+    );
+    this.speed = calcGrowth(
+      speed,
+      DIFFICULTY.ENEMY_SPEED_GROWTH,
+      scene.wave.number,
+    );
     this.experienceMultiply = experienceMultiply;
 
     // Configure physics
     const offset = scale * 2;
+
     this.body.setCircle((this.width / 2) - offset, offset, offset);
     this.setScale(scale);
     this.setPushable(false);
@@ -140,11 +150,13 @@ export class Enemy extends Sprite {
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
+
       return;
     }
 
     const { player } = this.scene;
     const distanceToTarget = Phaser.Math.Distance.BetweenPoints(player, this);
+
     if (distanceToTarget < ENEMY_PATH_BREAKPOINT) {
       // Move directly towards player
       this.moveTo(player);
@@ -163,6 +175,7 @@ export class Enemy extends Sprite {
    */
   public freeze(duration: number) {
     const finalDuration = duration / this.scale;
+
     this.calm(finalDuration);
 
     if (!this.visible) {
@@ -215,6 +228,7 @@ export class Enemy extends Sprite {
     if (this.currentPath.length > 0) {
       // Check if target position is not changed
       const prev = this.currentPath[this.currentPath.length - 1];
+
       if (equalPositions(prev, player.positionAtMatrix)) {
         return;
       }
@@ -226,6 +240,7 @@ export class Enemy extends Sprite {
       if (!path) {
         this.destroy();
         console.warn('Enemy could not find path and was destroyed');
+
         return;
       }
 
@@ -261,6 +276,7 @@ export class Enemy extends Sprite {
    */
   private nextPathTile() {
     const [target] = this.currentPath;
+
     if (equalPositions(target, this.positionAtMatrix)) {
       this.currentPath.shift();
     }
@@ -271,8 +287,10 @@ export class Enemy extends Sprite {
    */
   private moveToTile() {
     const [target] = this.currentPath;
+
     if (target) {
       const positionAtWorld = Level.ToWorldPosition(target);
+
       this.moveTo(positionAtWorld);
     }
   }
@@ -285,12 +303,15 @@ export class Enemy extends Sprite {
   private moveTo(position: Phaser.Types.Math.Vector2Like) {
     const direction = Phaser.Math.Angle.Between(this.x, this.y, position.x, position.y);
     const collide = this.handleCollide(direction);
+
     if (collide) {
       this.setVelocity(0, 0);
+
       return;
     }
 
     const velocity = this.scene.physics.velocityFromRotation(direction, this.speed);
+
     this.setVelocity(velocity.x, velocity.y);
   }
 
@@ -346,8 +367,12 @@ export class Enemy extends Sprite {
    */
   private onDead() {
     const { player, wave } = this.scene;
-    const defaultExperience = ENEMY_KILL_EXPERIENCE * this.experienceMultiply;
-    const experience = calcGrowth(defaultExperience, ENEMY_KILL_EXPERIENCE_GROWTH, wave.number);
+    const experience = calcGrowth(
+      DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.experienceMultiply,
+      DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
+      wave.number,
+    );
+
     player.giveExperience(experience);
     player.incrementKills();
 

@@ -20,19 +20,23 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   const updateContent = (item: MenuItem) => {
     const title = <Phaser.GameObjects.Text> box.getByName('Title');
+
     title.setText(item.label);
 
     const content = <Phaser.GameObjects.Container> box.getByName('Content');
+
     content.each((child: Phaser.GameObjects.GameObject) => {
       child.destroy();
     });
 
     const value = item.content();
+
     content.add(value);
     content.setSize(value.width, value.height);
   };
 
   const background = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.85);
+
   background.setOrigin(0.0, 0.0);
 
   const logotype = this.add.text(shift.x, shift.y, 'IZOWAVE', {
@@ -48,6 +52,7 @@ export const ComponentMenu = Component<Props>(function (container, {
       fill: true,
     },
   });
+
   shift.y += logotype.height + 80;
 
   const items = ComponentItems.call(this, shift, {
@@ -55,6 +60,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     data: menuItems,
     onSelect: (item: MenuItem) => updateContent(item),
   });
+
   shift.y += items.height + 100;
 
   const copyright = this.add.text(shift.x, shift.y, COPYRIGHT, {
@@ -63,6 +69,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     fontFamily: INTERFACE_FONT_MONOSPACE,
     align: 'right',
   });
+
   shift.y += copyright.height;
   shift.x = logotype.width;
   copyright.setAlpha(0.5);
@@ -70,6 +77,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   box.setSize(shift.x + CONTENT_MARGIN + CONTENT_WIDTH, shift.y);
 
   const line = this.add.rectangle(shift.x + CONTENT_MARGIN / 2, -100, 1, shift.y + 200, 0xffffff, 0.3);
+
   line.setOrigin(0.0, 0.0);
   shift.x += CONTENT_MARGIN;
   shift.y = 0;
@@ -86,11 +94,13 @@ export const ComponentMenu = Component<Props>(function (container, {
       fill: true,
     },
   });
+
   shift.y += title.height + 80;
   title.setAlpha(0.3);
   title.setName('Title');
 
   const content = this.add.container(shift.x, shift.y);
+
   content.setName('Content');
 
   box.add([logotype, items, copyright, line, title, content]);
@@ -98,6 +108,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   container.add([background, box]);
 
   const defaultItem = menuItems.find((item) => item.default);
+
   if (defaultItem) {
     updateContent(defaultItem);
   }

@@ -16,6 +16,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
   const { canvas } = this.sys;
 
   const background = this.add.rectangle(0, 0, canvas.width, canvas.height, 0x000000, 0.85);
+
   background.setOrigin(0.0, 0.0);
 
   const box = this.add.container(canvas.width / 2, canvas.height / 2);
@@ -33,6 +34,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
       fill: true,
     },
   });
+
   title.setOrigin(0.5, 1.0);
   this.tweens.add({
     targets: title,
@@ -53,6 +55,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
     // @ts-ignore
     lineSpacing: 8,
   });
+
   text.setAlpha(0.75);
   text.setOrigin(0.5, 0.0);
 

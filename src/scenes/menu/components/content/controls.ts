@@ -3,6 +3,7 @@ import { Component } from '~lib/ui';
 
 export const ComponentControls = Component(function (container) {
   let shift = 0;
+
   for (const item of [
     { name: 'W A S D', description: 'Move player' },
     { name: 'SPACE', description: 'Attack' },
@@ -30,6 +31,7 @@ export const ComponentControls = Component(function (container) {
       });
 
       const body = this.add.rectangle(0, 0, textName.width, textName.height, INTERFACE_BOX_COLOR_BLUE);
+
       body.setOrigin(0.0, 0.0);
 
       const description = this.add.text(body.width + 10, 6, `-  ${item.description}`, {

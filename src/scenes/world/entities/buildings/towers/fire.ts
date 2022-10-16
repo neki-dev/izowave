@@ -53,6 +53,7 @@ export class BuildingTowerFire extends BuildingTower {
     const nextDamage = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
       ? this.getShotParams(this.upgradeLevel + 1).damage
       : null;
+
     return [
       ...super.getInfo(), {
         text: `Damage: ${this.getShotParams().damage}`,

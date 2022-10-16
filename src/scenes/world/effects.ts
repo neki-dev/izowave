@@ -24,6 +24,7 @@ export class Effects {
 
     for (const effect of Object.values(WorldEffect)) {
       const particle = scene.add.particles(WorldTexture[effect]);
+
       particle.setDepth(WORLD_DEPTH_EFFECT);
       this.particles[effect] = particle;
     }
@@ -58,6 +59,7 @@ export class Effects {
     }
 
     const effect = this.particles[key].createEmitter(params);
+
     effect.effectType = key;
 
     if (duration) {

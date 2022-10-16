@@ -1,4 +1,4 @@
-import { MINE_LIMIT, MINE_RESOURCES_LIMIT } from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { BuildingMine } from '~scene/world/entities/buildings/mine';
 import { BuildingVariant, BuildingTexture } from '~type/world/entities/building';
@@ -11,7 +11,7 @@ export class BuildingMineSilver extends BuildingMine {
     { text: 'Silver resource generation\nfor builds and upgrades.', type: 'text' },
     { text: 'Health: 400', icon: 0 },
     { text: 'Pause: 2.0 s', icon: 6 },
-    { text: `Limit: ${MINE_RESOURCES_LIMIT}`, icon: 5 },
+    { text: `Limit: ${DIFFICULTY.MINE_RESOURCES}`, icon: 5 },
   ];
 
   static Texture = BuildingTexture.MINE_SILVER;
@@ -22,7 +22,7 @@ export class BuildingMineSilver extends BuildingMine {
 
   static Health = 400;
 
-  static Limit = MINE_LIMIT;
+  static Limit = DIFFICULTY.MINE_LIMIT;
 
   /**
    * Building variant constructor.

@@ -5,6 +5,7 @@ import { ComponentControl, ComponentInstance, ComponentResizeCallback } from '~t
 
 export function adaptiveSize(callback: ComponentResizeCallback) {
   const refresh = () => callback(window.innerWidth, window.innerHeight);
+
   refresh();
   window.addEventListener('resize', refresh);
 
@@ -23,8 +24,8 @@ export function Component<T = any>(component: ComponentInstance<T>) {
     props?: T,
   ): Phaser.GameObjects.Container {
     const container = this.add.container(position?.x || 0, position?.y || 0);
-
     const result: ComponentControl = component.call(this, container, props);
+
     if (result) {
       const { update, destroy, resize } = result;
 
@@ -43,6 +44,7 @@ export function Component<T = any>(component: ComponentInstance<T>) {
 
       if (resize) {
         const { cancel } = adaptiveSize(resize);
+
         container.on(Phaser.Scenes.Events.DESTROY, () => {
           cancel();
         });

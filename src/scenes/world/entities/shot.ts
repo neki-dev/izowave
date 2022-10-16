@@ -40,6 +40,7 @@ export class Shot extends Phaser.Physics.Arcade.Image {
    */
   constructor(tower: BuildingTower) {
     const texture = <keyof typeof ShotTexture> tower.shotType;
+
     super(tower.scene, tower.x, tower.y, ShotTexture[texture]);
     tower.scene.add.existing(this);
     tower.scene.shots.add(this);
@@ -56,12 +57,14 @@ export class Shot extends Phaser.Physics.Arcade.Image {
   public update() {
     if (!this.tower.actionsAreaContains(this)) {
       this.stop();
+
       return;
     }
 
     this.setDepth(Level.GetDepth(this.y, 1, this.displayHeight));
 
     const tileGround = this.scene.level.getTile({ ...Level.ToMatrixPosition(this), z: 0 });
+
     this.setVisible(tileGround?.visible || false);
     this.effect.setVisible(this.visible);
   }

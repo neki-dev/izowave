@@ -14,12 +14,14 @@ export const ComponentDifficulty = Component<Props>(function (container, {
   };
 
   let shift = 0;
+
   for (const type of Object.keys(WORLD_DIFFICULTY_POWERS)) {
     const text = this.add.text(0, shift, type, {
       color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR_ACTIVE : '#fff',
       fontSize: '18px',
       fontFamily: INTERFACE_FONT_PIXEL,
     });
+
     text.setAlpha(disabled ? 0.5 : 1.0);
 
     if (!disabled) {

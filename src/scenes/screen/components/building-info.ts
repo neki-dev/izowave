@@ -24,6 +24,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   origin, player, data, mode = 'building',
 }) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR_BLUE, 0.9);
+
   body.setOrigin(0.0, 0.0);
 
   let position = { x: container.x, y: container.y };
@@ -42,6 +43,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
       fill: true,
     },
   });
+
   shift.y += toEven(name.height + CONTAINER_PADDING);
 
   const description = ComponentParams.call(this, shift, {
@@ -57,9 +59,11 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     need: () => data()?.Cost,
     have: () => player.resources,
   });
+
   cost.setVisible(false);
 
   let point: Phaser.GameObjects.Triangle;
+
   if (mode === 'building') {
     point = this.add.triangle(0, 0, -10, 0, 10, 0, 0, 10, body.fillColor, body.fillAlpha);
     point.setOrigin(0.0, 0.0);
@@ -74,6 +78,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   const refresh = () => {
     const width = body.width + (cost.visible ? cost.width : 0);
     const height = Math.max(description.y + description.height + CONTAINER_PADDING, CONTAINER_MIN_HEIGHT);
+
     body.height = height;
     cost.height = height;
 
@@ -109,6 +114,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
 
       if (values?.Description) {
         const lines = values?.Description.map((item) => item.text.split('\n')).flat();
+
         if (prevLines !== lines.length) {
           prevLines = lines.length;
           refresh();

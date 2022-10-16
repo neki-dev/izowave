@@ -69,6 +69,7 @@ export class PathNode {
     }];
 
     let parent = this.getParent();
+
     while (parent) {
       path.push({
         x: parent.x,

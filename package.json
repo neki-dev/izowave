@@ -27,7 +27,7 @@
     "alias-reuse": "^1.0.10",
     "babel-loader": "^8.2.5",
     "eslint": "^8.25.0",
-    "eslint-config-neki": "^1.0.4",
+    "eslint-config-neki": "^1.1.0",
     "jest": "^29.1.2",
     "jest-environment-jsdom": "^29.2.0",
     "ts-jest": "^29.0.3",

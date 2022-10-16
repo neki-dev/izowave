@@ -17,9 +17,11 @@ export const ComponentBar = Component<Props>(function (container, {
   display, value, maxValue, event, color,
 }) {
   const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
+
   body.setOrigin(0.0, 0.0);
 
   const progress = this.add.rectangle(2, 2, 0, body.height - 4, color);
+
   progress.setOrigin(0.0, 0.0);
 
   const label = this.add.text(CONTAINER_WIDTH / 2, CONTAINER_HEIGHT / 2, display(), {
@@ -27,6 +29,7 @@ export const ComponentBar = Component<Props>(function (container, {
     fontFamily: INTERFACE_FONT_PIXEL,
     padding: { bottom: 1 },
   });
+
   label.setOrigin(0.5, 0.5);
 
   const additions = ComponentAdditions.call(this, {
@@ -40,6 +43,7 @@ export const ComponentBar = Component<Props>(function (container, {
   return {
     update: () => {
       const percent = value() / maxValue();
+
       progress.width = (body.width - 4) * percent;
       label.setText(display());
     },

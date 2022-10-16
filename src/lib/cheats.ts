@@ -6,6 +6,7 @@ export function setCheatsScheme(data: CheatsScheme) {
     // @ts-ignore
     window[cheat] = () => {
       callback();
+
       return 'Cheat activated';
     };
   }

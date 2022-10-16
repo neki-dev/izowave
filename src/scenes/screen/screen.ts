@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH } from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { INTERFACE_PADDING } from '~const/interface';
 import { registerAssets } from '~lib/assets';
 import { adaptiveSize } from '~lib/ui';
@@ -36,6 +36,7 @@ export class Screen extends Phaser.Scene {
     const wave = ComponentWave.call(this, shift, {
       wave: world.wave,
     });
+
     shift.y += wave.height + INTERFACE_PADDING;
     components.add(wave);
 
@@ -47,6 +48,7 @@ export class Screen extends Phaser.Scene {
       event: (callback: (amount: number) => void) => world.player.live.on(LiveEvents.HEAL, callback),
       color: 0xe4372c,
     });
+
     shift.y += health.height + 8;
     components.add(health);
 
@@ -54,10 +56,15 @@ export class Screen extends Phaser.Scene {
     const experience = ComponentBar.call(this, shift, {
       display: () => `${world.player.level}  LVL`,
       value: () => world.player.experience,
-      maxValue: () => calcGrowth(EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH, world.player.level + 1),
+      maxValue: () => calcGrowth(
+        DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
+        DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+        world.player.level + 1,
+      ),
       event: (callback: (amount: number) => void) => world.player.on(PlayerEvents.EXPERIENCE, callback),
       color: 0x1975c5,
     });
+
     shift.y += experience.height + INTERFACE_PADDING / 2;
     components.add(experience);
 
@@ -65,10 +72,12 @@ export class Screen extends Phaser.Scene {
     const resources = ComponentResources.call(this, shift, {
       player: world.player,
     });
+
     components.add(resources);
 
     // Component notices
     const notices = ComponentNotices.call(this, { y: INTERFACE_PADDING });
+
     components.add(notices);
 
     // Component builder
@@ -77,10 +86,12 @@ export class Screen extends Phaser.Scene {
       wave: world.wave,
       player: world.player,
     });
+
     components.add(builder);
 
     // Component fps
     const fps = ComponentFPS.call(this, { x: INTERFACE_PADDING });
+
     components.add(fps);
 
     const adaptive = adaptiveSize((width, height) => {

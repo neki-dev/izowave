@@ -41,6 +41,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
       const world = <World> this.scene.get(SceneKey.WORLD);
       const count = world.selectBuildings(variant).length;
       const limit = builder.getBuildCurrentLimit(data.Limit);
+
       data.Description = [
         ...data.Description, {
           text: `You have ${count} of ${limit}`,
@@ -59,6 +60,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
     player,
     data: getData,
   });
+
   info.setVisible(false);
   container.add(info);
 
@@ -95,9 +97,11 @@ export const ComponentBuilder = Component<Props>(function (container, {
 
   BUILDING_VARIANTS.forEach((variant: BuildingVariant, index: number) => {
     const item = this.add.container(-ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * index);
+
     item.setSize(ITEM_SIZE, ITEM_SIZE);
 
     const body = this.add.rectangle(0, 0, ITEM_SIZE, ITEM_SIZE);
+
     body.setName('Body');
     body.setOrigin(0.0, 0.0);
     body.setInteractive();
@@ -106,12 +110,14 @@ export const ComponentBuilder = Component<Props>(function (container, {
     body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
 
     const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
+
     preview.setScale(0.65);
 
     const number = this.add.text(ITEM_SIZE - 4, 4, String(index + 1), {
       fontSize: '12px',
       fontFamily: INTERFACE_FONT_MONOSPACE,
     });
+
     number.setOrigin(1.0, 0.0);
 
     item.add([body, preview, number]);
@@ -130,9 +136,11 @@ export const ComponentBuilder = Component<Props>(function (container, {
   return {
     update: () => {
       const itemsCount = container.getAll().length;
+
       for (let i = 1; i < itemsCount; i++) {
         const item = <Phaser.GameObjects.Container> container.getAt(i);
         const body = <Phaser.GameObjects.Rectangle> item.getByName('Body');
+
         if (wave.isGoing) {
           body.setFillStyle(0x000000);
           body.setAlpha(1.0);

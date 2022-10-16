@@ -37,6 +37,7 @@ export function equalPositions(
 export function formatTime(value: number): string {
   const h = Math.floor(value / 60);
   const m = value % 60;
+
   return `${(h < 10 ? '0' : '')}${h}:${(m < 10 ? '0' : '')}${m}`;
 }
 
@@ -50,6 +51,7 @@ export function toEven(value: number, shift: (-1 | 1) = 1): number {
   if (value % 2 === 0) {
     return value;
   }
+
   return value + shift;
 }
 
@@ -68,6 +70,7 @@ export function selectClosest<T extends Phaser.Types.Math.Vector2Like>(
   let meta = positions.map((position: T) => {
     const dx = position.x - target.x;
     const dy = position.y - target.y;
+
     return {
       position,
       distance: Math.sqrt(dx * dx + dy * dy),

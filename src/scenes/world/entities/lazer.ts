@@ -119,6 +119,7 @@ export class Lazer extends Phaser.GameObjects.Line {
       || !this.tower.actionsAreaContains(this.target)
     ) {
       this.stop();
+
       return;
     }
 

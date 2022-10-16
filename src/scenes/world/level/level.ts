@@ -64,6 +64,7 @@ export class Level extends TileMatrix {
         biomes: LEVEL_BIOMES,
       }],
     });
+
     map.generate();
     this.matrix = map.getMatrix();
 
@@ -98,11 +99,13 @@ export class Level extends TileMatrix {
     const positions = [];
     const step = LEVEL_SPAWN_POSITIONS_STEP;
     const rand = Math.floor(step / 2);
+
     for (let sY = step; sY < this.size - step; sY += step) {
       for (let sX = step; sX < this.size - step; sX += step) {
         const x = sX + Phaser.Math.Between(-rand, rand);
         const y = sY + Phaser.Math.Between(-rand, rand);
         const targets = this.matrix[y]?.[x]?.spawn;
+
         if (targets && targets.includes(target)) {
           positions.push({ x, y });
         }
@@ -120,6 +123,7 @@ export class Level extends TileMatrix {
       for (let y = 0; y < this.size; y++) {
         for (let x = 0; x < this.size; x++) {
           const tile = this.getTile({ x, y, z });
+
           if (tile) {
             tile.setVisible(false);
           }
@@ -144,10 +148,12 @@ export class Level extends TileMatrix {
 
     const { x, y } = player.positionAtMatrix;
     const c = Math.ceil(d / 52);
+
     for (let z = 0; z < this.height; z++) {
       for (let iy = y - c + 1; iy <= y + c + 1; iy++) {
         for (let ix = x - c + 1; ix <= x + c + 1; ix++) {
           const tile = level.getTile({ x: ix, y: iy, z });
+
           if (tile && area.contains(tile.x, tile.y)) {
             this.visibleTiles.add(tile);
             tile.setVisible(true);
@@ -168,6 +174,7 @@ export class Level extends TileMatrix {
       const tilePosition = { x, y, z: biome.z };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
       const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant);
+
       tile.setOrigin(0.5, TILE_META.origin);
       tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
       tile.biome = biome;
@@ -179,12 +186,15 @@ export class Level extends TileMatrix {
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         const biome = this.matrix[y][x];
+
         make(x, y, biome);
         // Add tile to hole
         if (biome.z > 1) {
           const z = biome.z - 1;
+
           if (this.matrix[y + 1]?.[x]?.z !== z || this.matrix[y]?.[x + 1]?.z !== z) {
             const neededBiome = Object.values(LEVEL_BIOMES).find((b) => (b.data.z === z));
+
             make(x, y, neededBiome.data);
           }
         }
@@ -199,9 +209,11 @@ export class Level extends TileMatrix {
     this.treesTiles = this.scene.add.group();
 
     const positions = this.readSpawnPositions(SpawnTarget.TREE);
+
     for (let i = 0; i < this.size * 2; i++) {
       const positionAtMatrix = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition = { ...positionAtMatrix, z: 1 };
+
       if (!this.getTile(tilePosition)) {
         const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
         const tile = this.scene.add.image(
@@ -210,6 +222,7 @@ export class Level extends TileMatrix {
           LevelTexture.TREE,
           Phaser.Math.Between(0, 3),
         );
+
         tile.setOrigin(0.5, 1.0);
         tile.setDepth(Level.GetDepth(positionAtWorld.y + 14, tilePosition.z, tile.displayHeight));
         this.putTile(tile, TileType.TREE, tilePosition);
@@ -223,6 +236,7 @@ export class Level extends TileMatrix {
    */
   private makePathFinder() {
     const grid = this.matrix.map((y) => y.map((x) => Number(x.collide)));
+
     this.navigator = new Navigator(grid);
   }
 
@@ -237,6 +251,7 @@ export class Level extends TileMatrix {
       x: (position.x / halfWidth),
       y: (position.y / (halfHeight / 2)),
     };
+
     return {
       x: Math.round((n.x + n.y) / 2),
       y: Math.round((n.y - n.x) / 2),
@@ -250,6 +265,7 @@ export class Level extends TileMatrix {
    */
   static ToWorldPosition(position: Phaser.Types.Math.Vector3Like): Phaser.Types.Math.Vector2Like {
     const { halfWidth, halfHeight } = TILE_META;
+
     return {
       x: (position.x - position.y) * halfWidth,
       y: (position.x + position.y) * (halfHeight / 2) - ((position.z || 0) * halfHeight),
@@ -264,6 +280,7 @@ export class Level extends TileMatrix {
    */
   static GetTileDepth(y: number, z: number): number {
     const { origin, height, halfHeight } = TILE_META;
+
     return Level.GetDepth(y + (height * origin) + (halfHeight / 2), z, height);
   }
 
@@ -276,6 +293,7 @@ export class Level extends TileMatrix {
    */
   static GetDepth(y: number, z: number, height: number): number {
     const weightZ = 999;
+
     return y + (z * weightZ) - (height / 2);
   }
 

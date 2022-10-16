@@ -1,11 +1,7 @@
 import Phaser from 'phaser';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import {
-  BUILDING_ACTION_PAUSE_GROWTH,
-  BUILDING_ACTION_RADIUS_GROWTH,
-  BUILDING_UPGRADE_EXPERIENCE,
-} from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { TILE_META } from '~const/level';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
@@ -93,6 +89,7 @@ export class Building extends Phaser.GameObjects.Image {
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
+
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.add.existing(this);
     scene.buildings.add(this);
@@ -137,6 +134,7 @@ export class Building extends Phaser.GameObjects.Image {
    */
   public setInteractive() {
     const shape = new Hexagon(0, 0, TILE_META.halfHeight);
+
     return super.setInteractive(shape, Hexagon.Contains);
   }
 
@@ -163,6 +161,7 @@ export class Building extends Phaser.GameObjects.Image {
    */
   public actionsAreaContains(position: Phaser.Types.Math.Vector2Like): boolean {
     const offset = this.actionsArea.getTopLeft();
+
     return this.getActionsArea().contains(position.x - offset.x, position.y - offset.y);
   }
 
@@ -204,10 +203,16 @@ export class Building extends Phaser.GameObjects.Image {
       { text: `Health: ${this.live.health}`, icon: 0 },
     ];
     const radius = this.getActionsRadius();
+
     if (radius) {
       const nextRadius = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-        ? calcGrowth(this.actions.radius, BUILDING_ACTION_RADIUS_GROWTH, this.upgradeLevel + 1) / 2
+        ? calcGrowth(
+          this.actions.radius,
+          DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
+          this.upgradeLevel + 1,
+        ) / 2
         : null;
+
       info.push({
         text: `Radius: ${Math.round(radius / 2)}`,
         post: nextRadius && `→ ${Math.round(nextRadius)}`,
@@ -215,10 +220,16 @@ export class Building extends Phaser.GameObjects.Image {
       });
     }
     const pause = this.getActionsPause();
+
     if (pause) {
       const nextPause = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-        ? calcGrowth(this.actions.pause, BUILDING_ACTION_PAUSE_GROWTH, this.upgradeLevel + 1) / 1000
+        ? calcGrowth(
+          this.actions.pause,
+          DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
+          this.upgradeLevel + 1,
+        ) / 1000
         : null;
+
       info.push({
         text: `Pause: ${(pause / 1000).toFixed(1)} s`,
         post: nextPause && `→ ${nextPause.toFixed(1)} s`,
@@ -231,6 +242,7 @@ export class Building extends Phaser.GameObjects.Image {
         type: 'hint',
       });
     }
+
     return info;
   }
 
@@ -246,6 +258,7 @@ export class Building extends Phaser.GameObjects.Image {
    */
   public getUpgradeLevelCost(): Resources {
     const multiply = 1 + ((this.upgradeLevel - 1) / 2);
+
     return Object.entries(this.upgradeCost).reduce((curr, [resource, cost]) => ({
       ...curr,
       [resource]: Math.round(cost * multiply),
@@ -304,6 +317,7 @@ export class Building extends Phaser.GameObjects.Image {
     const { persperctive, height, halfHeight } = TILE_META;
     const d = this.getActionsRadius() * 2;
     const out = height * 2;
+
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
@@ -314,7 +328,11 @@ export class Building extends Phaser.GameObjects.Image {
    */
   private getActionsRadius(): number {
     return this.actions?.radius
-      ? calcGrowth(this.actions.radius, BUILDING_ACTION_RADIUS_GROWTH, this.upgradeLevel)
+      ? calcGrowth(
+        this.actions.radius,
+        DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
+        this.upgradeLevel,
+      )
       : 0;
   }
 
@@ -323,7 +341,11 @@ export class Building extends Phaser.GameObjects.Image {
    */
   private getActionsPause(): number {
     return this.actions?.pause
-      ? calcGrowth(this.actions.pause, BUILDING_ACTION_PAUSE_GROWTH, this.upgradeLevel)
+      ? calcGrowth(
+        this.actions.pause,
+        DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
+        this.upgradeLevel,
+      )
       : 0;
   }
 
@@ -398,8 +420,10 @@ export class Building extends Phaser.GameObjects.Image {
 
     const cost = this.getUpgradeLevelCost();
     const { player, screen } = this.scene;
+
     if (!player.haveResources(cost)) {
       screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+
       return;
     }
 
@@ -412,7 +436,7 @@ export class Building extends Phaser.GameObjects.Image {
     this.live.heal();
 
     player.takeResources(cost);
-    player.giveExperience(BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
+    player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
     screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
   }

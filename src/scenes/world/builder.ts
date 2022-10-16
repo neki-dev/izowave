@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { BUILDING_BUILD_AREA, BUILDING_BUILD_AREA_GROWTH } from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { TILE_META } from '~const/level';
 import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
@@ -78,6 +78,7 @@ export class Builder {
     }
 
     const variant = BUILDING_VARIANTS[this.variantIndex];
+
     return BUILDINGS[variant][param];
   }
 
@@ -115,22 +116,27 @@ export class Builder {
    */
   public addFoundation(position: Phaser.Types.Math.Vector2Like) {
     const { level } = this.scene;
+
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
         const tileGround = level.getTile({ x, y, z: 0 });
+
         if (tileGround && tileGround.biome.solid) {
           // Replace biome
           const newBiome = Level.GetBiome(BiomeType.RUBBLE);
+
           tileGround.biome = newBiome;
           tileGround.clearTint();
           const frame = Array.isArray(newBiome.tileIndex)
             ? Phaser.Math.Between(...newBiome.tileIndex)
             : newBiome.tileIndex;
+
           tileGround.setFrame(frame);
 
           // Remove trees
           const tilePosition = { x, y, z: 1 };
           const tile = level.getTileWithType(tilePosition, TileType.TREE);
+
           if (tile) {
             level.removeTile(tilePosition);
             tile.destroy();
@@ -146,6 +152,7 @@ export class Builder {
    */
   private getAssumedPosition(): Phaser.Types.Math.Vector2Like {
     const { worldX, worldY } = this.scene.input.activePointer;
+
     return Level.ToMatrixPosition({ x: worldX, y: worldY });
   }
 
@@ -161,6 +168,7 @@ export class Builder {
     this.createBuildingPreview();
 
     const { input } = this.scene;
+
     input.on(Phaser.Input.Events.POINTER_UP, this.build, this);
     input.on(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview, this);
 
@@ -176,6 +184,7 @@ export class Builder {
     }
 
     const { input } = this.scene;
+
     input.off(Phaser.Input.Events.POINTER_UP, this.build);
     input.off(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview);
 
@@ -194,6 +203,7 @@ export class Builder {
     }
 
     const index = Number(e.key) - 1;
+
     if (!BUILDING_VARIANTS[index]) {
       return;
     }
@@ -208,6 +218,7 @@ export class Builder {
    */
   private isCanBuild(): boolean {
     const { player, wave } = this.scene;
+
     return (
       this.isVariantSelected()
       && !wave.isGoing
@@ -228,6 +239,7 @@ export class Builder {
     const positionAtWorldDown = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
     const offset = this.buildArea.getTopLeft();
     const inArea = this.buildArea.geom.contains(positionAtWorldDown.x - offset.x, positionAtWorldDown.y - offset.y);
+
     if (!inArea) {
       return false;
     }
@@ -235,6 +247,7 @@ export class Builder {
     // Pointer biome is solid
     const tileGround = level.getTile({ ...positionAtMatrix, z: 0 });
     const isSolid = tileGround?.biome.solid;
+
     if (!isSolid) {
       return false;
     }
@@ -245,6 +258,7 @@ export class Builder {
       level.isFreePoint(tilePosition)
       && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
     );
+
     if (!isFree) {
       return false;
     }
@@ -264,16 +278,20 @@ export class Builder {
     const BuildingInstance = BUILDINGS[variant];
 
     const { player } = this.scene;
+
     if (!player.haveResources(BuildingInstance.Cost)) {
       this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+
       return;
     }
 
     if (BuildingInstance.Limit) {
       const count = this.scene.selectBuildings(variant).length;
       const limit = this.getBuildCurrentLimit(BuildingInstance.Limit);
+
       if (count >= limit) {
         this.scene.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name.toUpperCase()}`);
+
         return;
       }
     }
@@ -281,6 +299,7 @@ export class Builder {
     player.takeResources(BuildingInstance.Cost);
 
     const positionAtMatrix = this.getAssumedPosition();
+
     new BuildingInstance(this.scene, positionAtMatrix);
 
     this.updateBuildArea();
@@ -291,7 +310,12 @@ export class Builder {
    */
   private createBuildArea() {
     const { player, difficulty } = this.scene;
-    const d = calcGrowth(BUILDING_BUILD_AREA / difficulty, BUILDING_BUILD_AREA_GROWTH, player.level) * 2;
+    const d = calcGrowth(
+      DIFFICULTY.BUILDING_BUILD_AREA / difficulty,
+      DIFFICULTY.BUILDING_BUILD_AREA_GROWTH,
+      player.level,
+    ) * 2;
+
     this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
     this.updateBuildArea();
@@ -303,6 +327,7 @@ export class Builder {
   private updateBuildArea() {
     const { x, y } = this.scene.player.getBottomCenter();
     const out = TILE_META.height * 2;
+
     this.buildArea.setPosition(x, y);
     this.buildArea.setDepth(Level.GetDepth(y, 1, this.buildArea.height + out));
   }
@@ -331,6 +356,7 @@ export class Builder {
     const positionAtMatrix = this.getAssumedPosition();
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
+
     this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
     this.buildingPreview.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);

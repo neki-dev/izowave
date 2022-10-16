@@ -33,6 +33,7 @@ export const ComponentItems = Component<Props>(function (container, {
         fill: true,
       },
     });
+
     shift += text.height + MENU_ITEMS_MARGIN;
     text.setOrigin(1.0, 0.0);
     text.setInteractive();

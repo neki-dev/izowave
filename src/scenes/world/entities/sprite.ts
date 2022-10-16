@@ -50,6 +50,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     texture, positionAtMatrix, health, frame = 0,
   }: SpriteData) {
     const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
+
     super(scene, positionAtWorld.x, positionAtWorld.y, texture, frame);
     scene.add.existing(this);
 
@@ -78,8 +79,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     this.container.setVisible(this.visible);
     if (this.visible) {
       const { x, y } = this.getTopCenter();
+
       this.container.setPosition(x, y);
       const depth = Level.GetDepth(this.y, 1, this.displayHeight);
+
       this.setDepth(depth);
       this.container.setDepth(depth);
 
@@ -122,6 +125,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     for (const positionAtMatrix of occupiedTiles) {
       // If collide tile
       const tile = this.scene.level.getTileWithType({ ...positionAtMatrix, z: 1 }, tileTypes);
+
       if (tile) {
         return tile;
       }
@@ -129,6 +133,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
       // If not collide ground tile
       if (ground) {
         const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
+
         if (!tileGround || tileGround?.biome.type === BiomeType.WATER) {
           return true;
         }
@@ -148,6 +153,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     const l = Phaser.Math.PI2 / count;
 
     const points: Phaser.Types.Math.Vector2Like[] = [];
+
     for (let u = 0; u < count; u++) {
       points.push({
         x: (x + r) + Math.sin(u * l) * r,
@@ -165,9 +171,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     const width = this.displayWidth * 1.5;
 
     const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
+
     body.setOrigin(0.0, 0.0);
 
     const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xe4372c);
+
     bar.setOrigin(0.0, 0.0);
 
     this.healthIndicator = this.scene.add.container(-width / 2, -13);
@@ -183,6 +191,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   private updateHealthIndicator() {
     const value = this.live.health / this.live.maxHealth;
     const bar = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
+
     bar.setSize((this.healthIndicator.width - 2) * value, this.healthIndicator.height - 2);
   }
 }

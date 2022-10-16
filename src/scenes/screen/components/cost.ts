@@ -21,12 +21,14 @@ export const ComponentCost = Component<Props>(function (container, {
   container.setSize(size[0], size[1]);
 
   const body = this.add.rectangle(0, 0, container.width, container.height, 0x000000, 0.9);
+
   body.setOrigin(0.0, 0.0);
 
   const title = this.add.text(10, offset, label, {
     fontSize: '9px',
     fontFamily: INTERFACE_FONT_MONOSPACE,
   });
+
   offset += toEven(title.height + 6);
 
   container.add([body, title]);
@@ -34,11 +36,13 @@ export const ComponentCost = Component<Props>(function (container, {
   for (const resource of Object.keys(ResourceType)) {
     const type = ResourceType[resource];
     const icon = this.add.rectangle(10, offset, 8, 8, RESOURCE_COLOR[type]);
+
     icon.setOrigin(0.0, 0.0);
     const text = this.add.text(10 + icon.width + 5, offset - 2, '0', {
       fontSize: '11px',
       fontFamily: INTERFACE_FONT_MONOSPACE,
     });
+
     offset += icon.height + 6;
     container.add([icon, text]);
     items.push({ type, text });
@@ -53,14 +57,17 @@ export const ComponentCost = Component<Props>(function (container, {
       body.setSize(container.width, container.height);
 
       const needAmounts = need();
+
       if (!needAmounts) {
         return;
       }
 
       const haveAmounts = have();
+
       for (const { type, text } of items) {
         const haveAmount = haveAmounts[type] || 0;
         const needAmount = needAmounts[type] || 0;
+
         text.setText(String(needAmount));
         if (needAmount === 0) {
           text.setColor('#aaa');

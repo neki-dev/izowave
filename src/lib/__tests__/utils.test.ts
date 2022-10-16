@@ -37,6 +37,7 @@ describe('utils.ts / formatTime', () => {
 describe('utils.ts / selectClosest', () => {
   it('should returns specified count positions', () => {
     let closests = selectClosest(positions, { x: 4, y: 4 }, 2);
+
     expect(closests.length).toEqual(2);
     closests = selectClosest(positions, { x: 4, y: 4 });
     expect(closests.length).toEqual(1);
@@ -44,6 +45,7 @@ describe('utils.ts / selectClosest', () => {
 
   it('should returns sorted positions', () => {
     const [closest] = selectClosest(positions, { x: 4, y: 4 });
+
     expect(`${closest.x},${closest.y}`).toEqual('0,0');
   });
 });

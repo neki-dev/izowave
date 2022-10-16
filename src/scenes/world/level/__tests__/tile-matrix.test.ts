@@ -35,6 +35,7 @@ describe('tile-matrix.ts', () => {
 
   it('should remove tile', () => {
     const position = { x: 0, y: 0, z: 0 };
+
     matrix.removeTile(position);
     expect(matrix.getTile(position)).toEqual(null);
   });

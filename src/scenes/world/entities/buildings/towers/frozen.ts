@@ -53,6 +53,7 @@ export class BuildingTowerFrozen extends BuildingTower {
     const nextFreeze = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
       ? this.getShotParams(this.upgradeLevel + 1).freeze / 1000
       : null;
+
     return [
       ...super.getInfo(), {
         text: `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,

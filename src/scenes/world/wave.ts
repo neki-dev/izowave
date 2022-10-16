@@ -1,9 +1,6 @@
 import EventEmitter from 'events';
 
-import {
-  WAVE_BOSS_SPAWN_RATE, WAVE_ENEMIES_COUNT, WAVE_ENEMIES_COUNT_GROWTH,
-  WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, WAVE_PAUSE,
-} from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
 import { calcGrowth } from '~lib/utils';
@@ -79,6 +76,7 @@ export class Wave extends EventEmitter {
    */
   public getTimeleft(): number {
     const now = this.scene.getTimerNow();
+
     return Math.max(0, this.timeleft - now);
   }
 
@@ -116,7 +114,8 @@ export class Wave extends EventEmitter {
    * Start timeleft to next wave.
    */
   public runTimeleft() {
-    const pause = (WAVE_PAUSE + (this.number - 1) * 1000) / this.scene.difficulty;
+    const pause = (DIFFICULTY.WAVE_PAUSE + (this.number - 1) * 1000) / this.scene.difficulty;
+
     this.timeleft = this.scene.getTimerNow() + pause;
   }
 
@@ -129,6 +128,7 @@ export class Wave extends EventEmitter {
     }
 
     const now = this.scene.getTimerNow();
+
     if (this.timeleft - now <= 3000) {
       return;
     }
@@ -147,8 +147,8 @@ export class Wave extends EventEmitter {
     this.spawnPause = 0;
     this.spawnedCount = 0;
     this.maxSpawnedCount = calcGrowth(
-      WAVE_ENEMIES_COUNT,
-      WAVE_ENEMIES_COUNT_GROWTH,
+      DIFFICULTY.WAVE_ENEMIES_COUNT,
+      DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
       this.number,
     );
 
@@ -173,10 +173,16 @@ export class Wave extends EventEmitter {
    */
   private spawnEnemy() {
     const variant = this.getEnemyVariant();
+
     this.scene.spawnEnemy(variant);
 
     const now = this.scene.getTimerNow();
-    const pause = calcGrowth(WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, this.number);
+    const pause = calcGrowth(
+      DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
+      DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
+      this.number,
+    );
+
     this.spawnPause = now + Math.max(pause, 500);
     this.spawnedCount++;
   }
@@ -187,13 +193,14 @@ export class Wave extends EventEmitter {
    */
   private getEnemyVariant(): EnemyVariant {
     if (
-      this.number % WAVE_BOSS_SPAWN_RATE === 0
-      && this.spawnedCount < Math.ceil(this.number / WAVE_BOSS_SPAWN_RATE)
+      this.number % DIFFICULTY.WAVE_BOSS_SPAWN_RATE === 0
+      && this.spawnedCount < Math.ceil(this.number / DIFFICULTY.WAVE_BOSS_SPAWN_RATE)
     ) {
       return EnemyVariant.BOSS;
     }
 
     const variants: EnemyVariant[] = [];
+
     for (const [type, meta] of Object.entries(ENEMY_VARIANTS_META)) {
       if (meta.spawnMinWave <= this.number) {
         for (let k = 0; k < meta.spawnFrequency; k++) {

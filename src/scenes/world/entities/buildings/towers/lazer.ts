@@ -51,6 +51,7 @@ export class BuildingTowerLazer extends BuildingTower {
     const nextDamage = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
       ? this.getShotParams(this.upgradeLevel + 1).damage * 5
       : null;
+
     return [
       ...super.getInfo(),
       { text: `Damage: ${this.getShotParams().damage * 5}`, post: nextDamage && `→ ${nextDamage}`, icon: 4 },

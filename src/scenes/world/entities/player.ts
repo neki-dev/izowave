@@ -1,16 +1,6 @@
 import Phaser from 'phaser';
 
-import {
-  EXPERIENCE_TO_NEXT_LEVEL, EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
-  PLAYER_HEALTH, PLAYER_HEALTH_GROWTH,
-  PLAYER_START_RESOURCES,
-  PLAYER_SPEED,
-  PLAYER_DAMAGE, PLAYER_DAMAGE_GROWTH,
-  PLAYER_ATTACK_DISTANCE, PLAYER_ATTACK_DISTANCE_GROWTH,
-  PLAYER_ATTACK_PAUSE,
-  WAVE_EXPERIENCE,
-  WAVE_EXPERIENCE_GROWTH,
-} from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import {
@@ -56,7 +46,7 @@ export class Player extends Sprite {
   /**
    * Resourse amounts.
    */
-  private _resources: Resources = PLAYER_START_RESOURCES;
+  private _resources: Resources = DIFFICULTY.PLAYER_START_RESOURCES;
 
   public get resources() { return this._resources; }
 
@@ -106,7 +96,7 @@ export class Player extends Sprite {
     super(scene, {
       texture: PlayerTexture.PLAYER,
       positionAtMatrix,
-      health: PLAYER_HEALTH,
+      health: DIFFICULTY.PLAYER_HEALTH,
     });
     scene.add.existing(this);
 
@@ -123,7 +113,12 @@ export class Player extends Sprite {
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
     this.scene.wave.on(WaveEvents.FINISH, (waveNumber: number) => {
-      const experience = calcGrowth(WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH, waveNumber);
+      const experience = calcGrowth(
+        DIFFICULTY.WAVE_EXPERIENCE,
+        DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
+        waveNumber,
+      );
+
       this.giveExperience(experience);
     });
   }
@@ -164,14 +159,15 @@ export class Player extends Sprite {
     this.emit(PlayerEvents.EXPERIENCE, amount);
 
     const calc = (level: number) => calcGrowth(
-      EXPERIENCE_TO_NEXT_LEVEL,
-      EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+      DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
+      DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
       this.level + level + 1,
     );
 
     let experienceNeed = calc(0);
     let experienceLeft = this.experience;
     let level = 0;
+
     while (experienceLeft >= experienceNeed) {
       level++;
       experienceLeft -= experienceNeed;
@@ -273,7 +269,12 @@ export class Player extends Sprite {
     this.level += count;
 
     // Update maximum player health by level
-    const maxHealth = calcGrowth(PLAYER_HEALTH, PLAYER_HEALTH_GROWTH, this.level);
+    const maxHealth = calcGrowth(
+      DIFFICULTY.PLAYER_HEALTH,
+      DIFFICULTY.PLAYER_HEALTH_GROWTH,
+      this.level,
+    );
+
     this.live.setMaxHealth(maxHealth);
     this.live.heal();
 
@@ -287,11 +288,13 @@ export class Player extends Sprite {
     this.freeze();
 
     const camera = this.scene.cameras.main;
+
     camera.stopFollow();
     camera.zoomTo(WORLD_CAMERA_ZOOM * 2, 10 * 1000);
 
     const record = this.readBestStat();
     const stat = this.getStat();
+
     this.writeBestStat(stat, record);
 
     this.scene.tweens.add({
@@ -324,6 +327,7 @@ export class Player extends Sprite {
     const { keyboard } = this.scene.input;
 
     const movementKeys = 'W,A,S,D,UP,LEFT,DOWN,RIGHT';
+
     this.cursors = <{
       [key: string]: Phaser.Input.Keyboard.Key
     }> keyboard.addKeys(movementKeys);
@@ -343,14 +347,24 @@ export class Player extends Sprite {
     }
 
     const now = this.scene.getTimerNow();
+
     if (this.attackPause > now) {
       return;
     }
 
-    const damage = calcGrowth(PLAYER_DAMAGE, PLAYER_DAMAGE_GROWTH, this.level);
-    const distance = calcGrowth(PLAYER_ATTACK_DISTANCE, PLAYER_ATTACK_DISTANCE_GROWTH, this.level);
+    const damage = calcGrowth(
+      DIFFICULTY.PLAYER_DAMAGE,
+      DIFFICULTY.PLAYER_DAMAGE_GROWTH,
+      this.level,
+    );
+    const distance = calcGrowth(
+      DIFFICULTY.PLAYER_ATTACK_DISTANCE,
+      DIFFICULTY.PLAYER_ATTACK_DISTANCE_GROWTH,
+      this.level,
+    );
     const offset = this.scene.physics.velocityFromAngle(this.direction, distance);
     const area = new Phaser.Geom.Circle(this.x + offset.x, this.y + offset.y, distance);
+
     this.scene.enemies.children.iterate((enemy: Enemy) => {
       if (area.contains(enemy.x, enemy.y)) {
         enemy.live.damage(damage);
@@ -370,14 +384,15 @@ export class Player extends Sprite {
       emitZone: { source: new Phaser.Geom.Circle(0, 0, distance / 3), type: 'random' },
     }, 300);
 
-    this.attackPause = now + PLAYER_ATTACK_PAUSE;
+    this.attackPause = now + DIFFICULTY.PLAYER_ATTACK_PAUSE;
   }
 
   /**
    * Get player speed relative to friction force of current biome.
    */
   private getSpeed(): number {
-    const speed = PLAYER_SPEED + (this.level - 1) * 1.5;
+    const speed = DIFFICULTY.PLAYER_SPEED + (this.level - 1) * 1.5;
+
     return speed / (this.tile ? this.tile.biome.friction : 1);
   }
 
@@ -387,16 +402,20 @@ export class Player extends Sprite {
   private updateVelocity() {
     if (!this.movement) {
       this.setVelocity(0, 0);
+
       return;
     }
 
     const collide = this.handleCollide();
+
     if (collide) {
       this.setVelocity(0, 0);
+
       return;
     }
 
     const { x, y } = this.scene.physics.velocityFromAngle(this.direction, this.getSpeed());
+
     this.setVelocity(x, y);
   }
 
@@ -410,6 +429,7 @@ export class Player extends Sprite {
 
     const oldMovement = this.movement;
     const oldDirection = this.direction;
+
     if (x !== 0 || y !== 0) {
       this.movement = true;
       this.direction = PLAYER_MOVE_DIRECTIONS[dirKey];
@@ -420,6 +440,7 @@ export class Player extends Sprite {
     if (oldMovement !== this.movement || oldDirection !== this.direction) {
       if (this.movement) {
         const animation = PLAYER_MOVE_ANIMATIONS[dirKey];
+
         this.play(animation);
       } else {
         this.stop();
@@ -466,6 +487,7 @@ export class Player extends Sprite {
    */
   private getStat(): PlayerStat {
     const { wave } = this.scene;
+
     return {
       waves: wave.isGoing ? wave.number - 1 : wave.number,
       kills: this.kills,
@@ -479,6 +501,7 @@ export class Player extends Sprite {
    */
   private readBestStat(): PlayerStat {
     const recordValue = localStorage.getItem(`${PLAYER_RECORD_KEY}.${this.scene.difficultyType}`);
+
     return recordValue ? JSON.parse(recordValue) : {};
   }
 
@@ -501,6 +524,7 @@ export class Player extends Sprite {
     const { anims } = this.scene;
 
     let frameIndex = 0;
+
     for (const key of Object.values(PLAYER_MOVE_ANIMATIONS)) {
       anims.create({
         key,

@@ -50,6 +50,7 @@ export class Hexagon extends Phaser.Geom.Polygon {
   private getCorners(): Phaser.Types.Math.Vector2Like[] {
     const l = Phaser.Math.PI2 / 6;
     const points: Phaser.Types.Math.Vector2Like[] = [];
+
     for (let u = 0; u < 6; u++) {
       points.push({
         x: (this.x + this.size) + Math.sin(u * l) * this.size,

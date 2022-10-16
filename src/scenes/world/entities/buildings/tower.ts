@@ -1,10 +1,7 @@
 import Phaser from 'phaser';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import {
-  TOWER_SHOT_DAMAGE_GROWTH, TOWER_SHOT_FREEZE_GROWTH,
-  TOWER_SHOT_SPEED_GROWTH, TOWER_AMMO_AMOUNT,
-} from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
@@ -43,7 +40,7 @@ export class BuildingTower extends Building {
   /**
    * Ammo left in clip.
    */
-  private ammoLeft: number = TOWER_AMMO_AMOUNT;
+  private ammoLeft: number = DIFFICULTY.TOWER_AMMO_AMOUNT;
 
   /**
    * Building variant constructor.
@@ -77,21 +74,24 @@ export class BuildingTower extends Building {
    */
   public getInfo(): BuildingDescriptionItem[] {
     const nextAmmo = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-      ? TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
+      ? DIFFICULTY.TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
       : null;
     const info = [
       ...super.getInfo(),
       { text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`, post: nextAmmo && `→ ${nextAmmo}`, icon: 2 },
     ];
+
     if (this.ammoLeft < this.getMaxAmmo()) {
       info.push({ text: 'PRESS |R| TO RELOAD', type: 'hint' });
     }
 
     const { speed } = this.getShotParams();
+
     if (speed) {
       const nextSpeed = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
         ? this.getShotParams(this.upgradeLevel + 1).speed / 10
         : null;
+
       info.push({
         text: `Speed: ${speed / 10}`,
         post: nextSpeed && `→ ${Math.round(nextSpeed)}`,
@@ -116,6 +116,7 @@ export class BuildingTower extends Building {
     }
 
     const target = this.getTarget();
+
     if (!target) {
       return;
     }
@@ -134,15 +135,29 @@ export class BuildingTower extends Building {
    */
   public getShotParams(level?: number) {
     const data: ShotParams = {};
+
     if (this.shotData.speed) {
-      data.speed = calcGrowth(this.shotData.speed, TOWER_SHOT_SPEED_GROWTH, level || this.upgradeLevel);
+      data.speed = calcGrowth(
+        this.shotData.speed,
+        DIFFICULTY.TOWER_SHOT_SPEED_GROWTH,
+        level || this.upgradeLevel,
+      );
     }
     if (this.shotData.damage) {
-      data.damage = calcGrowth(this.shotData.damage, TOWER_SHOT_DAMAGE_GROWTH, level || this.upgradeLevel);
+      data.damage = calcGrowth(
+        this.shotData.damage,
+        DIFFICULTY.TOWER_SHOT_DAMAGE_GROWTH,
+        level || this.upgradeLevel,
+      );
     }
     if (this.shotData.freeze) {
-      data.freeze = calcGrowth(this.shotData.freeze, TOWER_SHOT_FREEZE_GROWTH, level || this.upgradeLevel);
+      data.freeze = calcGrowth(
+        this.shotData.freeze,
+        DIFFICULTY.TOWER_SHOT_FREEZE_GROWTH,
+        level || this.upgradeLevel,
+      );
     }
+
     return data;
   }
 
@@ -152,11 +167,13 @@ export class BuildingTower extends Building {
   private getAmmunition(): BuildingAmmunition {
     const ammunitions = <BuildingAmmunition[]> this.scene.selectBuildings(BuildingVariant.AMMUNITION);
     const nearby = ammunitions.filter((building: Building) => building.actionsAreaContains(this));
+
     if (nearby.length === 0) {
       return null;
     }
 
     const ammunition = nearby.sort((a, b) => (b.amountLeft - a.amountLeft))[0];
+
     if (ammunition.amountLeft === 0) {
       return null;
     }
@@ -173,17 +190,21 @@ export class BuildingTower extends Building {
     }
 
     const needAmmo = this.getMaxAmmo() - this.ammoLeft;
+
     if (needAmmo <= 0) {
       return;
     }
 
     const ammunition = this.getAmmunition();
+
     if (!ammunition) {
       this.scene.screen.message(NoticeType.ERROR, 'NO AMMUNITION NEARBY');
+
       return;
     }
 
     const ammo = ammunition.use(needAmmo);
+
     this.ammoLeft += ammo;
 
     this.removeAlert();
@@ -193,7 +214,7 @@ export class BuildingTower extends Building {
    * Get maximum ammo in clip.
    */
   private getMaxAmmo(): number {
-    return TOWER_AMMO_AMOUNT * this.upgradeLevel;
+    return DIFFICULTY.TOWER_AMMO_AMOUNT * this.upgradeLevel;
   }
 
   /**
@@ -226,15 +247,29 @@ export class BuildingTower extends Building {
    */
   private shoot(target: Enemy) {
     const data: ShotParams = {};
+
     if (this.shotData.speed) {
-      data.speed = calcGrowth(this.shotData.speed, TOWER_SHOT_SPEED_GROWTH, this.upgradeLevel);
+      data.speed = calcGrowth(
+        this.shotData.speed,
+        DIFFICULTY.TOWER_SHOT_SPEED_GROWTH,
+        this.upgradeLevel,
+      );
     }
     if (this.shotData.damage) {
-      data.damage = calcGrowth(this.shotData.damage, TOWER_SHOT_DAMAGE_GROWTH, this.upgradeLevel);
+      data.damage = calcGrowth(
+        this.shotData.damage,
+        DIFFICULTY.TOWER_SHOT_DAMAGE_GROWTH,
+        this.upgradeLevel,
+      );
     }
     if (this.shotData.freeze) {
-      data.freeze = calcGrowth(this.shotData.freeze, TOWER_SHOT_FREEZE_GROWTH, this.upgradeLevel);
+      data.freeze = calcGrowth(
+        this.shotData.freeze,
+        DIFFICULTY.TOWER_SHOT_FREEZE_GROWTH,
+        this.upgradeLevel,
+      );
     }
+
     this.shot.shoot(target, data);
   }
 }

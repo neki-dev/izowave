@@ -177,6 +177,7 @@ export class World extends Phaser.Scene {
     }
 
     const loadingStatus = document.getElementById('loading-status');
+
     if (loadingStatus) {
       loadingStatus.innerText = 'ASSETS LOADING';
     }
@@ -189,6 +190,7 @@ export class World extends Phaser.Scene {
     this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
 
     const difficulty = localStorage.getItem(WORLD_DIFFICULTY_KEY);
+
     if (!difficulty) {
       localStorage.setItem(WORLD_DIFFICULTY_KEY, WorldDifficulty.NORMAL);
     }
@@ -200,6 +202,7 @@ export class World extends Phaser.Scene {
       this.scene.launch(SceneKey.MENU);
 
       const loadingScreen = document.getElementById('loading-screen');
+
       if (loadingScreen) {
         loadingScreen.remove();
       }
@@ -240,6 +243,7 @@ export class World extends Phaser.Scene {
    */
   public selectBuildings(variant: BuildingVariant): Building[] {
     const buildings = (<Building[]> this.buildings.getChildren());
+
     return buildings.filter((building) => (building.variant === variant));
   }
 
@@ -254,14 +258,17 @@ export class World extends Phaser.Scene {
         Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
       ))
     ));
+
     if (allowedPositions.length === 0) {
       console.warn('Invalid enemy spawn positions');
+
       return null;
     }
 
     const positions = selectClosest(allowedPositions, this.player.positionAtMatrix, ENEMY_SPAWN_POSITIONS);
 
     const EnemyInstance = ENEMIES[variant];
+
     return new EnemyInstance(this, {
       positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
@@ -272,6 +279,7 @@ export class World extends Phaser.Scene {
    */
   public refreshNavigationMeta() {
     const { navigator } = this.level;
+
     navigator.resetPointsCost();
 
     for (let y = 0; y < this.level.size; y++) {
@@ -319,6 +327,7 @@ export class World extends Phaser.Scene {
     this.builder = new Builder(this);
 
     const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
+
     this.player = new Player(this, Phaser.Utils.Array.GetRandom(positions));
 
     this.makeChests();
@@ -330,6 +339,7 @@ export class World extends Phaser.Scene {
     this.addEntityColliders();
 
     const camera = this.cameras.main;
+
     camera.resetFX();
     camera.startFollow(this.player);
     camera.setZoom(WORLD_CAMERA_ZOOM * 1.3);
@@ -413,6 +423,7 @@ export class World extends Phaser.Scene {
    */
   private updateEnemiesPath() {
     const now = this.getTimerNow();
+
     if (this.pathFindingPause > now) {
       return;
     }
@@ -486,6 +497,7 @@ export class World extends Phaser.Scene {
     const from = Level.ToWorldPosition({ x: 0, y: this.level.size - 1, z: 0 });
     const to = Level.ToWorldPosition({ x: this.level.size - 1, y: 0, z: 0 });
     const camera = this.cameras.main;
+
     camera.setZoom(1.8);
     camera.pan(from.x + (canvas.width / 2), from.y, 0);
     setTimeout(() => {
@@ -506,6 +518,7 @@ export class World extends Phaser.Scene {
 
     // Creating default chests
     const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE / 10) / this.difficulty);
+
     for (let i = 0; i < maxCount; i++) {
       create();
     }
@@ -513,6 +526,7 @@ export class World extends Phaser.Scene {
     this.wave.on(WaveEvents.FINISH, () => {
       // Get missing count of chests
       const newCount = maxCount - this.chests.getTotalUsed();
+
       if (newCount < 1) {
         return;
       }
@@ -521,6 +535,7 @@ export class World extends Phaser.Scene {
       for (let i = 0; i < newCount; i++) {
         const chest = create();
         const tileGround = this.level.getTile({ ...chest.positionAtMatrix, z: 0 });
+
         chest.setVisible(tileGround.visible);
       }
     });
@@ -542,6 +557,7 @@ export class World extends Phaser.Scene {
     const buildingsVariants = [
       [BuildingVariant.TOWER_FIRE],
     ];
+
     if (this.difficultyType === WorldDifficulty.EASY) {
       buildingsVariants.push([BuildingVariant.AMMUNITION]);
     }
@@ -553,9 +569,11 @@ export class World extends Phaser.Scene {
       const index = Phaser.Math.Between(0, spawns.length - 1);
       const positionAtMatrix = spawns[index];
       const tileGround = this.level.getTile({ ...positionAtMatrix, z: 0 });
+
       if (tileGround?.biome.solid) {
         const randomVariant: BuildingVariant = Phaser.Utils.Array.GetRandom(variant);
         const BuildingInstance = BUILDINGS[randomVariant];
+
         new BuildingInstance(this, positionAtMatrix);
       }
 
@@ -591,6 +609,7 @@ export class World extends Phaser.Scene {
           this.wave.complete();
         }
         const waveNumber = this.wave.number + Phaser.Math.Between(3, 7);
+
         this.wave.setNumber(waveNumber);
         this.wave.runTimeleft();
       },
@@ -616,6 +635,7 @@ export class World extends Phaser.Scene {
    */
   private sortDepthOptimization() {
     const ref = this.scene.systems.displayList;
+
     ref.depthSort = () => {
       if (ref.sortChildrenFlag) {
         ref.list.sort(ref.sortByDepth);

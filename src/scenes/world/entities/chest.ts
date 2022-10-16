@@ -1,9 +1,6 @@
 import Phaser from 'phaser';
 
-import {
-  CHEST_EXPERIENCE, CHEST_EXPERIENCE_GROWTH,
-  CHEST_RESOURCES, CHEST_RESOURCES_GROWTH,
-} from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { registerAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
@@ -28,6 +25,7 @@ export class Chest extends Phaser.GameObjects.Image {
   }: ChestData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
+
     super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.DEFAULT, variant);
     scene.add.existing(this);
     scene.chests.add(this);
@@ -51,20 +49,32 @@ export class Chest extends Phaser.GameObjects.Image {
     const waveNumber = wave.number + 1;
 
     // Give resources
-    const resources = Object.entries(CHEST_RESOURCES).reduce((curr, [type, amount]) => {
+    const resources = Object.entries(DIFFICULTY.CHEST_RESOURCES).reduce((curr, [type, amount]) => {
       // Randomizing amount
       let totalAmount = Phaser.Math.Between(
         amount - Math.floor(amount * 0.5),
         amount + Math.floor(amount * 0.5),
       );
         // Update amount by wave number
-      totalAmount = calcGrowth(totalAmount, CHEST_RESOURCES_GROWTH, waveNumber);
+
+      totalAmount = calcGrowth(
+        totalAmount,
+        DIFFICULTY.CHEST_RESOURCES_GROWTH,
+        waveNumber,
+      );
+
       return { ...curr, [type]: totalAmount };
     }, {});
+
     player.giveResources(resources);
 
     // Give experience
-    const experience = calcGrowth(CHEST_EXPERIENCE, CHEST_EXPERIENCE_GROWTH, waveNumber);
+    const experience = calcGrowth(
+      DIFFICULTY.CHEST_EXPERIENCE,
+      DIFFICULTY.CHEST_EXPERIENCE_GROWTH,
+      waveNumber,
+    );
+
     player.giveExperience(experience);
 
     this.destroy();

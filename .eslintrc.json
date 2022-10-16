@@ -1,7 +1,6 @@
 {
   "extends": ["neki/ts"],
   "rules": {
-    "max-len": ["warn", { "code": 128 }],
     "no-new": "off",
     "no-console": "off",
     "func-names": "off",

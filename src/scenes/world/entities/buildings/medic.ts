@@ -1,5 +1,5 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import { MEDIC_HEAL_AMOUNT, MEDIC_LIMIT } from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import { Player } from '~scene/world/entities/player';
@@ -13,7 +13,7 @@ export class BuildingMedic extends Building {
     { text: 'Health: 200', icon: 0 },
     { text: 'Radius: 200', icon: 1 },
     { text: 'Pause: 3.0 s', icon: 6 },
-    { text: `Heal: ${MEDIC_HEAL_AMOUNT}`, icon: 3 },
+    { text: `Heal: ${DIFFICULTY.MEDIC_HEAL_AMOUNT}`, icon: 3 },
   ];
 
   static Texture = BuildingTexture.MEDIC;
@@ -24,7 +24,7 @@ export class BuildingMedic extends Building {
 
   static Health = 200;
 
-  static Limit = MEDIC_LIMIT;
+  static Limit = DIFFICULTY.MEDIC_LIMIT;
 
   /**
    * Building variant constructor.
@@ -54,6 +54,7 @@ export class BuildingMedic extends Building {
     }
 
     const { player } = this.scene;
+
     if (player.live.isMaxHealth()) {
       return;
     }
@@ -71,8 +72,9 @@ export class BuildingMedic extends Building {
    */
   public getInfo(): BuildingDescriptionItem[] {
     const nextHeal = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-      ? MEDIC_HEAL_AMOUNT * (this.upgradeLevel + 1)
+      ? DIFFICULTY.MEDIC_HEAL_AMOUNT * (this.upgradeLevel + 1)
       : null;
+
     return [
       ...super.getInfo(),
       { text: `Heal: ${this.getHealAmount()}`, post: nextHeal && `→ ${nextHeal}`, icon: 3 },
@@ -83,7 +85,7 @@ export class BuildingMedic extends Building {
    * Get heal amount.
    */
   private getHealAmount(): number {
-    return MEDIC_HEAL_AMOUNT * this.upgradeLevel;
+    return DIFFICULTY.MEDIC_HEAL_AMOUNT * this.upgradeLevel;
   }
 
   /**
@@ -93,6 +95,7 @@ export class BuildingMedic extends Building {
    */
   private heal(player: Player) {
     const health = this.getHealAmount();
+
     player.live.setHealth(player.live.health + health);
   }
 }

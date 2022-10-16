@@ -42,6 +42,7 @@ export class Live extends EventEmmiter {
     }
 
     const damage = Math.min(amount, this.health);
+
     this.health -= damage;
     this.emit(LiveEvents.DAMAGE, damage);
 
@@ -59,6 +60,7 @@ export class Live extends EventEmmiter {
     }
 
     const prevHealth = this.health;
+
     this.health = 0;
     this.emit(LiveEvents.DAMAGE, prevHealth);
     this.emit(LiveEvents.DEAD);
@@ -78,6 +80,7 @@ export class Live extends EventEmmiter {
    */
   public setHealth(amount: number) {
     const prevHealth = this.health;
+
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
     if (this.health > prevHealth) {
       this.emit(LiveEvents.HEAL, this.health - prevHealth);

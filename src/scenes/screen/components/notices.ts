@@ -9,6 +9,7 @@ import { Notice, NoticeType } from '~type/screen/notice';
 export const ComponentNotices = Component(function (container) {
   const update = () => {
     let offset = 0;
+
     container.iterate((notice: Phaser.GameObjects.Container) => {
       notice.setPosition(0, offset);
       offset += toEven(notice.height + 5);
@@ -17,6 +18,7 @@ export const ComponentNotices = Component(function (container) {
 
   const create = ({ message, type }: Notice) => {
     const containerNotice = this.add.container(0, 0);
+
     containerNotice.setAlpha(0.0);
 
     const text = this.add.text(0, 0, message, {
@@ -29,6 +31,7 @@ export const ComponentNotices = Component(function (container) {
         right: 10,
       },
     });
+
     text.setName('Message');
     text.setOrigin(0.5, 0.0);
 
@@ -41,6 +44,7 @@ export const ComponentNotices = Component(function (container) {
       }
     })();
     const body = this.add.rectangle(0, 0, text.width, text.height, background, 0.75);
+
     body.setOrigin(0.5, 0.0);
 
     containerNotice.add([body, text]);
@@ -53,11 +57,13 @@ export const ComponentNotices = Component(function (container) {
     const existNotice = container.getAll().find((notice: Phaser.GameObjects.Container) => (
       (<Phaser.GameObjects.Text> notice.getByName('Message')).text === data.message
     ));
+
     if (existNotice) {
       existNotice.destroy();
     }
 
     const containerNotice = create(data);
+
     container.add(containerNotice);
 
     update();

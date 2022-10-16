@@ -57,6 +57,7 @@ export class Navigator {
       cost: 1.0,
       distance: Phaser.Math.Distance.BetweenPoints(task.from, task.to),
     });
+
     task.addNode(node);
 
     this.taskQueue.push(task);
@@ -67,6 +68,7 @@ export class Navigator {
   public processing() {
     while (this.taskQueue.length > 0) {
       const task = this.taskQueue[0];
+
       if (task.state === NavigatorTaskState.CANCELED) {
         this.taskQueue.shift();
         continue;
@@ -77,6 +79,7 @@ export class Navigator {
       }
 
       const currentNode = task.takeLastNode();
+
       if (!currentNode) {
         this.taskQueue.shift();
         task.failure();
@@ -99,6 +102,7 @@ export class Navigator {
   private checkAdjacentNode(task: NavigatorTask, currentNode: PathNode, shift: Phaser.Types.Math.Vector2Like) {
     const x = currentNode.x + shift.x;
     const y = currentNode.y + shift.y;
+
     if (!this.isWalkable(x, y)) {
       return;
     }
@@ -107,6 +111,7 @@ export class Navigator {
     const cost = currentNode.getCost() + (this.getPointCost(x, y) * C);
 
     const existNode = task.pickNode(x, y);
+
     if (existNode) {
       if (cost < existNode.getCost()) {
         existNode.setCost(cost);
@@ -119,6 +124,7 @@ export class Navigator {
         cost,
         distance: Phaser.Math.Distance.BetweenPoints({ x, y }, task.to),
       });
+
       node.openList();
       task.addNode(node);
     }

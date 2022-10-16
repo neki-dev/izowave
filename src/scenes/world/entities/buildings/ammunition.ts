@@ -1,5 +1,5 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import { AMMUNITION_AMMO_LIMIT, AMMUNITION_AMMO_UPGRADE, AMMUNITION_LIMIT } from '~const/difficulty';
+import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { Building } from '~scene/world/entities/building';
 import { NoticeType } from '~type/screen/notice';
@@ -14,7 +14,7 @@ export class BuildingAmmunition extends Building {
     { text: 'Ammo for towers.\nTo reload tower must\nbe inside radius.', type: 'text' },
     { text: 'Health: 300', icon: 0 },
     { text: 'Radius: 160', icon: 1 },
-    { text: `Amount: ${AMMUNITION_AMMO_LIMIT}`, icon: 2 },
+    { text: `Amount: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: 2 },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -25,12 +25,12 @@ export class BuildingAmmunition extends Building {
 
   static Health = 300;
 
-  static Limit = AMMUNITION_LIMIT;
+  static Limit = DIFFICULTY.AMMUNITION_LIMIT;
 
   /**
    * Ammo amount left.
    */
-  private _amountLeft: number = AMMUNITION_AMMO_LIMIT;
+  private _amountLeft: number = DIFFICULTY.AMMUNITION_AMMO;
 
   public get amountLeft() { return this._amountLeft; }
 
@@ -59,8 +59,9 @@ export class BuildingAmmunition extends Building {
    */
   public getInfo(): BuildingDescriptionItem[] {
     const nextLeft = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-      ? this.amountLeft + (AMMUNITION_AMMO_UPGRADE * this.upgradeLevel)
+      ? this.amountLeft + (DIFFICULTY.AMMUNITION_AMMO_UPGRADE * this.upgradeLevel)
       : null;
+
     return [
       ...super.getInfo(),
       { text: `Left: ${this.amountLeft}`, post: nextLeft && `→ ${nextLeft}`, icon: 2 },
@@ -73,8 +74,10 @@ export class BuildingAmmunition extends Building {
   public use(amount: number): number {
     if (this.amountLeft <= amount) {
       const left = this.amountLeft;
+
       this.scene.screen.message(NoticeType.WARN, `${this.getName()} ARE OVER`);
       this.destroy();
+
       return left;
     }
 
@@ -87,6 +90,6 @@ export class BuildingAmmunition extends Building {
    * Update amount left.
    */
   private upgradeAmount() {
-    this.amountLeft += AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
+    this.amountLeft += DIFFICULTY.AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
   }
 }

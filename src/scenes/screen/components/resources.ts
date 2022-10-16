@@ -21,10 +21,12 @@ export const ComponentResources = Component<Props>(function (container, {
     const item = this.add.container(0, ((ITEM_HEIGHT + ITEM_MARGIN) * index));
 
     const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, ITEM_HEIGHT, 0x000000, 0.75);
+
     body.setOrigin(0.0, 0.0);
 
     const size = ITEM_HEIGHT - (ITEM_PADDING * 2);
     const icon = this.add.rectangle(ITEM_PADDING, ITEM_PADDING, size, size, RESOURCE_COLOR[type]);
+
     icon.setOrigin(0.0, 0.0);
 
     const text = this.add.text(icon.width + 16, ITEM_PADDING, type, {
@@ -37,6 +39,7 @@ export const ComponentResources = Component<Props>(function (container, {
       fontSize: '14px',
       fontFamily: INTERFACE_FONT_PIXEL,
     });
+
     amount.setName('Amount');
     amount.setOrigin(0.0, 1.0);
 
@@ -63,6 +66,7 @@ export const ComponentResources = Component<Props>(function (container, {
       Object.values(ResourceType).forEach((type, index) => {
         const item = <Phaser.GameObjects.Container> container.getAt(index);
         const amount = <Phaser.GameObjects.Text> item.getByName('Amount');
+
         amount.setText(String(player.getResource(type)));
       });
     },
