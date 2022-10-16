@@ -203,15 +203,15 @@ export class Building extends Phaser.GameObjects.Image {
       { text: `Health: ${this.live.health}`, icon: 0 },
     ];
     const radius = this.getActionsRadius();
+    const pause = this.getActionsPause();
+    const canUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
 
     if (radius) {
-      const nextRadius = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-        ? calcGrowth(
-          this.actions.radius,
-          DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
-          this.upgradeLevel + 1,
-        ) / 2
-        : null;
+      const nextRadius = canUpgrade && calcGrowth(
+        this.actions.radius,
+        DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
+        this.upgradeLevel + 1,
+      ) / 2;
 
       info.push({
         text: `Radius: ${Math.round(radius / 2)}`,
@@ -219,16 +219,13 @@ export class Building extends Phaser.GameObjects.Image {
         icon: 1,
       });
     }
-    const pause = this.getActionsPause();
 
     if (pause) {
-      const nextPause = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-        ? calcGrowth(
-          this.actions.pause,
-          DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
-          this.upgradeLevel + 1,
-        ) / 1000
-        : null;
+      const nextPause = canUpgrade && calcGrowth(
+        this.actions.pause,
+        DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
+        this.upgradeLevel + 1,
+      ) / 1000;
 
       info.push({
         text: `Pause: ${(pause / 1000).toFixed(1)} s`,
@@ -236,7 +233,8 @@ export class Building extends Phaser.GameObjects.Image {
         icon: 6,
       });
     }
-    if (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing) {
+
+    if (canUpgrade) {
       info.push({
         text: 'PRESS |U| TO UPGRADE',
         type: 'hint',

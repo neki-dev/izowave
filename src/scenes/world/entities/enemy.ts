@@ -239,7 +239,7 @@ export class Enemy extends Sprite {
 
       if (!path) {
         this.destroy();
-        console.warn('Enemy could not find path and was destroyed');
+        console.warn('Enemy couldn\'t find path and was destroyed');
 
         return;
       }

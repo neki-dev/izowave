@@ -6,7 +6,6 @@ import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import {
   PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS,
 } from '~const/player';
-import { WORLD_CAMERA_ZOOM } from '~const/world';
 import { registerAssets } from '~lib/assets';
 import { entries, keys } from '~lib/core';
 import { calcGrowth } from '~lib/utils';
@@ -156,7 +155,7 @@ export class Player extends Sprite {
     }
 
     this.experience += amount;
-    this.emit(PlayerEvents.EXPERIENCE, amount);
+    this.emit(PlayerEvents.UPDATE_EXPERIENCE, amount);
 
     const calc = (level: number) => calcGrowth(
       DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
@@ -193,7 +192,7 @@ export class Player extends Sprite {
     for (const [type, amount] of entries(amounts)) {
       if (amount > 0) {
         this.resources[type] += amount;
-        this.emit(PlayerEvents.RESOURCE, type, amount);
+        this.emit(PlayerEvents.UPDATE_RESOURCE, type, amount);
       }
     }
   }
@@ -222,7 +221,7 @@ export class Player extends Sprite {
     for (const [type, amount] of entries(amounts)) {
       if (amount > 0) {
         this.resources[type] -= amount;
-        this.emit(PlayerEvents.RESOURCE, type, -amount);
+        this.emit(PlayerEvents.UPDATE_RESOURCE, type, -amount);
       }
     }
   }
@@ -290,7 +289,7 @@ export class Player extends Sprite {
     const camera = this.scene.cameras.main;
 
     camera.stopFollow();
-    camera.zoomTo(WORLD_CAMERA_ZOOM * 2, 10 * 1000);
+    camera.zoomTo(2.0, 10 * 1000);
 
     const record = this.readBestStat();
     const stat = this.getStat();

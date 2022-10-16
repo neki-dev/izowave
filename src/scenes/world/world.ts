@@ -224,14 +224,29 @@ export class World extends Phaser.Scene {
 
     try {
       this.player.update();
-      this.builder.update();
-      this.level.update();
-      this.wave.update();
-
-      this.updateEnemiesPath();
     } catch (e) {
-      console.error(e);
+      console.error('Error on `Player` update:', e);
     }
+
+    try {
+      this.builder.update();
+    } catch (e) {
+      console.error('Error on `Builder` update:', e);
+    }
+
+    try {
+      this.level.update();
+    } catch (e) {
+      console.error('Error on `Level` update:', e);
+    }
+
+    try {
+      this.wave.update();
+    } catch (e) {
+      console.error('Error on `Wave` update:', e);
+    }
+
+    this.updateEnemiesPath();
   }
 
   /**
@@ -427,7 +442,11 @@ export class World extends Phaser.Scene {
     }
 
     this.enemies.children.iterate((enemy: Enemy) => {
-      enemy.updatePath();
+      try {
+        enemy.updatePath();
+      } catch (e) {
+        console.error('Error on update enemy path:', e);
+      }
     });
 
     this.level.navigator.processing();
