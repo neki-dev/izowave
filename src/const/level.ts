@@ -18,9 +18,9 @@ export const TILE_META: TileMeta = {
 
 export const LEVEL_MAP_SIZE = (() => {
   switch (getPerformance()) {
-    case PerformanceLevel.LOW: return 90;
-    case PerformanceLevel.MEDIUM: return 100;
-    default: return 110;
+    case PerformanceLevel.LOW: return 100;
+    case PerformanceLevel.MEDIUM: return 120;
+    default: return 140;
   }
 })();
 export const LEVEL_MAP_HEIGHT = 4;
