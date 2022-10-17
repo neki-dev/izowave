@@ -17,6 +17,11 @@ export class Level extends TileMatrix {
   readonly scene: World;
 
   /**
+   * Map matrix.
+   */
+  readonly matrix: LevelBiome[][] = [];
+
+  /**
    * Map tiles group.
    */
   private mapTiles: Phaser.GameObjects.Group;
@@ -30,11 +35,6 @@ export class Level extends TileMatrix {
    * Visible tiles group.
    */
   private visibleTiles: Phaser.GameObjects.Group;
-
-  /**
-   * Map matrix.
-   */
-  private matrix: LevelBiome[][];
 
   /**
    * Path finder.

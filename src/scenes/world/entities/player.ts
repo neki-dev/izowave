@@ -61,9 +61,7 @@ export class Player extends Sprite {
   /**
    * Keyboard keys.
    */
-  private cursors: {
-    [key: string]: Phaser.Input.Keyboard.Key
-  };
+  private cursors: Record<string, Phaser.Input.Keyboard.Key>;
 
   /**
    * Current direction in deg.
@@ -83,12 +81,12 @@ export class Player extends Sprite {
   /**
    * Player NPC assistant.
    */
-  private assistant?: Assistant;
+  private assistant: Nullable<Assistant> = null;
 
   /**
-   *
+   * Current ground tile.
    */
-  private tile?: Phaser.GameObjects.Image;
+  private tile: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
    * Player constructor.
@@ -107,9 +105,9 @@ export class Player extends Sprite {
     this.setPushable(false);
     this.setOrigin(0.5, 0.75);
 
-    this.makeAnimations();
     this.registerKeyboard();
     this.addAssistant();
+    this.addAnimations();
 
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
@@ -118,7 +116,6 @@ export class Player extends Sprite {
 
   /**
    * Event update.
-   * Update direction, velocity and health indicator.
    */
   public update() {
     if (this.isBlocked) {
@@ -127,14 +124,14 @@ export class Player extends Sprite {
 
     super.update();
 
+    this.tile = this.scene.level.getTile({
+      ...this.positionAtMatrix,
+      z: 0,
+    });
+
+    this.addVisitedWay();
     this.updateDirection();
     this.updateVelocity();
-
-    // Add visited way
-    this.tile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
-    if ([BiomeType.SAND, BiomeType.GRASS].includes(this.tile?.biome.type)) {
-      this.tile.setTint(LEVEL_MAP_VISITED_TILE_TINT);
-    }
   }
 
   /**
@@ -151,20 +148,20 @@ export class Player extends Sprite {
     this.experience += amount;
     this.emit(PlayerEvents.UPDATE_EXPERIENCE, amount);
 
-    const calc = (level: number) => calcGrowth(
+    const calcNext = (level: number) => calcGrowth(
       DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
       DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
       this.level + level + 1,
     );
 
-    let experienceNeed = calc(0);
+    let experienceNeed = calcNext(0);
     let experienceLeft = this.experience;
     let level = 0;
 
     while (experienceLeft >= experienceNeed) {
       level++;
       experienceLeft -= experienceNeed;
-      experienceNeed = calc(level);
+      experienceNeed = calcNext(level);
     }
 
     if (level > 0) {
@@ -211,7 +208,7 @@ export class Player extends Sprite {
    *
    * @param amounts - Resources amounts
    */
-  public takeResources(amounts: Resources): void {
+  public takeResources(amounts: Resources) {
     for (const [type, amount] of entries(amounts)) {
       if (amount > 0) {
         this.resources[type] -= amount;
@@ -240,7 +237,7 @@ export class Player extends Sprite {
    * Blocking player movement.
    */
   public freeze() {
-    this.stop();
+    this.anims.stop();
     this.isBlocked = true;
     this.setVelocity(0, 0);
   }
@@ -270,7 +267,7 @@ export class Player extends Sprite {
     this.assistant.upgrade(this.level);
 
     this.assistant.on(Phaser.Scenes.Events.DESTROY, () => {
-      delete this.assistant;
+      this.assistant = null;
     });
   }
 
@@ -301,7 +298,7 @@ export class Player extends Sprite {
   }
 
   /**
-   * Eveny player dead.
+   * Event player dead.
    */
   private onDead() {
     this.freeze();
@@ -355,13 +352,11 @@ export class Player extends Sprite {
 
     const movementKeys = 'W,A,S,D,UP,LEFT,DOWN,RIGHT';
 
-    this.cursors = <{
-      [key: string]: Phaser.Input.Keyboard.Key
-    }> keyboard.addKeys(movementKeys);
+    this.cursors = <Record<string, Phaser.Input.Keyboard.Key>> keyboard.addKeys(movementKeys);
   }
 
   /**
-   * Update player velocity.
+   * Update velocity with handle collide.
    */
   private updateVelocity() {
     if (!this.movement) {
@@ -412,6 +407,19 @@ export class Player extends Sprite {
         this.anims.setProgress(0);
         this.anims.stop();
       }
+    }
+  }
+
+  /**
+   * Change ground tile tint.
+   */
+  private addVisitedWay() {
+    if (!this.tile) {
+      return;
+    }
+
+    if ([BiomeType.SAND, BiomeType.GRASS].includes(this.tile.biome.type)) {
+      this.tile.setTint(LEVEL_MAP_VISITED_TILE_TINT);
     }
   }
 
@@ -487,7 +495,7 @@ export class Player extends Sprite {
   /**
    * Add animations for all move directions.
    */
-  private makeAnimations() {
+  private addAnimations() {
     const { anims } = this.scene;
 
     let frameIndex = 0;

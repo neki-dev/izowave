@@ -19,7 +19,7 @@ export class Enemy extends NPC {
   /**
    * Timer for freeze effect.
    */
-  private timerTint?: Phaser.Time.TimerEvent;
+  private timerTint: Nullable<Phaser.Time.TimerEvent> = null;
 
   /**
    * Enemy constructor.
@@ -113,7 +113,7 @@ export class Enemy extends NPC {
       this.setTint(0x00a8ff);
       this.timerTint = this.scene.time.delayedCall(finalDuration, () => {
         this.clearTint();
-        delete this.timerTint;
+        this.timerTint = null;
       });
     }
   }

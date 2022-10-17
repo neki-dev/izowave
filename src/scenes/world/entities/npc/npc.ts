@@ -9,11 +9,6 @@ import { NPCData } from '~type/world/entities/npc';
 
 export class NPC extends Sprite {
   /**
-   * Pause for pursuit and attacks.
-   */
-  private calmPause: number = 0;
-
-  /**
    * Current finded path to target.
    */
   private currentPath: Phaser.Types.Math.Vector2Like[] = [];
@@ -21,7 +16,7 @@ export class NPC extends Sprite {
   /**
    * Current task of path finding.
    */
-  private pathFindingTask: NavigatorTask;
+  private pathFindingTask: Nullable<NavigatorTask> = null;
 
   /**
    * Distance to target for start find path.
@@ -31,7 +26,7 @@ export class NPC extends Sprite {
   /**
    * Damage power.
    */
-  public damage?: number;
+  public damage: Nullable<number> = null;
 
   /**
    * Maximum speed.
@@ -39,11 +34,16 @@ export class NPC extends Sprite {
   public speed: number;
 
   /**
+   * Pause for pursuit and attacks.
+   */
+  private stopCalmTimestamp: number = 0;
+
+  /**
    * NPC constructor.
    */
   constructor(scene: World, {
-    positionAtMatrix, texture, health, damage, speed, pathBreakpoint,
-    frameRate = 4,
+    positionAtMatrix, texture, health, speed, pathBreakpoint,
+    damage = null, frameRate = 4,
   }: NPCData) {
     super(scene, { texture, positionAtMatrix, health });
     scene.add.existing(this);
@@ -52,9 +52,7 @@ export class NPC extends Sprite {
     this.speed = speed;
     this.pathBreakpoint = pathBreakpoint;
 
-    // Configure physics
     this.setPushable(false);
-
     this.setVisible(this.atVisibleTile());
 
     // Add animations
@@ -102,14 +100,14 @@ export class NPC extends Sprite {
    * @param duration - Pause duration
    */
   public calm(duration: number) {
-    this.calmPause = this.scene.getTimerNow() + duration;
+    this.stopCalmTimestamp = this.scene.getTimerNow() + duration;
   }
 
   /**
    * Check if NPC pursuit and attacks is paused.
    */
   public isCalm(): boolean {
-    return (this.calmPause > this.scene.getTimerNow());
+    return (this.stopCalmTimestamp > this.scene.getTimerNow());
   }
 
   /**
@@ -136,7 +134,7 @@ export class NPC extends Sprite {
     }
 
     const onComplete = (path: Phaser.Types.Math.Vector2Like[]) => {
-      delete this.pathFindingTask;
+      this.pathFindingTask = null;
 
       if (!path) {
         this.destroy();
@@ -195,10 +193,10 @@ export class NPC extends Sprite {
   }
 
   /**
-   * Dead event.
+   * Event dead.
    */
   public onDead() {
-    this.stop();
+    this.anims.stop();
     this.scene.tweens.add({
       targets: this,
       alpha: 0.0,
@@ -228,7 +226,7 @@ export class NPC extends Sprite {
 
     if (this.pathFindingTask) {
       this.pathFindingTask.cancel();
-      delete this.pathFindingTask;
+      this.pathFindingTask = null;
     }
   }
 
@@ -270,6 +268,11 @@ export class NPC extends Sprite {
    * Check if current ground tile is visible.
    */
   private atVisibleTile(): boolean {
-    return this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 })?.visible || false;
+    const tile = this.scene.level.getTile({
+      ...this.positionAtMatrix,
+      z: 0,
+    });
+
+    return tile ? tile.visible : false;
   }
 }

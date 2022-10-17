@@ -6,7 +6,7 @@ export class PathNode {
 
   readonly y: number;
 
-  private distance: number;
+  readonly distance: number;
 
   private parent: PathNode;
 
@@ -18,11 +18,11 @@ export class PathNode {
     parent: PathNode,
     { position, cost, distance }: PathNodeParams,
   ) {
-    this.parent = parent;
     this.x = position.x;
     this.y = position.y;
-    this.cost = cost;
     this.distance = distance;
+    this.cost = cost;
+    this.parent = parent;
   }
 
   public bestGuessDistance(): number {
@@ -46,11 +46,11 @@ export class PathNode {
   }
 
   public isNewList() {
-    return this.listOpened === undefined;
+    return (this.listOpened === undefined);
   }
 
   public isListOpened() {
-    return this.listOpened === true;
+    return (this.listOpened === true);
   }
 
   public openList() {

@@ -26,17 +26,17 @@ export class Builder {
   /**
    * Permitted build area.
    */
-  private buildArea: Phaser.GameObjects.Ellipse;
+  private buildArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
   /**
    * Building preview.
    */
-  private buildingPreview: Phaser.GameObjects.Image;
+  private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
    * Current building variant index.
    */
-  private _variantIndex: number = null;
+  private _variantIndex: Nullable<number> = null;
 
   public get variantIndex() { return this._variantIndex; }
 
@@ -55,7 +55,7 @@ export class Builder {
    * Toggle build state and update build area.
    */
   public update() {
-    if (this.isCanBuild()) {
+    if (this.isAllowBuild()) {
       if (this.isBuild) {
         this.updateBuildArea();
       } else {
@@ -215,7 +215,7 @@ export class Builder {
   /**
    * Checks if player is stopped and wave not going.
    */
-  private isCanBuild(): boolean {
+  private isAllowBuild(): boolean {
     const { player, wave } = this.scene;
 
     return (
@@ -336,7 +336,7 @@ export class Builder {
    */
   private destroyBuildArea() {
     this.buildArea.destroy();
-    delete this.buildArea;
+    this.buildArea = null;
   }
 
   /**
@@ -366,6 +366,6 @@ export class Builder {
    */
   private destroyBuildingPreview() {
     this.buildingPreview.destroy();
-    delete this.buildingPreview;
+    this.buildingPreview = null;
   }
 }

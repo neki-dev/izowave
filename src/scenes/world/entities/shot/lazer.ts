@@ -18,22 +18,22 @@ export class ShotLazer extends Phaser.GameObjects.Line {
   /**
    * Timer of shoot processing.
    */
-  private timer?: Phaser.Time.TimerEvent;
+  private timer: Nullable<Phaser.Time.TimerEvent> = null;
 
   /**
    * Damage of hit.
    */
-  private damage: number;
+  private damage: Nullable<number> = null;
 
   /**
    * Max shot distance.
    */
-  private maxDistance: number;
+  private maxDistance: Nullable<number> = null;
 
   /**
    * Target enemy.
    */
-  private target: Enemy;
+  private target: Nullable<Enemy> = null;
 
   /**
    * Shot constructor.
@@ -94,11 +94,15 @@ export class ShotLazer extends Phaser.GameObjects.Line {
   /**
    * Stop shooting.
    */
-  public stop() {
-    this.setVisible(false);
+  private stop() {
+    this.target = null;
+    this.damage = null;
+    this.maxDistance = null;
+
     this.timer.destroy();
-    delete this.timer;
-    delete this.target;
+    this.timer = null;
+
+    this.setVisible(false);
   }
 
   /**
@@ -121,7 +125,7 @@ export class ShotLazer extends Phaser.GameObjects.Line {
   private processing() {
     if (
       this.target.live.isDead()
-      || Phaser.Math.Distance.BetweenPoints(this, this.target) > this.maxDistance
+      || Phaser.Math.Distance.BetweenPoints(this.parent, this.target) > this.maxDistance
     ) {
       this.stop();
 

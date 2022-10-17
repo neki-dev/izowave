@@ -41,7 +41,7 @@ export class Chest extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Take resources from chest and destroy it.
+   * Take resources from chest and destroy him.
    */
   public open() {
     const { player, wave } = this.scene;
@@ -54,8 +54,8 @@ export class Chest extends Phaser.GameObjects.Image {
         amount - Math.floor(amount * 0.5),
         amount + Math.floor(amount * 0.5),
       );
-        // Update amount by wave number
 
+      // Update amount by wave number
       totalAmount = calcGrowth(
         totalAmount,
         DIFFICULTY.CHEST_RESOURCES_GROWTH,

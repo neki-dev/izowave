@@ -77,11 +77,6 @@ export class World extends Phaser.Scene {
   private set shots(v) { this._shots = v; }
 
   /**
-   * Enemies positions for spawn.
-   */
-  private enemySpawnPositions: Phaser.Types.Math.Vector2Like[] = [];
-
-  /**
    * Screen scene.
    */
   private _screen: Screen;
@@ -154,6 +149,11 @@ export class World extends Phaser.Scene {
   private set builder(v) { this._builder = v; }
 
   /**
+   * Enemies positions for spawn.
+   */
+  private enemySpawnPositions: Phaser.Types.Math.Vector2Like[] = [];
+
+  /**
    * Global game timer.
    */
   private timer: Phaser.Time.TimerEvent;
@@ -166,7 +166,7 @@ export class World extends Phaser.Scene {
   /**
    * Pause for finding enemy path to player.
    */
-  private pathFindingPause: number = 0;
+  private nextFindPathTimestamp: number = 0;
 
   /**
    * World constructor.
@@ -395,9 +395,6 @@ export class World extends Phaser.Scene {
 
     this.isStarted = false;
 
-    delete this.wave;
-    delete this.builder;
-
     if (!IS_DEV_MODE) {
       delete window.onbeforeunload;
     }
@@ -431,6 +428,7 @@ export class World extends Phaser.Scene {
     this.timer = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
     });
+
     this.effects = new Effects(this);
 
     this.makeLevel();
@@ -448,7 +446,7 @@ export class World extends Phaser.Scene {
   private updateNPCPath() {
     const now = this.getTimerNow();
 
-    if (this.pathFindingPause > now) {
+    if (this.nextFindPathTimestamp > now) {
       return;
     }
 
@@ -464,7 +462,7 @@ export class World extends Phaser.Scene {
 
     this.level.navigator.processing();
 
-    this.pathFindingPause = now + NPC_PATH_RATE;
+    this.nextFindPathTimestamp = now + NPC_PATH_RATE;
   }
 
   /**

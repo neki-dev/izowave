@@ -54,7 +54,7 @@ export class BuildingMine extends Building {
   public update() {
     super.update();
 
-    if (!this.isAllowActions()) {
+    if (!this.isAllowAction()) {
       return;
     }
 

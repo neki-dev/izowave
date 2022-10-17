@@ -15,14 +15,16 @@ export const ComponentParams = Component<Props>(function (container, {
   } = { current: null };
 
   const create = (item: BuildingDescriptionItem, offset: number) => {
-    if (item.icon !== undefined) {
+    const haveIcon = (item.icon !== undefined);
+
+    if (haveIcon) {
       const icon = this.add.image(0, offset, ScreenTexture.ICON, item.icon);
 
       icon.setOrigin(0.0, 0.0);
       container.add(icon);
     }
 
-    const text = this.add.text((item.icon !== undefined) ? 15 : 0, offset - 1, item.text, (item.type === 'hint') ? {
+    const text = this.add.text(haveIcon ? 15 : 0, offset - 1, item.text, (item.type === 'hint') ? {
       color: INTERFACE_TEXT_COLOR.BLUE_LIGHT,
       fontSize: '10px',
       fontFamily: INTERFACE_FONT.MONOSPACE,

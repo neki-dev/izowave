@@ -64,11 +64,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     // Configure physics
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
 
-    this.container = scene.add.container(this.x, this.y);
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.container.destroy();
-    });
-
+    this.addContainer();
     this.addHealthIndicator();
 
     // Add events callbacks
@@ -169,6 +165,17 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     return points;
+  }
+
+  /**
+   * Add attached container.
+   */
+  private addContainer() {
+    this.container = this.scene.add.container(this.x, this.y);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.container.destroy();
+    });
   }
 
   /**

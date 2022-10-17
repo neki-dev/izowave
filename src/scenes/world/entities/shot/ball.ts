@@ -23,35 +23,38 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   /**
    * Shoot effect.
    */
-  private effect?: Phaser.GameObjects.Particles.ParticleEmitter;
+  private effect: Nullable<Phaser.GameObjects.Particles.ParticleEmitter> = null;
 
   /**
    * Damage of hit.
    */
-  private damage: number;
+  private damage: Nullable<number> = null;
 
   /**
    * Freeze of hit.
    */
-  private freeze: number;
+  private freeze: Nullable<number> = null;
 
   /**
    * Max shot distance.
    */
-  private maxDistance: number;
+  private maxDistance: Nullable<number> = null;
 
   /**
    * Start shoot position.
    */
-  private startPosition: Phaser.Types.Math.Vector2Like;
+  private startPosition: Nullable<Phaser.Types.Math.Vector2Like> = null;
 
-  private glowColor?: number;
+  /**
+   * Color for parent glow effect.
+   */
+  private glowColor: Nullable<number> = null;
 
   /**
    * Shot constructor.
    */
   constructor(parent: ShotParent, {
-    texture, glowColor,
+    texture, glowColor = null,
   }: ShotData) {
     super(parent.scene, parent.x, parent.y, texture);
     parent.scene.add.existing(this);
@@ -80,11 +83,33 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
       ...Level.ToMatrixPosition(this),
       z: 0,
     });
+    const visible = tileGround ? tileGround.visible : false;
 
-    this.setDepth(Level.GetDepth(this.y, 1, this.displayHeight));
-    this.setVisible(tileGround?.visible || false);
+    this.setVisible(visible);
     if (this.effect) {
-      this.effect.setVisible(this.visible);
+      this.effect.setVisible(visible);
+    }
+
+    if (visible) {
+      const depth = Level.GetDepth(this.y, 1, this.displayHeight);
+
+      this.setDepth(depth);
+    }
+  }
+
+  /**
+   * Handle collision of bullet to enemy.
+   *
+   * @param target - Enemy
+   */
+  public hit(target: Enemy) {
+    this.stop();
+
+    if (this.freeze) {
+      target.freeze(this.freeze);
+    }
+    if (this.damage) {
+      target.live.damage(this.damage);
     }
   }
 
@@ -95,8 +120,14 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
    * @param data - Shot params
    */
   public shoot(target: Enemy, {
-    speed, damage = 0, freeze = 0, maxDistance,
+    maxDistance, speed, damage = null, freeze = null,
   }: ShotParams) {
+    if (!damage && !freeze) {
+      console.warn('Shot has no damage or freeze parameter');
+
+      return;
+    }
+
     if (this.glowColor) {
       this.effect = this.scene.effects.emit(WorldEffect.GLOW, this.parent, {
         follow: this,
@@ -124,32 +155,21 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   /**
    * Stop shooting.
    */
-  public stop() {
+  private stop() {
+    if (this.effect) {
+      this.scene.effects.stop(this.parent, this.effect);
+      this.effect = null;
+    }
+
     this.setActive(false);
     this.setVisible(false);
 
-    if (this.effect) {
-      this.scene.effects.stop(this.parent, this.effect);
-      delete this.effect;
-    }
+    this.startPosition = null;
+    this.damage = null;
+    this.freeze = null;
+    this.maxDistance = null;
 
     this.scene.physics.world.disable(this);
-  }
-
-  /**
-   * Handle collision of bullet to enemy.
-   *
-   * @param target - Enemy
-   */
-  public hit(target: Enemy) {
-    this.stop();
-
-    if (this.freeze) {
-      target.freeze(this.freeze);
-    }
-    if (this.damage) {
-      target.live.damage(this.damage);
-    }
   }
 }
 

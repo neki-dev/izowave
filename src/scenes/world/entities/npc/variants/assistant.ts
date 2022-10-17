@@ -16,9 +16,9 @@ export class Assistant extends NPC {
   readonly shot: ShotBall;
 
   /**
-   * Pause between attacks.
+   * Pause for next attack.
    */
-  private attackPause: number = 0;
+  private nextAttackTimestamp: number = 0;
 
   /**
    * Assistant constructor.
@@ -40,7 +40,6 @@ export class Assistant extends NPC {
       texture: ShotTexture.FIRE,
     });
 
-    // Configure physics
     this.body.setCircle(this.width / 2, 0, 1);
   }
 
@@ -87,7 +86,7 @@ export class Assistant extends NPC {
   private attack() {
     const now = this.scene.getTimerNow();
 
-    if (this.attackPause >= now) {
+    if (this.nextAttackTimestamp >= now) {
       return;
     }
 
@@ -107,7 +106,7 @@ export class Assistant extends NPC {
       this.scene.player.level,
     );
 
-    this.attackPause = now + pause;
+    this.nextAttackTimestamp = now + pause;
   }
 
   /**

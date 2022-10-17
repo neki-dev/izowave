@@ -63,7 +63,7 @@ export class Building extends Phaser.GameObjects.Image {
   /**
    * Action pause.
    */
-  private actionPause: number = 0;
+  private nextActionTimestamp: number = 0;
 
   /**
    * Action area.
@@ -73,12 +73,12 @@ export class Building extends Phaser.GameObjects.Image {
   /**
    * Building info UI component.
    */
-  private info: Phaser.GameObjects.Container;
+  private info: Nullable<Phaser.GameObjects.Container> = null;
 
   /**
    * Alert.
    */
-  private alert: Phaser.GameObjects.Image;
+  private alert: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
    * Building constructor.
@@ -147,13 +147,6 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Get action area shape.
-   */
-  public getActionsArea(): Phaser.Geom.Ellipse {
-    return this.actionsArea.geom;
-  }
-
-  /**
    * Check if position inside action area.
    *
    * @param position - Position at world
@@ -161,7 +154,7 @@ export class Building extends Phaser.GameObjects.Image {
   public actionsAreaContains(position: Phaser.Types.Math.Vector2Like): boolean {
     const offset = this.actionsArea.getTopLeft();
 
-    return this.getActionsArea().contains(position.x - offset.x, position.y - offset.y);
+    return this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
   }
 
   /**
@@ -172,18 +165,18 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    this.actionPause = this.scene.getTimerNow() + this.getActionsPause();
+    this.nextActionTimestamp = this.scene.getTimerNow() + this.getActionsPause();
   }
 
   /**
    * Check if actions is not pused.
    */
-  public isAllowActions(): boolean {
+  public isAllowAction(): boolean {
     if (!this.actions?.pause) {
       return true;
     }
 
-    return (this.actionPause < this.scene.getTimerNow());
+    return (this.nextActionTimestamp < this.scene.getTimerNow());
   }
 
   /**
@@ -203,10 +196,9 @@ export class Building extends Phaser.GameObjects.Image {
     ];
     const radius = this.getActionsRadius();
     const pause = this.getActionsPause();
-    const canUpgrade = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
 
     if (radius) {
-      const nextRadius = canUpgrade && calcGrowth(
+      const nextRadius = this.isAllowUpgrade() && calcGrowth(
         this.actions.radius,
         DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
         this.upgradeLevel + 1,
@@ -220,7 +212,7 @@ export class Building extends Phaser.GameObjects.Image {
     }
 
     if (pause) {
-      const nextPause = canUpgrade && calcGrowth(
+      const nextPause = this.isAllowUpgrade() && calcGrowth(
         this.actions.pause,
         DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         this.upgradeLevel + 1,
@@ -233,7 +225,7 @@ export class Building extends Phaser.GameObjects.Image {
       });
     }
 
-    if (canUpgrade) {
+    if (this.isAllowUpgrade()) {
       info.push({
         text: 'PRESS |U| TO UPGRADE',
         type: 'hint',
@@ -292,7 +284,7 @@ export class Building extends Phaser.GameObjects.Image {
     }
 
     this.alert.destroy();
-    delete this.alert;
+    this.alert = null;
   }
 
   /**
@@ -347,6 +339,13 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
+   * Check if building allow upgrade.
+   */
+  private isAllowUpgrade(): boolean {
+    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
+  }
+
+  /**
    * Dead event.
    */
   private onDead() {
@@ -359,30 +358,17 @@ export class Building extends Phaser.GameObjects.Image {
    * Focus event.
    */
   private onFocus() {
-    const {
-      player, wave, input, builder,
-    } = this.scene;
-
-    if (player.live.isDead() || builder.isBuild) {
+    if (
+      this.scene.player.live.isDead()
+      || this.scene.builder.isBuild
+    ) {
       return;
     }
 
     this.actionsArea.setVisible(true);
+    this.addInfo();
 
-    this.info = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
-      x: this.x,
-      y: this.y - TILE_META.halfHeight,
-    }, {
-      origin: [0.5, 1.0],
-      player,
-      data: () => ({
-        Name: this.getName(),
-        Description: this.getInfo(),
-        Cost: (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !wave.isGoing) ? this.getUpgradeLevelCost() : undefined,
-      }),
-    });
-
-    input.setDefaultCursor('pointer');
+    this.scene.input.setDefaultCursor('pointer');
   }
 
   /**
@@ -393,25 +379,53 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
+    this.actionsArea.setVisible(false);
     if (this.info) {
-      this.info.destroy();
-      delete this.info;
+      this.removeInfo();
     }
 
-    this.actionsArea.setVisible(false);
-
     this.scene.input.setDefaultCursor('default');
+  }
+
+  /**
+   * Add information component.
+   */
+  private addInfo() {
+    if (this.info) {
+      return;
+    }
+
+    this.info = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
+      x: this.x,
+      y: this.y - TILE_META.halfHeight,
+    }, {
+      origin: [0.5, 1.0],
+      player: this.scene.player,
+      data: () => ({
+        Name: this.getName(),
+        Description: this.getInfo(),
+        Cost: this.isAllowUpgrade() ? this.getUpgradeLevelCost() : undefined,
+      }),
+    });
+  }
+
+  /**
+   * Remove information component.
+   */
+  private removeInfo() {
+    if (!this.info) {
+      return;
+    }
+
+    this.info.destroy();
+    this.info = null;
   }
 
   /**
    * Upgrade building to next level.
    */
   private nextUpgrade() {
-    if (
-      !this.isSelected()
-      || this.upgradeLevel === BUILDING_MAX_UPGRADE_LEVEL
-      || this.scene.wave.isGoing
-    ) {
+    if (!this.isSelected() || !this.isAllowUpgrade()) {
       return;
     }
 

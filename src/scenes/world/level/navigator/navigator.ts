@@ -14,7 +14,7 @@ const ADJACENT_DIRECTIONS = [
 ];
 
 export class Navigator {
-  readonly matrix: number[][];
+  readonly matrix: number[][] = [];
 
   private pointsToCost: number[][] = [];
 

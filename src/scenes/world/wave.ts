@@ -21,11 +21,6 @@ export class Wave extends EventEmitter {
   private set isGoing(v) { this._isGoing = v; }
 
   /**
-   * Pause for next wave.
-   */
-  private timeleft: number = null;
-
-  /**
    * Current wave number.
    */
   private _number: number = 0;
@@ -53,9 +48,14 @@ export class Wave extends EventEmitter {
   private set maxSpawnedCount(v) { this._maxSpawnedCount = v; }
 
   /**
+   * Pause for next wave.
+   */
+  private nextWaveTimestamp: number = 0;
+
+  /**
    * Pause for next enemy spawn.
    */
-  private spawnPause: number = 0;
+  private nextSpawnTimestamp: number = 0;
 
   /**
    * Wave constructor.
@@ -77,7 +77,7 @@ export class Wave extends EventEmitter {
   public getTimeleft(): number {
     const now = this.scene.getTimerNow();
 
-    return Math.max(0, this.timeleft - now);
+    return Math.max(0, this.nextWaveTimestamp - now);
   }
 
   /**
@@ -88,13 +88,13 @@ export class Wave extends EventEmitter {
 
     if (this.isGoing) {
       if (this.spawnedCount < this.maxSpawnedCount) {
-        if (this.spawnPause < now) {
+        if (this.nextSpawnTimestamp < now) {
           this.spawnEnemy();
         }
       } else if (this.scene.enemies.getTotalUsed() === 0) {
         this.complete();
       }
-    } else if (this.timeleft < now) {
+    } else if (this.nextWaveTimestamp < now) {
       this.start();
     }
   }
@@ -116,7 +116,7 @@ export class Wave extends EventEmitter {
   public runTimeleft() {
     const pause = (DIFFICULTY.WAVE_PAUSE + (this.number - 1) * 1000) / this.scene.difficulty;
 
-    this.timeleft = this.scene.getTimerNow() + pause;
+    this.nextWaveTimestamp = this.scene.getTimerNow() + pause;
   }
 
   /**
@@ -129,11 +129,11 @@ export class Wave extends EventEmitter {
 
     const now = this.scene.getTimerNow();
 
-    if (this.timeleft - now <= 3000) {
+    if (this.nextWaveTimestamp - now <= 3000) {
       return;
     }
 
-    this.timeleft = now + 3000;
+    this.nextWaveTimestamp = now + 3000;
   }
 
   /**
@@ -144,7 +144,7 @@ export class Wave extends EventEmitter {
     this.number++;
     this.isGoing = true;
 
-    this.spawnPause = 0;
+    this.nextSpawnTimestamp = 0;
     this.spawnedCount = 0;
     this.maxSpawnedCount = calcGrowth(
       DIFFICULTY.WAVE_ENEMIES_COUNT,
@@ -183,7 +183,7 @@ export class Wave extends EventEmitter {
       this.number,
     );
 
-    this.spawnPause = now + Math.max(pause, 500);
+    this.nextSpawnTimestamp = now + Math.max(pause, 500);
     this.spawnedCount++;
   }
 

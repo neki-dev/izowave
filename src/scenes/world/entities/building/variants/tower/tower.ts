@@ -104,7 +104,7 @@ export class BuildingTower extends Building {
 
     if (
       this.ammoLeft === 0
-      || !this.isAllowActions()
+      || !this.isAllowAction()
     ) {
       return;
     }

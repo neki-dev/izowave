@@ -38,7 +38,9 @@ export class TileMatrix {
    *
    * @param position - Tile position
    */
-  public getTile(position: Phaser.Types.Math.Vector3Like): Phaser.GameObjects.Image {
+  public getTile(
+    position: Phaser.Types.Math.Vector3Like,
+  ): Nullable<Phaser.GameObjects.Image> {
     const { x, y, z } = position;
 
     return this.tiles[z]?.[y]?.[x] || null;
@@ -53,7 +55,7 @@ export class TileMatrix {
   public getTileWithType(
     position: Phaser.Types.Math.Vector3Like,
     type: TileType | TileType[],
-  ): Phaser.GameObjects.Image {
+  ): Nullable<Phaser.GameObjects.Image> {
     if (!this.tileIs(position, type)) {
       return null;
     }
