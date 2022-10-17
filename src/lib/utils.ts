@@ -103,3 +103,25 @@ export function aroundPosition(
     { x: x + shift, y },
   ];
 }
+
+/**
+ * Call function with frequency limit.
+ *
+ * @param fn - Function
+ * @param delay - Delay between calls
+ */
+export function throttle(fn: (...params: any[]) => void, delay: number) {
+  let called = false;
+
+  return function (this: any, ...args: any[]) {
+    if (!called) {
+      called = true;
+      fn.apply(this, args);
+
+      setTimeout(() => {
+        fn.apply(this, args);
+        called = false;
+      }, delay);
+    }
+  };
+}

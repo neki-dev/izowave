@@ -1,9 +1,12 @@
 import Phaser from 'phaser';
+import { throttle } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { ComponentControl, ComponentInstance, ComponentResizeCallback } from '~type/screen/component';
 
 export function adaptiveSize(callback: ComponentResizeCallback) {
-  const refresh = () => callback(window.innerWidth, window.innerHeight);
+  const refresh = throttle(() => {
+    callback(window.innerWidth, window.innerHeight);
+  }, 100);
 
   refresh();
   window.addEventListener('resize', refresh);
