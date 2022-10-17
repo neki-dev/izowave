@@ -19,7 +19,6 @@ import {
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { ResourceType, Resources } from '~type/world/resources';
-import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite {
   /**
@@ -118,15 +117,6 @@ export class Player extends Sprite {
 
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
-    this.scene.wave.on(WaveEvents.FINISH, (waveNumber: number) => {
-      const experience = calcGrowth(
-        DIFFICULTY.WAVE_EXPERIENCE,
-        DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
-        waveNumber,
-      );
-
-      this.giveExperience(experience);
-    });
   }
 
   /**
