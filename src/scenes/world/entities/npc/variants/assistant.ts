@@ -1,4 +1,4 @@
-import { ASSISTANT_PATH_BREAKPOINT } from '~const/assistant';
+import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/assistant';
 import { DIFFICULTY } from '~const/difficulty';
 import { NPC } from '~entity/npc';
 import { Enemy } from '~entity/npc/variants/enemy';
@@ -39,6 +39,9 @@ export class Assistant extends NPC {
     this.shot = new ShotBall(this, {
       texture: ShotTexture.FIRE,
     });
+
+    // Configure physics
+    this.body.setCircle(this.width / 2, 0.0, 1.0);
   }
 
   /**
@@ -155,7 +158,7 @@ registerAssets([{
   url: `assets/sprites/${AssistantTexture.ASSISTANT}.png`,
   // @ts-ignore
   frameConfig: {
-    frameWidth: 16,
-    frameHeight: 16,
+    frameWidth: ASSISTANT_TILE_SIZE[0],
+    frameHeight: ASSISTANT_TILE_SIZE[1],
   },
 }]);

@@ -487,7 +487,7 @@ registerAssets([{
   url: `assets/sprites/${PlayerTexture.PLAYER}.png`,
   // @ts-ignore
   frameConfig: {
-    frameWidth: PLAYER_TILE_SIZE,
-    frameHeight: PLAYER_TILE_SIZE,
+    frameWidth: PLAYER_TILE_SIZE[0],
+    frameHeight: PLAYER_TILE_SIZE[1],
   },
 }]);

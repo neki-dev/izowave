@@ -31,7 +31,6 @@ export class Enemy extends NPC {
     super(scene, {
       texture,
       positionAtMatrix,
-      scale,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathBreakpoint: ENEMY_PATH_BREAKPOINT,
       health: calcGrowth(
@@ -55,6 +54,12 @@ export class Enemy extends NPC {
     scene.enemies.add(this);
 
     this.experienceMultiply = experienceMultiply;
+
+    // Configure physics
+    const offset = scale * 2;
+
+    this.body.setCircle((this.width / 2) - offset, offset, offset);
+    this.setScale(scale);
 
     if (this.visible) {
       this.addSpawnEffect();

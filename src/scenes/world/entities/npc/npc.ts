@@ -43,7 +43,7 @@ export class NPC extends Sprite {
    */
   constructor(scene: World, {
     positionAtMatrix, texture, health, damage, speed, pathBreakpoint,
-    frameRate = 4, scale = 1.0,
+    frameRate = 4,
   }: NPCData) {
     super(scene, { texture, positionAtMatrix, health });
     scene.add.existing(this);
@@ -53,10 +53,6 @@ export class NPC extends Sprite {
     this.pathBreakpoint = pathBreakpoint;
 
     // Configure physics
-    const offset = scale * 2;
-
-    this.body.setCircle((this.width / 2) - offset, offset, offset);
-    this.setScale(scale);
     this.setPushable(false);
 
     this.setVisible(this.atVisibleTile());

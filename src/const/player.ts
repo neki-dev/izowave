@@ -1,7 +1,7 @@
 import { TILE_META } from '~const/level';
 import { MovementDirection } from '~type/world/entities/player';
 
-export const PLAYER_TILE_SIZE = 16;
+export const PLAYER_TILE_SIZE = [16, 16];
 
 export const PLAYER_RECORD_KEY = 'BEST_GAME_RESULT';
 

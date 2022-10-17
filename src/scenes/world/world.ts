@@ -10,7 +10,7 @@ import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
 import { Building } from '~entity/building';
 import { Chest } from '~entity/chest';
 import { NPC } from '~entity/npc';
-import { Assistant } from '~entity/npc/variants';
+import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
 import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';

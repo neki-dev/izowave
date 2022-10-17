@@ -40,7 +40,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   /**
-   *
+   * Health bar above sprite.
    */
   private healthIndicator: Phaser.GameObjects.Container;
 
@@ -50,7 +50,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: World, {
     texture, positionAtMatrix, health, frame = 0,
   }: SpriteData) {
-    const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
+    const positionAtWorld = Level.ToWorldPosition({
+      ...positionAtMatrix,
+      z: 0,
+    });
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture, frame);
     scene.add.existing(this);
@@ -173,7 +176,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
    */
   private addHealthIndicator() {
     const width = this.displayWidth * 1.5;
-
     const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
 
     body.setOrigin(0.0, 0.0);

@@ -9,6 +9,5 @@ export type NPCData = {
   damage?: number
   health: number
   pathBreakpoint: number
-  scale?: number
   frameRate?: number
 };

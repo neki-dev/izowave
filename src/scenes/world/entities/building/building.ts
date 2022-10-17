@@ -4,7 +4,7 @@ import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { TILE_META } from '~const/level';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
-import { Hexagon } from '~entity/hexagon';
+import { Hexagon } from '~entity/building/hexagon';
 import { Live } from '~entity/live';
 import { registerAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
