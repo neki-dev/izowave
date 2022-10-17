@@ -83,3 +83,23 @@ export function selectClosest<T extends Phaser.Types.Math.Vector2Like>(
 
   return meta.map(({ position }) => position);
 }
+
+/**
+ * Get array of positions around source position.
+ *
+ * @param position - Source position
+ * @param shift - Shift from center
+ */
+export function aroundPosition(
+  position: Phaser.Types.Math.Vector2Like,
+  shift: number = 1,
+): Phaser.Types.Math.Vector2Like[] {
+  const { x, y } = position;
+
+  return [
+    { x, y: y - shift },
+    { x, y: y + shift },
+    { x: x - shift, y },
+    { x: x + shift, y },
+  ];
+}

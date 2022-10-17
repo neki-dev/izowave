@@ -49,3 +49,7 @@ describe('utils.ts / selectClosest', () => {
     expect(`${closest.x},${closest.y}`).toEqual('0,0');
   });
 });
+
+describe('utils.ts / aroundPosition', () => {
+  // TODO
+});

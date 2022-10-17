@@ -9,7 +9,7 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAssets } from '~lib/assets';
 import { entries, keys } from '~lib/core';
-import { calcGrowth } from '~lib/utils';
+import { aroundPosition, calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';
 import { LiveEvents } from '~type/world/entities/live';
@@ -81,13 +81,9 @@ export class Player extends Sprite {
   private isBlocked: boolean = false;
 
   /**
-   *
+   * Player NPC assistant.
    */
-  private _assistant?: Assistant;
-
-  public get assistant() { return this._assistant; }
-
-  private set assistant(v) { this._assistant = v; }
+  private assistant?: Assistant;
 
   /**
    *
@@ -261,20 +257,15 @@ export class Player extends Sprite {
    * Spawn assistant.
    */
   private addAssistant() {
-    const { x, y } = this.positionAtMatrix;
-    const shift = 2;
-    const positionAtMatrix = [
-      { x, y: y - shift },
-      { x, y: y + shift },
-      { x: x - shift, y },
-      { x: x + shift, y },
-    ].find((spawn) => {
+    const positionAtMatrix = aroundPosition(this.positionAtMatrix, 2).find((spawn) => {
       const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
 
       return Boolean(tileGround);
     });
 
-    this.assistant = new Assistant(this.scene, { positionAtMatrix });
+    this.assistant = new Assistant(this.scene, {
+      positionAtMatrix: positionAtMatrix || this.positionAtMatrix,
+    });
 
     this.assistant.upgrade(this.level);
 

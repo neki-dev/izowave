@@ -15,7 +15,7 @@ import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
 import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
-import { selectClosest } from '~lib/utils';
+import { aroundPosition, selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
 import { Effects } from '~scene/world/effects';
@@ -587,14 +587,7 @@ export class World extends Phaser.Scene {
    * Create default buildings close to player.
    */
   private makeDefaultBuildings() {
-    const { x, y } = this.player.positionAtMatrix;
-    const shift = 2;
-    const spawns = [
-      { x, y: y - shift },
-      { x, y: y + shift },
-      { x: x - shift, y },
-      { x: x + shift, y },
-    ];
+    const spawns = aroundPosition(this.player.positionAtMatrix, 2);
 
     const buildingsVariants = [
       [BuildingVariant.TOWER_FIRE],

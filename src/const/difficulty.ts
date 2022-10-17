@@ -9,7 +9,7 @@ export const DIFFICULTY = {
   ASSISTANT_SPEED_GROWTH: 0.015, // Assistant speed growth by player level
   ASSISTANT_HEALTH: 50, // Default assistant health
   ASSISTANT_HEALTH_GROWTH: 0.1, // Assistant health growth by player level
-  ASSISTANT_ATTACK_DAMAGE: 15, // Default assistant damage
+  ASSISTANT_ATTACK_DAMAGE: 10, // Default assistant damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.25, // Assistant damage growth by player level
   ASSISTANT_ATTACK_SPEED: 500, // Assistant attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.3, // Attack speed growth by player level
