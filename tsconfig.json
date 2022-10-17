@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
+      "~entity/*": ["./src/scenes/world/entities/*"],
       "~scene/*": ["./src/scenes/*"],
       "~type/*": ["./src/types/*"],
       "~const/*": ["./src/const/*"],

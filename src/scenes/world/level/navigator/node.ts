@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { PathNodeParams } from '~type/world/level/navigator';
 
 export class PathNode {

@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { INPUT_KEY } from '~const/keyboard';
 import { ComponentAbout } from '~scene/menu/components/content/about';
 import { ComponentControls } from '~scene/menu/components/content/controls';

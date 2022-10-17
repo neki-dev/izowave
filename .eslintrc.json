@@ -14,7 +14,7 @@
       "pathGroups": [
         {
           "pattern": "~**/**",
-          "group": "parent"
+          "group": "external"
         }
       ]
     }]

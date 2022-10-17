@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 import { MenuItem } from '~type/menu';

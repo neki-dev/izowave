@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { DIFFICULTY } from '~const/difficulty';
 import { registerAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';

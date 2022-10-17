@@ -1,6 +1,7 @@
+import { TileType } from '~type/world/level';
+
 import tile from '../__mocks__/tile';
 import { TileMatrix } from '../tile-matrix';
-import { TileType } from '~type/world/level';
 
 describe('tile-matrix.ts', () => {
   let matrix: TileMatrix;

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-
-import { Resources } from '~type/world/resources';
+import { ShotTexture, ShotType } from '~type/world/entities/shot';
+import { Resources, ResourceType } from '~type/world/resources';
 
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
@@ -61,3 +61,24 @@ export interface BuildingInstance {
   Health: number
   Limit?: number
 }
+
+export type BuildingTowerShotParams = {
+  speed?: number
+  damage?: number
+  freeze?: number
+};
+
+export type BuildingTowerShotData = {
+  type: ShotType
+  texture?: ShotTexture
+  glowColor?: number
+  params: BuildingTowerShotParams
+};
+
+export type BuildingTowerData = BuildingData & {
+  shotData: BuildingTowerShotData
+};
+
+export type BuildingMineData = BuildingData & {
+  resourceType: ResourceType
+};

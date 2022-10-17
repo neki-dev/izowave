@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
-
+import { BUILDINGS } from '~const/buildings';
 import { DIFFICULTY } from '~const/difficulty';
 import { TILE_META } from '~const/level';
 import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
-import { BUILDINGS } from '~scene/world/entities/buildings';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
 import { BuildingVariant } from '~type/world/entities/building';

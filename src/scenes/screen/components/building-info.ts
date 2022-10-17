@@ -1,10 +1,10 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { WORLD_DEPTH_UI } from '~const/world';
+import { Player } from '~entity/player';
 import { Component } from '~lib/ui';
 import { toEven } from '~lib/utils';
 import { ComponentCost } from '~scene/screen/components/cost';
 import { ComponentParams } from '~scene/screen/components/params';
-import { Player } from '~scene/world/entities/player';
 import { BuildingInstance } from '~type/world/entities/building';
 
 type Props = {

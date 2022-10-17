@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { Screen } from '~scene/screen';
 import { ComponentControl, ComponentInstance, ComponentResizeCallback } from '~type/screen/component';
 

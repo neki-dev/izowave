@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { DIFFICULTY } from '~const/difficulty';
 import { INTERFACE_PADDING } from '~const/interface';
 import { registerAssets } from '~lib/assets';

@@ -1,25 +1,24 @@
 import Phaser from 'phaser';
-
+import { BUILDINGS } from '~const/buildings';
+import { ENEMIES } from '~const/enemies';
 import { ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
 import { INTERFACE_FONT } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import { NPC_PATH_RATE } from '~const/npc';
 import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
+import { Building } from '~entity/building';
+import { Chest } from '~entity/chest';
+import { NPC } from '~entity/npc';
+import { Assistant } from '~entity/npc/variants';
+import { Enemy } from '~entity/npc/variants/enemy';
+import { Player } from '~entity/player';
 import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
 import { selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
 import { Effects } from '~scene/world/effects';
-import { Building } from '~scene/world/entities/building';
-import { BUILDINGS } from '~scene/world/entities/buildings';
-import { Chest } from '~scene/world/entities/chest';
-import { ENEMIES } from '~scene/world/entities/enemies';
-import { Enemy } from '~scene/world/entities/enemy';
-import { NPC } from '~scene/world/entities/npc';
-import { Player } from '~scene/world/entities/player';
-import { Shot } from '~scene/world/entities/shot';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { SceneKey } from '~type/scene';
@@ -514,14 +513,18 @@ export class World extends Phaser.Scene {
    * Add colliders to entities.
    */
   private addEntityColliders() {
-    this.physics.add.collider(this.enemies, this.enemies);
-
-    this.physics.add.collider(this.shots, this.enemies, (shot: Shot, enemy: Enemy) => {
+    this.physics.add.collider(this.shots, this.enemies, (shot: any, enemy: Enemy) => {
       shot.hit(enemy);
     });
 
     this.physics.add.collider(this.enemies, this.player, (enemy: Enemy, player: Player) => {
       enemy.attack(player);
+    });
+
+    this.physics.add.collider(this.enemies, this.npc, (enemy: Enemy, npc: NPC) => {
+      if (npc instanceof Assistant) {
+        enemy.attack(npc);
+      }
     });
   }
 

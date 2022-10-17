@@ -1,5 +1,5 @@
 import {
-  EnemyVariant, EnemyTexture, EnemyTexturesMeta, EnemyVariantsMeta,
+  EnemyTexture, EnemyTexturesMeta, EnemyVariant, EnemyVariantsMeta,
 } from '~type/world/entities/enemy';
 
 export const ENEMY_SPAWN_POSITIONS = 10;

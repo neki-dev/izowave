@@ -1,12 +1,11 @@
 import Phaser from 'phaser';
-
+import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { Player } from '~entity/player';
 import { Component } from '~lib/ui';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
 import { Builder } from '~scene/world/builder';
-import { BUILDINGS } from '~scene/world/entities/buildings';
-import { Player } from '~scene/world/entities/player';
 import { Wave } from '~scene/world/wave';
 import { SceneKey } from '~type/scene';
 import { BuildingInstance, BuildingVariant } from '~type/world/entities/building';

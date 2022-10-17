@@ -1,4 +1,7 @@
 import Phaser from 'phaser';
+import { Building } from '~entity/building';
+import { Assistant } from '~entity/npc/assistant';
+import { Player } from '~entity/player';
 
 export enum EnemyTexture {
   BAT = 'enemy/bat',
@@ -43,3 +46,5 @@ export type EnemyData = {
 export type EnemyVariantData = {
   positionAtMatrix: Phaser.Types.Math.Vector2Like
 };
+
+export type EnemyAttackTarget = Player | Assistant | Building;

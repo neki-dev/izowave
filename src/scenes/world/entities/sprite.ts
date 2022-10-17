@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
-
 import { WORLD_COLLIDE_LOOK } from '~const/world';
+import { Live } from '~entity/live';
 import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
-import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { WorldEffect } from '~type/world/effects';
 import { LiveEvents } from '~type/world/entities/live';

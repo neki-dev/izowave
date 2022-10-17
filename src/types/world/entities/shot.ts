@@ -1,6 +1,8 @@
+import { BuildingTower } from '~entity/building/variants/tower';
+import { Assistant } from '~entity/npc/variants/assistant';
+
 export enum ShotType {
-  FIRE = 'FIRE',
-  FROZEN = 'FROZEN',
+  BALL = 'BALL',
   LAZER = 'LAZER',
 }
 
@@ -11,6 +13,14 @@ export enum ShotTexture {
 
 export type ShotParams = {
   speed?: number
+  maxDistance: number
   damage?: number
   freeze?: number
 };
+
+export type ShotData = {
+  texture: ShotTexture
+  glowColor?: number
+};
+
+export type ShotParent = BuildingTower | Assistant;

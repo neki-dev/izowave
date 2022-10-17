@@ -1,17 +1,16 @@
 import Phaser from 'phaser';
-
 import { DIFFICULTY } from '~const/difficulty';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import {
   PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS,
 } from '~const/player';
+import { Chest } from '~entity/chest';
+import { Assistant } from '~entity/npc/variants/assistant';
+import { Sprite } from '~entity/sprite';
 import { registerAssets } from '~lib/assets';
 import { entries, keys } from '~lib/core';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
-import { Assistant } from '~scene/world/entities/assistant';
-import { Chest } from '~scene/world/entities/chest';
-import { Sprite } from '~scene/world/entities/sprite';
 import { NoticeType } from '~type/screen/notice';
 import { LiveEvents } from '~type/world/entities/live';
 import {

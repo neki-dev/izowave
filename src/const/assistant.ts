@@ -1,1 +1,1 @@
-export const ASSISTANT_PATH_BREAKPOINT = 64;
+export const ASSISTANT_PATH_BREAKPOINT = 40;

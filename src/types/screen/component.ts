@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { Screen } from '~scene/screen';
 
 export type ComponentResizeCallback = (width: number, height: number) => void;

@@ -1,5 +1,4 @@
 import { Game } from 'phaser';
-
 import { COPYRIGHT } from '~const/core';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';

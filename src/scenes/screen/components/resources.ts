@@ -1,7 +1,7 @@
 import { INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
+import { Player } from '~entity/player';
 import { Component } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
-import { Player } from '~scene/world/entities/player';
 import { PlayerEvents } from '~type/world/entities/player';
 import { ResourceType } from '~type/world/resources';
 

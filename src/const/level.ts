@@ -1,5 +1,4 @@
 import { Biome, LayerParameters } from 'gen-biome';
-
 import { getPerformance } from '~lib/optimize';
 import { PerformanceLevel } from '~type/optimize';
 import {

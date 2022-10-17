@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-
 import { TileType } from '~type/world/level';
 
 export class TileMatrix {
