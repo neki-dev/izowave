@@ -261,9 +261,20 @@ export class Player extends Sprite {
    * Spawn assistant.
    */
   private addAssistant() {
-    this.assistant = new Assistant(this.scene, {
-      positionAtMatrix: this.positionAtMatrix,
+    const { x, y } = this.positionAtMatrix;
+    const shift = 2;
+    const positionAtMatrix = [
+      { x, y: y - shift },
+      { x, y: y + shift },
+      { x: x - shift, y },
+      { x: x + shift, y },
+    ].find((spawn) => {
+      const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
+
+      return Boolean(tileGround);
     });
+
+    this.assistant = new Assistant(this.scene, { positionAtMatrix });
 
     this.assistant.upgrade(this.level);
 
@@ -405,9 +416,10 @@ export class Player extends Sprite {
       if (this.movement) {
         const animation = PLAYER_MOVE_ANIMATIONS[dirKey];
 
-        this.play(animation);
+        this.anims.play(animation);
       } else {
-        this.stop();
+        this.anims.setProgress(0);
+        this.anims.stop();
       }
     }
   }

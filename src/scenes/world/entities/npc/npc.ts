@@ -65,7 +65,7 @@ export class NPC extends Sprite {
       repeat: -1,
       delay: Math.random() * 500,
     });
-    this.play('idle');
+    this.anims.play('idle');
 
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
