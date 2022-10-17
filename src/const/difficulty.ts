@@ -1,5 +1,6 @@
 export const DIFFICULTY = {
-  PLAYER_SPEED: 100, // Player speed
+  PLAYER_SPEED: 100, // Default player speed
+  PLAYER_SPEED_GROWTH: 0.015, // Player speed growth by level
   PLAYER_HEALTH: 100, // Default player health
   PLAYER_HEALTH_GROWTH: 0.1, // Player health growth by level
   PLAYER_DAMAGE: 15, // Default player damage
@@ -8,6 +9,13 @@ export const DIFFICULTY = {
   PLAYER_ATTACK_DISTANCE_GROWTH: 0.03, // Attack distance growth
   PLAYER_ATTACK_PAUSE: 700, // Player attack pause
   PLAYER_START_RESOURCES: { bronze: 100, silver: 100, gold: 0 }, // Player start resources
+
+  ASSISTANT_SPEED: 100, // Default assistant speed
+  ASSISTANT_SPEED_GROWTH: 0.015, // Assistant speed growth by player level
+  ASSISTANT_HEALTH: 70, // Default assistant health
+  ASSISTANT_HEALTH_GROWTH: 0.1, // Assistant health growth by player level
+  ASSISTANT_DAMAGE: 15, // Default assistant damage
+  ASSISTANT_DAMAGE_GROWTH: 0.25, // Assistant damage growth by player level
 
   WAVE_PAUSE: 30000, // Pause in milliseconds between waves
   WAVE_ENEMIES_COUNT: 8, // Enemies count on first wave

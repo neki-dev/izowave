@@ -5,6 +5,8 @@ import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
+import { WorldEffect } from '~type/world/effects';
+import { LiveEvents } from '~type/world/entities/live';
 import { SpriteData } from '~type/world/entities/sprite';
 import { BiomeType, TileType } from '~type/world/level';
 
@@ -39,8 +41,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   /**
-    *
-    */
+   *
+   */
   private healthIndicator: Phaser.GameObjects.Container;
 
   /**
@@ -66,10 +68,13 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     });
 
     this.addHealthIndicator();
+
+    // Add events callbacks
+    this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
   }
 
   /**
-   * Update event.
+   * Event update.
    */
   public update() {
     super.update();
@@ -193,5 +198,22 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     const bar = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
 
     bar.setSize((this.healthIndicator.width - 2) * value, this.healthIndicator.height - 2);
+  }
+
+  /**
+   * Damage event.
+   */
+  private onDamage() {
+    if (!this.visible) {
+      return;
+    }
+
+    this.scene.effects.emit(WorldEffect.BLOOD, this, {
+      follow: this,
+      lifespan: { min: 100, max: 250 },
+      scale: { start: 1.0, end: 0.5 },
+      speed: 100,
+      maxParticles: 6,
+    }, 250);
   }
 }

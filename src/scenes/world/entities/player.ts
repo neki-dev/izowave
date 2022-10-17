@@ -10,6 +10,7 @@ import { registerAssets } from '~lib/assets';
 import { entries, keys } from '~lib/core';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
+import { Assistant } from '~scene/world/entities/assistant';
 import { Chest } from '~scene/world/entities/chest';
 import { Enemy } from '~scene/world/entities/enemy';
 import { Sprite } from '~scene/world/entities/sprite';
@@ -57,6 +58,11 @@ export class Player extends Sprite {
   private kills: number = 0;
 
   /**
+   * Maximum speed.
+   */
+  private speed: number = DIFFICULTY.PLAYER_SPEED;
+
+  /**
    * Keyboard keys.
    */
   private cursors: {
@@ -86,6 +92,15 @@ export class Player extends Sprite {
   /**
    *
    */
+  private _assistant?: Assistant;
+
+  public get assistant() { return this._assistant; }
+
+  private set assistant(v) { this._assistant = v; }
+
+  /**
+   *
+   */
   private tile?: Phaser.GameObjects.Image;
 
   /**
@@ -107,10 +122,10 @@ export class Player extends Sprite {
 
     this.makeAnimations();
     this.registerKeyboard();
+    this.addAssistant();
 
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
-    this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
     this.scene.wave.on(WaveEvents.FINISH, (waveNumber: number) => {
       const experience = calcGrowth(
         DIFFICULTY.WAVE_EXPERIENCE,
@@ -123,7 +138,7 @@ export class Player extends Sprite {
   }
 
   /**
-   * Update event.
+   * Event update.
    * Update direction, velocity and health indicator.
    */
   public update() {
@@ -260,12 +275,32 @@ export class Player extends Sprite {
   }
 
   /**
+   * Spawn assistant.
+   */
+  private addAssistant() {
+    this.assistant = new Assistant(this.scene, {
+      positionAtMatrix: this.positionAtMatrix,
+    });
+
+    this.assistant.upgrade(this.level);
+
+    this.assistant.on(Phaser.Scenes.Events.DESTROY, () => {
+      delete this.assistant;
+    });
+  }
+
+  /**
    * Upgrade player to next level.
    *
    * @param count - Levels count
    */
   private nextLevel(count: number) {
     this.level += count;
+
+    // Upgrade assistant
+    if (this.assistant) {
+      this.assistant.upgrade(this.level);
+    }
 
     // Update maximum player health by level
     const maxHealth = calcGrowth(
@@ -304,19 +339,6 @@ export class Player extends Sprite {
         this.scene.finishGame(stat, record);
       },
     });
-  }
-
-  /**
-   * Player damage event.
-   */
-  private onDamage() {
-    this.scene.effects.emit(WorldEffect.BLOOD, this, {
-      follow: this,
-      lifespan: { min: 100, max: 200 },
-      scale: { start: 1.0, end: 0.5 },
-      speed: 100,
-      maxParticles: 6,
-    }, 200);
   }
 
   /**
@@ -389,15 +411,6 @@ export class Player extends Sprite {
   }
 
   /**
-   * Get player speed relative to friction force of current biome.
-   */
-  private getSpeed(): number {
-    const speed = DIFFICULTY.PLAYER_SPEED + (this.level - 1) * 1.5;
-
-    return speed / (this.tile ? this.tile.biome.friction : 1);
-  }
-
-  /**
    * Update player velocity.
    */
   private updateVelocity() {
@@ -415,7 +428,9 @@ export class Player extends Sprite {
       return;
     }
 
-    const { x, y } = this.scene.physics.velocityFromAngle(this.direction, this.getSpeed());
+    const friction = this.tile ? this.tile.biome.friction : 1;
+    const speed = this.speed / friction;
+    const { x, y } = this.scene.physics.velocityFromAngle(this.direction, speed);
 
     this.setVelocity(x, y);
   }

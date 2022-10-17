@@ -1,0 +1,1 @@
+export const ASSISTANT_PATH_BREAKPOINT = 64;

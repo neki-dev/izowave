@@ -1,12 +1,10 @@
 import Phaser from 'phaser';
 
-import {
-  ENEMY_PATH_RATE, ENEMY_SPAWN_DISTANCE_FROM_BUILDING,
-  ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
-} from '~const/enemy';
+import { ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
 import { INTERFACE_FONT } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
+import { NPC_PATH_RATE } from '~const/npc';
 import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
 import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
@@ -19,6 +17,7 @@ import { BUILDINGS } from '~scene/world/entities/buildings';
 import { Chest } from '~scene/world/entities/chest';
 import { ENEMIES } from '~scene/world/entities/enemies';
 import { Enemy } from '~scene/world/entities/enemy';
+import { NPC } from '~scene/world/entities/npc';
 import { Player } from '~scene/world/entities/player';
 import { Shot } from '~scene/world/entities/shot';
 import { Level } from '~scene/world/level';
@@ -32,6 +31,15 @@ import { SpawnTarget } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 export class World extends Phaser.Scene {
+  /**
+   * Group of all NPC.
+   */
+  private _npc: Phaser.GameObjects.Group;
+
+  public get npc() { return this._npc; }
+
+  private set npc(v) { this._npc = v; }
+
   /**
    * Group of all enemies.
    */
@@ -246,7 +254,7 @@ export class World extends Phaser.Scene {
       console.error('Error on `Wave` update:', e);
     }
 
-    this.updateEnemiesPath();
+    this.updateNPCPath();
   }
 
   /**
@@ -431,24 +439,25 @@ export class World extends Phaser.Scene {
 
     this.makeChestsGroup();
     this.makeBuildingsGroups();
+    this.makeNPCGroup();
     this.makeEnemiesGroup();
   }
 
   /**
-   * Find enemies path to player.
+   * Find NPC path to target.
    */
-  private updateEnemiesPath() {
+  private updateNPCPath() {
     const now = this.getTimerNow();
 
     if (this.pathFindingPause > now) {
       return;
     }
 
-    this.enemies.children.iterate((enemy: Enemy) => {
+    this.npc.children.iterate((npc: NPC) => {
       try {
-        enemy.updatePath();
+        npc.updatePath();
       } catch (e) {
-        console.error('Error on update enemy path:', e);
+        console.error('Error on update NPC path:', e);
       }
 
       return true;
@@ -456,7 +465,7 @@ export class World extends Phaser.Scene {
 
     this.level.navigator.processing();
 
-    this.pathFindingPause = now + ENEMY_PATH_RATE;
+    this.pathFindingPause = now + NPC_PATH_RATE;
   }
 
   /**
@@ -478,7 +487,16 @@ export class World extends Phaser.Scene {
     });
 
     this.shots = this.add.group({
-      // classType: Shot,
+      runChildUpdate: true,
+    });
+  }
+
+  /**
+   * Create NPC group.
+   */
+  private makeNPCGroup() {
+    this.npc = this.add.group({
+      classType: NPC,
       runChildUpdate: true,
     });
   }
@@ -489,7 +507,6 @@ export class World extends Phaser.Scene {
   private makeEnemiesGroup() {
     this.enemies = this.add.group({
       classType: Enemy,
-      runChildUpdate: true,
     });
   }
 
