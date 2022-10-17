@@ -41,7 +41,7 @@ export class Assistant extends NPC {
     });
 
     // Configure physics
-    this.body.setCircle(this.width / 2, 0.0, 1.0);
+    this.body.setCircle(this.width / 2, 0, 1);
   }
 
   /**

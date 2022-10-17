@@ -565,7 +565,7 @@ export class World extends Phaser.Scene {
       create();
     }
 
-    this.wave.on(WaveEvents.FINISH, () => {
+    this.wave.on(WaveEvents.COMPLETE, () => {
       // Get missing count of chests
       const newCount = maxCount - this.chests.getTotalUsed();
 

@@ -130,7 +130,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
     unfocus();
   });
 
-  wave.on(WaveEvents.FINISH, () => {
+  wave.on(WaveEvents.COMPLETE, () => {
     container.setAlpha(1.0);
   });
 

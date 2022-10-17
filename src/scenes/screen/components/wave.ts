@@ -86,7 +86,7 @@ export const ComponentWave = Component<Props>(function (container, {
   wave.on(WaveEvents.START, () => {
     this.message(NoticeType.INFO, `WAVE ${wave.number} STARTED`);
   });
-  wave.on(WaveEvents.FINISH, () => {
+  wave.on(WaveEvents.COMPLETE, () => {
     this.message(NoticeType.INFO, `WAVE ${wave.number} COMPLETED`);
   });
 

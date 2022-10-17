@@ -1,5 +1,5 @@
 export enum WaveEvents {
   START = 'start',
-  FINISH = 'finish',
+  COMPLETE = 'complete',
   UPDATE = 'update',
 }

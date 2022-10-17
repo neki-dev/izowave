@@ -164,16 +164,8 @@ export class Wave extends EventEmitter {
     this.isGoing = false;
     this.runTimeleft();
 
-    const experience = calcGrowth(
-      DIFFICULTY.WAVE_EXPERIENCE,
-      DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
-      this.number,
-    );
-
-    this.scene.player.giveExperience(experience);
-
     this.emit(WaveEvents.UPDATE);
-    this.emit(WaveEvents.FINISH, this.number);
+    this.emit(WaveEvents.COMPLETE, this.number);
   }
 
   /**

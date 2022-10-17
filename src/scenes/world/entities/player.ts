@@ -18,6 +18,7 @@ import {
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { ResourceType, Resources } from '~type/world/resources';
+import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite {
   /**
@@ -116,6 +117,7 @@ export class Player extends Sprite {
 
     // Add events callbacks
     this.live.on(LiveEvents.DEAD, () => this.onDead());
+    this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => this.onWaveComplete(number));
   }
 
   /**
@@ -297,7 +299,7 @@ export class Player extends Sprite {
   }
 
   /**
-   * Player dead event.
+   * Eveny player dead.
    */
   private onDead() {
     this.freeze();
@@ -320,6 +322,27 @@ export class Player extends Sprite {
         this.scene.finishGame(stat, record);
       },
     });
+  }
+
+  /**
+   * Event wave complete.
+   *
+   * @param number - Wave number
+   */
+  private onWaveComplete(number: number) {
+    // Respawn assistant
+    if (!this.assistant) {
+      this.addAssistant();
+    }
+
+    // Give experience
+    const experience = calcGrowth(
+      DIFFICULTY.WAVE_EXPERIENCE,
+      DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
+      number,
+    );
+
+    this.giveExperience(experience);
   }
 
   /**
