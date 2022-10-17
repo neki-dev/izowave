@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/difficulty';
-import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import {
   PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS,
@@ -12,10 +11,8 @@ import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { Assistant } from '~scene/world/entities/assistant';
 import { Chest } from '~scene/world/entities/chest';
-import { Enemy } from '~scene/world/entities/enemy';
 import { Sprite } from '~scene/world/entities/sprite';
 import { NoticeType } from '~type/screen/notice';
-import { WorldEffect } from '~type/world/effects';
 import { LiveEvents } from '~type/world/entities/live';
 import {
   PlayerEvents, PlayerTexture, MovementDirection, PlayerStat,
@@ -83,11 +80,6 @@ export class Player extends Sprite {
    * State of move blocking.
    */
   private isBlocked: boolean = false;
-
-  /**
-   * Pause for attacks.
-   */
-  private attackPause: number = 0;
 
   /**
    *
@@ -342,7 +334,7 @@ export class Player extends Sprite {
   }
 
   /**
-   * Bind keyboard keys for movement and attack.
+   * Bind keyboard keys for movement.
    */
   private registerKeyboard() {
     const { keyboard } = this.scene.input;
@@ -352,62 +344,6 @@ export class Player extends Sprite {
     this.cursors = <{
       [key: string]: Phaser.Input.Keyboard.Key
     }> keyboard.addKeys(movementKeys);
-
-    for (const KEY of INPUT_KEY.PLAYER_ATTACK) {
-      keyboard.on(KEY, this.attack, this);
-    }
-  }
-
-  /**
-   * Give damage to nearby targets
-   * and add effect.
-   */
-  private attack() {
-    if (this.live.isDead()) {
-      return;
-    }
-
-    const now = this.scene.getTimerNow();
-
-    if (this.attackPause > now) {
-      return;
-    }
-
-    const damage = calcGrowth(
-      DIFFICULTY.PLAYER_DAMAGE,
-      DIFFICULTY.PLAYER_DAMAGE_GROWTH,
-      this.level,
-    );
-    const distance = calcGrowth(
-      DIFFICULTY.PLAYER_ATTACK_DISTANCE,
-      DIFFICULTY.PLAYER_ATTACK_DISTANCE_GROWTH,
-      this.level,
-    );
-    const offset = this.scene.physics.velocityFromAngle(this.direction, distance);
-    const area = new Phaser.Geom.Circle(this.x + offset.x, this.y + offset.y, distance);
-
-    this.scene.enemies.children.iterate((enemy: Enemy) => {
-      if (area.contains(enemy.x, enemy.y)) {
-        enemy.live.damage(damage);
-      }
-
-      return true;
-    });
-
-    this.scene.effects.emit(WorldEffect.GLOW, this, {
-      follow: this,
-      followOffset: offset,
-      scale: { start: 0.3, end: 0.1, ease: 'Power3' },
-      angle: this.direction + 180,
-      lifespan: { min: 100, max: 300 },
-      speed: { min: 150, max: 300 },
-      quantity: 2,
-      maxParticles: 16,
-      blendMode: 'ADD',
-      emitZone: { source: new Phaser.Geom.Circle(0, 0, distance / 3), type: 'random' },
-    }, 300);
-
-    this.attackPause = now + DIFFICULTY.PLAYER_ATTACK_PAUSE;
   }
 
   /**

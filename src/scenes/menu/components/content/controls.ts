@@ -6,7 +6,6 @@ export const ComponentControls = Component(function (container) {
 
   for (const item of [
     { name: 'W A S D', description: 'Move player' },
-    { name: 'SPACE', description: 'Attack' },
     {},
     { name: 'CLICK', description: 'New build' },
     { name: 'U', description: 'Upgrade building' },

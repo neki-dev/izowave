@@ -3,11 +3,6 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.015, // Player speed growth by level
   PLAYER_HEALTH: 100, // Default player health
   PLAYER_HEALTH_GROWTH: 0.1, // Player health growth by level
-  PLAYER_DAMAGE: 15, // Default player damage
-  PLAYER_DAMAGE_GROWTH: 0.25, // Player damage growth by level
-  PLAYER_ATTACK_DISTANCE: 30, // Player maximum attack distance
-  PLAYER_ATTACK_DISTANCE_GROWTH: 0.03, // Attack distance growth
-  PLAYER_ATTACK_PAUSE: 700, // Player attack pause
   PLAYER_START_RESOURCES: { bronze: 100, silver: 100, gold: 0 }, // Player start resources
 
   ASSISTANT_SPEED: 100, // Default assistant speed

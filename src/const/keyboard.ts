@@ -7,6 +7,4 @@ export const INPUT_KEY = {
   BUILDING_RELOAD: 'keyup-R',
 
   WAVE_SKIP_TIMELEFT: 'keyup-N',
-
-  PLAYER_ATTACK: ['keydown-SPACE', 'keydown-CTRL'],
 };
