@@ -11,11 +11,12 @@ export const DIFFICULTY = {
   ASSISTANT_HEALTH_GROWTH: 0.1, // Assistant health growth by player level
   ASSISTANT_ATTACK_DAMAGE: 15, // Default assistant damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.25, // Assistant damage growth by player level
-  ASSISTANT_ATTACK_SPEED: 500, //
-  ASSISTANT_ATTACK_SPEED_GROWTH: 0.3, //
+  ASSISTANT_ATTACK_SPEED: 500, // Assistant attack speed
+  ASSISTANT_ATTACK_SPEED_GROWTH: 0.3, // Attack speed growth by player level
   ASSISTANT_ATTACK_DISTANCE: 50, // Assistant maximum attack distance
-  ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.03, // Attack distance growth
-  ASSISTANT_ATTACK_PAUSE: 700, // Assistant attack pause
+  ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.03, // Attack distance growth by player level
+  ASSISTANT_ATTACK_PAUSE: 1000, // Assistant attack pause
+  ASSISTANT_ATTACK_PAUSE_GROWTH: -0.05, // Attack pause growth by player level
 
   WAVE_PAUSE: 30000, // Pause in milliseconds between waves
   WAVE_ENEMIES_COUNT: 8, // Enemies count on first wave

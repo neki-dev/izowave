@@ -101,14 +101,20 @@ export class Assistant extends NPC {
 
     this.shot.shoot(target, params);
 
-    this.attackPause = now + DIFFICULTY.ASSISTANT_ATTACK_PAUSE;
+    const pause = calcGrowth(
+      DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
+      DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
+      this.scene.player.level,
+    );
+
+    this.attackPause = now + pause;
   }
 
   /**
    * Find nearby enemy for shoot.
    */
   private getTarget(): Enemy {
-    const attackDistance = calcGrowth(
+    const distance = calcGrowth(
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
       this.scene.player.level,
@@ -116,7 +122,7 @@ export class Assistant extends NPC {
 
     const enemies = (<Enemy[]> this.scene.enemies.getChildren()).filter((enemy) => (
       !enemy.live.isDead()
-      && Phaser.Math.Distance.BetweenPoints(enemy, this) <= attackDistance
+      && Phaser.Math.Distance.BetweenPoints(enemy, this) <= distance
     ));
 
     if (enemies.length === 0) {
