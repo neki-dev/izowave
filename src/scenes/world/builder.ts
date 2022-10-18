@@ -55,7 +55,7 @@ export class Builder {
    * Toggle build state and update build area.
    */
   public update() {
-    if (this.isAllowBuild()) {
+    if (this.isCanBuild()) {
       if (this.isBuild) {
         this.updateBuildArea();
       } else {
@@ -215,7 +215,7 @@ export class Builder {
   /**
    * Checks if player is stopped and wave not going.
    */
-  private isAllowBuild(): boolean {
+  private isCanBuild(): boolean {
     const { player, wave } = this.scene;
 
     return (

@@ -254,7 +254,7 @@ export class Player extends Sprite {
    * Spawn assistant.
    */
   private addAssistant() {
-    const positionAtMatrix = aroundPosition(this.positionAtMatrix, 2).find((spawn) => {
+    const positionAtMatrix = aroundPosition(this.positionAtMatrix).find((spawn) => {
       const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
 
       return Boolean(tileGround);

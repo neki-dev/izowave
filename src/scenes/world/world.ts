@@ -585,7 +585,7 @@ export class World extends Phaser.Scene {
    * Create default buildings close to player.
    */
   private makeDefaultBuildings() {
-    const spawns = aroundPosition(this.player.positionAtMatrix, 2);
+    const spawns = aroundPosition(this.player.positionAtMatrix);
 
     const buildingsVariants = [
       [BuildingVariant.TOWER_FIRE],

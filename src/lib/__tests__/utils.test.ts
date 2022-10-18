@@ -1,5 +1,6 @@
 import positions from '../__mocks__/positions';
 import {
+  aroundPosition,
   calcGrowth, equalPositions, formatTime, selectClosest,
 } from '../utils';
 
@@ -51,5 +52,10 @@ describe('utils.ts / selectClosest', () => {
 });
 
 describe('utils.ts / aroundPosition', () => {
-  // TODO
+  it('should returns correct around positions', () => {
+    const pos = aroundPosition(positions[0]);
+
+    expect(pos.length).toEqual(8);
+    // TODO
+  });
 });

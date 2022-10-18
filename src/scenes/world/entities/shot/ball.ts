@@ -103,14 +103,14 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
    * @param target - Enemy
    */
   public hit(target: Enemy) {
-    this.stop();
-
     if (this.freeze) {
       target.freeze(this.freeze);
     }
     if (this.damage) {
       target.live.damage(this.damage);
     }
+
+    this.stop();
   }
 
   /**
