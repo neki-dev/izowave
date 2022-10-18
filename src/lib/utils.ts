@@ -128,3 +128,17 @@ export function throttle(fn: (...params: any[]) => void, delay: number) {
     }
   };
 }
+
+/**
+ * Check device screen size.
+ */
+export function isValidScreenSize() {
+  return document.body.clientWidth >= 800;
+}
+
+/**
+ * Check device OS.
+ */
+export function isMobileDevice() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}

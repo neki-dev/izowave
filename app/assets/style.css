@@ -21,14 +21,14 @@ body {
   flex-direction: column;
 }
 
-#loading-screen .animation {
+#loading-animation {
   width: 64px;
   height: 64px;
   background: url('./loading.gif') center center no-repeat;
+  margin-bottom: 30px;
 }
 
-#loading-screen #loading-status {
-  margin-top: 30px;
+#loading-status {
   font-family: 'Verdana';
   font-size: 10pt;
   letter-spacing: 2px;

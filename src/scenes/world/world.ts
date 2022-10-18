@@ -15,6 +15,7 @@ import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
 import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
+import { removeLoader, setLoaderStatus } from '~lib/loader';
 import { aroundPosition, selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
@@ -181,11 +182,7 @@ export class World extends Phaser.Scene {
       window.WORLD = this;
     }
 
-    const loadingStatus = document.getElementById('loading-status');
-
-    if (loadingStatus) {
-      loadingStatus.innerText = 'ASSETS LOADING';
-    }
+    setLoaderStatus('ASSETS LOADING');
   }
 
   /**
@@ -206,11 +203,7 @@ export class World extends Phaser.Scene {
       this.prepareGame();
       this.scene.launch(SceneKey.MENU);
 
-      const loadingScreen = document.getElementById('loading-screen');
-
-      if (loadingScreen) {
-        loadingScreen.remove();
-      }
+      removeLoader();
     });
   }
 
