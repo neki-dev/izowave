@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { TILE_META } from '~const/level';
 import { Player } from '~entity/player';
 import { Component } from '~lib/ui';
+import { isMobileDevice } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
 import { Builder } from '~scene/world/builder';
@@ -18,8 +20,6 @@ type Props = {
 };
 
 const BUILDING_VARIANTS = Object.values(BuildingVariant);
-const ITEM_SIZE = 50;
-const ITEMS_MARGIN = 5;
 
 export const ComponentBuilder = Component<Props>(function (container, {
   builder, wave, player,
@@ -28,51 +28,154 @@ export const ComponentBuilder = Component<Props>(function (container, {
     current: number
   } = { current: null };
 
-  container.setSize(ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * BUILDING_VARIANTS.length);
+  /**
+   * List
+   */
 
-  const getData = (): BuildingInstance => {
-    if (hover.current === null) {
-      return undefined;
-    }
+  const list = this.add.container();
 
-    const variant = BUILDING_VARIANTS[hover.current];
-    const data = { ...BUILDINGS[variant] };
+  container.add(list);
 
-    if (data.Limit) {
-      const world = <World> this.scene.get(SceneKey.WORLD);
-      const count = world.selectBuildings(variant).length;
-      const limit = builder.getBuildCurrentLimit(data.Limit);
+  /**
+   * Info
+   */
 
-      data.Description = [
-        ...data.Description, {
-          text: `You have ${count} of ${limit}`,
-          type: 'text',
-          color: (count >= limit) ? INTERFACE_TEXT_COLOR.ERROR : undefined,
-        },
-      ];
-    }
-
-    return data;
-  };
-
-  const info = ComponentBuildingInfo.call(this, { x: 0, y: 0 }, {
+  const info = ComponentBuildingInfo.call(this, {
     mode: 'builder',
     origin: [1.0, 0.0],
     player,
-    data: getData,
+    data: (): BuildingInstance => {
+      if (hover.current === null) {
+        return undefined;
+      }
+
+      const variant = BUILDING_VARIANTS[hover.current];
+      const data = { ...BUILDINGS[variant] };
+
+      if (data.Limit) {
+        const world = <World> this.scene.get(SceneKey.WORLD);
+        const count = world.selectBuildings(variant).length;
+        const limit = builder.getBuildCurrentLimit(data.Limit);
+
+        data.Description = [
+          ...data.Description, {
+            text: `You have ${count} of ${limit}`,
+            type: 'text',
+            color: (count >= limit) ? INTERFACE_TEXT_COLOR.ERROR : undefined,
+          },
+        ];
+      }
+
+      return data;
+    },
+    resize: (ctn: Phaser.GameObjects.Container) => {
+      if (hover.current === null) {
+        return;
+      }
+
+      const wrapper = <Phaser.GameObjects.Container> list.getAt(hover.current);
+
+      ctn.setPosition(wrapper.x - 10 - info.width, wrapper.y);
+    },
   });
 
   info.setVisible(false);
+
   container.add(info);
 
-  const focus = (item: Phaser.GameObjects.Container, index: number) => {
+  /**
+   * Items
+   */
+
+  BUILDING_VARIANTS.forEach((variant, index) => {
+    /**
+     * Wrapper
+     */
+
+    const wrapper = this.add.container();
+
+    wrapper.adaptive = (width, height) => {
+      const size = Math.max(30, width * 0.03);
+      const offsetY = height * 0.008;
+
+      wrapper.setSize(size, size);
+      wrapper.setPosition(-wrapper.width, (wrapper.height + offsetY) * index);
+    };
+
+    list.add(wrapper);
+
+    /**
+     * Body
+     */
+
+    const body = this.add.rectangle(0, 0, 0, 0);
+
+    body.setName('Body');
+    body.setAlpha(0.5);
+    body.setOrigin(0.0, 0.0);
+    body.adaptive = () => {
+      body.setSize(wrapper.width, wrapper.height);
+      body.setInteractive();
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    body.on(Phaser.Input.Events.POINTER_OVER, () => focus(index));
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    body.on(Phaser.Input.Events.POINTER_OUT, () => unfocus());
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
+    body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
+
+    wrapper.add(body);
+
+    /**
+     * Preview
+     */
+
+    const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);
+
+    preview.adaptive = () => {
+      const offset = wrapper.width * 0.18;
+
+      preview.setScale((wrapper.height - (offset * 2)) / TILE_META.height);
+      preview.setPosition(wrapper.width / 2, wrapper.height / 2);
+    };
+
+    wrapper.add(preview);
+
+    /**
+     * Number
+     */
+
+    if (!isMobileDevice()) {
+      const number = this.add.text(0, 0, String(index + 1), {
+        resolution: window.devicePixelRatio,
+        fontFamily: INTERFACE_FONT.MONOSPACE,
+      });
+
+      number.setOrigin(1.0, 0.0);
+      number.adaptive = () => {
+        const fontSize = wrapper.width / 70;
+
+        number.setFontSize(`${fontSize}rem`);
+        number.setPosition(wrapper.width - 4, 4);
+      };
+
+      wrapper.add(number);
+    }
+  });
+
+  /**
+   * Updating
+   */
+
+  const focus = (index: number) => {
     if (wave.isGoing) {
       return;
     }
 
-    this.input.setDefaultCursor('pointer');
-    info.setPositionWithOrigin(item.x - 10, item.y);
+    info.forceUpdate();
     info.setVisible(true);
+    this.input.setDefaultCursor('pointer');
     hover.current = index;
   };
 
@@ -81,8 +184,8 @@ export const ComponentBuilder = Component<Props>(function (container, {
       return;
     }
 
-    this.input.setDefaultCursor('default');
     info.setVisible(false);
+    this.input.setDefaultCursor('default');
     hover.current = null;
   };
 
@@ -96,66 +199,34 @@ export const ComponentBuilder = Component<Props>(function (container, {
     );
   };
 
-  BUILDING_VARIANTS.forEach((variant: BuildingVariant, index: number) => {
-    const item = this.add.container(-ITEM_SIZE, (ITEM_SIZE + ITEMS_MARGIN) * index);
-
-    item.setSize(ITEM_SIZE, ITEM_SIZE);
-
-    const body = this.add.rectangle(0, 0, ITEM_SIZE, ITEM_SIZE);
-
-    body.setName('Body');
-    body.setOrigin(0.0, 0.0);
-    body.setInteractive();
-    body.on(Phaser.Input.Events.POINTER_OVER, () => focus(item, index));
-    body.on(Phaser.Input.Events.POINTER_OUT, () => unfocus());
-    body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
-
-    const preview = this.add.image(ITEM_SIZE / 2, ITEM_SIZE / 2, BUILDINGS[variant].Texture);
-
-    preview.setScale(0.65);
-
-    const number = this.add.text(ITEM_SIZE - 4, 4, String(index + 1), {
-      fontSize: '12px',
-      fontFamily: INTERFACE_FONT.MONOSPACE,
-    });
-
-    number.setOrigin(1.0, 0.0);
-
-    item.add([body, preview, number]);
-    container.add(item);
-  });
-
   wave.on(WaveEvents.START, () => {
-    container.setAlpha(0.25);
     unfocus();
+    list.setAlpha(0.25);
   });
 
   wave.on(WaveEvents.COMPLETE, () => {
-    container.setAlpha(1.0);
+    list.setAlpha(1.0);
   });
 
   return {
     update: () => {
-      const itemsCount = container.getAll().length;
-
-      for (let i = 1; i < itemsCount; i++) {
-        const item = <Phaser.GameObjects.Container> container.getAt(i);
-        const body = <Phaser.GameObjects.Rectangle> item.getByName('Body');
+      list.getAll().forEach((wrapper: Phaser.GameObjects.Container, index) => {
+        const body = <Phaser.GameObjects.Rectangle> wrapper.getByName('Body');
 
         if (wave.isGoing) {
           body.setFillStyle(0x000000);
           body.setAlpha(1.0);
-        } else if (builder.variantIndex === i - 1) {
+        } else if (builder.variantIndex === index) {
           body.setFillStyle(INTERFACE_BOX_COLOR.BLUE);
           body.setAlpha(1.0);
-        } else if (hover.current === i - 1) {
+        } else if (hover.current === index) {
           body.setFillStyle(0x000000);
           body.setAlpha(1.0);
         } else {
           body.setFillStyle(0x000000);
           body.setAlpha(0.5);
         }
-      }
+      });
     },
   };
 });

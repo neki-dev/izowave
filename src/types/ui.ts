@@ -14,3 +14,18 @@ export type ComponentInstance<T> = (
   container: Phaser.GameObjects.Container,
   props?: T
 ) => ComponentControl | void;
+
+declare global {
+  namespace Phaser {
+    namespace GameObjects {
+      interface GameObject {
+        adaptive?: (width?: number, height?: number) => void
+      }
+
+      interface Container {
+        refreshAdaptive?: () => void
+        forceUpdate?: () => void
+      }
+    }
+  }
+}

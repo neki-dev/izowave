@@ -1,49 +1,69 @@
-import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
+import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
 
 export const ComponentControls = Component(function (container) {
-  let shift = 0;
-
-  for (const item of [
+  [
     { name: 'W A S D', description: 'Move player' },
-    {},
     { name: 'CLICK', description: 'New build' },
     { name: 'U', description: 'Upgrade building' },
     { name: 'R', description: 'Reload tower ammo' },
     { name: 'BACKSPACE', description: 'Destroy building' },
-    {},
     { name: 'N', description: 'Skip wave timeleft' },
     { name: 'ESC', description: 'Pause game' },
-  ]) {
-    if (item.name) {
-      const containerKey = this.add.container(0, shift);
+  ].forEach((item, index) => {
+    /**
+     * Wrapper
+     */
 
-      const textName = this.add.text(0, 0, item.name, {
-        fontSize: '16px',
-        fontFamily: INTERFACE_FONT.PIXEL,
-        padding: {
-          top: 3,
-          bottom: 7,
-          left: 5,
-          right: 5,
-        },
-      });
+    const wrapper = this.add.container();
 
-      const body = this.add.rectangle(0, 0, textName.width, textName.height, INTERFACE_BOX_COLOR.BLUE);
+    wrapper.adaptive = () => {
+      wrapper.setPosition(0, (container.height * 0.12) * index);
+    };
 
-      body.setOrigin(0.0, 0.0);
+    container.add(wrapper);
 
-      const description = this.add.text(body.width + 10, 6, `-  ${item.description}`, {
-        fontSize: '13px',
-        fontFamily: INTERFACE_FONT.PIXEL,
-      });
+    /**
+     * Name
+     */
 
-      containerKey.add([body, textName, description]);
-      containerKey.setSize(body.width + 10 + description.width, body.height);
-      container.add(containerKey);
-      shift += containerKey.height + 15;
-    } else {
-      shift += 15;
-    }
-  }
+    const name = this.add.text(0, 0, item.name, {
+      resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.PIXEL,
+      backgroundColor: INTERFACE_TEXT_COLOR.BLUE_DARK,
+      padding: {
+        top: 4,
+        bottom: 6,
+        left: 5,
+        right: 5,
+      },
+    });
+
+    name.adaptive = () => {
+      const fontSize = container.width / 500;
+
+      name.setFontSize(`${fontSize}rem`);
+    };
+
+    wrapper.add(name);
+
+    /**
+     * Description
+     */
+
+    const description = this.add.text(0, 0, `  -  ${item.description}`, {
+      resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.PIXEL,
+    });
+
+    description.setOrigin(0.0, 0.5);
+    description.adaptive = () => {
+      const fontSize = container.width / 600;
+
+      description.setFontSize(`${fontSize}rem`);
+      description.setPosition(name.width, name.height * 0.5);
+    };
+
+    wrapper.add(description);
+  });
 });

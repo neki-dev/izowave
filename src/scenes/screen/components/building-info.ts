@@ -1,35 +1,42 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { WORLD_DEPTH_UI } from '~const/world';
 import { Player } from '~entity/player';
 import { Component } from '~lib/ui';
-import { toEven } from '~lib/utils';
 import { ComponentCost } from '~scene/screen/components/cost';
 import { ComponentParams } from '~scene/screen/components/params';
 import { BuildingInstance } from '~type/world/entities/building';
 
 type Props = {
   mode?: 'building' | 'builder'
-  origin: [number, number]
   player: Player
   data: () => BuildingInstance
+  resize?: (container: Phaser.GameObjects.Container) => void
 };
 
-const CONTAINER_WIDTH = 220;
-const CONTAINER_MIN_HEIGHT = 77;
-const CONTAINER_PADDING = 16;
-
 export const ComponentBuildingInfo = Component<Props>(function (container, {
-  origin, player, data, mode = 'building',
+  player, data, resize, mode = 'building',
 }) {
-  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_MIN_HEIGHT, INTERFACE_BOX_COLOR.BLUE, 0.9);
+  const lines = {
+    current: 0,
+  };
+
+  /**
+   * Body
+   */
+  const body = this.add.rectangle(0, 0, 0, 0, INTERFACE_BOX_COLOR.BLUE, 0.9);
 
   body.setOrigin(0.0, 0.0);
+  body.adaptive = () => {
+    body.width = 220;
+  };
 
-  let position = { x: container.x, y: container.y };
-  const shift = { x: CONTAINER_PADDING, y: CONTAINER_PADDING };
+  container.add(body);
 
-  const name = this.add.text(shift.x, shift.y, '', {
-    fontSize: '18px',
+  /**
+   * Name
+   */
+
+  const name = this.add.text(0, 0, '', {
+    resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.PIXEL,
     color: INTERFACE_TEXT_COLOR.PRIMARY,
     padding: { bottom: 2 },
@@ -42,65 +49,92 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     },
   });
 
-  shift.y += toEven(name.height + CONTAINER_PADDING);
+  name.adaptive = () => {
+    const fontSize = body.width / 190;
+    const shadow = fontSize * 3;
+    const offset = body.width * 0.07;
 
-  const description = ComponentParams.call(this, shift, {
+    name.setFontSize(`${fontSize}rem`);
+    name.setShadowOffset(shadow, shadow);
+    name.setPosition(offset, offset);
+  };
+
+  container.add(name);
+
+  /**
+   * Params
+   */
+
+  const params = ComponentParams.call(this, {
     data: () => data()?.Description,
   });
 
+  params.adaptive = () => {
+    const offsetX = body.width * 0.07;
+    const offsetY = body.width * 0.05;
+
+    params.width = 188;
+    params.setPosition(
+      offsetX,
+      name.y + name.height + offsetY,
+    );
+  };
+
+  container.add(params);
+
+  /**
+   * Cost
+   */
+
   const cost = ComponentCost.call(this, {
-    x: body.width,
-    y: 0,
-  }, {
     label: (mode === 'building') ? 'UPGRADE' : 'BUILD',
-    size: [60, CONTAINER_MIN_HEIGHT],
     need: () => data()?.Cost,
     have: () => player.resources,
   });
 
   cost.setVisible(false);
+  cost.adaptive = () => {
+    cost.setPosition(body.width, 0);
+    cost.setSize(60, body.height);
+  };
 
-  let point: Phaser.GameObjects.Triangle;
+  container.add(cost);
+
+  /**
+   * Pointer
+   */
+
+  let pointer: Phaser.GameObjects.Triangle;
 
   if (mode === 'building') {
-    point = this.add.triangle(0, 0, -10, 0, 10, 0, 0, 10, body.fillColor, body.fillAlpha);
-    point.setOrigin(0.0, 0.0);
+    pointer = this.add.triangle(0, 0, -10, 0, 10, 0, 0, 10, body.fillColor, body.fillAlpha);
+    pointer.setOrigin(0.0, 0.0);
+    container.add(pointer);
   }
 
-  container.setDepth(WORLD_DEPTH_UI);
-  container.add([body, name, description, cost]);
-  if (point) {
-    container.add(point);
-  }
+  /**
+   * Updating
+   */
 
-  const refresh = () => {
+  const refreshSize = () => {
+    const padding = 16;
     const width = body.width + (cost.visible ? cost.width : 0);
-    const height = Math.max(description.y + description.height + CONTAINER_PADDING, CONTAINER_MIN_HEIGHT);
+    const height = Math.max(params.y + params.height + padding, 77);
 
     body.height = height;
     cost.height = height;
 
     container.setSize(width, height);
-    container.setPosition(
-      toEven(position.x - (container.width * origin[0])),
-      toEven(position.y - (container.height * origin[1])),
-    );
+    if (pointer) {
+      pointer.setPosition(width / 2, height);
+    }
 
-    if (point) {
-      point.setPosition(width / 2, height);
+    if (resize) {
+      resize(container);
     }
   };
 
-  // @ts-ignore
-  // eslint-disable-next-line no-param-reassign
-  container.setPositionWithOrigin = (x: number, y: number) => {
-    position = { x, y };
-    refresh();
-  };
-
-  refresh();
-
-  let prevLines = 0;
+  refreshSize();
 
   return {
     update: () => {
@@ -111,22 +145,22 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
       }
 
       if (values?.Description) {
-        const lines = values?.Description.map((item) => item.text.split('\n')).flat();
+        const newLines = values?.Description.map((item) => item.text.split('\n')).flat();
 
-        if (prevLines !== lines.length) {
-          prevLines = lines.length;
-          refresh();
+        if (lines.current !== newLines.length) {
+          lines.current = newLines.length;
+          refreshSize();
         }
       }
 
       if (values?.Cost) {
         if (!cost.visible) {
           cost.setVisible(true);
-          refresh();
+          refreshSize();
         }
       } else if (cost.visible) {
         cost.setVisible(false);
-        refresh();
+        refreshSize();
       }
     },
   };

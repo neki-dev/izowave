@@ -1,6 +1,7 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
+import { WORLD_DIFFICULTY_KEY } from '~const/world';
 import { Component } from '~lib/ui';
+import { WorldDifficulty } from '~type/world';
 
 type Props = {
   disabled: boolean
@@ -13,42 +14,61 @@ export const ComponentDifficulty = Component<Props>(function (container, {
     current: localStorage.getItem(WORLD_DIFFICULTY_KEY),
   };
 
-  let shift = 0;
-
-  for (const type of Object.keys(WORLD_DIFFICULTY_POWERS)) {
-    const text = this.add.text(0, shift, type, {
-      color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR.ACTIVE : '#fff',
-      fontSize: '18px',
+  Object.keys(WorldDifficulty).forEach((type, index) => {
+    const name = this.add.text(0, 0, type, {
+      resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.PIXEL,
+      color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR.ACTIVE : '#fff',
+      shadow: {
+        color: '#000',
+        blur: 0,
+        fill: true,
+      },
     });
 
-    text.setAlpha(disabled ? 0.5 : 1.0);
+    name.adaptive = () => {
+      const fontSize = container.width / 500;
+      const shadow = fontSize * 3;
+      const margin = container.height * 0.075;
+
+      name.setFontSize(`${fontSize}rem`);
+      name.setShadowOffset(shadow, shadow);
+      name.setPadding(0, 0, 0, shadow);
+      name.setPosition(0, (name.height + margin) * index);
+    };
+
+    name.setAlpha(disabled ? 0.5 : 1.0);
 
     if (!disabled) {
-      text.setInteractive();
-      text.on(Phaser.Input.Events.POINTER_OVER, () => {
+      name.setInteractive();
+
+      name.on(Phaser.Input.Events.POINTER_OVER, () => {
         this.input.setDefaultCursor('pointer');
-        text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
-      });
-      text.on(Phaser.Input.Events.POINTER_OUT, () => {
-        this.input.setDefaultCursor('default');
         if (difficulty.current !== type) {
-          text.setColor('#fff');
+          name.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
         }
       });
-      text.on(Phaser.Input.Events.POINTER_UP, () => {
-        difficulty.current = type;
-        localStorage.setItem(WORLD_DIFFICULTY_KEY, type);
+
+      name.on(Phaser.Input.Events.POINTER_OUT, () => {
+        this.input.setDefaultCursor('default');
+        if (difficulty.current !== type) {
+          name.setColor('#fff');
+        }
+      });
+
+      name.on(Phaser.Input.Events.POINTER_UP, () => {
         container.each((child: Phaser.GameObjects.Text) => {
           child.setColor('#fff');
         });
-        text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
+        name.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
+        difficulty.current = type;
+
+        localStorage.setItem(WORLD_DIFFICULTY_KEY, type);
       });
     }
 
-    container.add(text);
-    shift += text.height + 25;
-  }
+    container.add(name);
+  });
 
   return {
     destroy: () => {

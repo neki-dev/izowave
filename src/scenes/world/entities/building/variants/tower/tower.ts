@@ -75,9 +75,9 @@ export class BuildingTower extends Building {
       },
     ];
 
-    if (this.ammoLeft < this.getMaxAmmo()) {
-      info.push({ text: 'PRESS |R| TO RELOAD', type: 'hint' });
-    }
+    // if (this.ammoLeft < this.getMaxAmmo()) {
+    //   info.push({ text: 'PRESS |R| TO RELOAD', type: 'hint' });
+    // }
 
     const { speed } = this.getShotParams();
 

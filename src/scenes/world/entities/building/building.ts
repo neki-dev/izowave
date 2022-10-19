@@ -3,7 +3,7 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { TILE_META } from '~const/level';
-import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_UI } from '~const/world';
 import { Hexagon } from '~entity/building/hexagon';
 import { Live } from '~entity/live';
 import { registerAssets } from '~lib/assets';
@@ -191,7 +191,7 @@ export class Building extends Phaser.GameObjects.Image {
    */
   public getInfo(): BuildingDescriptionItem[] {
     const info: BuildingDescriptionItem[] = [
-      { text: `Upgrade ${this.upgradeLevel} of ${BUILDING_MAX_UPGRADE_LEVEL}`, type: 'text' },
+      { text: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`, type: 'text' },
       { text: `Health: ${this.live.health}`, icon: ScreenIcon.HEALTH },
     ];
     const radius = this.getActionsRadius();
@@ -225,12 +225,12 @@ export class Building extends Phaser.GameObjects.Image {
       });
     }
 
-    if (this.isAllowUpgrade()) {
-      info.push({
-        text: 'PRESS |U| TO UPGRADE',
-        type: 'hint',
-      });
-    }
+    // if (this.isAllowUpgrade()) {
+    //   info.push({
+    //     text: 'PRESS |U| TO UPGRADE',
+    //     type: 'hint',
+    //   });
+    // }
 
     return info;
   }
@@ -395,18 +395,22 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    this.info = <Phaser.GameObjects.Container> ComponentBuildingInfo.call(this.scene, {
-      x: this.x,
-      y: this.y - TILE_META.halfHeight,
-    }, {
-      origin: [0.5, 1.0],
+    this.info = ComponentBuildingInfo.call(this.scene, {
       player: this.scene.player,
       data: () => ({
         Name: this.getName(),
         Description: this.getInfo(),
         Cost: this.isAllowUpgrade() ? this.getUpgradeLevelCost() : undefined,
       }),
+      resize: (ctn: Phaser.GameObjects.Container) => {
+        ctn.setPosition(
+          this.x - ctn.width / 2,
+          this.y - ctn.height - TILE_META.halfHeight,
+        );
+      },
     });
+
+    this.info.setDepth(WORLD_DEPTH_UI);
   }
 
   /**

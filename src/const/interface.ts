@@ -5,24 +5,23 @@ export const INTERFACE_TEXT_COLOR = {
   BLUE: '#0076ad',
   BLUE_LIGHT: '#a8f0ff',
   BLUE_DARK: '#18324f',
+  ACTIVE: '#a7cc43',
+  INFO: '#',
+  INFO_DARK: '#83a81c',
+  WARN: '#',
+  WARN_DARK: '#ff9000',
   ERROR: '#ff6d6d',
   ERROR_DARK: '#db2323',
-  ACTIVE: '#a7cc43',
 };
 
 export const INTERFACE_BOX_COLOR = {
   BLUE: 0x18324f,
-  INFO: 0x83a81c,
-  ERROR: 0xdb2323,
-  WARN: 0xff9000,
 };
 
 export const INTERFACE_FONT = {
   PIXEL: 'Retro',
   MONOSPACE: 'Monospace',
 };
-
-export const INTERFACE_PADDING = 40;
 
 export const RESOURCE_COLOR: ResourceColor = {
   [ResourceType.BRONZE]: 0xfc9547,

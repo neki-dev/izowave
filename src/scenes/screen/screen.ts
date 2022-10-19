@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/difficulty';
-import { INTERFACE_PADDING } from '~const/interface';
 import { registerAssets } from '~lib/assets';
-import { adaptiveSize } from '~lib/ui';
+import { registerContainerAdaptive } from '~lib/ui';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
 import { ComponentBuilder } from '~scene/screen/components/builder';
@@ -28,31 +27,60 @@ export class Screen extends Phaser.Scene {
 
   create() {
     const world = <World> this.scene.get(SceneKey.WORLD);
-    const components = this.add.group();
-    const shift = { x: INTERFACE_PADDING, y: INTERFACE_PADDING };
+    const components = this.add.container();
 
-    // Component wave
-    const wave = ComponentWave.call(this, shift, {
+    /**
+     * Wave
+     */
+
+    const wave = ComponentWave.call(this, {
       wave: world.wave,
     });
 
-    shift.y += wave.height + INTERFACE_PADDING;
+    wave.adaptive = (width: number) => {
+      const offset = width * 0.02;
+
+      wave.setPosition(offset, offset);
+      wave.setSize(
+        Math.max(90, width * 0.08),
+        Math.max(23, width * 0.02),
+      );
+    };
+
     components.add(wave);
 
-    // Component health bar
-    const health = ComponentBar.call(this, shift, {
-      display: () => `${world.player.live.health}  HP`,
+    /**
+     * Health bar
+     */
+
+    const health = ComponentBar.call(this, {
+      display: () => `${world.player.live.health} HP`,
       value: () => world.player.live.health,
       maxValue: () => world.player.live.maxHealth,
       event: (callback: (amount: number) => void) => world.player.live.on(LiveEvents.UPDATE_HEALTH, callback),
       color: 0xe4372c,
     });
 
-    shift.y += health.height + 8;
+    health.adaptive = (width: number, height: number) => {
+      const offsetX = width * 0.02;
+      const offsetY = height * 0.03;
+
+      health.setPosition(
+        offsetX,
+        wave.y + wave.height + offsetY,
+      );
+      health.setSize(
+        Math.max(60, width * 0.06),
+        Math.max(15, width * 0.015),
+      );
+    };
+
     components.add(health);
 
-    // Component experience bar
-    const experience = ComponentBar.call(this, shift, {
+    /**
+     * Experience bar
+     */
+    const experience = ComponentBar.call(this, {
       display: () => `${world.player.level}  LVL`,
       value: () => world.player.experience,
       maxValue: () => calcGrowth(
@@ -64,49 +92,107 @@ export class Screen extends Phaser.Scene {
       color: 0x1975c5,
     });
 
-    shift.y += experience.height + INTERFACE_PADDING / 2;
+    experience.adaptive = (width: number, height: number) => {
+      const offsetX = width * 0.02;
+      const offsetY = height * 0.008;
+
+      experience.setPosition(
+        offsetX,
+        health.y + health.height + offsetY,
+      );
+      experience.setSize(
+        Math.max(60, width * 0.06),
+        Math.max(15, width * 0.015),
+      );
+    };
+
     components.add(experience);
 
-    // Component resources
-    const resources = ComponentResources.call(this, shift, {
+    /**
+     * Resources
+     */
+
+    const resources = ComponentResources.call(this, {
       player: world.player,
     });
 
+    resources.adaptive = (width: number, height: number) => {
+      const offsetX = width * 0.02;
+      const offsetY = height * 0.03;
+
+      resources.setPosition(
+        offsetX,
+        experience.y + experience.height + offsetY,
+      );
+    };
+
     components.add(resources);
 
-    // Component notices
-    const notices = ComponentNotices.call(this, { y: INTERFACE_PADDING });
+    /**
+     * Notices
+     */
+
+    const notices = ComponentNotices.call(this);
+
+    notices.adaptive = (width: number) => {
+      const offsetY = width * 0.02;
+
+      notices.setPosition(width / 2, offsetY);
+    };
 
     components.add(notices);
 
-    // Component builder
-    const builder = ComponentBuilder.call(this, { y: INTERFACE_PADDING }, {
+    /**
+     * Builder
+     */
+
+    const builder = ComponentBuilder.call(this, {
       builder: world.builder,
       wave: world.wave,
       player: world.player,
     });
 
+    builder.adaptive = (width: number) => {
+      const offset = width * 0.02;
+
+      builder.setPosition(width - offset, offset);
+    };
+
     components.add(builder);
 
-    // Component fps
-    const fps = ComponentFPS.call(this, { x: INTERFACE_PADDING });
+    /**
+     * FPS
+     */
+
+    const fps = ComponentFPS.call(this);
+
+    fps.adaptive = (width: number, height: number) => {
+      const offset = width * 0.02;
+
+      fps.setPosition(offset, height - offset);
+    };
 
     components.add(fps);
 
-    const adaptive = adaptiveSize((width, height) => {
-      notices.setX(width / 2);
-      builder.setX(width - INTERFACE_PADDING);
-      fps.setY(height - INTERFACE_PADDING);
-    });
+    /**
+     * Updating
+     */
+
+    registerContainerAdaptive(components);
 
     world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
-      adaptive.cancel();
-      components.destroy(true);
+      components.destroy();
 
-      ComponentGameOver.call(this, { x: 0, y: 0 }, { stat, record });
+      ComponentGameOver.call(this, { stat, record });
     });
   }
 
+  /**
+   * Send notice message.
+   *
+   * @param type - Notice type
+   * @param message - Message
+   */
   public message(type: NoticeType, message: string) {
     this.events.emit('notice', { type, message });
   }

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { MIN_VALID_SCREEN_SIZE } from '~const/core';
 
 /**
  * Quadratic equation for calculating difficulty
@@ -39,20 +40,6 @@ export function formatTime(value: number): string {
   const m = value % 60;
 
   return `${(h < 10 ? '0' : '')}${h}:${(m < 10 ? '0' : '')}${m}`;
-}
-
-/**
- * To even number.
- *
- * @param value - Number
- * @param shift - Inc or dec value
- */
-export function toEven(value: number, shift: (-1 | 1) = 1): number {
-  if (value % 2 === 0) {
-    return value;
-  }
-
-  return value + shift;
 }
 
 /**
@@ -133,7 +120,7 @@ export function throttle(fn: (...params: any[]) => void, delay: number) {
  * Check device screen size.
  */
 export function isValidScreenSize() {
-  return document.body.clientWidth >= 800;
+  return (document.body.clientWidth >= MIN_VALID_SCREEN_SIZE);
 }
 
 /**

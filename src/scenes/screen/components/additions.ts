@@ -1,6 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
-import { toEven } from '~lib/utils';
 
 type Props = {
   event: (callback: (amount: number) => void) => void
@@ -19,7 +18,7 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
     container.iterate((add: Phaser.GameObjects.Container) => {
       add.setX(offset);
-      offset += toEven(add.width + 5);
+      offset += add.width + (window.innerWidth * 0.005);
     });
   };
 
@@ -37,14 +36,20 @@ export const ComponentAdditions = Component<Props>(function (container, {
     }
 
     const addition = this.add.text(0, 0, formatAmount(amount), {
-      fontSize: '14px',
+      resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.MONOSPACE,
     });
 
     addition.setOrigin(0.0, 0.5);
     addition.setAlpha(0.0);
+    addition.adaptive = (width) => {
+      const fontSize = Math.max(0.6, width / 1800);
+
+      addition.setFontSize(`${fontSize}rem`);
+    };
 
     container.add(addition);
+    container.refreshAdaptive();
 
     update();
 

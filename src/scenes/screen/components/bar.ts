@@ -10,41 +10,79 @@ type Props = {
   color: number
 };
 
-const CONTAINER_WIDTH = 100;
-const CONTAINER_HEIGHT = 28;
-
 export const ComponentBar = Component<Props>(function (container, {
   display, value, maxValue, event, color,
 }) {
-  const body = this.add.rectangle(0, 0, CONTAINER_WIDTH, CONTAINER_HEIGHT, 0x000000, 0.75);
+  /**
+   * Body
+   */
+
+  const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.75);
 
   body.setOrigin(0.0, 0.0);
+  body.adaptive = () => {
+    body.setSize(container.width, container.height);
+  };
 
-  const progress = this.add.rectangle(2, 2, 0, body.height - 4, color);
+  container.add(body);
+
+  /**
+   * Progress
+   */
+
+  const progress = this.add.rectangle(0, 0, 0, 0, color);
 
   progress.setOrigin(0.0, 0.0);
+  progress.adaptive = (width) => {
+    const offset = (width <= 900) ? 1 : 2;
 
-  const label = this.add.text(CONTAINER_WIDTH / 2, CONTAINER_HEIGHT / 2, display(), {
-    fontSize: '11px',
+    progress.setPosition(offset, offset);
+    progress.height = container.height - (offset * 2);
+  };
+
+  container.add(progress);
+
+  /**
+   * Value
+   */
+
+  const label = this.add.text(0, 0, display(), {
     fontFamily: INTERFACE_FONT.PIXEL,
-    padding: { bottom: 1 },
+    resolution: window.devicePixelRatio,
   });
 
   label.setOrigin(0.5, 0.5);
+  label.adaptive = () => {
+    const fontSize = Math.max(0.5, body.width / 140);
 
-  const additions = ComponentAdditions.call(this, {
-    x: CONTAINER_WIDTH + 10,
-    y: CONTAINER_HEIGHT / 2,
-  }, { event });
+    label.setFontSize(`${fontSize}rem`);
+    label.setPosition(container.width / 2, container.height / 2);
+  };
 
-  container.add([body, progress, label, additions]);
-  container.setSize(body.width, body.height);
+  container.add(label);
+
+  /**
+   * Additions
+   */
+
+  const additions = ComponentAdditions.call(this, { event });
+
+  additions.adaptive = () => {
+    additions.setPosition(container.width + 10, container.height / 2);
+  };
+
+  container.add(additions);
+
+  /**
+   * Updating
+   */
 
   return {
     update: () => {
       const percent = value() / maxValue();
+      const offset = progress.x;
 
-      progress.width = (body.width - 4) * percent;
+      progress.width = (body.width - (offset * 2)) * percent;
       label.setText(display());
     },
   };

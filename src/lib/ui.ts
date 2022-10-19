@@ -1,12 +1,11 @@
 import Phaser from 'phaser';
-import { throttle } from '~lib/utils';
 import { Screen } from '~scene/screen';
-import { ComponentControl, ComponentInstance, ComponentResizeCallback } from '~type/screen/component';
+import { ComponentControl, ComponentInstance, ComponentResizeCallback } from '~type/ui';
 
-export function adaptiveSize(callback: ComponentResizeCallback) {
-  const refresh = throttle(() => {
+function bindScreenResize(callback: ComponentResizeCallback) {
+  const refresh = () => {
     callback(window.innerWidth, window.innerHeight);
-  }, 100);
+  };
 
   refresh();
   window.addEventListener('resize', refresh);
@@ -19,19 +18,52 @@ export function adaptiveSize(callback: ComponentResizeCallback) {
   };
 }
 
+export function registerContainerAdaptive(container: Phaser.GameObjects.Container) {
+  const provideAdaptive = (width: number, height: number) => {
+    if (container.adaptive) {
+      container.adaptive(width, height);
+    }
+
+    const deepProvideResize = (ctn: Phaser.GameObjects.Container) => {
+      ctn.iterate((child: Phaser.GameObjects.GameObject) => {
+        if (child.adaptive) {
+          child.adaptive(width, height);
+        }
+        if (child instanceof Phaser.GameObjects.Container) {
+          deepProvideResize(child);
+        }
+      });
+    };
+
+    deepProvideResize(container);
+  };
+
+  // eslint-disable-next-line no-param-reassign
+  container.refreshAdaptive = () => {
+    provideAdaptive(window.innerWidth, window.innerHeight);
+  };
+
+  const { cancel } = bindScreenResize(provideAdaptive);
+
+  container.on(Phaser.Scenes.Events.DESTROY, cancel);
+}
+
 export function Component<T = any>(component: ComponentInstance<T>) {
   return function create(
     this: Screen,
-    position?: Phaser.Types.Math.Vector2Like,
     props?: T,
   ): Phaser.GameObjects.Container {
-    const container = this.add.container(position?.x || 0, position?.y || 0);
+    const container = this.add.container();
     const result: ComponentControl = component.call(this, container, props);
 
+    registerContainerAdaptive(container);
+
     if (result) {
-      const { update, destroy, resize } = result;
+      const { update, destroy } = result;
 
       if (update) {
+        container.forceUpdate = update;
+
         try {
           update();
         } catch (error) {
@@ -41,14 +73,6 @@ export function Component<T = any>(component: ComponentInstance<T>) {
         this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
         container.on(Phaser.Scenes.Events.DESTROY, () => {
           this.events.off(Phaser.Scenes.Events.UPDATE, update);
-        });
-      }
-
-      if (resize) {
-        const { cancel } = adaptiveSize(resize);
-
-        container.on(Phaser.Scenes.Events.DESTROY, () => {
-          cancel();
         });
       }
 

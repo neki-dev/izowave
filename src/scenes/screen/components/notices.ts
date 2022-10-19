@@ -1,6 +1,5 @@
-import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
+import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component } from '~lib/ui';
-import { toEven } from '~lib/utils';
 import { Notice, NoticeType } from '~type/screen/notice';
 
 export const ComponentNotices = Component(function (container) {
@@ -9,71 +8,59 @@ export const ComponentNotices = Component(function (container) {
 
     container.iterate((notice: Phaser.GameObjects.Container) => {
       notice.setPosition(0, offset);
-      offset += toEven(notice.height + 5);
+      offset += notice.height + (window.innerWidth * 0.005);
     });
   };
 
   const create = ({ message, type }: Notice) => {
-    const containerNotice = this.add.container(0, 0);
-
-    containerNotice.setAlpha(0.0);
-
-    const text = this.add.text(0, 0, message, {
-      fontSize: '16px',
+    const notice = this.add.text(0, 0, message, {
+      resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.PIXEL,
-      padding: {
-        top: 9,
-        bottom: 10,
-        left: 10,
-        right: 10,
-      },
+      backgroundColor: (() => {
+        switch (type) {
+          case NoticeType.INFO: return INTERFACE_TEXT_COLOR.INFO_DARK;
+          case NoticeType.WARN: return INTERFACE_TEXT_COLOR.WARN_DARK;
+          case NoticeType.ERROR: return INTERFACE_TEXT_COLOR.ERROR_DARK;
+          default: return '#000';
+        }
+      })(),
     });
 
-    text.setName('Message');
-    text.setOrigin(0.5, 0.0);
+    notice.setOrigin(0.5, 0.0);
+    notice.adaptive = (width) => {
+      const fontSize = Math.max(0.75, width / 1400);
+      const padding = width * 0.006;
 
-    const background = (() => {
-      switch (type) {
-        case NoticeType.INFO: return INTERFACE_BOX_COLOR.INFO;
-        case NoticeType.WARN: return INTERFACE_BOX_COLOR.WARN;
-        case NoticeType.ERROR: return INTERFACE_BOX_COLOR.ERROR;
-        default: return 0x000000;
-      }
-    })();
-    const body = this.add.rectangle(0, 0, text.width, text.height, background, 0.75);
+      notice.setFontSize(`${fontSize}rem`);
+      notice.setPadding(padding, padding * 0.8, padding, padding);
+    };
 
-    body.setOrigin(0.5, 0.0);
-
-    containerNotice.add([body, text]);
-    containerNotice.setSize(body.width, body.height);
-
-    return containerNotice;
+    return notice;
   };
 
   this.events.on('notice', (data: Notice) => {
-    const existNotice = container.getAll().find((notice: Phaser.GameObjects.Container) => (
-      (<Phaser.GameObjects.Text> notice.getByName('Message')).text === data.message
-    ));
+    container.iterate((notice: Phaser.GameObjects.Text) => {
+      if (notice.text === data.message) {
+        notice.destroy();
+      }
+    });
 
-    if (existNotice) {
-      existNotice.destroy();
-    }
+    const notice = create(data);
 
-    const containerNotice = create(data);
-
-    container.add(containerNotice);
+    container.add(notice);
+    container.refreshAdaptive();
 
     update();
 
     this.tweens.add({
-      targets: containerNotice,
+      targets: notice,
       alpha: 1.0,
       duration: 500,
       ease: 'Power2',
       hold: 2000,
       yoyo: true,
       onComplete: () => {
-        containerNotice.destroy();
+        notice.destroy();
         update();
       },
     });

@@ -1,4 +1,4 @@
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 import { ScreenTexture } from '~type/screen';
 import { BuildingDescriptionItem } from '~type/world/entities/building';
@@ -14,42 +14,95 @@ export const ComponentParams = Component<Props>(function (container, {
     current: string
   } = { current: null };
 
-  const create = (item: BuildingDescriptionItem, offset: number) => {
-    const haveIcon = (item.icon !== undefined);
+  const refreshWrapper = (wrapper: Phaser.GameObjects.Container): number => {
+    const text = <Phaser.GameObjects.Text> wrapper.getByName('Text');
 
-    if (haveIcon) {
-      const icon = this.add.image(0, offset, ScreenTexture.ICON, item.icon);
+    // eslint-disable-next-line no-param-reassign
+    wrapper.height = text.height;
+
+    return wrapper.y + wrapper.height;
+  };
+
+  const create = (item: BuildingDescriptionItem, index: number) => {
+    /**
+     * Wrapper
+     */
+
+    const wrapper = this.add.container();
+
+    wrapper.adaptive = () => {
+      let offset = 0;
+
+      if (index > 0) {
+        // Get offset by previon wrapper
+        const offsetY = container.width * 0.025;
+        const prevWrapper = <Phaser.GameObjects.Container> container.getAt(index - 1);
+
+        offset += refreshWrapper(prevWrapper) + offsetY;
+      }
+
+      wrapper.width = container.width;
+      wrapper.setPosition(0, offset);
+    };
+
+    container.add(wrapper);
+
+    /**
+     * Icon
+     */
+
+    let icon: Phaser.GameObjects.Image;
+
+    if (item.icon !== undefined) {
+      icon = this.add.image(0, 0, ScreenTexture.ICON, item.icon);
 
       icon.setOrigin(0.0, 0.0);
-      container.add(icon);
+
+      wrapper.add(icon);
     }
 
-    const text = this.add.text(haveIcon ? 15 : 0, offset - 1, item.text, (item.type === 'hint') ? {
-      color: INTERFACE_TEXT_COLOR.BLUE_LIGHT,
-      fontSize: '10px',
+    /**
+     * Text
+     */
+
+    const text = this.add.text(0, -1, item.text, {
+      resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.MONOSPACE,
-      backgroundColor: INTERFACE_TEXT_COLOR.BLUE_DARK,
-      padding: { top: 2, left: 3, right: 3 },
-    } : {
       color: item.color || '#fff',
-      fontSize: '12px',
-      fontFamily: INTERFACE_FONT.MONOSPACE,
-      padding: { bottom: 1 },
     });
 
-    text.setOrigin(0.0, 0.0);
-    container.add(text);
+    text.setName('Text');
+    text.adaptive = () => {
+      const fontSize = wrapper.width / 250;
+      const padding = (item.type === 'text') ? 8 : 0;
+
+      text.setFontSize(`${fontSize}rem`);
+      text.setX(icon ? (icon.width + 5) : 0);
+      text.setPadding(0, 0, 0, padding);
+    };
+
+    wrapper.add(text);
+
+    /**
+     * Post text
+     */
 
     if (item.post) {
-      const post = this.add.text(text.x + text.width + 5, offset - 1, item.post, {
-        fontSize: '10px',
+      const post = this.add.text(0, 0, item.post, {
+        resolution: window.devicePixelRatio,
         fontFamily: INTERFACE_FONT.MONOSPACE,
-        padding: { bottom: 1 },
       });
 
-      post.setOrigin(0.0, 0.0);
       post.setAlpha(0.75);
-      container.add(post);
+      post.adaptive = () => {
+        const fontSize = wrapper.width / 280;
+        const offsetX = 5;
+
+        post.setFontSize(`${fontSize}rem`);
+        post.setX(text.x + text.width + offsetX);
+      };
+
+      wrapper.add(post);
     }
 
     return text;
@@ -76,23 +129,20 @@ export const ComponentParams = Component<Props>(function (container, {
       value.current = newValue;
       container.removeAll(true);
 
-      let offset = 0;
+      if (items.length === 0) {
+        return;
+      }
 
       items = items.sort((a, b) => (b.type || 'param').localeCompare((a.type || 'param')));
-      items.forEach((item, index) => {
-        if (item.type === 'hint') {
-          offset += 6;
-        }
+      items.forEach(create);
 
-        const text = create(item, offset);
+      const lastWrapper = <Phaser.GameObjects.Container> container.getAt(items.length - 1);
 
-        offset += text.height;
-        if (index + 1 !== items.length) {
-          offset += (item.type === 'text') ? 8 : 2;
-        }
-      });
-
-      container.setSize(188, offset);
+      // eslint-disable-next-line no-param-reassign
+      container.width = 188; // TODO
+      container.refreshAdaptive();
+      // eslint-disable-next-line no-param-reassign
+      container.height = refreshWrapper(lastWrapper);
     },
   };
 });

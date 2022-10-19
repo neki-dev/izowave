@@ -47,7 +47,7 @@ export type BuildingData = {
 export type BuildingDescriptionItem = {
   text: string
   icon?: number
-  type?: 'text' | 'param' | 'hint'
+  type?: 'text' | 'param'
   post?: string
   color?: string
 };

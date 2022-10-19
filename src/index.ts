@@ -30,6 +30,7 @@ function bootGame() {
     width: window.innerWidth,
     height: window.innerHeight,
     pixelArt: true,
+    autoRound: true,
     disableContextMenu: true,
     backgroundColor: '#222',
     scale: {
@@ -38,7 +39,7 @@ function bootGame() {
   });
 }
 
-if (isMobileDevice()) {
+if (!IS_DEV_MODE && isMobileDevice()) {
   stopLoader();
   setLoaderStatus('DEVICE IS NOT SUPPORTED :(');
 } else if (!isValidScreenSize()) {

@@ -5,6 +5,7 @@ import { ComponentControls } from '~scene/menu/components/content/controls';
 import { ComponentDifficulty } from '~scene/menu/components/content/difficulty';
 import { ComponentMenu } from '~scene/menu/components/menu';
 import { World } from '~scene/world';
+import { MenuItem } from '~type/menu';
 import { SceneKey } from '~type/scene';
 
 export class Menu extends Phaser.Scene {
@@ -17,22 +18,22 @@ export class Menu extends Phaser.Scene {
   public create({ pauseMode = false }) {
     this.pauseMode = pauseMode;
 
-    ComponentMenu.call(this, { x: 0, y: 0 }, {
-      menuItems: [{
+    ComponentMenu.call(this, {
+      menuItems: <MenuItem[]> [{
         label: this.pauseMode ? 'Continue' : 'New game',
         onClick: () => this.startGame(),
       }, {
         label: 'Difficulty',
-        content: () => ComponentDifficulty.call(this, { x: 0, y: 0 }, {
+        content: () => ComponentDifficulty.call(this, {
           disabled: this.pauseMode,
         }),
       }, {
         label: 'About',
-        content: () => ComponentAbout.call(this, { x: 0, y: 0 }),
+        content: () => ComponentAbout.call(this),
         default: true,
       }, {
         label: 'Controls',
-        content: () => ComponentControls.call(this, { x: 0, y: 0 }),
+        content: () => ComponentControls.call(this),
       }],
     });
 

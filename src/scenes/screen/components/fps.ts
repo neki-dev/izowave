@@ -2,20 +2,21 @@ import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 
 export const ComponentFPS = Component(function (container) {
-  const fps = this.add.text(0, 0, '', {
-    fontSize: '12px',
+  const value = this.add.text(0, 0, '', {
+    resolution: window.devicePixelRatio,
+    fontSize: '0.8rem',
     fontFamily: INTERFACE_FONT.MONOSPACE,
   });
 
-  fps.setAlpha(0.4);
+  value.setAlpha(0.5);
 
-  container.add(fps);
+  container.add(value);
 
   return {
     update: () => {
       const count = Math.round(this.sys.game.loop.actualFps);
 
-      fps.setText(`${count} FPS`);
+      value.setText(`${count} FPS`);
     },
   };
 });

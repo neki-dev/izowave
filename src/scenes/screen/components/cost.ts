@@ -1,54 +1,114 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
-import { keys } from '~lib/core';
 import { Component } from '~lib/ui';
-import { toEven } from '~lib/utils';
 import { Resources, ResourceType } from '~type/world/resources';
 
 type Props = {
   label: string
-  size: [number, number]
   need: () => Resources
   have: () => Resources
 };
 
 export const ComponentCost = Component<Props>(function (container, {
-  label, size, need, have,
+  label, need, have,
 }) {
-  const items: {
-    type: ResourceType
-    text: Phaser.GameObjects.Text
-  }[] = [];
-  let offset = 10;
+  /**
+   * Body
+   */
 
-  container.setSize(size[0], size[1]);
-
-  const body = this.add.rectangle(0, 0, container.width, container.height, 0x000000, 0.9);
+  const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.9);
 
   body.setOrigin(0.0, 0.0);
+  body.adaptive = () => {
+    body.setSize(container.width, container.height);
+  };
 
-  const title = this.add.text(10, offset, label, {
-    fontSize: '9px',
+  container.add(body);
+
+  /**
+   * Title
+   */
+
+  const title = this.add.text(0, 0, label, {
+    resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.MONOSPACE,
   });
 
-  offset += toEven(title.height + 6);
+  title.adaptive = () => {
+    const fontSize = container.width / 100;
+    const offset = container.width * 0.15;
 
-  container.add([body, title]);
+    title.setFontSize(`${fontSize}rem`);
+    title.setPosition(offset, offset);
+  };
 
-  for (const resource of keys(ResourceType)) {
-    const type = ResourceType[resource];
-    const icon = this.add.rectangle(10, offset, 8, 8, RESOURCE_COLOR[type]);
+  container.add(title);
+
+  /**
+   * Items
+   */
+
+  const list = this.add.container();
+
+  list.adaptive = () => {
+    const offset = container.width * 0.15;
+
+    list.setSize(container.width - (offset * 2), 0);
+    list.setPosition(offset, title.y + title.height + offset);
+  };
+
+  container.add(list);
+
+  Object.values(ResourceType).forEach((type, index) => {
+    /**
+     * Wrapper
+     */
+
+    const wrapper = this.add.container();
+
+    wrapper.adaptive = () => {
+      const offsetY = list.width * 0.15;
+      const height = list.width * 0.23;
+
+      wrapper.setSize(list.width, height);
+      wrapper.setPosition(0, (height + offsetY) * index);
+    };
+
+    list.add(wrapper);
+
+    /**
+     * Icon
+     */
+
+    const icon = this.add.rectangle(0, 0, 0, 0, RESOURCE_COLOR[type]);
 
     icon.setOrigin(0.0, 0.0);
-    const text = this.add.text(10 + icon.width + 5, offset - 2, '0', {
-      fontSize: '11px',
+    icon.adaptive = () => {
+      icon.setSize(wrapper.height, wrapper.height);
+    };
+
+    wrapper.add(icon);
+
+    /**
+     * Amount
+     */
+
+    const amount = this.add.text(0, 0, '', {
+      resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.MONOSPACE,
     });
 
-    offset += icon.height + 6;
-    container.add([icon, text]);
-    items.push({ type, text });
-  }
+    amount.setName('Amount');
+    amount.setOrigin(0.0, 0.5);
+    amount.adaptive = () => {
+      const fontSize = wrapper.width / 54;
+      const offsetX = wrapper.width * 0.15;
+
+      amount.setFontSize(`${fontSize}rem`);
+      amount.setPosition(icon.width + offsetX, wrapper.height / 2);
+    };
+
+    wrapper.add(amount);
+  });
 
   return {
     update: () => {
@@ -56,7 +116,7 @@ export const ComponentCost = Component<Props>(function (container, {
         return;
       }
 
-      body.setSize(container.width, container.height);
+      body.height = container.height;
 
       const needAmounts = need();
 
@@ -66,19 +126,21 @@ export const ComponentCost = Component<Props>(function (container, {
 
       const haveAmounts = have();
 
-      for (const { type, text } of items) {
+      Object.values(ResourceType).forEach((type, index) => {
+        const wrapper = <Phaser.GameObjects.Container> list.getAt(index);
+        const amount = <Phaser.GameObjects.Text> wrapper.getByName('Amount');
         const haveAmount = haveAmounts[type] || 0;
         const needAmount = needAmounts[type] || 0;
 
-        text.setText(String(needAmount));
+        amount.setText(String(needAmount));
         if (needAmount === 0) {
-          text.setColor('#aaa');
+          amount.setColor('#aaa');
         } else if (haveAmount < needAmount) {
-          text.setColor(INTERFACE_TEXT_COLOR.ERROR);
+          amount.setColor(INTERFACE_TEXT_COLOR.ERROR);
         } else {
-          text.setColor('#fff');
+          amount.setColor('#fff');
         }
-      }
+      });
     },
   };
 });

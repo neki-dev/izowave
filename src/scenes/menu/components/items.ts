@@ -4,44 +4,49 @@ import { Component } from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
 type Props = {
-  width: number
   data: MenuItem[]
   onSelect: (item: MenuItem) => void
 };
 
-const MENU_ITEMS_MARGIN = 40;
-
 export const ComponentItems = Component<Props>(function (container, {
-  width, data, onSelect,
+  data, onSelect,
 }) {
-  let shift = 0;
   const active: {
     current: Phaser.GameObjects.Text
   } = { current: null };
 
-  for (const item of data) {
-    const text = this.add.text(width, shift, item.label, {
+  data.forEach((item, index) => {
+    const text = this.add.text(0, 0, item.label, {
+      resolution: window.devicePixelRatio,
       color: '#fff',
-      fontSize: '20px',
       fontFamily: INTERFACE_FONT.PIXEL,
       align: 'right',
-      padding: { bottom: 4 },
       shadow: {
-        offsetX: 4,
-        offsetY: 4,
         color: '#000',
         blur: 0,
         fill: true,
       },
     });
 
-    shift += text.height + MENU_ITEMS_MARGIN;
+    text.adaptive = () => {
+      const fontSize = container.width / 214;
+      const shadow = fontSize * 4;
+      const margin = container.height * 0.1;
+
+      text.setFontSize(`${fontSize}rem`);
+      text.setShadowOffset(shadow, shadow);
+      text.setPadding(0, 0, 0, shadow);
+      text.setPosition(container.width, (text.height + margin) * index);
+    };
+
     text.setOrigin(1.0, 0.0);
     text.setInteractive();
 
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
-      text.setColor(item.onClick ? INTERFACE_TEXT_COLOR.PRIMARY : INTERFACE_TEXT_COLOR.ACTIVE);
+      if (active.current !== text) {
+        text.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
+      }
     });
 
     text.on(Phaser.Input.Events.POINTER_OUT, () => {
@@ -59,7 +64,7 @@ export const ComponentItems = Component<Props>(function (container, {
         if (active.current) {
           active.current.setColor('#fff');
         }
-        text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
+        text.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
         active.current = text;
       }
     });
@@ -67,12 +72,10 @@ export const ComponentItems = Component<Props>(function (container, {
     container.add(text);
 
     if (item.default) {
+      text.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
       active.current = text;
-      text.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
     }
-  }
-
-  container.setSize(width, shift - MENU_ITEMS_MARGIN);
+  });
 
   return {
     destroy: () => {
