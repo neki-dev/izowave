@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { PlayerStat } from '~type/world/entities/player';
 
 type Props = {
@@ -44,20 +44,17 @@ export const ComponentGameOver = Component<Props>(function (container, {
     color: INTERFACE_TEXT_COLOR.ERROR_DARK,
     fontFamily: INTERFACE_FONT.PIXEL,
     shadow: {
-      color: '#000',
-      blur: 0,
       fill: true,
     },
   });
 
   title.setOrigin(0.5, 1.0);
   title.adaptive = (width, height) => {
-    const fontSize = width / 400;
-    const shadow = fontSize * 4;
-
-    title.setFontSize(`${fontSize}rem`);
-    title.setShadowOffset(shadow, shadow);
-    title.setPadding(0, 0, 0, shadow);
+    scaleText(title, {
+      by: width,
+      scale: 0.05,
+      shadow: true,
+    });
     title.setPosition(0, -height * 0.05);
   };
 
@@ -90,9 +87,10 @@ export const ComponentGameOver = Component<Props>(function (container, {
   text.setAlpha(0.75);
   text.setOrigin(0.5, 0.0);
   text.adaptive = (width, height) => {
-    const fontSize = width / 1400;
-
-    text.setFontSize(`${fontSize}rem`);
+    scaleText(text, {
+      by: width,
+      scale: 0.01,
+    });
     text.setPosition(0, height * 0.05);
   };
 

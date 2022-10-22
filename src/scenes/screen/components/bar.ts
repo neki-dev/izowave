@@ -1,5 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {
@@ -46,17 +46,21 @@ export const ComponentBar = Component<Props>(function (container, {
    * Value
    */
 
-  const label = this.add.text(0, 0, display(), {
+  const label = this.add.text(0, 0, '', {
     fontFamily: INTERFACE_FONT.PIXEL,
     resolution: window.devicePixelRatio,
   });
 
   label.setOrigin(0.5, 0.5);
   label.adaptive = () => {
-    const fontSize = Math.max(0.5, body.width / 140);
-
-    label.setFontSize(`${fontSize}rem`);
-    label.setPosition(container.width / 2, container.height / 2);
+    scaleText(label, {
+      by: body.width,
+      scale: 0.1,
+    });
+    label.setPosition(
+      container.width / 2,
+      container.height / 2,
+    );
   };
 
   container.add(label);

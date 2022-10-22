@@ -42,7 +42,7 @@ export class Screen extends Phaser.Scene {
 
       wave.setPosition(offset, offset);
       wave.setSize(
-        Math.max(90, width * 0.08),
+        0, // Math.max(90, width * 0.08),
         Math.max(23, width * 0.02),
       );
     };

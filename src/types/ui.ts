@@ -15,6 +15,17 @@ export type ComponentInstance<T> = (
   props?: T
 ) => ComponentControl | void;
 
+export type ScaleFontParams = {
+  by: number
+  scale: number
+  shadow?: boolean
+};
+
+export type ScaleFontResult = {
+  fontSize: number
+  shadowSize: number
+};
+
 declare global {
   namespace Phaser {
     namespace GameObjects {

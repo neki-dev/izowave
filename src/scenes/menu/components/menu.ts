@@ -1,6 +1,6 @@
 import { COPYRIGHT } from '~const/core';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
 import { ComponentItems } from './items';
@@ -68,19 +68,18 @@ export const ComponentMenu = Component<Props>(function (container, {
     color: INTERFACE_TEXT_COLOR.BLUE,
     fontFamily: INTERFACE_FONT.PIXEL,
     shadow: {
-      color: '#000',
-      blur: 0,
       fill: true,
     },
   });
 
+  logotype.setOrigin(1.0, 0.0);
   logotype.adaptive = () => {
-    const fontSize = sidebar.width / 94;
-    const shadow = fontSize * 3;
-
-    logotype.setFontSize(`${fontSize}rem`);
-    logotype.setShadowOffset(shadow, shadow);
-    logotype.setPadding(0, 0, 0, shadow);
+    logotype.setPosition(sidebar.width, 0);
+    scaleText(logotype, {
+      by: sidebar.width,
+      scale: 0.16,
+      shadow: true,
+    });
   };
 
   sidebar.add(logotype);
@@ -110,7 +109,7 @@ export const ComponentMenu = Component<Props>(function (container, {
    */
 
   const copyright = this.add.text(0, 0, COPYRIGHT, {
-    // resolution: window.devicePixelRatio,
+    resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.MONOSPACE,
     align: 'right',
   });
@@ -118,10 +117,11 @@ export const ComponentMenu = Component<Props>(function (container, {
   copyright.setOrigin(1.0, 1.0);
   copyright.setAlpha(0.5);
   copyright.adaptive = () => {
-    const fontSize = sidebar.width / 420;
-
-    copyright.setFontSize(`${fontSize}rem`);
     copyright.setPosition(sidebar.width, sidebar.height);
+    scaleText(copyright, {
+      by: sidebar.width,
+      scale: 0.04,
+    });
   };
 
   sidebar.add(copyright);
@@ -170,20 +170,17 @@ export const ComponentMenu = Component<Props>(function (container, {
     resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.PIXEL,
     shadow: {
-      color: '#000',
-      blur: 0,
       fill: true,
     },
   });
 
   title.setAlpha(0.3);
   title.adaptive = () => {
-    const fontSize = sidebar.width / 94;
-    const shadow = fontSize * 3;
-
-    title.setFontSize(`${fontSize}rem`);
-    title.setShadowOffset(shadow, shadow);
-    title.setPadding(0, 0, 0, shadow);
+    scaleText(title, {
+      by: sidebar.width,
+      scale: 0.16,
+      shadow: true,
+    });
   };
 
   page.add(title);

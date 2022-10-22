@@ -1,5 +1,5 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 
 export const ComponentControls = Component(function (container) {
   [
@@ -40,9 +40,10 @@ export const ComponentControls = Component(function (container) {
     });
 
     name.adaptive = () => {
-      const fontSize = container.width / 500;
-
-      name.setFontSize(`${fontSize}rem`);
+      scaleText(name, {
+        by: container.width,
+        scale: 0.035,
+      });
     };
 
     wrapper.add(name);
@@ -58,10 +59,11 @@ export const ComponentControls = Component(function (container) {
 
     description.setOrigin(0.0, 0.5);
     description.adaptive = () => {
-      const fontSize = container.width / 600;
-
-      description.setFontSize(`${fontSize}rem`);
       description.setPosition(name.width, name.height * 0.5);
+      scaleText(description, {
+        by: container.width,
+        scale: 0.025,
+      });
     };
 
     wrapper.add(description);

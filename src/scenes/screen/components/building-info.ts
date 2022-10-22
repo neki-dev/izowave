@@ -1,6 +1,6 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Player } from '~entity/player';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { ComponentCost } from '~scene/screen/components/cost';
 import { ComponentParams } from '~scene/screen/components/params';
 import { BuildingInstance } from '~type/world/entities/building';
@@ -39,23 +39,20 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.PIXEL,
     color: INTERFACE_TEXT_COLOR.PRIMARY,
-    padding: { bottom: 2 },
     shadow: {
-      offsetX: 2,
-      offsetY: 2,
       color: '#332717',
-      blur: 0,
       fill: true,
     },
   });
 
   name.adaptive = () => {
-    const fontSize = body.width / 190;
-    const shadow = fontSize * 3;
     const offset = body.width * 0.07;
 
-    name.setFontSize(`${fontSize}rem`);
-    name.setShadowOffset(shadow, shadow);
+    scaleText(name, {
+      by: body.width,
+      scale: 0.08,
+      shadow: true,
+    });
     name.setPosition(offset, offset);
   };
 
@@ -73,7 +70,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     const offsetX = body.width * 0.07;
     const offsetY = body.width * 0.05;
 
-    params.width = 188;
+    params.width = body.width - (offsetX * 2);
     params.setPosition(
       offsetX,
       name.y + name.height + offsetY,

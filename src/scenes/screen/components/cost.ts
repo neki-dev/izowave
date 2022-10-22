@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { Resources, ResourceType } from '~type/world/resources';
 
 type Props = {
@@ -34,10 +34,12 @@ export const ComponentCost = Component<Props>(function (container, {
   });
 
   title.adaptive = () => {
-    const fontSize = container.width / 100;
     const offset = container.width * 0.15;
 
-    title.setFontSize(`${fontSize}rem`);
+    scaleText(title, {
+      by: container.width,
+      scale: 0.16,
+    });
     title.setPosition(offset, offset);
   };
 
@@ -100,11 +102,16 @@ export const ComponentCost = Component<Props>(function (container, {
     amount.setName('Amount');
     amount.setOrigin(0.0, 0.5);
     amount.adaptive = () => {
-      const fontSize = wrapper.width / 54;
       const offsetX = wrapper.width * 0.15;
 
-      amount.setFontSize(`${fontSize}rem`);
-      amount.setPosition(icon.width + offsetX, wrapper.height / 2);
+      scaleText(amount, {
+        by: wrapper.width,
+        scale: 0.3,
+      });
+      amount.setPosition(
+        icon.width + offsetX,
+        wrapper.height / 2,
+      );
     };
 
     wrapper.add(amount);

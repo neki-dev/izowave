@@ -4,7 +4,7 @@ import { Component } from '~lib/ui';
 export const ComponentFPS = Component(function (container) {
   const value = this.add.text(0, 0, '', {
     resolution: window.devicePixelRatio,
-    fontSize: '0.8rem',
+    fontSize: '12px',
     fontFamily: INTERFACE_FONT.MONOSPACE,
   });
 

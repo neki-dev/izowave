@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 
 export const ComponentAbout = Component(function (container) {
   const text = this.add.text(0, -2, [
@@ -13,8 +13,6 @@ export const ComponentAbout = Component(function (container) {
     resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.MONOSPACE,
     shadow: {
-      color: '#000',
-      blur: 0,
       fill: true,
     },
     // @ts-ignore
@@ -22,13 +20,12 @@ export const ComponentAbout = Component(function (container) {
   });
 
   text.adaptive = () => {
-    const fontSize = container.width / 534;
-    const shadow = fontSize * 3;
-
-    text.setFontSize(`${fontSize}rem`);
-    text.setShadowOffset(shadow, shadow);
-    text.setPadding(0, 0, 0, shadow);
     text.setWordWrapWidth(container.width);
+    scaleText(text, {
+      by: container.width,
+      scale: 0.03,
+      shadow: true,
+    });
   };
 
   container.add(text);

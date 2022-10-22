@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { formatTime } from '~lib/utils';
 import { Wave } from '~scene/world/wave';
 import { NoticeType } from '~type/screen/notice';
@@ -13,42 +13,28 @@ export const ComponentWave = Component<Props>(function (container, {
   wave,
 }) {
   /**
-   * Body
-   */
-
-  const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.75);
-
-  body.setOrigin(0.0, 0.0);
-  body.adaptive = () => {
-    body.setSize(container.width, container.height);
-  };
-
-  container.add(body);
-
-  /**
    * Number
    */
 
-  const number = this.add.text(2, 2, '', {
+  const number = this.add.text(0, 0, '', {
     resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.PIXEL,
     shadow: {
-      color: '#000',
-      blur: 0,
       fill: true,
     },
   });
 
   number.adaptive = () => {
-    const fontSize = container.height / 28;
-    const shadow = fontSize * 3;
-    const height = container.height - 4;
-    const paddingX = container.width * 0.1;
-    const paddingY = (height - (fontSize * 16)) / 2;
+    const { fontSize } = scaleText(number, {
+      by: container.height,
+      scale: 0.6,
+      shadow: true,
+    });
 
-    number.setFontSize(`${fontSize}rem`);
-    number.setFixedSize(0, height);
-    number.setShadowOffset(shadow, shadow);
+    const paddingX = container.height * 0.4;
+    const paddingY = (container.height - fontSize) / 2;
+
+    number.setFixedSize(0, container.height);
     number.setPadding(paddingX, paddingY, paddingX, 0);
   };
 
@@ -61,16 +47,25 @@ export const ComponentWave = Component<Props>(function (container, {
   const counterLabel = this.add.text(0, 0, '', {
     resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.PIXEL,
+    shadow: {
+      fill: true,
+    },
   });
 
-  counterLabel.setAlpha(0.75);
+  counterLabel.setAlpha(0.5);
   counterLabel.adaptive = () => {
-    const fontSize = container.height / 78;
-    const offsetX = container.width * 0.07;
-    const offsetY = container.height * 0.2;
+    const offsetX = container.height * 0.3;
+    const offsetY = container.height * 0.09;
 
-    counterLabel.setFontSize(`${fontSize}rem`);
-    counterLabel.setPosition(number.x + number.width + offsetX, offsetY);
+    counterLabel.setPosition(
+      number.x + number.width + offsetX,
+      offsetY,
+    );
+    scaleText(counterLabel, {
+      by: container.height,
+      scale: 0.3,
+      shadow: true,
+    });
   };
 
   container.add(counterLabel);
@@ -82,17 +77,25 @@ export const ComponentWave = Component<Props>(function (container, {
   const counterValue = this.add.text(0, 0, '', {
     resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.PIXEL,
+    shadow: {
+      fill: true,
+    },
   });
 
+  counterValue.setOrigin(0.0, 1.0);
   counterValue.adaptive = () => {
-    const fontSize = container.height / 40;
-    const offsetX = container.width * 0.07;
-    const offsetY = container.height * 0.07;
+    const offsetX = container.height * 0.3;
+    const offsetY = container.height * 0.09;
 
-    counterValue.setFontSize(`${fontSize}rem`);
+    const { shadowSize } = scaleText(counterValue, {
+      by: container.height,
+      scale: 0.5,
+      shadow: true,
+    });
+
     counterValue.setPosition(
       number.x + number.width + offsetX,
-      counterLabel.y + counterLabel.height + offsetY,
+      container.height + shadowSize - offsetY,
     );
   };
 
@@ -104,13 +107,13 @@ export const ComponentWave = Component<Props>(function (container, {
 
   const onNumberUpdate = () => {
     if (wave.isGoing) {
-      number.setBackgroundColor(INTERFACE_TEXT_COLOR.ERROR_DARK);
       number.setText(String(wave.number));
-      counterLabel.setText('ENEMIES');
+      number.setBackgroundColor(INTERFACE_TEXT_COLOR.ERROR_DARK);
+      counterLabel.setText('ENEMIES LEFT');
     } else {
-      number.setBackgroundColor(INTERFACE_TEXT_COLOR.INFO_DARK);
       number.setText(String(wave.number + 1));
-      counterLabel.setText('TIMELEFT');
+      number.setBackgroundColor(INTERFACE_TEXT_COLOR.INFO_DARK);
+      counterLabel.setText('TIME LEFT');
     }
 
     counterLabel.adaptive();
@@ -140,7 +143,8 @@ export const ComponentWave = Component<Props>(function (container, {
         const timeleft = Math.ceil(wave.getTimeleft() / 1000);
 
         counterValue.setText(formatTime(timeleft));
-        if (timeleft <= 3 && counterValue.style.color !== INTERFACE_TEXT_COLOR.ERROR) {
+
+        if (timeleft <= 5 && counterValue.style.color !== INTERFACE_TEXT_COLOR.ERROR) {
           counterValue.setColor(INTERFACE_TEXT_COLOR.ERROR);
           this.tweens.add({
             targets: counterValue,
@@ -148,7 +152,7 @@ export const ComponentWave = Component<Props>(function (container, {
             duration: 500,
             ease: 'Linear',
             yoyo: true,
-            repeat: 3,
+            repeat: 5,
           });
         }
       }

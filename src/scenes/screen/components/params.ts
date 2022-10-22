@@ -1,5 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { ScreenTexture } from '~type/screen';
 import { BuildingDescriptionItem } from '~type/world/entities/building';
 
@@ -65,7 +65,7 @@ export const ComponentParams = Component<Props>(function (container, {
      * Text
      */
 
-    const text = this.add.text(0, -1, item.text, {
+    const text = this.add.text(0, 0, item.text, {
       resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.MONOSPACE,
       color: item.color || '#fff',
@@ -73,12 +73,17 @@ export const ComponentParams = Component<Props>(function (container, {
 
     text.setName('Text');
     text.adaptive = () => {
-      const fontSize = wrapper.width / 250;
-      const padding = (item.type === 'text') ? 8 : 0;
+      const paddingBottom = (item.type === 'text') ? 8 : 0;
 
-      text.setFontSize(`${fontSize}rem`);
-      text.setX(icon ? (icon.width + 5) : 0);
-      text.setPadding(0, 0, 0, padding);
+      scaleText(text, {
+        by: wrapper.width,
+        scale: 0.07,
+      });
+      text.setPosition(
+        icon ? (icon.width + 5) : 0,
+        0,
+      );
+      text.setPadding(0, 0, 0, paddingBottom);
     };
 
     wrapper.add(text);
@@ -88,18 +93,21 @@ export const ComponentParams = Component<Props>(function (container, {
      */
 
     if (item.post) {
-      const post = this.add.text(0, 0, item.post, {
+      const post = this.add.text(0, 0, ` ${item.post}`, {
         resolution: window.devicePixelRatio,
         fontFamily: INTERFACE_FONT.MONOSPACE,
       });
 
       post.setAlpha(0.75);
       post.adaptive = () => {
-        const fontSize = wrapper.width / 280;
-        const offsetX = 5;
-
-        post.setFontSize(`${fontSize}rem`);
-        post.setX(text.x + text.width + offsetX);
+        scaleText(post, {
+          by: wrapper.width,
+          scale: 0.06,
+        });
+        post.setPosition(
+          text.x + text.width,
+          0,
+        );
       };
 
       wrapper.add(post);

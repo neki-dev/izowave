@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
 type Props = {
@@ -18,29 +18,28 @@ export const ComponentItems = Component<Props>(function (container, {
   data.forEach((item, index) => {
     const text = this.add.text(0, 0, item.label, {
       resolution: window.devicePixelRatio,
-      color: '#fff',
       fontFamily: INTERFACE_FONT.PIXEL,
       align: 'right',
       shadow: {
-        color: '#000',
-        blur: 0,
         fill: true,
       },
     });
 
-    text.adaptive = () => {
-      const fontSize = container.width / 214;
-      const shadow = fontSize * 4;
-      const margin = container.height * 0.1;
-
-      text.setFontSize(`${fontSize}rem`);
-      text.setShadowOffset(shadow, shadow);
-      text.setPadding(0, 0, 0, shadow);
-      text.setPosition(container.width, (text.height + margin) * index);
-    };
-
     text.setOrigin(1.0, 0.0);
     text.setInteractive();
+    text.adaptive = () => {
+      const margin = container.height * 0.07;
+
+      scaleText(text, {
+        by: container.width,
+        scale: 0.08,
+        shadow: true,
+      });
+      text.setPosition(
+        container.width,
+        (text.height + margin) * index,
+      );
+    };
 
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');

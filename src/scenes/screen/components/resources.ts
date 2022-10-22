@@ -1,6 +1,6 @@
 import { INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
 import { Player } from '~entity/player';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 import { PlayerEvents } from '~type/world/entities/player';
 import { ResourceType } from '~type/world/resources';
@@ -71,11 +71,13 @@ export const ComponentResources = Component<Props>(function (container, {
     });
 
     text.adaptive = () => {
-      const fontSize = wrapper.height / 82;
       const offsetX = wrapper.height * 0.2;
       const offsetY = wrapper.height * 0.18;
 
-      text.setFontSize(`${fontSize}rem`);
+      scaleText(text, {
+        by: wrapper.height,
+        scale: 0.2,
+      });
       text.setPosition(
         icon.x + icon.width + offsetX,
         offsetY,
@@ -96,11 +98,13 @@ export const ComponentResources = Component<Props>(function (container, {
     amount.setName('Amount');
     amount.setOrigin(0.0, 1.0);
     amount.adaptive = () => {
-      const fontSize = wrapper.height / 44;
       const offsetX = wrapper.height * 0.2;
       const offsetY = wrapper.height * 0.2;
 
-      amount.setFontSize(`${fontSize}rem`);
+      scaleText(amount, {
+        by: wrapper.height,
+        scale: 0.4,
+      });
       amount.setPosition(
         icon.x + icon.width + offsetX,
         wrapper.height - offsetY,

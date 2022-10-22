@@ -1,6 +1,6 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import { WORLD_DIFFICULTY_KEY } from '~const/world';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { WorldDifficulty } from '~type/world';
 
 type Props = {
@@ -20,21 +20,22 @@ export const ComponentDifficulty = Component<Props>(function (container, {
       fontFamily: INTERFACE_FONT.PIXEL,
       color: (difficulty.current === type) ? INTERFACE_TEXT_COLOR.ACTIVE : '#fff',
       shadow: {
-        color: '#000',
-        blur: 0,
         fill: true,
       },
     });
 
     name.adaptive = () => {
-      const fontSize = container.width / 500;
-      const shadow = fontSize * 3;
-      const margin = container.height * 0.075;
+      const margin = container.height * 0.07;
 
-      name.setFontSize(`${fontSize}rem`);
-      name.setShadowOffset(shadow, shadow);
-      name.setPadding(0, 0, 0, shadow);
-      name.setPosition(0, (name.height + margin) * index);
+      scaleText(name, {
+        by: container.width,
+        scale: 0.035,
+        shadow: true,
+      });
+      name.setPosition(
+        0,
+        (name.height + margin) * index,
+      );
     };
 
     name.setAlpha(disabled ? 0.5 : 1.0);

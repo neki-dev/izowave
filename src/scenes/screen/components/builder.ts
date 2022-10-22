@@ -3,7 +3,7 @@ import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { TILE_META } from '~const/level';
 import { Player } from '~entity/player';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { isMobileDevice } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
@@ -154,9 +154,10 @@ export const ComponentBuilder = Component<Props>(function (container, {
 
       number.setOrigin(1.0, 0.0);
       number.adaptive = () => {
-        const fontSize = wrapper.width / 70;
-
-        number.setFontSize(`${fontSize}rem`);
+        scaleText(number, {
+          by: wrapper.width,
+          scale: 0.22,
+        });
         number.setPosition(wrapper.width - 4, 4);
       };
 

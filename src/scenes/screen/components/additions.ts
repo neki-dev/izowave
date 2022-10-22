@@ -1,5 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 
 type Props = {
   event: (callback: (amount: number) => void) => void
@@ -43,9 +43,10 @@ export const ComponentAdditions = Component<Props>(function (container, {
     addition.setOrigin(0.0, 0.5);
     addition.setAlpha(0.0);
     addition.adaptive = (width) => {
-      const fontSize = Math.max(0.6, width / 1800);
-
-      addition.setFontSize(`${fontSize}rem`);
+      scaleText(addition, {
+        by: width,
+        scale: 0.008,
+      });
     };
 
     container.add(addition);

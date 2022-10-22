@@ -1,5 +1,5 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component, scaleText } from '~lib/ui';
 import { Notice, NoticeType } from '~type/screen/notice';
 
 export const ComponentNotices = Component(function (container) {
@@ -28,10 +28,12 @@ export const ComponentNotices = Component(function (container) {
 
     notice.setOrigin(0.5, 0.0);
     notice.adaptive = (width) => {
-      const fontSize = Math.max(0.75, width / 1400);
       const padding = width * 0.006;
 
-      notice.setFontSize(`${fontSize}rem`);
+      scaleText(notice, {
+        by: width,
+        scale: 0.01,
+      });
       notice.setPadding(padding, padding * 0.8, padding, padding);
     };
 

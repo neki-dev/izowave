@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { Screen } from '~scene/screen';
-import { ComponentControl, ComponentInstance, ComponentResizeCallback } from '~type/ui';
+import {
+  ComponentControl, ComponentInstance, ComponentResizeCallback, ScaleFontParams, ScaleFontResult,
+} from '~type/ui';
 
 function bindScreenResize(callback: ComponentResizeCallback) {
   const refresh = () => {
@@ -82,5 +84,24 @@ export function Component<T = any>(component: ComponentInstance<T>) {
     }
 
     return container;
+  };
+}
+
+export function scaleText(text: Phaser.GameObjects.Text, params: ScaleFontParams): ScaleFontResult {
+  const fontSize = params.by * params.scale;
+  let shadowSize = 0;
+
+  text.setFontSize(fontSize);
+
+  if (params.shadow) {
+    shadowSize = fontSize * 0.25;
+
+    text.setShadowOffset(shadowSize, shadowSize);
+    text.setPadding(0, 0, 0, shadowSize);
+  }
+
+  return {
+    fontSize,
+    shadowSize,
   };
 }
