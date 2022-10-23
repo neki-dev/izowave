@@ -3,10 +3,10 @@ import { DIFFICULTY } from '~const/difficulty';
 import { NPC } from '~entity/npc';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { ShotBall } from '~entity/shot';
-import { registerAssets } from '~lib/assets';
+import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
-import { AssistantTexture, AssistantData } from '~type/world/entities/assistant';
+import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/assistant';
 import { ShotParams, ShotTexture } from '~type/world/entities/shot';
 
 export class Assistant extends NPC {
@@ -78,6 +78,15 @@ export class Assistant extends NPC {
 
     this.live.setMaxHealth(maxHealth);
     this.live.heal();
+  }
+
+  /**
+   * Event dead.
+   */
+  public onDead() {
+    super.onDead();
+
+    this.scene.sound.play(AssistantAudio.DEAD);
   }
 
   /**
@@ -157,13 +166,8 @@ export class Assistant extends NPC {
   }
 }
 
-registerAssets([{
-  key: AssistantTexture.ASSISTANT,
-  type: 'spritesheet',
-  url: `assets/sprites/${AssistantTexture.ASSISTANT}.png`,
-  // @ts-ignore
-  frameConfig: {
-    frameWidth: ASSISTANT_TILE_SIZE[0],
-    frameHeight: ASSISTANT_TILE_SIZE[1],
-  },
-}]);
+registerAudioAssets(AssistantAudio);
+registerSpriteAssets(AssistantTexture, {
+  width: ASSISTANT_TILE_SIZE[0],
+  height: ASSISTANT_TILE_SIZE[1],
+});

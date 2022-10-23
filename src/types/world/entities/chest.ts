@@ -1,7 +1,11 @@
 import Phaser from 'phaser';
 
 export enum ChestTexture {
-  DEFAULT = 'chest',
+  CHEST = 'chest',
+}
+
+export enum ChestAudio {
+  OPEN = 'chest/open',
 }
 
 export type ChestData = {

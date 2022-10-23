@@ -4,7 +4,7 @@ import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP,
   LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT, LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS,
 } from '~const/level';
-import { registerAssets } from '~lib/assets';
+import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType,
@@ -308,22 +308,11 @@ export class Level extends TileMatrix {
   }
 }
 
-registerAssets([{
-  key: LevelTexture.TILESET,
-  type: 'spritesheet',
-  url: `assets/sprites/${LevelTexture.TILESET}.png`,
-  // @ts-ignore
-  frameConfig: {
-    frameWidth: TILE_META.width,
-    frameHeight: TILE_META.height,
-  },
-}, {
-  key: LevelTexture.TREE,
-  type: 'spritesheet',
-  url: `assets/sprites/${LevelTexture.TREE}.png`,
-  // @ts-ignore
-  frameConfig: {
-    frameWidth: TILE_META.width,
-    frameHeight: TILE_META.height + TILE_META.halfHeight,
-  },
-}]);
+registerSpriteAssets(LevelTexture.TILESET, {
+  width: TILE_META.width,
+  height: TILE_META.height,
+});
+registerSpriteAssets(LevelTexture.TREE, {
+  width: TILE_META.width,
+  height: TILE_META.height + TILE_META.halfHeight,
+});

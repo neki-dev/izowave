@@ -46,6 +46,7 @@ export class BuildingTower extends Building {
     } else {
       this.shot = new ShotBall(this, {
         texture: shotData.texture,
+        audio: shotData.audio,
         glowColor: shotData.glowColor,
       });
     }

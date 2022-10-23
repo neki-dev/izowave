@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/difficulty';
-import { registerAssets } from '~lib/assets';
+import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { registerContainerAdaptive } from '~lib/ui';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
@@ -12,7 +12,7 @@ import { ComponentResources } from '~scene/screen/components/resources';
 import { ComponentWave } from '~scene/screen/components/wave';
 import { World } from '~scene/world';
 import { SceneKey } from '~type/scene';
-import { ScreenTexture } from '~type/screen';
+import { ScreenAudio, ScreenTexture } from '~type/screen';
 import { Notice, NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
 import { LiveEvents } from '~type/world/entities/live';
@@ -198,17 +198,9 @@ export class Screen extends Phaser.Scene {
   }
 }
 
-registerAssets([{
-  key: ScreenTexture.ICON,
-  type: 'spritesheet',
-  url: `assets/sprites/${ScreenTexture.ICON}.png`,
-  // @ts-ignore
-  frameConfig: {
-    frameWidth: 10,
-    frameHeight: 10,
-  },
-}, {
-  key: ScreenTexture.ALERT,
-  type: 'image',
-  url: `assets/sprites/${ScreenTexture.ALERT}.png`,
-}]);
+registerAudioAssets(ScreenAudio);
+registerImageAssets(ScreenTexture.ALERT);
+registerSpriteAssets(ScreenTexture.ICON, {
+  width: 10,
+  height: 10,
+});

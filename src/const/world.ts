@@ -5,6 +5,8 @@ export const WORLD_COLLIDE_LOOK = 4.0;
 export const WORLD_DEPTH_UI = 9999;
 export const WORLD_DEPTH_EFFECT = 9998;
 
+export const WORLD_AUDIO_VOLUME = 0.1;
+
 export const WORLD_DIFFICULTY_KEY = 'GAME_DIFFICULTY';
 export const WORLD_DIFFICULTY_POWERS: WorldDifficultyPowers = {
   EASY: 0.8,

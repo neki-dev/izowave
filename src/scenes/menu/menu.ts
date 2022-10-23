@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
 import { INPUT_KEY } from '~const/keyboard';
+import { registerAudioAssets } from '~lib/assets';
 import { ComponentAbout } from '~scene/menu/components/content/about';
 import { ComponentControls } from '~scene/menu/components/content/controls';
 import { ComponentDifficulty } from '~scene/menu/components/content/difficulty';
 import { ComponentMenu } from '~scene/menu/components/menu';
 import { World } from '~scene/world';
-import { MenuItem } from '~type/menu';
+import { MenuAudio, MenuItem } from '~type/menu';
 import { SceneKey } from '~type/scene';
 
 export class Menu extends Phaser.Scene {
@@ -62,3 +63,5 @@ export class Menu extends Phaser.Scene {
     }
   }
 }
+
+registerAudioAssets(MenuAudio);

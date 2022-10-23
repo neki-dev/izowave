@@ -3,7 +3,7 @@ import { Component, scaleText } from '~lib/ui';
 import { formatTime } from '~lib/utils';
 import { Wave } from '~scene/world/wave';
 import { NoticeType } from '~type/screen/notice';
-import { WaveEvents } from '~type/world/wave';
+import { WaveAudio, WaveEvents } from '~type/world/wave';
 
 type Props = {
   wave: Wave
@@ -145,6 +145,18 @@ export const ComponentWave = Component<Props>(function (container, {
         counterValue.setText(formatTime(timeleft));
 
         if (timeleft <= 5 && counterValue.style.color !== INTERFACE_TEXT_COLOR.ERROR) {
+          this.sound.play(WaveAudio.TICK);
+
+          let repeats = timeleft;
+          const tick = setInterval(() => {
+            repeats--;
+            if (repeats === 0) {
+              clearInterval(tick);
+            } else {
+              this.sound.play(WaveAudio.TICK);
+            }
+          }, 1000);
+
           counterValue.setColor(INTERFACE_TEXT_COLOR.ERROR);
           this.tweens.add({
             targets: counterValue,

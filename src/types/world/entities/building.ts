@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { ShotTexture, ShotType } from '~type/world/entities/shot';
+import { ShotAudio, ShotTexture, ShotType } from '~type/world/entities/shot';
 import { Resources, ResourceType } from '~type/world/resources';
 
 export enum BuildingEvents {
@@ -19,15 +19,26 @@ export enum BuildingVariant {
 }
 
 export enum BuildingTexture {
-  WALL = 'build/wall',
-  TOWER_FIRE = 'build/tower_fire',
-  TOWER_FROZEN = 'build/tower_frozen',
-  TOWER_LAZER = 'build/tower_lazer',
-  MINE_BRONZE = 'build/mine_bronze',
-  MINE_SILVER = 'build/mine_silver',
-  MINE_GOLD = 'build/mine_gold',
-  AMMUNITION = 'build/ammunition',
-  MEDIC = 'build/medic',
+  WALL = 'building/wall',
+  TOWER_FIRE = 'building/tower_fire',
+  TOWER_FROZEN = 'building/tower_frozen',
+  TOWER_LAZER = 'building/tower_lazer',
+  MINE_BRONZE = 'building/mine_bronze',
+  MINE_SILVER = 'building/mine_silver',
+  MINE_GOLD = 'building/mine_gold',
+  AMMUNITION = 'building/ammunition',
+  MEDIC = 'building/medic',
+}
+
+export enum BuildingAudio {
+  SELECT = 'building/select',
+  UNSELECT = 'building/unselect',
+  BUILD = 'building/build',
+  UPGRADE = 'building/upgrade',
+  DEAD = 'building/dead',
+  REMOVE = 'building/remove',
+  FAILURE = 'building/failure',
+  OVER = 'building/over', // Maybe replace
 }
 
 export type BuildingActionsParams = {
@@ -71,6 +82,7 @@ export type BuildingTowerShotParams = {
 export type BuildingTowerShotData = {
   type: ShotType
   texture?: ShotTexture
+  audio?: ShotAudio
   glowColor?: number
   params: BuildingTowerShotParams
 };

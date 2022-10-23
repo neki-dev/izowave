@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/difficulty';
-import { registerAssets } from '~lib/assets';
+import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
-import { ChestTexture, ChestData } from '~type/world/entities/chest';
+import { ChestTexture, ChestData, ChestAudio } from '~type/world/entities/chest';
 import { TileType } from '~type/world/level';
 
 export class Chest extends Phaser.GameObjects.Image {
@@ -25,7 +25,7 @@ export class Chest extends Phaser.GameObjects.Image {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
 
-    super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.DEFAULT, variant);
+    super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.CHEST, variant);
     scene.add.existing(this);
     scene.chests.add(this);
 
@@ -76,17 +76,14 @@ export class Chest extends Phaser.GameObjects.Image {
 
     player.giveExperience(experience);
 
+    this.scene.sound.play(ChestAudio.OPEN);
+
     this.destroy();
   }
 }
 
-registerAssets([{
-  key: ChestTexture.DEFAULT,
-  type: 'spritesheet',
-  url: `assets/sprites/${ChestTexture.DEFAULT}.png`,
-  // @ts-ignore
-  frameConfig: {
-    frameWidth: 18,
-    frameHeight: 20,
-  },
-}]);
+registerAudioAssets(ChestAudio);
+registerSpriteAssets(ChestTexture, {
+  width: 18,
+  height: 20,
+});

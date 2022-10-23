@@ -7,14 +7,13 @@ import {
 import { Chest } from '~entity/chest';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
-import { registerAssets } from '~lib/assets';
+import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { entries, keys } from '~lib/core';
-import { aroundPosition, calcGrowth } from '~lib/utils';
+import { aroundPosition, calcGrowth, isMobileDevice } from '~lib/utils';
 import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';
-import { LiveEvents } from '~type/world/entities/live';
 import {
-  PlayerEvents, PlayerTexture, MovementDirection, PlayerStat,
+  PlayerEvents, PlayerTexture, MovementDirection, PlayerStat, PlayerAudio,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { ResourceType, Resources } from '~type/world/resources';
@@ -54,14 +53,14 @@ export class Player extends Sprite {
   private kills: number = 0;
 
   /**
-   * Maximum speed.
+   * Speed without friction.
    */
   private speed: number = DIFFICULTY.PLAYER_SPEED;
 
   /**
    * Keyboard keys.
    */
-  private cursors: Record<string, Phaser.Input.Keyboard.Key>;
+  private cursors: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
 
   /**
    * Current direction in deg.
@@ -72,11 +71,6 @@ export class Player extends Sprite {
    * Player is movement.
    */
   private movement: boolean = false;
-
-  /**
-   * State of move blocking.
-   */
-  private isBlocked: boolean = false;
 
   /**
    * Player NPC assistant.
@@ -105,12 +99,14 @@ export class Player extends Sprite {
     this.setPushable(false);
     this.setOrigin(0.5, 0.75);
 
-    this.registerKeyboard();
+    if (!isMobileDevice()) {
+      this.registerKeyboard();
+    }
+
     this.addAssistant();
     this.addAnimations();
 
     // Add events callbacks
-    this.live.on(LiveEvents.DEAD, () => this.onDead());
     this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => this.onWaveComplete(number));
   }
 
@@ -118,11 +114,11 @@ export class Player extends Sprite {
    * Event update.
    */
   public update() {
-    if (this.isBlocked) {
+    super.update();
+
+    if (this.live.isDead()) {
       return;
     }
-
-    super.update();
 
     this.tile = this.scene.level.getTile({
       ...this.positionAtMatrix,
@@ -234,20 +230,28 @@ export class Player extends Sprite {
   }
 
   /**
-   * Blocking player movement.
+   * Event dead.
    */
-  public freeze() {
-    this.anims.stop();
-    this.isBlocked = true;
-    this.setVelocity(0, 0);
-  }
+  public onDead() {
+    super.onDead();
 
-  /**
-   * Unblocking player movement.
-   */
-  public unfreeze() {
-    this.isBlocked = false;
-    this.updateDirection();
+    this.stopMovement();
+    this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
+    this.scene.sound.play(PlayerAudio.DEAD);
+
+    const record = this.readBestStat();
+    const stat = this.getStat();
+
+    this.writeBestStat(stat, record);
+
+    this.scene.tweens.add({
+      targets: [this, this.container],
+      alpha: 0.0,
+      duration: 250,
+      onComplete: () => {
+        this.scene.finishGame(stat, record);
+      },
+    });
   }
 
   /**
@@ -294,33 +298,8 @@ export class Player extends Sprite {
     this.live.setMaxHealth(maxHealth);
     this.live.heal();
 
+    this.scene.sound.play(PlayerAudio.LEVEL_UP);
     this.scene.screen.message(NoticeType.INFO, 'LEVEL UP');
-  }
-
-  /**
-   * Event player dead.
-   */
-  private onDead() {
-    this.freeze();
-
-    const camera = this.scene.cameras.main;
-
-    camera.stopFollow();
-    camera.zoomTo(2.0, 10 * 1000);
-
-    const record = this.readBestStat();
-    const stat = this.getStat();
-
-    this.writeBestStat(stat, record);
-
-    this.scene.tweens.add({
-      targets: [this, this.container],
-      alpha: 0.0,
-      duration: 250,
-      onComplete: () => {
-        this.scene.finishGame(stat, record);
-      },
-    });
   }
 
   /**
@@ -384,30 +363,94 @@ export class Player extends Sprite {
    * Update move direction and animation.
    */
   private updateDirection() {
-    const x = this.getSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']]);
-    const y = this.getSingleDirection([['UP', 'W'], ['DOWN', 'S']]);
-    const dirKey = `${x}|${y}`;
+    const direction = this.getInputDirection();
+    const key = `${direction.x}|${direction.y}`;
 
     const oldMovement = this.movement;
     const oldDirection = this.direction;
 
-    if (x !== 0 || y !== 0) {
+    if (direction.x !== 0 || direction.y !== 0) {
       this.movement = true;
-      this.direction = PLAYER_MOVE_DIRECTIONS[dirKey];
+      this.direction = PLAYER_MOVE_DIRECTIONS[key];
     } else {
       this.movement = false;
     }
 
     if (oldMovement !== this.movement || oldDirection !== this.direction) {
       if (this.movement) {
-        const animation = PLAYER_MOVE_ANIMATIONS[dirKey];
+        const animation = PLAYER_MOVE_ANIMATIONS[key];
 
         this.anims.play(animation);
+
+        if (!oldMovement) {
+          this.scene.sound.play(PlayerAudio.MOVE, {
+            loop: true,
+            rate: 1.8,
+          });
+        }
       } else {
-        this.anims.setProgress(0);
-        this.anims.stop();
+        this.stopMovement();
       }
     }
+  }
+
+  /**
+   * Stop movement animation and audio.
+   */
+  private stopMovement() {
+    this.anims.setProgress(0);
+    this.anims.stop();
+
+    this.scene.sound.stopByKey(PlayerAudio.MOVE);
+  }
+
+  /**
+   *
+   */
+  private getInputDirection(): Phaser.Types.Math.Vector2Like {
+    let x: number;
+    let y: number;
+
+    if (isMobileDevice()) {
+      // const touch = this.scene.input.activePointer;
+
+      // if (touch.isDown) {
+      //   const angle = Phaser.Math.Angle.BetweenPoints(touch, {
+      //     x: this.scene.cameras.main.centerX,
+      //     y: this.scene.cameras.main.centerY,
+      //   });
+      //   const roundPart = (Math.PI / 4);
+      //   const angleRound = Math.round((angle + Math.PI) / roundPart) * roundPart;
+
+      //   x = Math.round(Math.cos(angleRound));
+      //   y = Math.round(Math.sin(angleRound));
+      // } else {
+      //   x = 0;
+      //   y = 0;
+      // }
+    } else {
+      x = this.getKeyboardSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']]);
+      y = this.getKeyboardSingleDirection([['UP', 'W'], ['DOWN', 'S']]);
+    }
+
+    return { x, y };
+  }
+
+  /**
+   * Get single move direction by keys state.
+   *
+   * @param controls - Keyboard keys
+   */
+  private getKeyboardSingleDirection(
+    controls: [keyof typeof MovementDirection, string][],
+  ): MovementDirection {
+    for (const [core, alias] of controls) {
+      if (this.cursors[core].isDown || this.cursors[alias].isDown) {
+        return MovementDirection[core];
+      }
+    }
+
+    return MovementDirection.NONE;
   }
 
   /**
@@ -438,23 +481,6 @@ export class Player extends Sprite {
     }
 
     return Boolean(tile);
-  }
-
-  /**
-   * Get single move direction by keys state.
-   *
-   * @param controls - Keyboard keys
-   */
-  private getSingleDirection(
-    controls: [keyof typeof MovementDirection, string][],
-  ): MovementDirection {
-    for (const [core, alias] of controls) {
-      if (this.cursors[core].isDown || this.cursors[alias].isDown) {
-        return MovementDirection[core];
-      }
-    }
-
-    return MovementDirection.NONE;
   }
 
   /**
@@ -515,13 +541,8 @@ export class Player extends Sprite {
   }
 }
 
-registerAssets([{
-  key: PlayerTexture.PLAYER,
-  type: 'spritesheet',
-  url: `assets/sprites/${PlayerTexture.PLAYER}.png`,
-  // @ts-ignore
-  frameConfig: {
-    frameWidth: PLAYER_TILE_SIZE[0],
-    frameHeight: PLAYER_TILE_SIZE[1],
-  },
-}]);
+registerAudioAssets(PlayerAudio);
+registerSpriteAssets(PlayerTexture, {
+  width: PLAYER_TILE_SIZE[0],
+  height: PLAYER_TILE_SIZE[1],
+});

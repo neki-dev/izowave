@@ -1,5 +1,6 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component, scaleText } from '~lib/ui';
+import { ScreenAudio } from '~type/screen';
 import { Notice, NoticeType } from '~type/screen/notice';
 
 export const ComponentNotices = Component(function (container) {
@@ -46,6 +47,10 @@ export const ComponentNotices = Component(function (container) {
         notice.destroy();
       }
     });
+
+    if (data.type === NoticeType.ERROR) {
+      this.sound.play(ScreenAudio.ERROR);
+    }
 
     const notice = create(data);
 

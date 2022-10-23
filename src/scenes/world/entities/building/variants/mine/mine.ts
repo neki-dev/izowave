@@ -4,7 +4,9 @@ import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
-import { BuildingDescriptionItem, BuildingEvents, BuildingMineData } from '~type/world/entities/building';
+import {
+  BuildingAudio, BuildingDescriptionItem, BuildingEvents, BuildingMineData,
+} from '~type/world/entities/building';
 import { ResourceType } from '~type/world/resources';
 
 export class BuildingMine extends Building {
@@ -61,7 +63,9 @@ export class BuildingMine extends Building {
     this.generateResource();
 
     if (this.amountLeft === 0) {
+      this.scene.sound.play(BuildingAudio.OVER);
       this.scene.screen.message(NoticeType.WARN, `${this.getName()} RESOURCES ARE OVER`);
+
       this.destroy();
     } else {
       this.pauseActions();

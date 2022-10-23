@@ -3,6 +3,10 @@ export enum ScreenTexture {
   ALERT = 'alert',
 }
 
+export enum ScreenAudio {
+  ERROR = 'ui/error',
+}
+
 export enum ScreenIcon {
   HEALTH = 0,
   RADIUS = 1,

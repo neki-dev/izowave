@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { Building } from '~entity/building';
-import { Assistant } from '~entity/npc/assistant';
+import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 
 export enum EnemyTexture {
@@ -11,6 +11,10 @@ export enum EnemyTexture {
   IMPURE = 'enemy/impure',
   UNDEAD = 'enemy/undead',
   BOUCHE = 'enemy/bouche',
+}
+
+export enum EnemyAudio {
+  ATTACK = 'enemy/attack',
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {

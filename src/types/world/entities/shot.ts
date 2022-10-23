@@ -11,6 +11,12 @@ export enum ShotTexture {
   FROZEN = 'shot/frozen',
 }
 
+export enum ShotAudio {
+  BALL_FIRE = 'shot/ball_fire',
+  BALL_FROZEN = 'shot/ball_frozen',
+  LAZER = 'shot/lazer',
+}
+
 export type ShotParams = {
   speed?: number
   maxDistance: number
@@ -20,6 +26,7 @@ export type ShotParams = {
 
 export type ShotData = {
   texture: ShotTexture
+  audio: ShotAudio
   glowColor?: number
 };
 

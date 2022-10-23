@@ -6,14 +6,62 @@ const ASSETS_PACK: {
   files: [],
 };
 
-export function registerAssets(
-  items: Phaser.Types.Loader.FileConfig | Phaser.Types.Loader.FileConfig[],
-) {
-  if (Array.isArray(items)) {
-    ASSETS_PACK.files = ASSETS_PACK.files.concat(items);
-  } else {
-    ASSETS_PACK.files.push(items);
+type AssetsSource = string | string[] | Record<string, string>;
+
+type AssetsSpriteParams = {
+  width: number
+  height: number
+} | ((sprite: string) => {
+  width: number
+  height: number
+});
+
+function normalizeAssetsFiles(files: AssetsSource): string[] {
+  if (typeof files === 'string') {
+    return [files];
+  } if (Array.isArray(files)) {
+    return files;
   }
+
+  return Object.values(files);
+}
+
+export function registerAudioAssets(files: AssetsSource) {
+  ASSETS_PACK.files = ASSETS_PACK.files.concat(
+    normalizeAssetsFiles(files).map((audio) => ({
+      key: audio,
+      type: 'audio',
+      url: `assets/audio/${audio}.wav`,
+    })),
+  );
+}
+
+export function registerImageAssets(files: AssetsSource) {
+  ASSETS_PACK.files = ASSETS_PACK.files.concat(
+    normalizeAssetsFiles(files).map((image) => ({
+      key: image,
+      type: 'image',
+      url: `assets/sprites/${image}.png`,
+    })),
+  );
+}
+
+export function registerSpriteAssets(files: AssetsSource, params: AssetsSpriteParams) {
+  ASSETS_PACK.files = ASSETS_PACK.files.concat(
+    normalizeAssetsFiles(files).map((sprite) => {
+      const { width, height } = (typeof params === 'function') ? params(sprite) : params;
+
+      return {
+        key: sprite,
+        type: 'spritesheet',
+        url: `assets/sprites/${sprite}.png`,
+        frameConfig: {
+          frameWidth: width,
+          frameHeight: height,
+        },
+      };
+    }),
+  );
 }
 
 export function getAssetsPack() {

@@ -6,7 +6,7 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
-import { BuildingVariant } from '~type/world/entities/building';
+import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType } from '~type/world/level';
 
 const BUILDING_VARIANTS = Object.values(BuildingVariant);
@@ -84,7 +84,13 @@ export class Builder {
   /**
    * Set current building variant.
    */
-  public setBuildingVariant(index: number) {
+  public setBuildingVariant(index: Nullable<number>) {
+    if (index === null) {
+      this.scene.sound.play(BuildingAudio.UNSELECT);
+    } else {
+      this.scene.sound.play(BuildingAudio.SELECT);
+    }
+
     this.variantIndex = index;
 
     if (this.buildingPreview) {
@@ -270,6 +276,8 @@ export class Builder {
    */
   private build() {
     if (!this.isAllowBuild()) {
+      this.scene.sound.play(BuildingAudio.FAILURE);
+
       return;
     }
 
@@ -295,13 +303,14 @@ export class Builder {
       }
     }
 
-    player.takeResources(BuildingInstance.Cost);
+    this.scene.sound.play(BuildingAudio.BUILD);
 
     const positionAtMatrix = this.getAssumedPosition();
 
     new BuildingInstance(this.scene, positionAtMatrix);
-
     this.updateBuildArea();
+
+    player.takeResources(BuildingInstance.Cost);
   }
 
   /**

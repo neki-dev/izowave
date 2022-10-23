@@ -3,11 +3,13 @@ import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
-import { registerAssets } from '~lib/assets';
+import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { WorldEffect } from '~type/world/effects';
-import { EnemyAttackTarget, EnemyData, EnemyTexture } from '~type/world/entities/enemy';
+import {
+  EnemyAttackTarget, EnemyAudio, EnemyData, EnemyTexture,
+} from '~type/world/entities/enemy';
 import { TileType } from '~type/world/level';
 
 export class Enemy extends NPC {
@@ -76,7 +78,7 @@ export class Enemy extends NPC {
   /**
    * Event update.
    */
-  public update(): boolean {
+  public update() {
     const targetReached = super.update();
 
     if (!targetReached) {
@@ -126,6 +128,10 @@ export class Enemy extends NPC {
   public attack(target: EnemyAttackTarget) {
     if (this.isCalm() || target.live.isDead()) {
       return;
+    }
+
+    if (this.scene.sound.getAll(EnemyAudio.ATTACK).length < 3) {
+      this.scene.sound.play(EnemyAudio.ATTACK);
     }
 
     target.live.damage(this.damage);
@@ -194,12 +200,8 @@ export class Enemy extends NPC {
   }
 }
 
-registerAssets(Object.values(EnemyTexture).map((texture) => ({
-  key: texture,
-  type: 'spritesheet',
-  url: `assets/sprites/${texture}.png`,
-  frameConfig: {
-    frameWidth: ENEMY_TEXTURE_META[texture].size,
-    frameHeight: ENEMY_TEXTURE_META[texture].size,
-  },
-})));
+registerAudioAssets(EnemyAudio);
+registerSpriteAssets(EnemyTexture, (texture: EnemyTexture) => ({
+  width: ENEMY_TEXTURE_META[texture].size,
+  height: ENEMY_TEXTURE_META[texture].size,
+}));

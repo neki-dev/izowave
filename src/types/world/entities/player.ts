@@ -7,6 +7,12 @@ export enum PlayerTexture {
   PLAYER = 'player',
 }
 
+export enum PlayerAudio {
+  LEVEL_UP = 'player/level_up',
+  MOVE = 'player/move',
+  DEAD = 'player/dead',
+}
+
 export type PlayerStat = {
   waves?: number
   kills?: number

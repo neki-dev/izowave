@@ -69,6 +69,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
 
     // Add events callbacks
     this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
+    this.live.on(LiveEvents.DEAD, () => this.onDead());
   }
 
   /**
@@ -105,6 +106,30 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
    */
   public getAllPositionsAtMatrix(): Phaser.Types.Math.Vector2Like[] {
     return this.getCorners().map((point) => Level.ToMatrixPosition(point));
+  }
+
+  /**
+   * Damage event.
+   */
+  public onDamage() {
+    if (!this.visible) {
+      return;
+    }
+
+    this.scene.effects.emit(WorldEffect.BLOOD, this, {
+      follow: this,
+      lifespan: { min: 100, max: 250 },
+      scale: { start: 1.0, end: 0.5 },
+      speed: 100,
+      maxParticles: 6,
+    }, 250);
+  }
+
+  /**
+   * Dead event.
+   */
+  // eslint-disable-next-line class-methods-use-this
+  public onDead() {
   }
 
   /**
@@ -206,22 +231,5 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     const bar = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
 
     bar.setSize((this.healthIndicator.width - 2) * value, this.healthIndicator.height - 2);
-  }
-
-  /**
-   * Damage event.
-   */
-  private onDamage() {
-    if (!this.visible) {
-      return;
-    }
-
-    this.scene.effects.emit(WorldEffect.BLOOD, this, {
-      follow: this,
-      lifespan: { min: 100, max: 250 },
-      scale: { start: 1.0, end: 0.5 },
-      speed: 100,
-      maxParticles: 6,
-    }, 250);
   }
 }

@@ -6,7 +6,7 @@ import { TILE_META } from '~const/level';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_UI } from '~const/world';
 import { Hexagon } from '~entity/building/hexagon';
 import { Live } from '~entity/live';
-import { registerAssets } from '~lib/assets';
+import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
@@ -15,7 +15,7 @@ import { ScreenIcon, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
 import {
-  BuildingActionsParams, BuildingData, BuildingEvents,
+  BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingDescriptionItem,
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
@@ -114,7 +114,7 @@ export class Building extends Phaser.GameObjects.Image {
     scene.builder.addFoundation(positionAtMatrix);
 
     // Add keyboard events
-    scene.input.keyboard.on(INPUT_KEY.BUILDING_DESTROY, this.break, this);
+    scene.input.keyboard.on(INPUT_KEY.BUILDING_DESTROY, this.remove, this);
     scene.input.keyboard.on(INPUT_KEY.BUILDING_UPGRADE, this.nextUpgrade, this);
 
     // Add events callbacks
@@ -349,6 +349,7 @@ export class Building extends Phaser.GameObjects.Image {
    * Dead event.
    */
   private onDead() {
+    this.scene.sound.play(BuildingAudio.DEAD);
     this.scene.screen.message(NoticeType.WARN, `${this.getName()} HAS BEEN DESTROYED`);
 
     this.destroy();
@@ -453,27 +454,26 @@ export class Building extends Phaser.GameObjects.Image {
     player.takeResources(cost);
     player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
+    this.scene.sound.play(BuildingAudio.UPGRADE);
     screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
   }
 
   /**
    * Break building.
    */
-  private break() {
+  private remove() {
     if (!this.isSelected()) {
       return;
     }
+
+    this.scene.sound.play(BuildingAudio.REMOVE);
 
     this.destroy();
   }
 }
 
-registerAssets(Object.values(BuildingTexture).map((texture) => ({
-  key: texture,
-  type: 'spritesheet',
-  url: `assets/sprites/${texture}.png`,
-  frameConfig: {
-    frameWidth: TILE_META.width,
-    frameHeight: TILE_META.height,
-  },
-})));
+registerAudioAssets(BuildingAudio);
+registerSpriteAssets(BuildingTexture, {
+  width: TILE_META.width,
+  height: TILE_META.height,
+});

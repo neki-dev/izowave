@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component, scaleText } from '~lib/ui';
-import { MenuItem } from '~type/menu';
+import { MenuAudio, MenuItem } from '~type/menu';
 
 type Props = {
   data: MenuItem[]
@@ -56,6 +56,8 @@ export const ComponentItems = Component<Props>(function (container, {
     });
 
     text.on(Phaser.Input.Events.POINTER_UP, () => {
+      this.sound.play(MenuAudio.CLICK);
+
       if (item.onClick) {
         item.onClick();
       } else if (item.content) {

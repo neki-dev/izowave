@@ -4,7 +4,7 @@ import { BuildingTower } from '~entity/building/variants/tower';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { World } from '~scene/world';
 import { WorldEffect } from '~type/world/effects';
-import { ShotParams } from '~type/world/entities/shot';
+import { ShotAudio, ShotParams } from '~type/world/entities/shot';
 
 export class ShotLazer extends Phaser.GameObjects.Line {
   // @ts-ignore
@@ -89,6 +89,10 @@ export class ShotLazer extends Phaser.GameObjects.Line {
 
     this.setTo(this.parent.x, this.parent.y, target.x, target.y);
     this.setVisible(this.parent.visible && target.visible);
+
+    if (this.scene.sound.getAll(ShotAudio.LAZER).length < 3) {
+      this.scene.sound.play(ShotAudio.LAZER);
+    }
   }
 
   /**

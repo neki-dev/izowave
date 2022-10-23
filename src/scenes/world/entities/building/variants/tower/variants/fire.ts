@@ -2,7 +2,7 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
-import { ShotTexture, ShotType } from '~type/world/entities/shot';
+import { ShotAudio, ShotTexture, ShotType } from '~type/world/entities/shot';
 
 import { BuildingTower } from '../tower';
 
@@ -43,6 +43,7 @@ export class BuildingTowerFire extends BuildingTower {
       shotData: {
         type: ShotType.BALL,
         texture: ShotTexture.FIRE,
+        audio: ShotAudio.BALL_FIRE,
         glowColor: 0xff5400,
         params: {
           damage: 35,

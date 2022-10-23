@@ -6,14 +6,14 @@ import { INTERFACE_FONT } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import { NPC_PATH_RATE } from '~const/npc';
-import { WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
+import { WORLD_AUDIO_VOLUME, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
 import { Building } from '~entity/building';
 import { Chest } from '~entity/chest';
 import { NPC } from '~entity/npc';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
-import { getAssetsPack, loadFontFace, registerAssets } from '~lib/assets';
+import { getAssetsPack, loadFontFace, registerImageAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
 import { removeLoader, setLoaderStatus } from '~lib/loader';
 import { aroundPosition, selectClosest } from '~lib/utils';
@@ -198,6 +198,8 @@ export class World extends Phaser.Scene {
     }
 
     this.sortDepthOptimization();
+
+    this.sound.setVolume(WORLD_AUDIO_VOLUME);
 
     loadFontFace(INTERFACE_FONT.PIXEL, 'retro').finally(() => {
       this.prepareGame();
@@ -659,8 +661,4 @@ export class World extends Phaser.Scene {
   }
 }
 
-registerAssets(Object.values(WorldTexture).map((texture) => ({
-  key: texture,
-  type: 'image',
-  url: `assets/sprites/${texture}.png`,
-})));
+registerImageAssets(WorldTexture);

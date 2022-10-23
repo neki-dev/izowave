@@ -3,10 +3,11 @@ import EventEmitter from 'events';
 import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
+import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { EnemyVariant } from '~type/world/entities/enemy';
-import { WaveEvents } from '~type/world/wave';
+import { WaveAudio, WaveEvents } from '~type/world/wave';
 
 export class Wave extends EventEmitter {
   readonly scene: World;
@@ -152,6 +153,8 @@ export class Wave extends EventEmitter {
       this.number,
     );
 
+    this.scene.sound.play(WaveAudio.START);
+
     this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.START, this.number);
   }
@@ -163,6 +166,8 @@ export class Wave extends EventEmitter {
   public complete() {
     this.isGoing = false;
     this.runTimeleft();
+
+    this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.COMPLETE, this.number);
@@ -212,3 +217,5 @@ export class Wave extends EventEmitter {
     return Phaser.Utils.Array.GetRandom(variants);
   }
 }
+
+registerAudioAssets(WaveAudio);

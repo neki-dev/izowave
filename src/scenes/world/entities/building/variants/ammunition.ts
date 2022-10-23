@@ -4,6 +4,7 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
+  BuildingAudio,
   BuildingDescriptionItem, BuildingEvents, BuildingTexture, BuildingVariant,
 } from '~type/world/entities/building';
 
@@ -80,7 +81,9 @@ export class BuildingAmmunition extends Building {
     if (this.amountLeft <= amount) {
       const left = this.amountLeft;
 
+      this.scene.sound.play(BuildingAudio.OVER);
       this.scene.screen.message(NoticeType.WARN, `${this.getName()} ARE OVER`);
+
       this.destroy();
 
       return left;

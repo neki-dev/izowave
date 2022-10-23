@@ -4,7 +4,6 @@ import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
-import { LiveEvents } from '~type/world/entities/live';
 import { NPCData } from '~type/world/entities/npc';
 
 export class NPC extends Sprite {
@@ -64,9 +63,6 @@ export class NPC extends Sprite {
       delay: Math.random() * 500,
     });
     this.anims.play('idle');
-
-    // Add events callbacks
-    this.live.on(LiveEvents.DEAD, () => this.onDead());
   }
 
   /**
@@ -196,15 +192,21 @@ export class NPC extends Sprite {
    * Event dead.
    */
   public onDead() {
-    this.anims.stop();
-    this.scene.tweens.add({
-      targets: this,
-      alpha: 0.0,
-      duration: 250,
-      onComplete: () => {
-        this.destroy();
-      },
-    });
+    super.onDead();
+
+    if (this.visible) {
+      this.anims.stop();
+      this.scene.tweens.add({
+        targets: this,
+        alpha: 0.0,
+        duration: 250,
+        onComplete: () => {
+          this.destroy();
+        },
+      });
+    } else {
+      this.destroy();
+    }
   }
 
   /**

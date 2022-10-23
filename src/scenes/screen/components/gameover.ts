@@ -52,7 +52,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
   title.adaptive = (width, height) => {
     scaleText(title, {
       by: width,
-      scale: 0.05,
+      scale: 0.035,
       shadow: true,
     });
     title.setPosition(0, -height * 0.05);
