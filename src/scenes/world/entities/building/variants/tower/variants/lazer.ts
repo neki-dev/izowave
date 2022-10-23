@@ -1,8 +1,8 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { ShotLazer } from '~entity/shot/lazer';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
-import { ShotType } from '~type/world/entities/shot';
 
 import { BuildingTower } from '../tower';
 
@@ -40,7 +40,7 @@ export class BuildingTowerLazer extends BuildingTower {
         pause: 1600, // Pause between shoots
       },
       shotData: {
-        type: ShotType.LAZER,
+        instance: ShotLazer,
         params: {
           damage: 15,
         },
@@ -59,7 +59,7 @@ export class BuildingTowerLazer extends BuildingTower {
     return [
       ...super.getInfo(), {
         text: `Damage: ${this.getShotParams().damage * 5}`,
-        post: nextDamage && `→ ${nextDamage}`,
+        post: nextDamage,
         icon: ScreenIcon.DAMAGE,
       },
     ];

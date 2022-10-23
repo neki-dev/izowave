@@ -2,9 +2,10 @@ import Phaser from 'phaser';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { BuildingTower } from '~entity/building/variants/tower';
 import { Enemy } from '~entity/npc/variants/enemy';
+import { registerAudioAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import { WorldEffect } from '~type/world/effects';
-import { ShotAudio, ShotParams } from '~type/world/entities/shot';
+import { ShotLazerAudio, ShotParams } from '~type/world/entities/shot';
 
 export class ShotLazer extends Phaser.GameObjects.Line {
   // @ts-ignore
@@ -90,8 +91,8 @@ export class ShotLazer extends Phaser.GameObjects.Line {
     this.setTo(this.parent.x, this.parent.y, target.x, target.y);
     this.setVisible(this.parent.visible && target.visible);
 
-    if (this.scene.sound.getAll(ShotAudio.LAZER).length < 3) {
-      this.scene.sound.play(ShotAudio.LAZER);
+    if (this.scene.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
+      this.scene.sound.play(ShotLazerAudio.LAZER);
     }
   }
 
@@ -143,3 +144,5 @@ export class ShotLazer extends Phaser.GameObjects.Line {
     }
   }
 }
+
+registerAudioAssets(ShotLazerAudio);

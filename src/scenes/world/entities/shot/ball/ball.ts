@@ -5,7 +5,7 @@ import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { WorldEffect } from '~type/world/effects';
 import {
-  ShotParams, ShotData, ShotParent, ShotAudio, ShotTexture,
+  ShotParams, ShotBallData, ShotParent, ShotBallAudio, ShotBallTexture,
 } from '~type/world/entities/shot';
 
 export class ShotBall extends Phaser.Physics.Arcade.Image {
@@ -23,7 +23,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   /**
    * Shot audio.
    */
-  private readonly audio: ShotAudio;
+  private readonly audio: ShotBallAudio;
 
   /**
    * Shoot effect.
@@ -60,7 +60,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
    */
   constructor(parent: ShotParent, {
     texture, audio, glowColor = null,
-  }: ShotData) {
+  }: ShotBallData) {
     super(parent.scene, parent.x, parent.y, texture);
     parent.scene.add.existing(this);
     parent.scene.shots.add(this);
@@ -129,7 +129,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
     maxDistance, speed, damage = null, freeze = null,
   }: ShotParams) {
     if (!damage && !freeze) {
-      console.warn('Shot has no damage or freeze parameter');
+      console.warn('ShotBall has no damage or freeze parameter');
 
       return;
     }
@@ -183,5 +183,5 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   }
 }
 
-registerAudioAssets(ShotAudio); // TODO: Move to parent class
-registerImageAssets(ShotTexture); // TODO: Move to parent class
+registerAudioAssets(ShotBallAudio);
+registerImageAssets(ShotBallTexture);

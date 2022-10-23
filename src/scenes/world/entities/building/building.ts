@@ -206,7 +206,7 @@ export class Building extends Phaser.GameObjects.Image {
 
       info.push({
         text: `Radius: ${Math.round(radius / 2)}`,
-        post: nextRadius && `→ ${Math.round(nextRadius / 2)}`,
+        post: nextRadius && Math.round(nextRadius / 2),
         icon: ScreenIcon.RADIUS,
       });
     }
@@ -220,7 +220,7 @@ export class Building extends Phaser.GameObjects.Image {
 
       info.push({
         text: `Pause: ${(pause / 1000).toFixed(1)} s`,
-        post: nextPause && `→ ${(nextPause / 1000).toFixed(1)} s`,
+        post: nextPause && `${(nextPause / 1000).toFixed(1)} s`,
         icon: ScreenIcon.PAUSE,
       });
     }

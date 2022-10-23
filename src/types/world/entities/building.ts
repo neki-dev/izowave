@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { ShotAudio, ShotTexture, ShotType } from '~type/world/entities/shot';
+import { ShotInstance } from '~type/world/entities/shot';
 import { Resources, ResourceType } from '~type/world/resources';
 
 export enum BuildingEvents {
@@ -59,7 +59,7 @@ export type BuildingDescriptionItem = {
   text: string
   icon?: number
   type?: 'text' | 'param'
-  post?: string
+  post?: string | number
   color?: string
 };
 
@@ -79,16 +79,11 @@ export type BuildingTowerShotParams = {
   freeze?: number
 };
 
-export type BuildingTowerShotData = {
-  type: ShotType
-  texture?: ShotTexture
-  audio?: ShotAudio
-  glowColor?: number
-  params: BuildingTowerShotParams
-};
-
 export type BuildingTowerData = BuildingData & {
-  shotData: BuildingTowerShotData
+  shotData: {
+    instance: ShotInstance
+    params: BuildingTowerShotParams
+  }
 };
 
 export type BuildingMineData = BuildingData & {

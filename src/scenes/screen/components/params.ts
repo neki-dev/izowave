@@ -93,7 +93,7 @@ export const ComponentParams = Component<Props>(function (container, {
      */
 
     if (item.post) {
-      const post = this.add.text(0, 0, ` ${item.post}`, {
+      const post = this.add.text(0, 0, ` → ${item.post}`, {
         resolution: window.devicePixelRatio,
         fontFamily: INTERFACE_FONT.MONOSPACE,
       });

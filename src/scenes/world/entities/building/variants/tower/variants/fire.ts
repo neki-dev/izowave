@@ -1,8 +1,8 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
-import { ShotAudio, ShotTexture, ShotType } from '~type/world/entities/shot';
 
 import { BuildingTower } from '../tower';
 
@@ -41,10 +41,7 @@ export class BuildingTowerFire extends BuildingTower {
         pause: 1400, // Pause between shoots
       },
       shotData: {
-        type: ShotType.BALL,
-        texture: ShotTexture.FIRE,
-        audio: ShotAudio.BALL_FIRE,
-        glowColor: 0xff5400,
+        instance: ShotBallFire,
         params: {
           damage: 35,
           speed: 550,
@@ -64,7 +61,7 @@ export class BuildingTowerFire extends BuildingTower {
     return [
       ...super.getInfo(), {
         text: `Damage: ${this.getShotParams().damage}`,
-        post: nextDamage && `→ ${nextDamage}`,
+        post: nextDamage,
         icon: ScreenIcon.DAMAGE,
       },
     ];

@@ -1,8 +1,8 @@
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
-import { ShotAudio, ShotTexture, ShotType } from '~type/world/entities/shot';
 
 import { BuildingTower } from '../tower';
 
@@ -41,10 +41,7 @@ export class BuildingTowerFrozen extends BuildingTower {
         pause: 1400, // Pause between shoots
       },
       shotData: {
-        type: ShotType.BALL,
-        texture: ShotTexture.FROZEN,
-        audio: ShotAudio.BALL_FROZEN,
-        glowColor: 0x00a1ff,
+        instance: ShotBallFrozen,
         params: {
           freeze: 1000,
           speed: 550,
@@ -64,7 +61,7 @@ export class BuildingTowerFrozen extends BuildingTower {
     return [
       ...super.getInfo(), {
         text: `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
-        post: nextFreeze && `→ ${nextFreeze.toFixed(1)} s`,
+        post: nextFreeze && `${nextFreeze.toFixed(1)} s`,
         icon: ScreenIcon.DAMAGE,
       },
     ];

@@ -2,18 +2,18 @@ import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/assistant
 import { DIFFICULTY } from '~const/difficulty';
 import { NPC } from '~entity/npc';
 import { Enemy } from '~entity/npc/variants/enemy';
-import { ShotBall } from '~entity/shot';
+import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
 import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/assistant';
-import { ShotParams, ShotTexture } from '~type/world/entities/shot';
+import { ShotParams } from '~type/world/entities/shot';
 
 export class Assistant extends NPC {
   /**
    * Assistant shot item.
    */
-  readonly shot: ShotBall;
+  readonly shot: ShotBallFire;
 
   /**
    * Pause for next attack.
@@ -36,9 +36,7 @@ export class Assistant extends NPC {
     scene.add.existing(this);
     scene.npc.add(this);
 
-    this.shot = new ShotBall(this, {
-      texture: ShotTexture.FIRE,
-    });
+    this.shot = new ShotBallFire(this);
 
     this.body.setCircle(this.width / 2, 0, 1);
   }

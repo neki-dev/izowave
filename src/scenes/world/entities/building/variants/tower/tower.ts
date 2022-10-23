@@ -5,7 +5,8 @@ import { INPUT_KEY } from '~const/keyboard';
 import { Building } from '~entity/building';
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';
 import { Enemy } from '~entity/npc/variants/enemy';
-import { ShotBall, ShotLazer } from '~entity/shot';
+import { ShotBall } from '~entity/shot/ball';
+import { ShotLazer } from '~entity/shot/lazer';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -13,7 +14,7 @@ import { NoticeType } from '~type/screen/notice';
 import {
   BuildingDescriptionItem, BuildingEvents, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
 } from '~type/world/entities/building';
-import { ShotParams, ShotType } from '~type/world/entities/shot';
+import { ShotParams } from '~type/world/entities/shot';
 
 export class BuildingTower extends Building {
   /**
@@ -39,17 +40,10 @@ export class BuildingTower extends Building {
   }: BuildingTowerData) {
     super(scene, data);
 
-    this.shotParams = shotData.params;
+    const ShotInstance = shotData.instance;
 
-    if (shotData.type === ShotType.LAZER) {
-      this.shot = new ShotLazer(this);
-    } else {
-      this.shot = new ShotBall(this, {
-        texture: shotData.texture,
-        audio: shotData.audio,
-        glowColor: shotData.glowColor,
-      });
-    }
+    this.shot = new ShotInstance(this);
+    this.shotParams = shotData.params;
 
     // Add keyboard events
     scene.input.keyboard.on(INPUT_KEY.BUILDING_RELOAD, this.reload, this);
@@ -71,7 +65,7 @@ export class BuildingTower extends Building {
     const info = [
       ...super.getInfo(), {
         text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`,
-        post: nextAmmo && `→ ${nextAmmo}`,
+        post: nextAmmo,
         icon: ScreenIcon.AMMO,
       },
     ];
@@ -89,7 +83,7 @@ export class BuildingTower extends Building {
 
       info.push({
         text: `Speed: ${speed / 10}`,
-        post: nextSpeed && `→ ${Math.round(nextSpeed)}`,
+        post: nextSpeed && Math.round(nextSpeed),
         icon: ScreenIcon.SPEED,
       });
     }

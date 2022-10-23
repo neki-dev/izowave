@@ -68,7 +68,7 @@ export class BuildingAmmunition extends Building {
     return [
       ...super.getInfo(), {
         text: `Left: ${this.amountLeft}`,
-        post: nextLeft && `→ ${nextLeft}`,
+        post: nextLeft,
         icon: ScreenIcon.AMMO,
       },
     ];

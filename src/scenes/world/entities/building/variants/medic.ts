@@ -80,7 +80,7 @@ export class BuildingMedic extends Building {
     return [
       ...super.getInfo(), {
         text: `Heal: ${this.getHealAmount()}`,
-        post: nextHeal && `→ ${nextHeal}`,
+        post: nextHeal,
         icon: ScreenIcon.HEAL,
       },
     ];
