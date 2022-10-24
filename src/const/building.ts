@@ -1,1 +1,2 @@
 export const BUILDING_MAX_UPGRADE_LEVEL = 4;
+export const BUILDING_RESOUCES_LEFT_ALERT = 10;

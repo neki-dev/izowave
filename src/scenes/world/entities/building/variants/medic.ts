@@ -1,4 +1,3 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
 import { Player } from '~entity/player';
 import { World } from '~scene/world';
@@ -11,7 +10,7 @@ export class BuildingMedic extends Building {
   static Name = 'Medic';
 
   static Description = [
-    { text: 'Healing a player while\ninside radius.', type: 'text' },
+    { text: 'Heals player, that are in radius of this building', type: 'text' },
     { text: 'Health: 200', icon: ScreenIcon.HEALTH },
     { text: 'Radius: 200', icon: ScreenIcon.RADIUS },
     { text: 'Pause: 3.0 s', icon: ScreenIcon.PAUSE },
@@ -73,7 +72,7 @@ export class BuildingMedic extends Building {
    * Add heal amount to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextHeal = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextHeal = this.isAllowUpgrade()
       ? DIFFICULTY.MEDIC_HEAL_AMOUNT * (this.upgradeLevel + 1)
       : null;
 

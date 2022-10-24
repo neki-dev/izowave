@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { Resources, ResourceType } from '~type/world/resources';
 
 type Props = {
@@ -18,9 +18,9 @@ export const ComponentCost = Component<Props>(function (container, {
   const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.9);
 
   body.setOrigin(0.0, 0.0);
-  body.adaptive = () => {
+  useAdaptation(body, () => {
     body.setSize(container.width, container.height);
-  };
+  });
 
   container.add(body);
 
@@ -33,7 +33,7 @@ export const ComponentCost = Component<Props>(function (container, {
     fontFamily: INTERFACE_FONT.MONOSPACE,
   });
 
-  title.adaptive = () => {
+  useAdaptation(title, () => {
     const offset = container.width * 0.15;
 
     scaleText(title, {
@@ -41,7 +41,7 @@ export const ComponentCost = Component<Props>(function (container, {
       scale: 0.16,
     });
     title.setPosition(offset, offset);
-  };
+  });
 
   container.add(title);
 
@@ -51,12 +51,12 @@ export const ComponentCost = Component<Props>(function (container, {
 
   const list = this.add.container();
 
-  list.adaptive = () => {
+  useAdaptation(list, () => {
     const offset = container.width * 0.15;
 
     list.setSize(container.width - (offset * 2), 0);
     list.setPosition(offset, title.y + title.height + offset);
-  };
+  });
 
   container.add(list);
 
@@ -67,13 +67,13 @@ export const ComponentCost = Component<Props>(function (container, {
 
     const wrapper = this.add.container();
 
-    wrapper.adaptive = () => {
+    useAdaptation(wrapper, () => {
       const offsetY = list.width * 0.15;
       const height = list.width * 0.23;
 
       wrapper.setSize(list.width, height);
       wrapper.setPosition(0, (height + offsetY) * index);
-    };
+    });
 
     list.add(wrapper);
 
@@ -84,9 +84,9 @@ export const ComponentCost = Component<Props>(function (container, {
     const icon = this.add.rectangle(0, 0, 0, 0, RESOURCE_COLOR[type]);
 
     icon.setOrigin(0.0, 0.0);
-    icon.adaptive = () => {
+    useAdaptation(icon, () => {
       icon.setSize(wrapper.height, wrapper.height);
-    };
+    });
 
     wrapper.add(icon);
 
@@ -101,7 +101,7 @@ export const ComponentCost = Component<Props>(function (container, {
 
     amount.setName('Amount');
     amount.setOrigin(0.0, 0.5);
-    amount.adaptive = () => {
+    useAdaptation(amount, () => {
       const offsetX = wrapper.width * 0.15;
 
       scaleText(amount, {
@@ -112,7 +112,7 @@ export const ComponentCost = Component<Props>(function (container, {
         icon.width + offsetX,
         wrapper.height / 2,
       );
-    };
+    });
 
     wrapper.add(amount);
   });

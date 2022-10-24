@@ -10,7 +10,7 @@ export class BuildingMineBronze extends BuildingMine {
   static Name = 'Bronze mine';
 
   static Description = [
-    { text: 'Bronze resource generation\nfor builds and upgrades.', type: 'text' },
+    { text: 'Bronze resource generation for builds and upgrades', type: 'text' },
     { text: 'Health: 400', icon: ScreenIcon.HEALTH },
     { text: 'Pause: 2.0 s', icon: ScreenIcon.PAUSE },
     { text: `Resources: ${DIFFICULTY.MINE_RESOURCES}`, icon: ScreenIcon.RESOURCES },

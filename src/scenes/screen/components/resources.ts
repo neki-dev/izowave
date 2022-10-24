@@ -1,6 +1,6 @@
 import { INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
 import { Player } from '~entity/player';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 import { PlayerEvents } from '~type/world/entities/player';
 import { ResourceType } from '~type/world/resources';
@@ -18,7 +18,7 @@ export const ComponentResources = Component<Props>(function (container, {
      */
     const wrapper = this.add.container();
 
-    wrapper.adaptive = (width, height) => {
+    useAdaptation(wrapper, (width, height) => {
       const offsetY = height * 0.008;
 
       wrapper.setSize(
@@ -26,7 +26,7 @@ export const ComponentResources = Component<Props>(function (container, {
         Math.max(25, width * 0.02),
       );
       wrapper.setPosition(0, (wrapper.height + offsetY) * index);
-    };
+    });
 
     container.add(wrapper);
 
@@ -37,9 +37,9 @@ export const ComponentResources = Component<Props>(function (container, {
     const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.75);
 
     body.setOrigin(0.0, 0.0);
-    body.adaptive = () => {
+    useAdaptation(body, () => {
       body.setSize(wrapper.width, wrapper.height);
-    };
+    });
 
     wrapper.add(body);
 
@@ -50,13 +50,13 @@ export const ComponentResources = Component<Props>(function (container, {
     const icon = this.add.rectangle(0, 0, 0, 0, RESOURCE_COLOR[type]);
 
     icon.setOrigin(0.0, 0.0);
-    icon.adaptive = () => {
+    useAdaptation(icon, () => {
       const offset = wrapper.height * 0.18;
       const size = wrapper.height - (offset * 2);
 
       icon.setPosition(offset, offset);
       icon.setSize(size, size);
-    };
+    });
 
     wrapper.add(icon);
 
@@ -70,7 +70,7 @@ export const ComponentResources = Component<Props>(function (container, {
       color: '#ddd',
     });
 
-    text.adaptive = () => {
+    useAdaptation(text, () => {
       const offsetX = wrapper.height * 0.2;
       const offsetY = wrapper.height * 0.18;
 
@@ -82,7 +82,7 @@ export const ComponentResources = Component<Props>(function (container, {
         icon.x + icon.width + offsetX,
         offsetY,
       );
-    };
+    });
 
     wrapper.add(text);
 
@@ -97,7 +97,7 @@ export const ComponentResources = Component<Props>(function (container, {
 
     amount.setName('Amount');
     amount.setOrigin(0.0, 1.0);
-    amount.adaptive = () => {
+    useAdaptation(amount, () => {
       const offsetX = wrapper.height * 0.2;
       const offsetY = wrapper.height * 0.2;
 
@@ -109,7 +109,7 @@ export const ComponentResources = Component<Props>(function (container, {
         icon.x + icon.width + offsetX,
         wrapper.height - offsetY,
       );
-    };
+    });
 
     wrapper.add(amount);
 
@@ -128,9 +128,9 @@ export const ComponentResources = Component<Props>(function (container, {
       },
     });
 
-    additions.adaptive = () => {
+    useAdaptation(additions, () => {
       additions.setPosition(wrapper.width + 10, wrapper.height / 2);
-    };
+    });
 
     wrapper.add(additions);
   });

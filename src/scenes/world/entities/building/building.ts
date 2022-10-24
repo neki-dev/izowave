@@ -288,6 +288,13 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
+   * Check if building allow upgrade.
+   */
+  public isAllowUpgrade(): boolean {
+    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
+  }
+
+  /**
    * Get actions radius.
    */
   public getActionsRadius(): number {
@@ -336,13 +343,6 @@ export class Building extends Phaser.GameObjects.Image {
         this.upgradeLevel,
       )
       : 0;
-  }
-
-  /**
-   * Check if building allow upgrade.
-   */
-  private isAllowUpgrade(): boolean {
-    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
   /**

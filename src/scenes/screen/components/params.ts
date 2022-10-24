@@ -1,5 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { ScreenTexture } from '~type/screen';
 import { BuildingDescriptionItem } from '~type/world/entities/building';
 
@@ -7,6 +7,7 @@ type Props = {
   data: () => BuildingDescriptionItem[]
 };
 
+// TODO: Fix adaptation
 export const ComponentParams = Component<Props>(function (container, {
   data,
 }) {
@@ -14,14 +15,18 @@ export const ComponentParams = Component<Props>(function (container, {
     current: string
   } = { current: null };
 
-  const refreshWrapper = (wrapper: Phaser.GameObjects.Container): number => {
-    const text = <Phaser.GameObjects.Text> wrapper.getByName('Text');
-
+  useAdaptation(container, () => {
     // eslint-disable-next-line no-param-reassign
-    wrapper.height = text.height;
+    container.width = 190;
+  }, () => {
+    const wrappers = <Phaser.GameObjects.Container[]> container.getAll();
+    const lastWrapper = wrappers[wrappers.length - 1];
 
-    return wrapper.y + wrapper.height;
-  };
+    if (lastWrapper) {
+      // eslint-disable-next-line no-param-reassign
+      container.height = lastWrapper.y + lastWrapper.height;
+    }
+  });
 
   const create = (item: BuildingDescriptionItem, index: number) => {
     /**
@@ -30,20 +35,24 @@ export const ComponentParams = Component<Props>(function (container, {
 
     const wrapper = this.add.container();
 
-    wrapper.adaptive = () => {
+    useAdaptation(wrapper, () => {
       let offset = 0;
 
       if (index > 0) {
-        // Get offset by previon wrapper
-        const offsetY = container.width * 0.025;
         const prevWrapper = <Phaser.GameObjects.Container> container.getAt(index - 1);
+        const prevOffset = prevWrapper.y + prevWrapper.height;
+        const offsetY = container.width * 0.025;
 
-        offset += refreshWrapper(prevWrapper) + offsetY;
+        offset += prevOffset + offsetY;
       }
 
-      wrapper.width = container.width;
       wrapper.setPosition(0, offset);
-    };
+      wrapper.width = container.width;
+    }, () => {
+      const text = <Phaser.GameObjects.Text> wrapper.getByName('Text');
+
+      wrapper.height = text.height;
+    });
 
     container.add(wrapper);
 
@@ -72,19 +81,20 @@ export const ComponentParams = Component<Props>(function (container, {
     });
 
     text.setName('Text');
-    text.adaptive = () => {
+    useAdaptation(text, () => {
       const paddingBottom = (item.type === 'text') ? 8 : 0;
 
+      text.setWordWrapWidth(wrapper.width);
       scaleText(text, {
         by: wrapper.width,
-        scale: 0.07,
+        scale: 0.072,
       });
       text.setPosition(
         icon ? (icon.width + 5) : 0,
-        0,
+        -2, // ?
       );
       text.setPadding(0, 0, 0, paddingBottom);
-    };
+    });
 
     wrapper.add(text);
 
@@ -99,7 +109,7 @@ export const ComponentParams = Component<Props>(function (container, {
       });
 
       post.setAlpha(0.75);
-      post.adaptive = () => {
+      useAdaptation(post, () => {
         scaleText(post, {
           by: wrapper.width,
           scale: 0.06,
@@ -108,7 +118,7 @@ export const ComponentParams = Component<Props>(function (container, {
           text.x + text.width,
           0,
         );
-      };
+      });
 
       wrapper.add(post);
     }
@@ -141,16 +151,10 @@ export const ComponentParams = Component<Props>(function (container, {
         return;
       }
 
-      items = items.sort((a, b) => (b.type || 'param').localeCompare((a.type || 'param')));
+      items = items.sort((a, b) => (b.type || 'param').localeCompare(a.type || 'param'));
       items.forEach(create);
 
-      const lastWrapper = <Phaser.GameObjects.Container> container.getAt(items.length - 1);
-
-      // eslint-disable-next-line no-param-reassign
-      container.width = 188; // TODO
       container.refreshAdaptive();
-      // eslint-disable-next-line no-param-reassign
-      container.height = refreshWrapper(lastWrapper);
     },
   };
 });

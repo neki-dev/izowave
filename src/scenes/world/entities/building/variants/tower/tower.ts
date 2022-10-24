@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
+import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { Building } from '~entity/building';
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';
@@ -12,7 +12,7 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
-  BuildingDescriptionItem, BuildingEvents, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
+  BuildingAudio, BuildingDescriptionItem, BuildingEvents, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
 } from '~type/world/entities/building';
 import { ShotParams } from '~type/world/entities/shot';
 
@@ -59,7 +59,7 @@ export class BuildingTower extends Building {
    * Add ammo left and reload to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextAmmo = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextAmmo = this.isAllowUpgrade()
       ? DIFFICULTY.TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
       : null;
     const info = [
@@ -67,6 +67,9 @@ export class BuildingTower extends Building {
         text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`,
         post: nextAmmo,
         icon: ScreenIcon.AMMO,
+        color: (this.ammoLeft === 0)
+          ? INTERFACE_TEXT_COLOR.WARN
+          : undefined,
       },
     ];
 
@@ -77,13 +80,13 @@ export class BuildingTower extends Building {
     const { speed } = this.getShotParams();
 
     if (speed) {
-      const nextSpeed = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
-        ? this.getShotParams(this.upgradeLevel + 1).speed / 10
+      const nextSpeed = this.isAllowUpgrade()
+        ? this.getShotParams(this.upgradeLevel + 1).speed
         : null;
 
       info.push({
         text: `Speed: ${speed / 10}`,
-        post: nextSpeed && Math.round(nextSpeed),
+        post: nextSpeed && Math.round(nextSpeed / 10),
         icon: ScreenIcon.SPEED,
       });
     }
@@ -100,6 +103,7 @@ export class BuildingTower extends Building {
     if (
       this.ammoLeft === 0
       || !this.isAllowAction()
+      || this.scene.player.live.isDead()
     ) {
       return;
     }
@@ -200,6 +204,7 @@ export class BuildingTower extends Building {
 
     this.ammoLeft += ammo;
 
+    this.scene.sound.play(BuildingAudio.RELOAD);
     this.removeAlert();
   }
 

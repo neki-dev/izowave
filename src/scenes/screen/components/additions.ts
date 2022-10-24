@@ -1,5 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 
 type Props = {
   event: (callback: (amount: number) => void) => void
@@ -42,12 +42,12 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
     addition.setOrigin(0.0, 0.5);
     addition.setAlpha(0.0);
-    addition.adaptive = (width) => {
+    useAdaptation(addition, (width) => {
       scaleText(addition, {
         by: width,
         scale: 0.008,
       });
-    };
+    });
 
     container.add(addition);
     container.refreshAdaptive();

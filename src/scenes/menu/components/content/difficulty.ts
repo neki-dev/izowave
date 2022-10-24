@@ -1,6 +1,6 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import { WORLD_DIFFICULTY_KEY } from '~const/world';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { WorldDifficulty } from '~type/world';
 
 type Props = {
@@ -24,7 +24,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
       },
     });
 
-    name.adaptive = () => {
+    useAdaptation(name, () => {
       const margin = container.height * 0.07;
 
       scaleText(name, {
@@ -36,7 +36,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
         0,
         (name.height + margin) * index,
       );
-    };
+    });
 
     name.setAlpha(disabled ? 0.5 : 1.0);
 

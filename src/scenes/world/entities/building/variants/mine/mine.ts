@@ -1,5 +1,6 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
+import { BUILDING_RESOUCES_LEFT_ALERT } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
+import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -37,7 +38,7 @@ export class BuildingMine extends Building {
    * Add amount left to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextLeft = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextLeft = this.isAllowUpgrade()
       ? this.amountLeft + (DIFFICULTY.MINE_RESOURCES_UPGRADE * this.upgradeLevel)
       : null;
 
@@ -46,6 +47,9 @@ export class BuildingMine extends Building {
         text: `Left: ${this.amountLeft}`,
         post: nextLeft,
         icon: ScreenIcon.RESOURCES,
+        color: (this.amountLeft < BUILDING_RESOUCES_LEFT_ALERT)
+          ? INTERFACE_TEXT_COLOR.WARN
+          : undefined,
       },
     ];
   }
@@ -70,7 +74,7 @@ export class BuildingMine extends Building {
     } else {
       this.pauseActions();
 
-      if (this.amountLeft === 10) {
+      if (this.amountLeft === BUILDING_RESOUCES_LEFT_ALERT) {
         this.addAlert();
       }
     }

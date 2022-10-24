@@ -38,7 +38,8 @@ export enum BuildingAudio {
   DEAD = 'building/dead',
   REMOVE = 'building/remove',
   FAILURE = 'building/failure',
-  OVER = 'building/over', // Maybe replace
+  OVER = 'building/over',
+  RELOAD = 'building/reload',
 }
 
 export type BuildingActionsParams = {

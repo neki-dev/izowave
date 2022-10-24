@@ -6,7 +6,6 @@ export type ComponentResizeCallback = (width: number, height: number) => void;
 export type ComponentControl = {
   update?: () => void
   destroy?: () => void
-  resize?: ComponentResizeCallback
 };
 
 export type ComponentInstance<T> = (
@@ -30,7 +29,10 @@ declare global {
   namespace Phaser {
     namespace GameObjects {
       interface GameObject {
-        adaptive?: (width?: number, height?: number) => void
+        adaptives?: {
+          before: ComponentResizeCallback[]
+          after: ComponentResizeCallback[]
+        }
       }
 
       interface Container {

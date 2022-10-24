@@ -45,15 +45,15 @@ export class Assistant extends NPC {
    * Event update.
    */
   public update() {
-    this.attack();
+    super.update();
 
-    const targetReached = super.update();
-
-    if (!targetReached) {
-      return;
+    if (this.pathComplete) {
+      this.setVelocity(0, 0);
     }
 
-    this.setVelocity(0, 0);
+    if (!this.scene.player.live.isDead()) {
+      this.attack();
+    }
   }
 
   /**

@@ -3,7 +3,7 @@ import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { TILE_META } from '~const/level';
 import { Player } from '~entity/player';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { isMobileDevice } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
@@ -61,7 +61,9 @@ export const ComponentBuilder = Component<Props>(function (container, {
           ...data.Description, {
             text: `You have ${count} of ${limit}`,
             type: 'text',
-            color: (count >= limit) ? INTERFACE_TEXT_COLOR.ERROR : undefined,
+            color: (count >= limit)
+              ? INTERFACE_TEXT_COLOR.ERROR
+              : undefined,
           },
         ];
       }
@@ -94,13 +96,13 @@ export const ComponentBuilder = Component<Props>(function (container, {
 
     const wrapper = this.add.container();
 
-    wrapper.adaptive = (width, height) => {
+    useAdaptation(wrapper, (width, height) => {
       const size = Math.max(30, width * 0.03);
       const offsetY = height * 0.008;
 
       wrapper.setSize(size, size);
       wrapper.setPosition(-wrapper.width, (wrapper.height + offsetY) * index);
-    };
+    });
 
     list.add(wrapper);
 
@@ -113,10 +115,10 @@ export const ComponentBuilder = Component<Props>(function (container, {
     body.setName('Body');
     body.setAlpha(0.5);
     body.setOrigin(0.0, 0.0);
-    body.adaptive = () => {
+    useAdaptation(body, () => {
       body.setSize(wrapper.width, wrapper.height);
       body.setInteractive();
-    };
+    });
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     body.on(Phaser.Input.Events.POINTER_OVER, () => focus(index));
@@ -133,12 +135,12 @@ export const ComponentBuilder = Component<Props>(function (container, {
 
     const preview = this.add.image(0, 0, BUILDINGS[variant].Texture);
 
-    preview.adaptive = () => {
+    useAdaptation(preview, () => {
       const offset = wrapper.width * 0.18;
 
       preview.setScale((wrapper.height - (offset * 2)) / TILE_META.height);
       preview.setPosition(wrapper.width / 2, wrapper.height / 2);
-    };
+    });
 
     wrapper.add(preview);
 
@@ -153,13 +155,13 @@ export const ComponentBuilder = Component<Props>(function (container, {
       });
 
       number.setOrigin(1.0, 0.0);
-      number.adaptive = () => {
+      useAdaptation(number, () => {
         scaleText(number, {
           by: wrapper.width,
           scale: 0.22,
         });
         number.setPosition(wrapper.width - 4, 4);
-      };
+      });
 
       wrapper.add(number);
     }
@@ -176,6 +178,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
 
     info.forceUpdate();
     info.setVisible(true);
+
     this.input.setDefaultCursor('pointer');
     hover.current = index;
   };
@@ -186,6 +189,7 @@ export const ComponentBuilder = Component<Props>(function (container, {
     }
 
     info.setVisible(false);
+
     this.input.setDefaultCursor('default');
     hover.current = null;
   };

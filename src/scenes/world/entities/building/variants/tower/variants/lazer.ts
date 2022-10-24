@@ -1,4 +1,3 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { ShotLazer } from '~entity/shot/lazer';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -10,7 +9,7 @@ export class BuildingTowerLazer extends BuildingTower {
   static Name = 'Lazer tower';
 
   static Description = [
-    { text: 'Instant and continuous\nlaser attack of enemy.', type: 'text' },
+    { text: 'Instant and continuous laser attack of enemies', type: 'text' },
     { text: 'Health: 300', icon: ScreenIcon.HEALTH },
     { text: 'Radius: 180', icon: ScreenIcon.RADIUS },
     { text: 'Pause: 1.6 s', icon: ScreenIcon.PAUSE },
@@ -52,7 +51,7 @@ export class BuildingTowerLazer extends BuildingTower {
    * Add damage to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextDamage = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextDamage = this.isAllowUpgrade()
       ? this.getShotParams(this.upgradeLevel + 1).damage * 5
       : null;
 

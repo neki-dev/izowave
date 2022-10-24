@@ -1,6 +1,6 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Player } from '~entity/player';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { ComponentCost } from '~scene/screen/components/cost';
 import { ComponentParams } from '~scene/screen/components/params';
 import { BuildingInstance } from '~type/world/entities/building';
@@ -12,6 +12,7 @@ type Props = {
   resize?: (container: Phaser.GameObjects.Container) => void
 };
 
+// TODO: Fix adaptation
 export const ComponentBuildingInfo = Component<Props>(function (container, {
   player, data, resize, mode = 'building',
 }) {
@@ -20,16 +21,27 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   };
 
   /**
+   * Sidedata
+   */
+  const sidedata = this.add.container();
+
+  useAdaptation(sidedata, () => {
+    sidedata.width = 220;
+  });
+
+  container.add(sidedata);
+
+  /**
    * Body
    */
   const body = this.add.rectangle(0, 0, 0, 0, INTERFACE_BOX_COLOR.BLUE, 0.9);
 
   body.setOrigin(0.0, 0.0);
-  body.adaptive = () => {
-    body.width = 220;
-  };
+  useAdaptation(body, () => {
+    body.width = sidedata.width;
+  });
 
-  container.add(body);
+  sidedata.add(body);
 
   /**
    * Name
@@ -45,18 +57,18 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     },
   });
 
-  name.adaptive = () => {
+  useAdaptation(name, () => {
     const offset = body.width * 0.07;
 
     scaleText(name, {
       by: body.width,
-      scale: 0.08,
+      scale: 0.085,
       shadow: true,
     });
     name.setPosition(offset, offset);
-  };
+  });
 
-  container.add(name);
+  sidedata.add(name);
 
   /**
    * Params
@@ -66,18 +78,17 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     data: () => data()?.Description,
   });
 
-  params.adaptive = () => {
+  useAdaptation(params, () => {
     const offsetX = body.width * 0.07;
-    const offsetY = body.width * 0.05;
+    const offsetY = body.width * 0.035;
 
-    params.width = body.width - (offsetX * 2);
     params.setPosition(
       offsetX,
       name.y + name.height + offsetY,
     );
-  };
+  });
 
-  container.add(params);
+  sidedata.add(params);
 
   /**
    * Cost
@@ -90,10 +101,10 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   });
 
   cost.setVisible(false);
-  cost.adaptive = () => {
+  useAdaptation(cost, () => {
     cost.setPosition(body.width, 0);
-    cost.setSize(60, body.height);
-  };
+    cost.setSize(60, body.height); // ?
+  });
 
   container.add(cost);
 
@@ -114,9 +125,9 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
    */
 
   const refreshSize = () => {
-    const padding = 16;
+    const paddingBottom = body.width * 0.07;
     const width = body.width + (cost.visible ? cost.width : 0);
-    const height = Math.max(params.y + params.height + padding, 77);
+    const height = params.y + params.height + paddingBottom;
 
     body.height = height;
     cost.height = height;
@@ -131,32 +142,31 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     }
   };
 
-  refreshSize();
-
   return {
     update: () => {
       const values = data();
+      let needRefresh = false;
 
       if (values?.Name) {
         name.setText(values.Name);
       }
 
-      if (values?.Description) {
-        const newLines = values?.Description.map((item) => item.text.split('\n')).flat();
-
-        if (lines.current !== newLines.length) {
-          lines.current = newLines.length;
-          refreshSize();
-        }
+      if (values?.Description && lines.current !== values.Description.length) {
+        lines.current = values.Description.length;
+        needRefresh = true;
       }
 
       if (values?.Cost) {
         if (!cost.visible) {
           cost.setVisible(true);
-          refreshSize();
+          needRefresh = true;
         }
       } else if (cost.visible) {
         cost.setVisible(false);
+        needRefresh = true;
+      }
+
+      if (needRefresh) {
         refreshSize();
       }
     },

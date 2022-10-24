@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { INTERFACE_FONT } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 
 export const ComponentAbout = Component(function (container) {
   const text = this.add.text(0, -2, [
@@ -19,14 +19,14 @@ export const ComponentAbout = Component(function (container) {
     lineSpacing: 6,
   });
 
-  text.adaptive = () => {
+  useAdaptation(text, () => {
     text.setWordWrapWidth(container.width);
     scaleText(text, {
       by: container.width,
       scale: 0.03,
       shadow: true,
     });
-  };
+  });
 
   container.add(text);
 });

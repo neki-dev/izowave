@@ -1,4 +1,3 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -14,7 +13,7 @@ export class BuildingAmmunition extends Building {
   static Name = 'Ammunition';
 
   static Description = [
-    { text: 'Ammo for towers.\nTo reload tower must\nbe inside radius.', type: 'text' },
+    { text: 'Reloading towers ammo, that are in radius of this building', type: 'text' },
     { text: 'Health: 300', icon: ScreenIcon.HEALTH },
     { text: 'Radius: 160', icon: ScreenIcon.RADIUS },
     { text: `Ammo: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: ScreenIcon.AMMO },
@@ -61,7 +60,7 @@ export class BuildingAmmunition extends Building {
    * Add amount left to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextLeft = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextLeft = this.isAllowUpgrade()
       ? this.amountLeft + (DIFFICULTY.AMMUNITION_AMMO_UPGRADE * this.upgradeLevel)
       : null;
 

@@ -1,4 +1,3 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -10,7 +9,7 @@ export class BuildingTowerFire extends BuildingTower {
   static Name = 'Fire tower';
 
   static Description = [
-    { text: 'Basic attack of enemy\nwith a fireball.', type: 'text' },
+    { text: 'Basic fire attack of enemies', type: 'text' },
     { text: 'Health: 600', icon: ScreenIcon.HEALTH },
     { text: 'Radius: 215', icon: ScreenIcon.RADIUS },
     { text: 'Pause: 1.4 s', icon: ScreenIcon.PAUSE },
@@ -54,7 +53,7 @@ export class BuildingTowerFire extends BuildingTower {
    * Add damage to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextDamage = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextDamage = this.isAllowUpgrade()
       ? this.getShotParams(this.upgradeLevel + 1).damage
       : null;
 

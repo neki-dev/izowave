@@ -1,6 +1,6 @@
 import { COPYRIGHT } from '~const/core';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
 import { ComponentItems } from './items';
@@ -19,9 +19,9 @@ export const ComponentMenu = Component<Props>(function (container, {
   const background = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.85);
 
   background.setOrigin(0.0, 0.0);
-  background.adaptive = (width, height) => {
+  useAdaptation(background, (width, height) => {
     background.setSize(width, height);
-  };
+  });
 
   container.add(background);
 
@@ -31,7 +31,7 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   const wrapper = this.add.container();
 
-  wrapper.adaptive = (width, height) => {
+  useAdaptation(wrapper, (width, height) => {
     wrapper.setSize(
       Math.min(width * 0.9, 1000),
       Math.min(height * 0.8, 440),
@@ -40,7 +40,7 @@ export const ComponentMenu = Component<Props>(function (container, {
       (width / 2) - (wrapper.width / 2),
       (height / 2) - (wrapper.height / 2),
     );
-  };
+  });
 
   container.add(wrapper);
 
@@ -50,12 +50,12 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   const sidebar = this.add.container();
 
-  sidebar.adaptive = () => {
+  useAdaptation(sidebar, () => {
     sidebar.setSize(
       wrapper.width * 0.3,
       wrapper.height,
     );
-  };
+  });
 
   wrapper.add(sidebar);
 
@@ -73,14 +73,14 @@ export const ComponentMenu = Component<Props>(function (container, {
   });
 
   logotype.setOrigin(1.0, 0.0);
-  logotype.adaptive = () => {
+  useAdaptation(logotype, () => {
     logotype.setPosition(sidebar.width, 0);
     scaleText(logotype, {
       by: sidebar.width,
       scale: 0.16,
       shadow: true,
     });
-  };
+  });
 
   sidebar.add(logotype);
 
@@ -94,13 +94,13 @@ export const ComponentMenu = Component<Props>(function (container, {
     onSelect: (item: MenuItem) => updatePage(item),
   });
 
-  items.adaptive = () => {
+  useAdaptation(items, () => {
     const margin = sidebar.height * 0.15;
     const offset = logotype.height + margin;
 
     items.setSize(sidebar.width, sidebar.height - offset);
     items.setPosition(0, offset);
-  };
+  });
 
   sidebar.add(items);
 
@@ -116,13 +116,13 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   copyright.setOrigin(1.0, 1.0);
   copyright.setAlpha(0.5);
-  copyright.adaptive = () => {
+  useAdaptation(copyright, () => {
     copyright.setPosition(sidebar.width, sidebar.height);
     scaleText(copyright, {
       by: sidebar.width,
       scale: 0.04,
     });
-  };
+  });
 
   sidebar.add(copyright);
 
@@ -133,13 +133,13 @@ export const ComponentMenu = Component<Props>(function (container, {
   const line = this.add.rectangle(0, 0, 0, 0, 0xffffff, 0.3);
 
   line.setOrigin(0.5, 0.0);
-  line.adaptive = () => {
+  useAdaptation(line, () => {
     line.setSize(1, sidebar.height * 1.4);
     line.setPosition(
       sidebar.width + wrapper.width * 0.09,
       -sidebar.height * 0.2,
     );
-  };
+  });
 
   sidebar.add(line);
 
@@ -149,7 +149,7 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   const page = this.add.container();
 
-  page.adaptive = () => {
+  useAdaptation(page, () => {
     page.setSize(
       wrapper.width * 0.53,
       wrapper.height,
@@ -158,7 +158,7 @@ export const ComponentMenu = Component<Props>(function (container, {
       wrapper.width - page.width,
       0,
     );
-  };
+  });
 
   wrapper.add(page);
 
@@ -175,13 +175,13 @@ export const ComponentMenu = Component<Props>(function (container, {
   });
 
   title.setAlpha(0.3);
-  title.adaptive = () => {
+  useAdaptation(title, () => {
     scaleText(title, {
       by: sidebar.width,
       scale: 0.16,
       shadow: true,
     });
-  };
+  });
 
   page.add(title);
 
@@ -191,13 +191,13 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   const content = this.add.container();
 
-  content.adaptive = () => {
+  useAdaptation(content, () => {
     const margin = page.height * 0.15;
     const offset = title.height + margin;
 
     content.setSize(page.width, page.height - offset);
     content.setPosition(0, offset);
-  };
+  });
 
   page.add(content);
 
@@ -212,9 +212,9 @@ export const ComponentMenu = Component<Props>(function (container, {
 
     const contentChild = item.content();
 
-    contentChild.adaptive = () => {
+    useAdaptation(contentChild, () => {
       contentChild.setSize(content.width, content.height);
-    };
+    });
     contentChild.refreshAdaptive();
 
     content.add(contentChild);

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { MenuAudio, MenuItem } from '~type/menu';
 
 type Props = {
@@ -27,7 +27,7 @@ export const ComponentItems = Component<Props>(function (container, {
 
     text.setOrigin(1.0, 0.0);
     text.setInteractive();
-    text.adaptive = () => {
+    useAdaptation(text, () => {
       const margin = container.height * 0.07;
 
       scaleText(text, {
@@ -39,7 +39,7 @@ export const ComponentItems = Component<Props>(function (container, {
         container.width,
         (text.height + margin) * index,
       );
-    };
+    });
 
     text.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');

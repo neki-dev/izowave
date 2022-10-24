@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { PlayerStat } from '~type/world/entities/player';
 
 type Props = {
@@ -17,9 +17,9 @@ export const ComponentGameOver = Component<Props>(function (container, {
   const background = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.85);
 
   background.setOrigin(0.0, 0.0);
-  background.adaptive = (width, height) => {
+  useAdaptation(background, (width, height) => {
     background.setSize(width, height);
-  };
+  });
 
   container.add(background);
 
@@ -29,9 +29,9 @@ export const ComponentGameOver = Component<Props>(function (container, {
 
   const wrapper = this.add.container();
 
-  wrapper.adaptive = (width, height) => {
+  useAdaptation(wrapper, (width, height) => {
     wrapper.setPosition(width / 2, height / 2);
-  };
+  });
 
   container.add(wrapper);
 
@@ -49,14 +49,14 @@ export const ComponentGameOver = Component<Props>(function (container, {
   });
 
   title.setOrigin(0.5, 1.0);
-  title.adaptive = (width, height) => {
+  useAdaptation(title, (width, height) => {
     scaleText(title, {
       by: width,
       scale: 0.035,
       shadow: true,
     });
     title.setPosition(0, -height * 0.05);
-  };
+  });
 
   this.tweens.add({
     targets: title,
@@ -86,13 +86,13 @@ export const ComponentGameOver = Component<Props>(function (container, {
 
   text.setAlpha(0.75);
   text.setOrigin(0.5, 0.0);
-  text.adaptive = (width, height) => {
+  useAdaptation(text, (width, height) => {
     scaleText(text, {
       by: width,
       scale: 0.01,
     });
     text.setPosition(0, height * 0.05);
-  };
+  });
 
   wrapper.add(text);
 });

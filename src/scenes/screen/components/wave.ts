@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { formatTime } from '~lib/utils';
 import { Wave } from '~scene/world/wave';
 import { NoticeType } from '~type/screen/notice';
@@ -12,6 +12,13 @@ type Props = {
 export const ComponentWave = Component<Props>(function (container, {
   wave,
 }) {
+  useAdaptation(container, (width: number) => {
+    container.setSize(
+      0, // Math.max(90, width * 0.08),
+      Math.max(23, width * 0.02),
+    );
+  });
+
   /**
    * Number
    */
@@ -24,7 +31,7 @@ export const ComponentWave = Component<Props>(function (container, {
     },
   });
 
-  number.adaptive = () => {
+  useAdaptation(number, () => {
     const { fontSize } = scaleText(number, {
       by: container.height,
       scale: 0.6,
@@ -36,7 +43,7 @@ export const ComponentWave = Component<Props>(function (container, {
 
     number.setFixedSize(0, container.height);
     number.setPadding(paddingX, paddingY, paddingX, 0);
-  };
+  });
 
   container.add(number);
 
@@ -53,7 +60,7 @@ export const ComponentWave = Component<Props>(function (container, {
   });
 
   counterLabel.setAlpha(0.5);
-  counterLabel.adaptive = () => {
+  const counterLabelAdaptive = useAdaptation(counterLabel, () => {
     const offsetX = container.height * 0.3;
     const offsetY = container.height * 0.09;
 
@@ -66,7 +73,7 @@ export const ComponentWave = Component<Props>(function (container, {
       scale: 0.3,
       shadow: true,
     });
-  };
+  });
 
   container.add(counterLabel);
 
@@ -83,7 +90,7 @@ export const ComponentWave = Component<Props>(function (container, {
   });
 
   counterValue.setOrigin(0.0, 1.0);
-  counterValue.adaptive = () => {
+  const counterValueAdaptive = useAdaptation(counterValue, () => {
     const offsetX = container.height * 0.3;
     const offsetY = container.height * 0.09;
 
@@ -97,7 +104,7 @@ export const ComponentWave = Component<Props>(function (container, {
       number.x + number.width + offsetX,
       container.height + shadowSize - offsetY,
     );
-  };
+  });
 
   container.add(counterValue);
 
@@ -116,8 +123,8 @@ export const ComponentWave = Component<Props>(function (container, {
       counterLabel.setText('TIME LEFT');
     }
 
-    counterLabel.adaptive();
-    counterValue.adaptive();
+    counterLabelAdaptive();
+    counterValueAdaptive();
   };
 
   onNumberUpdate();

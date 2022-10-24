@@ -79,13 +79,11 @@ export class Enemy extends NPC {
    * Event update.
    */
   public update() {
-    const targetReached = super.update();
+    super.update();
 
-    if (!targetReached) {
-      return;
+    if (this.pathComplete) {
+      this.moveTo(this.scene.player);
     }
-
-    this.moveTo(this.scene.player);
   }
 
   /**

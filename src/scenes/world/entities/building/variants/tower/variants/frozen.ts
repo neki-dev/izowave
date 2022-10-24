@@ -1,4 +1,3 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -10,7 +9,7 @@ export class BuildingTowerFrozen extends BuildingTower {
   static Name = 'Frozen tower';
 
   static Description = [
-    { text: 'Freeze and stop enemies\nfor some time.', type: 'text' },
+    { text: 'Freezing enemies for some time', type: 'text' },
     { text: 'Health: 700', icon: ScreenIcon.HEALTH },
     { text: 'Radius: 210', icon: ScreenIcon.RADIUS },
     { text: 'Pause: 1.4 s', icon: ScreenIcon.PAUSE },
@@ -54,7 +53,7 @@ export class BuildingTowerFrozen extends BuildingTower {
    * Add freeze to building info.
    */
   public getInfo(): BuildingDescriptionItem[] {
-    const nextFreeze = (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing)
+    const nextFreeze = this.isAllowUpgrade()
       ? this.getShotParams(this.upgradeLevel + 1).freeze / 1000
       : null;
 

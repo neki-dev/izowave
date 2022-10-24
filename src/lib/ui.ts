@@ -4,50 +4,82 @@ import {
   ComponentControl, ComponentInstance, ComponentResizeCallback, ScaleFontParams, ScaleFontResult,
 } from '~type/ui';
 
-function bindScreenResize(callback: ComponentResizeCallback) {
-  const refresh = () => {
-    callback(window.innerWidth, window.innerHeight);
-  };
+export function useAdaptation(
+  object: Phaser.GameObjects.GameObject,
+  before: Nullable<ComponentResizeCallback>,
+  after: Nullable<ComponentResizeCallback> = null,
+): () => void {
+  if (!object.adaptives) {
+    // eslint-disable-next-line no-param-reassign
+    object.adaptives = {
+      before: [],
+      after: [],
+    };
+  }
 
-  refresh();
-  window.addEventListener('resize', refresh);
+  if (before) {
+    object.adaptives.before.push(before);
+  }
 
-  return {
-    refresh,
-    cancel: () => {
-      window.removeEventListener('resize', refresh);
-    },
+  if (after) {
+    object.adaptives.after.push(after);
+  }
+
+  return () => {
+    before(window.innerWidth, window.innerHeight); // ?
   };
 }
 
-export function registerContainerAdaptive(container: Phaser.GameObjects.Container) {
-  const provideAdaptive = (width: number, height: number) => {
-    if (container.adaptive) {
-      container.adaptive(width, height);
+export function callContainerAdaptive(container: Phaser.GameObjects.Container) {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  if (container.adaptives) {
+    for (const callback of container.adaptives.before) {
+      callback(width, height);
     }
+  }
 
-    const deepProvideResize = (ctn: Phaser.GameObjects.Container) => {
-      ctn.iterate((child: Phaser.GameObjects.GameObject) => {
-        if (child.adaptive) {
-          child.adaptive(width, height);
+  const deepProvideResize = (ctn: Phaser.GameObjects.Container) => {
+    ctn.iterate((child: Phaser.GameObjects.GameObject) => {
+      if (child.adaptives) {
+        for (const callback of child.adaptives.before) {
+          callback(width, height);
         }
-        if (child instanceof Phaser.GameObjects.Container) {
-          deepProvideResize(child);
+      }
+      if (child instanceof Phaser.GameObjects.Container) {
+        deepProvideResize(child);
+      }
+      if (child.adaptives) {
+        for (const callback of child.adaptives.after) {
+          callback(width, height);
         }
-      });
-    };
-
-    deepProvideResize(container);
+      }
+    });
   };
+
+  deepProvideResize(container);
+
+  if (container.adaptives) {
+    for (const callback of container.adaptives.after) {
+      callback(width, height);
+    }
+  }
+}
+
+export function registerContainerAdaptive(container: Phaser.GameObjects.Container) {
+  callContainerAdaptive(container);
 
   // eslint-disable-next-line no-param-reassign
   container.refreshAdaptive = () => {
-    provideAdaptive(window.innerWidth, window.innerHeight);
+    callContainerAdaptive(container);
   };
 
-  const { cancel } = bindScreenResize(provideAdaptive);
+  window.addEventListener('resize', container.refreshAdaptive);
 
-  container.on(Phaser.Scenes.Events.DESTROY, cancel);
+  container.on(Phaser.Scenes.Events.DESTROY, () => {
+    window.removeEventListener('resize', container.refreshAdaptive);
+  });
 }
 
 export function Component<T = any>(component: ComponentInstance<T>) {

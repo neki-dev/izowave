@@ -10,7 +10,7 @@ export class BuildingWall extends Building {
   static Name = 'Wall';
 
   static Description = [
-    { text: 'Wall with more health to\ndefend other buildings.', type: 'text' },
+    { text: 'Wall with more health to defend other buildings', type: 'text' },
     { text: 'Health: 2000', icon: ScreenIcon.HEALTH },
   ];
 

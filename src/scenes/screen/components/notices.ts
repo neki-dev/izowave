@@ -1,5 +1,5 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/ui';
 import { ScreenAudio } from '~type/screen';
 import { Notice, NoticeType } from '~type/screen/notice';
 
@@ -28,7 +28,7 @@ export const ComponentNotices = Component(function (container) {
     });
 
     notice.setOrigin(0.5, 0.0);
-    notice.adaptive = (width) => {
+    useAdaptation(notice, (width) => {
       const padding = width * 0.006;
 
       scaleText(notice, {
@@ -36,7 +36,7 @@ export const ComponentNotices = Component(function (container) {
         scale: 0.01,
       });
       notice.setPadding(padding, padding * 0.8, padding, padding);
-    };
+    });
 
     return notice;
   };

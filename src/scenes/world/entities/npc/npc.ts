@@ -38,6 +38,11 @@ export class NPC extends Sprite {
   private stopCalmTimestamp: number = 0;
 
   /**
+   *
+   */
+  public pathComplete: boolean = false;
+
+  /**
    * NPC constructor.
    */
   constructor(scene: World, {
@@ -68,26 +73,27 @@ export class NPC extends Sprite {
   /**
    * Update visible state and pursuit process.
    */
-  public update(): boolean | void {
+  public update() {
     super.update();
 
     this.setVisible(this.atVisibleTile());
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
+      this.pathComplete = false;
 
-      return false;
+      return;
     }
 
     if (this.getDistanceToTarget() > this.pathBreakpoint) {
       this.moveByPath();
+      this.pathComplete = false;
 
-      return false;
+      return;
     }
 
     this.resetPath();
-
-    return true;
+    this.pathComplete = true;
   }
 
   /**

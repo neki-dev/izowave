@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/difficulty';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { registerContainerAdaptive } from '~lib/ui';
+import { useAdaptation, registerContainerAdaptive } from '~lib/ui';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
 import { ComponentBuilder } from '~scene/screen/components/builder';
@@ -37,15 +37,11 @@ export class Screen extends Phaser.Scene {
       wave: world.wave,
     });
 
-    wave.adaptive = (width: number) => {
+    useAdaptation(wave, (width: number) => {
       const offset = width * 0.02;
 
       wave.setPosition(offset, offset);
-      wave.setSize(
-        0, // Math.max(90, width * 0.08),
-        Math.max(23, width * 0.02),
-      );
-    };
+    });
 
     components.add(wave);
 
@@ -61,7 +57,7 @@ export class Screen extends Phaser.Scene {
       color: 0xe4372c,
     });
 
-    health.adaptive = (width: number, height: number) => {
+    useAdaptation(health, (width: number, height: number) => {
       const offsetX = width * 0.02;
       const offsetY = height * 0.03;
 
@@ -69,11 +65,7 @@ export class Screen extends Phaser.Scene {
         offsetX,
         wave.y + wave.height + offsetY,
       );
-      health.setSize(
-        Math.max(60, width * 0.06),
-        Math.max(15, width * 0.015),
-      );
-    };
+    });
 
     components.add(health);
 
@@ -92,7 +84,7 @@ export class Screen extends Phaser.Scene {
       color: 0x1975c5,
     });
 
-    experience.adaptive = (width: number, height: number) => {
+    useAdaptation(experience, (width: number, height: number) => {
       const offsetX = width * 0.02;
       const offsetY = height * 0.008;
 
@@ -100,11 +92,7 @@ export class Screen extends Phaser.Scene {
         offsetX,
         health.y + health.height + offsetY,
       );
-      experience.setSize(
-        Math.max(60, width * 0.06),
-        Math.max(15, width * 0.015),
-      );
-    };
+    });
 
     components.add(experience);
 
@@ -116,7 +104,7 @@ export class Screen extends Phaser.Scene {
       player: world.player,
     });
 
-    resources.adaptive = (width: number, height: number) => {
+    useAdaptation(resources, (width: number, height: number) => {
       const offsetX = width * 0.02;
       const offsetY = height * 0.03;
 
@@ -124,7 +112,7 @@ export class Screen extends Phaser.Scene {
         offsetX,
         experience.y + experience.height + offsetY,
       );
-    };
+    });
 
     components.add(resources);
 
@@ -134,11 +122,11 @@ export class Screen extends Phaser.Scene {
 
     const notices = ComponentNotices.call(this);
 
-    notices.adaptive = (width: number) => {
+    useAdaptation(notices, (width: number) => {
       const offsetY = width * 0.02;
 
       notices.setPosition(width / 2, offsetY);
-    };
+    });
 
     components.add(notices);
 
@@ -152,11 +140,11 @@ export class Screen extends Phaser.Scene {
       player: world.player,
     });
 
-    builder.adaptive = (width: number) => {
+    useAdaptation(builder, (width: number) => {
       const offset = width * 0.02;
 
       builder.setPosition(width - offset, offset);
-    };
+    });
 
     components.add(builder);
 
@@ -166,11 +154,11 @@ export class Screen extends Phaser.Scene {
 
     const fps = ComponentFPS.call(this);
 
-    fps.adaptive = (width: number, height: number) => {
+    useAdaptation(fps, (width: number, height: number) => {
       const offset = width * 0.02;
 
       fps.setPosition(offset, height - offset);
-    };
+    });
 
     components.add(fps);
 
