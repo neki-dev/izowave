@@ -1,4 +1,4 @@
-import { entries } from '~lib/core';
+import { entries } from '~lib/system';
 import { CheatsScheme } from '~type/cheats';
 
 export function setCheatsScheme(data: CheatsScheme) {

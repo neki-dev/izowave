@@ -1,7 +1,8 @@
+import { DIFFICULTY_KEY } from '~const/core';
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { WORLD_DIFFICULTY_KEY } from '~const/world';
+import { keys } from '~lib/system';
 import { useAdaptation, Component, scaleText } from '~lib/ui';
-import { WorldDifficulty } from '~type/world';
+import { Difficulty } from '~type/core';
 
 type Props = {
   disabled: boolean
@@ -11,10 +12,10 @@ export const ComponentDifficulty = Component<Props>(function (container, {
   disabled,
 }) {
   const difficulty = {
-    current: localStorage.getItem(WORLD_DIFFICULTY_KEY),
+    current: localStorage.getItem(DIFFICULTY_KEY),
   };
 
-  Object.keys(WorldDifficulty).forEach((type, index) => {
+  keys(Difficulty).forEach((type, index) => {
     const name = this.add.text(0, 0, type, {
       resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.PIXEL,
@@ -64,7 +65,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
         name.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
         difficulty.current = type;
 
-        localStorage.setItem(WORLD_DIFFICULTY_KEY, type);
+        localStorage.setItem(DIFFICULTY_KEY, type);
       });
     }
 

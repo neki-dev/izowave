@@ -8,7 +8,7 @@ import { Chest } from '~entity/chest';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { entries, keys } from '~lib/core';
+import { entries, keys } from '~lib/system';
 import { aroundPosition, calcGrowth, isMobileDevice } from '~lib/utils';
 import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';

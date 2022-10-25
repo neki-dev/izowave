@@ -1,19 +1,17 @@
 import { Game } from 'phaser';
-import { COPYRIGHT } from '~const/core';
-import { setLoaderStatus, stopLoader } from '~lib/loader';
+import { COPYRIGHT, REPOSITORY } from '~const/core';
+import { INTERFACE_FONT } from '~const/interface';
+import { loadFontFace } from '~lib/assets';
+import { removeFailure, throwFailure } from '~lib/state';
 import { isValidScreenSize, isMobileDevice } from '~lib/utils';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
+import { FailureType } from '~type/core';
 
 declare global {
   const IS_DEV_MODE: boolean;
 }
-
-console.log([
-  ...COPYRIGHT,
-  'Source at https://github.com/neki-dev/izowave',
-].join('\n'));
 
 function bootGame() {
   new Game({
@@ -27,8 +25,8 @@ function bootGame() {
         gravity: { y: 0 },
       },
     },
-    width: window.innerWidth * window.devicePixelRatio,
-    height: window.innerHeight * window.devicePixelRatio,
+    width: window.innerWidth,
+    height: window.innerHeight,
     pixelArt: true,
     autoRound: true,
     disableContextMenu: true,
@@ -39,12 +37,31 @@ function bootGame() {
   });
 }
 
-if (!IS_DEV_MODE && isMobileDevice()) {
-  stopLoader();
-  setLoaderStatus('DEVICE IS NOT SUPPORTED :(');
-} else if (!isValidScreenSize()) {
-  stopLoader();
-  setLoaderStatus('SCREEN SIZE IS NOT SUPPORTED :(');
-} else {
-  bootGame();
-}
+(async () => {
+  console.log([...COPYRIGHT, `Source at ${REPOSITORY}`].join('\n'));
+
+  if (!IS_DEV_MODE && isMobileDevice()) {
+    throwFailure(FailureType.BAD_DEVICE);
+
+    return;
+  }
+
+  function checkScreenSize() {
+    if (isValidScreenSize()) {
+      removeFailure(FailureType.BAD_SCREEN_SIZE);
+    } else {
+      throwFailure(FailureType.BAD_SCREEN_SIZE);
+    }
+  }
+
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
+
+  await loadFontFace(INTERFACE_FONT.PIXEL, 'retro');
+
+  try {
+    bootGame();
+  } catch (e) {
+    throwFailure(FailureType.UNCAUGHT_ERROR);
+  }
+})();

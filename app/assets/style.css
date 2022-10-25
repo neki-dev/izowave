@@ -8,7 +8,7 @@ body {
   background: #222;
 }
 
-#loading-screen {
+.overlay {
   position: fixed;
   left: 0;
   right: 0;
@@ -19,18 +19,18 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-}
-
-#loading-animation {
-  width: 64px;
-  height: 64px;
-  background: url('./loading.gif') center center no-repeat;
-  margin-bottom: 30px;
-}
-
-#loading-status {
+  display: flex;
+  padding: 10%;
   font-family: 'Verdana';
   font-size: 10pt;
   letter-spacing: 2px;
   color: #aaa;
+  text-align: center;
+}
+
+.loading-animation {
+  width: 64px;
+  height: 64px;
+  background: url('./loading.gif') center center no-repeat;
+  margin-bottom: 30px;
 }

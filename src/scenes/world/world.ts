@@ -1,29 +1,29 @@
 import Phaser from 'phaser';
 import { BUILDINGS } from '~const/buildings';
+import { AUDIO_VOLUME, DIFFICULTY_KEY, DIFFICULTY_POWERS } from '~const/core';
 import { ENEMIES } from '~const/enemies';
 import { ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
-import { INTERFACE_FONT } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import { NPC_PATH_RATE } from '~const/npc';
-import { WORLD_AUDIO_VOLUME, WORLD_DIFFICULTY_KEY, WORLD_DIFFICULTY_POWERS } from '~const/world';
 import { Building } from '~entity/building';
 import { Chest } from '~entity/chest';
 import { NPC } from '~entity/npc';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
-import { getAssetsPack, loadFontFace, registerImageAssets } from '~lib/assets';
+import { getAssetsPack, registerImageAssets } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
-import { removeLoader, setLoaderStatus } from '~lib/loader';
+import { removeLoading, setLoadingStatus } from '~lib/state';
 import { aroundPosition, selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
 import { Effects } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
+import { Difficulty } from '~type/core';
 import { SceneKey } from '~type/scene';
-import { WorldDifficulty, WorldEvents, WorldTexture } from '~type/world';
+import { WorldEvents, WorldTexture } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariant } from '~type/world/entities/enemy';
 import { PlayerStat } from '~type/world/entities/player';
@@ -98,7 +98,7 @@ export class World extends Phaser.Scene {
   /**
    * Game difficulty type.
    */
-  private _difficultyType: WorldDifficulty;
+  private _difficultyType: Difficulty;
 
   public get difficultyType() { return this._difficultyType; }
 
@@ -182,31 +182,32 @@ export class World extends Phaser.Scene {
       window.WORLD = this;
     }
 
-    setLoaderStatus('ASSETS LOADING');
+    setLoadingStatus('ASSETS LOADING');
   }
 
   /**
    * Create world and open menu.
    */
   public create() {
-    this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
-
-    const difficulty = localStorage.getItem(WORLD_DIFFICULTY_KEY);
-
-    if (!difficulty) {
-      localStorage.setItem(WORLD_DIFFICULTY_KEY, WorldDifficulty.NORMAL);
+    if (!localStorage.getItem(DIFFICULTY_KEY)) {
+      localStorage.setItem(DIFFICULTY_KEY, Difficulty.NORMAL);
     }
 
     this.sortDepthOptimization();
+    this.makeEntityGroups();
+    this.makeLevel();
 
-    this.sound.setVolume(WORLD_AUDIO_VOLUME);
-
-    loadFontFace(INTERFACE_FONT.PIXEL, 'retro').finally(() => {
-      this.prepareGame();
-      this.scene.launch(SceneKey.MENU);
-
-      removeLoader();
+    this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
+    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
+    this.effects = new Effects(this);
+    this.timer = this.time.addEvent({
+      delay: Number.MAX_SAFE_INTEGER,
     });
+
+    this.sound.setVolume(AUDIO_VOLUME);
+    this.scene.launch(SceneKey.MENU);
+
+    removeLoading();
   }
 
   /**
@@ -336,8 +337,8 @@ export class World extends Phaser.Scene {
   public startGame() {
     this.scene.stop(SceneKey.MENU);
 
-    this.difficultyType = <WorldDifficulty> localStorage.getItem(WORLD_DIFFICULTY_KEY);
-    this.difficulty = WORLD_DIFFICULTY_POWERS[this.difficultyType];
+    this.difficultyType = <Difficulty> localStorage.getItem(DIFFICULTY_KEY);
+    this.difficulty = DIFFICULTY_POWERS[this.difficultyType];
 
     this.wave = new Wave(this);
     this.builder = new Builder(this);
@@ -417,25 +418,6 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   * Prepare game to start.
-   */
-  private prepareGame() {
-    this.timer = this.time.addEvent({
-      delay: Number.MAX_SAFE_INTEGER,
-    });
-
-    this.effects = new Effects(this);
-
-    this.makeLevel();
-    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
-
-    this.makeChestsGroup();
-    this.makeBuildingsGroups();
-    this.makeNPCGroup();
-    this.makeEnemiesGroup();
-  }
-
-  /**
    * Find NPC path to target.
    */
   private updateNPCPath() {
@@ -461,18 +443,13 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   * Create chests group.
+   * Create entity groups.
    */
-  private makeChestsGroup() {
+  private makeEntityGroups() {
     this.chests = this.add.group({
       classType: Chest,
     });
-  }
 
-  /**
-   * Create buildings and shots group.
-   */
-  private makeBuildingsGroups() {
     this.buildings = this.add.group({
       classType: Building,
       runChildUpdate: true,
@@ -481,22 +458,12 @@ export class World extends Phaser.Scene {
     this.shots = this.add.group({
       runChildUpdate: true,
     });
-  }
 
-  /**
-   * Create NPC group.
-   */
-  private makeNPCGroup() {
     this.npc = this.add.group({
       classType: NPC,
       runChildUpdate: true,
     });
-  }
 
-  /**
-   * Create enemies group.
-   */
-  private makeEnemiesGroup() {
     this.enemies = this.add.group({
       classType: Enemy,
     });
@@ -586,10 +553,10 @@ export class World extends Phaser.Scene {
       [BuildingVariant.TOWER_FIRE],
     ];
 
-    if (this.difficultyType === WorldDifficulty.EASY) {
+    if (this.difficultyType === Difficulty.EASY) {
       buildingsVariants.push([BuildingVariant.AMMUNITION]);
     }
-    if (this.difficultyType !== WorldDifficulty.UNREAL) {
+    if (this.difficultyType !== Difficulty.UNREAL) {
       buildingsVariants.push([BuildingVariant.MINE_BRONZE, BuildingVariant.MINE_SILVER]);
     }
 
