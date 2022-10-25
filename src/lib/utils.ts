@@ -120,7 +120,10 @@ export function throttle(fn: (...params: any[]) => void, delay: number) {
  * Check device screen size.
  */
 export function isValidScreenSize() {
-  return (document.body.clientWidth >= MIN_VALID_SCREEN_SIZE);
+  return (
+    window.innerWidth >= MIN_VALID_SCREEN_SIZE[0]
+    && window.innerHeight >= MIN_VALID_SCREEN_SIZE[1]
+  );
 }
 
 /**

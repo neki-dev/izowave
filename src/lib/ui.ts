@@ -119,14 +119,18 @@ export function Component<T = any>(component: ComponentInstance<T>) {
   };
 }
 
+export function switchSize(value: number): number {
+  return Math.round(value * ((window.innerWidth < 1200) ? 0.83 : 1));
+}
+
 export function scaleText(text: Phaser.GameObjects.Text, params: ScaleFontParams): ScaleFontResult {
-  const fontSize = params.by * params.scale;
+  const fontSize = params.scale ? Math.round(params.by * params.scale) : params.by;
   let shadowSize = 0;
 
   text.setFontSize(fontSize);
 
   if (params.shadow) {
-    shadowSize = fontSize * 0.25;
+    shadowSize = Math.round(fontSize * 0.25);
 
     text.setShadowOffset(shadowSize, shadowSize);
     text.setPadding(0, 0, 0, shadowSize);

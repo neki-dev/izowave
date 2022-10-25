@@ -1,6 +1,8 @@
 import { INTERFACE_FONT, RESOURCE_COLOR } from '~const/interface';
 import { Player } from '~entity/player';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 import { PlayerEvents } from '~type/world/entities/player';
 import { ResourceType } from '~type/world/resources';
@@ -19,13 +21,16 @@ export const ComponentResources = Component<Props>(function (container, {
     const wrapper = this.add.container();
 
     useAdaptation(wrapper, (width, height) => {
-      const offsetY = height * 0.008;
+      const offsetY = Math.round(height * 0.008);
 
       wrapper.setSize(
-        Math.max(60, width * 0.06),
-        Math.max(25, width * 0.02),
+        switchSize(104),
+        switchSize(36),
       );
-      wrapper.setPosition(0, (wrapper.height + offsetY) * index);
+      wrapper.setPosition(
+        0,
+        (wrapper.height + offsetY) * index,
+      );
     });
 
     container.add(wrapper);
@@ -118,7 +123,6 @@ export const ComponentResources = Component<Props>(function (container, {
      */
 
     const additions = ComponentAdditions.call(this, {
-      combine: true,
       event: (callback: (value: number) => void) => {
         player.on(PlayerEvents.UPDATE_RESOURCE, (resourceType: ResourceType, value: number) => {
           if (resourceType === type) {

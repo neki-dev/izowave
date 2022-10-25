@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { BUILDINGS } from '~const/buildings';
 import { DIFFICULTY } from '~const/difficulty';
 import { TILE_META } from '~const/level';
-import { calcGrowth, equalPositions, isMobileDevice } from '~lib/utils';
+import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
@@ -48,9 +48,7 @@ export class Builder {
   constructor(scene: World) {
     this.scene = scene;
 
-    if (!isMobileDevice()) {
-      this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant, this);
-    }
+    this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant, this);
   }
 
   /**

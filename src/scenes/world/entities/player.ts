@@ -9,7 +9,7 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { entries, keys } from '~lib/system';
-import { aroundPosition, calcGrowth, isMobileDevice } from '~lib/utils';
+import { aroundPosition, calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';
 import {
@@ -99,9 +99,7 @@ export class Player extends Sprite {
     this.setPushable(false);
     this.setOrigin(0.5, 0.75);
 
-    if (!isMobileDevice()) {
-      this.registerKeyboard();
-    }
+    this.registerKeyboard();
 
     this.addAssistant();
     this.addAnimations();
@@ -363,13 +361,14 @@ export class Player extends Sprite {
    * Update move direction and animation.
    */
   private updateDirection() {
-    const direction = this.getInputDirection();
-    const key = `${direction.x}|${direction.y}`;
+    const x = this.getKeyboardSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']]);
+    const y = this.getKeyboardSingleDirection([['UP', 'W'], ['DOWN', 'S']]);
+    const key = `${x}|${y}`;
 
     const oldMovement = this.movement;
     const oldDirection = this.direction;
 
-    if (direction.x !== 0 || direction.y !== 0) {
+    if (x !== 0 || y !== 0) {
       this.movement = true;
       this.direction = PLAYER_MOVE_DIRECTIONS[key];
     } else {
@@ -402,38 +401,6 @@ export class Player extends Sprite {
     this.anims.stop();
 
     this.scene.sound.stopByKey(PlayerAudio.MOVE);
-  }
-
-  /**
-   *
-   */
-  private getInputDirection(): Phaser.Types.Math.Vector2Like {
-    let x: number;
-    let y: number;
-
-    if (isMobileDevice()) {
-      // const touch = this.scene.input.activePointer;
-
-      // if (touch.isDown) {
-      //   const angle = Phaser.Math.Angle.BetweenPoints(touch, {
-      //     x: this.scene.cameras.main.centerX,
-      //     y: this.scene.cameras.main.centerY,
-      //   });
-      //   const roundPart = (Math.PI / 4);
-      //   const angleRound = Math.round((angle + Math.PI) / roundPart) * roundPart;
-
-      //   x = Math.round(Math.cos(angleRound));
-      //   y = Math.round(Math.sin(angleRound));
-      // } else {
-      //   x = 0;
-      //   y = 0;
-      // }
-    } else {
-      x = this.getKeyboardSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']]);
-      y = this.getKeyboardSingleDirection([['UP', 'W'], ['DOWN', 'S']]);
-    }
-
-    return { x, y };
   }
 
   /**

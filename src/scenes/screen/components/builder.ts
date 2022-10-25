@@ -3,8 +3,9 @@ import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { TILE_META } from '~const/level';
 import { Player } from '~entity/player';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
-import { isMobileDevice } from '~lib/utils';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
 import { Builder } from '~scene/world/builder';
@@ -97,8 +98,8 @@ export const ComponentBuilder = Component<Props>(function (container, {
     const wrapper = this.add.container();
 
     useAdaptation(wrapper, (width, height) => {
-      const size = Math.max(30, width * 0.03);
-      const offsetY = height * 0.008;
+      const size = switchSize(54);
+      const offsetY = Math.round(height * 0.008);
 
       wrapper.setSize(size, size);
       wrapper.setPosition(-wrapper.width, (wrapper.height + offsetY) * index);
@@ -148,23 +149,21 @@ export const ComponentBuilder = Component<Props>(function (container, {
      * Number
      */
 
-    if (!isMobileDevice()) {
-      const number = this.add.text(0, 0, String(index + 1), {
-        resolution: window.devicePixelRatio,
-        fontFamily: INTERFACE_FONT.MONOSPACE,
-      });
+    const number = this.add.text(0, 0, String(index + 1), {
+      resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.MONOSPACE,
+    });
 
-      number.setOrigin(1.0, 0.0);
-      useAdaptation(number, () => {
-        scaleText(number, {
-          by: wrapper.width,
-          scale: 0.22,
-        });
-        number.setPosition(wrapper.width - 4, 4);
+    number.setOrigin(1.0, 0.0);
+    useAdaptation(number, () => {
+      scaleText(number, {
+        by: wrapper.width,
+        scale: 0.22,
       });
+      number.setPosition(wrapper.width - 4, 4);
+    });
 
-      wrapper.add(number);
-    }
+    wrapper.add(number);
   });
 
   /**

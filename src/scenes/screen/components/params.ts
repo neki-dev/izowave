@@ -87,7 +87,7 @@ export const ComponentParams = Component<Props>(function (container, {
       text.setWordWrapWidth(wrapper.width);
       scaleText(text, {
         by: wrapper.width,
-        scale: 0.072,
+        scale: 0.07,
       });
       text.setPosition(
         icon ? (icon.width + 5) : 0,
@@ -138,7 +138,7 @@ export const ComponentParams = Component<Props>(function (container, {
         return;
       }
 
-      const newValue = items.map((item) => item.text).join('\n');
+      const newValue = items.map((item) => (item.text + (item.post || ''))).join('\n');
 
       if (value.current === newValue) {
         return;

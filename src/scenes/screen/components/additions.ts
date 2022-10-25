@@ -1,38 +1,28 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 
 type Props = {
   event: (callback: (amount: number) => void) => void
-  combine?: boolean
 };
 
 export const ComponentAdditions = Component<Props>(function (container, {
-  event, combine = false,
+  event,
 }) {
   const formatAmount = (amount: number): string => (
     `${(amount > 0) ? '+' : ''}${amount}`
   );
 
-  const update = () => {
-    let offset = 0;
-
-    container.iterate((add: Phaser.GameObjects.Container) => {
-      add.setX(offset);
-      offset += add.width + (window.innerWidth * 0.005);
-    });
-  };
-
   event((amount) => {
-    if (combine) {
-      const addition = <Phaser.GameObjects.Text> container.getAt(0);
+    const additionExist = <Phaser.GameObjects.Text> container.getAt(0);
 
-      if (addition) {
-        const current = Number(addition.text.replace('+', ''));
+    if (additionExist) {
+      const current = Number(additionExist.text.replace('+', ''));
 
-        addition.setText(formatAmount(current + amount));
+      additionExist.setText(formatAmount(current + amount));
 
-        return;
-      }
+      return;
     }
 
     const addition = this.add.text(0, 0, formatAmount(amount), {
@@ -42,17 +32,12 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
     addition.setOrigin(0.0, 0.5);
     addition.setAlpha(0.0);
-    useAdaptation(addition, (width) => {
-      scaleText(addition, {
-        by: width,
-        scale: 0.008,
-      });
+    useAdaptation(addition, () => {
+      scaleText(addition, { by: switchSize(14) });
     });
 
     container.add(addition);
     container.refreshAdaptive();
-
-    update();
 
     this.tweens.add({
       targets: addition,
@@ -63,7 +48,6 @@ export const ComponentAdditions = Component<Props>(function (container, {
       ease: 'Linear',
       onComplete: () => {
         addition.destroy();
-        update();
       },
     });
   });

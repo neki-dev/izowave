@@ -1,5 +1,7 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 import { formatTime } from '~lib/utils';
 import { Wave } from '~scene/world/wave';
 import { NoticeType } from '~type/screen/notice';
@@ -12,10 +14,10 @@ type Props = {
 export const ComponentWave = Component<Props>(function (container, {
   wave,
 }) {
-  useAdaptation(container, (width: number) => {
+  useAdaptation(container, () => {
     container.setSize(
-      0, // Math.max(90, width * 0.08),
-      Math.max(23, width * 0.02),
+      0, // unused
+      switchSize(36),
     );
   });
 

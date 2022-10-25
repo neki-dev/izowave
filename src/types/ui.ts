@@ -16,7 +16,7 @@ export type ComponentInstance<T> = (
 
 export type ScaleFontParams = {
   by: number
-  scale: number
+  scale?: number
   shadow?: boolean
 };
 

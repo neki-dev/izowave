@@ -23,6 +23,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   /**
    * Sidedata
    */
+
   const sidedata = this.add.container();
 
   useAdaptation(sidedata, () => {
@@ -34,6 +35,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   /**
    * Body
    */
+
   const body = this.add.rectangle(0, 0, 0, 0, INTERFACE_BOX_COLOR.BLUE, 0.9);
 
   body.setOrigin(0.0, 0.0);

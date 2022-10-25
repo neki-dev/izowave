@@ -2,7 +2,7 @@ import { DifficultyPowers } from '~type/core';
 
 import pkg from '../../package.json';
 
-export const MIN_VALID_SCREEN_SIZE = 500;
+export const MIN_VALID_SCREEN_SIZE = [800, 600];
 
 export const AUDIO_VOLUME = 0.1;
 

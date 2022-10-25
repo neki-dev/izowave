@@ -38,7 +38,7 @@ export class Screen extends Phaser.Scene {
     });
 
     useAdaptation(wave, (width: number) => {
-      const offset = width * 0.02;
+      const offset = Math.round(width * 0.02);
 
       wave.setPosition(offset, offset);
     });
@@ -58,8 +58,8 @@ export class Screen extends Phaser.Scene {
     });
 
     useAdaptation(health, (width: number, height: number) => {
-      const offsetX = width * 0.02;
-      const offsetY = height * 0.03;
+      const offsetX = Math.round(width * 0.02);
+      const offsetY = Math.round(height * 0.03);
 
       health.setPosition(
         offsetX,
@@ -85,8 +85,8 @@ export class Screen extends Phaser.Scene {
     });
 
     useAdaptation(experience, (width: number, height: number) => {
-      const offsetX = width * 0.02;
-      const offsetY = height * 0.008;
+      const offsetX = Math.round(width * 0.02);
+      const offsetY = Math.round(height * 0.008);
 
       experience.setPosition(
         offsetX,
@@ -105,8 +105,8 @@ export class Screen extends Phaser.Scene {
     });
 
     useAdaptation(resources, (width: number, height: number) => {
-      const offsetX = width * 0.02;
-      const offsetY = height * 0.03;
+      const offsetX = Math.round(width * 0.02);
+      const offsetY = Math.round(height * 0.03);
 
       resources.setPosition(
         offsetX,
@@ -123,7 +123,7 @@ export class Screen extends Phaser.Scene {
     const notices = ComponentNotices.call(this);
 
     useAdaptation(notices, (width: number) => {
-      const offsetY = width * 0.02;
+      const offsetY = Math.round(width * 0.02);
 
       notices.setPosition(width / 2, offsetY);
     });
@@ -141,7 +141,7 @@ export class Screen extends Phaser.Scene {
     });
 
     useAdaptation(builder, (width: number) => {
-      const offset = width * 0.02;
+      const offset = Math.round(width * 0.02);
 
       builder.setPosition(width - offset, offset);
     });

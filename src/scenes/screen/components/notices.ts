@@ -1,5 +1,7 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 import { ScreenAudio } from '~type/screen';
 import { Notice, NoticeType } from '~type/screen/notice';
 
@@ -9,7 +11,7 @@ export const ComponentNotices = Component(function (container) {
 
     container.iterate((notice: Phaser.GameObjects.Container) => {
       notice.setPosition(0, offset);
-      offset += notice.height + (window.innerWidth * 0.005);
+      offset += notice.height + Math.round(window.innerHeight * 0.008);
     });
   };
 
@@ -28,14 +30,11 @@ export const ComponentNotices = Component(function (container) {
     });
 
     notice.setOrigin(0.5, 0.0);
-    useAdaptation(notice, (width) => {
-      const padding = width * 0.006;
+    useAdaptation(notice, () => {
+      const padding = switchSize(12);
 
-      scaleText(notice, {
-        by: width,
-        scale: 0.01,
-      });
-      notice.setPadding(padding, padding * 0.8, padding, padding);
+      scaleText(notice, { by: switchSize(18) });
+      notice.setPadding(padding, padding * 0.8, padding, padding * 0.8);
     });
 
     return notice;

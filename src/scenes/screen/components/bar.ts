@@ -1,5 +1,7 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {
@@ -13,10 +15,10 @@ type Props = {
 export const ComponentBar = Component<Props>(function (container, {
   display, value, maxValue, event, color,
 }) {
-  useAdaptation(container, (width: number) => {
+  useAdaptation(container, () => {
     container.setSize(
-      Math.max(60, width * 0.06),
-      Math.max(15, width * 0.015),
+      switchSize(104),
+      switchSize(26),
     );
   });
 
