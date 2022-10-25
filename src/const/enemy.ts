@@ -19,7 +19,7 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
   },
   [EnemyTexture.UNDEAD]: {
     frameRate: 4,
-    size: 16,
+    size: 18,
   },
   [EnemyTexture.OVERLORD]: {
     frameRate: 8,
