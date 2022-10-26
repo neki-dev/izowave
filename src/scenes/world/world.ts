@@ -6,24 +6,25 @@ import { ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, E
 import { INPUT_KEY } from '~const/keyboard';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
 import { NPC_PATH_RATE } from '~const/npc';
+import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { Building } from '~entity/building';
 import { Chest } from '~entity/chest';
 import { NPC } from '~entity/npc';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
-import { getAssetsPack, registerImageAssets } from '~lib/assets';
+import { getAssetsPack } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
 import { removeLoading, setLoadingStatus } from '~lib/state';
 import { aroundPosition, selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
-import { Effects } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { Difficulty } from '~type/core';
 import { SceneKey } from '~type/scene';
-import { WorldEvents, WorldTexture } from '~type/world';
+import { WorldEvents } from '~type/world';
+import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariant } from '~type/world/entities/enemy';
 import { PlayerStat } from '~type/world/entities/player';
@@ -87,13 +88,13 @@ export class World extends Phaser.Scene {
   private set screen(v) { this._screen = v; }
 
   /**
-   * Effects manager.
+   * Particles manager.
    */
-  private _effects: Effects;
+  private _particles: ParticlesList = {};
 
-  public get effects() { return this._effects; }
+  public get particles() { return this._particles; }
 
-  private set effects(v) { this._effects = v; }
+  private set particles(v) { this._particles = v; }
 
   /**
    * Game difficulty type.
@@ -194,12 +195,12 @@ export class World extends Phaser.Scene {
     }
 
     this.sortDepthOptimization();
+    this.initParticles();
     this.makeEntityGroups();
     this.makeLevel();
 
     this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
     this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
-    this.effects = new Effects(this);
     this.timer = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
     });
@@ -581,6 +582,16 @@ export class World extends Phaser.Scene {
   }
 
   /**
+   *
+   */
+  private initParticles() {
+    for (const effect of Object.values(ParticlesType)) {
+      this.particles[effect] = this.add.particles(ParticlesTexture[effect]);
+      this.particles[effect].setDepth(WORLD_DEPTH_EFFECT);
+    }
+  }
+
+  /**
    * Cheatcodes.
    */
   private getCheats() {
@@ -627,5 +638,3 @@ export class World extends Phaser.Scene {
     };
   }
 }
-
-registerImageAssets(WorldTexture);

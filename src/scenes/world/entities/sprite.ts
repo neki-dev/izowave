@@ -1,13 +1,15 @@
 import Phaser from 'phaser';
 import { WORLD_COLLIDE_LOOK } from '~const/world';
-import { Live } from '~entity/live';
 import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
-import { WorldEffect } from '~type/world/effects';
+import { Live } from '~scene/world/live';
+import { ParticlesType } from '~type/world/effects';
 import { LiveEvents } from '~type/world/entities/live';
 import { SpriteData } from '~type/world/entities/sprite';
 import { BiomeType, TileType } from '~type/world/level';
+
+import { Particles } from '../effects';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite {
   // @ts-ignore
@@ -116,13 +118,17 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    this.scene.effects.emit(WorldEffect.BLOOD, this, {
-      follow: this,
-      lifespan: { min: 100, max: 250 },
-      scale: { start: 1.0, end: 0.5 },
-      speed: 100,
-      maxParticles: 6,
-    }, 250);
+    new Particles(this, {
+      type: ParticlesType.BLOOD,
+      duration: 250,
+      params: {
+        follow: this,
+        lifespan: { min: 100, max: 250 },
+        scale: { start: 1.0, end: 0.5 },
+        speed: 100,
+        maxParticles: 6,
+      },
+    });
   }
 
   /**

@@ -4,7 +4,8 @@ import { BuildingTower } from '~entity/building/variants/tower';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets } from '~lib/assets';
 import { World } from '~scene/world';
-import { WorldEffect } from '~type/world/effects';
+import { Particles } from '~scene/world/effects';
+import { ParticlesType } from '~type/world/effects';
 import { ShotLazerAudio, ShotParams } from '~type/world/entities/shot';
 
 export class ShotLazer extends Phaser.GameObjects.Line {
@@ -115,13 +116,22 @@ export class ShotLazer extends Phaser.GameObjects.Line {
    */
   private hit() {
     this.target.live.damage(this.damage);
-    this.scene.effects.emit(WorldEffect.GLOW, this.target, {
-      follow: this.target,
-      lifespan: { min: 100, max: 150 },
-      scale: { start: 0.2, end: 0.1 },
-      speed: 80,
-      tint: 0xb136ff,
-    }, 150);
+
+    if (!this.target.visible) {
+      return;
+    }
+
+    new Particles(this.target, {
+      type: ParticlesType.GLOW,
+      duration: 150,
+      params: {
+        follow: this.target,
+        lifespan: { min: 100, max: 150 },
+        scale: { start: 0.2, end: 0.1 },
+        speed: 80,
+        tint: 0xb136ff,
+      },
+    });
   }
 
   /**

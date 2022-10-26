@@ -4,16 +4,18 @@ import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
 import { TILE_META } from '~const/level';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_UI } from '~const/world';
-import { Hexagon } from '~entity/building/hexagon';
-import { Live } from '~entity/live';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { World } from '~scene/world';
+import { Effect } from '~scene/world/effects';
+import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
+import { Live } from '~scene/world/live';
 import { ScreenIcon, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
+import { EffectTexture } from '~type/world/effects';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingDescriptionItem,
@@ -118,6 +120,7 @@ export class Building extends Phaser.GameObjects.Image {
     scene.input.keyboard.on(INPUT_KEY.BUILDING_UPGRADE, this.nextUpgrade, this);
 
     // Add events callbacks
+    this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
     this.live.on(LiveEvents.DEAD, () => this.onDead());
     this.scene.events.on(WorldEvents.GAMEOVER, () => this.onUnfocus());
     this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
@@ -346,11 +349,37 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Dead event.
+   * Event damage.
+   */
+  private onDamage() {
+    if (!this.visible) {
+      return;
+    }
+
+    new Effect(this.scene, {
+      texture: EffectTexture.DAMAGE,
+      position: this,
+      rate: 14,
+    });
+  }
+
+  /**
+   * Event dead.
    */
   private onDead() {
-    this.scene.sound.play(BuildingAudio.DEAD);
     this.scene.screen.message(NoticeType.WARN, `${this.getName()} HAS BEEN DESTROYED`);
+
+    if (this.visible) {
+      new Effect(this.scene, {
+        texture: EffectTexture.SMOKE,
+        audio: BuildingAudio.DEAD,
+        position: {
+          x: this.x,
+          y: this.y + TILE_META.halfHeight,
+        },
+        rate: 18,
+      });
+    }
 
     this.destroy();
   }
@@ -466,7 +495,15 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    this.scene.sound.play(BuildingAudio.REMOVE);
+    new Effect(this.scene, {
+      texture: EffectTexture.SMOKE,
+      audio: BuildingAudio.REMOVE,
+      position: {
+        x: this.x,
+        y: this.y + TILE_META.halfHeight,
+      },
+      rate: 18,
+    });
 
     this.destroy();
   }

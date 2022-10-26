@@ -6,7 +6,8 @@ import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
-import { WorldEffect } from '~type/world/effects';
+import { Particles } from '~scene/world/effects';
+import { ParticlesType } from '~type/world/effects';
 import {
   EnemyAttackTarget, EnemyAudio, EnemyData, EnemyTexture,
 } from '~type/world/entities/enemy';
@@ -100,12 +101,16 @@ export class Enemy extends NPC {
       return;
     }
 
-    this.scene.effects.emit(WorldEffect.GLOW, this, {
-      follow: this,
-      lifespan: { min: 100, max: 150 },
-      scale: { start: 0.2, end: 0.1 },
-      speed: 80,
-    }, 250);
+    new Particles(this, {
+      type: ParticlesType.GLOW,
+      duration: 250,
+      params: {
+        follow: this,
+        lifespan: { min: 100, max: 150 },
+        scale: { start: 0.2, end: 0.1 },
+        speed: 80,
+      },
+    });
 
     if (this.timerTint) {
       this.timerTint.elapsed = 0;
@@ -186,15 +191,19 @@ export class Enemy extends NPC {
       },
     });
 
-    this.scene.effects.emit(WorldEffect.GLOW, this, {
-      x: this.x,
-      y: this.y,
-      lifespan: { min: 150, max: 250 },
-      scale: { start: 0.25, end: 0.0 },
-      speed: 100,
-      quantity: 2,
-      tint: 0x000,
-    }, 500);
+    new Particles(this, {
+      type: ParticlesType.GLOW,
+      duration: 500,
+      params: {
+        x: this.x,
+        y: this.y,
+        lifespan: { min: 150, max: 250 },
+        scale: { start: 0.25, end: 0.0 },
+        speed: 100,
+        quantity: 2,
+        tint: 0x000,
+      },
+    });
   }
 }
 

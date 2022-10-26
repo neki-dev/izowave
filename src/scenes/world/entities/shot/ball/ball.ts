@@ -2,8 +2,9 @@ import Phaser from 'phaser';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { WorldEffect } from '~type/world/effects';
+import { ParticlesType } from '~type/world/effects';
 import {
   ShotParams, ShotBallData, ShotParent, ShotBallAudio, ShotBallTexture,
 } from '~type/world/entities/shot';
@@ -28,7 +29,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   /**
    * Shoot effect.
    */
-  private effect: Nullable<Phaser.GameObjects.Particles.ParticleEmitter> = null;
+  private effect: Nullable<Particles> = null;
 
   /**
    * Damage of hit.
@@ -135,13 +136,16 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
     }
 
     if (this.glowColor) {
-      this.effect = this.scene.effects.emit(WorldEffect.GLOW, this.parent, {
-        follow: this,
-        lifespan: { min: 100, max: 200 },
-        scale: { start: 0.25, end: 0.0 },
-        quantity: 2,
-        blendMode: 'ADD',
-        tint: this.glowColor,
+      this.effect = new Particles(this, {
+        type: ParticlesType.GLOW,
+        params: {
+          follow: this,
+          lifespan: { min: 100, max: 200 },
+          scale: { start: 0.25, end: 0.0 },
+          quantity: 2,
+          blendMode: 'ADD',
+          tint: this.glowColor,
+        },
       });
     }
 
@@ -167,7 +171,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
    */
   private stop() {
     if (this.effect) {
-      this.scene.effects.stop(this.parent, this.effect);
+      this.effect.destroy();
       this.effect = null;
     }
 

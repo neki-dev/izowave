@@ -6,6 +6,8 @@ import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
+import { Effect } from '~scene/world/effects';
+import { EffectTexture } from '~type/world/effects';
 import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/assistant';
 import { ShotParams } from '~type/world/entities/shot';
 
@@ -84,7 +86,15 @@ export class Assistant extends NPC {
   public onDead() {
     super.onDead();
 
-    this.scene.sound.play(AssistantAudio.DEAD);
+    if (!this.visible) {
+      return;
+    }
+
+    new Effect(this.scene, {
+      texture: EffectTexture.EXPLOSION,
+      audio: AssistantAudio.DEAD,
+      position: this,
+    });
   }
 
   /**

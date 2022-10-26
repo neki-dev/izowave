@@ -13,8 +13,8 @@ export class Live extends EventEmmiter {
   private set health(v) { this._health = v; }
 
   /**
-    * Maximum health amount.
-    */
+   * Maximum health amount.
+   */
   private _maxHealth: number;
 
   public get maxHealth() { return this._maxHealth; }
