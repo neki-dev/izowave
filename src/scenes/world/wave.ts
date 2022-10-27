@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 
+import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
@@ -89,13 +90,13 @@ export class Wave extends EventEmitter {
 
     if (this.isGoing) {
       if (this.spawnedCount < this.maxSpawnedCount) {
-        if (this.nextSpawnTimestamp < now) {
+        if (this.nextSpawnTimestamp <= now) {
           this.spawnEnemy();
         }
       } else if (this.scene.enemies.getTotalUsed() === 0) {
         this.complete();
       }
-    } else if (this.nextWaveTimestamp < now) {
+    } else if (this.nextWaveTimestamp <= now) {
       this.start();
     }
   }
@@ -115,7 +116,7 @@ export class Wave extends EventEmitter {
    * Start timeleft to next wave.
    */
   public runTimeleft() {
-    const pause = (DIFFICULTY.WAVE_PAUSE + (this.number - 1) * 1000) / this.scene.difficulty;
+    const pause = (DIFFICULTY.WAVE_PAUSE + this.number * 1000) / this.scene.difficulty;
 
     this.nextWaveTimestamp = this.scene.getTimerNow() + pause;
   }
@@ -141,7 +142,7 @@ export class Wave extends EventEmitter {
    * Start wave.
    * Increment current wave number and start enemies spawning.
    */
-  public start() {
+  private start() {
     this.number++;
     this.isGoing = true;
 
@@ -163,7 +164,7 @@ export class Wave extends EventEmitter {
    * Complete wave.
    * Start timeleft to next wave.
    */
-  public complete() {
+  private complete() {
     this.isGoing = false;
     this.runTimeleft();
 

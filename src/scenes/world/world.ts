@@ -609,9 +609,6 @@ export class World extends Phaser.Scene {
         });
       },
       FUTURE: () => {
-        if (this.wave.isGoing) {
-          this.wave.complete();
-        }
         const waveNumber = this.wave.number + Phaser.Math.Between(3, 7);
 
         this.wave.setNumber(waveNumber);
