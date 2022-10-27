@@ -56,7 +56,6 @@ export class NPC extends Sprite {
     this.speed = speed;
     this.pathBreakpoint = pathBreakpoint;
 
-    this.setPushable(false);
     this.setVisible(this.atVisibleTile());
 
     // Add animations
@@ -179,19 +178,13 @@ export class NPC extends Sprite {
 
     if (collide) {
       this.setVelocity(0, 0);
+      this.body.setImmovable(true);
 
       return;
     }
 
+    this.body.setImmovable(false);
     this.setVelocity(velocity.x, velocity.y);
-  }
-
-  /**
-   * Get and handle collides.
-   */
-  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
-  public handleCollide(direction: number): boolean {
-    return false;
   }
 
   /**

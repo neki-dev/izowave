@@ -42,6 +42,21 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   /**
+   *
+   */
+  private collisionTargets: TileType[] = [];
+
+  /**
+   *
+   */
+  private collisionHandler: Nullable<(tile: Phaser.GameObjects.Image) => void> = null;
+
+  /**
+   *
+   */
+  private collisionGround: boolean = false;
+
+  /**
    * Health bar above sprite.
    */
   private healthIndicator: Phaser.GameObjects.Container;
@@ -64,14 +79,21 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     this.live = new Live(health);
 
     // Configure physics
+
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
+    this.setPushable(false);
 
     this.addContainer();
     this.addHealthIndicator();
 
     // Add events callbacks
-    this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
-    this.live.on(LiveEvents.DEAD, () => this.onDead());
+
+    this.live.on(LiveEvents.DAMAGE, () => {
+      this.onDamage();
+    });
+    this.live.on(LiveEvents.DEAD, () => {
+      this.onDead();
+    });
   }
 
   /**
@@ -111,7 +133,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Damage event.
+   * Event damage.
    */
   public onDamage() {
     if (!this.visible) {
@@ -132,24 +154,55 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Dead event.
+   * Event dead.
    */
   // eslint-disable-next-line class-methods-use-this
   public onDead() {
   }
 
   /**
+   *
+   */
+  public setTilesCollision(
+    targets: TileType[],
+    handler: (tile: Phaser.GameObjects.Image) => void,
+  ) {
+    this.collisionTargets = targets;
+    this.collisionHandler = handler;
+  }
+
+  /**
+   *
+   */
+  public setTilesGroundCollision(state: boolean) {
+    this.collisionGround = state;
+  }
+
+  /**
+   * Get and handle collided tile.
+   */
+  public handleCollide(direction: number): boolean {
+    const tile = this.getCollidedTile(direction);
+
+    if (this.collisionHandler && tile instanceof Phaser.GameObjects.Image) {
+      this.collisionHandler(tile);
+    }
+
+    return Boolean(tile);
+  }
+
+  /**
    * Get collided tile by direction.
    *
    * @param direction - Current direction in degrees
-   * @param tileTypes - List of tile types for check
-   * @param ground - Flag for check ground tile
    */
-  public getCollide(
+  private getCollidedTile(
     direction: number,
-    tileTypes: TileType[],
-    ground: boolean = true,
   ): boolean | Phaser.GameObjects.Image {
+    if (this.collisionTargets.length === 0 && !this.collisionGround) {
+      return false;
+    }
+
     const target = this.scene.physics.velocityFromAngle(direction, WORLD_COLLIDE_LOOK);
     const occupiedTiles = this.getCorners().map((point) => Level.ToMatrixPosition({
       x: point.x + target.x,
@@ -158,15 +211,21 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
 
     for (const positionAtMatrix of occupiedTiles) {
       // If collide tile
-      const tile = this.scene.level.getTileWithType({ ...positionAtMatrix, z: 1 }, tileTypes);
+      const tile = this.scene.level.getTileWithType({
+        ...positionAtMatrix,
+        z: 1,
+      }, this.collisionTargets);
 
       if (tile) {
         return tile;
       }
 
       // If not collide ground tile
-      if (ground) {
-        const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
+      if (this.collisionGround) {
+        const tileGround = this.scene.level.getTile({
+          ...positionAtMatrix,
+          z: 0,
+        });
 
         if (!tileGround || tileGround?.biome.type === BiomeType.WATER) {
           return true;

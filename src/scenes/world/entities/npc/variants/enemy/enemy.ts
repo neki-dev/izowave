@@ -59,16 +59,24 @@ export class Enemy extends NPC {
     this.experienceMultiply = experienceMultiply;
 
     // Configure physics
+
     const offset = scale * 2;
 
     this.body.setCircle((this.width / 2) - offset, offset, offset);
     this.setScale(scale);
+
+    this.setTilesCollision([TileType.BUILDING], (tile: Building) => {
+      this.attack(tile);
+    });
+
+    //
 
     if (this.visible) {
       this.addSpawnEffect();
     }
 
     // Add events callbacks
+
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.timerTint) {
         this.timerTint.destroy();
@@ -140,19 +148,6 @@ export class Enemy extends NPC {
     target.live.damage(this.damage);
 
     this.calm(1000);
-  }
-
-  /**
-   * Get and handle collides.
-   */
-  public handleCollide(direction: number): boolean {
-    const tile = this.getCollide(direction, [TileType.BUILDING], false);
-
-    if (tile instanceof Building) {
-      this.attack(tile);
-    }
-
-    return Boolean(tile);
   }
 
   /**

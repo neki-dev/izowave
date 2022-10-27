@@ -75,23 +75,29 @@ export function selectClosest<T extends Phaser.Types.Math.Vector2Like>(
  * Get array of positions around source position.
  *
  * @param position - Source position
+ * @param space - Space between source position and around positions
  */
 export function aroundPosition(
   position: Phaser.Types.Math.Vector2Like,
+  space: number = 0,
 ): Phaser.Types.Math.Vector2Like[] {
-  const { x, y } = position;
-  const shift = 2;
+  const list = [];
+  const shift = space + 1;
 
-  return [
-    { x, y: y - shift },
-    { x: x + shift, y: y - shift },
-    { x: x + shift, y },
-    { x: x + shift, y: y + shift },
-    { x, y: y + shift },
-    { x: x - shift, y: y + shift },
-    { x: x - shift, y },
-    { x: x - shift, y: y - shift },
-  ];
+  for (let y = position.y - shift; y <= position.y + shift; y++) {
+    for (let x = position.x - shift; x <= position.x + shift; x++) {
+      if (
+        x === position.x - shift
+        || x === position.x + shift
+        || y === position.y - shift
+        || y === position.y + shift
+      ) {
+        list.push({ x, y });
+      }
+    }
+  }
+
+  return list;
 }
 
 /**

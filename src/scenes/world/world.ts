@@ -13,6 +13,7 @@ import { NPC } from '~entity/npc';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
+import { ShotBall } from '~entity/shot/ball';
 import { getAssetsPack } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
 import { removeLoading, setLoadingStatus } from '~lib/state';
@@ -194,10 +195,10 @@ export class World extends Phaser.Scene {
       localStorage.setItem(DIFFICULTY_KEY, Difficulty.NORMAL);
     }
 
-    this.sortDepthOptimization();
-    this.initParticles();
-    this.makeEntityGroups();
+    this.registerOptimization();
+    this.registerParticles();
     this.makeLevel();
+    this.addEntityGroups();
 
     this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
     this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
@@ -446,7 +447,7 @@ export class World extends Phaser.Scene {
   /**
    * Create entity groups.
    */
-  private makeEntityGroups() {
+  private addEntityGroups() {
     this.chests = this.add.group({
       classType: Chest,
     });
@@ -474,7 +475,7 @@ export class World extends Phaser.Scene {
    * Add colliders to entities.
    */
   private addEntityColliders() {
-    this.physics.add.collider(this.shots, this.enemies, (shot: any, enemy: Enemy) => {
+    this.physics.add.collider(this.shots, this.enemies, (shot: ShotBall, enemy: Enemy) => {
       shot.hit(enemy);
     });
 
@@ -548,7 +549,7 @@ export class World extends Phaser.Scene {
    * Create default buildings close to player.
    */
   private makeDefaultBuildings() {
-    const spawns = aroundPosition(this.player.positionAtMatrix);
+    const spawns = aroundPosition(this.player.positionAtMatrix, 1);
 
     const buildingsVariants = [
       [BuildingVariant.TOWER_FIRE],
@@ -561,22 +562,17 @@ export class World extends Phaser.Scene {
       buildingsVariants.push([BuildingVariant.MINE_BRONZE, BuildingVariant.MINE_SILVER]);
     }
 
-    for (const variant of buildingsVariants) {
+    while (spawns.length > 0 && buildingsVariants.length > 0) {
       const index = Phaser.Math.Between(0, spawns.length - 1);
-      const positionAtMatrix = spawns[index];
+      const [positionAtMatrix] = spawns.splice(index, 1);
       const tileGround = this.level.getTile({ ...positionAtMatrix, z: 0 });
 
       if (tileGround?.biome.solid) {
-        const randomVariant: BuildingVariant = Phaser.Utils.Array.GetRandom(variant);
+        const [variant] = buildingsVariants.splice(0, 1);
+        const randomVariant = <BuildingVariant> Phaser.Utils.Array.GetRandom(variant);
         const BuildingInstance = BUILDINGS[randomVariant];
 
         new BuildingInstance(this, positionAtMatrix);
-      }
-
-      // Remove occupied position from spawns
-      spawns.splice(index, 1);
-      if (spawns.length === 0) {
-        break;
       }
     }
   }
@@ -584,7 +580,7 @@ export class World extends Phaser.Scene {
   /**
    *
    */
-  private initParticles() {
+  private registerParticles() {
     for (const effect of Object.values(ParticlesType)) {
       this.particles[effect] = this.add.particles(ParticlesTexture[effect]);
       this.particles[effect].setDepth(WORLD_DEPTH_EFFECT);
@@ -627,7 +623,7 @@ export class World extends Phaser.Scene {
   /**
    * https://github.com/photonstorm/phaser/pull/6217
    */
-  private sortDepthOptimization() {
+  private registerOptimization() {
     const ref = this.scene.systems.displayList;
 
     ref.depthSort = () => {

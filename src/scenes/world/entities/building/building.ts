@@ -101,33 +101,47 @@ export class Building extends Phaser.GameObjects.Image {
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
 
+    this.setInteractive();
+    this.makeActionArea();
+
+    scene.builder.addFoundation(positionAtMatrix);
+
     // Configure tile
+
     this.setOrigin(0.5, TILE_META.origin);
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     scene.level.putTile(this, TileType.BUILDING, tilePosition);
     scene.refreshNavigationMeta();
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      scene.level.removeTile(tilePosition);
-      scene.refreshNavigationMeta();
-    });
-
-    this.setInteractive();
-    this.makeActionArea();
-    scene.builder.addFoundation(positionAtMatrix);
 
     // Add keyboard events
+
     scene.input.keyboard.on(INPUT_KEY.BUILDING_DESTROY, this.remove, this);
     scene.input.keyboard.on(INPUT_KEY.BUILDING_UPGRADE, this.nextUpgrade, this);
 
     // Add events callbacks
-    this.live.on(LiveEvents.DAMAGE, () => this.onDamage());
-    this.live.on(LiveEvents.DEAD, () => this.onDead());
-    this.scene.events.on(WorldEvents.GAMEOVER, () => this.onUnfocus());
-    this.on(Phaser.Input.Events.POINTER_OVER, this.onFocus, this);
-    this.on(Phaser.Input.Events.POINTER_OUT, this.onUnfocus, this);
+
+    this.live.on(LiveEvents.DAMAGE, () => {
+      this.onDamage();
+    });
+    this.live.on(LiveEvents.DEAD, () => {
+      this.onDead();
+    });
+
+    this.on(Phaser.Input.Events.POINTER_OVER, () => {
+      this.onFocus();
+    });
+    this.on(Phaser.Input.Events.POINTER_OUT, () => {
+      this.onUnfocus();
+    });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      scene.level.removeTile(tilePosition);
+      scene.refreshNavigationMeta();
       this.onUnfocus();
       this.removeAlert();
+    });
+
+    this.scene.events.on(WorldEvents.GAMEOVER, () => {
+      this.onUnfocus();
     });
   }
 

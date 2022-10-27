@@ -93,19 +93,33 @@ export class Player extends Sprite {
     });
     scene.add.existing(this);
 
-    // Configure physics
-    this.body.setCircle(3, 5, 10);
-    this.setScale(2.0);
-    this.setPushable(false);
-    this.setOrigin(0.5, 0.75);
-
     this.registerKeyboard();
+    this.registerAnimations();
 
     this.addAssistant();
-    this.addAnimations();
+
+    // Configure physics
+
+    this.body.setCircle(3, 5, 10);
+    this.setScale(2.0);
+    this.setOrigin(0.5, 0.75);
+
+    this.setTilesGroundCollision(true);
+    this.setTilesCollision([
+      TileType.MAP,
+      TileType.BUILDING,
+      TileType.CHEST,
+    ], (tile) => {
+      if (tile instanceof Chest) {
+        tile.open();
+      }
+    });
 
     // Add events callbacks
-    this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => this.onWaveComplete(number));
+
+    this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => {
+      this.onWaveComplete(number);
+    });
   }
 
   /**
@@ -256,7 +270,7 @@ export class Player extends Sprite {
    * Spawn assistant.
    */
   private addAssistant() {
-    const positionAtMatrix = aroundPosition(this.positionAtMatrix).find((spawn) => {
+    const positionAtMatrix = aroundPosition(this.positionAtMatrix, 1).find((spawn) => {
       const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
 
       return Boolean(tileGround);
@@ -338,14 +352,16 @@ export class Player extends Sprite {
   private updateVelocity() {
     if (!this.movement) {
       this.setVelocity(0, 0);
+      this.body.setImmovable(true);
 
       return;
     }
 
-    const collide = this.handleCollide();
+    const collide = this.handleCollide(this.direction);
 
     if (collide) {
       this.setVelocity(0, 0);
+      this.body.setImmovable(true);
 
       return;
     }
@@ -354,6 +370,7 @@ export class Player extends Sprite {
     const speed = this.speed / friction;
     const { x, y } = this.scene.physics.velocityFromAngle(this.direction, speed);
 
+    this.body.setImmovable(false);
     this.setVelocity(x, y);
   }
 
@@ -434,23 +451,6 @@ export class Player extends Sprite {
   }
 
   /**
-   * Get and handle collides.
-   */
-  private handleCollide(): boolean {
-    const tile = this.getCollide(this.direction, [
-      TileType.MAP,
-      TileType.BUILDING,
-      TileType.CHEST,
-    ]);
-
-    if (tile instanceof Chest) {
-      tile.open();
-    }
-
-    return Boolean(tile);
-  }
-
-  /**
    * Get current game stat.
    */
   private getStat(): PlayerStat {
@@ -488,7 +488,7 @@ export class Player extends Sprite {
   /**
    * Add animations for all move directions.
    */
-  private addAnimations() {
+  private registerAnimations() {
     const { anims } = this.scene;
 
     let frameIndex = 0;
