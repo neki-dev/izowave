@@ -27,14 +27,19 @@ export const ComponentNotices = Component(function (container) {
           default: return '#000';
         }
       })(),
+      shadow: {
+        fill: true,
+      },
     });
 
     notice.setOrigin(0.5, 0.0);
     useAdaptation(notice, () => {
       const padding = switchSize(12);
+      const shadow = switchSize(4);
 
       scaleText(notice, { by: switchSize(18) });
-      notice.setPadding(padding, padding * 0.8, padding, padding * 0.8);
+      notice.setShadowOffset(shadow, shadow);
+      notice.setPadding(padding, padding * 0.8, padding, padding * 0.9);
     });
 
     return notice;

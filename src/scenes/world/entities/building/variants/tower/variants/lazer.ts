@@ -10,10 +10,10 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static Description = [
     { text: 'Instant and continuous laser attack of enemies', type: 'text' },
-    { text: 'Health: 300', icon: ScreenIcon.HEALTH },
-    { text: 'Radius: 180', icon: ScreenIcon.RADIUS },
-    { text: 'Pause: 1.6 s', icon: ScreenIcon.PAUSE },
-    { text: 'Damage: 75', icon: ScreenIcon.DAMAGE },
+    { text: 'HEALTH: 300', icon: ScreenIcon.HEALTH },
+    { text: 'RADIUS: 180', icon: ScreenIcon.RADIUS },
+    { text: 'PAUSE: 1.6 s', icon: ScreenIcon.PAUSE },
+    { text: 'DAMAGE: 75', icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
@@ -57,7 +57,7 @@ export class BuildingTowerLazer extends BuildingTower {
 
     return [
       ...super.getInfo(), {
-        text: `Damage: ${this.getShotParams().damage * 5}`,
+        text: `DAMAGE: ${this.getShotParams().damage * 5}`,
         post: nextDamage,
         icon: ScreenIcon.DAMAGE,
       },

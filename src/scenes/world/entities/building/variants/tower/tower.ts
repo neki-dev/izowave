@@ -64,7 +64,7 @@ export class BuildingTower extends Building {
       : null;
     const info = [
       ...super.getInfo(), {
-        text: `Ammo: ${this.ammoLeft}/${this.getMaxAmmo()}`,
+        text: `AMMO: ${this.ammoLeft}/${this.getMaxAmmo()}`,
         post: nextAmmo,
         icon: ScreenIcon.AMMO,
         color: (this.ammoLeft === 0)
@@ -85,7 +85,7 @@ export class BuildingTower extends Building {
         : null;
 
       info.push({
-        text: `Speed: ${speed / 10}`,
+        text: `SPEED: ${speed / 10}`,
         post: nextSpeed && Math.round(nextSpeed / 10),
         icon: ScreenIcon.SPEED,
       });

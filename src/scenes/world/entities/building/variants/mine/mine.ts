@@ -44,7 +44,7 @@ export class BuildingMine extends Building {
 
     return [
       ...super.getInfo(), {
-        text: `Left: ${this.amountLeft}`,
+        text: `RESOURCES: ${this.amountLeft}`,
         post: nextLeft,
         icon: ScreenIcon.RESOURCES,
         color: (this.amountLeft < BUILDING_RESOUCES_LEFT_ALERT)

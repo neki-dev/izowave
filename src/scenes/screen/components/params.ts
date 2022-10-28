@@ -75,7 +75,7 @@ export const ComponentParams = Component<Props>(function (container, {
      */
 
     const text = this.add.text(0, 0, item.text, {
-      resolution: window.devicePixelRatio,
+      // resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.MONOSPACE,
       color: item.color || '#fff',
     });
@@ -91,7 +91,7 @@ export const ComponentParams = Component<Props>(function (container, {
       });
       text.setPosition(
         icon ? (icon.width + 5) : 0,
-        -2, // ?
+        -1, // ?
       );
       text.setPadding(0, 0, 0, paddingBottom);
     });
@@ -104,19 +104,19 @@ export const ComponentParams = Component<Props>(function (container, {
 
     if (item.post) {
       const post = this.add.text(0, 0, ` → ${item.post}`, {
-        resolution: window.devicePixelRatio,
+        // resolution: window.devicePixelRatio,
         fontFamily: INTERFACE_FONT.MONOSPACE,
       });
 
-      post.setAlpha(0.75);
+      post.setAlpha(0.5);
       useAdaptation(post, () => {
         scaleText(post, {
           by: wrapper.width,
-          scale: 0.06,
+          scale: 0.07,
         });
         post.setPosition(
           text.x + text.width,
-          0,
+          -1, // ?
         );
       });
 

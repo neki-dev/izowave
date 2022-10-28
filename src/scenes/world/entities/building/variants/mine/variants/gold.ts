@@ -11,9 +11,9 @@ export class BuildingMineGold extends BuildingMine {
 
   static Description = [
     { text: 'Gold resource generation for builds and upgrades', type: 'text' },
-    { text: 'Health: 400', icon: ScreenIcon.HEALTH },
-    { text: 'Pause: 2.0 s', icon: ScreenIcon.PAUSE },
-    { text: `Resources: ${DIFFICULTY.MINE_RESOURCES}`, icon: ScreenIcon.RESOURCES },
+    { text: 'HEALTH: 400', icon: ScreenIcon.HEALTH },
+    { text: 'PAUSE: 2.0 s', icon: ScreenIcon.PAUSE },
+    { text: `RESOURCES: ${DIFFICULTY.MINE_RESOURCES}`, icon: ScreenIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.MINE_GOLD;

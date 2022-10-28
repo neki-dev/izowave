@@ -11,10 +11,10 @@ export class BuildingMedic extends Building {
 
   static Description = [
     { text: 'Heals player, that are in radius of this building', type: 'text' },
-    { text: 'Health: 200', icon: ScreenIcon.HEALTH },
-    { text: 'Radius: 200', icon: ScreenIcon.RADIUS },
-    { text: 'Pause: 3.0 s', icon: ScreenIcon.PAUSE },
-    { text: `Heal: ${DIFFICULTY.MEDIC_HEAL_AMOUNT}`, icon: ScreenIcon.HEAL },
+    { text: 'HEALTH: 200', icon: ScreenIcon.HEALTH },
+    { text: 'RADIUS: 200', icon: ScreenIcon.RADIUS },
+    { text: 'PAUSE: 3.0 s', icon: ScreenIcon.PAUSE },
+    { text: `HEAL: ${DIFFICULTY.MEDIC_HEAL_AMOUNT}`, icon: ScreenIcon.HEAL },
   ];
 
   static Texture = BuildingTexture.MEDIC;
@@ -78,7 +78,7 @@ export class BuildingMedic extends Building {
 
     return [
       ...super.getInfo(), {
-        text: `Heal: ${this.getHealAmount()}`,
+        text: `HEAL: ${this.getHealAmount()}`,
         post: nextHeal,
         icon: ScreenIcon.HEAL,
       },

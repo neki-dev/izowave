@@ -209,7 +209,7 @@ export class Building extends Phaser.GameObjects.Image {
   public getInfo(): BuildingDescriptionItem[] {
     const info: BuildingDescriptionItem[] = [
       { text: `UPGRADE ${this.upgradeLevel} OF ${BUILDING_MAX_UPGRADE_LEVEL}`, type: 'text' },
-      { text: `Health: ${this.live.health}`, icon: ScreenIcon.HEALTH },
+      { text: `HEALTH: ${this.live.health}`, icon: ScreenIcon.HEALTH },
     ];
     const radius = this.getActionsRadius();
     const pause = this.getActionsPause();
@@ -222,7 +222,7 @@ export class Building extends Phaser.GameObjects.Image {
       );
 
       info.push({
-        text: `Radius: ${Math.round(radius / 2)}`,
+        text: `RADIUS: ${Math.round(radius / 2)}`,
         post: nextRadius && Math.round(nextRadius / 2),
         icon: ScreenIcon.RADIUS,
       });
@@ -236,7 +236,7 @@ export class Building extends Phaser.GameObjects.Image {
       );
 
       info.push({
-        text: `Pause: ${(pause / 1000).toFixed(1)} s`,
+        text: `PAUSE: ${(pause / 1000).toFixed(1)} s`,
         post: nextPause && `${(nextPause / 1000).toFixed(1)} s`,
         icon: ScreenIcon.PAUSE,
       });

@@ -11,7 +11,7 @@ export class BuildingWall extends Building {
 
   static Description = [
     { text: 'Wall with more health to defend other buildings', type: 'text' },
-    { text: 'Health: 2000', icon: ScreenIcon.HEALTH },
+    { text: 'HEALTH: 2000', icon: ScreenIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;

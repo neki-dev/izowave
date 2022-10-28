@@ -14,9 +14,9 @@ export class BuildingAmmunition extends Building {
 
   static Description = [
     { text: 'Reloading towers ammo, that are in radius of this building', type: 'text' },
-    { text: 'Health: 300', icon: ScreenIcon.HEALTH },
-    { text: 'Radius: 160', icon: ScreenIcon.RADIUS },
-    { text: `Ammo: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: ScreenIcon.AMMO },
+    { text: 'HEALTH: 300', icon: ScreenIcon.HEALTH },
+    { text: 'RADIUS: 160', icon: ScreenIcon.RADIUS },
+    { text: `AMMO: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: ScreenIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -66,7 +66,7 @@ export class BuildingAmmunition extends Building {
 
     return [
       ...super.getInfo(), {
-        text: `Left: ${this.amountLeft}`,
+        text: `AMMO: ${this.amountLeft}`,
         post: nextLeft,
         icon: ScreenIcon.AMMO,
       },

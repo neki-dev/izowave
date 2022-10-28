@@ -10,11 +10,11 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Description = [
     { text: 'Basic fire attack of enemies', type: 'text' },
-    { text: 'Health: 600', icon: ScreenIcon.HEALTH },
-    { text: 'Radius: 215', icon: ScreenIcon.RADIUS },
-    { text: 'Pause: 1.4 s', icon: ScreenIcon.PAUSE },
-    { text: 'Speed: 55', icon: ScreenIcon.SPEED },
-    { text: 'Damage: 35', icon: ScreenIcon.DAMAGE },
+    { text: 'HEALTH: 600', icon: ScreenIcon.HEALTH },
+    { text: 'RADIUS: 215', icon: ScreenIcon.RADIUS },
+    { text: 'PAUSE: 1.4 s', icon: ScreenIcon.PAUSE },
+    { text: 'SPEED: 55', icon: ScreenIcon.SPEED },
+    { text: 'DAMAGE: 35', icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_FIRE;
@@ -59,7 +59,7 @@ export class BuildingTowerFire extends BuildingTower {
 
     return [
       ...super.getInfo(), {
-        text: `Damage: ${this.getShotParams().damage}`,
+        text: `DAMAGE: ${this.getShotParams().damage}`,
         post: nextDamage,
         icon: ScreenIcon.DAMAGE,
       },

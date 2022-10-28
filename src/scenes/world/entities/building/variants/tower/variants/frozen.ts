@@ -10,11 +10,11 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Description = [
     { text: 'Freezing enemies for some time', type: 'text' },
-    { text: 'Health: 700', icon: ScreenIcon.HEALTH },
-    { text: 'Radius: 210', icon: ScreenIcon.RADIUS },
-    { text: 'Pause: 1.4 s', icon: ScreenIcon.PAUSE },
-    { text: 'Speed: 55', icon: ScreenIcon.SPEED },
-    { text: 'Freeze: 1.0 s', icon: ScreenIcon.DAMAGE },
+    { text: 'HEALTH: 700', icon: ScreenIcon.HEALTH },
+    { text: 'RADIUS: 210', icon: ScreenIcon.RADIUS },
+    { text: 'PAUSE: 1.4 s', icon: ScreenIcon.PAUSE },
+    { text: 'SPEED: 55', icon: ScreenIcon.SPEED },
+    { text: 'FREEZE: 1.0 s', icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_FROZEN;
@@ -59,7 +59,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
     return [
       ...super.getInfo(), {
-        text: `Freeze: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
+        text: `FREEZE: ${(this.getShotParams().freeze / 1000).toFixed(1)} s`,
         post: nextFreeze && `${nextFreeze.toFixed(1)} s`,
         icon: ScreenIcon.DAMAGE,
       },

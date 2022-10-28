@@ -109,7 +109,7 @@ export const ComponentMenu = Component<Props>(function (container, {
    */
 
   const copyright = this.add.text(0, 0, COPYRIGHT, {
-    resolution: window.devicePixelRatio,
+    // resolution: window.devicePixelRatio,
     fontFamily: INTERFACE_FONT.MONOSPACE,
     align: 'right',
   });
