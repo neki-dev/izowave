@@ -97,6 +97,8 @@ export class Player extends Sprite {
 
     this.addAssistant();
 
+    this.live.setMaxHealth(9999);
+
     // Configure physics
 
     this.body.setCircle(3, 5, 10);

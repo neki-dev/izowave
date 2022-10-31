@@ -1,7 +1,9 @@
 import { DIFFICULTY } from '~const/difficulty';
 import { Player } from '~entity/player';
 import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
 import { ScreenIcon } from '~type/screen';
+import { ParticlesType } from '~type/world/effects';
 import { BuildingVariant, BuildingTexture, BuildingParamItem } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -95,5 +97,19 @@ export class BuildingMedic extends Building {
     const health = this.getHealAmount();
 
     player.live.setHealth(player.live.health + health);
+
+    new Particles(this, {
+      type: ParticlesType.BIT,
+      duration: 500,
+      params: {
+        x: this.x,
+        y: this.y,
+        lifespan: { min: 100, max: 300 },
+        scale: { start: 1.0, end: 0.5 },
+        speed: 100,
+        maxParticles: 6,
+        alpha: 0.75,
+      },
+    });
   }
 }

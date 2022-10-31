@@ -141,7 +141,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     }
 
     new Particles(this, {
-      type: ParticlesType.BLOOD,
+      type: ParticlesType.BIT,
       duration: 250,
       params: {
         follow: this,
@@ -149,6 +149,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
         scale: { start: 1.0, end: 0.5 },
         speed: 100,
         maxParticles: 6,
+        tint: 0xdd1e1e,
       },
     });
   }

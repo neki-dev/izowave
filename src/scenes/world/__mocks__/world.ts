@@ -1,9 +1,15 @@
+import { TutorialStep } from '~type/tutorial';
+
 import { World } from '../world';
 
 const world = {
   difficulty: 1,
   getTimerNow: jest.fn(),
   spawnEnemy: jest.fn(),
+  tutorial: {
+    step: TutorialStep.DONE,
+    on: jest.fn(),
+  },
   enemies: {
     getTotalUsed: jest.fn(),
   },

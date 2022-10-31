@@ -4,12 +4,12 @@ import { Sprite } from '~entity/sprite';
 import { Particles } from '~scene/world/effects';
 
 export enum ParticlesType {
-  BLOOD = 'BLOOD',
+  BIT = 'BIT',
   GLOW = 'GLOW',
 }
 
 export enum ParticlesTexture {
-  BLOOD = 'effect/blood',
+  BIT = 'effect/bit',
   GLOW = 'effect/glow',
 }
 
