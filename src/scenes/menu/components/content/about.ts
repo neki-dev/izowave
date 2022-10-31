@@ -9,11 +9,9 @@ export const ComponentAbout = Component(function (container) {
 
   container.add(
     ref.text = this.add.text(0, -2, [
-      'Your task is to survive as many waves as possible. With each wave, the number of enemies and their characteristics will grow.',
+      'Your task is to survive in open world as many waves as possible. With each wave count of enemies and their characteristics will grow.',
       '',
-      'Between waves there are built walls to defend, towers to attack, mines to generation resources, and medics to replenish health.',
-      '',
-      'Also, do not forget to upgrade your buildings so as not to yield to enemies.',
+      'Between waves build walls to defend, towers to attack, generators to get resources, ammunitions to reload towers, and medics to replenish your health.',
     ], {
       // resolution: window.devicePixelRatio,
       fontFamily: INTERFACE_FONT.MONOSPACE,
