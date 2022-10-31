@@ -42,17 +42,17 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   /**
-   *
+   * Collision tiles.
    */
   private collisionTargets: TileType[] = [];
 
   /**
-   *
+   * Collision tile handler.
    */
   private collisionHandler: Nullable<(tile: Phaser.GameObjects.Image) => void> = null;
 
   /**
-   *
+   * Flag for handle ground collision.
    */
   private collisionGround: boolean = false;
 

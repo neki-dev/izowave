@@ -11,7 +11,6 @@ export const DIFFICULTY_POWERS: DifficultyPowers = {
   EASY: 0.8,
   NORMAL: 1.0,
   HARD: 1.3,
-  UNREAL: 1.8,
 };
 
 export const COPYRIGHT = [

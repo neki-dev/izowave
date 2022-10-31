@@ -1,7 +1,8 @@
 import { INTERFACE_FONT } from '~const/interface';
 import {
-  useAdaptation, Component, scaleText, switchSize,
+  useAdaptation, Component, scaleText, refreshAdaptive,
 } from '~lib/ui';
+import { formatAmount, rawAmount } from '~lib/utils';
 
 type Props = {
   event: (callback: (amount: number) => void) => void
@@ -10,44 +11,52 @@ type Props = {
 export const ComponentAdditions = Component<Props>(function (container, {
   event,
 }) {
-  const formatAmount = (amount: number): string => (
-    `${(amount > 0) ? '+' : ''}${amount}`
-  );
+  const ref: {
+    addition?: Phaser.GameObjects.Text
+  } = {};
 
   event((amount) => {
-    const additionExist = <Phaser.GameObjects.Text> container.getAt(0);
+    if (ref.addition) {
+      /**
+       * Updating
+       */
 
-    if (additionExist) {
-      const current = Number(additionExist.text.replace('+', ''));
-
-      additionExist.setText(formatAmount(current + amount));
+      ref.addition.setText(
+        formatAmount(rawAmount(ref.addition.text) + amount),
+      );
 
       return;
     }
 
-    const addition = this.add.text(0, 0, formatAmount(amount), {
-      resolution: window.devicePixelRatio,
-      fontFamily: INTERFACE_FONT.MONOSPACE,
+    /**
+     * Creating
+     */
+
+    container.add(
+      ref.addition = this.add.text(0, 0, formatAmount(amount), {
+        resolution: window.devicePixelRatio,
+        fontFamily: INTERFACE_FONT.MONOSPACE,
+      }),
+    );
+
+    ref.addition.setOrigin(0.0, 0.5);
+    ref.addition.setAlpha(0.0);
+    useAdaptation(ref.addition, () => {
+      scaleText(ref.addition, 13);
     });
 
-    addition.setOrigin(0.0, 0.5);
-    addition.setAlpha(0.0);
-    useAdaptation(addition, () => {
-      scaleText(addition, { by: switchSize(14) });
-    });
-
-    container.add(addition);
-    container.refreshAdaptive();
+    refreshAdaptive(container);
 
     this.tweens.add({
-      targets: addition,
+      targets: ref.addition,
       alpha: 0.75,
       duration: 250,
       hold: 1000,
       yoyo: true,
       ease: 'Linear',
       onComplete: () => {
-        addition.destroy();
+        ref.addition.destroy();
+        ref.addition = undefined;
       },
     });
   });

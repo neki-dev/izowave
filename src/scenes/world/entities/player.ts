@@ -8,7 +8,7 @@ import { Chest } from '~entity/chest';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { entries, keys } from '~lib/system';
+import { keys } from '~lib/system';
 import { aroundPosition, calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';
@@ -16,7 +16,6 @@ import {
   PlayerEvents, PlayerTexture, MovementDirection, PlayerStat, PlayerAudio,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
-import { ResourceType, Resources } from '~type/world/resources';
 import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite {
@@ -39,9 +38,9 @@ export class Player extends Sprite {
   private set experience(v) { this._experience = v; }
 
   /**
-   * Resourse amounts.
+   * Resourses amount.
    */
-  private _resources: Resources = DIFFICULTY.PLAYER_START_RESOURCES;
+  private _resources: number = DIFFICULTY.PLAYER_START_RESOURCES;
 
   public get resources() { return this._resources; }
 
@@ -181,57 +180,25 @@ export class Player extends Sprite {
   /**
    * Give player resources.
    *
-   * @param amounts - Resources amounts
+   * @param amount - Resources amount
    */
-  public giveResources(amounts: Resources) {
+  public giveResources(amount: number) {
     if (this.live.isDead()) {
       return;
     }
 
-    for (const [type, amount] of entries(amounts)) {
-      if (amount > 0) {
-        this.resources[type] += amount;
-        this.emit(PlayerEvents.UPDATE_RESOURCE, type, amount);
-      }
-    }
-  }
-
-  /**
-   * Check if player have resources.
-   *
-   * @param amounts - Resources amounts
-   */
-  public haveResources(amounts: Resources): boolean {
-    for (const [type, amount] of entries(amounts)) {
-      if (this.resources[type] < amount) {
-        return false;
-      }
-    }
-
-    return true;
+    this.resources += amount;
+    this.emit(PlayerEvents.UPDATE_RESOURCE, amount);
   }
 
   /**
    * Take player resources.
    *
-   * @param amounts - Resources amounts
+   * @param amount - Resources amount
    */
-  public takeResources(amounts: Resources) {
-    for (const [type, amount] of entries(amounts)) {
-      if (amount > 0) {
-        this.resources[type] -= amount;
-        this.emit(PlayerEvents.UPDATE_RESOURCE, type, -amount);
-      }
-    }
-  }
-
-  /**
-   * Get resource amount.
-   *
-   * @param type - Resource type
-   */
-  public getResource(type: ResourceType): number {
-    return this.resources[type];
+  public takeResources(amount: number) {
+    this.resources -= amount;
+    this.emit(PlayerEvents.UPDATE_RESOURCE, -amount);
   }
 
   /**

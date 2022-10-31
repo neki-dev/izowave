@@ -13,14 +13,12 @@ import { ComponentWave } from '~scene/screen/components/wave';
 import { World } from '~scene/world';
 import { SceneKey } from '~type/scene';
 import { ScreenAudio, ScreenTexture } from '~type/screen';
-import { Notice, NoticeType } from '~type/screen/notice';
+import { NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';
 import { LiveEvents } from '~type/world/entities/live';
 import { PlayerEvents, PlayerStat } from '~type/world/entities/player';
 
 export class Screen extends Phaser.Scene {
-  readonly notices: Notice[] = [];
-
   constructor() {
     super(SceneKey.SCREEN);
   }
@@ -51,8 +49,7 @@ export class Screen extends Phaser.Scene {
 
     const health = ComponentBar.call(this, {
       display: () => `${world.player.live.health} HP`,
-      value: () => world.player.live.health,
-      maxValue: () => world.player.live.maxHealth,
+      percent: () => (world.player.live.health / world.player.live.maxHealth),
       event: (callback: (amount: number) => void) => world.player.live.on(LiveEvents.UPDATE_HEALTH, callback),
       color: 0xe4372c,
     });
@@ -72,13 +69,15 @@ export class Screen extends Phaser.Scene {
     /**
      * Experience bar
      */
+
     const experience = ComponentBar.call(this, {
       display: () => `${world.player.level}  LVL`,
-      value: () => world.player.experience,
-      maxValue: () => calcGrowth(
-        DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
-        DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
-        world.player.level + 1,
+      percent: () => (
+        world.player.experience / calcGrowth(
+          DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
+          DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+          world.player.level + 1,
+        )
       ),
       event: (callback: (amount: number) => void) => world.player.on(PlayerEvents.UPDATE_EXPERIENCE, callback),
       color: 0x1975c5,
@@ -134,11 +133,7 @@ export class Screen extends Phaser.Scene {
      * Builder
      */
 
-    const builder = ComponentBuilder.call(this, {
-      builder: world.builder,
-      wave: world.wave,
-      player: world.player,
-    });
+    const builder = ComponentBuilder.call(this);
 
     useAdaptation(builder, (width: number) => {
       const offset = Math.round(width * 0.02);
@@ -187,6 +182,7 @@ export class Screen extends Phaser.Scene {
 }
 
 registerAudioAssets(ScreenAudio);
+registerImageAssets(ScreenTexture.RESOURCES);
 registerImageAssets(ScreenTexture.ALERT);
 registerSpriteAssets(ScreenTexture.ICON, {
   width: 10,

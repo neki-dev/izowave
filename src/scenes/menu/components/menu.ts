@@ -1,6 +1,8 @@
 import { COPYRIGHT } from '~const/core';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, refreshAdaptive,
+} from '~lib/ui';
 import { MenuItem } from '~type/menu';
 
 import { ComponentItems } from './items';
@@ -12,215 +14,235 @@ type Props = {
 export const ComponentMenu = Component<Props>(function (container, {
   menuItems,
 }) {
+  const ref: {
+    background?: Phaser.GameObjects.Rectangle
+    wrapper?: Phaser.GameObjects.Container
+    sidebar?: Phaser.GameObjects.Container
+    logotype?: Phaser.GameObjects.Text
+    items?: Phaser.GameObjects.Container
+    copyright?: Phaser.GameObjects.Text
+    line?: Phaser.GameObjects.Rectangle
+    page?: Phaser.GameObjects.Container
+    title?: Phaser.GameObjects.Text
+    content?: Phaser.GameObjects.Container
+  } = {};
+
   /**
    * Background
    */
 
-  const background = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.85);
+  container.add(
+    ref.background = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.85),
+  );
 
-  background.setOrigin(0.0, 0.0);
-  useAdaptation(background, (width, height) => {
-    background.setSize(width, height);
+  ref.background.setOrigin(0.0, 0.0);
+  useAdaptation(ref.background, (width, height) => {
+    ref.background.setSize(width, height);
   });
-
-  container.add(background);
 
   /**
    * Wrapper
    */
 
-  const wrapper = this.add.container();
+  container.add(
+    ref.wrapper = this.add.container(),
+  );
 
-  useAdaptation(wrapper, (width, height) => {
-    wrapper.setSize(
+  useAdaptation(ref.wrapper, (width, height) => {
+    ref.wrapper.setSize(
       Math.min(width * 0.9, 1000),
       Math.min(height * 0.8, 440),
     );
-    wrapper.setPosition(
-      (width / 2) - (wrapper.width / 2),
-      (height / 2) - (wrapper.height / 2),
+    ref.wrapper.setPosition(
+      (width / 2) - (ref.wrapper.width / 2),
+      (height / 2) - (ref.wrapper.height / 2),
     );
   });
-
-  container.add(wrapper);
 
   /**
    * Sidebar
    */
 
-  const sidebar = this.add.container();
+  ref.wrapper.add(
+    ref.sidebar = this.add.container(),
+  );
 
-  useAdaptation(sidebar, () => {
-    sidebar.setSize(
-      wrapper.width * 0.3,
-      wrapper.height,
+  useAdaptation(ref.sidebar, () => {
+    ref.sidebar.setSize(
+      ref.wrapper.width * 0.3,
+      ref.wrapper.height,
     );
   });
-
-  wrapper.add(sidebar);
 
   /**
    * Sidebar: Logotype
    */
 
-  const logotype = this.add.text(0, 0, 'IZOWAVE', {
-    resolution: window.devicePixelRatio,
-    color: INTERFACE_TEXT_COLOR.BLUE,
-    fontFamily: INTERFACE_FONT.PIXEL,
-    shadow: {
-      fill: true,
-    },
-  });
+  ref.sidebar.add(
+    ref.logotype = this.add.text(0, 0, 'IZOWAVE', {
+      resolution: window.devicePixelRatio,
+      color: INTERFACE_TEXT_COLOR.BLUE,
+      fontFamily: INTERFACE_FONT.PIXEL,
+      shadow: {
+        fill: true,
+      },
+    }),
+  );
 
-  logotype.setOrigin(1.0, 0.0);
-  useAdaptation(logotype, () => {
-    logotype.setPosition(sidebar.width, 0);
-    scaleText(logotype, {
-      by: sidebar.width,
-      scale: 0.16,
-      shadow: true,
-    });
+  ref.logotype.setOrigin(1.0, 0.0);
+  useAdaptation(ref.logotype, () => {
+    scaleText(ref.logotype, 40, true);
+    ref.logotype.setPosition(
+      ref.sidebar.width,
+      0,
+    );
   });
-
-  sidebar.add(logotype);
 
   /**
    * Sidebar: Menu items
    */
 
-  const items = ComponentItems.call(this, {
-    data: menuItems,
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    onSelect: (item: MenuItem) => updatePage(item),
+  ref.sidebar.add(
+    ref.items = ComponentItems.call(this, {
+      data: menuItems,
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      onSelect: (index: number) => updatePage(menuItems[index]),
+    }),
+  );
+
+  useAdaptation(ref.items, () => {
+    const margin = ref.sidebar.height * 0.15;
+    const offset = ref.logotype.height + margin;
+
+    ref.items.setSize(
+      ref.sidebar.width,
+      ref.sidebar.height - offset,
+    );
+    ref.items.setPosition(0, offset);
   });
-
-  useAdaptation(items, () => {
-    const margin = sidebar.height * 0.15;
-    const offset = logotype.height + margin;
-
-    items.setSize(sidebar.width, sidebar.height - offset);
-    items.setPosition(0, offset);
-  });
-
-  sidebar.add(items);
 
   /**
    * Sidebar: Copyright
    */
 
-  const copyright = this.add.text(0, 0, COPYRIGHT, {
-    // resolution: window.devicePixelRatio,
-    fontFamily: INTERFACE_FONT.MONOSPACE,
-    align: 'right',
-  });
+  ref.sidebar.add(
+    ref.copyright = this.add.text(0, 0, COPYRIGHT, {
+      // resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.MONOSPACE,
+      align: 'right',
+    }),
+  );
 
-  copyright.setOrigin(1.0, 1.0);
-  copyright.setAlpha(0.5);
-  useAdaptation(copyright, () => {
-    copyright.setPosition(sidebar.width, sidebar.height);
-    scaleText(copyright, {
-      by: sidebar.width,
-      scale: 0.04,
-    });
+  ref.copyright.setOrigin(1.0, 1.0);
+  ref.copyright.setAlpha(0.5);
+  useAdaptation(ref.copyright, () => {
+    scaleText(ref.copyright, 10);
+    ref.copyright.setPosition(
+      ref.sidebar.width,
+      ref.sidebar.height,
+    );
   });
-
-  sidebar.add(copyright);
 
   /**
    * Sidebar: Line
    */
 
-  const line = this.add.rectangle(0, 0, 0, 0, 0xffffff, 0.3);
+  ref.sidebar.add(
+    ref.line = this.add.rectangle(0, 0, 0, 0, 0xffffff, 0.3),
+  );
 
-  line.setOrigin(0.5, 0.0);
-  useAdaptation(line, () => {
-    line.setSize(1, sidebar.height * 1.4);
-    line.setPosition(
-      sidebar.width + wrapper.width * 0.09,
-      -sidebar.height * 0.2,
+  ref.line.setOrigin(0.5, 0.0);
+  useAdaptation(ref.line, () => {
+    ref.line.setSize(
+      1,
+      ref.sidebar.height * 1.4,
+    );
+    ref.line.setPosition(
+      ref.sidebar.width + ref.wrapper.width * 0.09,
+      -ref.sidebar.height * 0.2,
     );
   });
-
-  sidebar.add(line);
 
   /**
    * Page
    */
 
-  const page = this.add.container();
+  ref.wrapper.add(
+    ref.page = this.add.container(),
+  );
 
-  useAdaptation(page, () => {
-    page.setSize(
-      wrapper.width * 0.53,
-      wrapper.height,
+  useAdaptation(ref.page, () => {
+    ref.page.setSize(
+      ref.wrapper.width * 0.53,
+      ref.wrapper.height,
     );
-    page.setPosition(
-      wrapper.width - page.width,
+    ref.page.setPosition(
+      ref.wrapper.width - ref.page.width,
       0,
     );
   });
-
-  wrapper.add(page);
 
   /**
    * Page: Title
    */
 
-  const title = this.add.text(0, 0, '', {
-    resolution: window.devicePixelRatio,
-    fontFamily: INTERFACE_FONT.PIXEL,
-    shadow: {
-      fill: true,
-    },
-  });
+  ref.page.add(
+    ref.title = this.add.text(0, 0, '', {
+      resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.PIXEL,
+      shadow: {
+        fill: true,
+      },
+    }),
+  );
 
-  title.setAlpha(0.3);
-  useAdaptation(title, () => {
-    scaleText(title, {
-      by: sidebar.width,
-      scale: 0.16,
-      shadow: true,
-    });
+  ref.title.setAlpha(0.3);
+  useAdaptation(ref.title, () => {
+    scaleText(ref.title, 40, true);
   });
-
-  page.add(title);
 
   /**
    * Page: Content
    */
 
-  const content = this.add.container();
+  ref.page.add(
+    ref.content = this.add.container(),
+  );
 
-  useAdaptation(content, () => {
-    const margin = page.height * 0.15;
-    const offset = title.height + margin;
+  useAdaptation(ref.content, () => {
+    const margin = ref.page.height * 0.15;
+    const offset = ref.title.height + margin;
 
-    content.setSize(page.width, page.height - offset);
-    content.setPosition(0, offset);
+    ref.content.setSize(
+      ref.page.width,
+      ref.page.height - offset,
+    );
+    ref.content.setPosition(0, offset);
   });
-
-  page.add(content);
 
   /**
    * Updating
    */
 
   const updatePage = (item: MenuItem) => {
-    title.setText(item.label);
+    ref.title.setText(item.label);
 
-    content.removeAll(true);
+    ref.content.removeAll(true);
 
     const contentChild = item.content();
 
     useAdaptation(contentChild, () => {
-      contentChild.setSize(content.width, content.height);
+      contentChild.setSize(
+        ref.content.width,
+        ref.content.height,
+      );
     });
-    contentChild.refreshAdaptive();
+    refreshAdaptive(contentChild);
 
-    content.add(contentChild);
+    ref.content.add(contentChild);
   };
 
-  const defaultItem = menuItems.find((item) => item.default);
+  const defaultItem = menuItems.find((item) => item.active);
 
   if (defaultItem) {
     updatePage(defaultItem);

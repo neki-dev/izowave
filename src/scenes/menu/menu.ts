@@ -6,7 +6,7 @@ import { ComponentControls } from '~scene/menu/components/content/controls';
 import { ComponentDifficulty } from '~scene/menu/components/content/difficulty';
 import { ComponentMenu } from '~scene/menu/components/menu';
 import { World } from '~scene/world';
-import { MenuAudio, MenuItem } from '~type/menu';
+import { ControlItem, MenuAudio, MenuItem } from '~type/menu';
 import { SceneKey } from '~type/scene';
 
 export class Menu extends Phaser.Scene {
@@ -31,10 +31,20 @@ export class Menu extends Phaser.Scene {
       }, {
         label: 'About',
         content: () => ComponentAbout.call(this),
-        default: true,
+        active: true,
       }, {
         label: 'Controls',
-        content: () => ComponentControls.call(this),
+        content: () => ComponentControls.call(this, {
+          controlItems: <ControlItem[]> [
+            { name: 'W A S D', description: 'Move player' },
+            { name: 'CLICK', description: 'New build' },
+            { name: 'U', description: 'Upgrade building' },
+            { name: 'R', description: 'Reload tower ammo' },
+            { name: 'BACKSPACE', description: 'Destroy building' },
+            { name: 'N', description: 'Skip wave timeleft' },
+            { name: 'ESC', description: 'Pause game' },
+          ],
+        }),
       }],
     });
 

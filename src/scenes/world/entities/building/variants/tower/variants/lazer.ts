@@ -1,28 +1,28 @@
 import { ShotLazer } from '~entity/shot/lazer';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
-import { BuildingDescriptionItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
+import { BuildingParamItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 
 import { BuildingTower } from '../tower';
 
 export class BuildingTowerLazer extends BuildingTower {
   static Name = 'Lazer tower';
 
-  static Description = [
-    { text: 'Instant and continuous laser attack of enemies', type: 'text' },
-    { text: 'HEALTH: 300', icon: ScreenIcon.HEALTH },
-    { text: 'RADIUS: 180', icon: ScreenIcon.RADIUS },
-    { text: 'PAUSE: 1.6 s', icon: ScreenIcon.PAUSE },
-    { text: 'DAMAGE: 75', icon: ScreenIcon.DAMAGE },
+  static Description = 'Instant and continuous laser attack of enemies';
+
+  static Params: BuildingParamItem[] = [
+    { label: 'HEALTH', value: 300, icon: ScreenIcon.HEALTH },
+    { label: 'RADIUS', value: 180, icon: ScreenIcon.RADIUS },
+    { label: 'DAMAGE', value: 75, icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
 
-  static Cost = { bronze: 45, silver: 40, gold: 40 };
-
-  static UpgradeCost = { bronze: 45, silver: 40, gold: 80 };
+  static Cost = 60;
 
   static Health = 300;
+
+  static WaveAllowed = 5;
 
   /**
    * Building variant constructor.
@@ -33,7 +33,6 @@ export class BuildingTowerLazer extends BuildingTower {
       variant: BuildingVariant.TOWER_LAZER,
       health: BuildingTowerLazer.Health,
       texture: BuildingTowerLazer.Texture,
-      upgradeCost: BuildingTowerLazer.UpgradeCost,
       actions: {
         radius: 180, // Attack radius
         pause: 1600, // Pause between shoots
@@ -50,16 +49,12 @@ export class BuildingTowerLazer extends BuildingTower {
   /**
    * Add damage to building info.
    */
-  public getInfo(): BuildingDescriptionItem[] {
-    const nextDamage = this.isAllowUpgrade()
-      ? this.getShotParams(this.upgradeLevel + 1).damage * 5
-      : null;
-
+  public getInfo(): BuildingParamItem[] {
     return [
       ...super.getInfo(), {
-        text: `DAMAGE: ${this.getShotParams().damage * 5}`,
-        post: nextDamage,
+        label: 'DAMAGE',
         icon: ScreenIcon.DAMAGE,
+        value: this.getShotParams().damage * 5,
       },
     ];
   }

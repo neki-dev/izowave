@@ -7,6 +7,7 @@ import { INPUT_KEY } from '~const/keyboard';
 import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
+import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { EnemyVariant } from '~type/world/entities/enemy';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
 
@@ -25,11 +26,7 @@ export class Wave extends EventEmitter {
   /**
    * Current wave number.
    */
-  private _number: number = 0;
-
-  public get number() { return this._number; }
-
-  private set number(v) { this._number = v; }
+  public number: number = 0;
 
   /**
    * Count of spawned enemies in current wave.
@@ -67,10 +64,19 @@ export class Wave extends EventEmitter {
 
     this.scene = scene;
 
-    this.runTimeleft();
+    this.setTimeleft();
 
     // Add keyboard events
     scene.input.keyboard.on(INPUT_KEY.WAVE_SKIP_TIMELEFT, this.skipTimeleft, this);
+
+    // Tutorial progress
+    this.scene.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
+      if (step === TutorialStep.WAVE_TIMELEFT) {
+        setTimeout(() => {
+          this.scene.tutorial.complete();
+        }, 5000);
+      }
+    });
   }
 
   /**
@@ -102,30 +108,32 @@ export class Wave extends EventEmitter {
   }
 
   /**
-   * Set current wave number.
-   *
-   * @param number - Number
+   * Start timeleft to next wave.
    */
-  public setNumber(number: number) {
-    this.number = number;
+  public setTimeleft() {
+    let pause: number;
 
-    this.emit(WaveEvents.UPDATE);
+    if (this.scene.tutorial.step === TutorialStep.DONE) {
+      pause = (DIFFICULTY.WAVE_PAUSE + this.number * 1000) / this.scene.difficulty;
+    } else {
+      pause = 5000;
+    }
+
+    this.nextWaveTimestamp = this.scene.getTimerNow() + pause;
   }
 
   /**
-   * Start timeleft to next wave.
+   * Get current wave number.
    */
-  public runTimeleft() {
-    const pause = (DIFFICULTY.WAVE_PAUSE + this.number * 1000) / this.scene.difficulty;
-
-    this.nextWaveTimestamp = this.scene.getTimerNow() + pause;
+  public getCurrentNumber(): number {
+    return this.isGoing ? this.number : this.number + 1;
   }
 
   /**
    * Skip timeleft.
    */
   public skipTimeleft() {
-    if (this.isGoing) {
+    if (this.isGoing || this.scene.tutorial.step !== TutorialStep.DONE) {
       return;
     }
 
@@ -156,7 +164,6 @@ export class Wave extends EventEmitter {
 
     this.scene.sound.play(WaveAudio.START);
 
-    this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.START, this.number);
   }
 
@@ -166,11 +173,10 @@ export class Wave extends EventEmitter {
    */
   private complete() {
     this.isGoing = false;
-    this.runTimeleft();
+    this.setTimeleft();
 
     this.scene.sound.play(WaveAudio.COMPLETE);
 
-    this.emit(WaveEvents.UPDATE);
     this.emit(WaveEvents.COMPLETE, this.number);
   }
 

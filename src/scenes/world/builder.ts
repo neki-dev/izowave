@@ -1,3 +1,5 @@
+import EventEmitter from 'events';
+
 import Phaser from 'phaser';
 import { BUILDINGS } from '~const/buildings';
 import { DIFFICULTY } from '~const/difficulty';
@@ -6,12 +8,15 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
-import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
+import { TutorialStep } from '~type/tutorial';
+import { BuilderEvents } from '~type/world/builder';
+import { BuildingAudio, BuildingMeta, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType } from '~type/world/level';
+import { WaveEvents } from '~type/world/wave';
 
 const BUILDING_VARIANTS = Object.values(BuildingVariant);
 
-export class Builder {
+export class Builder extends EventEmitter {
   readonly scene: World;
 
   /**
@@ -46,9 +51,15 @@ export class Builder {
    * Builder constructor.
    */
   constructor(scene: World) {
+    super();
+
     this.scene = scene;
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant, this);
+
+    this.scene.wave.on(WaveEvents.START, () => {
+      this.variantIndex = null;
+    });
   }
 
   /**
@@ -67,35 +78,59 @@ export class Builder {
   }
 
   /**
-   * Get building meta parameter.
-   *
-   * @param param - Parameter key
-   */
-  public getBuildingMeta(param: string) {
-    if (!this.isVariantSelected()) {
-      return null;
-    }
-
-    const variant = BUILDING_VARIANTS[this.variantIndex];
-
-    return BUILDINGS[variant][param];
-  }
-
-  /**
    * Set current building variant.
    */
-  public setBuildingVariant(index: Nullable<number>) {
-    if (index === null) {
-      this.scene.sound.play(BuildingAudio.UNSELECT);
-    } else {
-      this.scene.sound.play(BuildingAudio.SELECT);
+  public setBuildingVariant(index: number) {
+    if (this.scene.wave.isGoing || this.variantIndex === index) {
+      return;
     }
+
+    const variant = BUILDING_VARIANTS[index];
+    const data: BuildingMeta = BUILDINGS[variant];
+
+    if (!this.isBuildingAllowedByTutorial(variant)) {
+      return;
+    }
+
+    if (!this.isBuildingAllowedByWave(variant)) {
+      this.scene.screen.message(NoticeType.ERROR, `${data.Name} BE AVAILABLE ON ${data.WaveAllowed} WAVE`);
+
+      return;
+    }
+
+    if (this.isBuildingLimitReached(variant)) {
+      this.scene.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${data.Name}`);
+
+      return;
+    }
+
+    this.scene.sound.play(BuildingAudio.SELECT);
 
     this.variantIndex = index;
 
     if (this.buildingPreview) {
       this.buildingPreview.setTexture(this.getBuildingMeta('Texture'));
     }
+  }
+
+  /**
+   * Unset current building variant.
+   */
+  public unsetBuildingVariant() {
+    if (this.scene.wave.isGoing || this.variantIndex === null) {
+      return;
+    }
+
+    this.scene.sound.play(BuildingAudio.UNSELECT);
+
+    this.clearBuildingVariant();
+  }
+
+  /**
+   * Clear current building variant.
+   */
+  public clearBuildingVariant() {
+    this.variantIndex = null;
   }
 
   /**
@@ -162,6 +197,17 @@ export class Builder {
   }
 
   /**
+   * Get building meta parameter.
+   *
+   * @param param - Parameter key
+   */
+  private getBuildingMeta(param: string) {
+    const variant = BUILDING_VARIANTS[this.variantIndex];
+
+    return BUILDINGS[variant][param];
+  }
+
+  /**
    * Create builder interface and allow build.
    */
   private openBuilder() {
@@ -178,6 +224,8 @@ export class Builder {
     input.on(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview, this);
 
     this.isBuild = true;
+
+    this.emit(BuilderEvents.BUILD_START);
   }
 
   /**
@@ -197,25 +245,31 @@ export class Builder {
     this.destroyBuildArea();
 
     this.isBuild = false;
+
+    this.emit(BuilderEvents.BUILD_STOP);
   }
 
   /**
    * Switch current building variant.
    */
   private switchBuildingVariant(e: KeyboardEvent) {
-    if (!Number(e.key)) {
-      return;
+    if (e.key === 'Backspace') {
+      if (this.variantIndex !== null) {
+        this.unsetBuildingVariant();
+      }
+    } else if (Number(e.key)) {
+      const index = Number(e.key) - 1;
+
+      if (!BUILDING_VARIANTS[index]) {
+        return;
+      }
+
+      if (this.variantIndex === index) {
+        this.unsetBuildingVariant();
+      } else {
+        this.setBuildingVariant(index);
+      }
     }
-
-    const index = Number(e.key) - 1;
-
-    if (!BUILDING_VARIANTS[index]) {
-      return;
-    }
-
-    this.setBuildingVariant(
-      (this.variantIndex === index) ? null : index,
-    );
   }
 
   /**
@@ -275,6 +329,10 @@ export class Builder {
    * Build in assumed position.
    */
   private build() {
+    if (!this.buildingPreview.visible) {
+      return;
+    }
+
     if (!this.isAllowBuild()) {
       this.scene.sound.play(BuildingAudio.FAILURE);
 
@@ -284,33 +342,89 @@ export class Builder {
     const variant = BUILDING_VARIANTS[this.variantIndex];
     const BuildingInstance = BUILDINGS[variant];
 
-    const { player } = this.scene;
-
-    if (!player.haveResources(BuildingInstance.Cost)) {
+    if (this.scene.player.resources < BuildingInstance.Cost) {
       this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
 
       return;
     }
 
-    if (BuildingInstance.Limit) {
-      const count = this.scene.selectBuildings(variant).length;
-      const limit = this.getBuildCurrentLimit(BuildingInstance.Limit);
+    const positionAtMatrix = this.getAssumedPosition();
 
-      if (count >= limit) {
-        this.scene.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name.toUpperCase()}`);
+    new BuildingInstance(this.scene, positionAtMatrix);
 
-        return;
-      }
+    this.updateBuildArea();
+
+    this.scene.player.takeResources(BuildingInstance.Cost);
+
+    if (this.isBuildingLimitReached(variant)) {
+      this.clearBuildingVariant();
     }
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    const positionAtMatrix = this.getAssumedPosition();
+    // Tutorial progress
+    switch (this.scene.tutorial.step) {
+      case TutorialStep.BUILD_TOWER_FIRE: {
+        this.scene.tutorial.progress(TutorialStep.BUILD_GENERATOR);
 
-    new BuildingInstance(this.scene, positionAtMatrix);
-    this.updateBuildArea();
+        this.clearBuildingVariant();
+        break;
+      }
+      case TutorialStep.BUILD_GENERATOR: {
+        this.scene.tutorial.progress(TutorialStep.WAVE_TIMELEFT);
 
-    player.takeResources(BuildingInstance.Cost);
+        this.clearBuildingVariant();
+        this.scene.unpauseProcess();
+        break;
+      }
+      default: break;
+    }
+  }
+
+  /**
+   *
+   */
+  public isBuildingAllowedByTutorial(variant: BuildingVariant): boolean {
+    switch (this.scene.tutorial.step) {
+      case TutorialStep.BUILD_TOWER_FIRE: {
+        return (variant === BuildingVariant.TOWER_FIRE);
+      }
+      case TutorialStep.BUILD_GENERATOR: {
+        return (variant === BuildingVariant.GENERATOR);
+      }
+      default: {
+        return true;
+      }
+    }
+  }
+
+  /**
+   *
+   */
+  public isBuildingAllowedByWave(variant: BuildingVariant): boolean {
+    const waveAllowed = BUILDINGS[variant].WaveAllowed;
+
+    if (waveAllowed) {
+      return (waveAllowed <= this.scene.wave.getCurrentNumber());
+    }
+
+    return true;
+  }
+
+  /**
+   *
+   */
+  private isBuildingLimitReached(variant: BuildingVariant): boolean {
+    const limit = BUILDINGS[variant].Limit;
+
+    if (limit) {
+      const count = this.scene.selectBuildings(variant).length;
+      const currentLimit = this.getBuildCurrentLimit(limit);
+
+      return (count >= currentLimit);
+    }
+
+    return false;
   }
 
   /**
@@ -362,12 +476,18 @@ export class Builder {
    */
   private updateBuildingPreview() {
     const positionAtMatrix = this.getAssumedPosition();
-    const tilePosition = { ...positionAtMatrix, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
 
-    this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
-    this.buildingPreview.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-    this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
+    this.buildingPreview.setVisible(isVisibleTile);
+
+    if (this.buildingPreview.visible) {
+      const tilePosition = { ...positionAtMatrix, z: 1 };
+      const positionAtWorld = Level.ToWorldPosition(tilePosition);
+
+      this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
+      this.buildingPreview.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+      this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
+    }
   }
 
   /**

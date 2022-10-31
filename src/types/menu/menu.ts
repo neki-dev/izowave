@@ -4,7 +4,12 @@ export enum MenuAudio {
 
 export type MenuItem = {
   label: string
-  default?: boolean
+  active?: boolean
   content?: () => any
   onClick?: () => void
+};
+
+export type ControlItem = {
+  name: string
+  description: string
 };

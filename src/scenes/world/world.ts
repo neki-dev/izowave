@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import { BUILDINGS } from '~const/buildings';
 import { AUDIO_VOLUME, DIFFICULTY_KEY, DIFFICULTY_POWERS } from '~const/core';
 import { ENEMIES } from '~const/enemies';
 import { ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
@@ -16,14 +15,18 @@ import { Player } from '~entity/player';
 import { ShotBall } from '~entity/shot/ball';
 import { getAssetsPack } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
+import { shaders } from '~lib/shaders';
 import { removeLoading, setLoadingStatus } from '~lib/state';
-import { aroundPosition, selectClosest } from '~lib/utils';
+import { entries } from '~lib/system';
+import { selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
+import { Tutorial } from '~scene/world/tutorial';
 import { Wave } from '~scene/world/wave';
 import { Difficulty } from '~type/core';
 import { SceneKey } from '~type/scene';
+import { TutorialStep } from '~type/tutorial';
 import { WorldEvents } from '~type/world';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -172,6 +175,11 @@ export class World extends Phaser.Scene {
   private nextFindPathTimestamp: number = 0;
 
   /**
+   * Tutorial.
+   */
+  public tutorial: Tutorial;
+
+  /**
    * World constructor.
    */
   constructor() {
@@ -195,6 +203,7 @@ export class World extends Phaser.Scene {
       localStorage.setItem(DIFFICULTY_KEY, Difficulty.NORMAL);
     }
 
+    this.registerShaders();
     this.registerOptimization();
     this.registerParticles();
     this.makeLevel();
@@ -202,8 +211,11 @@ export class World extends Phaser.Scene {
 
     this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
     this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
+    this.tutorial = new Tutorial();
+
     this.timer = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
+      paused: (this.tutorial.step !== TutorialStep.DONE),
     });
 
     this.sound.setVolume(AUDIO_VOLUME);
@@ -217,6 +229,13 @@ export class World extends Phaser.Scene {
    */
   public getTimerNow(): number {
     return Math.floor(this.timer.getElapsed());
+  }
+
+  /**
+   *
+   */
+  public unpauseProcess() {
+    this.timer.paused = false;
   }
 
   /**
@@ -342,17 +361,13 @@ export class World extends Phaser.Scene {
     this.difficultyType = <Difficulty> localStorage.getItem(DIFFICULTY_KEY);
     this.difficulty = DIFFICULTY_POWERS[this.difficultyType];
 
+    setCheatsScheme(this.getCheats());
+
     this.wave = new Wave(this);
     this.builder = new Builder(this);
 
-    const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
-
-    this.player = new Player(this, Phaser.Utils.Array.GetRandom(positions));
-
-    this.makeChests();
-    this.makeDefaultBuildings();
-
-    setCheatsScheme(this.getCheats());
+    this.addPlayer();
+    this.addChests();
 
     this.level.hideTiles();
     this.addEntityColliders();
@@ -423,7 +438,7 @@ export class World extends Phaser.Scene {
    * Find NPC path to target.
    */
   private updateNPCPath() {
-    const now = this.getTimerNow();
+    const now = Date.now(); // this.getTimerNow();
 
     if (this.nextFindPathTimestamp > now) {
       return;
@@ -510,9 +525,18 @@ export class World extends Phaser.Scene {
   }
 
   /**
+   * Spawn player on world.
+   */
+  private addPlayer() {
+    const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
+
+    this.player = new Player(this, Phaser.Utils.Array.GetRandom(positions));
+  }
+
+  /**
    * Spawn chests on world.
    */
-  private makeChests() {
+  private addChests() {
     const positions = this.level.readSpawnPositions(SpawnTarget.CHEST);
 
     const create = () => new Chest(this, {
@@ -527,54 +551,45 @@ export class World extends Phaser.Scene {
       create();
     }
 
+    // Creating missing chests
     this.wave.on(WaveEvents.COMPLETE, () => {
-      // Get missing count of chests
       const newCount = maxCount - this.chests.getTotalUsed();
 
-      if (newCount < 1) {
-        return;
-      }
-
-      // Creating missing chests
       for (let i = 0; i < newCount; i++) {
         const chest = create();
-        const tileGround = this.level.getTile({ ...chest.positionAtMatrix, z: 0 });
+        const isVisibleTile = this.level.isVisibleTile({ ...chest.positionAtMatrix, z: 0 });
 
-        chest.setVisible(tileGround.visible);
+        chest.setVisible(isVisibleTile);
       }
     });
   }
 
   /**
-   * Create default buildings close to player.
+   * Cheatcodes.
    */
-  private makeDefaultBuildings() {
-    const spawns = aroundPosition(this.player.positionAtMatrix, 1);
+  private getCheats() {
+    return {
+      HEALPLS: () => {
+        this.player.live.heal();
+      },
+      RICHBITCH: () => {
+        this.player.giveResources(9999);
+      },
+      BOOSTME: () => {
+        this.player.giveExperience(9999);
+      },
+      GODHAND: () => {
+        this.enemies.children.iterate((enemy: Enemy) => {
+          enemy.live.kill();
 
-    const buildingsVariants = [
-      [BuildingVariant.TOWER_FIRE],
-    ];
-
-    if (this.difficultyType === Difficulty.EASY) {
-      buildingsVariants.push([BuildingVariant.AMMUNITION]);
-    }
-    if (this.difficultyType !== Difficulty.UNREAL) {
-      buildingsVariants.push([BuildingVariant.MINE_BRONZE, BuildingVariant.MINE_SILVER]);
-    }
-
-    while (spawns.length > 0 && buildingsVariants.length > 0) {
-      const index = Phaser.Math.Between(0, spawns.length - 1);
-      const [positionAtMatrix] = spawns.splice(index, 1);
-      const tileGround = this.level.getTile({ ...positionAtMatrix, z: 0 });
-
-      if (tileGround?.biome.solid) {
-        const [variant] = buildingsVariants.splice(0, 1);
-        const randomVariant = <BuildingVariant> Phaser.Utils.Array.GetRandom(variant);
-        const BuildingInstance = BUILDINGS[randomVariant];
-
-        new BuildingInstance(this, positionAtMatrix);
-      }
-    }
+          return true;
+        });
+      },
+      FUTURE: () => {
+        this.wave.number += Phaser.Math.Between(3, 7);
+        this.wave.setTimeleft();
+      },
+    };
   }
 
   /**
@@ -588,33 +603,14 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   * Cheatcodes.
+   *
    */
-  private getCheats() {
-    return {
-      HEALPLS: () => {
-        this.player.live.heal();
-      },
-      RICHBITCH: () => {
-        this.player.giveResources({ gold: 9999, silver: 9999, bronze: 9999 });
-      },
-      BOOSTME: () => {
-        this.player.giveExperience(9999);
-      },
-      GODHAND: () => {
-        this.enemies.children.iterate((enemy: Enemy) => {
-          enemy.live.kill();
+  private registerShaders() {
+    const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.game.renderer;
 
-          return true;
-        });
-      },
-      FUTURE: () => {
-        const waveNumber = this.wave.number + Phaser.Math.Between(3, 7);
-
-        this.wave.setNumber(waveNumber);
-        this.wave.runTimeleft();
-      },
-    };
+    for (const [name, Shader] of entries(shaders)) {
+      renderer.pipelines.add(name, new Shader(this.game));
+    }
   }
 
   /**

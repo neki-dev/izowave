@@ -47,6 +47,17 @@ export class TileMatrix {
   }
 
   /**
+   * Check if tile is visible.
+   *
+   * @param position - Tile position
+   */
+  public isVisibleTile(
+    position: Phaser.Types.Math.Vector3Like,
+  ): boolean {
+    return this.getTile(position)?.visible || false;
+  }
+
+  /**
    * Get tile with strict type.
    *
    * @param position - Tile position

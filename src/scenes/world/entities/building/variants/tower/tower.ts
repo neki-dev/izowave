@@ -12,7 +12,8 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
-  BuildingAudio, BuildingDescriptionItem, BuildingEvents, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
+  BuildingAction,
+  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
 } from '~type/world/entities/building';
 import { ShotParams } from '~type/world/entities/shot';
 
@@ -46,7 +47,11 @@ export class BuildingTower extends Building {
     this.shotParams = shotData.params;
 
     // Add keyboard events
-    scene.input.keyboard.on(INPUT_KEY.BUILDING_RELOAD, this.reload, this);
+    scene.input.keyboard.on(INPUT_KEY.BUILDING_RELOAD, () => {
+      if (this.isFocused) {
+        this.reload();
+      }
+    });
 
     // Add events callbacks
     this.on(BuildingEvents.UPGRADE, this.upgradeAmmo, this);
@@ -58,40 +63,45 @@ export class BuildingTower extends Building {
   /**
    * Add ammo left and reload to building info.
    */
-  public getInfo(): BuildingDescriptionItem[] {
-    const nextAmmo = this.isAllowUpgrade()
-      ? DIFFICULTY.TOWER_AMMO_AMOUNT * (this.upgradeLevel + 1)
-      : null;
-    const info = [
-      ...super.getInfo(), {
-        text: `AMMO: ${this.ammoLeft}/${this.getMaxAmmo()}`,
-        post: nextAmmo,
-        icon: ScreenIcon.AMMO,
-        color: (this.ammoLeft === 0)
-          ? INTERFACE_TEXT_COLOR.WARN
-          : undefined,
-      },
-    ];
-
-    // if (this.ammoLeft < this.getMaxAmmo()) {
-    //   info.push({ text: 'PRESS |R| TO RELOAD', type: 'hint' });
-    // }
+  public getInfo(): BuildingParamItem[] {
+    const info = super.getInfo();
 
     const { speed } = this.getShotParams();
 
     if (speed) {
-      const nextSpeed = this.isAllowUpgrade()
-        ? this.getShotParams(this.upgradeLevel + 1).speed
-        : null;
-
       info.push({
-        text: `SPEED: ${speed / 10}`,
-        post: nextSpeed && Math.round(nextSpeed / 10),
+        label: 'SPEED',
         icon: ScreenIcon.SPEED,
+        value: Math.round(speed / 10),
       });
     }
 
+    info.push({
+      label: 'AMMO',
+      icon: ScreenIcon.AMMO,
+      color: (this.ammoLeft === 0)
+        ? INTERFACE_TEXT_COLOR.WARN
+        : undefined,
+      value: `${this.ammoLeft}/${this.getMaxAmmo()}`,
+    });
+
     return info;
+  }
+
+  /**
+   * Add reload to building actions.
+   */
+  public getActions(): BuildingAction[] {
+    const actions = super.getActions();
+
+    if (this.ammoLeft < this.getMaxAmmo()) {
+      actions.push({
+        label: 'RELOAD',
+        onClick: () => this.reload(),
+      });
+    }
+
+    return actions;
   }
 
   /**
@@ -182,10 +192,6 @@ export class BuildingTower extends Building {
    * Reload ammo.
    */
   private reload() {
-    if (!this.isSelected()) {
-      return;
-    }
-
     const needAmmo = this.getMaxAmmo() - this.ammoLeft;
 
     if (needAmmo <= 0) {

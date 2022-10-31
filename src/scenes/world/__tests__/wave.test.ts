@@ -14,6 +14,10 @@ describe('wave.ts', () => {
     wave = new Wave(world);
   });
 
+  it('should return current number', () => {
+    expect(wave.getCurrentNumber()).toEqual(1);
+  });
+
   it('should return timeleft to wave start', () => {
     expect(wave.getTimeleft()).toEqual(DIFFICULTY.WAVE_PAUSE);
   });
@@ -30,7 +34,6 @@ describe('wave.ts', () => {
     wave.update();
 
     expect(wave.isGoing).toEqual(true);
-    expect(wave.number).toEqual(1);
     expect(wave.maxSpawnedCount).toEqual(DIFFICULTY.WAVE_ENEMIES_COUNT);
   });
 

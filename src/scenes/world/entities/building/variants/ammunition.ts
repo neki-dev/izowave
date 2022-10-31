@@ -4,7 +4,7 @@ import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
   BuildingAudio,
-  BuildingDescriptionItem, BuildingEvents, BuildingTexture, BuildingVariant,
+  BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -12,22 +12,22 @@ import { Building } from '../building';
 export class BuildingAmmunition extends Building {
   static Name = 'Ammunition';
 
-  static Description = [
-    { text: 'Reloading towers ammo, that are in radius of this building', type: 'text' },
-    { text: 'HEALTH: 300', icon: ScreenIcon.HEALTH },
-    { text: 'RADIUS: 160', icon: ScreenIcon.RADIUS },
-    { text: `AMMO: ${DIFFICULTY.AMMUNITION_AMMO}`, icon: ScreenIcon.AMMO },
+  static Description = 'Reloading towers ammo, that are in radius of this building';
+
+  static Params: BuildingParamItem[] = [
+    { label: 'HEALTH', value: 300, icon: ScreenIcon.HEALTH },
+    { label: 'AMMO', value: DIFFICULTY.AMMUNITION_AMMO, icon: ScreenIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
 
-  static Cost = { bronze: 20, silver: 20, gold: 5 };
-
-  static UpgradeCost = { bronze: 30, silver: 30, gold: 40 };
+  static Cost = 30;
 
   static Health = 300;
 
   static Limit = DIFFICULTY.AMMUNITION_LIMIT;
+
+  static WaveAllowed = 2;
 
   /**
    * Ammo amount left.
@@ -47,7 +47,6 @@ export class BuildingAmmunition extends Building {
       variant: BuildingVariant.AMMUNITION,
       health: BuildingAmmunition.Health,
       texture: BuildingAmmunition.Texture,
-      upgradeCost: BuildingAmmunition.UpgradeCost,
       actions: {
         radius: 160, // Reload towers radius
       },
@@ -59,16 +58,12 @@ export class BuildingAmmunition extends Building {
   /**
    * Add amount left to building info.
    */
-  public getInfo(): BuildingDescriptionItem[] {
-    const nextLeft = this.isAllowUpgrade()
-      ? this.amountLeft + (DIFFICULTY.AMMUNITION_AMMO_UPGRADE * this.upgradeLevel)
-      : null;
-
+  public getInfo(): BuildingParamItem[] {
     return [
       ...super.getInfo(), {
-        text: `AMMO: ${this.amountLeft}`,
-        post: nextLeft,
+        label: 'AMMO',
         icon: ScreenIcon.AMMO,
+        value: this.amountLeft,
       },
     ];
   }
@@ -81,7 +76,7 @@ export class BuildingAmmunition extends Building {
       const left = this.amountLeft;
 
       this.scene.sound.play(BuildingAudio.OVER);
-      this.scene.screen.message(NoticeType.WARN, `${this.getName()} ARE OVER`);
+      this.scene.screen.message(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
 
       this.destroy();
 

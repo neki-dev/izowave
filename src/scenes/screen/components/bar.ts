@@ -6,15 +6,33 @@ import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {
   display: () => string
-  value: () => number
-  maxValue: () => number
+  percent: () => number
   event: (callback: (amount: number) => void) => void
   color: number
 };
 
 export const ComponentBar = Component<Props>(function (container, {
-  display, value, maxValue, event, color,
+  display, percent, event, color,
 }) {
+  const ref: {
+    body?: Phaser.GameObjects.Rectangle
+    progress?: Phaser.GameObjects.Rectangle
+    value?: Phaser.GameObjects.Text
+    additions?: Phaser.GameObjects.Container
+  } = {};
+
+  const state: {
+    percent: number
+    display: string
+  } = {
+    percent: null,
+    display: null,
+  };
+
+  /**
+   * Adaptation
+   */
+
   useAdaptation(container, () => {
     container.setSize(
       switchSize(104),
@@ -26,65 +44,65 @@ export const ComponentBar = Component<Props>(function (container, {
    * Body
    */
 
-  const body = this.add.rectangle(0, 0, 0, 0, 0x000000, 0.75);
+  container.add(
+    ref.body = this.add.rectangle(0, 0, 0, 0, 0x000000),
+  );
 
-  body.setOrigin(0.0, 0.0);
-  useAdaptation(body, () => {
-    body.setSize(container.width, container.height);
+  ref.body.setOrigin(0.0, 0.0);
+  useAdaptation(ref.body, () => {
+    ref.body.setSize(container.width, container.height);
   });
-
-  container.add(body);
 
   /**
    * Progress
    */
 
-  const progress = this.add.rectangle(0, 0, 0, 0, color);
+  container.add(
+    ref.progress = this.add.rectangle(0, 0, 0, 0, color),
+  );
 
-  progress.setOrigin(0.0, 0.0);
-  useAdaptation(progress, (width) => {
+  ref.progress.setOrigin(0.0, 0.0);
+  useAdaptation(ref.progress, (width) => {
     const offset = (width <= 900) ? 1 : 2;
 
-    progress.setPosition(offset, offset);
-    progress.height = container.height - (offset * 2);
+    ref.progress.setPosition(offset, offset);
+    ref.progress.height = container.height - (offset * 2);
   });
-
-  container.add(progress);
 
   /**
    * Value
    */
 
-  const label = this.add.text(0, 0, '', {
-    fontFamily: INTERFACE_FONT.PIXEL,
-    resolution: window.devicePixelRatio,
-  });
+  container.add(
+    ref.value = this.add.text(0, 0, '', {
+      resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.PIXEL,
+      shadow: {
+        fill: true,
+      },
+    }),
+  );
 
-  label.setOrigin(0.5, 0.5);
-  useAdaptation(label, () => {
-    scaleText(label, {
-      by: body.width,
-      scale: 0.1,
-    });
-    label.setPosition(
+  ref.value.setOrigin(0.5, 0.5);
+  useAdaptation(ref.value, () => {
+    scaleText(ref.value, 10, true);
+    ref.value.setPosition(
       container.width / 2,
       container.height / 2,
     );
   });
 
-  container.add(label);
-
   /**
    * Additions
    */
 
-  const additions = ComponentAdditions.call(this, { event });
+  container.add(
+    ref.additions = ComponentAdditions.call(this, { event }),
+  );
 
-  useAdaptation(additions, () => {
-    additions.setPosition(container.width + 10, container.height / 2);
+  useAdaptation(ref.additions, () => {
+    ref.additions.setPosition(container.width + 10, container.height / 2);
   });
-
-  container.add(additions);
 
   /**
    * Updating
@@ -92,11 +110,23 @@ export const ComponentBar = Component<Props>(function (container, {
 
   return {
     update: () => {
-      const percent = value() / maxValue();
-      const offset = progress.x;
+      const currentDisplay = display();
+      const currentPercent = percent();
 
-      progress.width = (body.width - (offset * 2)) * percent;
-      label.setText(display());
+      if (state.percent !== currentPercent) {
+        const offset = ref.progress.x;
+        const fullWidth = ref.body.width - (offset * 2);
+
+        ref.progress.width = fullWidth * currentPercent;
+
+        state.percent = currentPercent;
+      }
+
+      if (state.display !== currentDisplay) {
+        ref.value.setText(currentDisplay);
+
+        state.display = currentDisplay;
+      }
     },
   };
 });

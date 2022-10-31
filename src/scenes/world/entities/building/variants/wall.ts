@@ -1,7 +1,7 @@
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import {
-  BuildingEvents, BuildingVariant, BuildingTexture,
+  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParamItem,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -9,16 +9,15 @@ import { Building } from '../building';
 export class BuildingWall extends Building {
   static Name = 'Wall';
 
-  static Description = [
-    { text: 'Wall with more health to defend other buildings', type: 'text' },
-    { text: 'HEALTH: 2000', icon: ScreenIcon.HEALTH },
+  static Description = 'Wall with more health to defend other buildings';
+
+  static Params: BuildingParamItem[] = [
+    { label: 'HEALTH', value: 2000, icon: ScreenIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;
 
-  static Cost = { bronze: 10, silver: 10 };
-
-  static UpgradeCost = { bronze: 5, silver: 5, gold: 10 };
+  static Cost = 15;
 
   static Health = 2000;
 
@@ -31,7 +30,6 @@ export class BuildingWall extends Building {
       variant: BuildingVariant.WALL,
       health: BuildingWall.Health,
       texture: BuildingWall.Texture,
-      upgradeCost: BuildingWall.UpgradeCost,
     });
 
     this.on(BuildingEvents.UPGRADE, this.upgradeHealth, this);

@@ -1,5 +1,3 @@
-import { ResourceType, ResourceColor } from '~type/world/resources';
-
 export const INTERFACE_TEXT_COLOR = {
   PRIMARY: '#ff9600',
   BLUE: '#0076ad',
@@ -16,15 +14,10 @@ export const INTERFACE_TEXT_COLOR = {
 
 export const INTERFACE_BOX_COLOR = {
   BLUE: 0x18324f,
+  INFO: 0x83a81c,
 };
 
 export const INTERFACE_FONT = {
   PIXEL: 'Retro',
   MONOSPACE: 'Monospace',
-};
-
-export const RESOURCE_COLOR: ResourceColor = {
-  [ResourceType.BRONZE]: 0xfc9547,
-  [ResourceType.SILVER]: 0xdadada,
-  [ResourceType.GOLD]: 0xfdca52,
 };

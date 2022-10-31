@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
+import { ScreenIcon } from '~type/screen';
+import { ComponentFunction } from '~type/ui';
 import { ShotInstance } from '~type/world/entities/shot';
-import { Resources, ResourceType } from '~type/world/resources';
 
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
@@ -11,9 +12,7 @@ export enum BuildingVariant {
   TOWER_FIRE = 'TOWER_FIRE',
   TOWER_LAZER = 'TOWER_LAZER',
   TOWER_FROZEN = 'TOWER_FROZEN',
-  MINE_BRONZE = 'MINE_BRONZE',
-  MINE_SILVER = 'MINE_SILVER',
-  MINE_GOLD = 'MINE_GOLD',
+  GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   MEDIC = 'MEDIC',
 }
@@ -23,9 +22,7 @@ export enum BuildingTexture {
   TOWER_FIRE = 'building/tower_fire',
   TOWER_FROZEN = 'building/tower_frozen',
   TOWER_LAZER = 'building/tower_lazer',
-  MINE_BRONZE = 'building/mine_bronze',
-  MINE_SILVER = 'building/mine_silver',
-  MINE_GOLD = 'building/mine_gold',
+  GENERATOR = 'building/generator',
   AMMUNITION = 'building/ammunition',
   MEDIC = 'building/medic',
 }
@@ -53,25 +50,33 @@ export type BuildingData = {
   positionAtMatrix: Phaser.Types.Math.Vector2Like
   texture: BuildingTexture
   actions?: BuildingActionsParams
-  upgradeCost: Resources
 };
 
-export type BuildingDescriptionItem = {
-  text: string
-  icon?: number
-  type?: 'text' | 'param'
-  post?: string | number
+export type BuildingParamItem = {
+  label: string
+  value: string | number
+  icon: ScreenIcon
   color?: string
 };
 
-export interface BuildingInstance {
+export type BuildingAction = {
+  label: string
+  addon?: {
+    component: ComponentFunction
+    props?: any
+  }
+  onClick: () => void
+};
+
+export interface BuildingMeta {
   Name: string
-  Description: BuildingDescriptionItem[]
+  Description: string
+  Params: BuildingParamItem[]
   Texture: BuildingTexture
-  Cost: Resources
-  UpgradeCost: Resources
+  Cost: number
   Health: number
   Limit?: number
+  WaveAllowed?: number
 }
 
 export type BuildingTowerShotParams = {
@@ -85,8 +90,4 @@ export type BuildingTowerData = BuildingData & {
     instance: ShotInstance
     params: BuildingTowerShotParams
   }
-};
-
-export type BuildingMineData = BuildingData & {
-  resourceType: ResourceType
 };

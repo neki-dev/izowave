@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { Screen } from '~scene/screen';
 
+export type ComponentFunction<T = any> = (this: Screen, props?: T) => Phaser.GameObjects.Container;
+
 export type ComponentResizeCallback = (width: number, height: number) => void;
 
 export type ComponentControl = {
@@ -13,12 +15,6 @@ export type ComponentInstance<T> = (
   container: Phaser.GameObjects.Container,
   props?: T
 ) => ComponentControl | void;
-
-export type ScaleFontParams = {
-  by: number
-  scale?: number
-  shadow?: boolean
-};
 
 export type ScaleFontResult = {
   fontSize: number
@@ -36,7 +32,6 @@ declare global {
       }
 
       interface Container {
-        refreshAdaptive?: () => void
         forceUpdate?: () => void
       }
     }

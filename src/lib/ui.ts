@@ -1,14 +1,13 @@
 import Phaser from 'phaser';
 import { Screen } from '~scene/screen';
 import {
-  ComponentControl, ComponentInstance, ComponentResizeCallback, ScaleFontParams, ScaleFontResult,
+  ComponentFunction, ComponentControl, ComponentInstance, ComponentResizeCallback, ScaleFontResult,
 } from '~type/ui';
 
 export function useAdaptation(
   object: Phaser.GameObjects.GameObject,
-  before: Nullable<ComponentResizeCallback>,
-  after: Nullable<ComponentResizeCallback> = null,
-): () => void {
+  callback: ComponentResizeCallback,
+) {
   if (!object.adaptives) {
     // eslint-disable-next-line no-param-reassign
     object.adaptives = {
@@ -17,72 +16,62 @@ export function useAdaptation(
     };
   }
 
-  if (before) {
-    object.adaptives.before.push(before);
-  }
-
-  if (after) {
-    object.adaptives.after.push(after);
-  }
-
-  return () => {
-    before(window.innerWidth, window.innerHeight); // ?
-  };
+  object.adaptives.before.push(callback);
 }
 
-export function callContainerAdaptive(container: Phaser.GameObjects.Container) {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+export function useAdaptationAfter(
+  object: Phaser.GameObjects.GameObject,
+  callback: ComponentResizeCallback,
+) {
+  if (!object.adaptives) {
+    // eslint-disable-next-line no-param-reassign
+    object.adaptives = {
+      before: [],
+      after: [],
+    };
+  }
 
-  if (container.adaptives) {
-    for (const callback of container.adaptives.before) {
-      callback(width, height);
+  object.adaptives.after.push(callback);
+}
+
+export function refreshAdaptive(
+  gameObject: Phaser.GameObjects.GameObject,
+  deep: boolean = true,
+) {
+  if (gameObject.adaptives) {
+    for (const callback of gameObject.adaptives.before) {
+      callback(window.innerWidth, window.innerHeight);
     }
   }
 
-  const deepProvideResize = (ctn: Phaser.GameObjects.Container) => {
-    ctn.iterate((child: Phaser.GameObjects.GameObject) => {
-      if (child.adaptives) {
-        for (const callback of child.adaptives.before) {
-          callback(width, height);
-        }
-      }
-      if (child instanceof Phaser.GameObjects.Container) {
-        deepProvideResize(child);
-      }
-      if (child.adaptives) {
-        for (const callback of child.adaptives.after) {
-          callback(width, height);
-        }
-      }
+  if (deep && gameObject instanceof Phaser.GameObjects.Container) {
+    gameObject.iterate((child: Phaser.GameObjects.GameObject) => {
+      refreshAdaptive(child, deep);
     });
-  };
+  }
 
-  deepProvideResize(container);
-
-  if (container.adaptives) {
-    for (const callback of container.adaptives.after) {
-      callback(width, height);
+  if (gameObject.adaptives) {
+    for (const callback of gameObject.adaptives.after) {
+      callback(window.innerWidth, window.innerHeight);
     }
   }
 }
 
 export function registerContainerAdaptive(container: Phaser.GameObjects.Container) {
-  callContainerAdaptive(container);
+  refreshAdaptive(container);
 
-  // eslint-disable-next-line no-param-reassign
-  container.refreshAdaptive = () => {
-    callContainerAdaptive(container);
+  const onResize = () => {
+    refreshAdaptive(container);
   };
 
-  window.addEventListener('resize', container.refreshAdaptive);
+  window.addEventListener('resize', onResize);
 
   container.on(Phaser.Scenes.Events.DESTROY, () => {
-    window.removeEventListener('resize', container.refreshAdaptive);
+    window.removeEventListener('resize', onResize);
   });
 }
 
-export function Component<T = any>(component: ComponentInstance<T>) {
+export function Component<T = any>(component: ComponentInstance<T>): ComponentFunction<T> {
   return function create(
     this: Screen,
     props?: T,
@@ -120,16 +109,30 @@ export function Component<T = any>(component: ComponentInstance<T>) {
 }
 
 export function switchSize(value: number): number {
-  return Math.round(value * ((window.innerWidth < 1200) ? 0.83 : 1));
+  let k: number;
+
+  if (window.innerWidth < 1200) {
+    k = 0.83;
+  } else if (window.innerWidth < 1600) {
+    k = 1.0;
+  } else {
+    k = 1.17;
+  }
+
+  return Math.round(value * k);
 }
 
-export function scaleText(text: Phaser.GameObjects.Text, params: ScaleFontParams): ScaleFontResult {
-  const fontSize = params.scale ? Math.round(params.by * params.scale) : params.by;
+export function scaleText(
+  text: Phaser.GameObjects.Text,
+  size: number,
+  shadow: boolean = false,
+): ScaleFontResult {
+  const fontSize = switchSize(size);
   let shadowSize = 0;
 
   text.setFontSize(fontSize);
 
-  if (params.shadow) {
+  if (shadow) {
     shadowSize = Math.round(fontSize * 0.25);
 
     text.setShadowOffset(shadowSize, shadowSize);

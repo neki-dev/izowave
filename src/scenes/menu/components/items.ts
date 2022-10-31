@@ -5,76 +5,88 @@ import { MenuAudio, MenuItem } from '~type/menu';
 
 type Props = {
   data: MenuItem[]
-  onSelect: (item: MenuItem) => void
+  onSelect: (index: number) => void
 };
 
 export const ComponentItems = Component<Props>(function (container, {
   data, onSelect,
 }) {
-  const active: {
+  const ref: Record<string, {
+    label?: Phaser.GameObjects.Text
+  }> = {};
+
+  const state: {
     current: Phaser.GameObjects.Text
   } = { current: null };
 
-  data.forEach((item, index) => {
-    const text = this.add.text(0, 0, item.label, {
-      resolution: window.devicePixelRatio,
-      fontFamily: INTERFACE_FONT.PIXEL,
-      align: 'right',
-      shadow: {
-        fill: true,
-      },
-    });
+  /**
+   * Creating
+   */
 
-    text.setOrigin(1.0, 0.0);
-    text.setInteractive();
-    useAdaptation(text, () => {
+  data.forEach(({
+    label, content, onClick, active,
+  }, index) => {
+    ref[label] = {};
+
+    /**
+     * Label
+     */
+
+    container.add(
+      ref[label].label = this.add.text(0, 0, label, {
+        resolution: window.devicePixelRatio,
+        fontFamily: INTERFACE_FONT.PIXEL,
+        align: 'right',
+        shadow: {
+          fill: true,
+        },
+      }),
+    );
+
+    ref[label].label.setOrigin(1.0, 0.0);
+    ref[label].label.setInteractive();
+    useAdaptation(ref[label].label, () => {
       const margin = container.height * 0.07;
 
-      scaleText(text, {
-        by: container.width,
-        scale: 0.08,
-        shadow: true,
-      });
-      text.setPosition(
+      scaleText(ref[label].label, 22, true);
+      ref[label].label.setPosition(
         container.width,
-        (text.height + margin) * index,
+        (ref[label].label.height + margin) * index,
       );
     });
 
-    text.on(Phaser.Input.Events.POINTER_OVER, () => {
+    ref[label].label.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.input.setDefaultCursor('pointer');
-      if (active.current !== text) {
-        text.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
+      if (state.current !== ref[label].label) {
+        ref[label].label.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
       }
     });
 
-    text.on(Phaser.Input.Events.POINTER_OUT, () => {
+    ref[label].label.on(Phaser.Input.Events.POINTER_OUT, () => {
       this.input.setDefaultCursor('default');
-      if (active.current !== text) {
-        text.setColor('#fff');
+      if (state.current !== ref[label].label) {
+        ref[label].label.setColor('#fff');
       }
     });
 
-    text.on(Phaser.Input.Events.POINTER_UP, () => {
+    ref[label].label.on(Phaser.Input.Events.POINTER_UP, () => {
       this.sound.play(MenuAudio.CLICK);
 
-      if (item.onClick) {
-        item.onClick();
-      } else if (item.content) {
-        onSelect(item);
-        if (active.current) {
-          active.current.setColor('#fff');
+      if (onClick) {
+        onClick();
+      } else if (content) {
+        onSelect(index);
+        if (state.current) {
+          state.current.setColor('#fff');
         }
-        text.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
-        active.current = text;
+        ref[label].label.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
+        state.current = ref[label].label;
       }
     });
 
-    container.add(text);
-
-    if (item.default) {
-      text.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
-      active.current = text;
+    if (active) {
+      ref[label].label.setColor(INTERFACE_TEXT_COLOR.PRIMARY);
+      state.current = ref[label].label;
     }
   });
 

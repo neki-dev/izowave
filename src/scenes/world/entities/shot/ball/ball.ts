@@ -86,18 +86,17 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
       return;
     }
 
-    const tileGround = this.scene.level.getTile({
+    const isVisibleTile = this.scene.level.isVisibleTile({
       ...Level.ToMatrixPosition(this),
       z: 0,
     });
-    const visible = tileGround ? tileGround.visible : false;
 
-    this.setVisible(visible);
+    this.setVisible(isVisibleTile);
     if (this.effect) {
-      this.effect.setVisible(visible);
+      this.effect.setVisible(isVisibleTile);
     }
 
-    if (visible) {
+    if (isVisibleTile) {
       const depth = Level.GetDepth(this.y, 1, this.displayHeight);
 
       this.setDepth(depth);

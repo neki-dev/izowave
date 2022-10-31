@@ -269,11 +269,9 @@ export class NPC extends Sprite {
    * Check if current ground tile is visible.
    */
   private atVisibleTile(): boolean {
-    const tile = this.scene.level.getTile({
+    return this.scene.level.isVisibleTile({
       ...this.positionAtMatrix,
       z: 0,
     });
-
-    return tile ? tile.visible : false;
   }
 }

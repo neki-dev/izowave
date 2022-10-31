@@ -6,30 +6,45 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
-  BuildingAudio, BuildingDescriptionItem, BuildingEvents, BuildingMineData,
+  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant,
 } from '~type/world/entities/building';
-import { ResourceType } from '~type/world/resources';
 
-export class BuildingMine extends Building {
-  /**
-   * Resource amount left.
-   */
-  private amountLeft: number = DIFFICULTY.MINE_RESOURCES;
+export class BuildingGenerator extends Building {
+  static Name = 'Generator';
+
+  static Description = 'Resource generation for builds and upgrades';
+
+  static Params: BuildingParamItem[] = [
+    { label: 'HEALTH', value: 400, icon: ScreenIcon.HEALTH },
+    { label: 'RESOURCES', value: DIFFICULTY.GENERATOR_RESOURCES, icon: ScreenIcon.RESOURCES },
+  ];
+
+  static Texture = BuildingTexture.GENERATOR;
+
+  static Cost = 30;
+
+  static Health = 400;
+
+  static Limit = DIFFICULTY.GENERATOR_LIMIT;
 
   /**
-   * Generation resource type.
+   * Resources amount left.
    */
-  private resourceType: ResourceType;
+  private amountLeft: number = DIFFICULTY.GENERATOR_RESOURCES;
 
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, {
-    resourceType, ...data
-  }: BuildingMineData) {
-    super(scene, data);
-
-    this.resourceType = resourceType;
+  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+    super(scene, {
+      positionAtMatrix,
+      variant: BuildingVariant.GENERATOR,
+      health: BuildingGenerator.Health,
+      texture: BuildingGenerator.Texture,
+      actions: {
+        pause: 1500, // Pause between generations
+      },
+    });
 
     this.on(BuildingEvents.UPGRADE, this.upgradeAmount, this);
   }
@@ -37,19 +52,15 @@ export class BuildingMine extends Building {
   /**
    * Add amount left to building info.
    */
-  public getInfo(): BuildingDescriptionItem[] {
-    const nextLeft = this.isAllowUpgrade()
-      ? this.amountLeft + (DIFFICULTY.MINE_RESOURCES_UPGRADE * this.upgradeLevel)
-      : null;
-
+  public getInfo(): BuildingParamItem[] {
     return [
       ...super.getInfo(), {
-        text: `RESOURCES: ${this.amountLeft}`,
-        post: nextLeft,
+        label: 'RESOURCES',
         icon: ScreenIcon.RESOURCES,
         color: (this.amountLeft < BUILDING_RESOUCES_LEFT_ALERT)
           ? INTERFACE_TEXT_COLOR.WARN
           : undefined,
+        value: this.amountLeft,
       },
     ];
   }
@@ -68,7 +79,7 @@ export class BuildingMine extends Building {
 
     if (this.amountLeft === 0) {
       this.scene.sound.play(BuildingAudio.OVER);
-      this.scene.screen.message(NoticeType.WARN, `${this.getName()} RESOURCES ARE OVER`);
+      this.scene.screen.message(NoticeType.WARN, `${this.getMeta().Name} RESOURCES ARE OVER`);
 
       this.destroy();
     } else {
@@ -86,7 +97,7 @@ export class BuildingMine extends Building {
   private generateResource() {
     const { player } = this.scene;
 
-    player.giveResources({ [this.resourceType]: 1 });
+    player.giveResources(1);
     this.amountLeft--;
   }
 
@@ -94,7 +105,7 @@ export class BuildingMine extends Building {
    * Update amount left.
    */
   private upgradeAmount() {
-    this.amountLeft += DIFFICULTY.MINE_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
+    this.amountLeft += DIFFICULTY.GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
 
     this.removeAlert();
   }

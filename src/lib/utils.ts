@@ -101,24 +101,49 @@ export function aroundPosition(
 }
 
 /**
+ * Add sign to amount.
+ *
+ * @param value - Amount
+ */
+export function formatAmount(value: number): string {
+  return `${(value > 0) ? '+' : ''}${value}`;
+}
+
+/**
+ * Remove sign from amount.
+ *
+ * @param value - Amount
+ */
+export function rawAmount(value: string): number {
+  return Number(value.replace('+', ''));
+}
+
+/**
  * Call function with frequency limit.
  *
  * @param fn - Function
  * @param delay - Delay between calls
  */
-export function throttle(fn: (...params: any[]) => void, delay: number) {
-  let called = false;
+export function debounce(fn: (...params: any[]) => void, delay: number) {
+  let timeout: Nullable<NodeJS.Timeout> = null;
 
-  return function (this: any, ...args: any[]) {
-    if (!called) {
-      called = true;
-      fn.apply(this, args);
+  return {
+    call(this: any, ...args: any[]) {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
 
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         fn.apply(this, args);
-        called = false;
+        timeout = null;
       }, delay);
-    }
+    },
+    reject() {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+    },
   };
 }
 

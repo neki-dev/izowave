@@ -2,21 +2,41 @@ import { INTERFACE_FONT } from '~const/interface';
 import { Component } from '~lib/ui';
 
 export const ComponentFPS = Component(function (container) {
-  const value = this.add.text(0, 0, '', {
-    resolution: window.devicePixelRatio,
-    fontSize: '12px',
-    fontFamily: INTERFACE_FONT.MONOSPACE,
-  });
+  const ref: {
+    value?: Phaser.GameObjects.Text
+  } = {};
 
-  value.setAlpha(0.5);
+  const state: {
+    value: number
+  } = { value: null };
 
-  container.add(value);
+  /**
+   * Creating
+   */
+
+  container.add(
+    ref.value = this.add.text(0, 0, '', {
+      // resolution: window.devicePixelRatio,
+      fontSize: '12px',
+      fontFamily: INTERFACE_FONT.MONOSPACE,
+    }),
+  );
+
+  ref.value.setAlpha(0.5);
+
+  /**
+   * Updating
+   */
 
   return {
     update: () => {
-      const count = Math.round(this.sys.game.loop.actualFps);
+      const currentValue = Math.round(this.sys.game.loop.actualFps);
 
-      value.setText(`${count} FPS`);
+      if (state.value !== currentValue) {
+        ref.value.setText(`${currentValue} FPS`);
+
+        state.value = currentValue;
+      }
     },
   };
 });

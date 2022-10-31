@@ -1,8 +1,6 @@
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';
+import { BuildingGenerator } from '~entity/building/variants/generator';
 import { BuildingMedic } from '~entity/building/variants/medic';
-import { BuildingMineBronze } from '~entity/building/variants/mine/variants/bronze';
-import { BuildingMineGold } from '~entity/building/variants/mine/variants/gold';
-import { BuildingMineSilver } from '~entity/building/variants/mine/variants/silver';
 import { BuildingTowerFire } from '~entity/building/variants/tower/variants/fire';
 import { BuildingTowerFrozen } from '~entity/building/variants/tower/variants/frozen';
 import { BuildingTowerLazer } from '~entity/building/variants/tower/variants/lazer';
@@ -14,9 +12,7 @@ export const BUILDINGS: Record<BuildingVariant, any> = {
   [BuildingVariant.TOWER_FIRE]: BuildingTowerFire,
   [BuildingVariant.TOWER_FROZEN]: BuildingTowerFrozen,
   [BuildingVariant.TOWER_LAZER]: BuildingTowerLazer,
-  [BuildingVariant.MINE_BRONZE]: BuildingMineBronze,
-  [BuildingVariant.MINE_SILVER]: BuildingMineSilver,
-  [BuildingVariant.MINE_GOLD]: BuildingMineGold,
+  [BuildingVariant.GENERATOR]: BuildingGenerator,
   [BuildingVariant.AMMUNITION]: BuildingAmmunition,
   [BuildingVariant.MEDIC]: BuildingMedic,
 };
