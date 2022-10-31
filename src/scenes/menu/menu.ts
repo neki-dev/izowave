@@ -37,12 +37,10 @@ export class Menu extends Phaser.Scene {
         content: () => ComponentControls.call(this, {
           controlItems: <ControlItem[]> [
             { name: 'W A S D', description: 'Move player' },
-            { name: 'CLICK', description: 'New build' },
             { name: 'U', description: 'Upgrade building' },
             { name: 'R', description: 'Reload tower ammo' },
             { name: 'BACKSPACE', description: 'Destroy building' },
-            { name: 'N', description: 'Skip wave timeleft' },
-            { name: 'ESC', description: 'Pause game' },
+            { name: 'N', description: 'Skip wave time left' },
           ],
         }),
       }],
