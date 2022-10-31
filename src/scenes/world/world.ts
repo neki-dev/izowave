@@ -203,9 +203,10 @@ export class World extends Phaser.Scene {
       localStorage.setItem(DIFFICULTY_KEY, Difficulty.NORMAL);
     }
 
-    this.registerShaders();
     this.registerOptimization();
+    this.registerShaders();
     this.registerParticles();
+
     this.makeLevel();
     this.addEntityGroups();
 
@@ -314,21 +315,19 @@ export class World extends Phaser.Scene {
    * Update navigation points costs.
    */
   public refreshNavigationMeta() {
-    const { navigator } = this.level;
-
-    navigator.resetPointsCost();
+    this.level.navigator.resetPointsCost();
 
     for (let y = 0; y < this.level.size; y++) {
       for (let x = 0; x < this.level.size; x++) {
-        if (navigator.matrix[y][x] === 1) {
+        if (this.level.navigator.matrix[y][x] === 1) {
           for (let s = x - 1; s <= x + 1; s++) {
-            if (s !== x && navigator.matrix[y]?.[s] === 0) {
-              navigator.setPointCost(s, y, LEVEL_CORNER_PATH_COST);
+            if (s !== x && this.level.navigator.matrix[y]?.[s] === 0) {
+              this.level.navigator.setPointCost(s, y, LEVEL_CORNER_PATH_COST);
             }
           }
           for (let s = y - 1; s <= y + 1; s++) {
-            if (s !== y && navigator.matrix[s]?.[x] === 0) {
-              navigator.setPointCost(x, s, LEVEL_CORNER_PATH_COST);
+            if (s !== y && this.level.navigator.matrix[s]?.[x] === 0) {
+              this.level.navigator.setPointCost(x, s, LEVEL_CORNER_PATH_COST);
             }
           }
         }
@@ -336,14 +335,16 @@ export class World extends Phaser.Scene {
     }
 
     this.buildings.children.iterate((building: Building) => {
-      const { x, y } = building.positionAtMatrix;
+      this.level.navigator.setPointCost(
+        building.positionAtMatrix.x,
+        building.positionAtMatrix.y,
+        LEVEL_BUILDING_PATH_COST,
+      );
 
-      navigator.setPointCost(x, y, LEVEL_BUILDING_PATH_COST);
-
-      for (let iy = y - 1; iy <= y + 1; iy++) {
-        for (let ix = x - 1; ix <= x + 1; ix++) {
-          if (this.level.getTile({ x: ix, y: iy, z: 0 }) && this.level.isFreePoint({ x: ix, y: iy, z: 1 })) {
-            navigator.setPointCost(ix, iy, LEVEL_CORNER_PATH_COST);
+      for (let y = building.positionAtMatrix.y - 1; y <= building.positionAtMatrix.y + 1; y++) {
+        for (let x = building.positionAtMatrix.x - 1; x <= building.positionAtMatrix.x + 1; x++) {
+          if (this.level.getTile({ x, y, z: 0 }) && this.level.isFreePoint({ x, y, z: 1 })) {
+            this.level.navigator.setPointCost(x, y, LEVEL_CORNER_PATH_COST);
           }
         }
       }
@@ -509,18 +510,24 @@ export class World extends Phaser.Scene {
    * Create level and configure camera.
    */
   private makeLevel() {
-    const { canvas } = this.sys;
-
     this.level = new Level(this);
 
-    const from = Level.ToWorldPosition({ x: 0, y: this.level.size - 1, z: 0 });
-    const to = Level.ToWorldPosition({ x: this.level.size - 1, y: 0, z: 0 });
     const camera = this.cameras.main;
+    const from = Level.ToWorldPosition({
+      x: 0,
+      y: this.level.size - 1,
+      z: 0,
+    });
+    const to = Level.ToWorldPosition({
+      x: this.level.size - 1,
+      y: 0,
+      z: 0,
+    });
 
     camera.setZoom(1.8);
-    camera.pan(from.x + (canvas.width / 2), from.y, 0);
+    camera.pan(from.x + (this.sys.canvas.width / 2), from.y, 0);
     setTimeout(() => {
-      camera.pan(to.x - (canvas.width / 2), to.y, 2 * 60 * 1000);
+      camera.pan(to.x - (this.sys.canvas.width / 2), to.y, 2 * 60 * 1000);
     }, 0);
   }
 
@@ -614,7 +621,7 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   * https://github.com/photonstorm/phaser/pull/6217
+   *
    */
   private registerOptimization() {
     const ref = this.scene.systems.displayList;

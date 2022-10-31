@@ -54,17 +54,15 @@ export class BuildingMedic extends Building {
       return;
     }
 
-    const { player } = this.scene;
-
-    if (player.live.isMaxHealth()) {
+    if (this.scene.player.live.isMaxHealth()) {
       return;
     }
 
-    if (!this.actionsAreaContains(player)) {
+    if (!this.actionsAreaContains(this.scene.player)) {
       return;
     }
 
-    this.heal(player);
+    this.heal(this.scene.player);
     this.pauseActions();
   }
 

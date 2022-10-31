@@ -65,14 +65,13 @@ export class BuildingTower extends Building {
    */
   public getInfo(): BuildingParamItem[] {
     const info = super.getInfo();
+    const params = this.getShotParams();
 
-    const { speed } = this.getShotParams();
-
-    if (speed) {
+    if (params.speed) {
       info.push({
         label: 'SPEED',
         icon: ScreenIcon.SPEED,
-        value: Math.round(speed / 10),
+        value: Math.round(params.speed / 10),
       });
     }
 

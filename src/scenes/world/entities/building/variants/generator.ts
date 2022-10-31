@@ -97,9 +97,7 @@ export class BuildingGenerator extends Building {
    * Generate resource and give to player.
    */
   private generateResource() {
-    const { player } = this.scene;
-
-    player.giveResources(1);
+    this.scene.player.giveResources(1);
     this.amountLeft--;
 
     new Particles(this, {

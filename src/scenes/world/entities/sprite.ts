@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { WORLD_COLLIDE_LOOK } from '~const/world';
 import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { ParticlesType } from '~type/world/effects';
@@ -9,14 +10,9 @@ import { LiveEvents } from '~type/world/entities/live';
 import { SpriteData } from '~type/world/entities/sprite';
 import { BiomeType, TileType } from '~type/world/level';
 
-import { Particles } from '../effects';
-
 export class Sprite extends Phaser.Physics.Arcade.Sprite {
   // @ts-ignore
   readonly scene: World;
-
-  // @ts-ignore
-  readonly body: Phaser.Physics.Arcade.Body;
 
   /**
    * Health managment.
@@ -106,9 +102,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
 
     this.container.setVisible(this.visible);
     if (this.visible) {
-      const { x, y } = this.getTopCenter();
+      const position = this.getTopCenter();
 
-      this.container.setPosition(x, y);
+      this.container.setPosition(position.x, position.y);
       const depth = Level.GetDepth(this.y, 1, this.displayHeight);
 
       this.setDepth(depth);
@@ -241,17 +237,16 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
    * Get body corners.
    */
   private getCorners(): Phaser.Types.Math.Vector2Like[] {
-    const { position: { x, y }, width } = this.body;
     const count = 8;
-    const r = width / 2;
+    const r = this.body.width / 2;
     const l = Phaser.Math.PI2 / count;
 
     const points: Phaser.Types.Math.Vector2Like[] = [];
 
     for (let u = 0; u < count; u++) {
       points.push({
-        x: (x + r) + Math.sin(u * l) * r,
-        y: (y + r) - Math.cos(u * l) * r,
+        x: (this.body.position.x + r) + Math.sin(u * l) * r,
+        y: (this.body.position.y + r) - Math.cos(u * l) * r,
       });
     }
 

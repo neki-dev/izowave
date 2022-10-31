@@ -155,11 +155,9 @@ export class Builder extends EventEmitter {
    * @param position - Position at matrix
    */
   public addFoundation(position: Phaser.Types.Math.Vector2Like) {
-    const { level } = this.scene;
-
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
-        const tileGround = level.getTile({ x, y, z: 0 });
+        const tileGround = this.scene.level.getTile({ x, y, z: 0 });
 
         if (tileGround && tileGround.biome.solid) {
           // Replace biome
@@ -175,10 +173,10 @@ export class Builder extends EventEmitter {
 
           // Remove trees
           const tilePosition = { x, y, z: 1 };
-          const tile = level.getTileWithType(tilePosition, TileType.TREE);
+          const tile = this.scene.level.getTileWithType(tilePosition, TileType.TREE);
 
           if (tile) {
-            level.removeTile(tilePosition);
+            this.scene.level.removeTile(tilePosition);
             tile.destroy();
           }
         }
@@ -191,9 +189,10 @@ export class Builder extends EventEmitter {
    * and converting to build grided position.
    */
   private getAssumedPosition(): Phaser.Types.Math.Vector2Like {
-    const { worldX, worldY } = this.scene.input.activePointer;
-
-    return Level.ToMatrixPosition({ x: worldX, y: worldY });
+    return Level.ToMatrixPosition({
+      x: this.scene.input.activePointer.worldX,
+      y: this.scene.input.activePointer.worldY,
+    });
   }
 
   /**
@@ -218,10 +217,8 @@ export class Builder extends EventEmitter {
     this.createBuildArea();
     this.createBuildingPreview();
 
-    const { input } = this.scene;
-
-    input.on(Phaser.Input.Events.POINTER_UP, this.build, this);
-    input.on(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview, this);
+    this.scene.input.on(Phaser.Input.Events.POINTER_UP, this.build, this);
+    this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview, this);
 
     this.isBuild = true;
 
@@ -236,10 +233,8 @@ export class Builder extends EventEmitter {
       return;
     }
 
-    const { input } = this.scene;
-
-    input.off(Phaser.Input.Events.POINTER_UP, this.build);
-    input.off(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview);
+    this.scene.input.off(Phaser.Input.Events.POINTER_UP, this.build);
+    this.scene.input.off(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview);
 
     this.destroyBuildingPreview();
     this.destroyBuildArea();
@@ -276,13 +271,11 @@ export class Builder extends EventEmitter {
    * Checks if player is stopped and wave not going.
    */
   private isCanBuild(): boolean {
-    const { player, wave } = this.scene;
-
     return (
       this.isVariantSelected()
-      && !wave.isGoing
-      && !player.live.isDead()
-      && player.isStopped()
+      && !this.scene.wave.isGoing
+      && !this.scene.player.live.isDead()
+      && this.scene.player.isStopped()
     );
   }
 
@@ -290,7 +283,6 @@ export class Builder extends EventEmitter {
    * Checks if allow to build on estimated position.
    */
   private isAllowBuild(): boolean {
-    const { player, level } = this.scene;
     const positionAtMatrix = this.getAssumedPosition();
     const tilePosition = { ...positionAtMatrix, z: 1 };
 
@@ -304,7 +296,7 @@ export class Builder extends EventEmitter {
     }
 
     // Pointer biome is solid
-    const tileGround = level.getTile({ ...positionAtMatrix, z: 0 });
+    const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
     const isSolid = tileGround?.biome.solid;
 
     if (!isSolid) {
@@ -312,9 +304,9 @@ export class Builder extends EventEmitter {
     }
 
     // Pointer is not contains player or other buildings
-    const playerPositionsAtMatrix = player.getAllPositionsAtMatrix();
+    const playerPositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
     const isFree = (
-      level.isFreePoint(tilePosition)
+      this.scene.level.isFreePoint(tilePosition)
       && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
     );
 
@@ -431,11 +423,10 @@ export class Builder extends EventEmitter {
    * Create permitted build area on map.
    */
   private createBuildArea() {
-    const { player, difficulty } = this.scene;
     const d = calcGrowth(
-      DIFFICULTY.BUILDING_BUILD_AREA / difficulty,
+      DIFFICULTY.BUILDING_BUILD_AREA / this.scene.difficulty,
       DIFFICULTY.BUILDING_BUILD_AREA_GROWTH,
-      player.level,
+      this.scene.player.level,
     ) * 2;
 
     this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive);
@@ -447,11 +438,12 @@ export class Builder extends EventEmitter {
    * Update build area position.
    */
   private updateBuildArea() {
-    const { x, y } = this.scene.player.getBottomCenter();
+    const position = this.scene.player.getBottomCenter();
     const out = TILE_META.height * 2;
+    const depth = Level.GetDepth(position.y, 1, this.buildArea.height + out);
 
-    this.buildArea.setPosition(x, y);
-    this.buildArea.setDepth(Level.GetDepth(y, 1, this.buildArea.height + out));
+    this.buildArea.setPosition(position.x, position.y);
+    this.buildArea.setDepth(depth);
   }
 
   /**

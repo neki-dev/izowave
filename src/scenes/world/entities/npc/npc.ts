@@ -115,8 +115,6 @@ export class NPC extends Sprite {
    * Find new path and move.
    */
   public updatePath() {
-    const { player, level } = this.scene;
-
     if (this.pathFindingTask) {
       return;
     }
@@ -129,7 +127,7 @@ export class NPC extends Sprite {
       // Check if target position is not changed
       const prev = this.currentPath[this.currentPath.length - 1];
 
-      if (equalPositions(prev, player.positionAtMatrix)) {
+      if (equalPositions(prev, this.scene.player.positionAtMatrix)) {
         return;
       }
     }
@@ -152,9 +150,9 @@ export class NPC extends Sprite {
       }
     };
 
-    this.pathFindingTask = level.navigator.createTask(
+    this.pathFindingTask = this.scene.level.navigator.createTask(
       this.positionAtMatrix,
-      player.positionAtMatrix,
+      this.scene.player.positionAtMatrix,
       onComplete,
     );
   }

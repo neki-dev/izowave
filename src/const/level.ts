@@ -17,13 +17,13 @@ export const TILE_META: TileMeta = {
 
 export const LEVEL_MAP_SIZE = (() => {
   switch (getPerformance()) {
-    case PerformanceLevel.LOW: return 100;
+    case PerformanceLevel.HIGH: return 140;
     case PerformanceLevel.MEDIUM: return 120;
-    default: return 140;
+    default: return 100;
   }
 })();
 export const LEVEL_MAP_HEIGHT = 4;
-export const LEVEL_MAP_VISIBLE_PART = 0.75;
+export const LEVEL_MAP_VISIBLE_PART = 0.8;
 export const LEVEL_MAP_VISITED_TILE_TINT = 0xDDDDDD;
 
 export const LEVEL_CORNER_PATH_COST = 8.0;

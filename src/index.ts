@@ -16,7 +16,16 @@ declare global {
 function bootGame() {
   new Game({
     scene: [World, Screen, Menu],
+    pixelArt: true,
+    autoRound: true,
+    disableContextMenu: true,
+    width: window.innerWidth,
+    height: window.innerHeight,
     parent: 'game-screen',
+    backgroundColor: '#222',
+    scale: {
+      mode: Phaser.Scale.RESIZE,
+    },
     physics: {
       default: 'arcade',
       arcade: {
@@ -25,19 +34,11 @@ function bootGame() {
         gravity: { y: 0 },
       },
     },
-    width: window.innerWidth,
-    height: window.innerHeight,
-    pixelArt: true,
-    autoRound: true,
-    disableContextMenu: true,
-    backgroundColor: '#222',
-    scale: {
-      mode: Phaser.Scale.RESIZE,
-    },
   });
 }
 
 (async () => {
+  console.clear();
   console.log([...COPYRIGHT, `Source at ${REPOSITORY}`].join('\n'));
 
   if (!IS_DEV_MODE && isMobileDevice()) {

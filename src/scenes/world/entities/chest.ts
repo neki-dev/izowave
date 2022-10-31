@@ -44,8 +44,7 @@ export class Chest extends Phaser.GameObjects.Image {
    * Take resources from chest and destroy him.
    */
   public open() {
-    const { player, wave } = this.scene;
-    const waveNumber = wave.getCurrentNumber();
+    const waveNumber = this.scene.wave.getCurrentNumber();
 
     // Give resources
 
@@ -60,7 +59,7 @@ export class Chest extends Phaser.GameObjects.Image {
       waveNumber,
     );
 
-    player.giveResources(amount);
+    this.scene.player.giveResources(amount);
 
     // Give experience
 
@@ -70,7 +69,7 @@ export class Chest extends Phaser.GameObjects.Image {
       waveNumber,
     );
 
-    player.giveExperience(experience);
+    this.scene.player.giveExperience(experience);
 
     this.scene.sound.play(ChestAudio.OPEN);
 

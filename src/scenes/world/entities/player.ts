@@ -306,11 +306,9 @@ export class Player extends Sprite {
    * Bind keyboard keys for movement.
    */
   private registerKeyboard() {
-    const { keyboard } = this.scene.input;
-
     const movementKeys = 'W,A,S,D,UP,LEFT,DOWN,RIGHT';
 
-    this.cursors = <Record<string, Phaser.Input.Keyboard.Key>> keyboard.addKeys(movementKeys);
+    this.cursors = <Record<string, Phaser.Input.Keyboard.Key>> this.scene.input.keyboard.addKeys(movementKeys);
   }
 
   /**
@@ -335,10 +333,10 @@ export class Player extends Sprite {
 
     const friction = this.tile ? this.tile.biome.friction : 1;
     const speed = this.speed / friction;
-    const { x, y } = this.scene.physics.velocityFromAngle(this.direction, speed);
+    const velocity = this.scene.physics.velocityFromAngle(this.direction, speed);
 
     this.body.setImmovable(false);
-    this.setVelocity(x, y);
+    this.setVelocity(velocity.x, velocity.y);
   }
 
   /**
@@ -421,10 +419,8 @@ export class Player extends Sprite {
    * Get current game stat.
    */
   private getStat(): PlayerStat {
-    const { wave } = this.scene;
-
     return {
-      waves: wave.isGoing ? wave.number - 1 : wave.number,
+      waves: this.scene.wave.getCurrentNumber() - 1,
       kills: this.kills,
       level: this.level,
       lived: this.scene.getTimerNow() / 1000 / 60,
@@ -456,14 +452,12 @@ export class Player extends Sprite {
    * Add animations for all move directions.
    */
   private registerAnimations() {
-    const { anims } = this.scene;
-
     let frameIndex = 0;
 
     for (const key of Object.values(PLAYER_MOVE_ANIMATIONS)) {
-      anims.create({
+      this.scene.anims.create({
         key,
-        frames: anims.generateFrameNumbers(PlayerTexture.PLAYER, {
+        frames: this.scene.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
           start: frameIndex * 4,
           end: (frameIndex + 1) * 4 - 1,
         }),

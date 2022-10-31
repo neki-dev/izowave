@@ -151,20 +151,19 @@ export class Enemy extends NPC {
   }
 
   /**
-   * Dead event.
+   * Event dead.
    */
   public onDead() {
     super.onDead();
 
-    const { player, wave } = this.scene;
     const experience = calcGrowth(
       DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.experienceMultiply,
       DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
-      wave.number,
+      this.scene.wave.number,
     );
 
-    player.giveExperience(experience);
-    player.incrementKills();
+    this.scene.player.giveExperience(experience);
+    this.scene.player.incrementKills();
   }
 
   /**

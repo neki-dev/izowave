@@ -50,7 +50,9 @@ export class Screen extends Phaser.Scene {
     const health = ComponentBar.call(this, {
       display: () => `${world.player.live.health} HP`,
       percent: () => (world.player.live.health / world.player.live.maxHealth),
-      event: (callback: (amount: number) => void) => world.player.live.on(LiveEvents.UPDATE_HEALTH, callback),
+      event: (callback: (amount: number) => void) => {
+        world.player.live.on(LiveEvents.UPDATE_HEALTH, callback);
+      },
       color: 0xe4372c,
     });
 
@@ -79,7 +81,9 @@ export class Screen extends Phaser.Scene {
           world.player.level + 1,
         )
       ),
-      event: (callback: (amount: number) => void) => world.player.on(PlayerEvents.UPDATE_EXPERIENCE, callback),
+      event: (callback: (amount: number) => void) => {
+        world.player.on(PlayerEvents.UPDATE_EXPERIENCE, callback);
+      },
       color: 0x1975c5,
     });
 

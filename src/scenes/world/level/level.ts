@@ -76,7 +76,7 @@ export class Level extends TileMatrix {
   }
 
   /**
-   * Update event.
+   * Event update.
    */
   public update() {
     this.updateVisibleTiles();
@@ -135,9 +135,8 @@ export class Level extends TileMatrix {
    * Update area of visible tiles.
    */
   private updateVisibleTiles() {
-    const { player, level } = this.scene;
     const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
-    const center = player.getBottomCenter();
+    const center = this.scene.player.getBottomCenter();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
 
     this.visibleTiles.children.iterate((tile: Phaser.GameObjects.Image) => {
@@ -147,13 +146,12 @@ export class Level extends TileMatrix {
     });
     this.visibleTiles.clear();
 
-    const { x, y } = player.positionAtMatrix;
     const c = Math.ceil(d / 52);
 
     for (let z = 0; z < this.height; z++) {
-      for (let iy = y - c + 1; iy <= y + c + 1; iy++) {
-        for (let ix = x - c + 1; ix <= x + c + 1; ix++) {
-          const tile = level.getTile({ x: ix, y: iy, z });
+      for (let y = this.scene.player.positionAtMatrix.y - c + 1; y <= this.scene.player.positionAtMatrix.y + c + 1; y++) {
+        for (let x = this.scene.player.positionAtMatrix.x - c + 1; x <= this.scene.player.positionAtMatrix.x + c + 1; x++) {
+          const tile = this.scene.level.getTile({ x, y, z });
 
           if (tile && area.contains(tile.x, tile.y)) {
             this.visibleTiles.add(tile);

@@ -196,7 +196,7 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Update event.
+   * Event update.
    */
   public update() {
     if (this.alert) {

@@ -272,22 +272,18 @@ export const ComponentBuilder = Component(function (container) {
   return {
     update: () => {
       entries(ref.items).forEach(([variant, { wrapper, body, preview }], index) => {
-        const allowed = (
-          world.builder.isBuildingAllowedByTutorial(variant)
-          && world.builder.isBuildingAllowedByWave(variant)
-        );
-
         if (world.wave.isGoing) {
           wrapper.setAlpha(0.25);
           preview.setAlpha(1.0);
-        } else if (!allowed) {
+        } else if (
+          !world.builder.isBuildingAllowedByTutorial(variant)
+          || !world.builder.isBuildingAllowedByWave(variant)
+        ) {
           wrapper.setAlpha(0.25);
           preview.setAlpha(0.5);
-          // preview.setPipeline('GrayscaleShader');
         } else {
           wrapper.setAlpha(1.0);
           preview.setAlpha(1.0);
-          // preview.setPipeline('Default');
         }
 
         if (world.builder.variantIndex === index) {
