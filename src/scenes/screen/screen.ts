@@ -72,8 +72,8 @@ export class Screen extends Phaser.Scene {
       display: () => `${world.player.level}  LVL`,
       percent: () => (
         world.player.experience / calcGrowth(
-          DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
-          DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+          DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL,
+          DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
           world.player.level + 1,
         )
       ),

@@ -31,7 +31,7 @@ import { TutorialStep } from '~type/tutorial';
 import { WorldEvents } from '~type/world';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';
-import { EnemyVariant } from '~type/world/entities/enemy';
+import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { PlayerStat } from '~type/world/entities/player';
 import { SpawnTarget } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
