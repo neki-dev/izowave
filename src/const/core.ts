@@ -17,4 +17,6 @@ export const COPYRIGHT = [
   `Version ${pkg.version} beta`,
 ];
 
+export const ANALYTICS_SERVER = 'https://izowave-analytics.neki.guru';
+
 export const REPOSITORY = pkg.repository.url.replace('git+', '');

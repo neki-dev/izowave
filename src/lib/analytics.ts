@@ -1,3 +1,4 @@
+import { ANALYTICS_SERVER } from '~const/core';
 import { AnalyticEvent } from '~type/analytics';
 
 const DATA: {
@@ -23,10 +24,14 @@ export function trackAnalytic(event: AnalyticEvent, parameters: {
     parameters,
   };
 
-  // TODO: Send event to analytics server
-
   if (IS_DEV_MODE) {
-    console.log('track analytic event:', payload);
+    console.log('Track analytic event:', payload);
+  } else {
+    fetch(`${ANALYTICS_SERVER}/event`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {});
   }
 }
 

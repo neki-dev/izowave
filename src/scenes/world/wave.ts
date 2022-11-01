@@ -168,12 +168,6 @@ export class Wave extends EventEmitter {
     this.scene.sound.play(WaveAudio.START);
 
     this.emit(WaveEvents.START, this.number);
-
-    trackAnalytic(AnalyticEvent.WAVE_START, {
-      number: this.number,
-      resources: this.scene.player.resources,
-      level: this.scene.player.level,
-    });
   }
 
   /**
@@ -189,6 +183,7 @@ export class Wave extends EventEmitter {
     this.emit(WaveEvents.COMPLETE, this.number);
 
     trackAnalytic(AnalyticEvent.WAVE_COMPLETE, {
+      difficulty: this.scene.difficultyType,
       number: this.number,
       resources: this.scene.player.resources,
       level: this.scene.player.level,

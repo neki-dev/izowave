@@ -394,10 +394,6 @@ export class World extends Phaser.Scene {
 
     this.isStarted = true;
 
-    trackAnalytic(AnalyticEvent.GAME_START, {
-      difficulty: this.difficultyType,
-    });
-
     if (!IS_DEV_MODE) {
       window.onbeforeunload = function confirm() {
         return 'Leave game? No saves!';
@@ -420,7 +416,10 @@ export class World extends Phaser.Scene {
       delete window.onbeforeunload;
     }
 
-    trackAnalytic(AnalyticEvent.GAME_FINISH, stat);
+    trackAnalytic(AnalyticEvent.GAME_FINISH, {
+      ...stat,
+      difficulty: this.difficultyType,
+    });
   }
 
   /**
