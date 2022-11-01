@@ -13,6 +13,7 @@ const world = {
   enemies: {
     getTotalUsed: jest.fn(),
   },
+  player: {},
   input: {
     keyboard: {
       on: jest.fn(),
