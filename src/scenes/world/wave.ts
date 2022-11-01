@@ -5,9 +5,11 @@ import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
+import { trackAnalytic } from '~lib/analytics';
 import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
+import { AnalyticEvent } from '~type/analytics';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
@@ -166,6 +168,12 @@ export class Wave extends EventEmitter {
     this.scene.sound.play(WaveAudio.START);
 
     this.emit(WaveEvents.START, this.number);
+
+    trackAnalytic(AnalyticEvent.WAVE_START, {
+      number: this.number,
+      resources: this.scene.player.resources,
+      level: this.scene.player.level,
+    });
   }
 
   /**
@@ -179,6 +187,12 @@ export class Wave extends EventEmitter {
     this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.emit(WaveEvents.COMPLETE, this.number);
+
+    trackAnalytic(AnalyticEvent.WAVE_COMPLETE, {
+      number: this.number,
+      resources: this.scene.player.resources,
+      level: this.scene.player.level,
+    });
   }
 
   /**

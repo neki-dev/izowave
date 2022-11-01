@@ -14,6 +14,7 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
 import { ShotBall } from '~entity/shot/ball';
+import { trackAnalytic } from '~lib/analytics';
 import { getAssetsPack } from '~lib/assets';
 import { setCheatsScheme } from '~lib/cheats';
 import { shaders } from '~lib/shaders';
@@ -25,6 +26,7 @@ import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
 import { Tutorial } from '~scene/world/tutorial';
 import { Wave } from '~scene/world/wave';
+import { AnalyticEvent } from '~type/analytics';
 import { Difficulty } from '~type/core';
 import { SceneKey } from '~type/scene';
 import { TutorialStep } from '~type/tutorial';
@@ -392,6 +394,10 @@ export class World extends Phaser.Scene {
 
     this.isStarted = true;
 
+    trackAnalytic(AnalyticEvent.GAME_START, {
+      difficulty: this.difficultyType,
+    });
+
     if (!IS_DEV_MODE) {
       window.onbeforeunload = function confirm() {
         return 'Leave game? No saves!';
@@ -413,6 +419,8 @@ export class World extends Phaser.Scene {
     if (!IS_DEV_MODE) {
       delete window.onbeforeunload;
     }
+
+    trackAnalytic(AnalyticEvent.GAME_FINISH, stat);
   }
 
   /**

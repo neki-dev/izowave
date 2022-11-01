@@ -2,6 +2,7 @@ import { Game } from 'phaser';
 
 import { COPYRIGHT, REPOSITORY } from '~const/core';
 import { INTERFACE_FONT } from '~const/interface';
+import { initAnalytics } from '~lib/analytics';
 import { loadFontFace } from '~lib/assets';
 import { removeFailure, throwFailure } from '~lib/state';
 import { isValidScreenSize, isMobileDevice } from '~lib/utils';
@@ -41,6 +42,8 @@ function bootGame() {
 (async () => {
   console.clear();
   console.log([...COPYRIGHT, `Source at ${REPOSITORY}`].join('\n'));
+
+  initAnalytics();
 
   if (!IS_DEV_MODE && isMobileDevice()) {
     throwFailure(FailureType.BAD_DEVICE);
