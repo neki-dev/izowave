@@ -157,8 +157,8 @@ export class Player extends Sprite {
     this.emit(PlayerEvents.UPDATE_EXPERIENCE, amount);
 
     const calcNext = (level: number) => calcGrowth(
-      DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL,
-      DIFFICULTY.EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL,
+      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
       this.level + level + 1,
     );
 

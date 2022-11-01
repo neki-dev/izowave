@@ -16,8 +16,6 @@ import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { BuildingMeta, BuildingVariant } from '~type/world/entities/building';
 import { WaveEvents } from '~type/world/wave';
 
-const BUILDING_VARIANTS = Object.values(BuildingVariant);
-
 export const ComponentBuilder = Component(function (container) {
   const world = <World> this.scene.get(SceneKey.WORLD);
 
@@ -34,7 +32,7 @@ export const ComponentBuilder = Component(function (container) {
   } = { items: {} };
 
   const state: {
-    variant: number
+    variant: BuildingVariant
   } = { variant: null };
 
   /**
@@ -53,7 +51,7 @@ export const ComponentBuilder = Component(function (container) {
    * Items
    */
 
-  BUILDING_VARIANTS.forEach((variant, index) => {
+  Object.values(BuildingVariant).forEach((variant, index) => {
     ref.items[variant] = {};
 
     /**
@@ -93,11 +91,11 @@ export const ComponentBuilder = Component(function (container) {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    ref.items[variant].body.on(Phaser.Input.Events.POINTER_OVER, () => focus(variant, index));
+    ref.items[variant].body.on(Phaser.Input.Events.POINTER_OVER, () => focus(variant));
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     ref.items[variant].body.on(Phaser.Input.Events.POINTER_OUT, () => unfocus());
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
-    ref.items[variant].body.on(Phaser.Input.Events.POINTER_UP, () => select(index));
+    ref.items[variant].body.on(Phaser.Input.Events.POINTER_UP, () => select(variant));
 
     /**
      * Preview
@@ -169,15 +167,13 @@ export const ComponentBuilder = Component(function (container) {
       ref.info.destroy();
     }
 
-    const data: BuildingMeta = { ...BUILDINGS[variant] };
-    let limit: [number, number];
+    const data: BuildingMeta = BUILDINGS[variant];
 
-    if (data.Limit) {
-      limit = [
-        world.selectBuildings(variant).length,
-        world.builder.getBuildCurrentLimit(data.Limit),
-      ];
-    }
+    const limit = world.builder.getBuildingLimit(variant);
+    const limitState: [number, number] = limit ? [
+      world.selectBuildings(variant).length,
+      limit,
+    ] : undefined;
 
     container.add(
       ref.info = ComponentBuildInfo(this, {
@@ -185,7 +181,7 @@ export const ComponentBuilder = Component(function (container) {
         description: data.Description,
         cost: data.Cost,
         params: data.Params,
-        limit,
+        limit: limitState,
         allowed: world.builder.isBuildingAllowedByWave(variant),
       }),
     );
@@ -200,7 +196,7 @@ export const ComponentBuilder = Component(function (container) {
    * Updating
    */
 
-  const focus = (variant: BuildingVariant, index: number) => {
+  const focus = (variant: BuildingVariant) => {
     if (world.wave.isGoing || !world.builder.isBuildingAllowedByTutorial(variant)) {
       return;
     }
@@ -210,7 +206,7 @@ export const ComponentBuilder = Component(function (container) {
     }
 
     this.input.setDefaultCursor('pointer');
-    state.variant = index;
+    state.variant = variant;
 
     addInfo.call(variant);
   };
@@ -234,11 +230,11 @@ export const ComponentBuilder = Component(function (container) {
     state.variant = null;
   };
 
-  const select = (index: number) => {
-    if (world.builder.variantIndex === index) {
+  const select = (variant: BuildingVariant) => {
+    if (world.builder.variant === variant) {
       world.builder.unsetBuildingVariant();
     } else {
-      world.builder.setBuildingVariant(index);
+      world.builder.setBuildingVariant(variant);
     }
   };
 
@@ -270,7 +266,7 @@ export const ComponentBuilder = Component(function (container) {
 
   return {
     update: () => {
-      entries(ref.items).forEach(([variant, { wrapper, body, preview }], index) => {
+      for (const [variant, { wrapper, body, preview }] of entries(ref.items)) {
         if (world.wave.isGoing) {
           wrapper.setAlpha(0.25);
           preview.setAlpha(1.0);
@@ -285,17 +281,17 @@ export const ComponentBuilder = Component(function (container) {
           preview.setAlpha(1.0);
         }
 
-        if (world.builder.variantIndex === index) {
+        if (world.builder.variant === variant) {
           body.setFillStyle(INTERFACE_BOX_COLOR.BLUE);
           body.setAlpha(1.0);
-        } else if (state.variant === index) {
+        } else if (state.variant === variant) {
           body.setFillStyle(0x000000);
           body.setAlpha(1.0);
         } else {
           body.setFillStyle(0x000000);
           body.setAlpha(0.5);
         }
-      });
+      }
     },
   };
 });

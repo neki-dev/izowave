@@ -4,6 +4,8 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Default player health
   PLAYER_HEALTH_GROWTH: 0.1, // Player health growth by level
   PLAYER_START_RESOURCES: 70, // Player start resources
+  PLAYER_EXPERIENCE_TO_NEXT_LEVEL: 200, // Need experience count to next level
+  PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH: 0.3, // Experience count growth by level
 
   ASSISTANT_SPEED: 90, // Default assistant speed
   ASSISTANT_SPEED_GROWTH: 0.015, // Assistant speed growth by player level
@@ -26,9 +28,6 @@ export const DIFFICULTY = {
   WAVE_BOSS_SPAWN_RATE: 5, // Every Nth wave a boss will spawn
   WAVE_EXPERIENCE: 200, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.1, // Experience count growth by wave number
-
-  EXPERIENCE_TO_NEXT_LEVEL: 300, // Need experience count to next level
-  EXPERIENCE_TO_NEXT_LEVEL_GROWTH: 0.3, // Experience count growth by level
 
   CHEST_EXPERIENCE: 8, // Gained experience per open chest
   CHEST_EXPERIENCE_GROWTH: 0.3, // Experience growth by wave number

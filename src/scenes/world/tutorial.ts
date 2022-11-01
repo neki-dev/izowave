@@ -15,7 +15,9 @@ export class Tutorial extends EventEmitter {
   private set step(v) { this._step = v; }
 
   /**
+   * Change tutorial step.
    *
+   * @param step - Next step
    */
   public progress(step: TutorialStep) {
     this.step = step;
@@ -24,7 +26,7 @@ export class Tutorial extends EventEmitter {
   }
 
   /**
-   *
+   * Complete tutorial.
    */
   public complete() {
     this.progress(TutorialStep.DONE);

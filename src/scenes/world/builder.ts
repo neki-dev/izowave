@@ -15,8 +15,6 @@ import { BuildingAudio, BuildingMeta, BuildingVariant } from '~type/world/entiti
 import { BiomeType, TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
-const BUILDING_VARIANTS = Object.values(BuildingVariant);
-
 export class Builder extends EventEmitter {
   readonly scene: World;
 
@@ -40,13 +38,13 @@ export class Builder extends EventEmitter {
   private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
-   * Current building variant index.
+   * Current building variant.
    */
-  private _variantIndex: Nullable<number> = null;
+  private _variant: Nullable<BuildingVariant> = null;
 
-  public get variantIndex() { return this._variantIndex; }
+  public get variant() { return this._variant; }
 
-  private set variantIndex(v) { this._variantIndex = v; }
+  private set variant(v) { this._variant = v; }
 
   /**
    * Builder constructor.
@@ -59,7 +57,7 @@ export class Builder extends EventEmitter {
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, this.switchBuildingVariant, this);
 
     this.scene.wave.on(WaveEvents.START, () => {
-      this.variantIndex = null;
+      this.clearBuildingVariant();
     });
   }
 
@@ -81,12 +79,11 @@ export class Builder extends EventEmitter {
   /**
    * Set current building variant.
    */
-  public setBuildingVariant(index: number) {
-    if (this.scene.wave.isGoing || this.variantIndex === index) {
+  public setBuildingVariant(variant: BuildingVariant) {
+    if (this.scene.wave.isGoing || this.variant === variant) {
       return;
     }
 
-    const variant = BUILDING_VARIANTS[index];
     const data: BuildingMeta = BUILDINGS[variant];
 
     if (!this.isBuildingAllowedByTutorial(variant)) {
@@ -107,7 +104,7 @@ export class Builder extends EventEmitter {
 
     this.scene.sound.play(BuildingAudio.SELECT);
 
-    this.variantIndex = index;
+    this.variant = variant;
 
     if (this.buildingPreview) {
       this.buildingPreview.setTexture(this.getBuildingMeta('Texture'));
@@ -118,7 +115,7 @@ export class Builder extends EventEmitter {
    * Unset current building variant.
    */
   public unsetBuildingVariant() {
-    if (this.scene.wave.isGoing || this.variantIndex === null) {
+    if (this.scene.wave.isGoing || this.variant === null) {
       return;
     }
 
@@ -131,23 +128,7 @@ export class Builder extends EventEmitter {
    * Clear current building variant.
    */
   public clearBuildingVariant() {
-    this.variantIndex = null;
-  }
-
-  /**
-   * Check is building variant selected.
-   */
-  public isVariantSelected() {
-    return (this.variantIndex !== null);
-  }
-
-  /**
-   * Get build limit on current wave.
-   *
-   * @param limit - Default limit
-   */
-  public getBuildCurrentLimit(limit: number): number {
-    return limit * (Math.floor(this.scene.wave.number / 5) + 1);
+    this.variant = null;
   }
 
   /**
@@ -202,9 +183,7 @@ export class Builder extends EventEmitter {
    * @param param - Parameter key
    */
   private getBuildingMeta(param: string) {
-    const variant = BUILDING_VARIANTS[this.variantIndex];
-
-    return BUILDINGS[variant][param];
+    return BUILDINGS[this.variant][param];
   }
 
   /**
@@ -250,30 +229,29 @@ export class Builder extends EventEmitter {
    */
   private switchBuildingVariant(e: KeyboardEvent) {
     if (e.key === 'Backspace') {
-      if (this.variantIndex !== null) {
+      if (this.variant !== null) {
         this.unsetBuildingVariant();
       }
     } else if (Number(e.key)) {
       const index = Number(e.key) - 1;
+      const variant = Object.values(BuildingVariant)[index];
 
-      if (!BUILDING_VARIANTS[index]) {
-        return;
-      }
-
-      if (this.variantIndex === index) {
-        this.unsetBuildingVariant();
-      } else {
-        this.setBuildingVariant(index);
+      if (variant) {
+        if (this.variant === variant) {
+          this.unsetBuildingVariant();
+        } else {
+          this.setBuildingVariant(variant);
+        }
       }
     }
   }
 
   /**
-   * Checks if player is stopped and wave not going.
+   * Checks if player can build.
    */
   private isCanBuild(): boolean {
     return (
-      this.isVariantSelected()
+      this.variant !== null
       && !this.scene.wave.isGoing
       && !this.scene.player.live.isDead()
       && this.scene.player.isStopped()
@@ -285,12 +263,14 @@ export class Builder extends EventEmitter {
    */
   private isAllowBuild(): boolean {
     const positionAtMatrix = this.getAssumedPosition();
-    const tilePosition = { ...positionAtMatrix, z: 1 };
 
     // Pointer in build area
     const positionAtWorldDown = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
     const offset = this.buildArea.getTopLeft();
-    const inArea = this.buildArea.geom.contains(positionAtWorldDown.x - offset.x, positionAtWorldDown.y - offset.y);
+    const inArea = this.buildArea.geom.contains(
+      positionAtWorldDown.x - offset.x,
+      positionAtWorldDown.y - offset.y,
+    );
 
     if (!inArea) {
       return false;
@@ -307,7 +287,7 @@ export class Builder extends EventEmitter {
     // Pointer is not contains player or other buildings
     const playerPositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
     const isFree = (
-      this.scene.level.isFreePoint(tilePosition)
+      this.scene.level.isFreePoint({ ...positionAtMatrix, z: 1 })
       && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
     );
 
@@ -332,8 +312,7 @@ export class Builder extends EventEmitter {
       return;
     }
 
-    const variant = BUILDING_VARIANTS[this.variantIndex];
-    const BuildingInstance = BUILDINGS[variant];
+    const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
       this.scene.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
@@ -341,15 +320,12 @@ export class Builder extends EventEmitter {
       return;
     }
 
-    const positionAtMatrix = this.getAssumedPosition();
-
-    new BuildingInstance(this.scene, positionAtMatrix);
-
-    this.updateBuildArea();
-
     this.scene.player.takeResources(BuildingInstance.Cost);
 
-    if (this.isBuildingLimitReached(variant)) {
+    new BuildingInstance(this.scene, this.getAssumedPosition());
+
+    this.updateBuildArea();
+    if (this.isBuildingLimitReached(this.variant)) {
       this.clearBuildingVariant();
     }
 
@@ -375,7 +351,9 @@ export class Builder extends EventEmitter {
   }
 
   /**
+   * Check if tutorial is allowed building variant.
    *
+   * @param variant - Building variant
    */
   public isBuildingAllowedByTutorial(variant: BuildingVariant): boolean {
     switch (this.scene.tutorial.step) {
@@ -392,7 +370,9 @@ export class Builder extends EventEmitter {
   }
 
   /**
+   * Check if current wave is allowed building variant.
    *
+   * @param variant - Building variant
    */
   public isBuildingAllowedByWave(variant: BuildingVariant): boolean {
     const waveAllowed = BUILDINGS[variant].WaveAllowed;
@@ -405,19 +385,29 @@ export class Builder extends EventEmitter {
   }
 
   /**
+   * Check if count of buildings variants reached limit.
    *
+   * @param variant - Building variant
    */
   private isBuildingLimitReached(variant: BuildingVariant): boolean {
-    const limit = BUILDINGS[variant].Limit;
+    const limit = this.getBuildingLimit(variant);
 
-    if (limit) {
-      const count = this.scene.selectBuildings(variant).length;
-      const currentLimit = this.getBuildCurrentLimit(limit);
-
-      return (count >= currentLimit);
+    if (limit !== null) {
+      return (this.scene.selectBuildings(variant).length >= limit);
     }
 
     return false;
+  }
+
+  /**
+   * Get building limit on current wave.
+   *
+   * @param variant - Building variant
+   */
+  public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
+    const limit = BUILDINGS[variant].Limit;
+
+    return limit ? limit * (Math.floor(this.scene.wave.number / 5) + 1) : null;
   }
 
   /**
