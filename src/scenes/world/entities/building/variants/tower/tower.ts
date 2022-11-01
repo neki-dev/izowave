@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { DIFFICULTY } from '~const/difficulty';
 import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { INPUT_KEY } from '~const/keyboard';

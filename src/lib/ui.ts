@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
-import { Screen } from '~scene/screen';
+
 import {
-  ComponentFunction, ComponentControl, ComponentInstance, ComponentResizeCallback, ScaleFontResult,
+  ComponentCreator, ComponentControl, ComponentInstance, ResizeCallback,
 } from '~type/ui';
 
 export function useAdaptation(
   object: Phaser.GameObjects.GameObject,
-  callback: ComponentResizeCallback,
+  callback: ResizeCallback,
 ) {
   if (!object.adaptives) {
     // eslint-disable-next-line no-param-reassign
@@ -21,7 +21,7 @@ export function useAdaptation(
 
 export function useAdaptationAfter(
   object: Phaser.GameObjects.GameObject,
-  callback: ComponentResizeCallback,
+  callback: ResizeCallback,
 ) {
   if (!object.adaptives) {
     // eslint-disable-next-line no-param-reassign
@@ -71,36 +71,27 @@ export function registerContainerAdaptive(container: Phaser.GameObjects.Containe
   });
 }
 
-export function Component<T = any>(component: ComponentInstance<T>): ComponentFunction<T> {
-  return function create(
-    this: Screen,
-    props?: T,
-  ): Phaser.GameObjects.Container {
-    const container = this.add.container();
-    const result: ComponentControl = component.call(this, container, props);
+export function Component<T = undefined>(instance: ComponentInstance<T>): ComponentCreator<T> {
+  return (scene: Phaser.Scene, props?: T): Phaser.GameObjects.Container => {
+    const container = scene.add.container();
+    const control: ComponentControl = instance.call(scene, container, props);
 
     registerContainerAdaptive(container);
 
-    if (result) {
-      const { update, destroy } = result;
+    if (control) {
+      const { update, destroy } = control;
 
       if (update) {
-        container.forceUpdate = update;
+        update();
 
-        try {
-          update();
-        } catch (error) {
-          console.error('Error on update UI component:', error.message);
-        }
-
-        this.events.on(Phaser.Scenes.Events.UPDATE, update, this);
+        scene.events.on(Phaser.Scenes.Events.UPDATE, update, scene);
         container.on(Phaser.Scenes.Events.DESTROY, () => {
-          this.events.off(Phaser.Scenes.Events.UPDATE, update);
+          scene.events.off(Phaser.Scenes.Events.UPDATE, update);
         });
       }
 
       if (destroy) {
-        container.on(Phaser.Scenes.Events.DESTROY, destroy, this);
+        container.on(Phaser.Scenes.Events.DESTROY, destroy, scene);
       }
     }
 
@@ -126,7 +117,7 @@ export function scaleText(
   text: Phaser.GameObjects.Text,
   size: number,
   shadow: boolean = false,
-): ScaleFontResult {
+) {
   const fontSize = switchSize(size);
   let shadowSize = 0;
 
@@ -138,9 +129,4 @@ export function scaleText(
     text.setShadowOffset(shadowSize, shadowSize);
     text.setPadding(0, 0, 0, shadowSize);
   }
-
-  return {
-    fontSize,
-    shadowSize,
-  };
 }

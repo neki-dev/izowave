@@ -5,7 +5,7 @@ import { EnemyDemon } from '~entity/npc/variants/enemy/variants/demon';
 import { EnemyImpure } from '~entity/npc/variants/enemy/variants/impure';
 import { EnemyOverlord } from '~entity/npc/variants/enemy/variants/overlord';
 import { EnemyUndead } from '~entity/npc/variants/enemy/variants/undead';
-import { EnemyVariant } from '~type/world/entities/enemy';
+import { EnemyVariant } from '~type/world/entities/npc/enemy';
 
 export const ENEMIES: Record<EnemyVariant, any> = {
   [EnemyVariant.BAT]: EnemyBat,

@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
+
 import { DIFFICULTY } from '~const/difficulty';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { useAdaptation, registerContainerAdaptive } from '~lib/ui';
+import { useAdaptation, registerContainerAdaptive, switchSize } from '~lib/ui';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
 import { ComponentBuilder } from '~scene/screen/components/builder';
@@ -31,12 +32,10 @@ export class Screen extends Phaser.Scene {
      * Wave
      */
 
-    const wave = ComponentWave.call(this, {
-      wave: world.wave,
-    });
+    const wave = ComponentWave(this);
 
-    useAdaptation(wave, (width: number) => {
-      const offset = Math.round(width * 0.02);
+    useAdaptation(wave, () => {
+      const offset = switchSize(30);
 
       wave.setPosition(offset, offset);
     });
@@ -47,7 +46,7 @@ export class Screen extends Phaser.Scene {
      * Health bar
      */
 
-    const health = ComponentBar.call(this, {
+    const health = ComponentBar(this, {
       display: () => `${world.player.live.health} HP`,
       percent: () => (world.player.live.health / world.player.live.maxHealth),
       event: (callback: (amount: number) => void) => {
@@ -56,13 +55,10 @@ export class Screen extends Phaser.Scene {
       color: 0xe4372c,
     });
 
-    useAdaptation(health, (width: number, height: number) => {
-      const offsetX = Math.round(width * 0.02);
-      const offsetY = Math.round(height * 0.03);
-
+    useAdaptation(health, () => {
       health.setPosition(
-        offsetX,
-        wave.y + wave.height + offsetY,
+        switchSize(30),
+        wave.y + wave.height + switchSize(24),
       );
     });
 
@@ -72,7 +68,7 @@ export class Screen extends Phaser.Scene {
      * Experience bar
      */
 
-    const experience = ComponentBar.call(this, {
+    const experience = ComponentBar(this, {
       display: () => `${world.player.level}  LVL`,
       percent: () => (
         world.player.experience / calcGrowth(
@@ -87,13 +83,10 @@ export class Screen extends Phaser.Scene {
       color: 0x1975c5,
     });
 
-    useAdaptation(experience, (width: number, height: number) => {
-      const offsetX = Math.round(width * 0.02);
-      const offsetY = Math.round(height * 0.008);
-
+    useAdaptation(experience, () => {
       experience.setPosition(
-        offsetX,
-        health.y + health.height + offsetY,
+        switchSize(30),
+        health.y + health.height + switchSize(6),
       );
     });
 
@@ -103,17 +96,12 @@ export class Screen extends Phaser.Scene {
      * Resources
      */
 
-    const resources = ComponentResources.call(this, {
-      player: world.player,
-    });
+    const resources = ComponentResources(this);
 
-    useAdaptation(resources, (width: number, height: number) => {
-      const offsetX = Math.round(width * 0.02);
-      const offsetY = Math.round(height * 0.03);
-
+    useAdaptation(resources, () => {
       resources.setPosition(
-        offsetX,
-        experience.y + experience.height + offsetY,
+        switchSize(30),
+        experience.y + experience.height + switchSize(24),
       );
     });
 
@@ -123,12 +111,13 @@ export class Screen extends Phaser.Scene {
      * Notices
      */
 
-    const notices = ComponentNotices.call(this);
+    const notices = ComponentNotices(this);
 
-    useAdaptation(notices, (width: number) => {
-      const offsetY = Math.round(width * 0.02);
-
-      notices.setPosition(width / 2, offsetY);
+    useAdaptation(notices, (width) => {
+      notices.setPosition(
+        width / 2,
+        switchSize(30),
+      );
     });
 
     components.add(notices);
@@ -137,12 +126,15 @@ export class Screen extends Phaser.Scene {
      * Builder
      */
 
-    const builder = ComponentBuilder.call(this);
+    const builder = ComponentBuilder(this);
 
-    useAdaptation(builder, (width: number) => {
-      const offset = Math.round(width * 0.02);
+    useAdaptation(builder, (width) => {
+      const offset = switchSize(30);
 
-      builder.setPosition(width - offset, offset);
+      builder.setPosition(
+        width - offset,
+        offset,
+      );
     });
 
     components.add(builder);
@@ -151,15 +143,20 @@ export class Screen extends Phaser.Scene {
      * FPS
      */
 
-    const fps = ComponentFPS.call(this);
+    if (IS_DEV_MODE) {
+      const fps = ComponentFPS(this);
 
-    useAdaptation(fps, (width: number, height: number) => {
-      const offset = width * 0.02;
+      useAdaptation(fps, (width, height) => {
+        const offset = switchSize(30);
 
-      fps.setPosition(offset, height - offset);
-    });
+        fps.setPosition(
+          offset,
+          height - offset,
+        );
+      });
 
-    components.add(fps);
+      components.add(fps);
+    }
 
     /**
      * Updating
@@ -170,7 +167,7 @@ export class Screen extends Phaser.Scene {
     world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
       components.destroy();
 
-      ComponentGameOver.call(this, { stat, record });
+      ComponentGameOver(this, { stat, record });
     });
   }
 

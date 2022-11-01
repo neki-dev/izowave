@@ -11,12 +11,13 @@
         "order": "asc",
         "caseInsensitive": true
       },
-      "pathGroups": [
-        {
-          "pattern": "~**/**",
-          "group": "external"
-        }
-      ]
+      "pathGroups": [{
+        "pattern": "~**/**",
+        "group": "parent"
+      }, {
+        "pattern": "../**",
+        "group": "sibling"
+      }]
     }]
   }
 }

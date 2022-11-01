@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
@@ -38,7 +39,7 @@ export class NPC extends Sprite {
   private stopCalmTimestamp: number = 0;
 
   /**
-   *
+   * Finded path is completed.
    */
   public pathComplete: boolean = false;
 

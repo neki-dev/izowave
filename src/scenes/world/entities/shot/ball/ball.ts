@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { World } from '~scene/world';
@@ -10,10 +11,8 @@ import {
 } from '~type/world/entities/shot';
 
 export class ShotBall extends Phaser.Physics.Arcade.Image {
-  // @ts-ignore
   readonly scene: World;
 
-  // @ts-ignore
   readonly body: Phaser.Physics.Arcade.Body;
 
   /**

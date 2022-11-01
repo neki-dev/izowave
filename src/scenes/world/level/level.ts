@@ -1,5 +1,6 @@
 import GenBiome from 'gen-biome';
 import Phaser from 'phaser';
+
 import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP,
   LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT, LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS,

@@ -138,7 +138,7 @@ export const ComponentActions = Component<Props>(function (container, {
 
     if (addon) {
       ref[label].wrapper.add(
-        ref[label].addon = addon.component.call(this, addon.props),
+        ref[label].addon = addon.component(this, addon.props),
       );
 
       useAdaptationAfter(ref[label].addon, () => {

@@ -3,8 +3,7 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
-  BuildingAudio,
-  BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant,
+  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';

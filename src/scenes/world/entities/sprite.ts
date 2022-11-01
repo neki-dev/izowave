@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { WORLD_COLLIDE_LOOK } from '~const/world';
 import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
@@ -11,8 +12,9 @@ import { SpriteData } from '~type/world/entities/sprite';
 import { BiomeType, TileType } from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite {
-  // @ts-ignore
   readonly scene: World;
+
+  readonly body: Phaser.Physics.Arcade.Body;
 
   /**
    * Health managment.

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { DIFFICULTY } from '~const/difficulty';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
@@ -8,7 +9,6 @@ import { ChestTexture, ChestData, ChestAudio } from '~type/world/entities/chest'
 import { TileType } from '~type/world/level';
 
 export class Chest extends Phaser.GameObjects.Image {
-  // @ts-ignore
   readonly scene: World;
 
   /**

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
-import { AssistantTexture } from '~type/world/entities/assistant';
-import { EnemyTexture } from '~type/world/entities/enemy';
+
+import { AssistantTexture } from '~type/world/entities/npc/assistant';
+import { EnemyTexture } from '~type/world/entities/npc/enemy';
 
 export type NPCData = {
   positionAtMatrix: Phaser.Types.Math.Vector2Like

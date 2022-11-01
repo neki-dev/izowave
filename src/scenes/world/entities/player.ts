@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { DIFFICULTY } from '~const/difficulty';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
 import {

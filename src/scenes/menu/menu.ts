@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { INPUT_KEY } from '~const/keyboard';
 import { registerAudioAssets } from '~lib/assets';
 import { ComponentAbout } from '~scene/menu/components/content/about';
@@ -6,7 +7,7 @@ import { ComponentControls } from '~scene/menu/components/content/controls';
 import { ComponentDifficulty } from '~scene/menu/components/content/difficulty';
 import { ComponentMenu } from '~scene/menu/components/menu';
 import { World } from '~scene/world';
-import { ControlItem, MenuAudio, MenuItem } from '~type/menu';
+import { ControlItem, MenuAudio } from '~type/menu';
 import { SceneKey } from '~type/scene';
 
 export class Menu extends Phaser.Scene {
@@ -19,22 +20,22 @@ export class Menu extends Phaser.Scene {
   public create({ pauseMode = false }) {
     this.pauseMode = pauseMode;
 
-    ComponentMenu.call(this, {
-      menuItems: <MenuItem[]> [{
+    ComponentMenu(this, {
+      menuItems: [{
         label: this.pauseMode ? 'Continue' : 'New game',
         onClick: () => this.startGame(),
       }, {
         label: 'Difficulty',
-        content: () => ComponentDifficulty.call(this, {
+        content: () => ComponentDifficulty(this, {
           disabled: this.pauseMode,
         }),
       }, {
         label: 'About',
-        content: () => ComponentAbout.call(this),
+        content: () => ComponentAbout(this),
         active: true,
       }, {
         label: 'Controls',
-        content: () => ComponentControls.call(this, {
+        content: () => ComponentControls(this, {
           controlItems: <ControlItem[]> [
             { name: 'W A S D', description: 'Move player' },
             { name: 'U', description: 'Upgrade building' },

@@ -96,7 +96,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
    */
 
   container.add(
-    ref.upgradeLevel = ComponentUpgradeLevel.call(this, {
+    ref.upgradeLevel = ComponentUpgradeLevel(this, {
       value: upgradeLevel,
     }),
   );
@@ -113,9 +113,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
    */
 
   container.add(
-    ref.params = ComponentParams.call(this, {
-      items: params,
-    }),
+    ref.params = ComponentParams(this, { params }),
   );
 
   useAdaptation(ref.params, () => {
@@ -147,9 +145,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
    */
 
   container.add(
-    ref.actions = ComponentActions.call(this, {
-      actions,
-    }),
+    ref.actions = ComponentActions(this, { actions }),
   );
 
   useAdaptation(ref.actions, () => {

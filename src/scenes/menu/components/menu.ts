@@ -103,7 +103,7 @@ export const ComponentMenu = Component<Props>(function (container, {
    */
 
   ref.sidebar.add(
-    ref.items = ComponentItems.call(this, {
+    ref.items = ComponentItems(this, {
       data: menuItems,
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       onSelect: (index: number) => updatePage(menuItems[index]),

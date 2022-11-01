@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 
 import Phaser from 'phaser';
+
 import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/enemy';
 import { INPUT_KEY } from '~const/keyboard';
@@ -8,7 +9,7 @@ import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
-import { EnemyVariant } from '~type/world/entities/enemy';
+import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
 
 export class Wave extends EventEmitter {

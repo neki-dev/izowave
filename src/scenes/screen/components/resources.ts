@@ -1,19 +1,16 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Player } from '~entity/player';
 import {
   useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
 } from '~lib/ui';
 import { ComponentAdditions } from '~scene/screen/components/additions';
+import { World } from '~scene/world';
+import { SceneKey } from '~type/scene';
 import { ScreenTexture } from '~type/screen';
 import { PlayerEvents } from '~type/world/entities/player';
 
-type Props = {
-  player: Player
-};
+export const ComponentResources = Component(function (container) {
+  const world = <World> this.scene.get(SceneKey.WORLD);
 
-export const ComponentResources = Component<Props>(function (container, {
-  player,
-}) {
   const ref: {
     icon?: Phaser.GameObjects.Image
     label?: Phaser.GameObjects.Text
@@ -92,9 +89,9 @@ export const ComponentResources = Component<Props>(function (container, {
    */
 
   container.add(
-    ref.additions = ComponentAdditions.call(this, {
+    ref.additions = ComponentAdditions(this, {
       event: (callback: (amount: number) => void) => {
-        player.on(PlayerEvents.UPDATE_RESOURCE, callback);
+        world.player.on(PlayerEvents.UPDATE_RESOURCE, callback);
       },
     }),
   );
@@ -112,11 +109,11 @@ export const ComponentResources = Component<Props>(function (container, {
 
   return {
     update: () => {
-      if (state.amount !== player.resources) {
-        ref.amount.setText(String(player.resources));
+      if (state.amount !== world.player.resources) {
+        ref.amount.setText(String(world.player.resources));
         refreshAdaptive(ref.additions, false);
 
-        state.amount = player.resources;
+        state.amount = world.player.resources;
       }
     },
   };

@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import {

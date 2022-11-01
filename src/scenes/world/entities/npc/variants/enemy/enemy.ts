@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { DIFFICULTY } from '~const/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
 import { Building } from '~entity/building';
@@ -10,7 +11,7 @@ import { Particles } from '~scene/world/effects';
 import { ParticlesType } from '~type/world/effects';
 import {
   EnemyAttackTarget, EnemyAudio, EnemyData, EnemyTexture,
-} from '~type/world/entities/enemy';
+} from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
 export class Enemy extends NPC {

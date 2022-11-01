@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
+
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import {
+  useAdaptation, Component, scaleText, switchSize,
+} from '~lib/ui';
 import { MenuAudio, MenuItem } from '~type/menu';
 
 type Props = {
@@ -46,12 +49,10 @@ export const ComponentItems = Component<Props>(function (container, {
     ref[label].label.setOrigin(1.0, 0.0);
     ref[label].label.setInteractive();
     useAdaptation(ref[label].label, () => {
-      const margin = container.height * 0.07;
-
       scaleText(ref[label].label, 22, true);
       ref[label].label.setPosition(
         container.width,
-        (ref[label].label.height + margin) * index,
+        (ref[label].label.height + switchSize(14)) * index,
       );
     });
 

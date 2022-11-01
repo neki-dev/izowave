@@ -1,9 +1,9 @@
 {
   "name": "izowave",
-  "description": "Isometric game. Build and defence",
-  "version": "0.19.6",
+  "description": "Isometric game. Build and defence in open world",
+  "version": "0.19.7",
   "keywords": [],
-  "license": "MIT",
+  "license": "GNU",
   "author": {
     "name": "Nikita Galadiy",
     "email": "dev@neki.guru",

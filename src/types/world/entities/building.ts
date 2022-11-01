@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { ScreenIcon } from '~type/screen';
 import { ComponentFunction } from '~type/ui';
 import { ShotInstance } from '~type/world/entities/shot';

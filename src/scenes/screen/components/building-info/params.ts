@@ -6,11 +6,11 @@ import { ScreenTexture } from '~type/screen';
 import { BuildingParamItem } from '~type/world/entities/building';
 
 type Props = {
-  items: () => BuildingParamItem[]
+  params: () => BuildingParamItem[]
 };
 
 export const ComponentParams = Component<Props>(function (container, {
-  items,
+  params,
 }) {
   const ref: Record<string, {
     wrapper?: Phaser.GameObjects.Container
@@ -89,7 +89,7 @@ export const ComponentParams = Component<Props>(function (container, {
 
   for (const {
     label, value, color, icon,
-  } of items()) {
+  } of params()) {
     ref[label] = {};
     state.values[label] = value;
 
@@ -194,13 +194,13 @@ export const ComponentParams = Component<Props>(function (container, {
 
   return {
     update: () => {
-      const currentItems = items();
+      const currentParams = params();
 
-      if (!currentItems) {
+      if (!currentParams) {
         return;
       }
 
-      for (const { label, value } of currentItems) {
+      for (const { label, value } of currentParams) {
         if (state.values[label] !== value) {
           ref[label].value.setText(String(value));
 

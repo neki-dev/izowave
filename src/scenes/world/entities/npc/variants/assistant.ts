@@ -8,7 +8,7 @@ import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
 import { Effect } from '~scene/world/effects';
 import { EffectTexture } from '~type/world/effects';
-import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/assistant';
+import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/npc/assistant';
 import { ShotParams } from '~type/world/entities/shot';
 
 export class Assistant extends NPC {

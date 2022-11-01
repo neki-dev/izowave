@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { Building } from '~entity/building';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { MIN_VALID_SCREEN_SIZE } from '~const/core';
 
 /**

@@ -1,6 +1,6 @@
 import {
   EnemyTexture, EnemyTexturesMeta, EnemyVariant, EnemyVariantsMeta,
-} from '~type/world/entities/enemy';
+} from '~type/world/entities/npc/enemy';
 
 export const ENEMY_SPAWN_POSITIONS = 10;
 export const ENEMY_SPAWN_DISTANCE_FROM_PLAYER = 16;

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { DIFFICULTY } from '~const/difficulty';
 import { INPUT_KEY } from '~const/keyboard';
@@ -26,7 +27,6 @@ import { LiveEvents } from '~type/world/entities/live';
 import { TileType } from '~type/world/level';
 
 export class Building extends Phaser.GameObjects.Image {
-  // @ts-ignore
   readonly scene: World;
 
   /**
@@ -557,7 +557,7 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    this.info = ComponentBuildingInfo.call(this.scene, {
+    this.info = ComponentBuildingInfo(this.scene, {
       name: this.getMeta().Name,
       upgradeLevel: () => this.upgradeLevel,
       params: () => this.getInfo(),

@@ -97,7 +97,7 @@ export const ComponentBar = Component<Props>(function (container, {
    */
 
   container.add(
-    ref.additions = ComponentAdditions.call(this, { event }),
+    ref.additions = ComponentAdditions(this, { event }),
   );
 
   useAdaptation(ref.additions, () => {

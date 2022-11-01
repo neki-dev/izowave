@@ -60,10 +60,10 @@ export const ComponentWave = Component(function (container) {
   );
 
   useAdaptation(ref.number, () => {
-    const { fontSize } = scaleText(ref.number, 20, true);
+    scaleText(ref.number, 20, true);
 
     const paddingX = switchSize(16);
-    const paddingY = (container.height - fontSize) / 2;
+    const paddingY = switchSize(6);
 
     ref.number.setFixedSize(0, container.height);
     ref.number.setPadding(paddingX, paddingY, paddingX, 0);
@@ -85,13 +85,10 @@ export const ComponentWave = Component(function (container) {
 
   ref.label.setAlpha(0.5);
   useAdaptation(ref.label, () => {
-    const offsetX = container.height * 0.3;
-    const offsetY = container.height * 0.06;
-
     scaleText(ref.label, 10, true);
     ref.label.setPosition(
-      ref.number.x + ref.number.width + offsetX,
-      offsetY,
+      ref.number.x + ref.number.width + switchSize(10),
+      switchSize(2),
     );
   });
 
@@ -109,16 +106,11 @@ export const ComponentWave = Component(function (container) {
     }),
   );
 
-  ref.value.setOrigin(0.0, 1.0);
   useAdaptation(ref.value, () => {
-    const offsetX = container.height * 0.3;
-    const offsetY = container.height * 0.09;
-
-    const { shadowSize } = scaleText(ref.value, 18, true);
-
+    scaleText(ref.value, 18, true);
     ref.value.setPosition(
-      ref.number.x + ref.number.width + offsetX,
-      container.height + shadowSize - offsetY,
+      ref.number.x + ref.number.width + switchSize(10),
+      ref.label.y + ref.label.height + switchSize(2),
     );
   });
 
@@ -137,7 +129,7 @@ export const ComponentWave = Component(function (container) {
   world.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
     if (step === TutorialStep.WAVE_TIMELEFT) {
       container.add(
-        ref.help = ComponentHelp.call(this, {
+        ref.help = ComponentHelp(this, {
           message: 'Here display time left to start enemies attack',
           side: 'left',
         }),

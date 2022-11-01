@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';

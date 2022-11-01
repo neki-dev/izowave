@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { BuildingTower } from '~entity/building/variants/tower';
 import { Enemy } from '~entity/npc/variants/enemy';
@@ -9,7 +10,6 @@ import { ParticlesType } from '~type/world/effects';
 import { ShotLazerAudio, ShotParams } from '~type/world/entities/shot';
 
 export class ShotLazer extends Phaser.GameObjects.Line {
-  // @ts-ignore
   readonly scene: World;
 
   /**

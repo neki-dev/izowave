@@ -1,5 +1,4 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import { Player } from '~entity/player';
 import {
   useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
 } from '~lib/ui';
@@ -8,7 +7,6 @@ import { ComponentParams } from '~scene/screen/components/building-info/params';
 import { BuildingParamItem } from '~type/world/entities/building';
 
 type Props = {
-  player: Player
   name: string
   description: string
   params: BuildingParamItem[]
@@ -18,7 +16,7 @@ type Props = {
 };
 
 export const ComponentBuildInfo = Component<Props>(function (container, {
-  player, name, description, params, cost, limit, allowed,
+  name, description, params, cost, limit, allowed,
 }) {
   const ref: {
     body?: Phaser.GameObjects.Rectangle
@@ -149,9 +147,8 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
      */
 
     container.add(
-      ref.params = ComponentParams.call(this, {
-        unknown: !allowed,
-        items: () => params,
+      ref.params = ComponentParams(this, {
+        params: () => params,
       }),
     );
 
@@ -213,8 +210,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
      */
 
     container.add(
-      ref.cost = ComponentCost.call(this, {
-        player,
+      ref.cost = ComponentCost(this, {
         amount: () => cost,
       }),
     );

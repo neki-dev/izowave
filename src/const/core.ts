@@ -1,6 +1,5 @@
-import { DifficultyPowers } from '~type/core';
-
 import pkg from '../../package.json';
+import { DifficultyPowers } from '~type/core';
 
 export const MIN_VALID_SCREEN_SIZE = [800, 480];
 

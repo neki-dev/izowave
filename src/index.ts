@@ -1,4 +1,5 @@
 import { Game } from 'phaser';
+
 import { COPYRIGHT, REPOSITORY } from '~const/core';
 import { INTERFACE_FONT } from '~const/interface';
 import { loadFontFace } from '~lib/assets';

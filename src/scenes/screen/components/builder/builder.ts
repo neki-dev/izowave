@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
 import { TILE_META } from '~const/level';
@@ -63,14 +64,13 @@ export const ComponentBuilder = Component(function (container) {
       ref.items[variant].wrapper = this.add.container(),
     );
 
-    useAdaptation(ref.items[variant].wrapper, (width, height) => {
+    useAdaptation(ref.items[variant].wrapper, () => {
       const size = switchSize(54);
-      const offsetY = Math.round(height * 0.008);
 
       ref.items[variant].wrapper.setSize(size, size);
       ref.items[variant].wrapper.setPosition(
         -ref.items[variant].wrapper.width,
-        (ref.items[variant].wrapper.height + offsetY) * index,
+        (ref.items[variant].wrapper.height + switchSize(8)) * index,
       );
     });
 
@@ -146,7 +146,7 @@ export const ComponentBuilder = Component(function (container) {
 
   const addHelp = (variant: BuildingVariant, message: string) => {
     container.add(
-      ref.help = ComponentHelp.call(this, {
+      ref.help = ComponentHelp(this, {
         message,
         side: 'right',
       }),
@@ -180,8 +180,7 @@ export const ComponentBuilder = Component(function (container) {
     }
 
     container.add(
-      ref.info = ComponentBuildInfo.call(this, {
-        player: world.player,
+      ref.info = ComponentBuildInfo(this, {
         name: data.Name,
         description: data.Description,
         cost: data.Cost,

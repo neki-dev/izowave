@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 
 import Phaser from 'phaser';
+
 import { BUILDINGS } from '~const/buildings';
 import { DIFFICULTY } from '~const/difficulty';
 import { TILE_META } from '~const/level';
