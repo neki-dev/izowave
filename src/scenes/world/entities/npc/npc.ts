@@ -187,27 +187,6 @@ export class NPC extends Sprite {
   }
 
   /**
-   * Event dead.
-   */
-  public onDead() {
-    super.onDead();
-
-    if (this.visible) {
-      this.anims.stop();
-      this.scene.tweens.add({
-        targets: this,
-        alpha: 0.0,
-        duration: 250,
-        onComplete: () => {
-          this.destroy();
-        },
-      });
-    } else {
-      this.destroy();
-    }
-  }
-
-  /**
    * Check is path waypoint has been reached.
    */
   private nextPathTile() {

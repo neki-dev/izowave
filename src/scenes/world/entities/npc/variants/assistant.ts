@@ -84,17 +84,15 @@ export class Assistant extends NPC {
    * Event dead.
    */
   public onDead() {
-    super.onDead();
-
-    if (!this.visible) {
-      return;
+    if (this.visible) {
+      new Effect(this.scene, {
+        texture: EffectTexture.EXPLOSION,
+        audio: AssistantAudio.DEAD,
+        position: this,
+      });
     }
 
-    new Effect(this.scene, {
-      texture: EffectTexture.EXPLOSION,
-      audio: AssistantAudio.DEAD,
-      position: this,
-    });
+    super.onDead();
   }
 
   /**

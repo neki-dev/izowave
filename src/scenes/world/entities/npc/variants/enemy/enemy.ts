@@ -155,8 +155,6 @@ export class Enemy extends NPC {
    * Event dead.
    */
   public onDead() {
-    super.onDead();
-
     const experience = calcGrowth(
       DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.experienceMultiply,
       DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
@@ -165,6 +163,8 @@ export class Enemy extends NPC {
 
     this.scene.player.giveExperience(experience);
     this.scene.player.incrementKills();
+
+    super.onDead();
   }
 
   /**

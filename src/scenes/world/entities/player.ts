@@ -213,17 +213,15 @@ export class Player extends Sprite {
    * Event dead.
    */
   public onDead() {
-    super.onDead();
-
-    this.stopMovement();
-    this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
-    this.scene.sound.play(PlayerAudio.DEAD);
-
     const record = this.readBestStat();
     const stat = this.getStat();
 
     this.writeBestStat(stat, record);
 
+    this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
+    this.scene.sound.play(PlayerAudio.DEAD);
+
+    this.stopMovement();
     this.scene.tweens.add({
       targets: [this, this.container],
       alpha: 0.0,

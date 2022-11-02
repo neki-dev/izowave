@@ -155,8 +155,20 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   /**
    * Event dead.
    */
-  // eslint-disable-next-line class-methods-use-this
   public onDead() {
+    if (this.visible) {
+      this.anims.stop();
+      this.scene.tweens.add({
+        targets: [this, this.container],
+        alpha: 0.0,
+        duration: 250,
+        onComplete: () => {
+          this.destroy();
+        },
+      });
+    } else {
+      this.destroy();
+    }
   }
 
   /**
