@@ -12,7 +12,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Params: BuildingParamItem[] = [
     { label: 'HEALTH', value: 900, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: 210, icon: ScreenIcon.RADIUS },
+    { label: 'RADIUS', value: 190, icon: ScreenIcon.RADIUS },
     { label: 'FREEZE', value: '1.0 s', icon: ScreenIcon.DAMAGE },
     { label: 'SPEED', value: 55, icon: ScreenIcon.SPEED },
   ];
@@ -35,7 +35,7 @@ export class BuildingTowerFrozen extends BuildingTower {
       health: BuildingTowerFrozen.Health,
       texture: BuildingTowerFrozen.Texture,
       actions: {
-        radius: 210, // Attack radius
+        radius: 190, // Attack radius
         pause: 1400, // Pause between shoots
       },
       shotData: {

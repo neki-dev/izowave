@@ -14,7 +14,7 @@ export class BuildingMedic extends Building {
   static Description = 'Heals player, that are in radius of this building';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 200, icon: ScreenIcon.HEALTH },
+    { label: 'HEALTH', value: 160, icon: ScreenIcon.HEALTH },
     { label: 'HEAL', value: DIFFICULTY.MEDIC_HEAL_AMOUNT, icon: ScreenIcon.HEAL },
   ];
 
@@ -38,7 +38,7 @@ export class BuildingMedic extends Building {
       health: BuildingMedic.Health,
       texture: BuildingMedic.Texture,
       actions: {
-        radius: 200, // Heal radius
+        radius: 160, // Heal radius
         pause: 3000, // Pause between heals
       },
     });

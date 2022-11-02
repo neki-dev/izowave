@@ -12,7 +12,7 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Params: BuildingParamItem[] = [
     { label: 'HEALTH', value: 600, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: 215, icon: ScreenIcon.RADIUS },
+    { label: 'RADIUS', value: 200, icon: ScreenIcon.RADIUS },
     { label: 'DAMAGE', value: 35, icon: ScreenIcon.DAMAGE },
     { label: 'SPEED', value: 55, icon: ScreenIcon.SPEED },
   ];
@@ -33,7 +33,7 @@ export class BuildingTowerFire extends BuildingTower {
       health: BuildingTowerFire.Health,
       texture: BuildingTowerFire.Texture,
       actions: {
-        radius: 215, // Attack radius
+        radius: 200, // Attack radius
         pause: 1400, // Pause between shoots
       },
       shotData: {

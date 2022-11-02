@@ -12,7 +12,7 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static Params: BuildingParamItem[] = [
     { label: 'HEALTH', value: 300, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: 180, icon: ScreenIcon.RADIUS },
+    { label: 'RADIUS', value: 170, icon: ScreenIcon.RADIUS },
     { label: 'DAMAGE', value: 75, icon: ScreenIcon.DAMAGE },
   ];
 
@@ -34,7 +34,7 @@ export class BuildingTowerLazer extends BuildingTower {
       health: BuildingTowerLazer.Health,
       texture: BuildingTowerLazer.Texture,
       actions: {
-        radius: 180, // Attack radius
+        radius: 170, // Attack radius
         pause: 1600, // Pause between shoots
       },
       shotData: {
