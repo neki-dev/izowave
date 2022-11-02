@@ -1,4 +1,4 @@
-import { FailureType } from '~type/core';
+import { FailureType } from '~type/state';
 
 export function throwFailure(type: FailureType) {
   if (document.getElementById(`failure-${type}`)) {

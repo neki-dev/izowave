@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
+import { ComponentCreator } from '~type/interface';
 import { ScreenIcon } from '~type/screen';
-import { ComponentFunction } from '~type/ui';
 import { ShotInstance } from '~type/world/entities/shot';
 
 export enum BuildingEvents {
@@ -63,7 +63,7 @@ export type BuildingParamItem = {
 export type BuildingAction = {
   label: string
   addon?: {
-    component: ComponentFunction
+    component: ComponentCreator
     props?: any
   }
   onClick: () => void

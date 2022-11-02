@@ -2,9 +2,9 @@ import EventEmitter from 'events';
 
 import Phaser from 'phaser';
 
-import { BUILDINGS } from '~const/buildings';
-import { DIFFICULTY } from '~const/difficulty';
-import { TILE_META } from '~const/level';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { BUILDINGS } from '~const/world/entities/buildings';
+import { TILE_META } from '~const/world/level';
 import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
@@ -332,15 +332,15 @@ export class Builder extends EventEmitter {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     // Tutorial progress
-    switch (this.scene.tutorial.step) {
+    switch (this.scene.game.tutorial.step) {
       case TutorialStep.BUILD_TOWER_FIRE: {
-        this.scene.tutorial.progress(TutorialStep.BUILD_GENERATOR);
+        this.scene.game.tutorial.progress(TutorialStep.BUILD_GENERATOR);
 
         this.clearBuildingVariant();
         break;
       }
       case TutorialStep.BUILD_GENERATOR: {
-        this.scene.tutorial.progress(TutorialStep.WAVE_TIMELEFT);
+        this.scene.game.tutorial.progress(TutorialStep.WAVE_TIMELEFT);
 
         this.clearBuildingVariant();
         this.scene.unpauseProcess();
@@ -356,7 +356,7 @@ export class Builder extends EventEmitter {
    * @param variant - Building variant
    */
   public isBuildingAllowedByTutorial(variant: BuildingVariant): boolean {
-    switch (this.scene.tutorial.step) {
+    switch (this.scene.game.tutorial.step) {
       case TutorialStep.BUILD_TOWER_FIRE: {
         return (variant === BuildingVariant.TOWER_FIRE);
       }

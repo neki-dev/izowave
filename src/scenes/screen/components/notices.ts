@@ -1,7 +1,7 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
 import { ScreenAudio } from '~type/screen';
 import { Notice, NoticeType } from '~type/screen/notice';
 

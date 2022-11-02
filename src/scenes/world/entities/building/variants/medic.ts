@@ -1,4 +1,4 @@
-import { DIFFICULTY } from '~const/difficulty';
+import { DIFFICULTY } from '~const/world/difficulty';
 import { Player } from '~entity/player';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';

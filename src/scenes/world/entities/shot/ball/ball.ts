@@ -63,7 +63,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   }: ShotBallData) {
     super(parent.scene, parent.x, parent.y, texture);
     parent.scene.add.existing(this);
-    parent.scene.shots.add(this);
+    parent.scene.entityGroups.shots.add(this);
 
     this.parent = parent;
     this.audio = audio;

@@ -1,6 +1,6 @@
-import { BUILDING_RESOUCES_LEFT_ALERT } from '~const/building';
-import { DIFFICULTY } from '~const/difficulty';
 import { INTERFACE_TEXT_COLOR } from '~const/interface';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { BUILDING_RESOUCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';

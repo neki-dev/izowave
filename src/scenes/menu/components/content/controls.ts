@@ -1,16 +1,10 @@
+import { CONTROLS } from '~const/controls';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, useAdaptationAfter, switchSize,
-} from '~lib/ui';
-import { ControlItem } from '~type/menu';
+} from '~lib/interface';
 
-type Props = {
-  controlItems: ControlItem[]
-};
-
-export const ComponentControls = Component<Props>(function (container, {
-  controlItems,
-}) {
+export const ComponentControls = Component(function (container) {
   const ref: Record<string, {
     wrapper?: Phaser.GameObjects.Container
     name?: Phaser.GameObjects.Text
@@ -21,7 +15,7 @@ export const ComponentControls = Component<Props>(function (container, {
    * Creating
    */
 
-  controlItems.forEach(({ name, description }, index) => {
+  CONTROLS.forEach(({ name, description }, index) => {
     ref[name] = {};
 
     /**

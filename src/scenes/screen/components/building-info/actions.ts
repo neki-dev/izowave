@@ -1,7 +1,7 @@
 import { INTERFACE_FONT } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
 import { BuildingAction } from '~type/world/entities/building';
 
 type Props = {

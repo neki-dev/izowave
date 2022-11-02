@@ -10,8 +10,10 @@ const world = {
     step: TutorialStep.DONE,
     on: jest.fn(),
   },
-  enemies: {
-    getTotalUsed: jest.fn(),
+  entityGroups: {
+    enemies: {
+      getTotalUsed: jest.fn(),
+    },
   },
   player: {},
   input: {

@@ -1,3 +1,5 @@
+import { DifficultyPowers } from '~type/world/difficulty';
+
 export const DIFFICULTY = {
   PLAYER_SPEED: 90, // Default player speed
   PLAYER_SPEED_GROWTH: 0.015, // Player speed growth by level
@@ -61,4 +63,10 @@ export const DIFFICULTY = {
 
   MEDIC_HEAL_AMOUNT: 10, // Default medic heal
   MEDIC_LIMIT: 1, // Maximum count medic on world (N * (wave / 5))
+};
+
+export const DIFFICULTY_POWERS: DifficultyPowers = {
+  EASY: 0.8,
+  NORMAL: 1.0,
+  HARD: 1.3,
 };

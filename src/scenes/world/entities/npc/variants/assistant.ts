@@ -1,5 +1,5 @@
-import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/assistant';
-import { DIFFICULTY } from '~const/difficulty';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
@@ -36,7 +36,6 @@ export class Assistant extends NPC {
       pathBreakpoint: ASSISTANT_PATH_BREAKPOINT,
     });
     scene.add.existing(this);
-    scene.npc.add(this);
 
     this.shot = new ShotBallFire(this);
 
@@ -134,7 +133,7 @@ export class Assistant extends NPC {
       this.scene.player.level,
     );
 
-    const enemies = (<Enemy[]> this.scene.enemies.getChildren()).filter((enemy) => (
+    const enemies = (<Enemy[]> this.scene.entityGroups.enemies.getChildren()).filter((enemy) => (
       !enemy.live.isDead()
       && Phaser.Math.Distance.BetweenPoints(enemy, this) <= distance
     ));

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { Screen } from '~scene/screen';
 
-export type ComponentCreator<T> = (scene: Phaser.Scene, props?: T) => Phaser.GameObjects.Container;
+export type ComponentCreator<T = undefined> = (scene: Phaser.Scene, props?: T) => Phaser.GameObjects.Container;
 
 export type ComponentControl = {
   update?: () => void

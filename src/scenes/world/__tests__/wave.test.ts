@@ -1,6 +1,6 @@
 import 'jest-canvas-mock';
 
-import { DIFFICULTY } from '~const/difficulty';
+import { DIFFICULTY } from '~const/world/difficulty';
 
 import world from '../__mocks__/world';
 import { Wave } from '../wave';
@@ -47,7 +47,7 @@ describe('wave.ts', () => {
 
       wave.update();
 
-      world.enemies.getTotalUsed = jest.fn(() => (i + 1));
+      world.entityGroups.enemies.getTotalUsed = jest.fn(() => (i + 1));
     }
 
     expect(wave.spawnedCount).toEqual(wave.maxSpawnedCount);
@@ -55,7 +55,7 @@ describe('wave.ts', () => {
   });
 
   it('should complete wave', () => {
-    world.enemies.getTotalUsed = jest.fn(() => 0);
+    world.entityGroups.enemies.getTotalUsed = jest.fn(() => 0);
 
     wave.update();
 

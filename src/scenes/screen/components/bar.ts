@@ -1,7 +1,7 @@
 import { INTERFACE_FONT } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize,
-} from '~lib/ui';
+} from '~lib/interface';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {

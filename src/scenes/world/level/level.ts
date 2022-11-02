@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP,
   LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT, LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS,
-} from '~const/level';
+} from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import {
@@ -140,11 +140,9 @@ export class Level extends TileMatrix {
     const center = this.scene.player.getBottomCenter();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
 
-    this.visibleTiles.children.iterate((tile: Phaser.GameObjects.Image) => {
+    for (const tile of <Phaser.GameObjects.Image[]> this.visibleTiles.getChildren()) {
       tile.setVisible(false);
-
-      return true;
-    });
+    }
     this.visibleTiles.clear();
 
     const c = Math.ceil(d / 52);

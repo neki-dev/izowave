@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '~const/difficulty';
+import { DIFFICULTY } from '~const/world/difficulty';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
@@ -27,7 +27,7 @@ export class Chest extends Phaser.GameObjects.Image {
 
     super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.CHEST, variant);
     scene.add.existing(this);
-    scene.chests.add(this);
+    scene.entityGroups.chests.add(this);
 
     this.positionAtMatrix = positionAtMatrix;
 

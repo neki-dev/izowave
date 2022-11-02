@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '~const/difficulty';
-import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/level';
-import {
-  PLAYER_RECORD_KEY, PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS,
-} from '~const/player';
+import { CONTROL_KEY } from '~const/controls';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS } from '~const/world/entities/player';
+import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/world/level';
 import { Chest } from '~entity/chest';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
@@ -58,9 +57,9 @@ export class Player extends Sprite {
   private speed: number = DIFFICULTY.PLAYER_SPEED;
 
   /**
-   * Keyboard keys.
+   * Keyboard keys for movement.
    */
-  private cursors: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
+  private movementKeys: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
 
   /**
    * Current direction in deg.
@@ -302,12 +301,12 @@ export class Player extends Sprite {
   }
 
   /**
-   * Bind keyboard keys for movement.
+   * Add keyboard keys for movement.
    */
   private registerKeyboard() {
-    const movementKeys = 'W,A,S,D,UP,LEFT,DOWN,RIGHT';
-
-    this.cursors = <Record<string, Phaser.Input.Keyboard.Key>> this.scene.input.keyboard.addKeys(movementKeys);
+    this.movementKeys = <Record<string, Phaser.Input.Keyboard.Key>> this.scene.input.keyboard.addKeys(
+      CONTROL_KEY.MOVEMENT,
+    );
   }
 
   /**
@@ -393,7 +392,7 @@ export class Player extends Sprite {
     controls: [keyof typeof MovementDirection, string][],
   ): MovementDirection {
     for (const [core, alias] of controls) {
-      if (this.cursors[core].isDown || this.cursors[alias].isDown) {
+      if (this.movementKeys[core].isDown || this.movementKeys[alias].isDown) {
         return MovementDirection[core];
       }
     }
@@ -430,7 +429,7 @@ export class Player extends Sprite {
    * Get and save current game stat.
    */
   private readBestStat(): PlayerStat {
-    const recordValue = localStorage.getItem(`${PLAYER_RECORD_KEY}.${this.scene.difficultyType}`);
+    const recordValue = localStorage.getItem(`BEST_STAT.${this.scene.difficultyType}`);
 
     return recordValue ? JSON.parse(recordValue) : {};
   }
@@ -439,7 +438,7 @@ export class Player extends Sprite {
    * Get and save current game stat.
    */
   private writeBestStat(stat: PlayerStat, record: PlayerStat) {
-    localStorage.setItem(`${PLAYER_RECORD_KEY}.${this.scene.difficultyType}`, JSON.stringify(
+    localStorage.setItem(`BEST_STAT.${this.scene.difficultyType}`, JSON.stringify(
       keys(stat).reduce((curr, param) => ({
         ...curr,
         [param]: Math.max(stat[param], record[param] || 0),

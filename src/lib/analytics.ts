@@ -1,4 +1,4 @@
-import { ANALYTICS_SERVER } from '~const/core';
+import { ANALYTICS_SERVER } from '~const/analytics';
 import { AnalyticData } from '~type/analytics';
 
 const DATA: {
@@ -37,9 +37,9 @@ export function trackProgressionEvent(data: AnalyticData) {
 }
 
 export function initAnalytics() {
-  DATA.userId = localStorage.getItem('userId');
+  DATA.userId = localStorage.getItem('USER_ID');
   if (!DATA.userId) {
     DATA.userId = generateUserId();
-    localStorage.setItem('userId', DATA.userId);
+    localStorage.setItem('USER_ID', DATA.userId);
   }
 }

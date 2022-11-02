@@ -52,6 +52,7 @@ export class NPC extends Sprite {
   }: NPCData) {
     super(scene, { texture, positionAtMatrix, health });
     scene.add.existing(this);
+    scene.entityGroups.npc.add(this);
 
     this.damage = damage;
     this.speed = speed;

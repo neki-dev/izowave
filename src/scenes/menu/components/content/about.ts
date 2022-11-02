@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/interface';
 
 export const ComponentAbout = Component(function (container) {
   const ref: {

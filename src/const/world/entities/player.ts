@@ -1,24 +1,21 @@
-import { TILE_META } from '~const/level';
+import { TILE_META } from '~const/world/level';
 import { MovementDirection } from '~type/world/entities/player';
 
 export const PLAYER_TILE_SIZE = [16, 16];
 
-export const PLAYER_RECORD_KEY = 'BEST_GAME_RESULT';
-
-const ANGLE = TILE_META.deg;
 const {
   RIGHT, LEFT, UP, DOWN, NONE,
 } = MovementDirection;
 
 export const PLAYER_MOVE_DIRECTIONS = {
-  [`${LEFT}|${UP}`]: 180 + ANGLE,
+  [`${LEFT}|${UP}`]: 180 + TILE_META.deg,
   [`${LEFT}|${NONE}`]: 180,
-  [`${LEFT}|${DOWN}`]: 180 - ANGLE,
+  [`${LEFT}|${DOWN}`]: 180 - TILE_META.deg,
   [`${NONE}|${UP}`]: 270,
   [`${NONE}|${DOWN}`]: 90,
-  [`${RIGHT}|${UP}`]: -ANGLE,
+  [`${RIGHT}|${UP}`]: -TILE_META.deg,
   [`${RIGHT}|${NONE}`]: 0,
-  [`${RIGHT}|${DOWN}`]: ANGLE,
+  [`${RIGHT}|${DOWN}`]: TILE_META.deg,
 };
 
 export const PLAYER_MOVE_ANIMATIONS = {

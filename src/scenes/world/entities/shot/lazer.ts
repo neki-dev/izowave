@@ -43,7 +43,7 @@ export class ShotLazer extends Phaser.GameObjects.Line {
   constructor(parent: BuildingTower) {
     super(parent.scene);
     parent.scene.add.existing(this);
-    parent.scene.shots.add(this);
+    parent.scene.entityGroups.shots.add(this);
 
     this.parent = parent;
 

@@ -1,11 +1,11 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
 import { formatTime } from '~lib/utils';
 import { ComponentHelp } from '~scene/screen/components/help';
 import { World } from '~scene/world';
-import { SceneKey } from '~type/scene';
+import { SceneKey } from '~type/core';
 import { NoticeType } from '~type/screen/notice';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
@@ -126,7 +126,7 @@ export const ComponentWave = Component(function (container) {
     this.message(NoticeType.INFO, `WAVE ${world.wave.number} COMPLETED`);
   });
 
-  world.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
+  this.game.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
     if (step === TutorialStep.WAVE_TIMELEFT) {
       container.add(
         ref.help = ComponentHelp(this, {
@@ -172,7 +172,8 @@ export const ComponentWave = Component(function (container) {
       }
 
       if (world.wave.isGoing) {
-        const currentEnemies = world.wave.maxSpawnedCount - (world.wave.spawnedCount - world.wave.scene.enemies.getTotalUsed());
+        const killedEnemies = world.wave.spawnedCount - world.wave.scene.entityGroups.enemies.getTotalUsed();
+        const currentEnemies = world.wave.maxSpawnedCount - killedEnemies;
 
         if (state.enemies !== currentEnemies) {
           ref.value.setText(String(currentEnemies));
@@ -191,7 +192,7 @@ export const ComponentWave = Component(function (container) {
         if (
           currentTimeleft <= 5
           && ref.value.style.color !== INTERFACE_TEXT_COLOR.ERROR
-          && world.wave.scene.tutorial.step === TutorialStep.DONE
+          && this.game.tutorial.step === TutorialStep.DONE
         ) {
           this.sound.play(WaveAudio.TICK);
 

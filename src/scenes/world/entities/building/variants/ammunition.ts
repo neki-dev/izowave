@@ -1,4 +1,4 @@
-import { DIFFICULTY } from '~const/difficulty';
+import { DIFFICULTY } from '~const/world/difficulty';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';

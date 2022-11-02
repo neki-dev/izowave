@@ -1,20 +1,12 @@
 import Phaser from 'phaser';
 
+import { AssetsSource, AssetsSpriteParams } from '~type/assets';
+
 const ASSETS_PACK: {
   files: Phaser.Types.Loader.FileConfig[]
 } = {
   files: [],
 };
-
-type AssetsSource = string | string[] | Record<string, string>;
-
-type AssetsSpriteParams = {
-  width: number
-  height: number
-} | ((sprite: string) => {
-  width: number
-  height: number
-});
 
 function normalizeAssetsFiles(files: AssetsSource): string[] {
   if (typeof files === 'string') {

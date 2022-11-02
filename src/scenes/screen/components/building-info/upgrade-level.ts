@@ -1,6 +1,6 @@
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
 import { INTERFACE_BOX_COLOR } from '~const/interface';
-import { useAdaptation, Component, switchSize } from '~lib/ui';
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
+import { useAdaptation, Component, switchSize } from '~lib/interface';
 
 type Props = {
   value: () => number

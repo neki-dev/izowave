@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '~const/difficulty';
-import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/enemy';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
@@ -54,8 +54,7 @@ export class Enemy extends NPC {
       ),
     });
     scene.add.existing(this);
-    scene.npc.add(this);
-    scene.enemies.add(this);
+    scene.entityGroups.enemies.add(this);
 
     this.experienceMultiply = experienceMultiply;
 

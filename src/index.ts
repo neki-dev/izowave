@@ -1,42 +1,15 @@
-import { Game } from 'phaser';
-
 import { COPYRIGHT, REPOSITORY } from '~const/core';
 import { INTERFACE_FONT } from '~const/interface';
 import { initAnalytics } from '~lib/analytics';
 import { loadFontFace } from '~lib/assets';
 import { removeFailure, throwFailure } from '~lib/state';
 import { isValidScreenSize, isMobileDevice } from '~lib/utils';
-import { Menu } from '~scene/menu';
-import { Screen } from '~scene/screen';
-import { World } from '~scene/world';
-import { FailureType } from '~type/core';
+import { FailureType } from '~type/state';
+
+import { Game } from './game';
 
 declare global {
   const IS_DEV_MODE: boolean;
-}
-
-function bootGame() {
-  new Game({
-    scene: [World, Screen, Menu],
-    pixelArt: true,
-    autoRound: true,
-    disableContextMenu: true,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    parent: 'game-screen',
-    backgroundColor: '#222',
-    scale: {
-      mode: Phaser.Scale.RESIZE,
-    },
-    physics: {
-      default: 'arcade',
-      arcade: {
-        // debug: IS_DEV_MODE,
-        fps: 60,
-        gravity: { y: 0 },
-      },
-    },
-  });
 }
 
 (async () => {
@@ -65,7 +38,7 @@ function bootGame() {
   await loadFontFace(INTERFACE_FONT.PIXEL, 'retro');
 
   try {
-    bootGame();
+    new Game();
   } catch (e) {
     throwFailure(FailureType.UNCAUGHT_ERROR);
   }

@@ -8,8 +8,3 @@ export type MenuItem = {
   content?: () => Phaser.GameObjects.Container
   onClick?: () => void
 };
-
-export type ControlItem = {
-  name: string
-  description: string
-};

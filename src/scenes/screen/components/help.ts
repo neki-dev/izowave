@@ -1,7 +1,7 @@
 import { INTERFACE_FONT } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, useAdaptationAfter, switchSize,
-} from '~lib/ui';
+} from '~lib/interface';
 
 type Props = {
   message: string

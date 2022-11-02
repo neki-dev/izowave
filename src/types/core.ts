@@ -1,13 +1,5 @@
-export enum FailureType {
-  BAD_DEVICE = 'BAD_DEVICE',
-  BAD_SCREEN_SIZE = 'BAD_SCREEN_SIZE',
-  UNCAUGHT_ERROR = 'UNCAUGHT_ERROR',
+export enum SceneKey {
+  WORLD = 'WORLD',
+  SCREEN = 'SCREEN',
+  MENU = 'MENU',
 }
-
-export enum Difficulty {
-  EASY = 'EASY',
-  NORMAL = 'NORMAL',
-  HARD = 'HARD',
-}
-
-export type DifficultyPowers = Record<Difficulty, number>;

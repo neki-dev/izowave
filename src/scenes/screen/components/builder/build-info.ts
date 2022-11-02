@@ -1,7 +1,7 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
 import { ComponentCost } from '~scene/screen/components/building-info/cost';
 import { ComponentParams } from '~scene/screen/components/building-info/params';
 import { BuildingParamItem } from '~type/world/entities/building';

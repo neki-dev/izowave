@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize,
-} from '~lib/ui';
+} from '~lib/interface';
 import { MenuAudio, MenuItem } from '~type/menu';
 
 type Props = {

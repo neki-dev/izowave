@@ -1,12 +1,14 @@
 import Phaser from 'phaser';
 
-import { AUDIO_VOLUME, DIFFICULTY_KEY, DIFFICULTY_POWERS } from '~const/core';
-import { ENEMIES } from '~const/enemies';
-import { ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS } from '~const/enemy';
-import { INPUT_KEY } from '~const/keyboard';
-import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/level';
-import { NPC_PATH_RATE } from '~const/npc';
-import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { CONTROL_KEY } from '~const/controls';
+import { AUDIO_VOLUME } from '~const/core';
+import { WORLD_DEPTH_EFFECT, WORLD_FIND_PATH_RATE } from '~const/world';
+import { DIFFICULTY_POWERS } from '~const/world/difficulty';
+import { ENEMIES } from '~const/world/entities/enemies';
+import {
+  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
+} from '~const/world/entities/enemy';
+import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { Chest } from '~entity/chest';
 import { NPC } from '~entity/npc';
@@ -16,20 +18,17 @@ import { Player } from '~entity/player';
 import { ShotBall } from '~entity/shot/ball';
 import { trackProgressionEvent } from '~lib/analytics';
 import { getAssetsPack } from '~lib/assets';
-import { setCheatsScheme } from '~lib/cheats';
-import { shaders } from '~lib/shaders';
 import { removeLoading, setLoadingStatus } from '~lib/state';
 import { entries } from '~lib/system';
 import { selectClosest } from '~lib/utils';
 import { Screen } from '~scene/screen';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
-import { Tutorial } from '~scene/world/tutorial';
 import { Wave } from '~scene/world/wave';
-import { Difficulty } from '~type/core';
-import { SceneKey } from '~type/scene';
+import { SceneKey } from '~type/core';
 import { TutorialStep } from '~type/tutorial';
 import { WorldEvents } from '~type/world';
+import { Difficulty } from '~type/world/difficulty';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
@@ -39,50 +38,13 @@ import { WaveEvents } from '~type/world/wave';
 
 export class World extends Phaser.Scene {
   /**
-   * Group of all NPC.
+   * Groups of entities.
    */
-  private _npc: Phaser.GameObjects.Group;
+  private _entityGroups: Record<string, Phaser.GameObjects.Group>;
 
-  public get npc() { return this._npc; }
+  public get entityGroups() { return this._entityGroups; }
 
-  private set npc(v) { this._npc = v; }
-
-  /**
-   * Group of all enemies.
-   */
-  private _enemies: Phaser.GameObjects.Group;
-
-  public get enemies() { return this._enemies; }
-
-  private set enemies(v) { this._enemies = v; }
-
-  /**
-   * Group of all buildings.
-   */
-
-  private _buildings: Phaser.GameObjects.Group;
-
-  public get buildings() { return this._buildings; }
-
-  private set buildings(v) { this._buildings = v; }
-
-  /**
-   * Group of all chests.
-   */
-  private _chests: Phaser.GameObjects.Group;
-
-  public get chests() { return this._chests; }
-
-  private set chests(v) { this._chests = v; }
-
-  /**
-   * Group of all shots.
-   */
-  private _shots: Phaser.GameObjects.Group;
-
-  public get shots() { return this._shots; }
-
-  private set shots(v) { this._shots = v; }
+  private set entityGroups(v) { this._entityGroups = v; }
 
   /**
    * Screen scene.
@@ -177,11 +139,6 @@ export class World extends Phaser.Scene {
   private nextFindPathTimestamp: number = 0;
 
   /**
-   * Tutorial.
-   */
-  public tutorial: Tutorial;
-
-  /**
    * World constructor.
    */
   constructor() {
@@ -201,12 +158,11 @@ export class World extends Phaser.Scene {
    * Create world and open menu.
    */
   public create() {
-    if (!localStorage.getItem(DIFFICULTY_KEY)) {
-      localStorage.setItem(DIFFICULTY_KEY, Difficulty.NORMAL);
+    if (!localStorage.getItem('DIFFICULTY')) {
+      localStorage.setItem('DIFFICULTY', Difficulty.NORMAL);
     }
 
     this.registerOptimization();
-    this.registerShaders();
     this.registerParticles();
 
     this.makeLevel();
@@ -214,11 +170,10 @@ export class World extends Phaser.Scene {
 
     this.screen = <Screen> this.scene.get(SceneKey.SCREEN);
     this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
-    this.tutorial = new Tutorial();
 
     this.timer = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
-      paused: (this.tutorial.step !== TutorialStep.DONE),
+      paused: (this.game.tutorial.step !== TutorialStep.DONE),
     });
 
     this.sound.setVolume(AUDIO_VOLUME);
@@ -282,7 +237,7 @@ export class World extends Phaser.Scene {
    * @param variant - Varaint
    */
   public selectBuildings(variant: BuildingVariant): Building[] {
-    const buildings = (<Building[]> this.buildings.getChildren());
+    const buildings = (<Building[]> this.entityGroups.buildings.getChildren());
 
     return buildings.filter((building) => (building.variant === variant));
   }
@@ -291,7 +246,7 @@ export class World extends Phaser.Scene {
    * Spawn enemy in random position.
    */
   public spawnEnemy(variant: EnemyVariant): Enemy {
-    const buildings = this.buildings.getChildren();
+    const buildings = this.entityGroups.buildings.getChildren();
     const allowedPositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building: Building) => (
@@ -336,7 +291,7 @@ export class World extends Phaser.Scene {
       }
     }
 
-    this.buildings.children.iterate((building: Building) => {
+    for (const building of <Building[]> this.entityGroups.buildings.getChildren()) {
       this.level.navigator.setPointCost(
         building.positionAtMatrix.x,
         building.positionAtMatrix.y,
@@ -350,9 +305,7 @@ export class World extends Phaser.Scene {
           }
         }
       }
-
-      return true;
-    });
+    }
   }
 
   /**
@@ -361,16 +314,16 @@ export class World extends Phaser.Scene {
   public startGame() {
     this.scene.stop(SceneKey.MENU);
 
-    this.difficultyType = <Difficulty> localStorage.getItem(DIFFICULTY_KEY);
+    this.difficultyType = <Difficulty> localStorage.getItem('DIFFICULTY');
     this.difficulty = DIFFICULTY_POWERS[this.difficultyType];
-
-    setCheatsScheme(this.getCheats());
 
     this.wave = new Wave(this);
     this.builder = new Builder(this);
 
     this.addPlayer();
     this.addChests();
+
+    this.enableCheats();
 
     this.level.hideTiles();
     this.addEntityColliders();
@@ -383,7 +336,7 @@ export class World extends Phaser.Scene {
     camera.zoomTo(1.0, 100);
 
     this.scene.launch(this.screen);
-    this.input.keyboard.on(INPUT_KEY.PAUSE, () => {
+    this.input.keyboard.on(CONTROL_KEY.PAUSE, () => {
       if (this.player.live.isDead()) {
         window.location.reload();
       } else {
@@ -452,61 +405,45 @@ export class World extends Phaser.Scene {
       return;
     }
 
-    this.npc.children.iterate((npc: NPC) => {
+    for (const npc of <NPC[]> this.entityGroups.npc.getChildren()) {
       try {
         npc.updatePath();
       } catch (e) {
         console.error('Error on update NPC path:', e);
       }
-
-      return true;
-    });
+    }
 
     this.level.navigator.processing();
 
-    this.nextFindPathTimestamp = now + NPC_PATH_RATE;
+    this.nextFindPathTimestamp = now + WORLD_FIND_PATH_RATE;
   }
 
   /**
    * Create entity groups.
    */
   private addEntityGroups() {
-    this.chests = this.add.group({
-      classType: Chest,
-    });
-
-    this.buildings = this.add.group({
-      classType: Building,
-      runChildUpdate: true,
-    });
-
-    this.shots = this.add.group({
-      runChildUpdate: true,
-    });
-
-    this.npc = this.add.group({
-      classType: NPC,
-      runChildUpdate: true,
-    });
-
-    this.enemies = this.add.group({
-      classType: Enemy,
-    });
+    this.entityGroups = {
+      chests: this.add.group(),
+      buildings: this.add.group({ runChildUpdate: true }),
+      shots: this.add.group({ runChildUpdate: true }),
+      npc: this.add.group({ runChildUpdate: true }),
+      enemies: this.add.group(),
+    };
   }
 
   /**
    * Add colliders to entities.
    */
   private addEntityColliders() {
-    this.physics.add.collider(this.shots, this.enemies, (shot: ShotBall, enemy: Enemy) => {
+    this.physics.add.collider(this.entityGroups.shots, this.entityGroups.enemies, (shot: ShotBall, enemy: Enemy) => {
       shot.hit(enemy);
     });
 
-    this.physics.add.collider(this.enemies, this.player, (enemy: Enemy, player: Player) => {
+    this.physics.add.collider(this.entityGroups.enemies, this.player, (enemy: Enemy, player: Player) => {
       enemy.attack(player);
     });
 
-    this.physics.add.collider(this.enemies, this.npc, (enemy: Enemy, npc: NPC) => {
+    this.physics.add.collider(this.entityGroups.enemies, this.entityGroups.npc, (enemy: Enemy, npc: NPC) => {
       if (npc instanceof Assistant) {
         enemy.attack(npc);
       }
@@ -567,7 +504,7 @@ export class World extends Phaser.Scene {
 
     // Creating missing chests
     this.wave.on(WaveEvents.COMPLETE, () => {
-      const newCount = maxCount - this.chests.getTotalUsed();
+      const newCount = maxCount - this.entityGroups.chests.getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
         const chest = create();
@@ -579,10 +516,10 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   * Cheatcodes.
+   * Add cheat codes.
    */
-  private getCheats() {
-    return {
+  private enableCheats() {
+    for (const [cheat, callback] of entries({
       HEALPLS: () => {
         this.player.live.heal();
       },
@@ -593,17 +530,22 @@ export class World extends Phaser.Scene {
         this.player.giveExperience(9999);
       },
       GODHAND: () => {
-        this.enemies.children.iterate((enemy: Enemy) => {
+        for (const enemy of <Enemy[]> this.entityGroups.enemies.getChildren()) {
           enemy.live.kill();
-
-          return true;
-        });
+        }
       },
       FUTURE: () => {
         this.wave.number += Phaser.Math.Between(3, 7);
         this.wave.setTimeleft();
       },
-    };
+    })) {
+      // @ts-ignore
+      window[cheat] = () => {
+        callback();
+
+        return 'Cheat activated';
+      };
+    }
   }
 
   /**
@@ -613,17 +555,6 @@ export class World extends Phaser.Scene {
     for (const effect of Object.values(ParticlesType)) {
       this.particles[effect] = this.add.particles(ParticlesTexture[effect]);
       this.particles[effect].setDepth(WORLD_DEPTH_EFFECT);
-    }
-  }
-
-  /**
-   *
-   */
-  private registerShaders() {
-    const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.game.renderer;
-
-    for (const [name, Shader] of entries(shaders)) {
-      renderer.pipelines.add(name, new Shader(this.game));
     }
   }
 

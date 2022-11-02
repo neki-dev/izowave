@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '~const/difficulty';
+import { DIFFICULTY } from '~const/world/difficulty';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { useAdaptation, registerContainerAdaptive, switchSize } from '~lib/ui';
+import { useAdaptation, registerContainerAdaptive, switchSize } from '~lib/interface';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
 import { ComponentBuilder } from '~scene/screen/components/builder';
@@ -12,7 +12,7 @@ import { ComponentNotices } from '~scene/screen/components/notices';
 import { ComponentResources } from '~scene/screen/components/resources';
 import { ComponentWave } from '~scene/screen/components/wave';
 import { World } from '~scene/world';
-import { SceneKey } from '~type/scene';
+import { SceneKey } from '~type/core';
 import { ScreenAudio, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { WorldEvents } from '~type/world';

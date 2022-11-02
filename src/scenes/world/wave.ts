@@ -2,9 +2,9 @@ import EventEmitter from 'events';
 
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '~const/difficulty';
-import { ENEMY_VARIANTS_META } from '~const/enemy';
-import { INPUT_KEY } from '~const/keyboard';
+import { CONTROL_KEY } from '~const/controls';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { ENEMY_VARIANTS_META } from '~const/world/entities/enemy';
 import { trackProgressionEvent } from '~lib/analytics';
 import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
@@ -69,13 +69,13 @@ export class Wave extends EventEmitter {
     this.setTimeleft();
 
     // Add keyboard events
-    scene.input.keyboard.on(INPUT_KEY.WAVE_SKIP_TIMELEFT, this.skipTimeleft, this);
+    scene.input.keyboard.on(CONTROL_KEY.WAVE_SKIP_TIMELEFT, this.skipTimeleft, this);
 
     // Tutorial progress
-    this.scene.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
+    this.scene.game.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
       if (step === TutorialStep.WAVE_TIMELEFT) {
         setTimeout(() => {
-          this.scene.tutorial.complete();
+          this.scene.game.tutorial.complete();
         }, 5000);
       }
     });
@@ -101,7 +101,7 @@ export class Wave extends EventEmitter {
         if (this.nextSpawnTimestamp <= now) {
           this.spawnEnemy();
         }
-      } else if (this.scene.enemies.getTotalUsed() === 0) {
+      } else if (this.scene.entityGroups.enemies.getTotalUsed() === 0) {
         this.complete();
       }
     } else if (this.nextWaveTimestamp <= now) {
@@ -115,7 +115,7 @@ export class Wave extends EventEmitter {
   public setTimeleft() {
     let pause: number;
 
-    if (this.scene.tutorial.step === TutorialStep.DONE) {
+    if (this.scene.game.tutorial.step === TutorialStep.DONE) {
       pause = (DIFFICULTY.WAVE_PAUSE + this.number * 1000) / this.scene.difficulty;
     } else {
       pause = 5000;
@@ -135,7 +135,7 @@ export class Wave extends EventEmitter {
    * Skip timeleft.
    */
   public skipTimeleft() {
-    if (this.isGoing || this.scene.tutorial.step !== TutorialStep.DONE) {
+    if (this.isGoing || this.scene.game.tutorial.step !== TutorialStep.DONE) {
       return;
     }
 

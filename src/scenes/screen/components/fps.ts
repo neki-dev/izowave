@@ -1,5 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import { Component } from '~lib/ui';
+import { Component } from '~lib/interface';
 
 export const ComponentFPS = Component(function (container) {
   const ref: {
@@ -30,7 +30,7 @@ export const ComponentFPS = Component(function (container) {
 
   return {
     update: () => {
-      const currentValue = Math.round(this.sys.game.loop.actualFps);
+      const currentValue = Math.round(this.game.loop.actualFps);
 
       if (state.value !== currentValue) {
         ref.value.setText(`${currentValue} FPS`);

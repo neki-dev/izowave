@@ -1,7 +1,7 @@
 import { INTERFACE_FONT } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize, useAdaptationAfter,
-} from '~lib/ui';
+} from '~lib/interface';
 import { ScreenTexture } from '~type/screen';
 import { BuildingParamItem } from '~type/world/entities/building';
 

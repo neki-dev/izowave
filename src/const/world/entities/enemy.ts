@@ -3,7 +3,9 @@ import {
 } from '~type/world/entities/npc/enemy';
 
 export const ENEMY_SPAWN_POSITIONS = 10;
+
 export const ENEMY_SPAWN_DISTANCE_FROM_PLAYER = 16;
+
 export const ENEMY_SPAWN_DISTANCE_FROM_BUILDING = 8;
 
 export const ENEMY_PATH_BREAKPOINT = 32;

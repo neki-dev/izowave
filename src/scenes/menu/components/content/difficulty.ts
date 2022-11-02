@@ -1,10 +1,9 @@
-import { DIFFICULTY_KEY } from '~const/core';
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { keys } from '~lib/system';
 import {
   useAdaptation, Component, scaleText, switchSize,
-} from '~lib/ui';
-import { Difficulty } from '~type/core';
+} from '~lib/interface';
+import { keys } from '~lib/system';
+import { Difficulty } from '~type/world/difficulty';
 
 type Props = {
   disabled: boolean
@@ -20,7 +19,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
   const state: {
     type: string
   } = {
-    type: localStorage.getItem(DIFFICULTY_KEY),
+    type: localStorage.getItem('DIFFICULTY'),
   };
 
   /**
@@ -79,7 +78,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
         ref[type].type.setColor(INTERFACE_TEXT_COLOR.ACTIVE);
 
         state.type = type;
-        localStorage.setItem(DIFFICULTY_KEY, type);
+        localStorage.setItem('DIFFICULTY', type);
       });
     }
   });

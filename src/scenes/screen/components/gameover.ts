@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/ui';
+import { useAdaptation, Component, scaleText } from '~lib/interface';
 import { PlayerStat } from '~type/world/entities/player';
 
 type Props = {

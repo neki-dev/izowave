@@ -2,7 +2,7 @@ import { COPYRIGHT } from '~const/core';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
 import { MenuItem } from '~type/menu';
 
 import { ComponentItems } from './items';

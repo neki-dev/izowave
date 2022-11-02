@@ -1,10 +1,10 @@
 import { INTERFACE_FONT } from '~const/interface';
 import {
   useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 import { World } from '~scene/world';
-import { SceneKey } from '~type/scene';
+import { SceneKey } from '~type/core';
 import { ScreenTexture } from '~type/screen';
 import { PlayerEvents } from '~type/world/entities/player';
 

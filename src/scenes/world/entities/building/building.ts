@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/building';
-import { DIFFICULTY } from '~const/difficulty';
-import { INPUT_KEY } from '~const/keyboard';
-import { TILE_META } from '~const/level';
+import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_UI } from '~const/world';
+import { DIFFICULTY } from '~const/world/difficulty';
+import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
+import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
@@ -74,6 +74,16 @@ export class Building extends Phaser.GameObjects.Image {
   private alert: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
+   * Action area.
+   */
+  private actionsArea: Phaser.GameObjects.Ellipse;
+
+  /**
+   * Focus area.
+   */
+  private focusArea: Phaser.GameObjects.Ellipse;
+
+  /**
    * Focus state.
    */
   private _isFocused: boolean = false;
@@ -85,21 +95,7 @@ export class Building extends Phaser.GameObjects.Image {
   /**
    * Select state.
    */
-  private _isSelected: boolean = false;
-
-  public get isSelected() { return this._isSelected; }
-
-  private set isSelected(v) { this._isSelected = v; }
-
-  /**
-   * Action area.
-   */
-  private actionsArea: Phaser.GameObjects.Ellipse;
-
-  /**
-   * Focus area.
-   */
-  private focusArea: Phaser.GameObjects.Ellipse;
+  private isSelected: boolean = false;
 
   /**
    * Building constructor.
@@ -112,7 +108,7 @@ export class Building extends Phaser.GameObjects.Image {
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.add.existing(this);
-    scene.buildings.add(this);
+    scene.entityGroups.buildings.add(this);
 
     this.live = new Live(health);
     this.actions = actions;
@@ -133,12 +129,12 @@ export class Building extends Phaser.GameObjects.Image {
 
     // Add keyboard events
 
-    scene.input.keyboard.on(INPUT_KEY.BUILDING_DESTROY, () => {
+    scene.input.keyboard.on(CONTROL_KEY.BUILDING_DESTROY, () => {
       if (this.isFocused) {
         this.remove();
       }
     });
-    scene.input.keyboard.on(INPUT_KEY.BUILDING_UPGRADE, () => {
+    scene.input.keyboard.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
       if (this.isFocused) {
         this.nextUpgrade();
       }

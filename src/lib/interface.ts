@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import {
   ComponentCreator, ComponentControl, ComponentInstance, ResizeCallback,
-} from '~type/ui';
+} from '~type/interface';
 
 export function useAdaptation(
   object: Phaser.GameObjects.GameObject,

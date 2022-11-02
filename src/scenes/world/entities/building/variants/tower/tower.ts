@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '~const/difficulty';
+import { CONTROL_KEY } from '~const/controls';
 import { INTERFACE_TEXT_COLOR } from '~const/interface';
-import { INPUT_KEY } from '~const/keyboard';
+import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';
 import { Enemy } from '~entity/npc/variants/enemy';
@@ -48,7 +48,7 @@ export class BuildingTower extends Building {
     this.shotParams = shotData.params;
 
     // Add keyboard events
-    scene.input.keyboard.on(INPUT_KEY.BUILDING_RELOAD, () => {
+    scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
         this.reload();
       }
@@ -232,7 +232,7 @@ export class BuildingTower extends Building {
    * Find nearby enemy for shoot.
    */
   private getTarget(): Enemy {
-    const enemies = (<Enemy[]> this.scene.enemies.getChildren()).filter((enemy) => (
+    const enemies = (<Enemy[]> this.scene.entityGroups.enemies.getChildren()).filter((enemy) => (
       !enemy.live.isDead()
       && this.actionsAreaContains(enemy)
     ));

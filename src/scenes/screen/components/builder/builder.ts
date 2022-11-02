@@ -1,17 +1,17 @@
 import Phaser from 'phaser';
 
-import { BUILDINGS } from '~const/buildings';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
-import { TILE_META } from '~const/level';
-import { entries } from '~lib/system';
+import { BUILDINGS } from '~const/world/entities/buildings';
+import { TILE_META } from '~const/world/level';
 import {
   useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/ui';
+} from '~lib/interface';
+import { entries } from '~lib/system';
 import { debounce } from '~lib/utils';
 import { ComponentBuildInfo } from '~scene/screen/components/builder/build-info';
 import { ComponentHelp } from '~scene/screen/components/help';
 import { World } from '~scene/world';
-import { SceneKey } from '~type/scene';
+import { SceneKey } from '~type/core';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { BuildingMeta, BuildingVariant } from '~type/world/entities/building';
 import { WaveEvents } from '~type/world/wave';
@@ -261,8 +261,8 @@ export const ComponentBuilder = Component(function (container) {
 
   world.wave.on(WaveEvents.START, unfocus);
 
-  world.tutorial.on(TutorialEvent.PROGRESS, checkTutorailHelps);
-  checkTutorailHelps(world.tutorial.step);
+  this.game.tutorial.on(TutorialEvent.PROGRESS, checkTutorailHelps);
+  checkTutorailHelps(this.game.tutorial.step);
 
   return {
     update: () => {
