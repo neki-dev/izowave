@@ -91,7 +91,7 @@ export class Builder extends EventEmitter {
     }
 
     if (!this.isBuildingAllowedByWave(variant)) {
-      this.scene.screen.message(NoticeType.ERROR, `${data.Name} BE AVAILABLE ON ${data.WaveAllowed} WAVE`);
+      this.scene.screen.message(NoticeType.ERROR, `${data.Name} BE AVAILABLE ON ${data.AllowByWave} WAVE`);
 
       return;
     }
@@ -375,7 +375,7 @@ export class Builder extends EventEmitter {
    * @param variant - Building variant
    */
   public isBuildingAllowedByWave(variant: BuildingVariant): boolean {
-    const waveAllowed = BUILDINGS[variant].WaveAllowed;
+    const waveAllowed = BUILDINGS[variant].AllowByWave;
 
     if (waveAllowed) {
       return (waveAllowed <= this.scene.wave.getCurrentNumber());

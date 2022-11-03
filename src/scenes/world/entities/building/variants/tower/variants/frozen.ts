@@ -1,3 +1,4 @@
+import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -11,19 +12,20 @@ export class BuildingTowerFrozen extends BuildingTower {
   static Description = 'Freezing enemies for some time';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 900, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: 190, icon: ScreenIcon.RADIUS },
-    { label: 'FREEZE', value: '1.0 s', icon: ScreenIcon.DAMAGE },
-    { label: 'SPEED', value: 55, icon: ScreenIcon.SPEED },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS, icon: ScreenIcon.RADIUS },
+    // eslint-disable-next-line max-len
+    { label: 'FREEZE', value: `${(DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION / 1000).toFixed(1)} s`, icon: ScreenIcon.DAMAGE },
+    { label: 'SPEED', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED, icon: ScreenIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FROZEN;
 
-  static Cost = 35;
+  static Cost = DIFFICULTY.BUILDING_TOWER_FROZEN_COST;
 
-  static Health = 900;
+  static Health = DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH;
 
-  static WaveAllowed = 3;
+  static AllowByWave = DIFFICULTY.BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE;
 
   /**
    * Building variant constructor.
@@ -35,29 +37,16 @@ export class BuildingTowerFrozen extends BuildingTower {
       health: BuildingTowerFrozen.Health,
       texture: BuildingTowerFrozen.Texture,
       actions: {
-        radius: 190, // Attack radius
-        pause: 1400, // Pause between shoots
+        radius: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS,
+        pause: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_PAUSE,
       },
       shotData: {
         instance: ShotBallFrozen,
         params: {
-          freeze: 1000,
-          speed: 550,
+          freeze: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION,
+          speed: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED,
         },
       },
     });
-  }
-
-  /**
-   * Add freeze to building info.
-   */
-  public getInfo(): BuildingParamItem[] {
-    return [
-      ...super.getInfo(), {
-        label: 'FREEZE',
-        icon: ScreenIcon.DAMAGE,
-        value: (this.getShotParams().freeze / 1000).toFixed(1),
-      },
-    ];
   }
 }

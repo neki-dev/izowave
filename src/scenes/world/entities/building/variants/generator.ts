@@ -17,22 +17,22 @@ export class BuildingGenerator extends Building {
   static Description = 'Resource generation for builds and upgrades';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 400, icon: ScreenIcon.HEALTH },
-    { label: 'RESOURCES', value: DIFFICULTY.GENERATOR_RESOURCES, icon: ScreenIcon.RESOURCES },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: ScreenIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
 
-  static Cost = 30;
+  static Cost = DIFFICULTY.BUILDING_GENERATOR_COST;
 
-  static Health = 400;
+  static Health = DIFFICULTY.BUILDING_GENERATOR_HEALTH;
 
-  static Limit = DIFFICULTY.GENERATOR_LIMIT;
+  static Limit = DIFFICULTY.BUILDING_GENERATOR_LIMIT;
 
   /**
    * Resources amount left.
    */
-  private amountLeft: number = DIFFICULTY.GENERATOR_RESOURCES;
+  private amountLeft: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
 
   /**
    * Building variant constructor.
@@ -44,7 +44,7 @@ export class BuildingGenerator extends Building {
       health: BuildingGenerator.Health,
       texture: BuildingGenerator.Texture,
       actions: {
-        pause: 1500, // Pause between generations
+        pause: DIFFICULTY.BUILDING_GENERATOR_GENERATE_PAUSE,
       },
     });
 
@@ -116,10 +116,10 @@ export class BuildingGenerator extends Building {
   }
 
   /**
-   * Update amount left.
+   * Update amount left by upgrade level.
    */
   private upgradeAmount() {
-    this.amountLeft += DIFFICULTY.GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
+    this.amountLeft += DIFFICULTY.BUILDING_GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
 
     this.removeAlert();
   }

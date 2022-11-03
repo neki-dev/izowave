@@ -77,7 +77,7 @@ export interface BuildingMeta {
   Cost: number
   Health: number
   Limit?: number
-  WaveAllowed?: number
+  AllowByWave?: number
 }
 
 export type BuildingTowerShotParams = {

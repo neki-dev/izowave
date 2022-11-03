@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { BuildingTower } from '~entity/building/variants/tower';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets } from '~lib/assets';
@@ -84,8 +85,8 @@ export class ShotLazer extends Phaser.GameObjects.Line {
     this.maxDistance = maxDistance;
 
     this.timer = this.scene.time.addEvent({
-      delay: 80,
-      repeat: 5,
+      delay: SHOT_LAZER_DELAY,
+      repeat: SHOT_LAZER_REPEAT,
       callback: () => this.processing(),
     });
 
@@ -115,7 +116,9 @@ export class ShotLazer extends Phaser.GameObjects.Line {
    * Handle hit to target.
    */
   private hit() {
-    this.target.live.damage(this.damage);
+    const momentDamage = this.damage / SHOT_LAZER_REPEAT;
+
+    this.target.live.damage(momentDamage);
 
     if (!this.target.visible) {
       return;

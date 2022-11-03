@@ -361,7 +361,7 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.upgradeLevel++;
 
-    this.emit(BuildingEvents.UPGRADE, this.upgradeLevel);
+    this.emit(BuildingEvents.UPGRADE);
 
     this.updateActionArea();
     this.setFrame(this.upgradeLevel - 1);
@@ -378,7 +378,7 @@ export class Building extends Phaser.GameObjects.Image {
    *
    */
   private getWaveAllowUpgrade(): number {
-    return (this.getMeta().WaveAllowed || 1) + this.upgradeLevel;
+    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
   /**

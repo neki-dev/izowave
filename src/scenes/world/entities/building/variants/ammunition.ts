@@ -14,24 +14,24 @@ export class BuildingAmmunition extends Building {
   static Description = 'Reloading towers ammo, that are in radius of this building';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 300, icon: ScreenIcon.HEALTH },
-    { label: 'AMMO', value: DIFFICULTY.AMMUNITION_AMMO, icon: ScreenIcon.AMMO },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: ScreenIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
 
-  static Cost = 30;
+  static Cost = DIFFICULTY.BUILDING_AMMUNITION_COST;
 
-  static Health = 300;
+  static Health = DIFFICULTY.BUILDING_AMMUNITION_HEALTH;
 
-  static Limit = DIFFICULTY.AMMUNITION_LIMIT;
+  static Limit = DIFFICULTY.BUILDING_AMMUNITION_LIMIT;
 
-  static WaveAllowed = 2;
+  static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
 
   /**
    * Ammo amount left.
    */
-  private _amountLeft: number = DIFFICULTY.AMMUNITION_AMMO;
+  private _amountLeft: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
 
   public get amountLeft() { return this._amountLeft; }
 
@@ -47,7 +47,7 @@ export class BuildingAmmunition extends Building {
       health: BuildingAmmunition.Health,
       texture: BuildingAmmunition.Texture,
       actions: {
-        radius: 160, // Reload towers radius
+        radius: DIFFICULTY.BUILDING_AMMUNITION_RELOAD_RADIUS,
       },
     });
 
@@ -88,9 +88,9 @@ export class BuildingAmmunition extends Building {
   }
 
   /**
-   * Update amount left.
+   * Update amount left by upgrade level.
    */
   private upgradeAmount() {
-    this.amountLeft += DIFFICULTY.AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
+    this.amountLeft += DIFFICULTY.BUILDING_AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
   }
 }

@@ -286,7 +286,9 @@ export class Player extends Sprite {
    */
   private onWaveComplete(number: number) {
     // Respawn assistant
-    if (!this.assistant) {
+    if (this.assistant) {
+      this.assistant.live.heal();
+    } else {
       this.addAssistant();
     }
 

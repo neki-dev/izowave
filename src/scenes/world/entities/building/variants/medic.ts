@@ -14,19 +14,19 @@ export class BuildingMedic extends Building {
   static Description = 'Heals player, that are in radius of this building';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 160, icon: ScreenIcon.HEALTH },
-    { label: 'HEAL', value: DIFFICULTY.MEDIC_HEAL_AMOUNT, icon: ScreenIcon.HEAL },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: ScreenIcon.HEAL },
   ];
 
   static Texture = BuildingTexture.MEDIC;
 
-  static Cost = 80;
+  static Cost = DIFFICULTY.BUILDING_MEDIC_COST;
 
-  static Health = 200;
+  static Health = DIFFICULTY.BUILDING_MEDIC_HEALTH;
 
-  static Limit = DIFFICULTY.MEDIC_LIMIT;
+  static Limit = DIFFICULTY.BUILDING_MEDIC_LIMIT;
 
-  static WaveAllowed = 4;
+  static AllowByWave = DIFFICULTY.BUILDING_MEDIC_ALLOW_BY_WAVE;
 
   /**
    * Building variant constructor.
@@ -38,8 +38,8 @@ export class BuildingMedic extends Building {
       health: BuildingMedic.Health,
       texture: BuildingMedic.Texture,
       actions: {
-        radius: 160, // Heal radius
-        pause: 3000, // Pause between heals
+        radius: DIFFICULTY.BUILDING_MEDIC_HEAL_RADIUS,
+        pause: DIFFICULTY.BUILDING_MEDIC_HEAL_PAUSE,
       },
     });
   }
@@ -83,7 +83,7 @@ export class BuildingMedic extends Building {
    * Get heal amount.
    */
   private getHealAmount(): number {
-    return DIFFICULTY.MEDIC_HEAL_AMOUNT * this.upgradeLevel;
+    return DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT * this.upgradeLevel;
   }
 
   /**

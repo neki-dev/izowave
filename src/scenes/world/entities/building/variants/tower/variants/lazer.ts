@@ -1,3 +1,4 @@
+import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotLazer } from '~entity/shot/lazer';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -11,18 +12,18 @@ export class BuildingTowerLazer extends BuildingTower {
   static Description = 'Instant and continuous laser attack of enemies';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 300, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: 170, icon: ScreenIcon.RADIUS },
-    { label: 'DAMAGE', value: 75, icon: ScreenIcon.DAMAGE },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_RADIUS, icon: ScreenIcon.RADIUS },
+    { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE, icon: ScreenIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
 
-  static Cost = 60;
+  static Cost = DIFFICULTY.BUILDING_TOWER_LAZER_COST;
 
-  static Health = 300;
+  static Health = DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH;
 
-  static WaveAllowed = 5;
+  static AllowByWave = DIFFICULTY.BUILDING_TOWER_LAZER_ALLOW_BY_WAVE;
 
   /**
    * Building variant constructor.
@@ -34,28 +35,15 @@ export class BuildingTowerLazer extends BuildingTower {
       health: BuildingTowerLazer.Health,
       texture: BuildingTowerLazer.Texture,
       actions: {
-        radius: 170, // Attack radius
-        pause: 1600, // Pause between shoots
+        radius: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_RADIUS,
+        pause: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_PAUSE,
       },
       shotData: {
         instance: ShotLazer,
         params: {
-          damage: 15,
+          damage: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE,
         },
       },
     });
-  }
-
-  /**
-   * Add damage to building info.
-   */
-  public getInfo(): BuildingParamItem[] {
-    return [
-      ...super.getInfo(), {
-        label: 'DAMAGE',
-        icon: ScreenIcon.DAMAGE,
-        value: this.getShotParams().damage * 5,
-      },
-    ];
   }
 }

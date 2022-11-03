@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { DIFFICULTY } from '~const/world/difficulty';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import {
@@ -14,14 +15,14 @@ export class BuildingWall extends Building {
   static Description = 'Wall with more health to defend other buildings';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 2000, icon: ScreenIcon.HEALTH },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: ScreenIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;
 
-  static Cost = 15;
+  static Cost = DIFFICULTY.BUILDING_WALL_COST;
 
-  static Health = 2000;
+  static Health = DIFFICULTY.BUILDING_WALL_HEALTH;
 
   /**
    * Building variant constructor.
@@ -38,11 +39,11 @@ export class BuildingWall extends Building {
   }
 
   /**
-   * Update health by upgrade level.
-   *
-   * @param level - Upgrade level
+   * Update max health by upgrade level.
    */
-  private upgradeHealth(level: number) {
-    this.live.setMaxHealth(BuildingWall.Health * level);
+  private upgradeHealth() {
+    const health = DIFFICULTY.BUILDING_WALL_HEALTH + (DIFFICULTY.BUILDING_WALL_HEALTH_UPGRADE * (this.upgradeLevel - 1));
+
+    this.live.setMaxHealth(health);
   }
 }

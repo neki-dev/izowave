@@ -1,3 +1,4 @@
+import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
@@ -11,17 +12,17 @@ export class BuildingTowerFire extends BuildingTower {
   static Description = 'Basic fire attack of enemies';
 
   static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: 600, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: 200, icon: ScreenIcon.RADIUS },
-    { label: 'DAMAGE', value: 35, icon: ScreenIcon.DAMAGE },
-    { label: 'SPEED', value: 55, icon: ScreenIcon.SPEED },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS, icon: ScreenIcon.RADIUS },
+    { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE, icon: ScreenIcon.DAMAGE },
+    { label: 'SPEED', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED, icon: ScreenIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FIRE;
 
-  static Cost = 30;
+  static Cost = DIFFICULTY.BUILDING_TOWER_FIRE_COST;
 
-  static Health = 600;
+  static Health = DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH;
 
   /**
    * Building variant constructor.
@@ -33,29 +34,16 @@ export class BuildingTowerFire extends BuildingTower {
       health: BuildingTowerFire.Health,
       texture: BuildingTowerFire.Texture,
       actions: {
-        radius: 200, // Attack radius
-        pause: 1400, // Pause between shoots
+        radius: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS,
+        pause: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_PAUSE,
       },
       shotData: {
         instance: ShotBallFire,
         params: {
-          damage: 35,
-          speed: 550,
+          damage: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE,
+          speed: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED,
         },
       },
     });
-  }
-
-  /**
-   * Add damage to building info.
-   */
-  public getInfo(): BuildingParamItem[] {
-    return [
-      ...super.getInfo(), {
-        label: 'DAMAGE',
-        icon: ScreenIcon.DAMAGE,
-        value: this.getShotParams().damage,
-      },
-    ];
   }
 }

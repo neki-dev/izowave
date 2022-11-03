@@ -32,7 +32,7 @@ export class BuildingTower extends Building {
   /**
    * Ammo left in clip.
    */
-  private ammoLeft: number = DIFFICULTY.TOWER_AMMO_AMOUNT;
+  private ammoLeft: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
 
   /**
    * Building variant constructor.
@@ -68,11 +68,27 @@ export class BuildingTower extends Building {
     const info = super.getInfo();
     const params = this.getShotParams();
 
+    if (params.damage) {
+      info.push({
+        label: 'DAMAGE',
+        icon: ScreenIcon.DAMAGE,
+        value: params.damage,
+      });
+    }
+
+    if (params.freeze) {
+      info.push({
+        label: 'FREEZE',
+        icon: ScreenIcon.DAMAGE,
+        value: (params.freeze / 1000).toFixed(1),
+      });
+    }
+
     if (params.speed) {
       info.push({
         label: 'SPEED',
         icon: ScreenIcon.SPEED,
-        value: Math.round(params.speed / 10),
+        value: params.speed,
       });
     }
 
@@ -144,7 +160,7 @@ export class BuildingTower extends Building {
     if (this.shotParams.speed) {
       params.speed = calcGrowth(
         this.shotParams.speed,
-        DIFFICULTY.TOWER_SHOT_SPEED_GROWTH,
+        DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
         level || this.upgradeLevel,
       );
     }
@@ -152,7 +168,7 @@ export class BuildingTower extends Building {
     if (this.shotParams.damage) {
       params.damage = calcGrowth(
         this.shotParams.damage,
-        DIFFICULTY.TOWER_SHOT_DAMAGE_GROWTH,
+        DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         level || this.upgradeLevel,
       );
     }
@@ -160,7 +176,7 @@ export class BuildingTower extends Building {
     if (this.shotParams.freeze) {
       params.freeze = calcGrowth(
         this.shotParams.freeze,
-        DIFFICULTY.TOWER_SHOT_FREEZE_GROWTH,
+        DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
         level || this.upgradeLevel,
       );
     }
@@ -218,11 +234,11 @@ export class BuildingTower extends Building {
    * Get maximum ammo in clip.
    */
   private getMaxAmmo(): number {
-    return DIFFICULTY.TOWER_AMMO_AMOUNT * this.upgradeLevel;
+    return DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT * this.upgradeLevel;
   }
 
   /**
-   * Update ammo left.
+   * Update ammo left by upgrade level.
    */
   private upgradeAmmo() {
     this.ammoLeft = this.getMaxAmmo();
