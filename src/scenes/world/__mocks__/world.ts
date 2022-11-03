@@ -6,9 +6,11 @@ const world = {
   difficulty: 1,
   getTimerNow: jest.fn(),
   spawnEnemy: jest.fn(),
-  tutorial: {
-    step: TutorialStep.DONE,
-    on: jest.fn(),
+  game: {
+    tutorial: {
+      step: TutorialStep.DONE,
+      on: jest.fn(),
+    },
   },
   entityGroups: {
     enemies: {
