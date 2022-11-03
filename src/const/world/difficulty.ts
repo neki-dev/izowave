@@ -9,7 +9,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.015, // Player speed growth by level
   PLAYER_HEALTH: 100, // Default player health
   PLAYER_HEALTH_GROWTH: 0.1, // Player health growth by level
-  PLAYER_START_RESOURCES: 70, // Player start resources
+  PLAYER_START_RESOURCES: 80, // Player start resources
   PLAYER_EXPERIENCE_TO_NEXT_LEVEL: 200, // Need experience count to next level
   PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH: 0.3, // Experience count growth by level
 
@@ -47,6 +47,7 @@ export const DIFFICULTY = {
    * Chests
    */
 
+  CHEST_SPAWN_FACTOR: 0.15, // Chest spawn factor
   CHEST_EXPERIENCE: 8, // Gained experience per open chest
   CHEST_EXPERIENCE_GROWTH: 0.3, // Experience growth by wave number
   CHEST_RESOURCES: 4, // Default resources count in chest
@@ -56,7 +57,7 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH_GROWTH: 0.18, // Enemy health growth by wave number
+  ENEMY_HEALTH_GROWTH: 0.17, // Enemy health growth by wave number
   ENEMY_SPEED_GROWTH: 0.058, // Enemy speed growth by wave number
   ENEMY_DAMAGE_GROWTH: 0.06, // Enemy damage growth by wave number
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
@@ -130,7 +131,7 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_COST: 30, // Generator cost
   BUILDING_GENERATOR_HEALTH: 400, // Generator health
   BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * (wave / 5))
-  BUILDING_GENERATOR_GENERATE_PAUSE: 1500, // Generator pause between resource generations
+  BUILDING_GENERATOR_GENERATE_PAUSE: 1700, // Generator pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Maximum amount of resources that generator can
   BUILDING_GENERATOR_RESOURCES_UPGRADE: 100, // Amount of resources added per upgrade (N * level)
 

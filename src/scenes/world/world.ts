@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { AUDIO_VOLUME } from '~const/core';
 import { WORLD_DEPTH_EFFECT, WORLD_FIND_PATH_RATE } from '~const/world';
-import { DIFFICULTY_POWERS } from '~const/world/difficulty';
+import { DIFFICULTY, DIFFICULTY_POWERS } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
@@ -496,7 +496,7 @@ export class World extends Phaser.Scene {
     });
 
     // Creating default chests
-    const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE / 10) / this.difficulty);
+    const maxCount = Math.ceil(Math.floor(LEVEL_MAP_SIZE * DIFFICULTY.CHEST_SPAWN_FACTOR) / this.difficulty);
 
     for (let i = 0; i < maxCount; i++) {
       create();
