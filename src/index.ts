@@ -37,9 +37,9 @@ declare global {
 
   await loadFontFace(INTERFACE_FONT.PIXEL, 'retro');
 
-  try {
-    new Game();
-  } catch (e) {
-    throwFailure(FailureType.UNCAUGHT_ERROR);
-  }
+  // try {
+  new Game();
+  // } catch (e) {
+  //   throwFailure(FailureType.UNCAUGHT_ERROR);
+  // }
 })();
