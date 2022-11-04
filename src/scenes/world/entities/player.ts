@@ -379,8 +379,10 @@ export class Player extends Sprite {
    * Stop movement animation and audio.
    */
   private stopMovement() {
-    this.anims.setProgress(0);
-    this.anims.stop();
+    if (this.anims.currentAnim) {
+      this.anims.setProgress(0);
+      this.anims.stop();
+    }
 
     this.scene.sound.stopByKey(PlayerAudio.MOVE);
   }

@@ -20,7 +20,11 @@ export const ComponentActions = Component<Props>(function (container, {
 
   const state: {
     actions: string
-  } = { actions: '' };
+    hover: boolean
+  } = {
+    actions: '',
+    hover: false,
+  };
 
   /**
    * Adaptation
@@ -101,15 +105,20 @@ export const ComponentActions = Component<Props>(function (container, {
       event.stopPropagation();
     });
     ref[label].body.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.input.setDefaultCursor('pointer');
       ref[label].body.setFillStyle(0x000000, 1.0);
+      this.input.setDefaultCursor('pointer');
+      state.hover = true;
     });
     ref[label].body.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.input.setDefaultCursor('default');
       ref[label].body.setFillStyle(0x000000, 0.75);
+      this.input.setDefaultCursor('default');
+      state.hover = false;
     });
     ref[label].body.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.input.setDefaultCursor('default');
+      if (state.hover) {
+        this.input.setDefaultCursor('default');
+        state.hover = false;
+      }
     });
 
     /**
