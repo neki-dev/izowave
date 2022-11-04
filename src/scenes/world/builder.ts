@@ -321,6 +321,7 @@ export class Builder extends EventEmitter {
     }
 
     this.scene.player.takeResources(BuildingInstance.Cost);
+    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
     new BuildingInstance(this.scene, this.getAssumedPosition());
 

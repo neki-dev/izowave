@@ -69,7 +69,8 @@ export const DIFFICULTY = {
 
   BUILDING_ACTION_RADIUS_GROWTH: 0.2, // Actions radius growth by upgrade
   BUILDING_ACTION_PAUSE_GROWTH: -0.1, // Actions pause growth by upgrade
-  BUILDING_UPGRADE_EXPERIENCE: 40, // Gained experience per upgrade building
+  BUILDING_BUILD_EXPERIENCE: 50, // Gained experience for build
+  BUILDING_UPGRADE_EXPERIENCE: 40, // Gained experience per upgrade building (N * upgrade_level)
   BUILDING_BUILD_AREA: 180, // Default radius of build area
   BUILDING_BUILD_AREA_GROWTH: 0.05, // Radius growth by level
 
@@ -79,7 +80,7 @@ export const DIFFICULTY = {
 
   BUILDING_WALL_COST: 15, // Wall cost
   BUILDING_WALL_HEALTH: 2000, // Default wall health
-  BUILDING_WALL_HEALTH_UPGRADE: 2000, // Amount of health added per upgrade (N * level)
+  BUILDING_WALL_HEALTH_UPGRADE: 2000, // Amount of health added per upgrade (N * upgrade_level)
 
   /**
    * Building: Towers
@@ -88,7 +89,7 @@ export const DIFFICULTY = {
   BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.6, // Shot damage growth by upgrade
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.5, // Frozen duration growth by upgrade
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.3, // Shot speed growth by upgrade
-  BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip (N * level)
+  BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip (N * upgrade_level)
 
   /**
    * Building: Tower: Fire
@@ -130,10 +131,10 @@ export const DIFFICULTY = {
 
   BUILDING_GENERATOR_COST: 30, // Generator cost
   BUILDING_GENERATOR_HEALTH: 400, // Generator health
-  BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * (wave / 5))
+  BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * (wave_number / 5))
   BUILDING_GENERATOR_GENERATE_PAUSE: 1700, // Generator pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Maximum amount of resources that generator can
-  BUILDING_GENERATOR_RESOURCES_UPGRADE: 100, // Amount of resources added per upgrade (N * level)
+  BUILDING_GENERATOR_RESOURCES_UPGRADE: 100, // Amount of resources added per upgrade (N * upgrade_level)
 
   /**
    * Building: Ammunition
@@ -141,11 +142,11 @@ export const DIFFICULTY = {
 
   BUILDING_AMMUNITION_COST: 30, // Ammunition cost
   BUILDING_AMMUNITION_HEALTH: 300, // Ammunition health
-  BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * (wave / 5))
+  BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * (wave_number / 5))
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow ammunition
   BUILDING_AMMUNITION_RELOAD_RADIUS: 150, // Ammunition reload ammo radius
   BUILDING_AMMUNITION_AMMO: 170, // Maximum amount of ammo
-  BUILDING_AMMUNITION_AMMO_UPGRADE: 120, // Amount of ammo added per upgrade (N * level)
+  BUILDING_AMMUNITION_AMMO_UPGRADE: 120, // Amount of ammo added per upgrade (N * upgrade_level)
 
   /**
    * Building: Medic
@@ -153,7 +154,7 @@ export const DIFFICULTY = {
 
   BUILDING_MEDIC_COST: 80, // Medic cost
   BUILDING_MEDIC_HEALTH: 150, // Medic health
-  BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * (wave / 5))
+  BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * (wave_number / 5))
   BUILDING_MEDIC_ALLOW_BY_WAVE: 4, // Minimal wave for allow medic
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Medic heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Medic heal pause
