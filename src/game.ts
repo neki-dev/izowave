@@ -1,13 +1,12 @@
 import Phaser from 'phaser';
 
 import { CONTAINER_ID } from '~const/core';
+import { shaders } from '~lib/shaders';
 import { entries } from '~lib/system';
 import { Tutorial } from '~lib/tutorial';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
-
-import { shaders } from './shaders';
 
 export class Game extends Phaser.Game {
   readonly tutorial: Tutorial;
@@ -44,7 +43,7 @@ export class Game extends Phaser.Game {
     const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.renderer;
 
     for (const [name, Shader] of entries(shaders)) {
-      renderer.pipelines.add(name, new Shader(this));
+      renderer.pipelines.addPostPipeline(name, Shader);
     }
   }
 }

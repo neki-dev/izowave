@@ -6,6 +6,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { addShader, removeShader } from '~lib/shaders';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { ComponentCost } from '~scene/screen/components/building-info/cost';
@@ -77,11 +78,6 @@ export class Building extends Phaser.GameObjects.Image {
    * Action area.
    */
   private actionsArea: Phaser.GameObjects.Ellipse;
-
-  /**
-   * Focus area.
-   */
-  private focusArea: Phaser.GameObjects.Ellipse;
 
   /**
    * Focus state.
@@ -432,7 +428,10 @@ export class Building extends Phaser.GameObjects.Image {
     this.isFocused = true;
 
     this.scene.input.setDefaultCursor('pointer');
-    this.addFocusArea();
+    addShader(this, 'OutlineShader', {
+      size: 2.0,
+      color: 0xffffff,
+    });
   }
 
   /**
@@ -446,7 +445,7 @@ export class Building extends Phaser.GameObjects.Image {
     this.isFocused = false;
 
     this.scene.input.setDefaultCursor('default');
-    this.removeFocusArea();
+    removeShader(this, 'OutlineShader');
   }
 
   /**
@@ -500,49 +499,6 @@ export class Building extends Phaser.GameObjects.Image {
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
-  }
-
-  /**
-   * Add focus area effect.
-   */
-  private addFocusArea() {
-    if (this.focusArea) {
-      return;
-    }
-
-    const { persperctive, height, halfHeight } = TILE_META;
-    const d = 64;
-    const out = height * 2;
-
-    this.focusArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight, d, d * persperctive);
-    this.focusArea.setStrokeStyle(1, 0xffffff, 0.5);
-    this.focusArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
-    this.focusArea.updateDisplayOrigin();
-
-    const tween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-      targets: this.focusArea,
-      scale: 1.5,
-      duration: 500,
-      ease: 'Linear',
-      yoyo: true,
-      repeat: -1,
-    });
-
-    this.focusArea.on(Phaser.GameObjects.Events.DESTROY, () => {
-      tween.destroy();
-    });
-  }
-
-  /**
-   * Remove focus area effect.
-   */
-  private removeFocusArea() {
-    if (!this.focusArea) {
-      return;
-    }
-
-    this.focusArea.destroy();
-    this.focusArea = null;
   }
 
   /**

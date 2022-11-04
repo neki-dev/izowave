@@ -6,6 +6,7 @@ import { TILE_META } from '~const/world/level';
 import {
   useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
 } from '~lib/interface';
+import { addShader, removeShader } from '~lib/shaders';
 import { entries } from '~lib/system';
 import { debounce } from '~lib/utils';
 import { ComponentBuildInfo } from '~scene/screen/components/builder/build-info';
@@ -33,7 +34,11 @@ export const ComponentBuilder = Component(function (container) {
 
   const state: {
     variant: BuildingVariant
-  } = { variant: null };
+    mods: Partial<Record<BuildingVariant, 'normal' | 'disallow' | 'disabled'>>
+  } = {
+    variant: null,
+    mods: {},
+  };
 
   /**
    * Creating
@@ -268,17 +273,26 @@ export const ComponentBuilder = Component(function (container) {
     update: () => {
       for (const [variant, { wrapper, body, preview }] of entries(ref.items)) {
         if (world.wave.isGoing) {
-          wrapper.setAlpha(0.25);
-          preview.setAlpha(1.0);
+          if (state.mods[variant] !== 'disabled') {
+            wrapper.setAlpha(0.25);
+
+            state.mods[variant] = 'disabled';
+          }
         } else if (
           !world.builder.isBuildingAllowedByTutorial(variant)
           || !world.builder.isBuildingAllowedByWave(variant)
         ) {
-          wrapper.setAlpha(0.25);
-          preview.setAlpha(0.5);
-        } else {
+          if (state.mods[variant] !== 'disallow') {
+            wrapper.setAlpha(0.5);
+            addShader(preview, 'GrayscaleShader');
+
+            state.mods[variant] = 'disallow';
+          }
+        } else if (state.mods[variant] !== 'normal') {
           wrapper.setAlpha(1.0);
-          preview.setAlpha(1.0);
+          removeShader(preview, 'GrayscaleShader');
+
+          state.mods[variant] = 'normal';
         }
 
         if (world.builder.variant === variant) {
