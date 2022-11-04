@@ -1,22 +1,45 @@
-import Phaser from 'phaser';
-
 import { GrayscaleShader } from './grayscale';
 import { OutlineShader } from './outline';
 
-export const shaders = {
+export const shaders: Record<string, any> = {
   OutlineShader,
   GrayscaleShader,
 };
 
-export function addShader(gameObject: Phaser.GameObjects.Image, shader: string, config?: object) {
-  gameObject.setPostPipeline(shader);
+Phaser.GameObjects.Image.prototype.addShader = function (shader: string, config?: object) {
+  if (!shaders[shader]) {
+    console.warn(`Shader '${shader}' is not found`);
 
-  if (config) {
-    // @ts-ignore
-    gameObject.postPipelines[gameObject.postPipelines.length - 1].setConfig?.(config);
+    return;
   }
-}
 
-export function removeShader(gameObject: Phaser.GameObjects.Image, shader: string) {
-  gameObject.removePostPipeline(shader);
+  this.setPostPipeline(shader);
+  if (config) {
+    this.updateShader(shader, config);
+  }
+};
+
+Phaser.GameObjects.Image.prototype.updateShader = function (shader: string, config: object) {
+  const pipeline = this.getPostPipeline(shader);
+
+  if (pipeline && pipeline.setConfig) {
+    // @ts-ignore
+    pipeline.setConfig(config);
+  }
+};
+
+Phaser.GameObjects.Image.prototype.removeShader = function (shader: string) {
+  this.removePostPipeline(shader);
+};
+
+declare global {
+  namespace Phaser {
+    namespace GameObjects {
+      interface Image {
+        addShader: (shader: string, config?: object) => void
+        updateShader: (shader: string, config: object) => void
+        removeShader: (shader: String) => void
+      }
+    }
+  }
 }

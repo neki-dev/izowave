@@ -1,7 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText } from '~lib/interface';
 import { formatAmount, rawAmount } from '~lib/utils';
 
 type Props = {
@@ -41,11 +39,11 @@ export const ComponentAdditions = Component<Props>(function (container, {
 
     ref.addition.setOrigin(0.0, 0.5);
     ref.addition.setAlpha(0.0);
-    useAdaptation(ref.addition, () => {
+    ref.addition.useAdaptationBefore(() => {
       scaleText(ref.addition, 13);
     });
 
-    refreshAdaptive(container);
+    container.refreshAdaptation();
 
     this.tweens.add({
       targets: ref.addition,

@@ -1,7 +1,5 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { ComponentCost } from '~scene/screen/components/building-info/cost';
 import { ComponentParams } from '~scene/screen/components/building-info/params';
 import { BuildingParamItem } from '~type/world/entities/building';
@@ -34,12 +32,12 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     // eslint-disable-next-line no-param-reassign
     container.width = switchSize(220);
   });
 
-  useAdaptationAfter(container, () => {
+  container.useAdaptationAfter(() => {
     // eslint-disable-next-line no-param-reassign
     container.height = ((ref.costBody)
       ? (ref.costBody.y + ref.costBody.height)
@@ -60,7 +58,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
   );
 
   ref.body.setOrigin(0.0, 0.0);
-  useAdaptation(ref.body, () => {
+  ref.body.useAdaptationBefore(() => {
     ref.body.setSize(container.width, container.height);
   });
 
@@ -80,7 +78,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
     }),
   );
 
-  useAdaptation(ref.name, () => {
+  ref.name.useAdaptationBefore(() => {
     scaleText(ref.name, 18, true);
     ref.name.setPosition(
       switchSize(12),
@@ -99,7 +97,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
     }),
   );
 
-  useAdaptation(ref.description, () => {
+  ref.description.useAdaptationBefore(() => {
     const offsetX = switchSize(12);
 
     scaleText(ref.description, 12);
@@ -112,8 +110,8 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
     );
 
     if (!allowed) {
-      refreshAdaptive(container, false);
-      refreshAdaptive(ref.body);
+      container.refreshAdaptation(false);
+      ref.body.refreshAdaptation();
     }
   });
 
@@ -133,7 +131,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
         }),
       );
 
-      useAdaptation(ref.limit, () => {
+      ref.limit.useAdaptationBefore(() => {
         scaleText(ref.limit, 11);
         ref.limit.setPosition(
           switchSize(12),
@@ -152,7 +150,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
       }),
     );
 
-    useAdaptation(ref.params, () => {
+    ref.params.useAdaptationBefore(() => {
       ref.params.setPosition(
         switchSize(12),
         (ref.limit
@@ -171,7 +169,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
     );
 
     ref.costBody.setOrigin(0.0, 0.0);
-    useAdaptation(ref.costBody, () => {
+    ref.costBody.useAdaptationBefore(() => {
       ref.costBody.setPosition(
         switchSize(12),
         ref.params.y + ref.params.height + switchSize(12),
@@ -181,8 +179,8 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
         switchSize(27),
       );
 
-      refreshAdaptive(container, false);
-      refreshAdaptive(ref.body);
+      container.refreshAdaptation(false);
+      ref.body.refreshAdaptation();
     });
 
     /**
@@ -197,7 +195,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
     );
 
     ref.costLabel.setOrigin(0.0, 0.5);
-    useAdaptation(ref.costLabel, () => {
+    ref.costLabel.useAdaptationBefore(() => {
       scaleText(ref.costLabel, 10);
       ref.costLabel.setPosition(
         ref.costBody.x + switchSize(9),
@@ -215,7 +213,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
       }),
     );
 
-    useAdaptation(ref.cost, () => {
+    ref.cost.useAdaptationBefore(() => {
       ref.cost.setPosition(
         ref.costLabel.x + ref.costLabel.width + switchSize(3),
         ref.costLabel.y - (ref.cost.height / 2) - 1,
@@ -234,7 +232,7 @@ export const ComponentBuildInfo = Component<Props>(function (container, {
   );
 
   ref.pointer.setOrigin(0.0, 0.0);
-  useAdaptation(ref.pointer, () => {
+  ref.pointer.useAdaptationBefore(() => {
     ref.pointer.setPosition(
       container.width,
       switchSize(27),

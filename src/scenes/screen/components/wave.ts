@@ -1,7 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { formatTime } from '~lib/utils';
 import { ComponentHelp } from '~scene/screen/components/help';
 import { World } from '~scene/world';
@@ -36,7 +34,7 @@ export const ComponentWave = Component(function (container) {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     // eslint-disable-next-line no-param-reassign
     container.height = switchSize(34);
   });
@@ -59,7 +57,7 @@ export const ComponentWave = Component(function (container) {
     }),
   );
 
-  useAdaptation(ref.number, () => {
+  ref.number.useAdaptationBefore(() => {
     scaleText(ref.number, 20, true);
 
     const paddingX = switchSize(16);
@@ -84,7 +82,7 @@ export const ComponentWave = Component(function (container) {
   );
 
   ref.label.setAlpha(0.5);
-  useAdaptation(ref.label, () => {
+  ref.label.useAdaptationBefore(() => {
     scaleText(ref.label, 10, true);
     ref.label.setPosition(
       ref.number.x + ref.number.width + switchSize(10),
@@ -106,7 +104,7 @@ export const ComponentWave = Component(function (container) {
     }),
   );
 
-  useAdaptation(ref.value, () => {
+  ref.value.useAdaptationBefore(() => {
     scaleText(ref.value, 18, true);
     ref.value.setPosition(
       ref.number.x + ref.number.width + switchSize(10),
@@ -165,8 +163,8 @@ export const ComponentWave = Component(function (container) {
       if (state.number !== currentNumber) {
         ref.number.setText(String(currentNumber));
 
-        refreshAdaptive(ref.label);
-        refreshAdaptive(ref.value);
+        ref.label.refreshAdaptation();
+        ref.value.refreshAdaptation();
 
         state.number = currentNumber;
       }

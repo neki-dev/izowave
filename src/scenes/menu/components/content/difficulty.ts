@@ -1,7 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { keys } from '~lib/system';
 import { Difficulty } from '~type/world/difficulty';
 
@@ -44,7 +42,7 @@ export const ComponentDifficulty = Component<Props>(function (container, {
       }),
     );
 
-    useAdaptation(ref[type].type, () => {
+    ref[type].type.useAdaptationBefore(() => {
       scaleText(ref[type].type, 16, true);
       ref[type].type.setPosition(
         0,

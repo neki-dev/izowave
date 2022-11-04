@@ -39,6 +39,9 @@ export class Game extends Phaser.Game {
     this.registerShaders();
   }
 
+  /**
+   * Add shaders to renderer pipelines.
+   */
   private registerShaders() {
     const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.renderer;
 

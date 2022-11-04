@@ -6,7 +6,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { addShader, removeShader } from '~lib/shaders';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { ComponentCost } from '~scene/screen/components/building-info/cost';
@@ -87,6 +86,11 @@ export class Building extends Phaser.GameObjects.Image {
   public get isFocused() { return this._isFocused; }
 
   private set isFocused(v) { this._isFocused = v; }
+
+  /**
+   *
+   */
+  private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
 
   /**
    * Select state.
@@ -233,29 +237,11 @@ export class Building extends Phaser.GameObjects.Image {
    * Get building information params.
    */
   public getInfo(): BuildingParamItem[] {
-    // const radius = this.getActionsRadius();
-    // const pause = this.getActionsPause();
-    const info: BuildingParamItem[] = [{
+    return [{
       label: 'HEALTH',
       icon: ScreenIcon.HEALTH,
       value: this.live.health,
     }];
-
-    // if (radius) {
-    //   info.push({
-    //     text: `RADIUS: ${Math.round(radius / 2)}`,
-    //     icon: ScreenIcon.RADIUS,
-    //   });
-    // }
-
-    // if (pause) {
-    //   info.push({
-    //     text: `PAUSE: ${(pause / 1000).toFixed(1)} s`,
-    //     icon: ScreenIcon.PAUSE,
-    //   });
-    // }
-
-    return info;
   }
 
   /**
@@ -274,7 +260,9 @@ export class Building extends Phaser.GameObjects.Image {
             amount: () => this.getUpgradeLevelCost(),
           },
         },
-        onClick: () => this.nextUpgrade(),
+        onClick: () => {
+          this.nextUpgrade();
+        },
       });
     }
 
@@ -296,13 +284,6 @@ export class Building extends Phaser.GameObjects.Image {
    */
   public getMeta(): BuildingMeta {
     return (this.constructor as unknown as BuildingMeta);
-  }
-
-  /**
-   * Check if building allow upgrade.
-   */
-  public isAllowUpgrade(): boolean {
-    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
   /**
@@ -329,6 +310,13 @@ export class Building extends Phaser.GameObjects.Image {
         this.upgradeLevel,
       )
       : 0;
+  }
+
+  /**
+   * Check if building allow upgrade.
+   */
+  private isAllowUpgrade(): boolean {
+    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
   /**
@@ -428,10 +416,7 @@ export class Building extends Phaser.GameObjects.Image {
     this.isFocused = true;
 
     this.scene.input.setDefaultCursor('pointer');
-    addShader(this, 'OutlineShader', {
-      size: 2.0,
-      color: 0xffffff,
-    });
+    this.addOutline();
   }
 
   /**
@@ -445,7 +430,9 @@ export class Building extends Phaser.GameObjects.Image {
     this.isFocused = false;
 
     this.scene.input.setDefaultCursor('default');
-    removeShader(this, 'OutlineShader');
+    if (!this.isSelected) {
+      this.removeOutline();
+    }
   }
 
   /**
@@ -460,6 +447,9 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(true);
     this.addInfo();
+    this.updateShader('OutlineShader', {
+      color: 0xd0ff4f,
+    });
   }
 
   /**
@@ -474,6 +464,47 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(false);
     this.removeInfo();
+    this.removeOutline();
+  }
+
+  /**
+   * Add outline effect.
+   */
+  private addOutline() {
+    if (this.outlineTween) {
+      return;
+    }
+
+    this.addShader('OutlineShader', {
+      size: 0,
+      color: 0xffffff,
+    });
+
+    this.outlineTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+      targets: this,
+      shaderSize: { from: 0, to: 3.0 },
+      duration: 350,
+      ease: 'Linear',
+      yoyo: true,
+      repeat: -1,
+      onUpdate: (_, __, ___, size: number) => {
+        this.updateShader('OutlineShader', { size });
+      },
+    });
+  }
+
+  /**
+   * Remove outline effect.
+   */
+  private removeOutline() {
+    if (!this.outlineTween) {
+      return;
+    }
+
+    this.removeShader('OutlineShader');
+
+    this.outlineTween.destroy();
+    this.outlineTween = null;
   }
 
   /**

@@ -1,7 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { World } from '~scene/world';
 import { SceneKey } from '~type/core';
 import { ScreenTexture } from '~type/screen';
@@ -32,7 +30,7 @@ export const ComponentCost = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptationAfter(container, () => {
+  container.useAdaptationAfter(() => {
     container.setSize(
       ref.amount.x + ref.amount.width,
       ref.icon.displayHeight,
@@ -49,7 +47,7 @@ export const ComponentCost = Component<Props>(function (container, {
 
   ref.icon.setOrigin(0.0, 0.5);
   ref.icon.setScale(0.38);
-  useAdaptation(ref.icon, () => {
+  ref.icon.useAdaptationBefore(() => {
     ref.icon.setPosition(
       0,
       container.height / 2,
@@ -68,7 +66,7 @@ export const ComponentCost = Component<Props>(function (container, {
   );
 
   ref.amount.setOrigin(0.0, 0.5);
-  useAdaptation(ref.amount, () => {
+  ref.amount.useAdaptationBefore(() => {
     scaleText(ref.amount, 11);
     ref.amount.setPosition(
       ref.icon.x + ref.icon.displayWidth + switchSize(3),
@@ -87,7 +85,7 @@ export const ComponentCost = Component<Props>(function (container, {
       if (state.need !== currentAmount) {
         ref.amount.setText(String(currentAmount));
 
-        refreshAdaptive(container, false);
+        container.refreshAdaptation(false);
       }
 
       if (state.need !== currentAmount || state.have !== world.player.resources) {

@@ -1,7 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, useAdaptationAfter,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { ScreenTexture } from '~type/screen';
 import { BuildingParamItem } from '~type/world/entities/building';
 
@@ -29,7 +27,7 @@ export const ComponentParams = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     if (container.parentContainer) {
       // eslint-disable-next-line no-param-reassign
       container.width = container.parentContainer.width - switchSize(24);
@@ -39,7 +37,7 @@ export const ComponentParams = Component<Props>(function (container, {
     }
   });
 
-  useAdaptationAfter(container, () => {
+  container.useAdaptationAfter(() => {
     /**
      * Set wrappers grid positions
      */
@@ -122,7 +120,7 @@ export const ComponentParams = Component<Props>(function (container, {
 
     ref[label].iconBody.setName('IconBody');
     ref[label].iconBody.setOrigin(0.0, 0.0);
-    useAdaptation(ref[label].iconBody, () => {
+    ref[label].iconBody.useAdaptationBefore(() => {
       const size = switchSize(20);
       const offset = switchSize(4);
 
@@ -138,7 +136,7 @@ export const ComponentParams = Component<Props>(function (container, {
       ref[label].icon = this.add.image(0, 0, ScreenTexture.ICON, icon),
     );
 
-    useAdaptation(ref[label].icon, () => {
+    ref[label].icon.useAdaptationBefore(() => {
       ref[label].icon.setScale(switchSize(1.2));
       ref[label].icon.setPosition(
         ref[label].iconBody.x + ref[label].iconBody.width / 2,
@@ -159,7 +157,7 @@ export const ComponentParams = Component<Props>(function (container, {
     );
 
     ref[label].label.setAlpha(0.75);
-    useAdaptation(ref[label].label, () => {
+    ref[label].label.useAdaptationBefore(() => {
       scaleText(ref[label].label, 9);
       ref[label].label.setPosition(
         ref[label].iconBody.x + ref[label].iconBody.width + switchSize(5),
@@ -179,7 +177,7 @@ export const ComponentParams = Component<Props>(function (container, {
       }),
     );
 
-    useAdaptation(ref[label].value, () => {
+    ref[label].value.useAdaptationBefore(() => {
       scaleText(ref[label].value, 10);
       ref[label].value.setPosition(
         ref[label].iconBody.x + ref[label].iconBody.width + switchSize(5),

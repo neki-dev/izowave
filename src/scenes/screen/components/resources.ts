@@ -1,7 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 import { World } from '~scene/world';
 import { SceneKey } from '~type/core';
@@ -35,7 +33,7 @@ export const ComponentResources = Component(function (container) {
   );
 
   ref.icon.setOrigin(0.0, 0.0);
-  useAdaptation(ref.icon, () => {
+  ref.icon.useAdaptationBefore(() => {
     ref.icon.setScale(switchSize(1.0));
   });
 
@@ -54,7 +52,7 @@ export const ComponentResources = Component(function (container) {
   );
 
   ref.label.setAlpha(0.75);
-  useAdaptation(ref.label, () => {
+  ref.label.useAdaptationBefore(() => {
     scaleText(ref.label, 9, true);
     ref.label.setPosition(
       ref.icon.x + ref.icon.width + switchSize(8),
@@ -76,7 +74,7 @@ export const ComponentResources = Component(function (container) {
     }),
   );
 
-  useAdaptation(ref.amount, () => {
+  ref.amount.useAdaptationBefore(() => {
     scaleText(ref.amount, 16, true);
     ref.amount.setPosition(
       ref.icon.x + ref.icon.width + switchSize(8) - 1,
@@ -96,7 +94,7 @@ export const ComponentResources = Component(function (container) {
     }),
   );
 
-  useAdaptation(ref.additions, () => {
+  ref.additions.useAdaptationBefore(() => {
     ref.additions.setPosition(
       ref.amount.x + ref.amount.width + switchSize(8),
       ref.amount.y + (ref.amount.height / 2) - 1,
@@ -111,7 +109,7 @@ export const ComponentResources = Component(function (container) {
     update: () => {
       if (state.amount !== world.player.resources) {
         ref.amount.setText(String(world.player.resources));
-        refreshAdaptive(ref.additions, false);
+        ref.additions.refreshAdaptation(false);
 
         state.amount = world.player.resources;
       }

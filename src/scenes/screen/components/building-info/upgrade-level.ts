@@ -1,6 +1,6 @@
 import { INTERFACE_BOX_COLOR } from '~const/interface';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { useAdaptation, Component, switchSize } from '~lib/interface';
+import { Component, switchSize } from '~lib/interface';
 
 type Props = {
   value: () => number
@@ -23,7 +23,7 @@ export const ComponentUpgradeLevel = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     container.setSize(
       switchSize(196),
       switchSize(8),
@@ -45,7 +45,7 @@ export const ComponentUpgradeLevel = Component<Props>(function (container, {
       ref[i].wrapper = this.add.container(),
     );
 
-    useAdaptation(ref[i].wrapper, () => {
+    ref[i].wrapper.useAdaptationBefore(() => {
       const offsetX = 2;
       const width = (container.width - ((BUILDING_MAX_UPGRADE_LEVEL - 1) * offsetX)) / BUILDING_MAX_UPGRADE_LEVEL;
 
@@ -68,7 +68,7 @@ export const ComponentUpgradeLevel = Component<Props>(function (container, {
     );
 
     ref[i].body.setOrigin(0.0, 0.0);
-    useAdaptation(ref[i].body, () => {
+    ref[i].body.useAdaptationBefore(() => {
       ref[i].body.setSize(
         ref[i].wrapper.width,
         ref[i].wrapper.height,
@@ -85,7 +85,7 @@ export const ComponentUpgradeLevel = Component<Props>(function (container, {
 
     ref[i].progress.setVisible(false);
     ref[i].progress.setOrigin(0.0, 0.0);
-    useAdaptation(ref[i].progress, () => {
+    ref[i].progress.useAdaptationBefore(() => {
       ref[i].progress.setSize(
         ref[i].wrapper.width - 2,
         ref[i].wrapper.height - 2,

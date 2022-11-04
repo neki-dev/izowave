@@ -1,8 +1,6 @@
 import { CONTROLS } from '~const/controls';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, useAdaptationAfter, switchSize,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 
 export const ComponentControls = Component(function (container) {
   const ref: Record<string, {
@@ -26,7 +24,7 @@ export const ComponentControls = Component(function (container) {
       ref[name].wrapper = this.add.container(),
     );
 
-    useAdaptationAfter(ref[name].wrapper, () => {
+    ref[name].wrapper.useAdaptationAfter(() => {
       ref[name].wrapper.setPosition(
         0,
         (ref[name].name.height + switchSize(10)) * index,
@@ -51,7 +49,7 @@ export const ComponentControls = Component(function (container) {
       }),
     );
 
-    useAdaptation(ref[name].name, () => {
+    ref[name].name.useAdaptationBefore(() => {
       scaleText(ref[name].name, 15);
     });
 
@@ -67,7 +65,7 @@ export const ComponentControls = Component(function (container) {
     );
 
     ref[name].description.setOrigin(0.0, 0.5);
-    useAdaptation(ref[name].description, () => {
+    ref[name].description.useAdaptationBefore(() => {
       ref[name].description.setPosition(
         ref[name].name.width,
         ref[name].name.height / 2,

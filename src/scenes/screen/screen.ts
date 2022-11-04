@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { useAdaptation, registerContainerAdaptive, switchSize } from '~lib/interface';
+import { switchSize } from '~lib/interface';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
 import { ComponentBuilder } from '~scene/screen/components/builder';
@@ -34,7 +34,7 @@ export class Screen extends Phaser.Scene {
 
     const wave = ComponentWave(this);
 
-    useAdaptation(wave, () => {
+    wave.useAdaptationBefore(() => {
       const offset = switchSize(30);
 
       wave.setPosition(offset, offset);
@@ -55,7 +55,7 @@ export class Screen extends Phaser.Scene {
       color: 0xe4372c,
     });
 
-    useAdaptation(health, () => {
+    health.useAdaptationBefore(() => {
       health.setPosition(
         switchSize(30),
         wave.y + wave.height + switchSize(24),
@@ -83,7 +83,7 @@ export class Screen extends Phaser.Scene {
       color: 0x1975c5,
     });
 
-    useAdaptation(experience, () => {
+    experience.useAdaptationBefore(() => {
       experience.setPosition(
         switchSize(30),
         health.y + health.height + switchSize(6),
@@ -98,7 +98,7 @@ export class Screen extends Phaser.Scene {
 
     const resources = ComponentResources(this);
 
-    useAdaptation(resources, () => {
+    resources.useAdaptationBefore(() => {
       resources.setPosition(
         switchSize(30),
         experience.y + experience.height + switchSize(24),
@@ -113,7 +113,7 @@ export class Screen extends Phaser.Scene {
 
     const notices = ComponentNotices(this);
 
-    useAdaptation(notices, (width) => {
+    notices.useAdaptationBefore((width) => {
       notices.setPosition(
         width / 2,
         switchSize(30),
@@ -128,7 +128,7 @@ export class Screen extends Phaser.Scene {
 
     const builder = ComponentBuilder(this);
 
-    useAdaptation(builder, (width) => {
+    builder.useAdaptationBefore((width) => {
       const offset = switchSize(30);
 
       builder.setPosition(
@@ -146,7 +146,7 @@ export class Screen extends Phaser.Scene {
     if (IS_DEV_MODE) {
       const fps = ComponentFPS(this);
 
-      useAdaptation(fps, (width, height) => {
+      fps.useAdaptationBefore((width, height) => {
         const offset = switchSize(30);
 
         fps.setPosition(
@@ -162,7 +162,7 @@ export class Screen extends Phaser.Scene {
      * Updating
      */
 
-    registerContainerAdaptive(components);
+    components.registerAdaptive();
 
     world.events.on(WorldEvents.GAMEOVER, (stat: PlayerStat, record: PlayerStat) => {
       components.destroy();

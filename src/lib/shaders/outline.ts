@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
 type Config = {
-  size: number
-  color: number
+  size?: number
+  color?: number
 };
 
 export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
@@ -62,8 +62,12 @@ export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipelin
   }
 
   setConfig({ size, color }: Config) {
-    this._size = size;
-    this._color = new Phaser.Display.Color();
-    this._color.setFromRGB(Phaser.Display.Color.IntegerToRGB(color));
+    if (size !== undefined) {
+      this._size = size;
+    }
+    if (color !== undefined) {
+      this._color = new Phaser.Display.Color();
+      this._color.setFromRGB(Phaser.Display.Color.IntegerToRGB(color));
+    }
   }
 }

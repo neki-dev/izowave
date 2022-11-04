@@ -1,8 +1,6 @@
 import { COPYRIGHT } from '~const/core';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText } from '~lib/interface';
 import { MenuItem } from '~type/menu';
 
 import { ComponentItems } from './items';
@@ -36,7 +34,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   );
 
   ref.background.setOrigin(0.0, 0.0);
-  useAdaptation(ref.background, (width, height) => {
+  ref.background.useAdaptationBefore((width, height) => {
     ref.background.setSize(width, height);
   });
 
@@ -48,7 +46,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     ref.wrapper = this.add.container(),
   );
 
-  useAdaptation(ref.wrapper, (width, height) => {
+  ref.wrapper.useAdaptationBefore((width, height) => {
     ref.wrapper.setSize(
       Math.min(width * 0.9, 1000),
       Math.min(height * 0.8, 440),
@@ -67,7 +65,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     ref.sidebar = this.add.container(),
   );
 
-  useAdaptation(ref.sidebar, () => {
+  ref.sidebar.useAdaptationBefore(() => {
     ref.sidebar.setSize(
       ref.wrapper.width * 0.3,
       ref.wrapper.height,
@@ -90,7 +88,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   );
 
   ref.logotype.setOrigin(1.0, 0.0);
-  useAdaptation(ref.logotype, () => {
+  ref.logotype.useAdaptationBefore(() => {
     scaleText(ref.logotype, 40, true);
     ref.logotype.setPosition(
       ref.sidebar.width,
@@ -110,7 +108,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     }),
   );
 
-  useAdaptation(ref.items, () => {
+  ref.items.useAdaptationBefore(() => {
     const margin = ref.sidebar.height * 0.15;
     const offset = ref.logotype.height + margin;
 
@@ -135,7 +133,7 @@ export const ComponentMenu = Component<Props>(function (container, {
 
   ref.copyright.setOrigin(1.0, 1.0);
   ref.copyright.setAlpha(0.5);
-  useAdaptation(ref.copyright, () => {
+  ref.copyright.useAdaptationBefore(() => {
     scaleText(ref.copyright, 10);
     ref.copyright.setPosition(
       ref.sidebar.width,
@@ -152,7 +150,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   );
 
   ref.line.setOrigin(0.5, 0.0);
-  useAdaptation(ref.line, () => {
+  ref.line.useAdaptationBefore(() => {
     ref.line.setSize(
       1,
       ref.sidebar.height * 1.4,
@@ -171,7 +169,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     ref.page = this.add.container(),
   );
 
-  useAdaptation(ref.page, () => {
+  ref.page.useAdaptationBefore(() => {
     ref.page.setSize(
       ref.wrapper.width * 0.53,
       ref.wrapper.height,
@@ -197,7 +195,7 @@ export const ComponentMenu = Component<Props>(function (container, {
   );
 
   ref.title.setAlpha(0.3);
-  useAdaptation(ref.title, () => {
+  ref.title.useAdaptationBefore(() => {
     scaleText(ref.title, 40, true);
   });
 
@@ -209,7 +207,7 @@ export const ComponentMenu = Component<Props>(function (container, {
     ref.content = this.add.container(),
   );
 
-  useAdaptation(ref.content, () => {
+  ref.content.useAdaptationBefore(() => {
     const margin = ref.page.height * 0.15;
     const offset = ref.title.height + margin;
 
@@ -231,13 +229,13 @@ export const ComponentMenu = Component<Props>(function (container, {
 
     const contentChild = item.content();
 
-    useAdaptation(contentChild, () => {
+    contentChild.useAdaptationBefore(() => {
       contentChild.setSize(
         ref.content.width,
         ref.content.height,
       );
     });
-    refreshAdaptive(contentChild);
+    contentChild.refreshAdaptation();
 
     ref.content.add(contentChild);
   };

@@ -3,10 +3,7 @@ import Phaser from 'phaser';
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { TILE_META } from '~const/world/level';
-import {
-  useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/interface';
-import { addShader, removeShader } from '~lib/shaders';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { entries } from '~lib/system';
 import { debounce } from '~lib/utils';
 import { ComponentBuildInfo } from '~scene/screen/components/builder/build-info';
@@ -67,7 +64,7 @@ export const ComponentBuilder = Component(function (container) {
       ref.items[variant].wrapper = this.add.container(),
     );
 
-    useAdaptation(ref.items[variant].wrapper, () => {
+    ref.items[variant].wrapper.useAdaptationBefore(() => {
       const size = switchSize(54);
 
       ref.items[variant].wrapper.setSize(size, size);
@@ -87,7 +84,7 @@ export const ComponentBuilder = Component(function (container) {
 
     ref.items[variant].body.setAlpha(0.5);
     ref.items[variant].body.setOrigin(0.0, 0.0);
-    useAdaptation(ref.items[variant].body, () => {
+    ref.items[variant].body.useAdaptationBefore(() => {
       ref.items[variant].body.setSize(
         ref.items[variant].wrapper.width,
         ref.items[variant].wrapper.height,
@@ -110,7 +107,7 @@ export const ComponentBuilder = Component(function (container) {
       ref.items[variant].preview = this.add.image(0, 0, BUILDINGS[variant].Texture),
     );
 
-    useAdaptation(ref.items[variant].preview, () => {
+    ref.items[variant].preview.useAdaptationBefore(() => {
       const offset = ref.items[variant].wrapper.width * 0.18;
 
       ref.items[variant].preview.setScale(
@@ -134,7 +131,7 @@ export const ComponentBuilder = Component(function (container) {
     );
 
     ref.items[variant].number.setOrigin(1.0, 0.0);
-    useAdaptation(ref.items[variant].number, () => {
+    ref.items[variant].number.useAdaptationBefore(() => {
       scaleText(ref.items[variant].number, 11);
       ref.items[variant].number.setPosition(
         ref.items[variant].wrapper.width - 4,
@@ -155,7 +152,7 @@ export const ComponentBuilder = Component(function (container) {
       }),
     );
 
-    useAdaptation(ref.help, () => {
+    ref.help.useAdaptationBefore(() => {
       ref.help.setPosition(
         ref.items[variant].wrapper.x - switchSize(12),
         ref.items[variant].wrapper.y + (ref.items[variant].wrapper.height / 2),
@@ -261,7 +258,7 @@ export const ComponentBuilder = Component(function (container) {
       default: return;
     }
 
-    refreshAdaptive(ref.help);
+    ref.help.refreshAdaptation();
   };
 
   world.wave.on(WaveEvents.START, unfocus);
@@ -284,13 +281,13 @@ export const ComponentBuilder = Component(function (container) {
         ) {
           if (state.mods[variant] !== 'disallow') {
             wrapper.setAlpha(0.5);
-            addShader(preview, 'GrayscaleShader');
+            preview.addShader('GrayscaleShader');
 
             state.mods[variant] = 'disallow';
           }
         } else if (state.mods[variant] !== 'normal') {
           wrapper.setAlpha(1.0);
-          removeShader(preview, 'GrayscaleShader');
+          preview.removeShader('GrayscaleShader');
 
           state.mods[variant] = 'normal';
         }

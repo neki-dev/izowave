@@ -1,7 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {
@@ -33,7 +31,7 @@ export const ComponentBar = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     container.setSize(
       switchSize(104),
       switchSize(26),
@@ -49,7 +47,7 @@ export const ComponentBar = Component<Props>(function (container, {
   );
 
   ref.body.setOrigin(0.0, 0.0);
-  useAdaptation(ref.body, () => {
+  ref.body.useAdaptationBefore(() => {
     ref.body.setSize(container.width, container.height);
   });
 
@@ -62,7 +60,7 @@ export const ComponentBar = Component<Props>(function (container, {
   );
 
   ref.progress.setOrigin(0.0, 0.0);
-  useAdaptation(ref.progress, (width) => {
+  ref.progress.useAdaptationBefore((width) => {
     const offset = (width <= 900) ? 1 : 2;
 
     ref.progress.setPosition(offset, offset);
@@ -84,7 +82,7 @@ export const ComponentBar = Component<Props>(function (container, {
   );
 
   ref.value.setOrigin(0.5, 0.5);
-  useAdaptation(ref.value, () => {
+  ref.value.useAdaptationBefore(() => {
     scaleText(ref.value, 10, true);
     ref.value.setPosition(
       container.width / 2,
@@ -100,7 +98,7 @@ export const ComponentBar = Component<Props>(function (container, {
     ref.additions = ComponentAdditions(this, { event }),
   );
 
-  useAdaptation(ref.additions, () => {
+  ref.additions.useAdaptationBefore(() => {
     ref.additions.setPosition(container.width + 10, container.height / 2);
   });
 

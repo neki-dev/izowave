@@ -1,9 +1,7 @@
 import Phaser from 'phaser';
 
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { MenuAudio, MenuItem } from '~type/menu';
 
 type Props = {
@@ -48,7 +46,7 @@ export const ComponentItems = Component<Props>(function (container, {
 
     ref[label].label.setOrigin(1.0, 0.0);
     ref[label].label.setInteractive();
-    useAdaptation(ref[label].label, () => {
+    ref[label].label.useAdaptationBefore(() => {
       scaleText(ref[label].label, 22, true);
       ref[label].label.setPosition(
         container.width,

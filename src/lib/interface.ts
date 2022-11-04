@@ -4,79 +4,68 @@ import {
   ComponentCreator, ComponentControl, ComponentInstance, ResizeCallback,
 } from '~type/interface';
 
-export function useAdaptation(
-  object: Phaser.GameObjects.GameObject,
-  callback: ResizeCallback,
-) {
-  if (!object.adaptives) {
-    // eslint-disable-next-line no-param-reassign
-    object.adaptives = {
+Phaser.GameObjects.GameObject.prototype.useAdaptationBefore = function (callback: ResizeCallback) {
+  if (!this.adaptives) {
+    this.adaptives = {
       before: [],
       after: [],
     };
   }
 
-  object.adaptives.before.push(callback);
-}
+  this.adaptives.before.push(callback);
+};
 
-export function useAdaptationAfter(
-  object: Phaser.GameObjects.GameObject,
-  callback: ResizeCallback,
-) {
-  if (!object.adaptives) {
-    // eslint-disable-next-line no-param-reassign
-    object.adaptives = {
+Phaser.GameObjects.GameObject.prototype.useAdaptationAfter = function (callback: ResizeCallback) {
+  if (!this.adaptives) {
+    this.adaptives = {
       before: [],
       after: [],
     };
   }
 
-  object.adaptives.after.push(callback);
-}
+  this.adaptives.after.push(callback);
+};
 
-export function refreshAdaptive(
-  gameObject: Phaser.GameObjects.GameObject,
-  deep: boolean = true,
-) {
-  if (gameObject.adaptives) {
-    for (const callback of gameObject.adaptives.before) {
+Phaser.GameObjects.GameObject.prototype.refreshAdaptation = function (deep: boolean = true) {
+  if (this.adaptives) {
+    for (const callback of this.adaptives.before) {
       callback(window.innerWidth, window.innerHeight);
     }
   }
 
-  if (deep && gameObject instanceof Phaser.GameObjects.Container) {
-    gameObject.iterate((child: Phaser.GameObjects.GameObject) => {
-      refreshAdaptive(child, deep);
+  if (deep && this instanceof Phaser.GameObjects.Container) {
+    this.iterate((child: Phaser.GameObjects.GameObject) => {
+      child.refreshAdaptation(deep);
     });
   }
 
-  if (gameObject.adaptives) {
-    for (const callback of gameObject.adaptives.after) {
+  if (this.adaptives) {
+    for (const callback of this.adaptives.after) {
       callback(window.innerWidth, window.innerHeight);
     }
   }
-}
+};
 
-export function registerContainerAdaptive(container: Phaser.GameObjects.Container) {
-  refreshAdaptive(container);
+Phaser.GameObjects.Container.prototype.registerAdaptive = function () {
+  this.refreshAdaptation();
 
   const onResize = () => {
-    refreshAdaptive(container);
+    this.refreshAdaptation();
   };
 
   window.addEventListener('resize', onResize);
 
-  container.on(Phaser.Scenes.Events.DESTROY, () => {
+  this.on(Phaser.Scenes.Events.DESTROY, () => {
     window.removeEventListener('resize', onResize);
   });
-}
+};
 
 export function Component<T = undefined>(instance: ComponentInstance<T>): ComponentCreator<T> {
   return (scene: Phaser.Scene, props?: T): Phaser.GameObjects.Container => {
     const container = scene.add.container();
     const control: ComponentControl = instance.call(scene, container, props);
 
-    registerContainerAdaptive(container);
+    container.registerAdaptive();
 
     if (control) {
       const { update, destroy } = control;

@@ -1,7 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, useAdaptationAfter, switchSize,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 
 type Props = {
   message: string
@@ -20,7 +18,7 @@ export const ComponentHelp = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptationAfter(container, () => {
+  container.useAdaptationAfter(() => {
     container.setSize(
       ref.message.width,
       ref.message.height,
@@ -45,7 +43,7 @@ export const ComponentHelp = Component<Props>(function (container, {
     ref.message.setOrigin(0.0, 0.5);
   }
 
-  useAdaptation(ref.message, () => {
+  ref.message.useAdaptationBefore(() => {
     const padding = switchSize(10);
 
     scaleText(ref.message, 12);

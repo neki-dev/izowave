@@ -1,7 +1,5 @@
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { ScreenAudio } from '~type/screen';
 import { Notice, NoticeType } from '~type/screen/notice';
 
@@ -34,7 +32,7 @@ export const ComponentNotices = Component(function (container) {
 
     notice.setOrigin(0.5, 0.0);
     notice.setAlpha(0.0);
-    useAdaptation(notice, () => {
+    notice.useAdaptationBefore(() => {
       const padding = switchSize(11);
       const shadow = switchSize(4);
 
@@ -60,7 +58,7 @@ export const ComponentNotices = Component(function (container) {
     const notice = create(data);
 
     container.add(notice);
-    refreshAdaptive(container);
+    container.refreshAdaptation();
 
     update();
 

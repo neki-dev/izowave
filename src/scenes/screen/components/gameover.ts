@@ -1,5 +1,5 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/interface';
+import { Component, scaleText } from '~lib/interface';
 import { PlayerStat } from '~type/world/entities/player';
 
 type Props = {
@@ -26,7 +26,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
   );
 
   ref.background.setOrigin(0.0, 0.0);
-  useAdaptation(ref.background, (width, height) => {
+  ref.background.useAdaptationBefore((width, height) => {
     ref.background.setSize(width, height);
   });
 
@@ -38,7 +38,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
     ref.wrapper = this.add.container(),
   );
 
-  useAdaptation(ref.wrapper, (width, height) => {
+  ref.wrapper.useAdaptationBefore((width, height) => {
     ref.wrapper.setPosition(width / 2, height / 2);
   });
 
@@ -58,7 +58,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
   );
 
   ref.title.setOrigin(0.5, 1.0);
-  useAdaptation(ref.title, (width, height) => {
+  ref.title.useAdaptationBefore((width, height) => {
     scaleText(ref.title, 60, true);
     ref.title.setPosition(
       0,
@@ -94,7 +94,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
 
   ref.stat.setAlpha(0.75);
   ref.stat.setOrigin(0.5, 0.0);
-  useAdaptation(ref.stat, (width, height) => {
+  ref.stat.useAdaptationBefore((width, height) => {
     scaleText(ref.stat, 18);
     ref.stat.setPosition(
       0,

@@ -1,7 +1,5 @@
 import { INTERFACE_FONT } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { BuildingAction } from '~type/world/entities/building';
 
 type Props = {
@@ -30,12 +28,12 @@ export const ComponentActions = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     // eslint-disable-next-line no-param-reassign
     container.width = switchSize(100);
   });
 
-  useAdaptationAfter(container, () => {
+  container.useAdaptationAfter(() => {
     const refs = Object.values(ref);
 
     if (refs.length > 0) {
@@ -61,7 +59,7 @@ export const ComponentActions = Component<Props>(function (container, {
       ref[label].wrapper = this.add.container(),
     );
 
-    useAdaptation(ref[label].wrapper, () => {
+    ref[label].wrapper.useAdaptationBefore(() => {
       ref[label].wrapper.setSize(
         container.width,
         switchSize(20),
@@ -84,7 +82,7 @@ export const ComponentActions = Component<Props>(function (container, {
 
     ref[label].body.setOrigin(0.0, 0.0);
     ref[label].body.setOrigin(0.0, 0.0);
-    useAdaptation(ref[label].body, () => {
+    ref[label].body.useAdaptationBefore(() => {
       ref[label].body.setSize(
         ref[label].wrapper.width,
         ref[label].wrapper.height,
@@ -133,7 +131,7 @@ export const ComponentActions = Component<Props>(function (container, {
     );
 
     ref[label].label.setOrigin(0.0, 0.5);
-    useAdaptation(ref[label].label, () => {
+    ref[label].label.useAdaptationBefore(() => {
       scaleText(ref[label].label, 10);
       ref[label].label.setPosition(
         switchSize(6),
@@ -150,7 +148,7 @@ export const ComponentActions = Component<Props>(function (container, {
         ref[label].addon = addon.component(this, addon.props),
       );
 
-      useAdaptationAfter(ref[label].addon, () => {
+      ref[label].addon.useAdaptationAfter(() => {
         ref[label].addon.setPosition(
           ref[label].wrapper.width - ref[label].addon.width - switchSize(6),
           (ref[label].wrapper.height / 2) - (ref[label].addon.height / 2),
@@ -172,7 +170,7 @@ export const ComponentActions = Component<Props>(function (container, {
         container.removeAll(true);
         ref = {};
         currentActions.forEach(create);
-        refreshAdaptive(container);
+        container.refreshAdaptation();
 
         state.actions = memoActions;
       }

@@ -1,7 +1,5 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
-import {
-  useAdaptation, Component, scaleText, switchSize, useAdaptationAfter, refreshAdaptive,
-} from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { ComponentActions } from '~scene/screen/components/building-info/actions';
 import { ComponentParams } from '~scene/screen/components/building-info/params';
 import { ComponentUpgradeLevel } from '~scene/screen/components/building-info/upgrade-level';
@@ -37,17 +35,17 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
    * Adaptation
    */
 
-  useAdaptation(container, () => {
+  container.useAdaptationBefore(() => {
     // eslint-disable-next-line no-param-reassign
     container.width = switchSize(220);
   });
 
-  useAdaptationAfter(container, () => {
+  container.useAdaptationAfter(() => {
     // eslint-disable-next-line no-param-reassign
     container.height = ref.params.y + ref.params.height + switchSize(12);
 
-    refreshAdaptive(ref.actions);
-    refreshAdaptive(ref.pointer);
+    ref.actions.refreshAdaptation();
+    ref.pointer.refreshAdaptation();
   });
 
   /**
@@ -63,7 +61,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   );
 
   ref.body.setOrigin(0.0, 0.0);
-  useAdaptation(ref.body, () => {
+  ref.body.useAdaptationBefore(() => {
     ref.body.setSize(container.width, container.height);
   });
 
@@ -83,7 +81,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     }),
   );
 
-  useAdaptation(ref.name, () => {
+  ref.name.useAdaptationBefore(() => {
     scaleText(ref.name, 18, true);
     ref.name.setPosition(
       switchSize(12),
@@ -101,7 +99,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     }),
   );
 
-  useAdaptation(ref.upgradeLevel, () => {
+  ref.upgradeLevel.useAdaptationBefore(() => {
     ref.upgradeLevel.setPosition(
       switchSize(12),
       ref.name.y + ref.name.height + switchSize(6),
@@ -116,7 +114,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     ref.params = ComponentParams(this, { params }),
   );
 
-  useAdaptation(ref.params, () => {
+  ref.params.useAdaptationBefore(() => {
     ref.params.setPosition(
       switchSize(12),
       ref.upgradeLevel.y + ref.upgradeLevel.height + switchSize(12),
@@ -133,7 +131,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
   container.add(ref.pointer);
 
   ref.pointer.setOrigin(0.0, 0.0);
-  useAdaptation(ref.pointer, () => {
+  ref.pointer.useAdaptationBefore(() => {
     ref.pointer.setPosition(
       container.width / 2,
       container.height,
@@ -148,7 +146,7 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
     ref.actions = ComponentActions(this, { actions }),
   );
 
-  useAdaptation(ref.actions, () => {
+  ref.actions.useAdaptationBefore(() => {
     ref.actions.setPosition(
       (container.width / 2) - (ref.actions.width / 2),
       container.height + switchSize(60),
@@ -166,8 +164,8 @@ export const ComponentBuildingInfo = Component<Props>(function (container, {
       if (state.lines !== currentParams.length) {
         state.lines = currentParams.length;
 
-        refreshAdaptive(container, false);
-        refreshAdaptive(ref.body);
+        container.refreshAdaptation(false);
+        ref.body.refreshAdaptation();
       }
     },
   };

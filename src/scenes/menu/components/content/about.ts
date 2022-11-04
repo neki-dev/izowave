@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { INTERFACE_FONT } from '~const/interface';
-import { useAdaptation, Component, scaleText } from '~lib/interface';
+import { Component, scaleText } from '~lib/interface';
 
 export const ComponentAbout = Component(function (container) {
   const ref: {
@@ -23,7 +23,7 @@ export const ComponentAbout = Component(function (container) {
     }),
   );
 
-  useAdaptation(ref.text, () => {
+  ref.text.useAdaptationBefore(() => {
     ref.text.setWordWrapWidth(container.width);
     scaleText(ref.text, 14, true);
   });
