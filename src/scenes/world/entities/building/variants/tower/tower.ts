@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 import { CONTROL_KEY } from '~const/controls';
 import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
@@ -13,8 +11,7 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
-  BuildingAction,
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
+  BuildingAction, BuildingAudio, BuildingParamItem, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
 } from '~type/world/entities/building';
 import { ShotParams } from '~type/world/entities/shot';
 
@@ -47,17 +44,10 @@ export class BuildingTower extends Building {
     this.shot = new ShotInstance(this);
     this.shotParams = shotData.params;
 
-    // Add keyboard events
     scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
         this.reload();
       }
-    });
-
-    // Add events callbacks
-    this.on(BuildingEvents.UPGRADE, this.upgradeAmmo, this);
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.shot.destroy();
     });
   }
 
@@ -235,13 +225,6 @@ export class BuildingTower extends Building {
    */
   private getMaxAmmo(): number {
     return DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT * this.upgradeLevel;
-  }
-
-  /**
-   * Update ammo left by upgrade level.
-   */
-  private upgradeAmmo() {
-    this.ammoLeft = this.getMaxAmmo();
   }
 
   /**

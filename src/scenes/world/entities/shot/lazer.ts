@@ -53,6 +53,10 @@ export class ShotLazer extends Phaser.GameObjects.Line {
     this.setDepth(WORLD_DEPTH_EFFECT);
     this.setOrigin(0.0, 0.0);
 
+    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.destroy();
+    });
+
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.timer) {
         this.timer.destroy();

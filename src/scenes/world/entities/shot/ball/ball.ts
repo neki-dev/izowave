@@ -71,6 +71,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
 
     this.setActive(false);
     this.setVisible(false);
+
+    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.destroy();
+    });
   }
 
   /**
