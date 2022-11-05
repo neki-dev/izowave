@@ -7,7 +7,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/world/entities/enemy';
 import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import { TutorialStep } from '~type/tutorial';
 import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';

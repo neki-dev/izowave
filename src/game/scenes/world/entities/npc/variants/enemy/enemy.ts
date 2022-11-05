@@ -2,12 +2,12 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
-import { Building } from '~game/scenes/world/entities/building';
-import { NPC } from '~game/scenes/world/entities/npc';
+import { Building } from '~entity/building';
+import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { World } from '~game/scenes/world';
-import { Particles } from '~game/scenes/world/effects';
+import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
 import { ParticlesType } from '~type/world/effects';
 import {
   EnemyAttackTarget, EnemyAudio, EnemyData, EnemyTexture,

@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
 import { registerSpriteAssets } from '~lib/assets';
-import { World } from '~game/scenes/world';
-import { Level } from '~game/scenes/world/level';
+import { World } from '~scene/world';
+import { Level } from '~scene/world/level';
 import { EffectData, EffectTexture } from '~type/world/effects';
 
 export class Effect extends Phaser.GameObjects.Sprite {

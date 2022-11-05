@@ -1,4 +1,4 @@
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 
 export type AnalyticData = {
   world: World

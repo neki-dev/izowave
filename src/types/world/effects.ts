@@ -1,7 +1,7 @@
-import { Building } from '~game/scenes/world/entities/building';
-import { ShotBall } from '~game/scenes/world/entities/shot/ball';
-import { Sprite } from '~game/scenes/world/entities/sprite';
-import { Particles } from '~game/scenes/world/effects';
+import { Building } from '~entity/building';
+import { ShotBall } from '~entity/shot/ball';
+import { Sprite } from '~entity/sprite';
+import { Particles } from '~scene/world/effects';
 
 export enum ParticlesType {
   BIT = 'BIT',

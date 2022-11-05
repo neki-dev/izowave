@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ShotBallFrozen } from '~game/scenes/world/entities/shot/ball/variants/frozen';
-import { World } from '~game/scenes/world';
+import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
+import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingParamItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 

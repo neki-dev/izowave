@@ -3,8 +3,8 @@ import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { World } from '~game/scenes/world';
-import { Level } from '~game/scenes/world/level';
+import { World } from '~scene/world';
+import { Level } from '~scene/world/level';
 import { ChestTexture, ChestData, ChestAudio } from '~type/world/entities/chest';
 import { TileType } from '~type/world/level';
 

@@ -1,8 +1,8 @@
 import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component, scaleText, switchSize } from '~lib/interface';
-import { ComponentActions } from '~game/scenes/screen/components/building-info/actions';
-import { ComponentParams } from '~game/scenes/screen/components/building-info/params';
-import { ComponentUpgradeLevel } from '~game/scenes/screen/components/building-info/upgrade-level';
+import { ComponentActions } from '~scene/screen/components/building-info/actions';
+import { ComponentParams } from '~scene/screen/components/building-info/params';
+import { ComponentUpgradeLevel } from '~scene/screen/components/building-info/upgrade-level';
 import { BuildingParamItem } from '~type/world/entities/building';
 
 type Props = {

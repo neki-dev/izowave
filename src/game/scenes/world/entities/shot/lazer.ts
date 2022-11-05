@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
-import { BuildingTower } from '~game/scenes/world/entities/building/variants/tower';
-import { Enemy } from '~game/scenes/world/entities/npc/variants/enemy';
+import { BuildingTower } from '~entity/building/variants/tower';
+import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets } from '~lib/assets';
-import { World } from '~game/scenes/world';
-import { Particles } from '~game/scenes/world/effects';
+import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
 import { ParticlesType } from '~type/world/effects';
 import { ShotLazerAudio, ShotParams } from '~type/world/entities/shot';
 

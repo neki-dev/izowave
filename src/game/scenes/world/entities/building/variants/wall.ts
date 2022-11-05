@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import {
   BuildingEvents, BuildingVariant, BuildingTexture, BuildingParamItem,

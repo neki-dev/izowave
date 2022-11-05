@@ -1,4 +1,4 @@
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';

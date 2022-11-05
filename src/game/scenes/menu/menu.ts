@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
 import { registerAudioAssets } from '~lib/assets';
-import { ComponentAbout } from '~game/scenes/menu/components/content/about';
-import { ComponentControls } from '~game/scenes/menu/components/content/controls';
-import { ComponentDifficulty } from '~game/scenes/menu/components/content/difficulty';
-import { ComponentMenu } from '~game/scenes/menu/components/menu';
-import { Level } from '~game/scenes/world/level';
+import { ComponentAbout } from '~scene/menu/components/content/about';
+import { ComponentControls } from '~scene/menu/components/content/controls';
+import { ComponentDifficulty } from '~scene/menu/components/content/difficulty';
+import { ComponentMenu } from '~scene/menu/components/menu';
+import { Level } from '~scene/world/level';
 import { SceneKey } from '~type/game';
 import { MenuAudio } from '~type/menu';
 

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { Screen } from '~game/scenes/screen';
+import { Screen } from '~scene/screen';
 
 export type ComponentCreator<T = undefined> = (scene: Phaser.Scene, props?: T) => Phaser.GameObjects.Container;
 

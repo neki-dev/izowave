@@ -1,7 +1,7 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import { Component, scaleText, switchSize } from '~lib/interface';
 import { formatTime } from '~lib/utils';
-import { ComponentHelp } from '~game/scenes/screen/components/help';
+import { ComponentHelp } from '~scene/screen/components/help';
 import { NoticeType } from '~type/screen/notice';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { WaveAudio, WaveEvents } from '~type/world/wave';

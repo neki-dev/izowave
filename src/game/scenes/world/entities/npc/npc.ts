@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
-import { Sprite } from '~game/scenes/world/entities/sprite';
+import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
-import { World } from '~game/scenes/world';
-import { Level } from '~game/scenes/world/level';
-import { NavigatorTask } from '~game/scenes/world/level/navigator/task';
+import { World } from '~scene/world';
+import { Level } from '~scene/world/level';
+import { NavigatorTask } from '~scene/world/level/navigator/task';
 import { NPCData } from '~type/world/entities/npc';
 
 export class NPC extends Sprite {

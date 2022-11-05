@@ -1,7 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { Player } from '~game/scenes/world/entities/player';
-import { World } from '~game/scenes/world';
-import { Particles } from '~game/scenes/world/effects';
+import { Player } from '~entity/player';
+import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
 import { ScreenIcon } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
 import { BuildingVariant, BuildingTexture, BuildingParamItem } from '~type/world/entities/building';

@@ -1,10 +1,10 @@
-import { EnemyBat } from '~game/scenes/world/entities/npc/variants/enemy/variants/bat';
-import { EnemyBoss } from '~game/scenes/world/entities/npc/variants/enemy/variants/boss';
-import { EnemyBouche } from '~game/scenes/world/entities/npc/variants/enemy/variants/bouche';
-import { EnemyDemon } from '~game/scenes/world/entities/npc/variants/enemy/variants/demon';
-import { EnemyImpure } from '~game/scenes/world/entities/npc/variants/enemy/variants/impure';
-import { EnemyOverlord } from '~game/scenes/world/entities/npc/variants/enemy/variants/overlord';
-import { EnemyUndead } from '~game/scenes/world/entities/npc/variants/enemy/variants/undead';
+import { EnemyBat } from '~entity/npc/variants/enemy/variants/bat';
+import { EnemyBoss } from '~entity/npc/variants/enemy/variants/boss';
+import { EnemyBouche } from '~entity/npc/variants/enemy/variants/bouche';
+import { EnemyDemon } from '~entity/npc/variants/enemy/variants/demon';
+import { EnemyImpure } from '~entity/npc/variants/enemy/variants/impure';
+import { EnemyOverlord } from '~entity/npc/variants/enemy/variants/overlord';
+import { EnemyUndead } from '~entity/npc/variants/enemy/variants/undead';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 
 export const ENEMIES: Record<EnemyVariant, any> = {

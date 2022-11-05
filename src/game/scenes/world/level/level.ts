@@ -6,7 +6,7 @@ import {
   LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT, LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType,
 } from '~type/world/level';

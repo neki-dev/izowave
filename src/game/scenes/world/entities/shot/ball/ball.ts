@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
-import { Enemy } from '~game/scenes/world/entities/npc/variants/enemy';
+import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
-import { World } from '~game/scenes/world';
-import { Particles } from '~game/scenes/world/effects';
-import { Level } from '~game/scenes/world/level';
+import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
+import { Level } from '~scene/world/level';
 import { ParticlesType } from '~type/world/effects';
 import {
   ShotParams, ShotBallData, ShotParent, ShotBallAudio, ShotBallTexture,

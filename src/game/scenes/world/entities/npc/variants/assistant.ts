@@ -1,12 +1,12 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
-import { NPC } from '~game/scenes/world/entities/npc';
-import { Enemy } from '~game/scenes/world/entities/npc/variants/enemy';
-import { ShotBallFire } from '~game/scenes/world/entities/shot/ball/variants/fire';
+import { NPC } from '~entity/npc';
+import { Enemy } from '~entity/npc/variants/enemy';
+import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth, selectClosest } from '~lib/utils';
-import { World } from '~game/scenes/world';
-import { Effect } from '~game/scenes/world/effects';
+import { World } from '~scene/world';
+import { Effect } from '~scene/world/effects';
 import { EffectTexture } from '~type/world/effects';
 import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/npc/assistant';
 import { ShotParams } from '~type/world/entities/shot';

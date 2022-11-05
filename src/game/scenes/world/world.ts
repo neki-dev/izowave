@@ -8,18 +8,18 @@ import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/world/entities/enemy';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/world/level';
-import { Building } from '~game/scenes/world/entities/building';
-import { Chest } from '~game/scenes/world/entities/chest';
-import { NPC } from '~game/scenes/world/entities/npc';
-import { Assistant } from '~game/scenes/world/entities/npc/variants/assistant';
-import { Enemy } from '~game/scenes/world/entities/npc/variants/enemy';
-import { Player } from '~game/scenes/world/entities/player';
-import { ShotBall } from '~game/scenes/world/entities/shot/ball';
+import { Building } from '~entity/building';
+import { Chest } from '~entity/chest';
+import { NPC } from '~entity/npc';
+import { Assistant } from '~entity/npc/variants/assistant';
+import { Enemy } from '~entity/npc/variants/enemy';
+import { Player } from '~entity/player';
+import { ShotBall } from '~entity/shot/ball';
 import { entries } from '~lib/system';
 import { selectClosest } from '~lib/utils';
-import { Builder } from '~game/scenes/world/builder';
-import { Level } from '~game/scenes/world/level';
-import { Wave } from '~game/scenes/world/wave';
+import { Builder } from '~scene/world/builder';
+import { Level } from '~scene/world/level';
+import { Wave } from '~scene/world/wave';
 import { SceneKey } from '~type/game';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';

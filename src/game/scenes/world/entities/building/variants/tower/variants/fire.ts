@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ShotBallFire } from '~game/scenes/world/entities/shot/ball/variants/fire';
-import { World } from '~game/scenes/world';
+import { ShotBallFire } from '~entity/shot/ball/variants/fire';
+import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingParamItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 

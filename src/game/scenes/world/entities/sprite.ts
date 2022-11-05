@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 
 import { WORLD_COLLIDE_LOOK } from '~const/world';
 import { equalPositions } from '~lib/utils';
-import { World } from '~game/scenes/world';
-import { Particles } from '~game/scenes/world/effects';
-import { Level } from '~game/scenes/world/level';
-import { Live } from '~game/scenes/world/live';
+import { World } from '~scene/world';
+import { Particles } from '~scene/world/effects';
+import { Level } from '~scene/world/level';
+import { Live } from '~scene/world/live';
 import { ParticlesType } from '~type/world/effects';
 import { LiveEvents } from '~type/world/entities/live';
 import { SpriteData } from '~type/world/entities/sprite';

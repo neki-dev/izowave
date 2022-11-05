@@ -3,13 +3,13 @@ import Phaser from 'phaser';
 import { AUDIO_VOLUME, CONTAINER_ID } from '~const/core';
 import { DIFFICULTY_POWERS } from '~const/world/difficulty';
 import { Analytics } from '~game/analytics';
-import { Basic } from '~game/scenes/basic';
-import { Menu } from '~game/scenes/menu';
-import { Screen } from '~game/scenes/screen';
-import { World } from '~game/scenes/world';
 import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
 import { entries, keys } from '~lib/system';
+import { Basic } from '~scene/basic';
+import { Menu } from '~scene/menu';
+import { Screen } from '~scene/screen';
+import { World } from '~scene/world';
 import { GameDifficulty, GameEvents, GameStat } from '~type/game';
 
 export class Game extends Phaser.Game {

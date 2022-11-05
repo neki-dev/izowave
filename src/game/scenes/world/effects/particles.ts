@@ -1,5 +1,5 @@
 import { registerImageAssets } from '~lib/assets';
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import {
   ParticlesTexture, ParticlesType, ParticlesData, ParticlesParent,
 } from '~type/world/effects';

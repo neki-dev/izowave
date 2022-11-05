@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ShotLazer } from '~game/scenes/world/entities/shot/lazer';
-import { World } from '~game/scenes/world';
+import { ShotLazer } from '~entity/shot/lazer';
+import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { BuildingParamItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 

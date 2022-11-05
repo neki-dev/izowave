@@ -1,16 +1,16 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ComponentBar } from '~game/scenes/screen/components/bar';
-import { ComponentBuilder } from '~game/scenes/screen/components/builder';
-import { ComponentFPS } from '~game/scenes/screen/components/fps';
-import { ComponentGameOver } from '~game/scenes/screen/components/gameover';
-import { ComponentNotices } from '~game/scenes/screen/components/notices';
-import { ComponentResources } from '~game/scenes/screen/components/resources';
-import { ComponentWave } from '~game/scenes/screen/components/wave';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { switchSize } from '~lib/interface';
 import { calcGrowth } from '~lib/utils';
+import { ComponentBar } from '~scene/screen/components/bar';
+import { ComponentBuilder } from '~scene/screen/components/builder';
+import { ComponentFPS } from '~scene/screen/components/fps';
+import { ComponentGameOver } from '~scene/screen/components/gameover';
+import { ComponentNotices } from '~scene/screen/components/notices';
+import { ComponentResources } from '~scene/screen/components/resources';
+import { ComponentWave } from '~scene/screen/components/wave';
 import { GameEvents, GameStat, SceneKey } from '~type/game';
 import { ScreenAudio, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';

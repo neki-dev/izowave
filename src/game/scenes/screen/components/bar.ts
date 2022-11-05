@@ -1,6 +1,6 @@
 import { INTERFACE_FONT } from '~const/interface';
 import { Component, scaleText, switchSize } from '~lib/interface';
-import { ComponentAdditions } from '~game/scenes/screen/components/additions';
+import { ComponentAdditions } from '~scene/screen/components/additions';
 
 type Props = {
   display: () => string

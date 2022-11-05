@@ -1,13 +1,13 @@
 import { CONTROL_KEY } from '~const/controls';
 import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { Building } from '~game/scenes/world/entities/building';
-import { BuildingAmmunition } from '~game/scenes/world/entities/building/variants/ammunition';
-import { Enemy } from '~game/scenes/world/entities/npc/variants/enemy';
-import { ShotBall } from '~game/scenes/world/entities/shot/ball';
-import { ShotLazer } from '~game/scenes/world/entities/shot/lazer';
+import { Building } from '~entity/building';
+import { BuildingAmmunition } from '~entity/building/variants/ammunition';
+import { Enemy } from '~entity/npc/variants/enemy';
+import { ShotBall } from '~entity/shot/ball';
+import { ShotLazer } from '~entity/shot/lazer';
 import { calcGrowth, selectClosest } from '~lib/utils';
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {

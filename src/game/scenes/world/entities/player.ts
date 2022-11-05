@@ -4,12 +4,12 @@ import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS } from '~const/world/entities/player';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/world/level';
-import { Chest } from '~game/scenes/world/entities/chest';
-import { Assistant } from '~game/scenes/world/entities/npc/variants/assistant';
-import { Sprite } from '~game/scenes/world/entities/sprite';
+import { Chest } from '~entity/chest';
+import { Assistant } from '~entity/npc/variants/assistant';
+import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { aroundPosition, calcGrowth } from '~lib/utils';
-import { World } from '~game/scenes/world';
+import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';
 import {
   PlayerEvents, PlayerTexture, MovementDirection, PlayerAudio,
