@@ -252,7 +252,11 @@ export const ComponentBuilder = Component(function (container) {
         break;
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
-        addHelp(BuildingVariant.TOWER_FIRE, 'Build fire tower to defend yourself from enemies');
+        addHelp(BuildingVariant.TOWER_FIRE, 'Build tower to defend yourself from enemies');
+        break;
+      }
+      case TutorialStep.BUILD_AMMUNITION: {
+        addHelp(BuildingVariant.AMMUNITION, 'Build ammunition for reload tower ammo');
         break;
       }
       default: return;

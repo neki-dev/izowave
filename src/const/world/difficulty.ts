@@ -34,7 +34,8 @@ export const DIFFICULTY = {
    * Wave
    */
 
-  WAVE_PAUSE: 30000, // Pause in milliseconds between waves
+  WAVE_PAUSE: 20000, // Pause in milliseconds between waves
+  WAVE_PAUSE_GROWTH: 0.135, // Pause growth by wave number
   WAVE_ENEMIES_COUNT: 5, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.5, // Enemies count growth by wave number
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Default pause in milliseconds between enemies spawn
@@ -57,8 +58,8 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH_GROWTH: 0.17, // Enemy health growth by wave number
-  ENEMY_SPEED_GROWTH: 0.058, // Enemy speed growth by wave number
+  ENEMY_HEALTH_GROWTH: 0.16, // Enemy health growth by wave number
+  ENEMY_SPEED_GROWTH: 0.056, // Enemy speed growth by wave number
   ENEMY_DAMAGE_GROWTH: 0.06, // Enemy damage growth by wave number
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.07, // Experience growth by wave number
@@ -132,7 +133,7 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_COST: 30, // Generator cost
   BUILDING_GENERATOR_HEALTH: 400, // Generator health
   BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * (wave_number / 5))
-  BUILDING_GENERATOR_GENERATE_PAUSE: 1700, // Generator pause between resource generations
+  BUILDING_GENERATOR_GENERATE_PAUSE: 1500, // Generator pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Maximum amount of resources that generator can
   BUILDING_GENERATOR_RESOURCES_UPGRADE: 100, // Amount of resources added per upgrade (N * upgrade_level)
 
@@ -155,7 +156,7 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_COST: 80, // Medic cost
   BUILDING_MEDIC_HEALTH: 150, // Medic health
   BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * (wave_number / 5))
-  BUILDING_MEDIC_ALLOW_BY_WAVE: 4, // Minimal wave for allow medic
+  BUILDING_MEDIC_ALLOW_BY_WAVE: 5, // Minimal wave for allow medic
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Medic heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Medic heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Default medic heal

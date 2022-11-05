@@ -8,7 +8,7 @@ const world = {
   spawnEnemy: jest.fn(),
   game: {
     tutorial: {
-      step: TutorialStep.DONE,
+      step: TutorialStep.IDLE,
       on: jest.fn(),
     },
   },

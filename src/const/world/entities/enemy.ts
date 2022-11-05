@@ -51,7 +51,7 @@ export const ENEMY_VARIANTS_META: EnemyVariantsMeta = {
     spawnFrequency: 3,
   },
   [EnemyVariant.UNDEAD]: {
-    spawnMinWave: 5,
+    spawnMinWave: 6,
     spawnFrequency: 2,
   },
   [EnemyVariant.IMPURE]: {

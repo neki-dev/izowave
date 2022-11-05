@@ -10,6 +10,7 @@ import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
+import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
 
@@ -75,7 +76,7 @@ export class Wave extends EventEmitter {
     this.scene.game.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
       if (step === TutorialStep.WAVE_TIMELEFT) {
         setTimeout(() => {
-          this.scene.game.tutorial.complete();
+          this.scene.game.tutorial.progress(TutorialStep.IDLE);
         }, 5000);
       }
     });
@@ -115,10 +116,14 @@ export class Wave extends EventEmitter {
   public setTimeleft() {
     let pause: number;
 
-    if (this.scene.game.tutorial.step === TutorialStep.DONE) {
-      pause = (DIFFICULTY.WAVE_PAUSE + this.number * 1000) / this.scene.difficulty;
-    } else {
+    if (this.scene.isTimerPaused()) {
       pause = 5000;
+    } else {
+      pause = calcGrowth(
+        DIFFICULTY.WAVE_PAUSE,
+        DIFFICULTY.WAVE_PAUSE_GROWTH,
+        this.number + 1,
+      ) / this.scene.difficulty;
     }
 
     this.nextWaveTimestamp = this.scene.getTimerNow() + pause;
@@ -135,7 +140,7 @@ export class Wave extends EventEmitter {
    * Skip timeleft.
    */
   public skipTimeleft() {
-    if (this.isGoing || this.scene.game.tutorial.step !== TutorialStep.DONE) {
+    if (this.isGoing || this.scene.isTimerPaused()) {
       return;
     }
 
@@ -167,6 +172,11 @@ export class Wave extends EventEmitter {
     this.scene.sound.play(WaveAudio.START);
 
     this.emit(WaveEvents.START, this.number);
+
+    // Tutorial progress
+    if (this.scene.game.tutorial.step === TutorialStep.UPGRADE_BUILDING) {
+      this.scene.game.tutorial.progress(TutorialStep.IDLE);
+    }
   }
 
   /**
@@ -180,6 +190,19 @@ export class Wave extends EventEmitter {
     this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.emit(WaveEvents.COMPLETE, this.number);
+
+    // Tutorial progress
+    if (this.scene.game.tutorial.step === TutorialStep.IDLE) {
+      if (this.number === 1) {
+        this.scene.game.tutorial.progress(TutorialStep.UPGRADE_BUILDING);
+      } else if (this.number === 2) {
+        if (this.scene.selectBuildings(BuildingVariant.AMMUNITION).length === 0) {
+          this.scene.game.tutorial.progress(TutorialStep.BUILD_AMMUNITION);
+        } else {
+          this.scene.game.tutorial.progress(TutorialStep.IDLE);
+        }
+      }
+    }
 
     trackProgressionEvent({
       world: this.scene,

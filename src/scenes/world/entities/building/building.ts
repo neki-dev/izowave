@@ -9,6 +9,7 @@ import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
 import { ComponentCost } from '~scene/screen/components/building-info/cost';
+import { ComponentHelp } from '~scene/screen/components/help';
 import { World } from '~scene/world';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
@@ -16,6 +17,7 @@ import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { ScreenIcon, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
+import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
@@ -67,6 +69,11 @@ export class Building extends Phaser.GameObjects.Image {
    * Building info UI component.
    */
   private info: Nullable<Phaser.GameObjects.Container> = null;
+
+  /**
+   * Building help UI component.
+   */
+  private help: Nullable<Phaser.GameObjects.Container> = null;
 
   /**
    * Alert.
@@ -180,6 +187,28 @@ export class Building extends Phaser.GameObjects.Image {
       this.onUnfocus();
       this.onUnclick();
     });
+
+    // Tutorial help
+
+    if (variant === BuildingVariant.TOWER_FIRE) {
+      this.scene.game.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
+        if (step === TutorialStep.UPGRADE_BUILDING) {
+          this.help = ComponentHelp(this.scene, {
+            message: 'Click on building to upgrade',
+            side: 'top',
+          });
+
+          this.help.setDepth(WORLD_DEPTH_UI);
+          this.help.setPosition(
+            this.x,
+            this.y + TILE_META.height,
+          );
+        } else if (this.help) {
+          this.help.destroy();
+          this.help = null;
+        }
+      });
+    }
   }
 
   /**
@@ -356,6 +385,11 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.scene.sound.play(BuildingAudio.UPGRADE);
     this.scene.screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
+
+    // Tutorial progress
+    if (this.scene.game.tutorial.step === TutorialStep.UPGRADE_BUILDING) {
+      this.scene.game.tutorial.progress(TutorialStep.IDLE);
+    }
   }
 
   /**
@@ -540,6 +574,10 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
+    if (this.help) {
+      this.help.setVisible(false);
+    }
+
     this.info = ComponentBuildingInfo(this.scene, {
       name: this.getMeta().Name,
       upgradeLevel: () => this.upgradeLevel,
@@ -564,6 +602,10 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.info.destroy();
     this.info = null;
+
+    if (this.help) {
+      this.help.setVisible(true);
+    }
   }
 
   /**

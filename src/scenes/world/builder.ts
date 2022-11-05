@@ -343,8 +343,15 @@ export class Builder extends EventEmitter {
       case TutorialStep.BUILD_GENERATOR: {
         this.scene.game.tutorial.progress(TutorialStep.WAVE_TIMELEFT);
 
+        this.scene.setTimerPause(false);
         this.clearBuildingVariant();
-        this.scene.unpauseProcess();
+        break;
+      }
+      case TutorialStep.BUILD_AMMUNITION: {
+        this.scene.game.tutorial.progress(TutorialStep.IDLE);
+
+        this.scene.setTimerPause(false);
+        this.clearBuildingVariant();
         break;
       }
       default: break;
@@ -358,11 +365,17 @@ export class Builder extends EventEmitter {
    */
   public isBuildingAllowedByTutorial(variant: BuildingVariant): boolean {
     switch (this.scene.game.tutorial.step) {
+      case TutorialStep.WAVE_TIMELEFT: {
+        return false;
+      }
       case TutorialStep.BUILD_TOWER_FIRE: {
         return (variant === BuildingVariant.TOWER_FIRE);
       }
       case TutorialStep.BUILD_GENERATOR: {
         return (variant === BuildingVariant.GENERATOR);
+      }
+      case TutorialStep.BUILD_AMMUNITION: {
+        return (variant === BuildingVariant.AMMUNITION);
       }
       default: {
         return true;

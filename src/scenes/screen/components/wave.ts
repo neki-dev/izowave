@@ -190,7 +190,7 @@ export const ComponentWave = Component(function (container) {
         if (
           currentTimeleft <= 5
           && ref.value.style.color !== INTERFACE_TEXT_COLOR.ERROR
-          && this.game.tutorial.step === TutorialStep.DONE
+          && this.game.tutorial.step > TutorialStep.WAVE_TIMELEFT
         ) {
           this.sound.play(WaveAudio.TICK);
 

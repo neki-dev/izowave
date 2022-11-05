@@ -3,7 +3,7 @@ import { Component, scaleText, switchSize } from '~lib/interface';
 
 type Props = {
   message: string
-  side: 'right' | 'left'
+  side: 'right' | 'left' | 'top'
 };
 
 export const ComponentHelp = Component<Props>(function (container, {
@@ -37,10 +37,12 @@ export const ComponentHelp = Component<Props>(function (container, {
     }),
   );
 
-  if (side === 'right') {
-    ref.message.setOrigin(1.0, 0.5);
-  } else {
+  if (side === 'left') {
     ref.message.setOrigin(0.0, 0.5);
+  } else if (side === 'right') {
+    ref.message.setOrigin(1.0, 0.5);
+  } else if (side === 'top') {
+    ref.message.setOrigin(0.5, 0.0);
   }
 
   ref.message.useAdaptationBefore(() => {
@@ -56,9 +58,18 @@ export const ComponentHelp = Component<Props>(function (container, {
    */
 
   const size = switchSize(8);
+  let points: number[];
+
+  if (side === 'left') {
+    points = [0, -size, -size, 0, 0, size];
+  } else if (side === 'right') {
+    points = [0, -size, size, 0, 0, size];
+  } else if (side === 'top') {
+    points = [-size, 0, 0, -size, size, 0];
+  }
 
   container.add(
-    ref.pointer = this.add.triangle(0, 0, 0, -size, (side === 'right') ? size : -size, 0, 0, size, 0x000000),
+    ref.pointer = this.add.triangle(0, 0, ...points, 0x000000),
   );
 
   ref.pointer.setOrigin((side === 'right') ? 0.1 : 0.0, 0.0);
@@ -67,9 +78,21 @@ export const ComponentHelp = Component<Props>(function (container, {
    * Animation
    */
 
+  const movings: {
+    [key in string]: number
+  } = {};
+
+  if (side === 'left') {
+    movings.x = switchSize(10);
+  } else if (side === 'right') {
+    movings.x = -switchSize(10);
+  } else if (side === 'top') {
+    movings.y = switchSize(10);
+  }
+
   const tween = <Phaser.Tweens.Tween> this.tweens.add({
+    ...movings,
     targets: [ref.message, ref.pointer],
-    x: switchSize(10) * ((side === 'right') ? -1 : 1),
     duration: 500,
     ease: 'Linear',
     yoyo: true,

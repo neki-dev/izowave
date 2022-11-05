@@ -7,7 +7,7 @@ export class Tutorial extends EventEmitter {
    * Current step.
    */
   private _step: TutorialStep = IS_DEV_MODE
-    ? TutorialStep.DONE
+    ? TutorialStep.IDLE
     : TutorialStep.BUILD_TOWER_FIRE;
 
   public get step() { return this._step; }
@@ -23,12 +23,5 @@ export class Tutorial extends EventEmitter {
     this.step = step;
 
     this.emit(TutorialEvent.PROGRESS, step);
-  }
-
-  /**
-   * Complete tutorial.
-   */
-  public complete() {
-    this.progress(TutorialStep.DONE);
   }
 }

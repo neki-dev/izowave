@@ -1,10 +1,12 @@
 import { Tutorial } from '~lib/tutorial';
 
 export enum TutorialStep {
-  BUILD_TOWER_FIRE = 'BUILD_TOWER_FIRE',
-  BUILD_GENERATOR = 'BUILD_GENERATOR',
-  WAVE_TIMELEFT = 'WAVE_TIMELEFT',
-  DONE = 'DONE',
+  BUILD_TOWER_FIRE = 0,
+  BUILD_GENERATOR = 1,
+  WAVE_TIMELEFT = 2,
+  UPGRADE_BUILDING = 3,
+  BUILD_AMMUNITION = 4,
+  IDLE = 999,
 }
 
 export enum TutorialEvent {

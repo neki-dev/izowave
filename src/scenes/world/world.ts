@@ -124,7 +124,7 @@ export class World extends Phaser.Scene {
   private enemySpawnPositions: Phaser.Types.Math.Vector2Like[] = [];
 
   /**
-   * Global game timer.
+   * Global lifecycle timer.
    */
   private timer: Phaser.Time.TimerEvent;
 
@@ -173,7 +173,7 @@ export class World extends Phaser.Scene {
 
     this.timer = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
-      paused: (this.game.tutorial.step !== TutorialStep.DONE),
+      paused: (this.game.tutorial.step !== TutorialStep.IDLE),
     });
 
     this.sound.setVolume(AUDIO_VOLUME);
@@ -190,10 +190,19 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   *
+   * Get game timer pause state.
    */
-  public unpauseProcess() {
-    this.timer.paused = false;
+  public isTimerPaused(): boolean {
+    return this.timer.paused;
+  }
+
+  /**
+   * Set game timer pause state.
+   *
+   * @param state - Pause state
+   */
+  public setTimerPause(state: boolean) {
+    this.timer.paused = state;
   }
 
   /**
