@@ -1,0 +1,172 @@
+import { INTERFACE_BOX_COLOR, INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
+import { ComponentActions } from '~game/scenes/screen/components/building-info/actions';
+import { ComponentParams } from '~game/scenes/screen/components/building-info/params';
+import { ComponentUpgradeLevel } from '~game/scenes/screen/components/building-info/upgrade-level';
+import { BuildingParamItem } from '~type/world/entities/building';
+
+type Props = {
+  name: string
+  upgradeLevel: () => number
+  params: () => BuildingParamItem[]
+  actions: () => Array<{
+    label: string
+    onClick: () => void
+  }>
+};
+
+export const ComponentBuildingInfo = Component<Props>(function (container, {
+  name, upgradeLevel, params, actions,
+}) {
+  const ref: {
+    body?: Phaser.GameObjects.Rectangle
+    name?: Phaser.GameObjects.Text
+    upgradeLevel?: Phaser.GameObjects.Container
+    params?: Phaser.GameObjects.Container
+    pointer?: Phaser.GameObjects.Triangle
+    actions?: Phaser.GameObjects.Container
+  } = {};
+
+  const state: {
+    lines: number
+  } = { lines: null };
+
+  /**
+   * Adaptation
+   */
+
+  container.useAdaptationBefore(() => {
+    // eslint-disable-next-line no-param-reassign
+    container.width = switchSize(220);
+  });
+
+  container.useAdaptationAfter(() => {
+    // eslint-disable-next-line no-param-reassign
+    container.height = ref.params.y + ref.params.height + switchSize(12);
+
+    ref.actions.refreshAdaptation();
+    ref.pointer.refreshAdaptation();
+  });
+
+  /**
+   * Creating
+   */
+
+  /**
+   * Body
+   */
+
+  container.add(
+    ref.body = this.add.rectangle(0, 0, 0, 0, INTERFACE_BOX_COLOR.BLUE, 0.8),
+  );
+
+  ref.body.setOrigin(0.0, 0.0);
+  ref.body.useAdaptationBefore(() => {
+    ref.body.setSize(container.width, container.height);
+  });
+
+  /**
+   * Name
+   */
+
+  container.add(
+    ref.name = this.add.text(0, 0, name, {
+      resolution: window.devicePixelRatio,
+      fontFamily: INTERFACE_FONT.PIXEL,
+      color: INTERFACE_TEXT_COLOR.PRIMARY,
+      shadow: {
+        color: '#332717',
+        fill: true,
+      },
+    }),
+  );
+
+  ref.name.useAdaptationBefore(() => {
+    scaleText(ref.name, 18, true);
+    ref.name.setPosition(
+      switchSize(12),
+      switchSize(12),
+    );
+  });
+
+  /**
+   * Upgrade level
+   */
+
+  container.add(
+    ref.upgradeLevel = ComponentUpgradeLevel(this, {
+      value: upgradeLevel,
+    }),
+  );
+
+  ref.upgradeLevel.useAdaptationBefore(() => {
+    ref.upgradeLevel.setPosition(
+      switchSize(12),
+      ref.name.y + ref.name.height + switchSize(6),
+    );
+  });
+
+  /**
+   * Params
+   */
+
+  container.add(
+    ref.params = ComponentParams(this, { params }),
+  );
+
+  ref.params.useAdaptationBefore(() => {
+    ref.params.setPosition(
+      switchSize(12),
+      ref.upgradeLevel.y + ref.upgradeLevel.height + switchSize(12),
+    );
+  });
+
+  /**
+   * Pointer
+   */
+
+  const size = switchSize(10);
+
+  ref.pointer = this.add.triangle(0, 0, -size, 0, size, 0, 0, size, ref.body.fillColor, ref.body.fillAlpha);
+  container.add(ref.pointer);
+
+  ref.pointer.setOrigin(0.0, 0.0);
+  ref.pointer.useAdaptationBefore(() => {
+    ref.pointer.setPosition(
+      container.width / 2,
+      container.height,
+    );
+  });
+
+  /**
+   * Actions
+   */
+
+  container.add(
+    ref.actions = ComponentActions(this, { actions }),
+  );
+
+  ref.actions.useAdaptationBefore(() => {
+    ref.actions.setPosition(
+      (container.width / 2) - (ref.actions.width / 2),
+      container.height + switchSize(60),
+    );
+  });
+
+  /**
+   * Updating
+   */
+
+  return {
+    update: () => {
+      const currentParams = params();
+
+      if (state.lines !== currentParams.length) {
+        state.lines = currentParams.length;
+
+        container.refreshAdaptation(false);
+        ref.body.refreshAdaptation();
+      }
+    },
+  };
+});

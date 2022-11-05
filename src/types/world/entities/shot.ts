@@ -1,8 +1,8 @@
-import { BuildingTower } from '~entity/building/variants/tower';
-import { Assistant } from '~entity/npc/variants/assistant';
-import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
-import { ShotLazer } from '~entity/shot/lazer';
+import { BuildingTower } from '~game/scenes/world/entities/building/variants/tower';
+import { Assistant } from '~game/scenes/world/entities/npc/variants/assistant';
+import { ShotBallFire } from '~game/scenes/world/entities/shot/ball/variants/fire';
+import { ShotBallFrozen } from '~game/scenes/world/entities/shot/ball/variants/frozen';
+import { ShotLazer } from '~game/scenes/world/entities/shot/lazer';
 
 export type ShotInstance = typeof ShotLazer | typeof ShotBallFire | typeof ShotBallFrozen;
 

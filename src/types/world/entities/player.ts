@@ -13,13 +13,6 @@ export enum PlayerAudio {
   DEAD = 'player/dead',
 }
 
-export type PlayerStat = {
-  waves?: number
-  kills?: number
-  level?: number
-  lived?: number
-};
-
 export enum MovementDirection {
   LEFT = -1,
   RIGHT = 1,

@@ -1,10 +1,10 @@
-import { BuildingAmmunition } from '~entity/building/variants/ammunition';
-import { BuildingGenerator } from '~entity/building/variants/generator';
-import { BuildingMedic } from '~entity/building/variants/medic';
-import { BuildingTowerFire } from '~entity/building/variants/tower/variants/fire';
-import { BuildingTowerFrozen } from '~entity/building/variants/tower/variants/frozen';
-import { BuildingTowerLazer } from '~entity/building/variants/tower/variants/lazer';
-import { BuildingWall } from '~entity/building/variants/wall';
+import { BuildingAmmunition } from '~game/scenes/world/entities/building/variants/ammunition';
+import { BuildingGenerator } from '~game/scenes/world/entities/building/variants/generator';
+import { BuildingMedic } from '~game/scenes/world/entities/building/variants/medic';
+import { BuildingTowerFire } from '~game/scenes/world/entities/building/variants/tower/variants/fire';
+import { BuildingTowerFrozen } from '~game/scenes/world/entities/building/variants/tower/variants/frozen';
+import { BuildingTowerLazer } from '~game/scenes/world/entities/building/variants/tower/variants/lazer';
+import { BuildingWall } from '~game/scenes/world/entities/building/variants/wall';
 import { BuildingVariant } from '~type/world/entities/building';
 
 export const BUILDINGS: Record<BuildingVariant, any> = {

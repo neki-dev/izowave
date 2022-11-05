@@ -1,4 +1,4 @@
-import { DifficultyPowers } from '~type/world/difficulty';
+import { GameDifficultyPowers } from '~type/game';
 
 export const DIFFICULTY = {
   /**
@@ -162,7 +162,7 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Default medic heal
 };
 
-export const DIFFICULTY_POWERS: DifficultyPowers = {
+export const DIFFICULTY_POWERS: GameDifficultyPowers = {
   EASY: 0.8,
   NORMAL: 1.0,
   HARD: 1.3,

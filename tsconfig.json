@@ -9,8 +9,10 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "~entity/*": ["./src/scenes/world/entities/*"],
-      "~scene/*": ["./src/scenes/*"],
+      "~entity/*": ["./src/game/scenes/world/entities/*"],
+      "~scene/*": ["./src/game/scenes/*"],
+      "~game/*": ["./src/game/*"],
+      "~game": ["./src/game"],
       "~type/*": ["./src/types/*"],
       "~const/*": ["./src/const/*"],
       "~lib/*": ["./src/lib/*"]
