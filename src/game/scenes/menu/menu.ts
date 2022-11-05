@@ -15,19 +15,13 @@ import { Game } from '~game';
 export class Menu extends Phaser.Scene {
   readonly game: Game;
 
-  private pauseMode: boolean = false;
-
   constructor() {
     super(SceneKey.MENU);
   }
 
-  public create({
-    pauseMode = false,
-  }) {
-    this.pauseMode = pauseMode;
-
+  public create() {
     ComponentMenu(this, {
-      menuItems: [...(this.pauseMode ? [{
+      menuItems: [...(this.game.paused ? [{
         label: 'Continue',
         onClick: () => {
           this.game.resumeGame();
@@ -48,7 +42,7 @@ export class Menu extends Phaser.Scene {
       }]), {
         label: 'Difficulty',
         content: () => ComponentDifficulty(this, {
-          disabled: this.pauseMode,
+          disabled: this.game.paused,
         }),
       }, {
         label: 'About',
@@ -60,19 +54,9 @@ export class Menu extends Phaser.Scene {
       }].filter((item) => item),
     });
 
-    this.bindKeyboard();
-
-    if (!this.pauseMode) {
+    if (!this.game.paused) {
       this.setCameraPreview();
-    }
-  }
 
-  private bindKeyboard() {
-    if (this.pauseMode) {
-      this.input.keyboard.once(CONTROL_KEY.PAUSE, () => {
-        this.game.resumeGame();
-      });
-    } else {
       this.input.keyboard.once(CONTROL_KEY.START, () => {
         this.game.startGame();
       });

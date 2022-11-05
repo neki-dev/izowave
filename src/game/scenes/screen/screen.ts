@@ -7,11 +7,10 @@ import { calcGrowth } from '~lib/utils';
 import { ComponentBar } from '~scene/screen/components/bar';
 import { ComponentBuilder } from '~scene/screen/components/builder';
 import { ComponentFPS } from '~scene/screen/components/fps';
-import { ComponentGameOver } from '~scene/screen/components/gameover';
 import { ComponentNotices } from '~scene/screen/components/notices';
 import { ComponentResources } from '~scene/screen/components/resources';
 import { ComponentWave } from '~scene/screen/components/wave';
-import { GameEvents, GameStat, SceneKey } from '~type/game';
+import { SceneKey } from '~type/game';
 import { ScreenAudio, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { LiveEvents } from '~type/world/entities/live';
@@ -164,12 +163,6 @@ export class Screen extends Phaser.Scene {
      */
 
     components.registerAdaptive();
-
-    this.game.events.on(GameEvents.GAMEOVER, (stat: GameStat, record: GameStat) => {
-      components.destroy();
-
-      ComponentGameOver(this, { stat, record });
-    });
   }
 
   /**

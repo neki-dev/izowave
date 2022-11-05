@@ -1,10 +1,10 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
 import { Component, scaleText } from '~lib/interface';
-import { PlayerStat } from '~type/world/entities/player';
+import { GameStat } from '~type/game';
 
 type Props = {
-  stat: PlayerStat
-  record: PlayerStat
+  stat: GameStat
+  record: GameStat
 };
 
 export const ComponentGameOver = Component<Props>(function (container, {

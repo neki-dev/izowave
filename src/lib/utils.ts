@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { MIN_VALID_SCREEN_SIZE } from '~const/core';
+import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 
 /**
  * Quadratic equation for calculating difficulty

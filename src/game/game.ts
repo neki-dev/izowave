@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { AUDIO_VOLUME, CONTAINER_ID } from '~const/core';
+import { AUDIO_VOLUME, CONTAINER_ID } from '~const/game';
 import { DIFFICULTY_POWERS } from '~const/world/difficulty';
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
@@ -31,6 +31,15 @@ export class Game extends Phaser.Game {
   public get started() { return this._started; }
 
   private set started(v) { this._started = v; }
+
+  /**
+   * Game is paused.
+   */
+  private _paused: boolean = false;
+
+  public get paused() { return this._paused; }
+
+  private set paused(v) { this._paused = v; }
 
   /**
    * Game is finished.
@@ -132,18 +141,20 @@ export class Game extends Phaser.Game {
    * Pause game.
    */
   public pauseGame() {
+    this.paused = true;
+
     this.world.scene.pause();
     this.screen.scene.pause();
 
-    this.scene.systemScene.scene.launch(this.menu, {
-      pauseMode: true,
-    });
+    this.scene.systemScene.scene.launch(this.menu);
   }
 
   /**
    * Resume game.
    */
   public resumeGame() {
+    this.paused = false;
+
     this.scene.systemScene.scene.stop(this.menu);
 
     this.world.scene.resume();
@@ -162,8 +173,10 @@ export class Game extends Phaser.Game {
     this.scene.systemScene.scene.stop(this.menu);
     this.scene.systemScene.scene.launch(this.screen);
 
+    this.events.emit(GameEvents.START);
+
     if (!IS_DEV_MODE) {
-      window.onbeforeunload = function confirm() {
+      window.onbeforeunload = function confirmLeave() {
         return 'Leave game? No saves!';
       };
     }
@@ -176,6 +189,8 @@ export class Game extends Phaser.Game {
     this.started = false;
 
     this.scene.systemScene.scene.stop(this.menu);
+    this.scene.systemScene.scene.stop(this.screen);
+
     this.tutorial.disable();
 
     if (!IS_DEV_MODE) {
@@ -187,10 +202,14 @@ export class Game extends Phaser.Game {
    * Restart game.
    */
   public restartGame() {
-    this.stopGame();
+    if (this.started) {
+      this.stopGame();
+    }
 
-    this.world.scene.restart({
-      autoStart: true,
+    this.world.scene.restart();
+
+    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
+      this.startGame();
     });
   }
 
@@ -205,9 +224,11 @@ export class Game extends Phaser.Game {
     const record = this.readBestStat();
     const stat = this.getCurrentStat();
 
-    this.writeBestStat(stat, record);
+    if (!IS_DEV_MODE) {
+      this.writeBestStat(stat, record);
+    }
 
-    this.events.emit(GameEvents.GAMEOVER, stat, record);
+    this.events.emit(GameEvents.FINISH, stat, record);
 
     this.analytics.track({
       world: this.world,

@@ -1,4 +1,4 @@
-import { COPYRIGHT, REPOSITORY } from '~const/core';
+import { COPYRIGHT, REPOSITORY } from '~const/game';
 import { removeFailure, throwFailure } from '~lib/state';
 import { isValidScreenSize, isMobileDevice } from '~lib/utils';
 import { FailureType } from '~type/state';

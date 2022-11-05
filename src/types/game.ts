@@ -6,7 +6,8 @@ export enum SceneKey {
 }
 
 export enum GameEvents {
-  GAMEOVER = 'gameover',
+  START = 'start',
+  FINISH = 'finish',
 }
 
 export enum GameDifficulty {

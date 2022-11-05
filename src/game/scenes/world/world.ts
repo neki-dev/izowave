@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_FIND_PATH_RATE } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
@@ -112,21 +111,13 @@ export class World extends Phaser.Scene {
   /**
    * Create world.
    */
-  public create({
-    autoStart = false,
-  }) {
+  public create() {
     this.registerOptimization();
     this.registerParticles();
 
     this.makeLevel();
     this.addLifecycle();
     this.enableCheats();
-
-    if (autoStart) {
-      this.game.startGame();
-    } else {
-      this.scene.launch(SceneKey.MENU);
-    }
   }
 
   /**
@@ -142,14 +133,6 @@ export class World extends Phaser.Scene {
     this.addEntityColliders();
 
     this.level.hideTiles();
-
-    this.input.keyboard.on(CONTROL_KEY.PAUSE, () => {
-      if (this.game.finished) {
-        this.game.restartGame();
-      } else {
-        this.game.pauseGame();
-      }
-    });
   }
 
   /**

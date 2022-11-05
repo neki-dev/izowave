@@ -1,4 +1,4 @@
-import { COPYRIGHT } from '~const/core';
+import { COPYRIGHT } from '~const/game';
 import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
 import { Component, scaleText } from '~lib/interface';
 import { MenuItem } from '~type/menu';
