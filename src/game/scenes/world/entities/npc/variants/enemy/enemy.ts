@@ -185,19 +185,21 @@ export class Enemy extends NPC {
       },
     });
 
-    new Particles(this, {
-      type: ParticlesType.GLOW,
-      duration: 500,
-      params: {
-        x: this.x,
-        y: this.y,
-        lifespan: { min: 150, max: 250 },
-        scale: { start: 0.25, end: 0.0 },
-        speed: 100,
-        quantity: 2,
-        tint: 0x000,
-      },
-    });
+    if (this.visible) {
+      new Particles(this, {
+        type: ParticlesType.GLOW,
+        duration: 500,
+        params: {
+          x: this.x,
+          y: this.y,
+          lifespan: { min: 150, max: 250 },
+          scale: { start: 0.25, end: 0.0 },
+          speed: 100,
+          quantity: 2,
+          tint: 0x000,
+        },
+      });
+    }
   }
 }
 

@@ -24,14 +24,14 @@ export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipelin
         precision highmedp float;
         uniform sampler2D uMainSampler; 
         varying vec2 outTexCoord;
-        uniform vec2 texSize;
+        uniform vec2 imageSize;
         uniform float thickness;
         uniform vec3 outlineColor;
         const float DOUBLE_PI = 3.14159265358979323846264 * 2.;
         void main() {
           vec4 front = texture2D(uMainSampler, outTexCoord);
           if (thickness > 0.0) {
-            vec2 mag = vec2(thickness/texSize.x, thickness/texSize.y);
+            vec2 mag = vec2(thickness/imageSize.x, thickness/imageSize.y);
             vec4 curColor;
             float maxAlpha = front.a;
             vec2 offset;
@@ -58,7 +58,7 @@ export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipelin
   onPreRender() {
     this.set1f('thickness', this._size);
     this.set3f('outlineColor', this._color.redGL, this._color.greenGL, this._color.blueGL);
-    this.set2f('texSize', this.renderer.width, this.renderer.height);
+    this.set2f('imageSize', this.renderer.width, this.renderer.height);
   }
 
   setConfig({ size, color }: Config) {

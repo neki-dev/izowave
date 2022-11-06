@@ -650,15 +650,17 @@ export class Building extends Phaser.GameObjects.Image {
    * Break building.
    */
   private remove() {
-    new Effect(this.scene, {
-      texture: EffectTexture.SMOKE,
-      audio: BuildingAudio.REMOVE,
-      position: {
-        x: this.x,
-        y: this.y + TILE_META.halfHeight,
-      },
-      rate: 18,
-    });
+    if (this.visible) {
+      new Effect(this.scene, {
+        texture: EffectTexture.SMOKE,
+        audio: BuildingAudio.REMOVE,
+        position: {
+          x: this.x,
+          y: this.y + TILE_META.halfHeight,
+        },
+        rate: 18,
+      });
+    }
 
     this.destroy();
   }

@@ -124,21 +124,19 @@ export class ShotLazer extends Phaser.GameObjects.Line {
 
     this.target.live.damage(momentDamage);
 
-    if (!this.target.visible) {
-      return;
+    if (this.target.visible) {
+      new Particles(this.target, {
+        type: ParticlesType.GLOW,
+        duration: 150,
+        params: {
+          follow: this.target,
+          lifespan: { min: 100, max: 150 },
+          scale: { start: 0.2, end: 0.1 },
+          speed: 80,
+          tint: 0xb136ff,
+        },
+      });
     }
-
-    new Particles(this.target, {
-      type: ParticlesType.GLOW,
-      duration: 150,
-      params: {
-        follow: this.target,
-        lifespan: { min: 100, max: 150 },
-        scale: { start: 0.2, end: 0.1 },
-        speed: 80,
-        tint: 0xb136ff,
-      },
-    });
   }
 
   /**

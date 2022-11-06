@@ -20,10 +20,9 @@ Phaser.GameObjects.Image.prototype.addShader = function (shader: string, config?
 };
 
 Phaser.GameObjects.Image.prototype.updateShader = function (shader: string, config: object) {
-  const pipeline = this.getPostPipeline(shader);
+  const pipeline = this.postPipelines.find((p: any) => (p.name === shader));
 
   if (pipeline && pipeline.setConfig) {
-    // @ts-ignore
     pipeline.setConfig(config);
   }
 };

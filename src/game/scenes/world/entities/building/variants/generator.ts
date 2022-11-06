@@ -100,19 +100,21 @@ export class BuildingGenerator extends Building {
     this.scene.player.giveResources(1);
     this.amountLeft--;
 
-    new Particles(this, {
-      type: ParticlesType.BIT,
-      duration: 300,
-      params: {
-        x: this.x,
-        y: this.y + 10 - (this.upgradeLevel * 2.5),
-        lifespan: { min: 100, max: 200 },
-        scale: { start: 1.0, end: 0.5 },
-        speed: 70,
-        maxParticles: 6,
-        tint: 0x2dffb2,
-      },
-    });
+    if (this.visible) {
+      new Particles(this, {
+        type: ParticlesType.BIT,
+        duration: 300,
+        params: {
+          x: this.x,
+          y: this.y + 10 - (this.upgradeLevel * 2.5),
+          lifespan: { min: 100, max: 200 },
+          scale: { start: 1.0, end: 0.5 },
+          speed: 70,
+          maxParticles: 6,
+          tint: 0x2dffb2,
+        },
+      });
+    }
   }
 
   /**
