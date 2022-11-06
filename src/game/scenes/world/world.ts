@@ -6,7 +6,6 @@ import { ENEMIES } from '~const/world/entities/enemies';
 import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/world/entities/enemy';
-import { LEVEL_BUILDING_PATH_COST, LEVEL_CORNER_PATH_COST, LEVEL_MAP_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { Chest } from '~entity/chest';
 import { NPC } from '~entity/npc';
@@ -231,46 +230,6 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   * Update navigation points costs.
-   */
-  public refreshNavigationMeta() {
-    this.level.navigator.resetPointsCost();
-
-    for (let y = 0; y < this.level.size; y++) {
-      for (let x = 0; x < this.level.size; x++) {
-        if (this.level.navigator.matrix[y][x] === 1) {
-          for (let s = x - 1; s <= x + 1; s++) {
-            if (s !== x && this.level.navigator.matrix[y]?.[s] === 0) {
-              this.level.navigator.setPointCost(s, y, LEVEL_CORNER_PATH_COST);
-            }
-          }
-          for (let s = y - 1; s <= y + 1; s++) {
-            if (s !== y && this.level.navigator.matrix[s]?.[x] === 0) {
-              this.level.navigator.setPointCost(x, s, LEVEL_CORNER_PATH_COST);
-            }
-          }
-        }
-      }
-    }
-
-    for (const building of <Building[]> this.entityGroups.buildings.getChildren()) {
-      this.level.navigator.setPointCost(
-        building.positionAtMatrix.x,
-        building.positionAtMatrix.y,
-        LEVEL_BUILDING_PATH_COST,
-      );
-
-      for (let y = building.positionAtMatrix.y - 1; y <= building.positionAtMatrix.y + 1; y++) {
-        for (let x = building.positionAtMatrix.x - 1; x <= building.positionAtMatrix.x + 1; x++) {
-          if (this.level.getTile({ x, y, z: 0 }) && this.level.isFreePoint({ x, y, z: 1 })) {
-            this.level.navigator.setPointCost(x, y, LEVEL_CORNER_PATH_COST);
-          }
-        }
-      }
-    }
-  }
-
-  /**
    * Find NPC path to target.
    */
   private updateNPCPath() {
@@ -375,7 +334,7 @@ export class World extends Phaser.Scene {
 
     // Creating default chests
     const maxCount = Math.ceil(
-      Math.floor(LEVEL_MAP_SIZE * DIFFICULTY.CHEST_SPAWN_FACTOR) / this.game.difficulty,
+      Math.floor(this.level.size * DIFFICULTY.CHEST_SPAWN_FACTOR) / this.game.difficulty,
     );
 
     for (let i = 0; i < maxCount; i++) {
@@ -433,7 +392,7 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   *
+   * Add particles for effects.
    */
   private registerParticles() {
     for (const effect of Object.values(ParticlesType)) {
@@ -443,7 +402,7 @@ export class World extends Phaser.Scene {
   }
 
   /**
-   *
+   * Optimize depth sort.
    */
   private registerOptimization() {
     const ref = this.scene.systems.displayList;

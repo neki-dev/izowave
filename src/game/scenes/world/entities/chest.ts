@@ -47,22 +47,18 @@ export class Chest extends Phaser.GameObjects.Image {
     const waveNumber = this.scene.wave.getCurrentNumber();
 
     // Give resources
-
-    let amount = DIFFICULTY.CHEST_RESOURCES;
-
-    amount = calcGrowth(
+    const resources = calcGrowth(
       Phaser.Math.Between(
-        amount - Math.floor(amount * 0.5),
-        amount + Math.floor(amount * 0.5),
+        DIFFICULTY.CHEST_RESOURCES - Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
+        DIFFICULTY.CHEST_RESOURCES + Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
       ),
       DIFFICULTY.CHEST_RESOURCES_GROWTH,
       waveNumber,
     );
 
-    this.scene.player.giveResources(amount);
+    this.scene.player.giveResources(resources);
 
     // Give experience
-
     const experience = calcGrowth(
       DIFFICULTY.CHEST_EXPERIENCE,
       DIFFICULTY.CHEST_EXPERIENCE_GROWTH,

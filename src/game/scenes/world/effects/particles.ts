@@ -76,7 +76,7 @@ export class Particles {
       this.timer.destroy();
     }
 
-    this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy, this);
+    this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);
   }
 }
 

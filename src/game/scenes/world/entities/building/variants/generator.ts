@@ -1,6 +1,6 @@
 import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_RESOUCES_LEFT_ALERT } from '~const/world/entities/building';
+import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
@@ -59,7 +59,7 @@ export class BuildingGenerator extends Building {
       ...super.getInfo(), {
         label: 'RESOURCES',
         icon: ScreenIcon.RESOURCES,
-        color: (this.amountLeft < BUILDING_RESOUCES_LEFT_ALERT)
+        color: (this.amountLeft < BUILDING_RESOURCES_LEFT_ALERT)
           ? INTERFACE_TEXT_COLOR.WARN
           : undefined,
         value: this.amountLeft,
@@ -87,7 +87,7 @@ export class BuildingGenerator extends Building {
     } else {
       this.pauseActions();
 
-      if (this.amountLeft === BUILDING_RESOUCES_LEFT_ALERT) {
+      if (this.amountLeft === BUILDING_RESOURCES_LEFT_ALERT) {
         this.addAlert();
       }
     }

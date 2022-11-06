@@ -76,13 +76,13 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
     this.positionAtMatrix = positionAtMatrix;
     this.live = new Live(health);
 
+    this.addContainer();
+    this.addHealthIndicator();
+
     // Configure physics
 
     scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.setPushable(false);
-
-    this.addContainer();
-    this.addHealthIndicator();
 
     // Add events callbacks
 
