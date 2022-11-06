@@ -40,6 +40,13 @@ export enum BuildingAudio {
   RELOAD = 'building/reload',
 }
 
+export enum BuildingOutlineState {
+  NONE = 'NONE',
+  FOCUSED = 'FOCUSED',
+  SELECTED = 'SELECTED',
+  ALERT = 'ALERT',
+}
+
 export type BuildingActionsParams = {
   radius?: number
   pause?: number

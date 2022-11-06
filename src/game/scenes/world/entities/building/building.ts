@@ -23,7 +23,7 @@ import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
-  BuildingTexture, BuildingVariant, BuildingParamItem, BuildingMeta, BuildingAction,
+  BuildingTexture, BuildingVariant, BuildingParamItem, BuildingMeta, BuildingAction, BuildingOutlineState,
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { TileType } from '~type/world/level';
@@ -81,6 +81,16 @@ export class Building extends Phaser.GameObjects.Image {
   private alert: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
+   * Current outline state.
+   */
+  private outlineState: BuildingOutlineState = BuildingOutlineState.NONE;
+
+  /**
+   *
+   */
+  private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
+
+  /**
    * Action area.
    */
   private actionsArea: Phaser.GameObjects.Ellipse;
@@ -93,11 +103,6 @@ export class Building extends Phaser.GameObjects.Image {
   public get isFocused() { return this._isFocused; }
 
   private set isFocused(v) { this._isFocused = v; }
-
-  /**
-   *
-   */
-  private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
 
   /**
    * Select state.
@@ -227,6 +232,17 @@ export class Building extends Phaser.GameObjects.Image {
     if (this.alert) {
       this.alert.setVisible(this.visible);
     }
+
+    let outlineState = BuildingOutlineState.NONE;
+
+    if (this.isSelected) {
+      outlineState = BuildingOutlineState.SELECTED;
+    } else if (this.isFocused) {
+      outlineState = BuildingOutlineState.FOCUSED;
+    } else if (this.alert) {
+      outlineState = BuildingOutlineState.ALERT;
+    }
+    this.setOutline(outlineState);
   }
 
   /**
@@ -450,7 +466,6 @@ export class Building extends Phaser.GameObjects.Image {
     this.isFocused = true;
 
     this.scene.input.setDefaultCursor('pointer');
-    this.addOutline();
   }
 
   /**
@@ -464,9 +479,6 @@ export class Building extends Phaser.GameObjects.Image {
     this.isFocused = false;
 
     this.scene.input.setDefaultCursor('default');
-    if (!this.isSelected) {
-      this.removeOutline();
-    }
   }
 
   /**
@@ -481,9 +493,6 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(true);
     this.addInfo();
-    this.updateShader('OutlineShader', {
-      color: 0xd0ff4f,
-    });
   }
 
   /**
@@ -498,72 +507,51 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.actionsArea.setVisible(false);
     this.removeInfo();
-    this.removeOutline();
   }
 
   /**
-   * Add outline effect.
+   * Set outline state.
    */
-  private addOutline() {
-    if (this.outlineTween) {
+  private setOutline(state: BuildingOutlineState) {
+    if (this.outlineState === state) {
       return;
     }
 
-    this.addShader('OutlineShader', {
-      size: 0,
-      color: 0xffffff,
-    });
+    if (state === BuildingOutlineState.NONE) {
+      this.removeShader('OutlineShader');
 
-    this.outlineTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-      targets: this,
-      shaderSize: { from: 0, to: 3.0 },
-      duration: 350,
-      ease: 'Linear',
-      yoyo: true,
-      repeat: -1,
-      onUpdate: (_, __, ___, size: number) => {
-        this.updateShader('OutlineShader', { size });
-      },
-    });
-  }
+      this.outlineTween.destroy();
+      this.outlineTween = null;
+    } else {
+      const color: number = {
+        [BuildingOutlineState.FOCUSED]: 0xffffff,
+        [BuildingOutlineState.SELECTED]: 0xd0ff4f,
+        [BuildingOutlineState.ALERT]: 0xffa200,
+      }[state];
 
-  /**
-   * Remove outline effect.
-   */
-  private removeOutline() {
-    if (!this.outlineTween) {
-      return;
+      if (this.outlineState === BuildingOutlineState.NONE) {
+        this.addShader('OutlineShader', {
+          size: 0.0,
+          color,
+        });
+
+        this.outlineTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+          targets: this,
+          shaderSize: { from: 0.0, to: 3.0 },
+          duration: 350,
+          ease: 'Linear',
+          yoyo: true,
+          repeat: -1,
+          onUpdate: (_, __, ___, size: number) => {
+            this.updateShader('OutlineShader', { size });
+          },
+        });
+      } else {
+        this.updateShader('OutlineShader', { color });
+      }
     }
 
-    this.removeShader('OutlineShader');
-
-    this.outlineTween.destroy();
-    this.outlineTween = null;
-  }
-
-  /**
-   * Create action area.
-   */
-  private addActionArea() {
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight);
-    this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
-    this.actionsArea.setFillStyle(0xffffff, 0.2);
-    this.actionsArea.setVisible(false);
-
-    this.updateActionArea();
-  }
-
-  /**
-   * Update size and depth of action area.
-   */
-  private updateActionArea() {
-    const { persperctive, height, halfHeight } = TILE_META;
-    const d = this.getActionsRadius() * 2;
-    const out = height * 2;
-
-    this.actionsArea.setSize(d, d * persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
-    this.actionsArea.updateDisplayOrigin();
+    this.outlineState = state;
   }
 
   /**
@@ -616,22 +604,9 @@ export class Building extends Phaser.GameObjects.Image {
       return;
     }
 
-    this.alert = this.scene.add.image(this.x, this.y + TILE_META.halfHeight, ScreenTexture.ALERT);
+    this.alert = this.scene.add.image(this.x, this.y, ScreenTexture.ALERT);
     this.alert.setDepth(WORLD_DEPTH_EFFECT);
     this.alert.setVisible(this.visible);
-
-    const tween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-      targets: this.alert,
-      scale: 0.8,
-      duration: 500,
-      ease: 'Linear',
-      yoyo: true,
-      repeat: -1,
-    });
-
-    this.alert.on(Phaser.GameObjects.Events.DESTROY, () => {
-      tween.destroy();
-    });
   }
 
   /**
@@ -644,6 +619,31 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.alert.destroy();
     this.alert = null;
+  }
+
+  /**
+   * Create action area.
+   */
+  private addActionArea() {
+    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight);
+    this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
+    this.actionsArea.setFillStyle(0xffffff, 0.2);
+    this.actionsArea.setVisible(false);
+
+    this.updateActionArea();
+  }
+
+  /**
+   * Update size and depth of action area.
+   */
+  private updateActionArea() {
+    const { persperctive, height, halfHeight } = TILE_META;
+    const d = this.getActionsRadius() * 2;
+    const out = height * 2;
+
+    this.actionsArea.setSize(d, d * persperctive);
+    this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
+    this.actionsArea.updateDisplayOrigin();
   }
 
   /**
