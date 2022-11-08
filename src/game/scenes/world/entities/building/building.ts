@@ -93,7 +93,7 @@ export class Building extends Phaser.GameObjects.Image {
   /**
    * Action area.
    */
-  private actionsArea: Phaser.GameObjects.Ellipse;
+  private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
   /**
    * Focus state.
@@ -164,22 +164,24 @@ export class Building extends Phaser.GameObjects.Image {
     this.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.onFocus();
     });
-    this.on(Phaser.Input.Events.POINTER_UP, () => {
-      this.onClick();
-    });
     this.on(Phaser.Input.Events.POINTER_OUT, () => {
       this.onUnfocus();
     });
+    this.on(Phaser.Input.Events.POINTER_UP, () => {
+      this.onClick();
+    });
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      this.onUnclick();
+      if (!this.isFocused) {
+        this.onUnclick();
+      }
     });
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.actionsArea.destroy();
       this.scene.level.removeTile(tilePosition);
       this.scene.level.refreshNavigationMeta();
       this.onUnfocus();
       this.onUnclick();
+      this.removeActionArea();
       this.removeAlert();
     });
 
@@ -251,6 +253,10 @@ export class Building extends Phaser.GameObjects.Image {
    * @param position - Position at world
    */
   public actionsAreaContains(position: Phaser.Types.Math.Vector2Like): boolean {
+    if (!this.actionsArea) {
+      return false;
+    }
+
     const offset = this.actionsArea.getTopLeft();
 
     return this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
@@ -491,22 +497,26 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.isSelected = true;
 
-    this.actionsArea.setVisible(true);
     this.addInfo();
+    if (this.actionsArea) {
+      this.actionsArea.setVisible(true);
+    }
   }
 
   /**
    * Event unclick.
    */
   private onUnclick() {
-    if (this.isFocused || !this.isSelected) {
+    if (!this.isSelected) {
       return;
     }
 
     this.isSelected = false;
 
-    this.actionsArea.setVisible(false);
     this.removeInfo();
+    if (this.actionsArea) {
+      this.actionsArea.setVisible(false);
+    }
   }
 
   /**
@@ -622,9 +632,13 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Create action area.
+   * Add action area.
    */
   private addActionArea() {
+    if (!this.actions?.radius || this.actionsArea) {
+      return;
+    }
+
     this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight);
     this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
     this.actionsArea.setFillStyle(0xffffff, 0.2);
@@ -637,6 +651,10 @@ export class Building extends Phaser.GameObjects.Image {
    * Update size and depth of action area.
    */
   private updateActionArea() {
+    if (!this.actionsArea) {
+      return;
+    }
+
     const { persperctive, height, halfHeight } = TILE_META;
     const d = this.getActionsRadius() * 2;
     const out = height * 2;
@@ -644,6 +662,18 @@ export class Building extends Phaser.GameObjects.Image {
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
+  }
+
+  /**
+   * Remove action area.
+   */
+  private removeActionArea() {
+    if (!this.actionsArea) {
+      return;
+    }
+
+    this.actionsArea.destroy();
+    this.actionsArea = null;
   }
 
   /**
