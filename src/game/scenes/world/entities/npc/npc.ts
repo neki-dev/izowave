@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { WORLD_DEPTH_UI } from '~const/world';
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
@@ -44,6 +45,11 @@ export class NPC extends Sprite {
   public pathComplete: boolean = false;
 
   /**
+   * Path debug graphics.
+   */
+  private pathDebug: Nullable<Phaser.GameObjects.Graphics> = null;
+
+  /**
    * NPC constructor.
    */
   constructor(scene: World, {
@@ -59,6 +65,7 @@ export class NPC extends Sprite {
     this.pathBreakpoint = pathBreakpoint;
 
     this.setVisible(this.atVisibleTile());
+    this.addDebugPath();
 
     // Add animations
     this.anims.create({
@@ -150,6 +157,8 @@ export class NPC extends Sprite {
       if (this.isCanPursuit()) {
         this.moveToTile();
       }
+
+      this.drawDebugPath();
     };
 
     this.pathFindingTask = this.scene.level.navigator.createTask(
@@ -252,5 +261,50 @@ export class NPC extends Sprite {
       ...this.positionAtMatrix,
       z: 0,
     });
+  }
+
+  /**
+   * Add path debugger.
+   */
+  private addDebugPath() {
+    if (!this.scene.physics.world.drawDebug) {
+      return;
+    }
+
+    this.pathDebug = this.scene.add.graphics();
+    this.pathDebug.setDepth(WORLD_DEPTH_UI);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.pathDebug.destroy();
+    });
+  }
+
+  /**
+   * Draw debug path lines.
+   */
+  private drawDebugPath() {
+    if (!this.pathDebug) {
+      return;
+    }
+
+    this.pathDebug.clear();
+    this.pathDebug.lineStyle(2, 0xe3fc03);
+    this.pathDebug.beginPath();
+
+    const points = [
+      this.positionAtMatrix,
+      ...this.currentPath,
+    ];
+
+    for (let i = 1; i < points.length; i++) {
+      const prev = Level.ToWorldPosition(points[i - 1]);
+      const next = Level.ToWorldPosition(points[i]);
+
+      this.pathDebug.moveTo(prev.x, prev.y);
+      this.pathDebug.lineTo(next.x, next.y);
+    }
+
+    this.pathDebug.closePath();
+    this.pathDebug.strokePath();
   }
 }

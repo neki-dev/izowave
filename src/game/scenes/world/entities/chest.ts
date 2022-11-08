@@ -32,8 +32,10 @@ export class Chest extends Phaser.GameObjects.Image {
     this.positionAtMatrix = positionAtMatrix;
 
     // Configure tile
+
     this.setDepth(Level.GetDepth(positionAtWorld.y - 10, tilePosition.z, this.displayHeight));
     this.setOrigin(0.5, 0.75);
+
     scene.level.putTile(this, TileType.CHEST, tilePosition);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       scene.level.removeTile(tilePosition);

@@ -27,7 +27,6 @@ export const LEVEL_MAP_HEIGHT = 4;
 export const LEVEL_MAP_VISIBLE_PART = 0.8;
 export const LEVEL_MAP_VISITED_TILE_TINT = 0xDDDDDD;
 
-export const LEVEL_CORNER_PATH_COST = 8.0;
 export const LEVEL_BUILDING_PATH_COST = 16.0;
 
 export const LEVEL_SPAWN_POSITIONS_STEP = 4;

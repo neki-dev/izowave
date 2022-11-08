@@ -1,17 +1,11 @@
 /* eslint-disable no-continue */
 
+import { entries } from '~lib/system';
 import { equalPositions } from '~lib/utils';
 import { NavigatorTaskState } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 import { NavigatorTask } from './task';
-
-const ADJACENT_DIRECTIONS = [
-  { x: 0, y: 1 }, { x: 1, y: 0 },
-  { x: 0, y: -1 }, { x: -1, y: 0 },
-  { x: 1, y: 1 }, { x: 1, y: -1 },
-  { x: -1, y: 1 }, { x: -1, y: -1 },
-];
 
 export class Navigator {
   readonly matrix: number[][] = [];
@@ -93,21 +87,52 @@ export class Navigator {
       }
 
       currentNode.closeList();
-      for (const offset of ADJACENT_DIRECTIONS) {
+      for (const offset of this.getAllowedDirections(currentNode)) {
         this.checkAdjacentNode(task, currentNode, offset);
       }
     }
+  }
+
+  private getAllowedDirections(currentNode: PathNode): Phaser.Types.Math.Vector2Like[] {
+    const straightFlags: Record<string, boolean> = {};
+    const straightDirs = {
+      R: { x: 1, y: 0 }, // →
+      L: { x: -1, y: 0 }, // ←
+      D: { x: 0, y: 1 }, // ↓
+      U: { x: 0, y: -1 }, // ↑
+    };
+    const diagonalDirs = {
+      RD: { x: 1, y: 1 }, // ↘
+      RU: { x: 1, y: -1 }, // ↗
+      LU: { x: -1, y: -1 }, // ↖
+      LD: { x: -1, y: 1 }, // ↙
+    };
+
+    const allowedDirs = [];
+
+    for (const [key, dir] of entries(straightDirs)) {
+      if (this.isWalkable(currentNode.x + dir.x, currentNode.y + dir.y)) {
+        straightFlags[key] = true;
+        allowedDirs.push(dir);
+      }
+    }
+
+    for (const [key, dir] of entries(diagonalDirs)) {
+      const dontCross = key.split('').every((flag) => straightFlags[flag]);
+
+      if (dontCross && this.isWalkable(currentNode.x + dir.x, currentNode.y + dir.y)) {
+        allowedDirs.push(dir);
+      }
+    }
+
+    return allowedDirs;
   }
 
   private checkAdjacentNode(task: NavigatorTask, currentNode: PathNode, shift: Phaser.Types.Math.Vector2Like) {
     const x = currentNode.x + shift.x;
     const y = currentNode.y + shift.y;
 
-    if (!this.isWalkable(x, y)) {
-      return;
-    }
-
-    const c = (Math.abs(shift.x) + Math.abs(shift.y) === 1) ? 1.0 : 1.4;
+    const c = (Math.abs(shift.x) + Math.abs(shift.y) === 1) ? 1.0 : Math.SQRT2;
     const cost = currentNode.getCost() + (this.getPointCost(x, y) * c);
 
     const existNode = task.pickNode(x, y);

@@ -136,8 +136,13 @@ export class Building extends Phaser.GameObjects.Image {
 
     this.setOrigin(0.5, TILE_META.origin);
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+
     scene.level.putTile(this, TileType.BUILDING, tilePosition);
     scene.level.refreshNavigationMeta();
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.level.removeTile(tilePosition);
+      this.scene.level.refreshNavigationMeta();
+    });
 
     // Add keyboard events
 
@@ -177,8 +182,6 @@ export class Building extends Phaser.GameObjects.Image {
     });
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.level.removeTile(tilePosition);
-      this.scene.level.refreshNavigationMeta();
       this.onUnfocus();
       this.onUnclick();
       this.removeActionArea();

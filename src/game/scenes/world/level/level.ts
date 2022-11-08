@@ -2,8 +2,8 @@ import GenBiome from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP,
-  LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT, LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_CORNER_PATH_COST, LEVEL_BUILDING_PATH_COST,
+  TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
+  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST,
 } from '~const/world/level';
 import { Building } from '~entity/building';
 import { registerSpriteAssets } from '~lib/assets';
@@ -43,13 +43,9 @@ export class Level extends TileMatrix {
    */
   private _navigator: Navigator;
 
-  public get navigator() {
-    return this._navigator;
-  }
+  public get navigator() { return this._navigator; }
 
-  private set navigator(v) {
-    this._navigator = v;
-  }
+  private set navigator(v) { this._navigator = v; }
 
   /**
    * Level constructor.
@@ -168,37 +164,12 @@ export class Level extends TileMatrix {
   public refreshNavigationMeta() {
     this.navigator.resetPointsCost();
 
-    for (let y = 0; y < this.size; y++) {
-      for (let x = 0; x < this.size; x++) {
-        if (this.navigator.matrix[y][x] === 1) {
-          for (let s = x - 1; s <= x + 1; s++) {
-            if (s !== x && this.navigator.matrix[y]?.[s] === 0) {
-              this.navigator.setPointCost(s, y, LEVEL_CORNER_PATH_COST);
-            }
-          }
-          for (let s = y - 1; s <= y + 1; s++) {
-            if (s !== y && this.navigator.matrix[s]?.[x] === 0) {
-              this.navigator.setPointCost(x, s, LEVEL_CORNER_PATH_COST);
-            }
-          }
-        }
-      }
-    }
-
     for (const building of <Building[]> this.scene.entityGroups.buildings.getChildren()) {
       this.navigator.setPointCost(
         building.positionAtMatrix.x,
         building.positionAtMatrix.y,
         LEVEL_BUILDING_PATH_COST,
       );
-
-      for (let y = building.positionAtMatrix.y - 1; y <= building.positionAtMatrix.y + 1; y++) {
-        for (let x = building.positionAtMatrix.x - 1; x <= building.positionAtMatrix.x + 1; x++) {
-          if (this.getTile({ x, y, z: 0 }) && this.isFreePoint({ x, y, z: 1 })) {
-            this.navigator.setPointCost(x, y, LEVEL_CORNER_PATH_COST);
-          }
-        }
-      }
     }
   }
 
