@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
 
-import { WORLD_DEPTH_EFFECT, WORLD_FIND_PATH_RATE } from '~const/world';
+import { CONTROL_KEY } from '~const/controls';
+import {
+  WORLD_DEPTH_EFFECT, WORLD_FIND_PATH_RATE, WORLD_MAX_ZOOM, WORLD_MIN_ZOOM,
+} from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
@@ -130,6 +133,7 @@ export class World extends Phaser.Scene {
     this.addPlayer();
     this.addChests();
     this.addEntityColliders();
+    this.addZoomControl();
 
     this.level.hideTiles();
   }
@@ -350,6 +354,27 @@ export class World extends Phaser.Scene {
         const isVisibleTile = this.level.isVisibleTile({ ...chest.positionAtMatrix, z: 0 });
 
         chest.setVisible(isVisibleTile);
+      }
+    });
+  }
+
+  /**
+   * Add controls for zoom.
+   */
+  private addZoomControl() {
+    this.input.keyboard.on(CONTROL_KEY.ZOOM_IN, () => {
+      const currentZoom = this.cameras.main.zoom;
+
+      if (currentZoom < WORLD_MAX_ZOOM) {
+        this.cameras.main.zoomTo(currentZoom + 0.5, 300);
+      }
+    });
+
+    this.input.keyboard.on(CONTROL_KEY.ZOOM_OUT, () => {
+      const currentZoom = this.cameras.main.zoom;
+
+      if (currentZoom > WORLD_MIN_ZOOM) {
+        this.cameras.main.zoomTo(currentZoom - 0.5, 300);
       }
     });
   }

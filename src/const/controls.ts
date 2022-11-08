@@ -11,6 +11,9 @@ export const CONTROL_KEY = {
   BUILDING_RELOAD: 'keyup-R',
 
   WAVE_SKIP_TIMELEFT: 'keyup-N',
+
+  ZOOM_IN: 'keyup-PLUS',
+  ZOOM_OUT: 'keyup-MINUS',
 };
 
 export const CONTROLS: ControlItem[] = [
