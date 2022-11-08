@@ -71,11 +71,17 @@ export function Component<T = undefined>(instance: ComponentInstance<T>): Compon
       const { update, destroy } = control;
 
       if (update) {
-        update();
+        const safeUpdate = () => {
+          if (container.active) {
+            update();
+          }
+        };
 
-        scene.events.on(Phaser.Scenes.Events.UPDATE, update, scene);
+        safeUpdate();
+
+        scene.events.on(Phaser.Scenes.Events.UPDATE, safeUpdate, scene);
         container.on(Phaser.Scenes.Events.DESTROY, () => {
-          scene.events.off(Phaser.Scenes.Events.UPDATE, update);
+          scene.events.off(Phaser.Scenes.Events.UPDATE, safeUpdate);
         });
       }
 
