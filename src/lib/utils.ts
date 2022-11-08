@@ -123,7 +123,7 @@ export function rawAmount(value: string): number {
  * Call function with frequency limit.
  *
  * @param fn - Function
- * @param delay - Delay between calls
+ * @param delay - Call delay
  */
 export function debounce(fn: (...params: any[]) => void, delay: number) {
   let timeout: Nullable<NodeJS.Timeout> = null;

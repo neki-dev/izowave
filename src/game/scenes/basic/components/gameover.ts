@@ -103,7 +103,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
 
     ref.stat[key].wrapper.useAdaptationAfter(() => {
       ref.stat[key].wrapper.setPosition(
-        -switchSize(80),
+        -switchSize(75),
         (ref.stat[key].value.height + switchSize(10)) * index,
       );
     });
@@ -192,7 +192,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
   ref.restart.setOrigin(0.5, 0.0);
   ref.restart.setInteractive();
   ref.restart.useAdaptationBefore(() => {
-    scaleText(ref.restart, 17);
+    scaleText(ref.restart, 16);
     ref.restart.setPosition(
       0,
       switchSize(120),

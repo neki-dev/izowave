@@ -223,6 +223,7 @@ export const ComponentBuilder = Component(function (container) {
 
     if (ref.info) {
       ref.info.destroy();
+      delete ref.info;
     } else {
       addInfo.reject();
     }
