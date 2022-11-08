@@ -1,6 +1,7 @@
 import { INTERFACE_TEXT_COLOR, INTERFACE_FONT } from '~const/interface';
-import { Component, scaleText } from '~lib/interface';
+import { Component, scaleText, switchSize } from '~lib/interface';
 import { GameStat } from '~type/game';
+import { MenuAudio } from '~type/menu';
 
 type Props = {
   stat: GameStat
@@ -14,8 +15,14 @@ export const ComponentGameOver = Component<Props>(function (container, {
     background?: Phaser.GameObjects.Rectangle
     wrapper?: Phaser.GameObjects.Container
     title?: Phaser.GameObjects.Text
-    stat?: Phaser.GameObjects.Text
-  } = {};
+    stat?: Record<string, {
+      wrapper?: Phaser.GameObjects.Container
+      value?: Phaser.GameObjects.Text
+      label?: Phaser.GameObjects.Text
+      record?: Phaser.GameObjects.Text
+    }>
+    restart?: Phaser.GameObjects.Text
+  } = { stat: {} };
 
   /**
    * Background
@@ -58,11 +65,11 @@ export const ComponentGameOver = Component<Props>(function (container, {
   );
 
   ref.title.setOrigin(0.5, 1.0);
-  ref.title.useAdaptationBefore((width, height) => {
+  ref.title.useAdaptationBefore(() => {
     scaleText(ref.title, 60, true);
     ref.title.setPosition(
       0,
-      -height * 0.05,
+      -switchSize(80),
     );
   });
 
@@ -78,27 +85,138 @@ export const ComponentGameOver = Component<Props>(function (container, {
    * Stat
    */
 
+  [
+    { key: 'waves', label: 'WAVES COMPLETED', value: stat.waves },
+    { key: 'level', label: 'LEVEL REACHED', value: stat.level },
+    { key: 'kills', label: 'ENEMIES KILLED', value: stat.kills },
+    { key: 'lived', label: 'MINUTES LIVED', value: stat.lived.toFixed(1) },
+  ].forEach(({ key, label, value }, index) => {
+    ref.stat[key] = {};
+
+    /**
+     * Wrapper
+     */
+
+    ref.wrapper.add(
+      ref.stat[key].wrapper = this.add.container(),
+    );
+
+    ref.stat[key].wrapper.useAdaptationAfter(() => {
+      ref.stat[key].wrapper.setPosition(
+        -switchSize(80),
+        (ref.stat[key].value.height + switchSize(10)) * index,
+      );
+    });
+
+    /**
+     * Value
+     */
+
+    ref.stat[key].wrapper.add(
+      ref.stat[key].value = this.add.text(0, 0, String(value), {
+        resolution: window.devicePixelRatio,
+        fontFamily: INTERFACE_FONT.PIXEL,
+      }),
+    );
+
+    ref.stat[key].value.setOrigin(0.0, 0.5);
+    ref.stat[key].value.useAdaptationBefore(() => {
+      scaleText(ref.stat[key].value, 17);
+    });
+
+    /**
+     * Label
+     */
+
+    ref.stat[key].wrapper.add(
+      ref.stat[key].label = this.add.text(0, 0, label, {
+        // resolution: window.devicePixelRatio,
+        fontFamily: INTERFACE_FONT.MONOSPACE,
+      }),
+    );
+
+    ref.stat[key].label.setOrigin(0.0, 0.5);
+    ref.stat[key].label.setAlpha(0.9);
+    ref.stat[key].label.useAdaptationBefore(() => {
+      scaleText(ref.stat[key].label, 13);
+      ref.stat[key].label.setPosition(
+        ref.stat[key].value.width + switchSize(8),
+        1,
+      );
+    });
+
+    /**
+     * Record
+     */
+
+    // @ts-ignore
+    if (record[key] < stat[key]) {
+      ref.stat[key].wrapper.add(
+        ref.stat[key].record = this.add.text(0, 0, 'RECORD', {
+          resolution: window.devicePixelRatio,
+          fontFamily: INTERFACE_FONT.MONOSPACE,
+          color: INTERFACE_TEXT_COLOR.INFO,
+        }),
+      );
+
+      ref.stat[key].record.setOrigin(0.0, 0.5);
+      ref.stat[key].record.useAdaptationBefore(() => {
+        scaleText(ref.stat[key].record, 9);
+        ref.stat[key].record.setPosition(
+          ref.stat[key].label.x + ref.stat[key].label.width + switchSize(10),
+          1,
+        );
+      });
+    }
+  });
+
+  /**
+   * Restart
+   */
+
   ref.wrapper.add(
-    ref.stat = this.add.text(0, 0, [
-      `COMPLETED WAVES - ${stat.waves}${(record.waves < stat.waves) ? ' - NEW RECORD' : ''}`,
-      `KILLED ENEMIES - ${stat.kills}${(record.kills < stat.kills) ? ' - NEW RECORD' : ''}`,
-      `REACHED LEVEL - ${stat.level}${(record.level < stat.level) ? ' - NEW RECORD' : ''}`,
-      `LIVED MINUTES - ${stat.lived.toFixed(1)}${(record.lived < stat.lived) ? ' - NEW RECORD' : ''}`,
-    ], {
+    ref.restart = this.add.text(0, 0, 'PLAY AGAIN', {
       resolution: window.devicePixelRatio,
-      fontFamily: INTERFACE_FONT.MONOSPACE,
-      // @ts-ignore
-      lineSpacing: 8,
+      fontFamily: INTERFACE_FONT.PIXEL,
+      color: '#fff',
+      backgroundColor: INTERFACE_TEXT_COLOR.BLUE_DARK,
+      padding: {
+        top: 11,
+        bottom: 14,
+        left: 14,
+        right: 14,
+      },
     }),
   );
 
-  ref.stat.setAlpha(0.75);
-  ref.stat.setOrigin(0.5, 0.0);
-  ref.stat.useAdaptationBefore((width, height) => {
-    scaleText(ref.stat, 18);
-    ref.stat.setPosition(
+  ref.restart.setOrigin(0.5, 0.0);
+  ref.restart.setInteractive();
+  ref.restart.useAdaptationBefore(() => {
+    scaleText(ref.restart, 17);
+    ref.restart.setPosition(
       0,
-      height * 0.05,
+      switchSize(120),
     );
   });
+
+  ref.restart.on(Phaser.Input.Events.POINTER_OVER, () => {
+    this.input.setDefaultCursor('pointer');
+    ref.restart.setBackgroundColor('#000');
+  });
+
+  ref.restart.on(Phaser.Input.Events.POINTER_OUT, () => {
+    this.input.setDefaultCursor('default');
+    ref.restart.setBackgroundColor(INTERFACE_TEXT_COLOR.BLUE_DARK);
+  });
+
+  ref.restart.on(Phaser.Input.Events.POINTER_UP, () => {
+    this.sound.play(MenuAudio.CLICK);
+    this.game.restartGame();
+  });
+
+  return {
+    destroy: () => {
+      this.input.setDefaultCursor('default');
+    },
+  };
 });
