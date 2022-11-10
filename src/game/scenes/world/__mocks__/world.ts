@@ -1,5 +1,3 @@
-import { TutorialStep } from '~type/tutorial';
-
 import { World } from '../world';
 
 const world = {
@@ -9,7 +7,7 @@ const world = {
   game: {
     difficulty: 1,
     tutorial: {
-      step: TutorialStep.NONE,
+      // step: TutorialStep.NONE,
       on: jest.fn(),
     },
     analytics: {

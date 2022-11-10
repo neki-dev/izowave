@@ -2,6 +2,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
+import { TutorialStep } from '~type/tutorial';
 import { BuildingParamItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
 
 import { BuildingTower } from '../tower';
@@ -44,6 +45,23 @@ export class BuildingTowerFire extends BuildingTower {
           speed: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED,
         },
       },
+    });
+
+    this.scene.game.tutorial.onBegAny((step: TutorialStep) => {
+      switch (step) {
+        case TutorialStep.UPGRADE_BUILDING: {
+          this.addHelp('Hover on building and press [U] to upgrade');
+          break;
+        }
+        case TutorialStep.RELOAD_BUILDING: {
+          this.addHelp('Hover on building and press [R] to reload ammo');
+          break;
+        }
+        default: break;
+      }
+    });
+    this.scene.game.tutorial.onEndAny(() => {
+      this.removeHelp();
     });
   }
 }

@@ -1,16 +1,12 @@
 import EventEmitter from 'events';
 
-import { TutorialEvent, TutorialStep } from '~type/tutorial';
+import { TutorialEvent, TutorialStep, TutorialStepState } from '~type/tutorial';
 
 export class Tutorial extends EventEmitter {
   /**
-   * Current step.
+   * Steps progress states.
    */
-  private _step: TutorialStep = TutorialStep.IDLE;
-
-  public get step() { return this._step; }
-
-  private set step(v) { this._step = v; }
+  private progress: Partial<Record<TutorialStep, boolean>> = {};
 
   /**
    * Disabled state.
@@ -28,25 +24,119 @@ export class Tutorial extends EventEmitter {
     super();
 
     if (IS_DEV_MODE) {
-      this.disable();
-    } else {
-      this.progress(TutorialStep.BUILD_TOWER_FIRE);
+      // this.disable();
     }
   }
 
   /**
-   * Change tutorial step.
+   * Begin step.
    *
-   * @param step - Next step
+   * @param step - Step
    */
-  public progress(step: TutorialStep) {
+  public beg(step: TutorialStep) {
+    if (this.isDisabled || this.progress[step] !== undefined) {
+      return;
+    }
+
+    this.progress[step] = true;
+
+    this.emit(TutorialEvent.BEG, step);
+  }
+
+  /**
+   * End step.
+   *
+   * @param step - Step
+   */
+  public end(step: TutorialStep) {
+    if (this.isDisabled || this.progress[step] !== true) {
+      return;
+    }
+
+    this.progress[step] = false;
+
+    this.emit(TutorialEvent.END, step);
+  }
+
+  /**
+   * Check step state.
+   *
+   * @param step - Step
+   */
+  public state(step: TutorialStep): TutorialStepState {
+    if (this.isDisabled) {
+      return TutorialStepState.END;
+    }
+
+    if (this.progress[step] === undefined) {
+      return TutorialStepState.IDLE;
+    }
+
+    return this.progress[step]
+      ? TutorialStepState.BEG
+      : TutorialStepState.END;
+  }
+
+  /**
+   * Bind callback on begin step.
+   *
+   * @param step - Step to bind
+   * @param callback - Callback function
+   */
+  public onBeg(step: TutorialStep, callback: () => void) {
     if (this.isDisabled) {
       return;
     }
 
-    this.step = step;
+    this.on(TutorialEvent.BEG, (stepBeg: TutorialStep) => {
+      if (step === stepBeg) {
+        callback();
+      }
+    });
+  }
 
-    this.emit(TutorialEvent.PROGRESS, step);
+  /**
+   * Bind callback on begin steps.
+   *
+   * @param callback - Callback function
+   */
+  public onBegAny(callback: (step: TutorialStep) => void) {
+    if (this.isDisabled) {
+      return;
+    }
+
+    this.on(TutorialEvent.BEG, callback);
+  }
+
+  /**
+   * Bind callback on end step.
+   *
+   * @param step - Step to bind
+   * @param callback - Callback function
+   */
+  public onEnd(step: TutorialStep, callback: () => void) {
+    if (this.isDisabled) {
+      return;
+    }
+
+    this.on(TutorialEvent.END, (stepEnd: TutorialStep) => {
+      if (step === stepEnd) {
+        callback();
+      }
+    });
+  }
+
+  /**
+   * Bind callback on end steps.
+   *
+   * @param callback - Callback function
+   */
+  public onEndAny(callback: (step: TutorialStep) => void) {
+    if (this.isDisabled) {
+      return;
+    }
+
+    this.on(TutorialEvent.END, callback);
   }
 
   /**
@@ -54,6 +144,5 @@ export class Tutorial extends EventEmitter {
    */
   public disable() {
     this.isDisabled = true;
-    this.step = TutorialStep.NONE;
   }
 }

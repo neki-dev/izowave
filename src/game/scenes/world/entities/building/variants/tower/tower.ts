@@ -10,6 +10,7 @@ import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
+import { TutorialStep } from '~type/tutorial';
 import {
   BuildingAction, BuildingAudio, BuildingParamItem, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
 } from '~type/world/entities/building';
@@ -137,6 +138,8 @@ export class BuildingTower extends Building {
 
     if (this.ammoLeft === 0) {
       this.alert = true;
+
+      this.scene.game.tutorial.beg(TutorialStep.RELOAD_BUILDING);
     }
   }
 
@@ -219,6 +222,8 @@ export class BuildingTower extends Building {
 
     this.scene.sound.play(BuildingAudio.RELOAD);
     this.alert = false;
+
+    this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
   }
 
   /**

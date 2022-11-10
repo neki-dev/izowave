@@ -146,29 +146,10 @@ export class World extends Phaser.Scene {
       return;
     }
 
-    try {
-      this.player.update();
-    } catch (e) {
-      console.error('Error on `Player` update:', e);
-    }
-
-    try {
-      this.builder.update();
-    } catch (e) {
-      console.error('Error on `Builder` update:', e);
-    }
-
-    try {
-      this.level.update();
-    } catch (e) {
-      console.error('Error on `Level` update:', e);
-    }
-
-    try {
-      this.wave.update();
-    } catch (e) {
-      console.error('Error on `Wave` update:', e);
-    }
+    this.player.update();
+    this.level.update();
+    this.builder.update();
+    this.wave.update();
 
     this.updateNPCPath();
   }

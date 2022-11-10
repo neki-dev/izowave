@@ -9,7 +9,7 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
-import { TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
 import { BuildingAudio, BuildingMeta, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType } from '~type/world/level';
@@ -53,6 +53,10 @@ export class Builder extends EventEmitter {
     super();
 
     this.scene = scene;
+
+    setTimeout(() => {
+      this.scene.game.tutorial.beg(TutorialStep.BUILD_TOWER_FIRE);
+    }, 500);
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
       if (e.key === 'Backspace') {
@@ -333,23 +337,24 @@ export class Builder extends EventEmitter {
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    // Tutorial progress
-    switch (this.scene.game.tutorial.step) {
-      case TutorialStep.BUILD_TOWER_FIRE: {
-        this.scene.game.tutorial.progress(TutorialStep.BUILD_GENERATOR);
+    switch (TutorialStepState.BEG) {
+      case this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE): {
+        this.scene.game.tutorial.end(TutorialStep.BUILD_TOWER_FIRE);
+        this.scene.game.tutorial.beg(TutorialStep.BUILD_GENERATOR);
 
         this.clearBuildingVariant();
         break;
       }
-      case TutorialStep.BUILD_GENERATOR: {
-        this.scene.game.tutorial.progress(TutorialStep.WAVE_TIMELEFT);
+      case this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR): {
+        this.scene.game.tutorial.end(TutorialStep.BUILD_GENERATOR);
+        this.scene.game.tutorial.beg(TutorialStep.WAVE_TIMELEFT);
 
         this.scene.setTimerPause(false);
         this.clearBuildingVariant();
         break;
       }
-      case TutorialStep.BUILD_AMMUNITION: {
-        this.scene.game.tutorial.progress(TutorialStep.IDLE);
+      case this.scene.game.tutorial.state(TutorialStep.BUILD_AMMUNITION): {
+        this.scene.game.tutorial.end(TutorialStep.BUILD_AMMUNITION);
 
         this.scene.setTimerPause(false);
         this.clearBuildingVariant();
@@ -365,23 +370,21 @@ export class Builder extends EventEmitter {
    * @param variant - Building variant
    */
   public isBuildingAllowedByTutorial(variant: BuildingVariant): boolean {
-    switch (this.scene.game.tutorial.step) {
-      case TutorialStep.WAVE_TIMELEFT: {
-        return false;
-      }
-      case TutorialStep.BUILD_TOWER_FIRE: {
-        return (variant === BuildingVariant.TOWER_FIRE);
-      }
-      case TutorialStep.BUILD_GENERATOR: {
-        return (variant === BuildingVariant.GENERATOR);
-      }
-      case TutorialStep.BUILD_AMMUNITION: {
-        return (variant === BuildingVariant.AMMUNITION);
-      }
-      default: {
-        return true;
+    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
+      return false;
+    }
+
+    for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
+      [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
+      [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
+      [TutorialStep.BUILD_AMMUNITION, BuildingVariant.AMMUNITION],
+    ]) {
+      if (this.scene.game.tutorial.state(step) === TutorialStepState.BEG) {
+        return (variant === allowedVariant);
       }
     }
+
+    return true;
   }
 
   /**

@@ -18,7 +18,7 @@ import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
-import { TutorialEvent, TutorialStep } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import {
@@ -195,28 +195,6 @@ export class Building extends Phaser.GameObjects.Image {
       this.onUnfocus();
       this.onUnclick();
     });
-
-    // Tutorial help
-
-    if (variant === BuildingVariant.TOWER_FIRE) {
-      this.scene.game.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
-        if (step === TutorialStep.UPGRADE_BUILDING) {
-          this.help = ComponentHelp(this.scene, {
-            message: 'Click on building to upgrade',
-            side: 'top',
-          });
-
-          this.help.setDepth(WORLD_DEPTH_UI);
-          this.help.setPosition(
-            this.x,
-            this.y + TILE_META.height,
-          );
-        } else if (this.help) {
-          this.help.destroy();
-          this.help = null;
-        }
-      });
-    }
   }
 
   /**
@@ -396,10 +374,7 @@ export class Building extends Phaser.GameObjects.Image {
     this.scene.sound.play(BuildingAudio.UPGRADE);
     this.scene.game.screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
 
-    // Tutorial progress
-    if (this.scene.game.tutorial.step === TutorialStep.UPGRADE_BUILDING) {
-      this.scene.game.tutorial.progress(TutorialStep.IDLE);
-    }
+    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
   }
 
   /**
@@ -645,6 +620,40 @@ export class Building extends Phaser.GameObjects.Image {
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
+  }
+
+  /**
+   * Add tutorial help.
+   *
+   * @param message - Text
+   */
+  public addHelp(message: string) {
+    if (this.help) {
+      this.help.destroy();
+    }
+
+    this.help = ComponentHelp(this.scene, {
+      message,
+      side: 'top',
+    });
+
+    this.help.setDepth(WORLD_DEPTH_UI);
+    this.help.setPosition(
+      this.x,
+      this.y + TILE_META.height,
+    );
+  }
+
+  /**
+   * Remove tutorial help.
+   */
+  public removeHelp() {
+    if (!this.help) {
+      return;
+    }
+
+    this.help.destroy();
+    this.help = null;
   }
 
   /**

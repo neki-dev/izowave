@@ -3,7 +3,7 @@ import { Component, scaleText, switchSize } from '~lib/interface';
 import { formatTime } from '~lib/utils';
 import { ComponentHelp } from '~scene/screen/components/help';
 import { NoticeType } from '~type/screen/notice';
-import { TutorialEvent, TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
 
 export const ComponentWave = Component(function (container) {
@@ -120,23 +120,23 @@ export const ComponentWave = Component(function (container) {
     this.message(NoticeType.INFO, `WAVE ${this.game.world.wave.number} COMPLETED`);
   });
 
-  this.game.tutorial.on(TutorialEvent.PROGRESS, (step: TutorialStep) => {
-    if (step === TutorialStep.WAVE_TIMELEFT) {
-      container.add(
-        ref.help = ComponentHelp(this, {
-          message: 'Here display time left to start enemies attack',
-          side: 'left',
-        }),
-      );
+  this.game.tutorial.onBeg(TutorialStep.WAVE_TIMELEFT, () => {
+    container.add(
+      ref.help = ComponentHelp(this, {
+        message: 'Here display time left to start enemies attack',
+        side: 'left',
+      }),
+    );
 
-      ref.help.setPosition(
-        ref.label.x + ref.label.width + switchSize(12),
-        container.height / 2,
-      );
-    } else if (ref.help) {
-      ref.help.destroy();
-      delete ref.help;
-    }
+    ref.help.setPosition(
+      ref.label.x + ref.label.width + switchSize(12),
+      container.height / 2,
+    );
+  });
+
+  this.game.tutorial.onEnd(TutorialStep.WAVE_TIMELEFT, () => {
+    ref.help.destroy();
+    delete ref.help;
   });
 
   return {
@@ -187,7 +187,7 @@ export const ComponentWave = Component(function (container) {
         if (
           currentTimeleft <= 5
           && ref.value.style.color !== INTERFACE_TEXT_COLOR.ERROR
-          && this.game.tutorial.step > TutorialStep.WAVE_TIMELEFT
+          && this.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.END
         ) {
           this.sound.play(WaveAudio.TICK);
 

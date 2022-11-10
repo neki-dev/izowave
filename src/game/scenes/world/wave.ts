@@ -9,7 +9,6 @@ import { registerAudioAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { TutorialStep } from '~type/tutorial';
-import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { WaveAudio, WaveEvents } from '~type/world/wave';
 
@@ -163,13 +162,8 @@ export class Wave extends EventEmitter {
 
     this.emit(WaveEvents.START, this.number);
 
-    // Tutorial progress
-    if (
-      this.scene.game.tutorial.step === TutorialStep.UPGRADE_BUILDING
-      || this.scene.game.tutorial.step === TutorialStep.WAVE_TIMELEFT
-    ) {
-      this.scene.game.tutorial.progress(TutorialStep.IDLE);
-    }
+    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
+    this.scene.game.tutorial.end(TutorialStep.WAVE_TIMELEFT);
   }
 
   /**
@@ -184,17 +178,11 @@ export class Wave extends EventEmitter {
 
     this.emit(WaveEvents.COMPLETE, this.number);
 
-    // Tutorial progress
-    if (this.scene.game.tutorial.step === TutorialStep.IDLE) {
-      if (this.number === 1) {
-        this.scene.game.tutorial.progress(TutorialStep.UPGRADE_BUILDING);
-      } else if (this.number === 2) {
-        if (this.scene.selectBuildings(BuildingVariant.AMMUNITION).length === 0) {
-          this.scene.game.tutorial.progress(TutorialStep.BUILD_AMMUNITION);
-        } else {
-          this.scene.game.tutorial.progress(TutorialStep.IDLE);
-        }
-      }
+    if (this.number === 1) {
+      this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
+      this.scene.setTimerPause(true);
+    } else if (this.number === 2) {
+      this.scene.game.tutorial.beg(TutorialStep.UPGRADE_BUILDING);
     }
 
     this.scene.game.analytics.track({

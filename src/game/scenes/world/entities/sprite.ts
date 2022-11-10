@@ -107,6 +107,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
       const position = this.getTopCenter();
 
       this.container.setPosition(position.x, position.y);
+
       const depth = Level.GetDepth(this.y, 1, this.displayHeight);
 
       this.setDepth(depth);
@@ -124,7 +125,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Get all occupied by body positions.
+   * Get all occupied positions by body.
    */
   public getAllPositionsAtMatrix(): Phaser.Types.Math.Vector2Like[] {
     return this.getCorners().map((point) => Level.ToMatrixPosition(point));

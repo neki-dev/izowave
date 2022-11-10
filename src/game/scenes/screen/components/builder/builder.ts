@@ -8,7 +8,7 @@ import { entries } from '~lib/system';
 import { debounce } from '~lib/utils';
 import { ComponentBuildInfo } from '~scene/screen/components/builder/build-info';
 import { ComponentHelp } from '~scene/screen/components/help';
-import { TutorialEvent, TutorialStep } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { BuildingMeta, BuildingVariant } from '~type/world/entities/building';
 import { WaveEvents } from '~type/world/wave';
 
@@ -141,6 +141,10 @@ export const ComponentBuilder = Component(function (container) {
    */
 
   const addHelp = (variant: BuildingVariant, message: string) => {
+    if (ref.help) {
+      ref.help.destroy();
+    }
+
     container.add(
       ref.help = ComponentHelp(this, {
         message,
@@ -240,12 +244,9 @@ export const ComponentBuilder = Component(function (container) {
     }
   };
 
-  const checkTutorailHelps = (step: TutorialStep) => {
-    if (ref.help) {
-      ref.help.destroy();
-      delete ref.help;
-    }
+  this.game.world.wave.on(WaveEvents.START, unfocus);
 
+  this.game.tutorial.onBegAny((step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR: {
         addHelp(BuildingVariant.GENERATOR, 'Build generator to get resources');
@@ -256,19 +257,20 @@ export const ComponentBuilder = Component(function (container) {
         break;
       }
       case TutorialStep.BUILD_AMMUNITION: {
-        addHelp(BuildingVariant.AMMUNITION, 'Build ammunition for reload tower ammo');
+        addHelp(BuildingVariant.AMMUNITION, 'Build ammunition to reload tower ammo');
         break;
       }
       default: return;
     }
 
     ref.help.refreshAdaptation();
-  };
-
-  this.game.world.wave.on(WaveEvents.START, unfocus);
-
-  this.game.tutorial.on(TutorialEvent.PROGRESS, checkTutorailHelps);
-  checkTutorailHelps(this.game.tutorial.step);
+  });
+  this.game.tutorial.onEndAny(() => {
+    if (ref.help) {
+      ref.help.destroy();
+      delete ref.help;
+    }
+  });
 
   return {
     update: () => {
