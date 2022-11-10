@@ -9,7 +9,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.015, // Player speed growth by level
   PLAYER_HEALTH: 100, // Default player health
   PLAYER_HEALTH_GROWTH: 0.1, // Player health growth by level
-  PLAYER_START_RESOURCES: 80, // Player start resources
+  PLAYER_START_RESOURCES: 90, // Player start resources
   PLAYER_EXPERIENCE_TO_NEXT_LEVEL: 200, // Need experience count to next level
   PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH: 0.3, // Experience count growth by level
 
@@ -79,7 +79,7 @@ export const DIFFICULTY = {
    * Building: Wall
    */
 
-  BUILDING_WALL_COST: 15, // Wall cost
+  BUILDING_WALL_COST: 10, // Wall cost
   BUILDING_WALL_HEALTH: 2000, // Default wall health
   BUILDING_WALL_HEALTH_UPGRADE: 2000, // Amount of health added per upgrade (N * upgrade_level)
 
