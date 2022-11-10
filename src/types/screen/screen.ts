@@ -1,7 +1,6 @@
 export enum ScreenTexture {
   ICON = 'ui/icons',
   RESOURCES = 'ui/resources',
-  ALERT = 'ui/alert',
 }
 
 export enum ScreenAudio {

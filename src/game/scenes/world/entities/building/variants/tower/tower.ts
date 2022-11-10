@@ -134,8 +134,9 @@ export class BuildingTower extends Building {
     this.pauseActions();
 
     this.ammoLeft--;
+
     if (this.ammoLeft === 0) {
-      this.addAlert();
+      this.alert = true;
     }
   }
 
@@ -217,7 +218,7 @@ export class BuildingTower extends Building {
     this.ammoLeft += ammo;
 
     this.scene.sound.play(BuildingAudio.RELOAD);
-    this.removeAlert();
+    this.alert = false;
   }
 
   /**

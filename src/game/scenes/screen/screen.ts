@@ -178,7 +178,6 @@ export class Screen extends Phaser.Scene {
 
 registerAudioAssets(ScreenAudio);
 registerImageAssets(ScreenTexture.RESOURCES);
-registerImageAssets(ScreenTexture.ALERT);
 registerSpriteAssets(ScreenTexture.ICON, {
   width: 10,
   height: 10,

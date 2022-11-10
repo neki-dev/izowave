@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_UI } from '~const/world';
+import { WORLD_DEPTH_UI } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { TILE_META } from '~const/world/level';
@@ -16,7 +16,7 @@ import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
-import { ScreenIcon, ScreenTexture } from '~type/screen';
+import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { TutorialEvent, TutorialStep } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
@@ -76,11 +76,6 @@ export class Building extends Phaser.GameObjects.Image {
   private help: Nullable<Phaser.GameObjects.Container> = null;
 
   /**
-   * Alert.
-   */
-  private alert: Nullable<Phaser.GameObjects.Image> = null;
-
-  /**
    * Current outline state.
    */
   private outlineState: BuildingOutlineState = BuildingOutlineState.NONE;
@@ -94,6 +89,11 @@ export class Building extends Phaser.GameObjects.Image {
    * Action area.
    */
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
+
+  /**
+   * Alert state.
+   */
+  public alert: boolean = false;
 
   /**
    * Focus state.
@@ -184,8 +184,6 @@ export class Building extends Phaser.GameObjects.Image {
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.onUnfocus();
       this.onUnclick();
-      this.removeActionArea();
-      this.removeAlert();
     });
 
     this.scene.game.events.on(GameEvents.FINISH, () => {
@@ -234,20 +232,7 @@ export class Building extends Phaser.GameObjects.Image {
    * Event update.
    */
   public update() {
-    if (this.alert) {
-      this.alert.setVisible(this.visible);
-    }
-
-    let outlineState = BuildingOutlineState.NONE;
-
-    if (this.isSelected) {
-      outlineState = BuildingOutlineState.SELECTED;
-    } else if (this.isFocused) {
-      outlineState = BuildingOutlineState.FOCUSED;
-    } else if (this.alert) {
-      outlineState = BuildingOutlineState.ALERT;
-    }
-    this.setOutline(outlineState);
+    this.updateOutline();
   }
 
   /**
@@ -568,6 +553,22 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
+   * Update current outline state.
+   */
+  private updateOutline() {
+    let outlineState = BuildingOutlineState.NONE;
+
+    if (this.isSelected) {
+      outlineState = BuildingOutlineState.SELECTED;
+    } else if (this.isFocused) {
+      outlineState = BuildingOutlineState.FOCUSED;
+    } else if (this.alert) {
+      outlineState = BuildingOutlineState.ALERT;
+    }
+    this.setOutline(outlineState);
+  }
+
+  /**
    * Add information component.
    */
   private addInfo() {
@@ -610,31 +611,6 @@ export class Building extends Phaser.GameObjects.Image {
   }
 
   /**
-   * Add alert sign.
-   */
-  public addAlert() {
-    if (this.alert) {
-      return;
-    }
-
-    this.alert = this.scene.add.image(this.x, this.y, ScreenTexture.ALERT);
-    this.alert.setDepth(WORLD_DEPTH_EFFECT);
-    this.alert.setVisible(this.visible);
-  }
-
-  /**
-   * Remove alert sign.
-   */
-  public removeAlert() {
-    if (!this.alert) {
-      return;
-    }
-
-    this.alert.destroy();
-    this.alert = null;
-  }
-
-  /**
    * Add action area.
    */
   private addActionArea() {
@@ -648,6 +624,10 @@ export class Building extends Phaser.GameObjects.Image {
     this.actionsArea.setVisible(false);
 
     this.updateActionArea();
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.actionsArea.destroy();
+    });
   }
 
   /**
@@ -665,18 +645,6 @@ export class Building extends Phaser.GameObjects.Image {
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
-  }
-
-  /**
-   * Remove action area.
-   */
-  private removeActionArea() {
-    if (!this.actionsArea) {
-      return;
-    }
-
-    this.actionsArea.destroy();
-    this.actionsArea = null;
   }
 
   /**

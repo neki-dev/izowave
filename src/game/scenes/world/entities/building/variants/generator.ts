@@ -88,7 +88,7 @@ export class BuildingGenerator extends Building {
       this.pauseActions();
 
       if (this.amountLeft === BUILDING_RESOURCES_LEFT_ALERT) {
-        this.addAlert();
+        this.alert = true;
       }
     }
   }
@@ -122,7 +122,6 @@ export class BuildingGenerator extends Building {
    */
   private upgradeAmount() {
     this.amountLeft += DIFFICULTY.BUILDING_GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
-
-    this.removeAlert();
+    this.alert = false;
   }
 }
