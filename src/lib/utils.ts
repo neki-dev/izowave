@@ -24,8 +24,12 @@ export function calcGrowth(
  * @param b - Second position
  */
 export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D): boolean {
-  if ('z' in a && 'z' in b) {
-    return (a.x === b.x && a.y === b.y && a.z === b.z);
+  if ('z' in a) {
+    if ('z' in b) {
+      return (a.x === b.x && a.y === b.y && a.z === b.z);
+    }
+
+    return false;
   }
 
   return (a.x === b.x && a.y === b.y);
