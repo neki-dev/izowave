@@ -19,7 +19,8 @@ module.exports = (_, { mode }) => ({
   module: {
     rules: [{
       test: /\.ts$/,
-      use: 'babel-loader',
+      use: ['babel-loader', 'ts-loader'],
+      exclude: /node_modules/,
     }],
   },
   devServer: {
