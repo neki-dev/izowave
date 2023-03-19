@@ -47,18 +47,16 @@ export class BuildingTowerFire extends BuildingTower {
       },
     });
 
-    this.scene.game.tutorial.onBegAny((step: TutorialStep) => {
-      switch (step) {
-        case TutorialStep.UPGRADE_BUILDING: {
+    this.scene.game.tutorial.onBeg(TutorialStep.UPGRADE_BUILDING, () => {
+      const isHelpExist = this.scene.selectBuildings(BuildingVariant.TOWER_FIRE)
+        .some((building) => building.help);
+
+      if (!isHelpExist) {
           this.addHelp('Hover on building and press [U] to upgrade');
-          break;
         }
-        case TutorialStep.RELOAD_BUILDING: {
+    });
+    this.scene.game.tutorial.onBeg(TutorialStep.RELOAD_BUILDING, () => {
           this.addHelp('Hover on building and press [R] to reload ammo');
-          break;
-        }
-        default: break;
-      }
     });
     this.scene.game.tutorial.onEndAny(() => {
       this.removeHelp();

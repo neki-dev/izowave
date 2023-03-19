@@ -73,7 +73,11 @@ export class Building extends Phaser.GameObjects.Image {
   /**
    * Building help UI component.
    */
-  private help: Nullable<Phaser.GameObjects.Container> = null;
+  private _help: Nullable<Phaser.GameObjects.Container> = null;
+
+  public get help() { return this._help; }
+
+  private set help(v) { this._help = v; }
 
   /**
    * Current outline state.
