@@ -179,5 +179,5 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
 export const LEVEL_BIOME_PARAMETERS: LayerParameters = {
   frequencyChange: 8,
   sizeDifference: 1.2,
-  bordersPuriry: 10,
+  bordersPurity: 10,
 };

@@ -17,6 +17,5 @@
       "~const/*": ["./src/const/*"],
       "~lib/*": ["./src/lib/*"]
     }
-  },
-  "include": ["./src"]
+  }
 }

@@ -1,14 +1,14 @@
 const path = require('path');
-const webpack = require('webpack');
+
 const alias = require('alias-reuse');
+const webpack = require('webpack');
+
 const tsconfig = require('./tsconfig.json');
 
 module.exports = (_, { mode }) => ({
   resolve: {
     extensions: ['.js', '.ts'],
-    alias: alias(path.join(__dirname))
-      .fromTsconfig()
-      .toWebpack(),
+    alias: alias.fromFile(__dirname, './tsconfig.json').toWebpack(),
   },
   target: 'web',
   entry: path.join(__dirname, 'src/index.ts'),
@@ -32,7 +32,7 @@ module.exports = (_, { mode }) => ({
   devtool: 'source-map',
   plugins: [
     new webpack.DefinePlugin({
-      'IS_DEV_MODE': JSON.stringify(mode === 'development')
-    })
-  ]
+      IS_DEV_MODE: JSON.stringify(mode === 'development'),
+    }),
+  ],
 });
