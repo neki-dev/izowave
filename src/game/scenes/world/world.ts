@@ -192,10 +192,10 @@ export class World extends Phaser.Scene {
    * Spawn enemy in random position.
    */
   public spawnEnemy(variant: EnemyVariant): Enemy {
-    const buildings = this.entityGroups.buildings.getChildren();
+    const buildings = (<Building[]> this.entityGroups.buildings.getChildren());
     const allowedPositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
-      && buildings.every((building: Building) => (
+      && buildings.every((building) => (
         Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
       ))
     ));

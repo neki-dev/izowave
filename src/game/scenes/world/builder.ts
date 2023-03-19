@@ -11,7 +11,7 @@ import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
-import { BuildingAudio, BuildingMeta, BuildingVariant } from '~type/world/entities/building';
+import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
@@ -94,20 +94,21 @@ export class Builder extends EventEmitter {
       return;
     }
 
-    const data: BuildingMeta = BUILDINGS[variant];
+    const BuildingInstance = BUILDINGS[variant];
 
     if (!this.isBuildingAllowedByTutorial(variant)) {
       return;
     }
 
     if (!this.isBuildingAllowedByWave(variant)) {
-      this.scene.game.screen.message(NoticeType.ERROR, `${data.Name} BE AVAILABLE ON ${data.AllowByWave} WAVE`);
+      // eslint-disable-next-line max-len
+      this.scene.game.screen.message(NoticeType.ERROR, `${BuildingInstance.Name} BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
 
       return;
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${data.Name}`);
+      this.scene.game.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
 
       return;
     }
@@ -117,7 +118,7 @@ export class Builder extends EventEmitter {
     this.variant = variant;
 
     if (this.buildingPreview) {
-      this.buildingPreview.setTexture(this.getBuildingMeta('Texture'));
+      this.buildingPreview.setTexture(BuildingInstance.Texture);
     }
   }
 
@@ -185,15 +186,6 @@ export class Builder extends EventEmitter {
       x: this.scene.input.activePointer.worldX,
       y: this.scene.input.activePointer.worldY,
     });
-  }
-
-  /**
-   * Get building meta parameter.
-   *
-   * @param param - Parameter key
-   */
-  private getBuildingMeta(param: string) {
-    return BUILDINGS[this.variant][param];
   }
 
   /**
@@ -328,7 +320,9 @@ export class Builder extends EventEmitter {
     this.scene.player.takeResources(BuildingInstance.Cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
-    new BuildingInstance(this.scene, this.getAssumedPosition());
+    new BuildingInstance(this.scene, {
+      positionAtMatrix: this.getAssumedPosition(),
+    });
 
     this.updateBuildArea();
     if (this.isBuildingLimitReached(this.variant)) {
@@ -467,7 +461,9 @@ export class Builder extends EventEmitter {
    * Create building variant preview on map.
    */
   private createBuildingPreview() {
-    this.buildingPreview = this.scene.add.image(0, 0, this.getBuildingMeta('Texture'));
+    const BuildingInstance = BUILDINGS[this.variant];
+
+    this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildingPreview.setOrigin(0.5, TILE_META.origin);
     this.updateBuildingPreview();
   }

@@ -8,7 +8,7 @@ import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { ParticlesType } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant,
+  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -37,9 +37,9 @@ export class BuildingGenerator extends Building {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+  constructor(scene: World, data: BuildingVariantData) {
     super(scene, {
-      positionAtMatrix,
+      ...data,
       variant: BuildingVariant.GENERATOR,
       health: BuildingGenerator.Health,
       texture: BuildingGenerator.Texture,

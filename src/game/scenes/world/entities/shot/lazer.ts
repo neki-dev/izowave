@@ -2,36 +2,32 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
-import { BuildingTower } from '~entity/building/variants/tower';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
 import { ParticlesType } from '~type/world/effects';
-import { ShotLazerAudio, ShotParams } from '~type/world/entities/shot';
+import {
+  IShot, IShotInitiator, ShotLazerAudio, ShotParams,
+} from '~type/world/entities/shot';
 
-export class ShotLazer extends Phaser.GameObjects.Line {
+export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
   readonly scene: World;
 
   /**
-   * Shot owner.
+   * Shot initiator.
    */
-  private readonly parent: BuildingTower;
+  private initiator: Nullable<IShotInitiator> = null;
+
+  /**
+   * Shot params.
+   */
+  public params: ShotParams;
 
   /**
    * Timer of shoot processing.
    */
   private timer: Nullable<Phaser.Time.TimerEvent> = null;
-
-  /**
-   * Damage of hit.
-   */
-  private damage: Nullable<number> = null;
-
-  /**
-   * Max shot distance.
-   */
-  private maxDistance: Nullable<number> = null;
 
   /**
    * Target enemy.
@@ -41,26 +37,35 @@ export class ShotLazer extends Phaser.GameObjects.Line {
   /**
    * Shot constructor.
    */
-  constructor(parent: BuildingTower) {
-    super(parent.scene);
-    parent.scene.add.existing(this);
-    parent.scene.entityGroups.shots.add(this);
+  constructor(scene: World, params: ShotParams) {
+    super(scene);
+    scene.add.existing(this);
+    scene.entityGroups.shots.add(this);
 
-    this.parent = parent;
+    this.params = params;
 
     this.setVisible(false);
     this.setStrokeStyle(2, 0xb136ff, 0.5);
     this.setDepth(WORLD_DEPTH_EFFECT);
     this.setOrigin(0.0, 0.0);
 
-    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.destroy();
-    });
-
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.timer) {
         this.timer.destroy();
       }
+    });
+  }
+
+  /**
+   * Set initiator for next shoots.
+   *
+   * @param initiator - Initiator
+   */
+  public setInitiator(initiator: IShotInitiator) {
+    this.initiator = initiator;
+
+    initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.destroy();
     });
   }
 
@@ -72,21 +77,20 @@ export class ShotLazer extends Phaser.GameObjects.Line {
       return;
     }
 
-    this.setTo(this.parent.x, this.parent.y, this.target.x, this.target.y);
+    this.setTo(this.initiator.x, this.initiator.y, this.target.x, this.target.y);
   }
 
   /**
    * Make shoot to target.
    *
    * @param target - Enemy
-   * @param data - Shot params
    */
-  public shoot(target: Enemy, {
-    damage, maxDistance,
-  }: ShotParams) {
+  public shoot(target: Enemy) {
+    if (!this.initiator) {
+      return;
+    }
+
     this.target = target;
-    this.damage = damage;
-    this.maxDistance = maxDistance;
 
     this.timer = this.scene.time.addEvent({
       delay: SHOT_LAZER_DELAY,
@@ -94,8 +98,8 @@ export class ShotLazer extends Phaser.GameObjects.Line {
       callback: () => this.processing(),
     });
 
-    this.setTo(this.parent.x, this.parent.y, target.x, target.y);
-    this.setVisible(this.parent.visible && target.visible);
+    this.setTo(this.initiator.x, this.initiator.y, target.x, target.y);
+    this.setVisible(this.initiator.visible && target.visible);
 
     if (this.scene.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
       this.scene.sound.play(ShotLazerAudio.LAZER);
@@ -107,8 +111,6 @@ export class ShotLazer extends Phaser.GameObjects.Line {
    */
   private stop() {
     this.target = null;
-    this.damage = null;
-    this.maxDistance = null;
 
     this.timer.destroy();
     this.timer = null;
@@ -120,7 +122,7 @@ export class ShotLazer extends Phaser.GameObjects.Line {
    * Handle hit to target.
    */
   private hit() {
-    const momentDamage = this.damage / SHOT_LAZER_REPEAT;
+    const momentDamage = this.params.damage / SHOT_LAZER_REPEAT;
 
     this.target.live.damage(momentDamage);
 
@@ -145,7 +147,7 @@ export class ShotLazer extends Phaser.GameObjects.Line {
   private processing() {
     if (
       this.target.live.isDead()
-      || Phaser.Math.Distance.BetweenPoints(this.parent, this.target) > this.maxDistance
+      || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target) > this.params.maxDistance
     ) {
       this.stop();
 

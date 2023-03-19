@@ -2,7 +2,9 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
-import { BuildingParamItem, BuildingTexture, BuildingVariant } from '~type/world/entities/building';
+import {
+  BuildingParamItem, BuildingTexture, BuildingVariant, BuildingVariantData,
+} from '~type/world/entities/building';
 
 import { BuildingTower } from '../tower';
 
@@ -30,9 +32,14 @@ export class BuildingTowerFrozen extends BuildingTower {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+  constructor(scene: World, data: BuildingVariantData) {
+    const shot = new ShotBallFrozen(scene, {
+      freeze: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION,
+      speed: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED,
+    });
+
     super(scene, {
-      positionAtMatrix,
+      ...data,
       variant: BuildingVariant.TOWER_FROZEN,
       health: BuildingTowerFrozen.Health,
       texture: BuildingTowerFrozen.Texture,
@@ -40,13 +47,6 @@ export class BuildingTowerFrozen extends BuildingTower {
         radius: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS,
         pause: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_PAUSE,
       },
-      shotData: {
-        instance: ShotBallFrozen,
-        params: {
-          freeze: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION,
-          speed: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED,
-        },
-      },
-    });
+    }, shot);
   }
 }

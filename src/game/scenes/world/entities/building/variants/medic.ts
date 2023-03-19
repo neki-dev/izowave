@@ -4,7 +4,9 @@ import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
 import { ScreenIcon } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
-import { BuildingVariant, BuildingTexture, BuildingParamItem } from '~type/world/entities/building';
+import {
+  BuildingVariant, BuildingTexture, BuildingParamItem, BuildingVariantData,
+} from '~type/world/entities/building';
 
 import { Building } from '../building';
 
@@ -31,9 +33,9 @@ export class BuildingMedic extends Building {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+  constructor(scene: World, data: BuildingVariantData) {
     super(scene, {
-      positionAtMatrix,
+      ...data,
       variant: BuildingVariant.MEDIC,
       health: BuildingMedic.Health,
       texture: BuildingMedic.Texture,

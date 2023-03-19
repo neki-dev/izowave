@@ -3,7 +3,7 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import {
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant,
+  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -40,9 +40,9 @@ export class BuildingAmmunition extends Building {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+  constructor(scene: World, data: BuildingVariantData) {
     super(scene, {
-      positionAtMatrix,
+      ...data,
       variant: BuildingVariant.AMMUNITION,
       health: BuildingAmmunition.Health,
       texture: BuildingAmmunition.Texture,

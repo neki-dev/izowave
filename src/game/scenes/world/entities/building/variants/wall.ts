@@ -1,10 +1,8 @@
-import Phaser from 'phaser';
-
 import { DIFFICULTY } from '~const/world/difficulty';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import {
-  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParamItem,
+  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParamItem, BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -27,9 +25,9 @@ export class BuildingWall extends Building {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+  constructor(scene: World, data: BuildingVariantData) {
     super(scene, {
-      positionAtMatrix,
+      ...data,
       variant: BuildingVariant.WALL,
       health: BuildingWall.Health,
       texture: BuildingWall.Texture,

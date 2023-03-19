@@ -7,18 +7,23 @@ import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { ParticlesType } from '~type/world/effects';
 import {
-  ShotParams, ShotBallData, ShotParent, ShotBallAudio, ShotBallTexture,
+  ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShot,
 } from '~type/world/entities/shot';
 
-export class ShotBall extends Phaser.Physics.Arcade.Image {
+export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
   readonly scene: World;
 
   readonly body: Phaser.Physics.Arcade.Body;
 
   /**
-   * Shot owner.
+   * Shot initiator.
    */
-  private readonly parent: ShotParent;
+  private initiator: Nullable<IShotInitiator> = null;
+
+  /**
+   * Shot params.
+   */
+  public params: ShotParams;
 
   /**
    * Shot audio.
@@ -31,48 +36,43 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   private effect: Nullable<Particles> = null;
 
   /**
-   * Damage of hit.
-   */
-  private damage: Nullable<number> = null;
-
-  /**
-   * Freeze of hit.
-   */
-  private freeze: Nullable<number> = null;
-
-  /**
-   * Max shot distance.
-   */
-  private maxDistance: Nullable<number> = null;
-
-  /**
    * Start shoot position.
    */
   private startPosition: Nullable<Phaser.Types.Math.Vector2Like> = null;
 
   /**
-   * Color for parent glow effect.
+   * Color for initiator glow effect.
    */
   private glowColor: Nullable<number> = null;
 
   /**
    * Shot constructor.
    */
-  constructor(parent: ShotParent, {
+  constructor(scene: World, params: ShotParams, {
     texture, audio, glowColor = null,
   }: ShotBallData) {
-    super(parent.scene, parent.x, parent.y, texture);
-    parent.scene.add.existing(this);
-    parent.scene.entityGroups.shots.add(this);
+    super(scene, null, null, texture);
+    scene.add.existing(this);
+    scene.entityGroups.shots.add(this);
 
-    this.parent = parent;
+    this.params = params;
     this.audio = audio;
     this.glowColor = glowColor;
 
     this.setActive(false);
     this.setVisible(false);
+  }
 
-    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
+  /**
+   * Set initiator for next shoots.
+   *
+   * @param initiator - Initiator
+   */
+  public setInitiator(initiator: IShotInitiator) {
+    this.initiator = initiator;
+    this.setPosition(initiator.x, initiator.y);
+
+    initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
     });
   }
@@ -83,7 +83,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
   public update() {
     const distance = Phaser.Math.Distance.BetweenPoints(this, this.startPosition);
 
-    if (distance > this.maxDistance) {
+    if (distance > this.params.maxDistance) {
       this.stop();
 
       return;
@@ -112,11 +112,11 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
    * @param target - Enemy
    */
   public hit(target: Enemy) {
-    if (this.freeze) {
-      target.freeze(this.freeze);
+    if (this.params.freeze) {
+      target.freeze(this.params.freeze);
     }
-    if (this.damage) {
-      target.live.damage(this.damage);
+    if (this.params.damage) {
+      target.live.damage(this.params.damage);
     }
 
     this.stop();
@@ -126,14 +126,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
    * Make shoot to target.
    *
    * @param target - Enemy
-   * @param data - Shot params
    */
-  public shoot(target: Enemy, {
-    maxDistance, speed, damage = null, freeze = null,
-  }: ShotParams) {
-    if (!damage && !freeze) {
-      console.warn('ShotBall has no damage or freeze parameter');
-
+  public shoot(target: Enemy) {
+    if (!this.initiator) {
       return;
     }
 
@@ -151,17 +146,14 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
       });
     }
 
-    this.setPosition(this.parent.x, this.parent.y);
+    this.setPosition(this.initiator.x, this.initiator.y);
     this.setActive(true);
     this.setVisible(true);
 
     this.startPosition = { x: this.x, y: this.y };
-    this.damage = damage;
-    this.freeze = freeze;
-    this.maxDistance = maxDistance;
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.scene.physics.moveTo(this, target.x, target.y, speed);
+    this.scene.physics.moveTo(this, target.x, target.y, this.params.speed);
 
     if (this.scene.sound.getAll(this.audio).length < 3) {
       this.scene.sound.play(this.audio);
@@ -181,9 +173,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image {
     this.setVisible(false);
 
     this.startPosition = null;
-    this.damage = null;
-    this.freeze = null;
-    this.maxDistance = null;
 
     this.scene.physics.world.disable(this);
   }

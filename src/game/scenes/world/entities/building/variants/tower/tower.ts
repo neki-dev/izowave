@@ -4,28 +4,21 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';
 import { Enemy } from '~entity/npc/variants/enemy';
-import { ShotBall } from '~entity/shot/ball';
-import { ShotLazer } from '~entity/shot/lazer';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { TutorialStep } from '~type/tutorial';
 import {
-  BuildingAction, BuildingAudio, BuildingParamItem, BuildingTowerData, BuildingTowerShotParams, BuildingVariant,
+  BuildingAction, BuildingAudio, BuildingData, BuildingParamItem, BuildingVariant,
 } from '~type/world/entities/building';
-import { ShotParams } from '~type/world/entities/shot';
+import { IShot, ShotParams } from '~type/world/entities/shot';
 
 export class BuildingTower extends Building {
   /**
-   * Shot params.
-   */
-  readonly shotParams: BuildingTowerShotParams;
-
-  /**
    * Tower shot item.
    */
-  readonly shot: ShotBall | ShotLazer;
+  readonly shot: IShot;
 
   /**
    * Ammo left in clip.
@@ -35,15 +28,11 @@ export class BuildingTower extends Building {
   /**
    * Building variant constructor.
    */
-  constructor(scene: World, {
-    shotData, ...data
-  }: BuildingTowerData) {
+  constructor(scene: World, data: BuildingData, shot: IShot) {
     super(scene, data);
 
-    const ShotInstance = shotData.instance;
-
-    this.shot = new ShotInstance(this);
-    this.shotParams = shotData.params;
+    shot.setInitiator(this);
+    this.shot = shot;
 
     scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
@@ -57,7 +46,7 @@ export class BuildingTower extends Building {
    */
   public getInfo(): BuildingParamItem[] {
     const info = super.getInfo();
-    const params = this.getShotParams();
+    const params = this.getShotCurrentParams();
 
     if (params.damage) {
       info.push({
@@ -146,30 +135,30 @@ export class BuildingTower extends Building {
   /**
    * Get shot params.
    */
-  public getShotParams(level?: number) {
+  private getShotCurrentParams(level?: number) {
     const params: ShotParams = {
       maxDistance: this.getActionsRadius(),
     };
 
-    if (this.shotParams.speed) {
+    if (this.shot.params.speed) {
       params.speed = calcGrowth(
-        this.shotParams.speed,
+        this.shot.params.speed,
         DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
         level || this.upgradeLevel,
       );
     }
 
-    if (this.shotParams.damage) {
+    if (this.shot.params.damage) {
       params.damage = calcGrowth(
-        this.shotParams.damage,
+        this.shot.params.damage,
         DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         level || this.upgradeLevel,
       );
     }
 
-    if (this.shotParams.freeze) {
+    if (this.shot.params.freeze) {
       params.freeze = calcGrowth(
-        this.shotParams.freeze,
+        this.shot.params.freeze,
         DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
         level || this.upgradeLevel,
       );
@@ -255,8 +244,7 @@ export class BuildingTower extends Building {
    * @param target - Enemy
    */
   private shoot(target: Enemy) {
-    const params = this.getShotParams();
-
-    this.shot.shoot(target, params);
+    this.shot.params = this.getShotCurrentParams();
+    this.shot.shoot(target);
   }
 }

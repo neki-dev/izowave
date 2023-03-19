@@ -1,8 +1,21 @@
 import Phaser from 'phaser';
 
+import { Building } from '~entity/building';
+import { World } from '~scene/world';
 import { ComponentCreator } from '~type/interface';
 import { ScreenIcon } from '~type/screen';
-import { ShotInstance } from '~type/world/entities/shot';
+
+export interface IBuildingFactory {
+  Name: string
+  Description: string
+  Params: BuildingParamItem[]
+  Texture: BuildingTexture
+  Cost: number
+  Health: number
+  Limit?: number
+  AllowByWave?: number
+  new (scene: World, data: BuildingVariantData): Building
+}
 
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
@@ -52,14 +65,6 @@ export type BuildingActionsParams = {
   pause?: number
 };
 
-export type BuildingData = {
-  variant: BuildingVariant
-  health: number
-  positionAtMatrix: Phaser.Types.Math.Vector2Like
-  texture: BuildingTexture
-  actions?: BuildingActionsParams
-};
-
 export type BuildingParamItem = {
   label: string
   value: string | number
@@ -76,26 +81,13 @@ export type BuildingAction = {
   onClick: () => void
 };
 
-export interface BuildingMeta {
-  Name: string
-  Description: string
-  Params: BuildingParamItem[]
-  Texture: BuildingTexture
-  Cost: number
-  Health: number
-  Limit?: number
-  AllowByWave?: number
-}
-
-export type BuildingTowerShotParams = {
-  speed?: number
-  damage?: number
-  freeze?: number
+export type BuildingVariantData = {
+  positionAtMatrix: Phaser.Types.Math.Vector2Like
 };
 
-export type BuildingTowerData = BuildingData & {
-  shotData: {
-    instance: ShotInstance
-    params: BuildingTowerShotParams
-  }
+export type BuildingData = BuildingVariantData & {
+  variant: BuildingVariant
+  health: number
+  texture: BuildingTexture
+  actions?: BuildingActionsParams
 };

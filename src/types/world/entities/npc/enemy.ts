@@ -1,8 +1,16 @@
 import Phaser from 'phaser';
 
-import { Building } from '~entity/building';
-import { Assistant } from '~entity/npc/variants/assistant';
-import { Player } from '~entity/player';
+import { Enemy } from '~entity/npc/variants/enemy';
+import { World } from '~scene/world';
+import { Live } from '~scene/world/live';
+
+export interface IEnemyFactory {
+  new (scene: World, data: EnemyVariantData): Enemy
+}
+
+export interface IEnemyTarget {
+  live: Live
+}
 
 export enum EnemyTexture {
   BAT = 'enemy/bat',
@@ -18,11 +26,6 @@ export enum EnemyAudio {
   ATTACK = 'enemy/attack',
 }
 
-export type EnemyTexturesMeta = Record<EnemyTexture, {
-  frameRate: number
-  size: number
-}>;
-
 export enum EnemyVariant {
   BAT = 'BAT',
   DEMON = 'DEMON',
@@ -33,13 +36,21 @@ export enum EnemyVariant {
   BOUCHE = 'BOUCHE',
 }
 
+export type EnemyTexturesMeta = Record<EnemyTexture, {
+  frameRate: number
+  size: number
+}>;
+
 export type EnemyVariantsMeta = Partial<Record<EnemyVariant, {
   spawnMinWave: number
   spawnFrequency: number
 }>>;
 
-export type EnemyData = {
+export type EnemyVariantData = {
   positionAtMatrix: Phaser.Types.Math.Vector2Like
+};
+
+export type EnemyData = EnemyVariantData & {
   texture: EnemyTexture
   speed: number
   damage: number
@@ -47,9 +58,3 @@ export type EnemyData = {
   experienceMultiply?: number
   scale?: number
 };
-
-export type EnemyVariantData = {
-  positionAtMatrix: Phaser.Types.Math.Vector2Like
-};
-
-export type EnemyAttackTarget = Player | Assistant | Building;

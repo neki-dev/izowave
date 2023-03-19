@@ -9,7 +9,7 @@ import { debounce } from '~lib/utils';
 import { ComponentBuildInfo } from '~scene/screen/components/builder/build-info';
 import { ComponentHelp } from '~scene/screen/components/help';
 import { TutorialStep } from '~type/tutorial';
-import { BuildingMeta, BuildingVariant } from '~type/world/entities/building';
+import { BuildingVariant } from '~type/world/entities/building';
 import { WaveEvents } from '~type/world/wave';
 
 export const ComponentBuilder = Component(function (container) {
@@ -169,7 +169,7 @@ export const ComponentBuilder = Component(function (container) {
       ref.info.destroy();
     }
 
-    const data: BuildingMeta = BUILDINGS[variant];
+    const BuildingInstance = BUILDINGS[variant];
 
     const limit = this.game.world.builder.getBuildingLimit(variant);
     const limitState: [number, number] = limit ? [
@@ -179,10 +179,10 @@ export const ComponentBuilder = Component(function (container) {
 
     container.add(
       ref.info = ComponentBuildInfo(this, {
-        name: data.Name,
-        description: data.Description,
-        cost: data.Cost,
-        params: data.Params,
+        name: BuildingInstance.Name,
+        description: BuildingInstance.Description,
+        cost: BuildingInstance.Cost,
+        params: BuildingInstance.Params,
         limit: limitState,
         allowed: this.game.world.builder.isBuildingAllowedByWave(variant),
       }),

@@ -10,7 +10,7 @@ import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
 import { ParticlesType } from '~type/world/effects';
 import {
-  EnemyAttackTarget, EnemyAudio, EnemyData, EnemyTexture,
+  IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture,
 } from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
@@ -136,7 +136,7 @@ export class Enemy extends NPC {
    *
    * @param target - Target
    */
-  public attack(target: EnemyAttackTarget) {
+  public attack(target: IEnemyTarget) {
     if (this.isCalm() || target.live.isDead()) {
       return;
     }

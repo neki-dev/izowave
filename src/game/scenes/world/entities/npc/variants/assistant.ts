@@ -9,13 +9,14 @@ import { World } from '~scene/world';
 import { Effect } from '~scene/world/effects';
 import { EffectTexture } from '~type/world/effects';
 import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/npc/assistant';
-import { ShotParams } from '~type/world/entities/shot';
+import { IEnemyTarget } from '~type/world/entities/npc/enemy';
+import { IShot, IShotInitiator, ShotParams } from '~type/world/entities/shot';
 
-export class Assistant extends NPC {
+export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
   /**
    * Assistant shot item.
    */
-  readonly shot: ShotBallFire;
+  readonly shot: IShot;
 
   /**
    * Pause for next attack.
@@ -37,7 +38,12 @@ export class Assistant extends NPC {
     });
     scene.add.existing(this);
 
-    this.shot = new ShotBallFire(this);
+    this.shot = new ShotBallFire(scene, {
+      maxDistance: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
+      speed: DIFFICULTY.ASSISTANT_ATTACK_SPEED,
+      damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
+    });
+    this.shot.setInitiator(this);
 
     this.body.setCircle(this.width / 2, 0, 1);
   }
@@ -110,9 +116,8 @@ export class Assistant extends NPC {
       return;
     }
 
-    const params = this.getShotParams();
-
-    this.shot.shoot(target, params);
+    this.shot.params = this.getShotCurrentParams();
+    this.shot.shoot(target);
 
     const pause = calcGrowth(
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
@@ -148,20 +153,20 @@ export class Assistant extends NPC {
   /**
    * Get shot params.
    */
-  private getShotParams() {
+  private getShotCurrentParams() {
     const params: ShotParams = {
       maxDistance: calcGrowth(
-        DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
+        this.shot.params.maxDistance,
         DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
         this.scene.player.level,
       ),
       speed: calcGrowth(
-        DIFFICULTY.ASSISTANT_ATTACK_SPEED,
+        this.shot.params.speed,
         DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
         this.scene.player.level,
       ),
       damage: calcGrowth(
-        DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
+        this.shot.params.damage,
         DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
         this.scene.player.level,
       ),

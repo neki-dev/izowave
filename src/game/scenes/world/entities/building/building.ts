@@ -23,12 +23,14 @@ import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
-  BuildingTexture, BuildingVariant, BuildingParamItem, BuildingMeta, BuildingAction, BuildingOutlineState,
+  BuildingTexture, BuildingVariant, BuildingParamItem, BuildingAction,
+  BuildingOutlineState, IBuildingFactory,
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
+import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
-export class Building extends Phaser.GameObjects.Image {
+export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   readonly scene: World;
 
   /**
@@ -303,8 +305,8 @@ export class Building extends Phaser.GameObjects.Image {
   /**
    * Get building meta.
    */
-  public getMeta(): BuildingMeta {
-    return (this.constructor as unknown as BuildingMeta);
+  public getMeta(): IBuildingFactory {
+    return this.constructor as IBuildingFactory;
   }
 
   /**
