@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import { Vector2D } from '~type/world/level';
 
 export enum AssistantTexture {
   ASSISTANT = 'assistant',
@@ -9,5 +9,5 @@ export enum AssistantAudio {
 }
 
 export type AssistantData = {
-  positionAtMatrix: Phaser.Types.Math.Vector2Like
+  positionAtMatrix: Vector2D
 };

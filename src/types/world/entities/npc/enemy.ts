@@ -1,8 +1,7 @@
-import Phaser from 'phaser';
-
 import { Enemy } from '~entity/npc/variants/enemy';
 import { World } from '~scene/world';
 import { Live } from '~scene/world/live';
+import { Vector2D } from '~type/world/level';
 
 export interface IEnemyFactory {
   new (scene: World, data: EnemyVariantData): Enemy
@@ -47,7 +46,7 @@ export type EnemyVariantsMeta = Partial<Record<EnemyVariant, {
 }>>;
 
 export type EnemyVariantData = {
-  positionAtMatrix: Phaser.Types.Math.Vector2Like
+  positionAtMatrix: Vector2D
 };
 
 export type EnemyData = EnemyVariantData & {

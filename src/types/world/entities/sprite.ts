@@ -1,8 +1,8 @@
-import Phaser from 'phaser';
+import { Vector2D } from '../level';
 
 export type SpriteData = {
   texture: string
-  positionAtMatrix: Phaser.Types.Math.Vector2Like
+  positionAtMatrix: Vector2D
   frame?: number
   health: number
 };

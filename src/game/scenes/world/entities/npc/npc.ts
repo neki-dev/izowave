@@ -7,12 +7,13 @@ import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
 import { NPCData } from '~type/world/entities/npc';
+import { Vector2D } from '~type/world/level';
 
 export class NPC extends Sprite {
   /**
    * Current finded path to target.
    */
-  private currentPath: Phaser.Types.Math.Vector2Like[] = [];
+  private currentPath: Vector2D[] = [];
 
   /**
    * Current task of path finding.
@@ -141,7 +142,7 @@ export class NPC extends Sprite {
       }
     }
 
-    const onComplete = (path: Phaser.Types.Math.Vector2Like[]) => {
+    const onComplete = (path: Vector2D[]) => {
       this.pathFindingTask = null;
 
       if (!path) {
@@ -180,7 +181,7 @@ export class NPC extends Sprite {
    *
    * @param position - Position at world
    */
-  public moveTo(position: Phaser.Types.Math.Vector2Like) {
+  public moveTo(position: Vector2D) {
     const direction = Phaser.Math.Angle.Between(this.x, this.y, position.x, position.y);
     const velocity = this.scene.physics.velocityFromRotation(direction, this.speed);
     const collide = this.handleCollide(direction);

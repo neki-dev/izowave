@@ -46,12 +46,23 @@ export enum BiomeType {
   SNOW = 'SNOW',
 }
 
+export type Vector2D = {
+  x: number
+  y: number
+};
+
+export type Vector3D = {
+  x: number
+  y: number
+  z: number
+};
+
 declare global {
   namespace Phaser {
     namespace GameObjects {
       interface Image {
         biome?: LevelBiome
-        tileType?: TileType
+        tileType: TileType
       }
     }
   }

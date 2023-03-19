@@ -1,7 +1,8 @@
 /* eslint-disable no-continue */
 
-import { entries } from '~lib/system';
+import { eachEntries } from '~lib/system';
 import { equalPositions } from '~lib/utils';
+import { Vector2D } from '~type/world/level';
 import { NavigatorTaskState } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
@@ -41,9 +42,9 @@ export class Navigator {
   }
 
   public createTask(
-    from: Phaser.Types.Math.Vector2Like,
-    to: Phaser.Types.Math.Vector2Like,
-    callback: (path: Phaser.Types.Math.Vector2Like[]) => void,
+    from: Vector2D,
+    to: Vector2D,
+    callback: (path: Nullable<Vector2D[]>) => void,
   ) {
     const task = new NavigatorTask(from, to, callback);
     const node = new PathNode(null, {
@@ -93,42 +94,42 @@ export class Navigator {
     }
   }
 
-  private getAllowedDirections(currentNode: PathNode): Phaser.Types.Math.Vector2Like[] {
+  private getAllowedDirections(currentNode: PathNode): Vector2D[] {
     const straightFlags: Record<string, boolean> = {};
-    const straightDirs = {
+    const straightDirs: Record<string, Vector2D> = {
       R: { x: 1, y: 0 }, // →
       L: { x: -1, y: 0 }, // ←
       D: { x: 0, y: 1 }, // ↓
       U: { x: 0, y: -1 }, // ↑
     };
-    const diagonalDirs = {
+    const diagonalDirs: Record<string, Vector2D> = {
       RD: { x: 1, y: 1 }, // ↘
       RU: { x: 1, y: -1 }, // ↗
       LU: { x: -1, y: -1 }, // ↖
       LD: { x: -1, y: 1 }, // ↙
     };
 
-    const allowedDirs = [];
+    const allowedDirs: Vector2D[] = [];
 
-    for (const [key, dir] of entries(straightDirs)) {
+    eachEntries(straightDirs, (key, dir) => {
       if (this.isWalkable(currentNode.x + dir.x, currentNode.y + dir.y)) {
         straightFlags[key] = true;
         allowedDirs.push(dir);
       }
-    }
+    });
 
-    for (const [key, dir] of entries(diagonalDirs)) {
+    eachEntries(diagonalDirs, (key, dir) => {
       const dontCross = key.split('').every((flag) => straightFlags[flag]);
 
       if (dontCross && this.isWalkable(currentNode.x + dir.x, currentNode.y + dir.y)) {
         allowedDirs.push(dir);
       }
-    }
+    });
 
     return allowedDirs;
   }
 
-  private checkAdjacentNode(task: NavigatorTask, currentNode: PathNode, shift: Phaser.Types.Math.Vector2Like) {
+  private checkAdjacentNode(task: NavigatorTask, currentNode: PathNode, shift: Vector2D) {
     const x = currentNode.x + shift.x;
     const y = currentNode.y + shift.y;
 

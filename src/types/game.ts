@@ -27,8 +27,8 @@ export enum GameDifficulty {
 export type GameDifficultyPowers = Record<GameDifficulty, number>;
 
 export type GameStat = {
-  waves?: number
-  kills?: number
-  level?: number
-  lived?: number
+  waves: number
+  kills: number
+  level: number
+  lived: number
 };

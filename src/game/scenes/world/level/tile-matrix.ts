@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { TileType } from '~type/world/level';
+import { TileType, Vector3D } from '~type/world/level';
 
 export class TileMatrix {
   /**
@@ -39,9 +39,7 @@ export class TileMatrix {
    *
    * @param position - Tile position
    */
-  public getTile(
-    position: Phaser.Types.Math.Vector3Like,
-  ): Nullable<Phaser.GameObjects.Image> {
+  public getTile(position: Vector3D): Nullable<Phaser.GameObjects.Image> {
     const { x, y, z } = position;
 
     return this.tiles[z]?.[y]?.[x] || null;
@@ -52,10 +50,8 @@ export class TileMatrix {
    *
    * @param position - Tile position
    */
-  public isVisibleTile(
-    position: Phaser.Types.Math.Vector3Like,
-  ): boolean {
-    return this.getTile(position)?.visible || false;
+  public isVisibleTile(position: Vector3D): boolean {
+    return this.getTile(position)?.visible ?? false;
   }
 
   /**
@@ -65,7 +61,7 @@ export class TileMatrix {
    * @param type - Tile type or types
    */
   public getTileWithType(
-    position: Phaser.Types.Math.Vector3Like,
+    position: Vector3D,
     type: TileType | TileType[],
   ): Nullable<Phaser.GameObjects.Image> {
     if (!this.tileIs(position, type)) {
@@ -82,7 +78,7 @@ export class TileMatrix {
    * @param type - Tile type or types
    */
   public tileIs(
-    position: Phaser.Types.Math.Vector3Like,
+    position: Vector3D,
     type: TileType | TileType[],
   ): boolean {
     const tile = this.getTile(position);
@@ -108,7 +104,7 @@ export class TileMatrix {
   public putTile(
     tile: Phaser.GameObjects.Image,
     type: TileType,
-    position: Phaser.Types.Math.Vector3Like,
+    position: Vector3D,
   ) {
     const existsTile = this.getTile(position);
 
@@ -129,7 +125,7 @@ export class TileMatrix {
    *
    * @param position - Tile position
    */
-  public removeTile(position: Phaser.Types.Math.Vector3Like) {
+  public removeTile(position: Vector3D) {
     const tile = this.getTile(position);
 
     if (!tile) {

@@ -1,16 +1,16 @@
 import Heap from 'heap';
-import Phaser from 'phaser';
 
+import { Vector2D } from '~type/world/level';
 import { NavigatorTaskState } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 
 export class NavigatorTask {
-  readonly from: Phaser.Types.Math.Vector2Like;
+  readonly from: Vector2D;
 
-  readonly to: Phaser.Types.Math.Vector2Like;
+  readonly to: Vector2D;
 
-  private callback: (path: Phaser.Types.Math.Vector2Like[] | null) => void;
+  private callback: (path: Nullable<Vector2D[]>) => void;
 
   private tree: PathNode[][] = [];
 
@@ -19,9 +19,9 @@ export class NavigatorTask {
   public state: NavigatorTaskState = NavigatorTaskState.IDLE;
 
   constructor(
-    from: Phaser.Types.Math.Vector2Like,
-    to: Phaser.Types.Math.Vector2Like,
-    callback: (path: Phaser.Types.Math.Vector2Like[]) => void,
+    from: Vector2D,
+    to: Vector2D,
+    callback: (path: Nullable<Vector2D[]>) => void,
   ) {
     this.from = from;
     this.to = to;
@@ -31,7 +31,7 @@ export class NavigatorTask {
     ));
   }
 
-  public takeLastNode(): PathNode {
+  public takeLastNode(): PathNode | undefined {
     return this.nodes.pop();
   }
 

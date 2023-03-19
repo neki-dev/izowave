@@ -4,7 +4,7 @@ import { INTERFACE_BOX_COLOR, INTERFACE_FONT } from '~const/interface';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { TILE_META } from '~const/world/level';
 import { Component, scaleText, switchSize } from '~lib/interface';
-import { entries } from '~lib/system';
+import { eachEntries } from '~lib/system';
 import { debounce } from '~lib/utils';
 import { ComponentBuildInfo } from '~scene/screen/components/builder/build-info';
 import { ComponentHelp } from '~scene/screen/components/help';
@@ -274,7 +274,7 @@ export const ComponentBuilder = Component(function (container) {
 
   return {
     update: () => {
-      for (const [variant, { wrapper, body, preview }] of entries(ref.items)) {
+      eachEntries(ref.items, (variant, { wrapper, body, preview }) => {
         if (this.game.world.wave.isGoing) {
           if (state.mods[variant] !== 'disabled') {
             wrapper.setAlpha(0.25);
@@ -308,7 +308,7 @@ export const ComponentBuilder = Component(function (container) {
           body.setFillStyle(0x000000);
           body.setAlpha(0.5);
         }
-      }
+      });
     },
   };
 });

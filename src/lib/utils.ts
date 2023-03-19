@@ -1,6 +1,5 @@
-import Phaser from 'phaser';
-
 import { MIN_VALID_SCREEN_SIZE } from '~const/game';
+import { Vector2D, Vector3D } from '~type/world/level';
 
 /**
  * Quadratic equation for calculating difficulty
@@ -24,11 +23,12 @@ export function calcGrowth(
  * @param a - First position
  * @param b - Second position
  */
-export function equalPositions(
-  a: Phaser.Types.Math.Vector3Like,
-  b: Phaser.Types.Math.Vector3Like,
-): boolean {
-  return (a.x === b.x && a.y === b.y && a.z === b.z);
+export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D): boolean {
+  if ('z' in a && 'z' in b) {
+    return (a.x === b.x && a.y === b.y && a.z === b.z);
+  }
+
+  return (a.x === b.x && a.y === b.y);
 }
 
 /**
@@ -50,12 +50,12 @@ export function formatTime(value: number): string {
  * @param target - Target position
  * @param count - Count return positions
  */
-export function selectClosest<T extends Phaser.Types.Math.Vector2Like>(
+export function selectClosest<T extends Vector2D>(
   positions: T[],
-  target: Phaser.Types.Math.Vector2Like,
+  target: Vector2D,
   count: number = 1,
 ): T[] {
-  let meta = positions.map((position: T) => {
+  let meta = positions.map((position) => {
     const dx = position.x - target.x;
     const dy = position.y - target.y;
 
@@ -79,9 +79,9 @@ export function selectClosest<T extends Phaser.Types.Math.Vector2Like>(
  * @param space - Space between source position and around positions
  */
 export function aroundPosition(
-  position: Phaser.Types.Math.Vector2Like,
+  position: Vector2D,
   space: number = 0,
-): Phaser.Types.Math.Vector2Like[] {
+): Vector2D[] {
   const list = [];
   const shift = space + 1;
 

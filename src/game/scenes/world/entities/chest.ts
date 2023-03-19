@@ -6,7 +6,7 @@ import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { ChestTexture, ChestData, ChestAudio } from '~type/world/entities/chest';
-import { TileType } from '~type/world/level';
+import { TileType, Vector2D } from '~type/world/level';
 
 export class Chest extends Phaser.GameObjects.Image {
   readonly scene: World;
@@ -14,7 +14,7 @@ export class Chest extends Phaser.GameObjects.Image {
   /**
    * Position at matrix.
    */
-  readonly positionAtMatrix: Phaser.Types.Math.Vector2Like;
+  readonly positionAtMatrix: Vector2D;
 
   /**
    * Chest constructor.

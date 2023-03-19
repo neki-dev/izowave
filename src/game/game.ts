@@ -5,7 +5,7 @@ import { DIFFICULTY_POWERS } from '~const/world/difficulty';
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
-import { entries, keys } from '~lib/system';
+import { eachEntries } from '~lib/system';
 import { Basic } from '~scene/basic';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
@@ -271,9 +271,9 @@ export class Game extends Phaser.Game {
    */
   private writeBestStat(stat: GameStat, record: GameStat) {
     localStorage.setItem(`BEST_STAT.${this.difficultyType}`, JSON.stringify(
-      keys(stat).reduce((curr, param) => ({
+      Object.keys(stat).reduce((curr, param: keyof GameStat) => ({
         ...curr,
-        [param]: Math.max(stat[param], record[param] || 0),
+        [param]: Math.max(stat[param] ?? 0, record[param] ?? 0),
       }), {}),
     ));
   }
@@ -296,8 +296,8 @@ export class Game extends Phaser.Game {
   private registerShaders() {
     const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.renderer;
 
-    for (const [name, Shader] of entries(shaders)) {
+    eachEntries(shaders, (name, Shader) => {
       renderer.pipelines.addPostPipeline(name, Shader);
-    }
+    });
   }
 }

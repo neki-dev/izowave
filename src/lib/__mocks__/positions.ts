@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import { Vector2D } from '~type/world/level';
 
-const positions: Phaser.Types.Math.Vector2Like[] = [
+const positions: Vector2D[] = [
   { x: 0, y: 0 },
   { x: 10, y: 10 },
   { x: 20, y: -10 },

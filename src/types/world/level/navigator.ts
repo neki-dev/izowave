@@ -1,3 +1,5 @@
+import { Vector2D } from './level';
+
 export enum NavigatorTaskState {
   IDLE = 'IDLE',
   PROCESSING = 'PROCESSING',
@@ -7,7 +9,7 @@ export enum NavigatorTaskState {
 }
 
 export type PathNodeParams = {
-  position: Phaser.Types.Math.Vector2Like
+  position: Vector2D
   cost: number
   distance: number
 };

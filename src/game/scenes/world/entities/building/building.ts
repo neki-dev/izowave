@@ -28,7 +28,7 @@ import {
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
-import { TileType } from '~type/world/level';
+import { TileType, Vector2D } from '~type/world/level';
 
 export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   readonly scene: World;
@@ -46,7 +46,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Position at matrix.
    */
-  readonly positionAtMatrix: Phaser.Types.Math.Vector2Like;
+  readonly positionAtMatrix: Vector2D;
 
   /**
    * Current upgrade level.
@@ -224,7 +224,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    *
    * @param position - Position at world
    */
-  public actionsAreaContains(position: Phaser.Types.Math.Vector2Like): boolean {
+  public actionsAreaContains(position: Vector2D): boolean {
     if (!this.actionsArea) {
       return false;
     }

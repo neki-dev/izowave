@@ -5,7 +5,7 @@ type Config = {
 };
 
 export class GrayscaleShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
-  private _intensity: number;
+  private _intensity: number = 1.0;
 
   constructor(game: Phaser.Game) {
     super({
@@ -29,17 +29,13 @@ export class GrayscaleShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipel
         }
       `,
     });
-
-    this.setConfig({
-      intensity: 1.0,
-    });
   }
 
-  onPreRender() {
+  public onPreRender() {
     this.set1f('intensity', this._intensity);
   }
 
-  setConfig({ intensity }: Config) {
+  public setConfig({ intensity }: Config) {
     if (intensity !== undefined) {
       this._intensity = intensity;
     }

@@ -12,7 +12,7 @@ import { NoticeType } from '~type/screen/notice';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
-import { BiomeType, TileType } from '~type/world/level';
+import { BiomeType, TileType, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 export class Builder extends EventEmitter {
@@ -147,7 +147,7 @@ export class Builder extends EventEmitter {
    *
    * @param position - Position at matrix
    */
-  public addFoundation(position: Phaser.Types.Math.Vector2Like) {
+  public addFoundation(position: Vector2D) {
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
         const tileGround = this.scene.level.getTile({ x, y, z: 0 });
@@ -181,7 +181,7 @@ export class Builder extends EventEmitter {
    * Get current pointer world position
    * and converting to build grided position.
    */
-  private getAssumedPosition(): Phaser.Types.Math.Vector2Like {
+  private getAssumedPosition(): Vector2D {
     return Level.ToMatrixPosition({
       x: this.scene.input.activePointer.worldX,
       y: this.scene.input.activePointer.worldY,

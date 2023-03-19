@@ -11,9 +11,11 @@ export class Analytics {
    * Analytics constructor.
    */
   constructor() {
-    this.userId = localStorage.getItem('USER_ID');
+    const userId = localStorage.getItem('USER_ID');
 
-    if (!this.userId) {
+    if (userId) {
+      this.userId = userId;
+    } else {
       this.userId = Analytics.GenerateUserId();
       localStorage.setItem('USER_ID', this.userId);
     }

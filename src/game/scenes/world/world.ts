@@ -16,7 +16,7 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
 import { ShotBall } from '~entity/shot/ball';
-import { entries } from '~lib/system';
+import { eachEntries } from '~lib/system';
 import { selectClosest } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
@@ -26,7 +26,7 @@ import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effe
 import { BuildingVariant } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
-import { SpawnTarget } from '~type/world/level';
+import { SpawnTarget, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 import { Game } from '~game';
@@ -91,7 +91,7 @@ export class World extends Phaser.Scene implements IGameScene {
   /**
    * Enemies positions for spawn.
    */
-  private enemySpawnPositions: Phaser.Types.Math.Vector2Like[] = [];
+  private enemySpawnPositions: Vector2D[] = [];
 
   /**
    * Lifecycle timer.
@@ -294,7 +294,9 @@ export class World extends Phaser.Scene implements IGameScene {
   private addPlayer() {
     const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
 
-    this.player = new Player(this, Phaser.Utils.Array.GetRandom(positions));
+    this.player = new Player(this, {
+      positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
+    });
 
     this.cameras.main.resetFX();
     this.cameras.main.startFollow(this.player);
@@ -364,7 +366,7 @@ export class World extends Phaser.Scene implements IGameScene {
    * Add cheat codes.
    */
   private enableCheats() {
-    for (const [cheat, callback] of entries({
+    const scheme = {
       HEALPLS: () => {
         this.player.live.heal();
       },
@@ -383,9 +385,11 @@ export class World extends Phaser.Scene implements IGameScene {
         this.wave.number += Phaser.Math.Between(3, 7);
         this.wave.runTimeleft();
       },
-    })) {
+    };
+
+    eachEntries(scheme, (code, callback) => {
       // @ts-ignore
-      window[cheat] = () => {
+      window[code] = () => {
         if (this.game.started) {
           callback();
 
@@ -394,7 +398,7 @@ export class World extends Phaser.Scene implements IGameScene {
 
         return null;
       };
-    }
+    });
   }
 
   /**

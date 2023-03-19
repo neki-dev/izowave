@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import { Vector2D } from '~type/world/level';
+
 export class Hexagon extends Phaser.Geom.Polygon {
   /**
    * Position X of shape center.
@@ -47,9 +49,9 @@ export class Hexagon extends Phaser.Geom.Polygon {
     this.setTo(this.getCorners());
   }
 
-  private getCorners(): Phaser.Types.Math.Vector2Like[] {
+  private getCorners(): Vector2D[] {
     const l = Phaser.Math.PI2 / 6;
-    const points: Phaser.Types.Math.Vector2Like[] = [];
+    const points: Vector2D[] = [];
 
     for (let u = 0; u < 6; u++) {
       points.push({

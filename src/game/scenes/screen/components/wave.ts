@@ -15,10 +15,10 @@ export const ComponentWave = Component(function (container) {
   } = {};
 
   const state: {
-    number: number
-    enemies: number
-    timeleft: number
-    isGoing: boolean
+    number: Nullable<number>
+    enemies: Nullable<number>
+    timeleft: Nullable<number>
+    isGoing: Nullable<boolean>
   } = {
     number: null,
     enemies: null,

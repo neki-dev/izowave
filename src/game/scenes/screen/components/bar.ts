@@ -20,8 +20,8 @@ export const ComponentBar = Component<Props>(function (container, {
   } = {};
 
   const state: {
-    percent: number
-    display: string
+    percent: Nullable<number>
+    display: Nullable<string>
   } = {
     percent: null,
     display: null,

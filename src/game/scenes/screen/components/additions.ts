@@ -54,7 +54,7 @@ export const ComponentAdditions = Component<Props>(function (container, {
       ease: 'Linear',
       onComplete: () => {
         ref.addition.destroy();
-        ref.addition = undefined;
+        delete ref.addition;
       },
     });
   });

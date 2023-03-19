@@ -12,7 +12,7 @@ export type ComponentControl = {
 export type ComponentInstance<T> = (
   this: IGameScene,
   container: Phaser.GameObjects.Container,
-  props?: T
+  props: T
 ) => ComponentControl | void;
 
 export type ResizeCallback = (width: number, height: number) => void;

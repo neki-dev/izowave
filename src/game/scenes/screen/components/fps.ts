@@ -7,7 +7,7 @@ export const ComponentFPS = Component(function (container) {
   } = {};
 
   const state: {
-    value: number
+    value: Nullable<number>
   } = { value: null };
 
   /**

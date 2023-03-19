@@ -1,3 +1,5 @@
+import { Vector2D } from '../level';
+
 export enum PlayerEvents {
   UPDATE_EXPERIENCE = 'update_experience',
   UPDATE_RESOURCE = 'update_resource',
@@ -20,3 +22,7 @@ export enum MovementDirection {
   DOWN = 1,
   NONE = 0,
 }
+
+export type PlayerData = {
+  positionAtMatrix: Vector2D
+};

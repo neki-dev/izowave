@@ -9,7 +9,7 @@ import { Building } from '~entity/building';
 import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import {
-  BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType,
+  BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D,
 } from '~type/world/level';
 
 import { Navigator } from './navigator';
@@ -83,7 +83,7 @@ export class Level extends TileMatrix {
   /**
    *
    */
-  public isFreePoint(position: Phaser.Types.Math.Vector3Like) {
+  public isFreePoint(position: Vector3D) {
     return !this.getTile(position) || this.tileIs(position, TileType.TREE);
   }
 
@@ -92,7 +92,7 @@ export class Level extends TileMatrix {
    *
    * @param target - Spawn target
    */
-  public readSpawnPositions(target: SpawnTarget): Phaser.Types.Math.Vector2Like[] {
+  public readSpawnPositions(target: SpawnTarget): Vector2D[] {
     const positions = [];
     const step = LEVEL_SPAWN_POSITIONS_STEP;
     const rand = Math.floor(step / 2);
@@ -255,7 +255,7 @@ export class Level extends TileMatrix {
    *
    * @param position - Position at world
    */
-  static ToMatrixPosition(position: Phaser.Types.Math.Vector2Like): Phaser.Types.Math.Vector3Like {
+  static ToMatrixPosition(position: Vector2D): Vector2D {
     const { halfWidth, halfHeight } = TILE_META;
     const n = {
       x: (position.x / halfWidth),
@@ -273,12 +273,12 @@ export class Level extends TileMatrix {
    *
    * @param position - Position at matrix or tile position
    */
-  static ToWorldPosition(position: Phaser.Types.Math.Vector3Like): Phaser.Types.Math.Vector2Like {
+  static ToWorldPosition(position: Vector3D | Vector2D): Vector2D {
     const { halfWidth, halfHeight } = TILE_META;
 
     return {
       x: (position.x - position.y) * halfWidth,
-      y: (position.x + position.y) * (halfHeight / 2) - ((position.z || 0) * halfHeight),
+      y: (position.x + position.y) * (halfHeight / 2) - (('z' in position ? position.z : 0) * halfHeight),
     };
   }
 

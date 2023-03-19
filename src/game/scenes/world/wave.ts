@@ -6,6 +6,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/world/entities/enemy';
 import { registerAudioAssets } from '~lib/assets';
+import { eachEntries } from '~lib/system';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
 import { TutorialStep } from '~type/tutorial';
@@ -224,13 +225,13 @@ export class Wave extends EventEmitter {
 
     const variants: EnemyVariant[] = [];
 
-    for (const [type, meta] of Object.entries(ENEMY_VARIANTS_META)) {
+    eachEntries(ENEMY_VARIANTS_META, (type, meta) => {
       if (meta.spawnMinWave <= this.number) {
         for (let k = 0; k < meta.spawnFrequency; k++) {
           variants.push(<EnemyVariant> type);
         }
       }
-    }
+    });
 
     return Phaser.Utils.Array.GetRandom(variants);
   }

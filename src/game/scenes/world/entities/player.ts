@@ -13,7 +13,7 @@ import { World } from '~scene/world';
 import { NoticeType } from '~type/screen/notice';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import {
-  PlayerEvents, PlayerTexture, MovementDirection, PlayerAudio,
+  PlayerEvents, PlayerTexture, MovementDirection, PlayerAudio, PlayerData,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -88,10 +88,10 @@ export class Player extends Sprite implements IEnemyTarget {
   /**
    * Player constructor.
    */
-  constructor(scene: World, positionAtMatrix: Phaser.Types.Math.Vector2Like) {
+  constructor(scene: World, data: PlayerData) {
     super(scene, {
+      ...data,
       texture: PlayerTexture.PLAYER,
-      positionAtMatrix,
       health: DIFFICULTY.PLAYER_HEALTH,
     });
     scene.add.existing(this);

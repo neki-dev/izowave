@@ -9,6 +9,7 @@ import { ParticlesType } from '~type/world/effects';
 import {
   ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShot,
 } from '~type/world/entities/shot';
+import { Vector2D } from '~type/world/level';
 
 export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
   readonly scene: World;
@@ -38,7 +39,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
   /**
    * Start shoot position.
    */
-  private startPosition: Nullable<Phaser.Types.Math.Vector2Like> = null;
+  private startPosition: Nullable<Vector2D> = null;
 
   /**
    * Color for initiator glow effect.

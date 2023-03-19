@@ -1,5 +1,4 @@
-import Phaser from 'phaser';
-
+import { Vector2D } from '~type/world/level';
 import { PathNodeParams } from '~type/world/level/navigator';
 
 export class PathNode {
@@ -9,14 +8,14 @@ export class PathNode {
 
   readonly distance: number;
 
-  private parent: PathNode;
+  private parent: Nullable<PathNode>;
 
   private cost: number;
 
-  private listOpened: boolean;
+  private listOpened: Nullable<boolean> = null;
 
   constructor(
-    parent: PathNode,
+    parent: Nullable<PathNode>,
     { position, cost, distance }: PathNodeParams,
   ) {
     this.x = position.x;
@@ -47,7 +46,7 @@ export class PathNode {
   }
 
   public isNewList() {
-    return (this.listOpened === undefined);
+    return (this.listOpened === null);
   }
 
   public isListOpened() {
@@ -62,7 +61,7 @@ export class PathNode {
     this.listOpened = false;
   }
 
-  public getPath(): Phaser.Types.Math.Vector2Like[] {
+  public getPath(): Vector2D[] {
     const path = [{
       x: this.x,
       y: this.y,

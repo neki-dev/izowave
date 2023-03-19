@@ -64,7 +64,7 @@ export const ComponentHelp = Component<Props>(function (container, {
     points = [0, -size, -size, 0, 0, size];
   } else if (side === 'right') {
     points = [0, -size, size, 0, 0, size];
-  } else if (side === 'top') {
+  } else {
     points = [-size, 0, 0, -size, size, 0];
   }
 

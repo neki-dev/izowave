@@ -1,8 +1,5 @@
 import Phaser from 'phaser';
 
-// @ts-ignore
-const tile: Phaser.GameObjects.Image = {
-  tileType: null,
-};
+const tile = {} as Phaser.GameObjects.Image;
 
 export default tile;

@@ -22,9 +22,7 @@ Phaser.GameObjects.Image.prototype.addShader = function (shader: string, config?
 Phaser.GameObjects.Image.prototype.updateShader = function (shader: string, config: object) {
   const pipeline = this.postPipelines.find((p: any) => (p.name === shader));
 
-  if (pipeline && pipeline.setConfig) {
-    pipeline.setConfig(config);
-  }
+  pipeline?.setConfig?.(config);
 };
 
 Phaser.GameObjects.Image.prototype.removeShader = function (shader: string) {
@@ -37,7 +35,17 @@ declare global {
       interface Image {
         addShader: (shader: string, config?: object) => void
         updateShader: (shader: string, config: object) => void
-        removeShader: (shader: String) => void
+        removeShader: (shader: string) => void
+      }
+    }
+
+    namespace Renderer {
+      namespace WebGL {
+        namespace Pipelines {
+          interface PostFXPipeline {
+            setConfig?(config: object): void
+          }
+        }
       }
     }
   }

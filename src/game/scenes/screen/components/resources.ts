@@ -13,7 +13,7 @@ export const ComponentResources = Component(function (container) {
   } = {};
 
   const state: {
-    amount: number
+    amount: Nullable<number>
   } = { amount: null };
 
   /**

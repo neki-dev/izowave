@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import { Vector2D } from '../level';
 
 export enum ChestTexture {
   CHEST = 'chest',
@@ -9,6 +9,6 @@ export enum ChestAudio {
 }
 
 export type ChestData = {
-  positionAtMatrix: Phaser.Types.Math.Vector2Like
+  positionAtMatrix: Vector2D
   variant?: number
 };

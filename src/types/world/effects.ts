@@ -3,6 +3,8 @@ import { ShotBall } from '~entity/shot/ball';
 import { Sprite } from '~entity/sprite';
 import { Particles } from '~scene/world/effects';
 
+import { Vector2D } from './level';
+
 export enum ParticlesType {
   BIT = 'BIT',
   GLOW = 'GLOW',
@@ -31,7 +33,7 @@ export enum EffectTexture {
 
 export type EffectData = {
   texture: EffectTexture
-  position: Phaser.Types.Math.Vector2Like
+  position: Vector2D
   audio?: string
   rate?: number
 };

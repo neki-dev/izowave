@@ -9,7 +9,7 @@ import { Live } from '~scene/world/live';
 import { ParticlesType } from '~type/world/effects';
 import { LiveEvents } from '~type/world/entities/live';
 import { SpriteData } from '~type/world/entities/sprite';
-import { BiomeType, TileType } from '~type/world/level';
+import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite {
   readonly scene: World;
@@ -33,7 +33,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   /**
    * Position at matrix.
    */
-  private _positionAtMatrix: Phaser.Types.Math.Vector2Like;
+  private _positionAtMatrix: Vector2D;
 
   public get positionAtMatrix() { return this._positionAtMatrix; }
 
@@ -127,7 +127,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   /**
    * Get all occupied positions by body.
    */
-  public getAllPositionsAtMatrix(): Phaser.Types.Math.Vector2Like[] {
+  public getAllPositionsAtMatrix(): Vector2D[] {
     return this.getCorners().map((point) => Level.ToMatrixPosition(point));
   }
 
@@ -251,12 +251,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   /**
    * Get body corners.
    */
-  private getCorners(): Phaser.Types.Math.Vector2Like[] {
+  private getCorners(): Vector2D[] {
     const count = 8;
     const r = this.body.width / 2;
     const l = Phaser.Math.PI2 / count;
 
-    const points: Phaser.Types.Math.Vector2Like[] = [];
+    const points: Vector2D[] = [];
 
     for (let u = 0; u < count; u++) {
       points.push({
