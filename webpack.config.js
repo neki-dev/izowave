@@ -30,7 +30,7 @@ module.exports = (_, { mode }) => ({
     compress: true,
     port: 9000,
   },
-  devtool: 'source-map',
+  devtool: mode === 'development' ? 'inline-source-map' : undefined,
   plugins: [
     new webpack.DefinePlugin({
       IS_DEV_MODE: JSON.stringify(mode === 'development'),
