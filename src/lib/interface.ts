@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 
-import {
-  ComponentCreator, ComponentControl, ComponentInstance, ResizeCallback,
-} from '~type/interface';
+import { IGameScene } from '~type/game';
+import { ComponentCreator, ComponentInstance, ResizeCallback } from '~type/interface';
 
 Phaser.GameObjects.GameObject.prototype.useAdaptationBefore = function (callback: ResizeCallback) {
   if (!this.adaptives) {
@@ -61,9 +60,9 @@ Phaser.GameObjects.Container.prototype.registerAdaptive = function () {
 };
 
 export function Component<T = undefined>(instance: ComponentInstance<T>): ComponentCreator<T> {
-  return (scene: Phaser.Scene, props?: T): Phaser.GameObjects.Container => {
+  return (scene: IGameScene, props?: T): Phaser.GameObjects.Container => {
     const container = scene.add.container();
-    const control: ComponentControl = instance.call(scene, container, props);
+    const control = instance.call(scene, container, props);
 
     container.registerAdaptive();
 

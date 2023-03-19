@@ -1,3 +1,11 @@
+import Phaser from 'phaser';
+
+import { Game } from '~game/game';
+
+export interface IGameScene extends Phaser.Scene {
+  readonly game: Game
+}
+
 export enum SceneKey {
   BASIC = 'BASIC',
   WORLD = 'WORLD',

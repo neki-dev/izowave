@@ -7,12 +7,12 @@ import { ComponentControls } from '~scene/menu/components/content/controls';
 import { ComponentDifficulty } from '~scene/menu/components/content/difficulty';
 import { ComponentMenu } from '~scene/menu/components/menu';
 import { Level } from '~scene/world/level';
-import { SceneKey } from '~type/game';
+import { IGameScene, SceneKey } from '~type/game';
 import { MenuAudio } from '~type/menu';
 
 import { Game } from '~game';
 
-export class Menu extends Phaser.Scene {
+export class Menu extends Phaser.Scene implements IGameScene {
   readonly game: Game;
 
   constructor() {

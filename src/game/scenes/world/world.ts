@@ -21,7 +21,7 @@ import { selectClosest } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
-import { SceneKey } from '~type/game';
+import { IGameScene, SceneKey } from '~type/game';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
@@ -31,7 +31,7 @@ import { WaveEvents } from '~type/world/wave';
 
 import { Game } from '~game';
 
-export class World extends Phaser.Scene {
+export class World extends Phaser.Scene implements IGameScene {
   readonly game: Game;
 
   /**

@@ -113,11 +113,11 @@ export const ComponentWave = Component(function (container) {
    */
 
   this.game.world.wave.on(WaveEvents.START, () => {
-    this.message(NoticeType.INFO, `WAVE ${this.game.world.wave.number} STARTED`);
+    this.game.screen.message(NoticeType.INFO, `WAVE ${this.game.world.wave.number} STARTED`);
   });
 
   this.game.world.wave.on(WaveEvents.COMPLETE, () => {
-    this.message(NoticeType.INFO, `WAVE ${this.game.world.wave.number} COMPLETED`);
+    this.game.screen.message(NoticeType.INFO, `WAVE ${this.game.world.wave.number} COMPLETED`);
   });
 
   this.game.tutorial.onBeg(TutorialStep.WAVE_TIMELEFT, () => {

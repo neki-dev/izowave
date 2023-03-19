@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import { Screen } from '~scene/screen';
+import { IGameScene } from './game';
 
-export type ComponentCreator<T = undefined> = (scene: Phaser.Scene, props?: T) => Phaser.GameObjects.Container;
+export type ComponentCreator<T = undefined> = (scene: IGameScene, props?: T) => Phaser.GameObjects.Container;
 
 export type ComponentControl = {
   update?: () => void
@@ -10,7 +10,7 @@ export type ComponentControl = {
 };
 
 export type ComponentInstance<T> = (
-  this: Screen,
+  this: IGameScene,
   container: Phaser.GameObjects.Container,
   props?: T
 ) => ComponentControl | void;

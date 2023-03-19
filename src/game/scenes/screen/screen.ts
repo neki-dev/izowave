@@ -10,7 +10,7 @@ import { ComponentFPS } from '~scene/screen/components/fps';
 import { ComponentNotices } from '~scene/screen/components/notices';
 import { ComponentResources } from '~scene/screen/components/resources';
 import { ComponentWave } from '~scene/screen/components/wave';
-import { SceneKey } from '~type/game';
+import { IGameScene, SceneKey } from '~type/game';
 import { ScreenAudio, ScreenTexture } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { LiveEvents } from '~type/world/entities/live';
@@ -18,7 +18,7 @@ import { PlayerEvents } from '~type/world/entities/player';
 
 import { Game } from '~game';
 
-export class Screen extends Phaser.Scene {
+export class Screen extends Phaser.Scene implements IGameScene {
   readonly game: Game;
 
   constructor() {
