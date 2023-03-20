@@ -30,6 +30,7 @@
     "jest": "^29.2.2",
     "jest-canvas-mock": "^2.4.0",
     "jest-environment-jsdom": "^29.2.2",
+    "terser-webpack-plugin": "^5.3.7",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.2",

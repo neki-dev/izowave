@@ -1,6 +1,7 @@
 const path = require('path');
 
 const alias = require('alias-reuse');
+const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 const tsconfig = require('./tsconfig.json');
@@ -23,17 +24,27 @@ module.exports = (_, { mode }) => ({
       exclude: /node_modules/,
     }],
   },
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'app'),
-    },
-    compress: true,
-    port: 9000,
-  },
-  devtool: mode === 'development' ? 'inline-source-map' : undefined,
   plugins: [
     new webpack.DefinePlugin({
       IS_DEV_MODE: JSON.stringify(mode === 'development'),
     }),
   ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, tsconfig.compilerOptions.outDir),
+    },
+    compress: true,
+    port: 9000,
+  },
+  devtool: mode === 'development' ? 'inline-source-map' : undefined,
+  optimization: mode === 'production' ? {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          output: { comments: false },
+        },
+      }),
+    ],
+  } : undefined,
 });
