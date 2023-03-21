@@ -1,4 +1,4 @@
-import GenBiome from 'gen-biome';
+import { WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
@@ -53,16 +53,21 @@ export class Level extends TileMatrix {
   constructor(scene: World) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT);
 
-    const map = new GenBiome<LevelBiome>({
+    const generator = new WorldGenerator<LevelBiome>({
       width: LEVEL_MAP_SIZE,
       height: LEVEL_MAP_SIZE,
-      layers: [{
-        parameters: LEVEL_BIOME_PARAMETERS,
-        biomes: LEVEL_BIOMES,
-      }],
     });
 
-    map.generate();
+    const layer = generator.addLayer(LEVEL_BIOME_PARAMETERS);
+
+    for (const { params, data } of LEVEL_BIOMES) {
+      if (params) {
+        layer.addBiome(params, data);
+      }
+    }
+
+    const map = generator.generate();
+
     this.matrix = map.getMatrix();
 
     this.scene = scene;

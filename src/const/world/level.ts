@@ -1,4 +1,4 @@
-import { Biome, LayerParameters } from 'gen-biome';
+import { WorldBiomeParams, WorldLayerParams } from 'gen-biome';
 
 import { getPerformance } from '~lib/optimize';
 import { PerformanceLevel } from '~type/optimize';
@@ -31,8 +31,11 @@ export const LEVEL_BUILDING_PATH_COST = 16.0;
 
 export const LEVEL_SPAWN_POSITIONS_STEP = 4;
 
-export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
-  breakpoint: { max: 0.14 },
+export const LEVEL_BIOMES: Array<{
+  params?: WorldBiomeParams
+  data: LevelBiome
+}> = [{
+  params: { upperBound: 0.12 },
   data: {
     type: BiomeType.WATER,
     tileIndex: 0,
@@ -43,7 +46,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [],
   },
 }, {
-  breakpoint: { min: 0.14, max: 0.17 },
+  params: { lowerBound: 0.12, upperBound: 0.15 },
   data: {
     type: BiomeType.WATER,
     tileIndex: 1,
@@ -54,7 +57,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [],
   },
 }, {
-  breakpoint: { min: 0.17, max: 0.20 },
+  params: { lowerBound: 0.15, upperBound: 0.17 },
   data: {
     type: BiomeType.WATER,
     tileIndex: 2,
@@ -65,7 +68,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [],
   },
 }, {
-  breakpoint: { min: 0.20, max: 0.24 },
+  params: { lowerBound: 0.17, upperBound: 0.20 },
   data: {
     type: BiomeType.SAND,
     tileIndex: 6,
@@ -76,7 +79,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [SpawnTarget.ENEMY, SpawnTarget.CHEST],
   },
 }, {
-  breakpoint: { min: 0.24, max: 0.28 },
+  params: { lowerBound: 0.20, upperBound: 0.24 },
   data: {
     type: BiomeType.SAND,
     tileIndex: [7, 8],
@@ -87,7 +90,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CHEST],
   },
 }, {
-  breakpoint: { min: 0.28, max: 0.36 },
+  params: { lowerBound: 0.24, upperBound: 0.34 },
   data: {
     type: BiomeType.GRASS,
     tileIndex: 12,
@@ -98,7 +101,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CHEST, SpawnTarget.TREE],
   },
 }, {
-  breakpoint: { min: 0.36, max: 0.44 },
+  params: { lowerBound: 0.34, upperBound: 0.44 },
   data: {
     type: BiomeType.GRASS,
     tileIndex: [13, 14],
@@ -109,7 +112,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CHEST, SpawnTarget.TREE],
   },
 }, {
-  breakpoint: { min: 0.44, max: 0.54 },
+  params: { lowerBound: 0.44, upperBound: 0.54 },
   data: {
     type: BiomeType.GRASS,
     tileIndex: [15, 17],
@@ -120,7 +123,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [SpawnTarget.ENEMY, SpawnTarget.CHEST, SpawnTarget.TREE],
   },
 }, {
-  breakpoint: { min: 0.54, max: 0.59 },
+  params: { lowerBound: 0.54, upperBound: 0.59 },
   data: {
     type: BiomeType.MOUNT,
     tileIndex: 24,
@@ -131,7 +134,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [],
   },
 }, {
-  breakpoint: { min: 0.59, max: 0.63 },
+  params: { lowerBound: 0.59, upperBound: 0.63 },
   data: {
     type: BiomeType.MOUNT,
     tileIndex: 25,
@@ -142,7 +145,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [],
   },
 }, {
-  breakpoint: { min: 0.63, max: 0.70 },
+  params: { lowerBound: 0.63, upperBound: 0.70 },
   data: {
     type: BiomeType.MOUNT,
     tileIndex: 26,
@@ -153,7 +156,7 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
     spawn: [],
   },
 }, {
-  breakpoint: { min: 0.70 },
+  params: { lowerBound: 0.70 },
   data: {
     type: BiomeType.SNOW,
     tileIndex: 30,
@@ -175,8 +178,8 @@ export const LEVEL_BIOMES: Biome<LevelBiome>[] = [{
   },
 }];
 
-export const LEVEL_BIOME_PARAMETERS: LayerParameters = {
-  frequencyChange: 8,
-  sizeDifference: 1.2,
-  bordersPurity: 10,
+export const LEVEL_BIOME_PARAMETERS: WorldLayerParams = {
+  frequencyChange: 0.2,
+  heightRedistribution: 0.7,
+  borderSmoothness: 0.8,
 };
