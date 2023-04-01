@@ -474,6 +474,9 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     if (this.actionsArea) {
       this.actionsArea.setVisible(true);
     }
+
+    this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
+    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
   }
 
   /**
