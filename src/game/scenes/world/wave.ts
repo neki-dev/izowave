@@ -181,7 +181,6 @@ export class Wave extends EventEmitter {
 
     if (this.number === 1) {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
-      this.scene.setTimerPause(true);
     } else if (this.number === 2) {
       this.scene.game.tutorial.beg(TutorialStep.UPGRADE_BUILDING);
     }

@@ -6,6 +6,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { TILE_META } from '~const/world/level';
 import { calcGrowth, equalPositions } from '~lib/utils';
+import { ComponentBuildingPreview } from '~scene/screen/components/builder/building-preview';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen/notice';
@@ -35,7 +36,7 @@ export class Builder extends EventEmitter {
   /**
    * Building preview.
    */
-  private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
+  private buildingPreview: Nullable<Phaser.GameObjects.Container> = null;
 
   /**
    * Current building variant.
@@ -67,6 +68,21 @@ export class Builder extends EventEmitter {
     });
 
     this.scene.wave.on(WaveEvents.START, () => {
+      this.clearBuildingVariant();
+    });
+
+    this.scene.game.tutorial.onBeg(TutorialStep.BUILD_AMMUNITION, () => {
+      this.scene.setTimerPause(true);
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_AMMUNITION, () => {
+      this.scene.setTimerPause(false);
+      this.clearBuildingVariant();
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_GENERATOR, () => {
+      this.scene.setTimerPause(false);
+      this.clearBuildingVariant();
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_TOWER_FIRE, () => {
       this.clearBuildingVariant();
     });
   }
@@ -116,10 +132,6 @@ export class Builder extends EventEmitter {
     this.scene.sound.play(BuildingAudio.SELECT);
 
     this.variant = variant;
-
-    if (this.buildingPreview) {
-      this.buildingPreview.setTexture(BuildingInstance.Texture);
-    }
   }
 
   /**
@@ -139,6 +151,7 @@ export class Builder extends EventEmitter {
    * Clear current building variant.
    */
   public clearBuildingVariant() {
+    this.closeBuilder();
     this.variant = null;
   }
 
@@ -325,7 +338,6 @@ export class Builder extends EventEmitter {
       positionAtMatrix: this.getAssumedPosition(),
     });
 
-    this.updateBuildArea();
     if (this.isBuildingLimitReached(this.variant)) {
       this.clearBuildingVariant();
     }
@@ -336,23 +348,15 @@ export class Builder extends EventEmitter {
       case this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE): {
         this.scene.game.tutorial.end(TutorialStep.BUILD_TOWER_FIRE);
         this.scene.game.tutorial.beg(TutorialStep.BUILD_GENERATOR);
-
-        this.clearBuildingVariant();
         break;
       }
       case this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR): {
         this.scene.game.tutorial.end(TutorialStep.BUILD_GENERATOR);
         this.scene.game.tutorial.beg(TutorialStep.WAVE_TIMELEFT);
-
-        this.scene.setTimerPause(false);
-        this.clearBuildingVariant();
         break;
       }
       case this.scene.game.tutorial.state(TutorialStep.BUILD_AMMUNITION): {
         this.scene.game.tutorial.end(TutorialStep.BUILD_AMMUNITION);
-
-        this.scene.setTimerPause(false);
-        this.clearBuildingVariant();
         break;
       }
       default: break;
@@ -462,10 +466,10 @@ export class Builder extends EventEmitter {
    * Create building variant preview on map.
    */
   private createBuildingPreview() {
-    const BuildingInstance = BUILDINGS[this.variant];
-
-    this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
-    this.buildingPreview.setOrigin(0.5, TILE_META.origin);
+    this.buildingPreview = ComponentBuildingPreview(this.scene, {
+      image: () => BUILDINGS[this.variant].Texture,
+      cost: () => BUILDINGS[this.variant].Cost,
+    });
     this.updateBuildingPreview();
   }
 
