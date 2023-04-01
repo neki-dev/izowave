@@ -273,11 +273,11 @@ export class Game extends Phaser.Game {
   /**
    * Save best game stat.
    */
-  private writeBestStat(stat: GameStat, record: GameStat) {
+  private writeBestStat(stat: GameStat, record: Nullable<GameStat>) {
     localStorage.setItem(`BEST_STAT.${this.difficultyType}`, JSON.stringify(
       Object.keys(stat).reduce((curr, param: keyof GameStat) => ({
         ...curr,
-        [param]: Math.max(stat[param] ?? 0, record[param] ?? 0),
+        [param]: Math.max(stat[param], record?.[param] ?? 0),
       }), {}),
     ));
   }
