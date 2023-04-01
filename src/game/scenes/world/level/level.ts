@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 
 import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
-  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST,
+  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST, LEVEL_MAP_Z_WEIGHT,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
@@ -263,10 +263,10 @@ export class Level extends TileMatrix {
    * @param position - Position at world
    */
   static ToMatrixPosition(position: Vector2D) {
-    const { halfWidth, halfHeight } = TILE_META;
+    const { width, height, origin } = TILE_META;
     const n = {
-      x: (position.x / halfWidth),
-      y: (position.y / (halfHeight / 2)),
+      x: (position.x / (width * 0.5)),
+      y: (position.y / (height * origin)),
     };
     const convertedPosition: Vector2D = {
       x: Math.round((n.x + n.y) / 2),
@@ -282,10 +282,11 @@ export class Level extends TileMatrix {
    * @param position - Position at matrix or tile position
    */
   static ToWorldPosition(position: Vector3D | Vector2D) {
-    const { halfWidth, halfHeight } = TILE_META;
+    const { width, height, origin } = TILE_META;
+    const z = 'z' in position ? position.z : 0;
     const convertedPosition: Vector2D = {
-      x: (position.x - position.y) * halfWidth,
-      y: (position.x + position.y) * (halfHeight / 2) - (('z' in position ? position.z : 0) * halfHeight),
+      x: (position.x - position.y) * (width * 0.5),
+      y: (position.x + position.y) * (height * origin) - (z * (height * 0.5)),
     };
 
     return convertedPosition;
@@ -298,9 +299,7 @@ export class Level extends TileMatrix {
    * @param z - Tile Z
    */
   static GetTileDepth(y: number, z: number) {
-    const { origin, height, halfHeight } = TILE_META;
-
-    return Level.GetDepth(y + (height * origin) + (halfHeight / 2), z, height);
+    return y + (z * LEVEL_MAP_Z_WEIGHT);
   }
 
   /**
@@ -311,9 +310,7 @@ export class Level extends TileMatrix {
    * @param height - Sprite height
    */
   static GetDepth(y: number, z: number, height: number) {
-    const weightZ = 999;
-
-    return y + (z * weightZ) - (height / 2);
+    return y + (z * LEVEL_MAP_Z_WEIGHT) - (height / 2);
   }
 
   /**
@@ -332,5 +329,5 @@ registerSpriteAssets(LevelTexture.TILESET, {
 });
 registerSpriteAssets(LevelTexture.TREE, {
   width: TILE_META.width,
-  height: TILE_META.height + TILE_META.halfHeight,
+  height: TILE_META.height * 1.5,
 });
