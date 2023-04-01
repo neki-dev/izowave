@@ -69,6 +69,21 @@ export class Builder extends EventEmitter {
     this.scene.wave.on(WaveEvents.START, () => {
       this.clearBuildingVariant();
     });
+
+    this.scene.game.tutorial.onBeg(TutorialStep.BUILD_AMMUNITION, () => {
+      this.scene.setTimerPause(true);
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_AMMUNITION, () => {
+      this.scene.setTimerPause(false);
+      this.clearBuildingVariant();
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_GENERATOR, () => {
+      this.scene.setTimerPause(false);
+      this.clearBuildingVariant();
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_TOWER_FIRE, () => {
+      this.clearBuildingVariant();
+    });
   }
 
   /**
@@ -336,23 +351,15 @@ export class Builder extends EventEmitter {
       case this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE): {
         this.scene.game.tutorial.end(TutorialStep.BUILD_TOWER_FIRE);
         this.scene.game.tutorial.beg(TutorialStep.BUILD_GENERATOR);
-
-        this.clearBuildingVariant();
         break;
       }
       case this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR): {
         this.scene.game.tutorial.end(TutorialStep.BUILD_GENERATOR);
         this.scene.game.tutorial.beg(TutorialStep.WAVE_TIMELEFT);
-
-        this.scene.setTimerPause(false);
-        this.clearBuildingVariant();
         break;
       }
       case this.scene.game.tutorial.state(TutorialStep.BUILD_AMMUNITION): {
         this.scene.game.tutorial.end(TutorialStep.BUILD_AMMUNITION);
-
-        this.scene.setTimerPause(false);
-        this.clearBuildingVariant();
         break;
       }
       default: break;
