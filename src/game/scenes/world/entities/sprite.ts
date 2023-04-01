@@ -118,16 +118,16 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Check if body is stopped.
+   * Check is body is stopped.
    */
-  public isStopped(): boolean {
+  public isStopped() {
     return equalPositions(this.body.velocity, { x: 0, y: 0 });
   }
 
   /**
    * Get all occupied positions by body.
    */
-  public getAllPositionsAtMatrix(): Vector2D[] {
+  public getAllPositionsAtMatrix() {
     return this.getCorners().map((point) => Level.ToMatrixPosition(point));
   }
 
@@ -193,7 +193,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   /**
    * Get and handle collided tile.
    */
-  public handleCollide(direction: number): boolean {
+  public handleCollide(direction: number) {
     const tile = this.getCollidedTile(direction);
 
     if (this.collisionHandler && tile instanceof Phaser.GameObjects.Image) {
@@ -208,9 +208,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
    *
    * @param direction - Current direction in degrees
    */
-  private getCollidedTile(
-    direction: number,
-  ): boolean | Phaser.GameObjects.Image {
+  private getCollidedTile(direction: number) {
     if (this.collisionTargets.length === 0 && !this.collisionGround) {
       return false;
     }
@@ -239,7 +237,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
           z: 0,
         });
 
-        if (!tileGround || tileGround?.biome.type === BiomeType.WATER) {
+        if (!tileGround || tileGround.biome?.type === BiomeType.WATER) {
           return true;
         }
       }
@@ -251,7 +249,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite {
   /**
    * Get body corners.
    */
-  private getCorners(): Vector2D[] {
+  private getCorners() {
     const count = 8;
     const r = this.body.width / 2;
     const l = Phaser.Math.PI2 / count;

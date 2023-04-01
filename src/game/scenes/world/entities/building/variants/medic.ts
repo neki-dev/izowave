@@ -47,7 +47,7 @@ export class BuildingMedic extends Building {
   }
 
   /**
-   * Check if player inside action area and heal him.
+   * Check is player inside action area and heal him.
    */
   public update() {
     super.update();
@@ -71,7 +71,7 @@ export class BuildingMedic extends Building {
   /**
    * Add heal amount to building info.
    */
-  public getInfo(): BuildingParamItem[] {
+  public getInfo() {
     return [
       ...super.getInfo(), {
         label: 'HEAL',
@@ -84,7 +84,7 @@ export class BuildingMedic extends Building {
   /**
    * Get heal amount.
    */
-  private getHealAmount(): number {
+  private getHealAmount() {
     return DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT * this.upgradeLevel;
   }
 

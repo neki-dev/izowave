@@ -13,7 +13,7 @@ export function calcGrowth(
   startValue: number,
   growthScale: number,
   level: number,
-): number {
+) {
   return Math.round(startValue + (((level - 1) ** 1.1) * (startValue * growthScale)));
 }
 
@@ -23,7 +23,7 @@ export function calcGrowth(
  * @param a - First position
  * @param b - Second position
  */
-export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D): boolean {
+export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
   if ('z' in a) {
     if ('z' in b) {
       return (a.x === b.x && a.y === b.y && a.z === b.z);
@@ -40,7 +40,7 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D): 
  *
  * @param value - Timestamp in seconds
  */
-export function formatTime(value: number): string {
+export function formatTime(value: number) {
   const h = Math.floor(value / 60);
   const m = value % 60;
 
@@ -58,7 +58,7 @@ export function selectClosest<T extends Vector2D>(
   positions: T[],
   target: Vector2D,
   count: number = 1,
-): T[] {
+) {
   let meta = positions.map((position) => {
     const dx = position.x - target.x;
     const dy = position.y - target.y;
@@ -85,8 +85,8 @@ export function selectClosest<T extends Vector2D>(
 export function aroundPosition(
   position: Vector2D,
   space: number = 0,
-): Vector2D[] {
-  const list = [];
+) {
+  const list: Vector2D[] = [];
   const shift = space + 1;
 
   for (let y = position.y - shift; y <= position.y + shift; y++) {
@@ -110,7 +110,7 @@ export function aroundPosition(
  *
  * @param value - Amount
  */
-export function formatAmount(value: number): string {
+export function formatAmount(value: number) {
   return `${(value > 0) ? '+' : ''}${value}`;
 }
 
@@ -119,7 +119,7 @@ export function formatAmount(value: number): string {
  *
  * @param value - Amount
  */
-export function rawAmount(value: string): number {
+export function rawAmount(value: string) {
   return Number(value.replace('+', ''));
 }
 

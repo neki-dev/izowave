@@ -47,7 +47,7 @@ export class Basic extends Phaser.Scene {
       }
     });
 
-    this.game.events.on(GameEvents.FINISH, (stat: GameStat, record: GameStat) => {
+    this.game.events.on(GameEvents.FINISH, (stat: GameStat, record: Nullable<GameStat>) => {
       const gameOver = ComponentGameOver(this, { stat, record });
 
       this.game.events.once(GameEvents.START, () => {

@@ -60,7 +60,7 @@ Phaser.GameObjects.Container.prototype.registerAdaptive = function () {
 };
 
 export function Component<T = undefined>(instance: ComponentInstance<T>): ComponentCreator<T> {
-  return (scene: IGameScene, props?: T): Phaser.GameObjects.Container => {
+  return (scene: IGameScene, props?: T) => {
     const container = scene.add.container();
     const control = instance.call(scene, container, props);
 
@@ -93,7 +93,7 @@ export function Component<T = undefined>(instance: ComponentInstance<T>): Compon
   };
 }
 
-export function switchSize(value: number): number {
+export function switchSize(value: number) {
   let k: number;
 
   if (window.innerWidth < 1200) {

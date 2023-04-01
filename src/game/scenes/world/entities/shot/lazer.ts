@@ -73,7 +73,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
    * Update lazer target position.
    */
   public update() {
-    if (!this.target) {
+    if (!this.initiator || !this.target) {
       return;
     }
 
@@ -112,8 +112,10 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
   private stop() {
     this.target = null;
 
-    this.timer.destroy();
-    this.timer = null;
+    if (this.timer) {
+      this.timer.destroy();
+      this.timer = null;
+    }
 
     this.setVisible(false);
   }
@@ -156,7 +158,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
 
     this.hit();
 
-    if (this.timer.repeatCount === 0) {
+    if (this.timer?.repeatCount === 0) {
       this.stop();
     }
   }

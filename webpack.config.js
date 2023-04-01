@@ -11,7 +11,6 @@ module.exports = (_, { mode }) => ({
     extensions: ['.js', '.ts'],
     alias: alias.fromFile(__dirname, './tsconfig.json').toWebpack(),
   },
-  target: 'web',
   entry: path.join(__dirname, 'src/index.ts'),
   output: {
     path: path.join(__dirname, tsconfig.compilerOptions.outDir, 'dist'),

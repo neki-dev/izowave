@@ -58,7 +58,7 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH_GROWTH: 0.16, // Enemy health growth by wave number
+  ENEMY_HEALTH_GROWTH: 0.15, // Enemy health growth by wave number
   ENEMY_SPEED_GROWTH: 0.056, // Enemy speed growth by wave number
   ENEMY_DAMAGE_GROWTH: 0.06, // Enemy damage growth by wave number
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
@@ -133,7 +133,7 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_COST: 30, // Generator cost
   BUILDING_GENERATOR_HEALTH: 400, // Generator health
   BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * (wave_number / 5))
-  BUILDING_GENERATOR_GENERATE_PAUSE: 1500, // Generator pause between resource generations
+  BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Generator pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Maximum amount of resources that generator can
   BUILDING_GENERATOR_RESOURCES_UPGRADE: 100, // Amount of resources added per upgrade (N * upgrade_level)
 

@@ -44,11 +44,11 @@ export class Particles {
 
     if (!this.parent.effects) {
       this.parent.effects = {};
-    } else if (this.parent.effects[this.type]) {
-      this.parent.effects[this.type].destroy();
+    } else if (this.parent.effects[type]) {
+      this.parent.effects[type].destroy();
     }
 
-    this.parent.effects[this.type] = this;
+    this.parent.effects[type] = this;
 
     this.parent.on(Phaser.GameObjects.Events.DESTROY, this.destroy, this);
 

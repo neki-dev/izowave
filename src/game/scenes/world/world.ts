@@ -157,14 +157,14 @@ export class World extends Phaser.Scene implements IGameScene {
   /**
    * Get current game time.
    */
-  public getTimerNow(): number {
+  public getTimerNow() {
     return Math.floor(this.timer.getElapsed());
   }
 
   /**
    * Get game timer pause state.
    */
-  public isTimerPaused(): boolean {
+  public isTimerPaused() {
     return this.timer.paused;
   }
 
@@ -178,21 +178,35 @@ export class World extends Phaser.Scene implements IGameScene {
   }
 
   /**
+   * Get list of buildings
+   */
+  public getBuildings() {
+    return this.entityGroups.buildings.getChildren() as Building[];
+  }
+
+  /**
    * Get list of buildings with a specific variant.
    *
    * @param variant - Varaint
    */
-  public selectBuildings(variant: BuildingVariant): Building[] {
-    const buildings = (<Building[]> this.entityGroups.buildings.getChildren());
+  public getBuildingsByVariant(variant: BuildingVariant) {
+    const buildings = this.getBuildings();
 
     return buildings.filter((building) => (building.variant === variant));
   }
 
   /**
+   * Get list of enemies
+   */
+  public getEnemies() {
+    return this.entityGroups.enemies.getChildren() as Enemy[];
+  }
+
+  /**
    * Spawn enemy in random position.
    */
-  public spawnEnemy(variant: EnemyVariant): Enemy {
-    const buildings = (<Building[]> this.entityGroups.buildings.getChildren());
+  public spawnEnemy(variant: EnemyVariant) {
+    const buildings = this.getBuildings();
     const allowedPositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building) => (
@@ -377,7 +391,7 @@ export class World extends Phaser.Scene implements IGameScene {
         this.player.giveExperience(9999);
       },
       GODHAND: () => {
-        for (const enemy of <Enemy[]> this.entityGroups.enemies.getChildren()) {
+        for (const enemy of this.getEnemies()) {
           enemy.live.kill();
         }
       },
@@ -406,8 +420,10 @@ export class World extends Phaser.Scene implements IGameScene {
    */
   private registerParticles() {
     for (const effect of Object.values(ParticlesType)) {
-      this.particles[effect] = this.add.particles(ParticlesTexture[effect]);
-      this.particles[effect].setDepth(WORLD_DEPTH_EFFECT);
+      const particles = this.add.particles(ParticlesTexture[effect]);
+
+      particles.setDepth(WORLD_DEPTH_EFFECT);
+      this.particles[effect] = particles;
     }
   }
 

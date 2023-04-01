@@ -173,7 +173,7 @@ export const ComponentBuilder = Component(function (container) {
 
     const limit = this.game.world.builder.getBuildingLimit(variant);
     const limitState: [number, number] = limit ? [
-      this.game.world.selectBuildings(variant).length,
+      this.game.world.getBuildingsByVariant(variant).length,
       limit,
     ] : undefined;
 

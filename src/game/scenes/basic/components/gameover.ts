@@ -5,7 +5,7 @@ import { MenuAudio } from '~type/menu';
 
 type Props = {
   stat: GameStat
-  record: GameStat
+  record: Nullable<GameStat>
 };
 
 export const ComponentGameOver = Component<Props>(function (container, {
@@ -85,12 +85,18 @@ export const ComponentGameOver = Component<Props>(function (container, {
    * Stat
    */
 
-  [
+  const items: {
+    key: keyof GameStat
+    label: string
+    value: number | string
+  }[] = [
     { key: 'waves', label: 'WAVES COMPLETED', value: stat.waves },
     { key: 'level', label: 'LEVEL REACHED', value: stat.level },
     { key: 'kills', label: 'ENEMIES KILLED', value: stat.kills },
     { key: 'lived', label: 'MINUTES LIVED', value: stat.lived.toFixed(1) },
-  ].forEach(({ key, label, value }, index) => {
+  ];
+
+  items.forEach(({ key, label, value }, index) => {
     ref.stat[key] = {};
 
     /**
@@ -149,8 +155,7 @@ export const ComponentGameOver = Component<Props>(function (container, {
      * Record
      */
 
-    // @ts-ignore
-    if (record[key] < stat[key]) {
+    if ((record?.[key] ?? 0) < stat[key]) {
       ref.stat[key].wrapper.add(
         ref.stat[key].record = this.add.text(0, 0, 'RECORD', {
           resolution: window.devicePixelRatio,

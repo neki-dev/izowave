@@ -75,7 +75,7 @@ export class Wave extends EventEmitter {
   /**
    * Get timeleft to next wave.
    */
-  public getTimeleft(): number {
+  public getTimeleft() {
     const now = this.scene.getTimerNow();
 
     return Math.max(0, this.nextWaveTimestamp - now);
@@ -122,7 +122,7 @@ export class Wave extends EventEmitter {
   /**
    * Get current wave number.
    */
-  public getCurrentNumber(): number {
+  public getCurrentNumber() {
     return this.isGoing ? this.number : this.number + 1;
   }
 
@@ -215,7 +215,7 @@ export class Wave extends EventEmitter {
    * Get random enemy variant by wave.
    * Boss will spawn every `WAVE_BOSS_SPAWN_RATE`th wave.
    */
-  private getEnemyVariant(): EnemyVariant {
+  private getEnemyVariant() {
     if (
       this.number % DIFFICULTY.WAVE_BOSS_SPAWN_RATE === 0
       && this.spawnedCount < Math.ceil(this.number / DIFFICULTY.WAVE_BOSS_SPAWN_RATE)
@@ -233,7 +233,9 @@ export class Wave extends EventEmitter {
       }
     });
 
-    return Phaser.Utils.Array.GetRandom(variants);
+    const variant: EnemyVariant = Phaser.Utils.Array.GetRandom(variants);
+
+    return variant;
   }
 }
 

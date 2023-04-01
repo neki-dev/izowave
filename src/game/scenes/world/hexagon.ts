@@ -28,7 +28,7 @@ export class Hexagon extends Phaser.Geom.Polygon {
     this.refresh();
   }
 
-  public contains(x: number, y: number): boolean {
+  public contains(x: number, y: number) {
     return Hexagon.Contains(this, x, y);
   }
 
@@ -49,7 +49,7 @@ export class Hexagon extends Phaser.Geom.Polygon {
     this.setTo(this.getCorners());
   }
 
-  private getCorners(): Vector2D[] {
+  private getCorners() {
     const l = Phaser.Math.PI2 / 6;
     const points: Vector2D[] = [];
 

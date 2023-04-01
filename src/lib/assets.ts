@@ -8,7 +8,7 @@ const ASSETS_PACK: {
   files: [],
 };
 
-function normalizeAssetsFiles(files: AssetsSource): string[] {
+function normalizeAssetsFiles(files: AssetsSource) {
   if (typeof files === 'string') {
     return [files];
   } if (Array.isArray(files)) {
@@ -60,7 +60,7 @@ export function getAssetsPack() {
   return ASSETS_PACK;
 }
 
-export async function loadFontFace(name: string, file?: string): Promise<FontFace> {
+export async function loadFontFace(name: string, file?: string) {
   const font = new FontFace(name, `url('assets/fonts/${file || name}.ttf')`);
 
   return font.load().then(() => {

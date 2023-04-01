@@ -390,7 +390,7 @@ export class Player extends Sprite implements IEnemyTarget {
    */
   private getKeyboardSingleDirection(
     controls: [keyof typeof MovementDirection, string][],
-  ): MovementDirection {
+  ) {
     for (const [core, alias] of controls) {
       if (this.movementKeys[core].isDown || this.movementKeys[alias].isDown) {
         return MovementDirection[core];
@@ -404,7 +404,7 @@ export class Player extends Sprite implements IEnemyTarget {
    * Change ground tile tint.
    */
   private addVisitedWay() {
-    if (!this.tile) {
+    if (!this.tile?.biome) {
       return;
     }
 

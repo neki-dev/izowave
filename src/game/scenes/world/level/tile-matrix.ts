@@ -42,15 +42,15 @@ export class TileMatrix {
   public getTile(position: Vector3D): Nullable<Phaser.GameObjects.Image> {
     const { x, y, z } = position;
 
-    return this.tiles[z]?.[y]?.[x] || null;
+    return this.tiles[z]?.[y]?.[x] ?? null;
   }
 
   /**
-   * Check if tile is visible.
+   * Check is tile is visible.
    *
    * @param position - Tile position
    */
-  public isVisibleTile(position: Vector3D): boolean {
+  public isVisibleTile(position: Vector3D) {
     return this.getTile(position)?.visible ?? false;
   }
 
@@ -77,10 +77,7 @@ export class TileMatrix {
    * @param position - Tile position
    * @param type - Tile type or types
    */
-  public tileIs(
-    position: Vector3D,
-    type: TileType | TileType[],
-  ): boolean {
+  public tileIs(position: Vector3D, type: TileType | TileType[]) {
     const tile = this.getTile(position);
 
     if (!tile) {

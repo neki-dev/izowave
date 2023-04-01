@@ -1,7 +1,7 @@
 {
   "name": "izowave",
   "description": "Isometric game. Build and defence in open world",
-  "version": "0.21.7",
+  "version": "0.21.8",
   "keywords": [],
   "license": "GNU",
   "author": {
@@ -11,11 +11,11 @@
   },
   "main": "./app/index.html",
   "scripts": {
-    "lint": "eslint \"./**/*.{js,ts}\" --ignore-path .gitignore --fix",
-    "test": "jest",
     "serve": "webpack serve --mode development",
     "watch": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test": "jest",
+    "lint": "eslint \"./**/*.{js,ts}\" --ignore-path .gitignore --fix"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",

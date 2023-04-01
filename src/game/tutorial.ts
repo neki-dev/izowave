@@ -63,7 +63,7 @@ export class Tutorial extends EventEmitter {
    *
    * @param step - Step
    */
-  public state(step: TutorialStep): TutorialStepState {
+  public state(step: TutorialStep) {
     if (this.isDisabled) {
       return TutorialStepState.END;
     }

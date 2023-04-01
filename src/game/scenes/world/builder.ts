@@ -152,17 +152,19 @@ export class Builder extends EventEmitter {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
         const tileGround = this.scene.level.getTile({ x, y, z: 0 });
 
-        if (tileGround && tileGround.biome.solid) {
+        if (tileGround?.biome?.solid) {
           // Replace biome
           const newBiome = Level.GetBiome(BiomeType.RUBBLE);
 
-          tileGround.biome = newBiome;
-          tileGround.clearTint();
-          const frame = Array.isArray(newBiome.tileIndex)
-            ? Phaser.Math.Between(...newBiome.tileIndex)
-            : newBiome.tileIndex;
+          if (newBiome) {
+            tileGround.biome = newBiome;
+            tileGround.clearTint();
+            const frame = Array.isArray(newBiome.tileIndex)
+              ? Phaser.Math.Between(...newBiome.tileIndex)
+              : newBiome.tileIndex;
 
-          tileGround.setFrame(frame);
+            tileGround.setFrame(frame);
+          }
 
           // Remove trees
           const tilePosition = { x, y, z: 1 };
@@ -181,7 +183,7 @@ export class Builder extends EventEmitter {
    * Get current pointer world position
    * and converting to build grided position.
    */
-  private getAssumedPosition(): Vector2D {
+  private getAssumedPosition() {
     return Level.ToMatrixPosition({
       x: this.scene.input.activePointer.worldX,
       y: this.scene.input.activePointer.worldY,
@@ -244,9 +246,9 @@ export class Builder extends EventEmitter {
   }
 
   /**
-   * Checks if player can build.
+   * Check is player can build.
    */
-  private isCanBuild(): boolean {
+  private isCanBuild() {
     return (
       this.variant !== null
       && !this.scene.wave.isGoing
@@ -256,9 +258,9 @@ export class Builder extends EventEmitter {
   }
 
   /**
-   * Checks if allow to build on estimated position.
+   * Check is allow to build on estimated position.
    */
-  private isAllowBuild(): boolean {
+  private isAllowBuild() {
     const positionAtMatrix = this.getAssumedPosition();
 
     // Pointer in build area
@@ -275,9 +277,8 @@ export class Builder extends EventEmitter {
 
     // Pointer biome is solid
     const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
-    const isSolid = tileGround?.biome.solid;
 
-    if (!isSolid) {
+    if (!tileGround?.biome?.solid) {
       return false;
     }
 
@@ -359,11 +360,11 @@ export class Builder extends EventEmitter {
   }
 
   /**
-   * Check if tutorial is allowed building variant.
+   * Check is tutorial is allowed building variant.
    *
    * @param variant - Building variant
    */
-  public isBuildingAllowedByTutorial(variant: BuildingVariant): boolean {
+  public isBuildingAllowedByTutorial(variant: BuildingVariant) {
     if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
       return false;
     }
@@ -382,11 +383,11 @@ export class Builder extends EventEmitter {
   }
 
   /**
-   * Check if current wave is allowed building variant.
+   * Check is current wave is allowed building variant.
    *
    * @param variant - Building variant
    */
-  public isBuildingAllowedByWave(variant: BuildingVariant): boolean {
+  public isBuildingAllowedByWave(variant: BuildingVariant) {
     const waveAllowed = BUILDINGS[variant].AllowByWave;
 
     if (waveAllowed) {
@@ -397,15 +398,15 @@ export class Builder extends EventEmitter {
   }
 
   /**
-   * Check if count of buildings variants reached limit.
+   * Check is count of buildings variants reached limit.
    *
    * @param variant - Building variant
    */
-  private isBuildingLimitReached(variant: BuildingVariant): boolean {
+  private isBuildingLimitReached(variant: BuildingVariant) {
     const limit = this.getBuildingLimit(variant);
 
     if (limit !== null) {
-      return (this.scene.selectBuildings(variant).length >= limit);
+      return (this.scene.getBuildingsByVariant(variant).length >= limit);
     }
 
     return false;

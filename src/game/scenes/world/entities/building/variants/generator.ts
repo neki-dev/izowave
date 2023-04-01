@@ -54,7 +54,7 @@ export class BuildingGenerator extends Building {
   /**
    * Add amount left to building info.
    */
-  public getInfo(): BuildingParamItem[] {
+  public getInfo() {
     return [
       ...super.getInfo(), {
         label: 'RESOURCES',

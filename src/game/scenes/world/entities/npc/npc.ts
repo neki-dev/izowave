@@ -115,9 +115,9 @@ export class NPC extends Sprite {
   }
 
   /**
-   * Check if NPC pursuit and attacks is paused.
+   * Check is NPC pursuit and attacks is paused.
    */
-  public isCalm(): boolean {
+  public isCalm() {
     return (this.stopCalmTimestamp > this.scene.getTimerNow());
   }
 
@@ -172,7 +172,7 @@ export class NPC extends Sprite {
   /**
    * Get distance to target.
    */
-  public getDistanceToTarget(): number {
+  public getDistanceToTarget() {
     return Phaser.Math.Distance.BetweenPoints(this.scene.player, this);
   }
 
@@ -244,9 +244,9 @@ export class NPC extends Sprite {
   }
 
   /**
-   * Check if NPC can pursuit target.
+   * Check is NPC can pursuit target.
    */
-  private isCanPursuit(): boolean {
+  private isCanPursuit() {
     return (
       !this.isCalm()
       && !this.live.isDead()
@@ -255,9 +255,9 @@ export class NPC extends Sprite {
   }
 
   /**
-   * Check if current ground tile is visible.
+   * Check is current ground tile is visible.
    */
-  private atVisibleTile(): boolean {
+  private atVisibleTile() {
     return this.scene.level.isVisibleTile({
       ...this.positionAtMatrix,
       z: 0,
@@ -276,7 +276,7 @@ export class NPC extends Sprite {
     this.pathDebug.setDepth(WORLD_DEPTH_UI);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.pathDebug.destroy();
+      this.pathDebug?.destroy();
     });
   }
 

@@ -166,7 +166,7 @@ export const ComponentWave = Component(function (container) {
       }
 
       if (this.game.world.wave.isGoing) {
-        const currentEnemies = this.game.world.wave.scene.entityGroups.enemies.getTotalUsed();
+        const currentEnemies = this.game.world.entityGroups.enemies.getTotalUsed();
         const killedEnemies = this.game.world.wave.spawnedCount - currentEnemies;
         const leftEnemies = this.game.world.wave.maxSpawnedCount - killedEnemies;
 

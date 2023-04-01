@@ -89,16 +89,16 @@ export class Live extends EventEmmiter {
   }
 
   /**
-   * Check if current health amount is maximum.
+   * Check is current health amount is maximum.
    */
-  public isMaxHealth(): boolean {
+  public isMaxHealth() {
     return (this.health === this.maxHealth);
   }
 
   /**
    * Check is dead.
    */
-  public isDead(): boolean {
+  public isDead() {
     return (this.health === 0);
   }
 }

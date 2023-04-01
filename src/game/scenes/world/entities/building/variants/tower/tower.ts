@@ -9,9 +9,7 @@ import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { NoticeType } from '~type/screen/notice';
 import { TutorialStep } from '~type/tutorial';
-import {
-  BuildingAction, BuildingAudio, BuildingData, BuildingParamItem, BuildingVariant,
-} from '~type/world/entities/building';
+import { BuildingAudio, BuildingData, BuildingVariant } from '~type/world/entities/building';
 import { IShot, ShotParams } from '~type/world/entities/shot';
 
 export class BuildingTower extends Building {
@@ -23,7 +21,11 @@ export class BuildingTower extends Building {
   /**
    * Ammo left in clip.
    */
-  private ammoLeft: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+  private _ammoLeft: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+
+  public get ammoLeft() { return this._ammoLeft; }
+
+  private set ammoLeft(v) { this._ammoLeft = v; }
 
   /**
    * Building variant constructor.
@@ -44,7 +46,7 @@ export class BuildingTower extends Building {
   /**
    * Add ammo left and reload to building info.
    */
-  public getInfo(): BuildingParamItem[] {
+  public getInfo() {
     const info = super.getInfo();
     const params = this.getShotCurrentParams();
 
@@ -87,7 +89,7 @@ export class BuildingTower extends Building {
   /**
    * Add reload to building actions.
    */
-  public getActions(): BuildingAction[] {
+  public getActions() {
     const actions = super.getActions();
 
     if (this.ammoLeft < this.getMaxAmmo()) {
@@ -170,8 +172,8 @@ export class BuildingTower extends Building {
   /**
    * Get nearby ammunition.
    */
-  private getAmmunition(): BuildingAmmunition {
-    const ammunitions = <BuildingAmmunition[]> this.scene.selectBuildings(BuildingVariant.AMMUNITION);
+  private getAmmunition() {
+    const ammunitions = <BuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION);
     const nearby = ammunitions.filter((building: Building) => building.actionsAreaContains(this));
 
     if (nearby.length === 0) {
@@ -218,15 +220,15 @@ export class BuildingTower extends Building {
   /**
    * Get maximum ammo in clip.
    */
-  private getMaxAmmo(): number {
+  private getMaxAmmo() {
     return DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT * this.upgradeLevel;
   }
 
   /**
    * Find nearby enemy for shoot.
    */
-  private getTarget(): Enemy {
-    const enemies = (<Enemy[]> this.scene.entityGroups.enemies.getChildren()).filter((enemy) => (
+  private getTarget() {
+    const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
       && this.actionsAreaContains(enemy)
     ));

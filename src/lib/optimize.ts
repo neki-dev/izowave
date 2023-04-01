@@ -1,6 +1,6 @@
 import { PerformanceLevel } from '~type/optimize';
 
-export function getPerformance(): PerformanceLevel {
+export function getPerformance() {
   // @ts-ignore
   const maxMem = Math.round((window.performance?.memory?.jsHeapSizeLimit || 0) / 1024 / 1024 / 1024);
 

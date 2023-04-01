@@ -5,7 +5,6 @@ import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
   LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST,
 } from '~const/world/level';
-import { Building } from '~entity/building';
 import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
 import {
@@ -97,8 +96,8 @@ export class Level extends TileMatrix {
    *
    * @param target - Spawn target
    */
-  public readSpawnPositions(target: SpawnTarget): Vector2D[] {
-    const positions = [];
+  public readSpawnPositions(target: SpawnTarget) {
+    const positions: Vector2D[] = [];
     const step = LEVEL_SPAWN_POSITIONS_STEP;
     const rand = Math.floor(step / 2);
 
@@ -169,7 +168,7 @@ export class Level extends TileMatrix {
   public refreshNavigationMeta() {
     this.navigator.resetPointsCost();
 
-    for (const building of <Building[]> this.scene.entityGroups.buildings.getChildren()) {
+    for (const building of this.scene.getBuildings()) {
       this.navigator.setPointCost(
         building.positionAtMatrix.x,
         building.positionAtMatrix.y,
@@ -203,6 +202,7 @@ export class Level extends TileMatrix {
         const biome = this.matrix[y][x];
 
         make(x, y, biome);
+
         // Add tile to hole
         if (biome.z > 1) {
           const z = biome.z - 1;
@@ -210,7 +210,9 @@ export class Level extends TileMatrix {
           if (this.matrix[y + 1]?.[x]?.z !== z || this.matrix[y]?.[x + 1]?.z !== z) {
             const neededBiome = Object.values(LEVEL_BIOMES).find((b) => (b.data.z === z));
 
-            make(x, y, neededBiome.data);
+            if (neededBiome) {
+              make(x, y, neededBiome.data);
+            }
           }
         }
       }
@@ -260,17 +262,18 @@ export class Level extends TileMatrix {
    *
    * @param position - Position at world
    */
-  static ToMatrixPosition(position: Vector2D): Vector2D {
+  static ToMatrixPosition(position: Vector2D) {
     const { halfWidth, halfHeight } = TILE_META;
     const n = {
       x: (position.x / halfWidth),
       y: (position.y / (halfHeight / 2)),
     };
-
-    return {
+    const convertedPosition: Vector2D = {
       x: Math.round((n.x + n.y) / 2),
       y: Math.round((n.y - n.x) / 2),
     };
+
+    return convertedPosition;
   }
 
   /**
@@ -278,13 +281,14 @@ export class Level extends TileMatrix {
    *
    * @param position - Position at matrix or tile position
    */
-  static ToWorldPosition(position: Vector3D | Vector2D): Vector2D {
+  static ToWorldPosition(position: Vector3D | Vector2D) {
     const { halfWidth, halfHeight } = TILE_META;
-
-    return {
+    const convertedPosition: Vector2D = {
       x: (position.x - position.y) * halfWidth,
       y: (position.x + position.y) * (halfHeight / 2) - (('z' in position ? position.z : 0) * halfHeight),
     };
+
+    return convertedPosition;
   }
 
   /**
@@ -293,7 +297,7 @@ export class Level extends TileMatrix {
    * @param y - Tile Y
    * @param z - Tile Z
    */
-  static GetTileDepth(y: number, z: number): number {
+  static GetTileDepth(y: number, z: number) {
     const { origin, height, halfHeight } = TILE_META;
 
     return Level.GetDepth(y + (height * origin) + (halfHeight / 2), z, height);
@@ -306,7 +310,7 @@ export class Level extends TileMatrix {
    * @param z - Tile Z
    * @param height - Sprite height
    */
-  static GetDepth(y: number, z: number, height: number): number {
+  static GetDepth(y: number, z: number, height: number) {
     const weightZ = 999;
 
     return y + (z * weightZ) - (height / 2);
@@ -317,8 +321,8 @@ export class Level extends TileMatrix {
    *
    * @param type - Biome type
    */
-  static GetBiome(type: BiomeType): LevelBiome {
-    return LEVEL_BIOMES.find((biome) => (biome.data.type === type))?.data || null;
+  static GetBiome(type: BiomeType): Nullable<LevelBiome> {
+    return LEVEL_BIOMES.find((biome) => (biome.data.type === type))?.data ?? null;
   }
 }
 

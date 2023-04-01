@@ -37,8 +37,8 @@ export class Navigator {
     this.pointsToCost = [];
   }
 
-  public getPointCost(x: number, y: number): number {
-    return this.pointsToCost[y]?.[x] || 1.0;
+  public getPointCost(x: number, y: number) {
+    return this.pointsToCost[y]?.[x] ?? 1.0;
   }
 
   public createTask(
@@ -94,7 +94,7 @@ export class Navigator {
     }
   }
 
-  private getAllowedDirections(currentNode: PathNode): Vector2D[] {
+  private getAllowedDirections(currentNode: PathNode) {
     const straightFlags: Record<string, boolean> = {};
     const straightDirs: Record<string, Vector2D> = {
       R: { x: 1, y: 0 }, // →
@@ -156,7 +156,7 @@ export class Navigator {
     }
   }
 
-  private isWalkable(x: number, y: number): boolean {
+  private isWalkable(x: number, y: number) {
     return (this.matrix[y]?.[x] === 0);
   }
 }

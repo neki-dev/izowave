@@ -131,14 +131,14 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
   /**
    * Find nearby enemy for shoot.
    */
-  private getTarget(): Enemy {
+  private getTarget(): Nullable<Enemy> {
     const distance = calcGrowth(
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
       this.scene.player.level,
     );
 
-    const enemies = (<Enemy[]> this.scene.entityGroups.enemies.getChildren()).filter((enemy) => (
+    const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
       && Phaser.Math.Distance.BetweenPoints(enemy, this) <= distance
     ));

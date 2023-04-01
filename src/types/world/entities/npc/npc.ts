@@ -6,7 +6,7 @@ export type NPCData = {
   positionAtMatrix: Vector2D
   texture: EnemyTexture | AssistantTexture
   speed: number
-  damage?: number
+  damage?: Nullable<number>
   health: number
   pathBreakpoint: number
   frameRate?: number

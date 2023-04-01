@@ -260,10 +260,14 @@ export class Game extends Phaser.Game {
   /**
    * Get best game stat.
    */
-  private readBestStat(): GameStat {
-    const recordValue = localStorage.getItem(`BEST_STAT.${this.difficultyType}`);
+  private readBestStat(): Nullable<GameStat> {
+    try {
+      const recordValue = localStorage.getItem(`BEST_STAT.${this.difficultyType}`);
 
-    return recordValue ? JSON.parse(recordValue) : {};
+      return JSON.parse(recordValue);
+    } catch (error) {
+      return null;
+    }
   }
 
   /**
@@ -281,13 +285,13 @@ export class Game extends Phaser.Game {
   /**
    * Get current game stat.
    */
-  private getCurrentStat(): GameStat {
+  private getCurrentStat() {
     return {
       waves: this.world.wave.getCurrentNumber() - 1,
       kills: this.world.player.kills,
       level: this.world.player.level,
       lived: this.world.getTimerNow() / 1000 / 60,
-    };
+    } as GameStat;
   }
 
   /**

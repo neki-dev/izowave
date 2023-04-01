@@ -31,8 +31,8 @@ export class NavigatorTask {
     ));
   }
 
-  public takeLastNode(): PathNode | undefined {
-    return this.nodes.pop();
+  public takeLastNode(): Nullable<PathNode> {
+    return this.nodes.pop() ?? null;
   }
 
   public addNode(node: PathNode) {
@@ -44,7 +44,7 @@ export class NavigatorTask {
     this.tree[node.y][node.x] = node;
   }
 
-  public pickNode(x: number, y: number): PathNode {
+  public pickNode(x: number, y: number) {
     return this.tree[y]?.[x];
   }
 

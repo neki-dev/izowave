@@ -60,7 +60,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Actions parameters.
    */
-  private actions: BuildingActionsParams;
+  private actions: Nullable<BuildingActionsParams>;
 
   /**
    * Action pause.
@@ -75,7 +75,10 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Building help UI component.
    */
-  private _help: Nullable<Phaser.GameObjects.Container> = null;
+  private _help: Nullable<{
+    message: string
+    container: Phaser.GameObjects.Container
+  }> = null;
 
   public get help() { return this._help; }
 
@@ -119,7 +122,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * Building constructor.
    */
   constructor(scene: World, {
-    positionAtMatrix, health, texture, actions, variant,
+    positionAtMatrix, health, texture, variant, actions = null,
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
@@ -220,18 +223,19 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   }
 
   /**
-   * Check if position inside action area.
+   * Check is position inside action area.
    *
    * @param position - Position at world
    */
-  public actionsAreaContains(position: Vector2D): boolean {
+  public actionsAreaContains(position: Vector2D) {
     if (!this.actionsArea) {
       return false;
     }
 
     const offset = this.actionsArea.getTopLeft();
+    const contains: boolean = this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
 
-    return this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
+    return contains;
   }
 
   /**
@@ -246,9 +250,9 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   }
 
   /**
-   * Check if actions is not pused.
+   * Check is actions is not pused.
    */
-  public isAllowAction(): boolean {
+  public isAllowAction() {
     if (!this.actions?.pause) {
       return true;
     }
@@ -259,18 +263,18 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Get building information params.
    */
-  public getInfo(): BuildingParamItem[] {
+  public getInfo() {
     return [{
       label: 'HEALTH',
       icon: ScreenIcon.HEALTH,
       value: this.live.health,
-    }];
+    }] as BuildingParamItem[];
   }
 
   /**
    * Get building actions.
    */
-  public getActions(): BuildingAction[] {
+  public getActions() {
     const actions: BuildingAction[] = [];
 
     if (this.isAllowUpgrade()) {
@@ -295,7 +299,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Get next upgrade cost.
    */
-  public getUpgradeLevelCost(): number {
+  public getUpgradeLevelCost() {
     const nextLevel = this.upgradeLevel + 1;
     const costGrow = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
 
@@ -305,14 +309,14 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Get building meta.
    */
-  public getMeta(): IBuildingFactory {
+  public getMeta() {
     return this.constructor as IBuildingFactory;
   }
 
   /**
    * Get actions radius.
    */
-  public getActionsRadius(): number {
+  public getActionsRadius() {
     return this.actions?.radius
       ? calcGrowth(
         this.actions.radius,
@@ -325,7 +329,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Get actions pause.
    */
-  private getActionsPause(): number {
+  private getActionsPause() {
     return this.actions?.pause
       ? calcGrowth(
         this.actions.pause,
@@ -336,9 +340,9 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   }
 
   /**
-   * Check if building allow upgrade.
+   * Check is building allow upgrade.
    */
-  private isAllowUpgrade(): boolean {
+  private isAllowUpgrade() {
     return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
@@ -386,7 +390,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    *
    */
-  private getWaveAllowUpgrade(): number {
+  private getWaveAllowUpgrade() {
     return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
@@ -499,8 +503,10 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     if (state === BuildingOutlineState.NONE) {
       this.removeShader('OutlineShader');
 
-      this.outlineTween.destroy();
-      this.outlineTween = null;
+      if (this.outlineTween) {
+        this.outlineTween.destroy();
+        this.outlineTween = null;
+      }
     } else {
       const color: number = {
         [BuildingOutlineState.FOCUSED]: 0xffffff,
@@ -558,7 +564,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     }
 
     if (this.help) {
-      this.help.setVisible(false);
+      this.help.container.setVisible(false);
     }
 
     this.info = ComponentBuildingInfo(this.scene, {
@@ -587,7 +593,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.info = null;
 
     if (this.help) {
-      this.help.setVisible(true);
+      this.help.container.setVisible(true);
     }
   }
 
@@ -607,7 +613,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.updateActionArea();
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.actionsArea.destroy();
+      this.actionsArea?.destroy();
     });
   }
 
@@ -634,17 +640,27 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * @param message - Text
    */
   public addHelp(message: string) {
-    if (this.help) {
-      this.help.destroy();
+    const isExist = this.scene.getBuildings()
+      .some((building) => (building.help?.message === message));
+
+    if (isExist) {
+      return;
     }
 
-    this.help = ComponentHelp(this.scene, {
-      message,
-      side: 'top',
-    });
+    if (this.help) {
+      this.help.container.destroy();
+    }
 
-    this.help.setDepth(WORLD_DEPTH_UI);
-    this.help.setPosition(
+    this.help = {
+      message,
+      container: ComponentHelp(this.scene, {
+        message,
+        side: 'top',
+      }),
+    };
+
+    this.help.container.setDepth(WORLD_DEPTH_UI);
+    this.help.container.setPosition(
       this.x,
       this.y + TILE_META.height,
     );
@@ -658,7 +674,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       return;
     }
 
-    this.help.destroy();
+    this.help.container.destroy();
     this.help = null;
   }
 

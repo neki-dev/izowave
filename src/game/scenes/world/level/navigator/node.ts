@@ -25,11 +25,11 @@ export class PathNode {
     this.parent = parent;
   }
 
-  public bestGuessDistance(): number {
+  public bestGuessDistance() {
     return this.cost + this.distance;
   }
 
-  public getCost(): number {
+  public getCost() {
     return this.cost;
   }
 
@@ -61,8 +61,8 @@ export class PathNode {
     this.listOpened = false;
   }
 
-  public getPath(): Vector2D[] {
-    const path = [{
+  public getPath() {
+    const path: Vector2D[] = [{
       x: this.x,
       y: this.y,
     }];

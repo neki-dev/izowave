@@ -57,7 +57,7 @@ export class BuildingAmmunition extends Building {
   /**
    * Add amount left to building info.
    */
-  public getInfo(): BuildingParamItem[] {
+  public getInfo() {
     return [
       ...super.getInfo(), {
         label: 'AMMO',
@@ -70,7 +70,7 @@ export class BuildingAmmunition extends Building {
   /**
    * Use ammo.
    */
-  public use(amount: number): number {
+  public use(amount: number) {
     if (this.amountLeft <= amount) {
       const left = this.amountLeft;
 
