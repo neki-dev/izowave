@@ -143,20 +143,18 @@ export class Screen extends Phaser.Scene implements IGameScene {
      * FPS
      */
 
-    if (IS_DEV_MODE) {
-      const fps = ComponentFPS(this);
+    const fps = ComponentFPS(this);
 
-      fps.useAdaptationBefore((width, height) => {
-        const offset = switchSize(30);
+    fps.useAdaptationBefore((width, height) => {
+      const offset = switchSize(30);
 
-        fps.setPosition(
-          offset,
-          height - offset,
-        );
-      });
+      fps.setPosition(
+        offset,
+        height - offset,
+      );
+    });
 
-      components.add(fps);
-    }
+    components.add(fps);
 
     /**
      * Updating
