@@ -71,7 +71,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
    */
   public setInitiator(initiator: IShotInitiator) {
     this.initiator = initiator;
-    this.setPosition(initiator.x, initiator.y);
 
     initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
@@ -133,6 +132,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
       return;
     }
 
+    this.setVisible(this.initiator.visible);
+    this.setPosition(this.initiator.x, this.initiator.y);
+    this.setActive(true);
+
     if (this.glowColor) {
       this.effect = new Particles(this, {
         type: ParticlesType.GLOW,
@@ -145,11 +148,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
           tint: this.glowColor,
         },
       });
+      this.effect.setVisible(this.visible);
     }
-
-    this.setPosition(this.initiator.x, this.initiator.y);
-    this.setActive(true);
-    this.setVisible(true);
 
     this.startPosition = { x: this.x, y: this.y };
 

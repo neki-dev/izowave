@@ -24,7 +24,7 @@ export const DIFFICULTY = {
   ASSISTANT_ATTACK_DAMAGE: 15, // Default assistant damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.2, // Assistant damage growth by player level
   ASSISTANT_ATTACK_SPEED: 500, // Assistant attack speed
-  ASSISTANT_ATTACK_SPEED_GROWTH: 0.3, // Attack speed growth by player level
+  ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by player level
   ASSISTANT_ATTACK_DISTANCE: 70, // Assistant maximum attack distance
   ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.03, // Attack distance growth by player level
   ASSISTANT_ATTACK_PAUSE: 1000, // Assistant attack pause

@@ -19,6 +19,11 @@ export class BuildingTower extends Building {
   readonly shot: IShot;
 
   /**
+   * Default shot params.
+   */
+  readonly shotDefaultParams: ShotParams;
+
+  /**
    * Ammo left in clip.
    */
   private _ammoLeft: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
@@ -35,6 +40,7 @@ export class BuildingTower extends Building {
 
     shot.setInitiator(this);
     this.shot = shot;
+    this.shotDefaultParams = shot.params;
 
     scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
@@ -142,25 +148,25 @@ export class BuildingTower extends Building {
       maxDistance: this.getActionsRadius(),
     };
 
-    if (this.shot.params.speed) {
+    if (this.shotDefaultParams.speed) {
       params.speed = calcGrowth(
-        this.shot.params.speed,
+        this.shotDefaultParams.speed,
         DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
         level || this.upgradeLevel,
       );
     }
 
-    if (this.shot.params.damage) {
+    if (this.shotDefaultParams.damage) {
       params.damage = calcGrowth(
-        this.shot.params.damage,
+        this.shotDefaultParams.damage,
         DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         level || this.upgradeLevel,
       );
     }
 
-    if (this.shot.params.freeze) {
+    if (this.shotDefaultParams.freeze) {
       params.freeze = calcGrowth(
-        this.shot.params.freeze,
+        this.shotDefaultParams.freeze,
         DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
         level || this.upgradeLevel,
       );

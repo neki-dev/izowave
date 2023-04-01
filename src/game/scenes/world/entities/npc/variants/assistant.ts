@@ -19,6 +19,11 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
   readonly shot: IShot;
 
   /**
+   * Default shot params.
+   */
+  readonly shotDefaultParams: ShotParams;
+
+  /**
    * Pause for next attack.
    */
   private nextAttackTimestamp: number = 0;
@@ -44,6 +49,7 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
       damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
     });
     this.shot.setInitiator(this);
+    this.shotDefaultParams = this.shot.params;
 
     this.body.setCircle(this.width / 2, 0, 1);
   }
@@ -156,17 +162,17 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
   private getShotCurrentParams() {
     const params: ShotParams = {
       maxDistance: calcGrowth(
-        this.shot.params.maxDistance,
+        this.shotDefaultParams.maxDistance,
         DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
         this.scene.player.level,
       ),
       speed: calcGrowth(
-        this.shot.params.speed,
+        this.shotDefaultParams.speed,
         DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
         this.scene.player.level,
       ),
       damage: calcGrowth(
-        this.shot.params.damage,
+        this.shotDefaultParams.damage,
         DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
         this.scene.player.level,
       ),
