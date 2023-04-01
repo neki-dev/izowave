@@ -7,7 +7,7 @@ export const AUDIO_VOLUME = 0.1;
 export const MIN_VALID_SCREEN_SIZE = [800, 480];
 
 export const COPYRIGHT = [
-  'Copyright © 2022, Nikita Galadiy',
+  '© Nikita Galadiy, 2022',
   `Version ${pkg.version} beta`,
 ];
 
