@@ -10,8 +10,6 @@ export type TileMeta = {
   persperctive: number
   width: number
   height: number
-  halfWidth: number
-  halfHeight: number
   deg: number
 };
 

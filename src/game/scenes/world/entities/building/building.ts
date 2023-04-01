@@ -210,7 +210,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * Set interactive by hexagon shape.
    */
   public setInteractive() {
-    const shape = new Hexagon(0, 0, TILE_META.halfHeight);
+    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
 
     return super.setInteractive(shape, Hexagon.Contains);
   }
@@ -421,7 +421,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
         audio: BuildingAudio.DEAD,
         position: {
           x: this.x,
-          y: this.y + TILE_META.halfHeight,
+          y: this.y + TILE_META.height * 0.5,
         },
         rate: 18,
       });
@@ -580,7 +580,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.info.setDepth(WORLD_DEPTH_UI);
     this.info.setPosition(
       this.x - this.info.width / 2,
-      this.y - this.info.height - TILE_META.halfHeight,
+      this.y - this.info.height - (TILE_META.height * 0.5),
     );
   }
 
@@ -608,7 +608,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       return;
     }
 
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.halfHeight);
+    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.height * 0.5);
     this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
     this.actionsArea.setFillStyle(0xffffff, 0.2);
     this.actionsArea.setVisible(false);
@@ -628,12 +628,12 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       return;
     }
 
-    const { persperctive, height, halfHeight } = TILE_META;
+    const { persperctive, height } = TILE_META;
     const d = this.getActionsRadius() * 2;
     const out = height * 2;
 
     this.actionsArea.setSize(d, d * persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(this.y + halfHeight, 1, d * persperctive + out));
+    this.actionsArea.setDepth(Level.GetDepth(this.y + TILE_META.height * 0.5, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
   }
 
@@ -691,7 +691,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
         audio: BuildingAudio.REMOVE,
         position: {
           x: this.x,
-          y: this.y + TILE_META.halfHeight,
+          y: this.y + TILE_META.height * 0.5,
         },
         rate: 18,
       });

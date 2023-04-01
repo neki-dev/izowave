@@ -8,9 +8,7 @@ import {
 
 export const TILE_META: TileMeta = {
   width: 42,
-  halfWidth: 21,
   height: 48,
-  halfHeight: 24,
   origin: 0.25,
   persperctive: 0.571,
   deg: 29.726,
@@ -26,6 +24,7 @@ export const LEVEL_MAP_SIZE = (() => {
 export const LEVEL_MAP_HEIGHT = 4;
 export const LEVEL_MAP_VISIBLE_PART = 0.8;
 export const LEVEL_MAP_VISITED_TILE_TINT = 0xDDDDDD;
+export const LEVEL_MAP_Z_WEIGHT = 999;
 
 export const LEVEL_BUILDING_PATH_COST = 16.0;
 
