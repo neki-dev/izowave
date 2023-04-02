@@ -1,4 +1,4 @@
-import { Vector2D } from '../level';
+import { Vector2D } from '~type/world/level';
 
 export enum ChestTexture {
   CHEST = 'chest',

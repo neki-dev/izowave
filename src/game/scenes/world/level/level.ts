@@ -68,7 +68,6 @@ export class Level extends TileMatrix {
     const map = generator.generate();
 
     this.matrix = map.getMatrix();
-
     this.scene = scene;
     this.visibleTiles = scene.add.group();
 
@@ -85,7 +84,7 @@ export class Level extends TileMatrix {
   }
 
   /**
-   *
+   * Checks is position does not have tile.
    */
   public isFreePoint(position: Vector3D) {
     return !this.getTile(position) || this.tileIs(position, TileType.TREE);
@@ -138,6 +137,7 @@ export class Level extends TileMatrix {
    */
   private updateVisibleTiles() {
     const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
+    const c = Math.ceil(d / 52);
     const center = this.scene.player.getBottomCenter();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
 
@@ -145,8 +145,6 @@ export class Level extends TileMatrix {
       tile.setVisible(false);
     }
     this.visibleTiles.clear();
-
-    const c = Math.ceil(d / 52);
 
     for (let z = 0; z < this.height; z++) {
       for (let y = this.scene.player.positionAtMatrix.y - c + 1; y <= this.scene.player.positionAtMatrix.y + c + 1; y++) {
@@ -208,7 +206,7 @@ export class Level extends TileMatrix {
           const z = biome.z - 1;
 
           if (this.matrix[y + 1]?.[x]?.z !== z || this.matrix[y]?.[x + 1]?.z !== z) {
-            const neededBiome = Object.values(LEVEL_BIOMES).find((b) => (b.data.z === z));
+            const neededBiome = LEVEL_BIOMES.find((b) => (b.data.z === z));
 
             if (neededBiome) {
               make(x, y, neededBiome.data);

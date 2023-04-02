@@ -135,10 +135,7 @@ export class Player extends Sprite implements IEnemyTarget {
       return;
     }
 
-    this.tile = this.scene.level.getTile({
-      ...this.positionAtMatrix,
-      z: 0,
-    });
+    this.tile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
 
     this.addVisitedWay();
     this.updateDirection();
@@ -355,9 +352,7 @@ export class Player extends Sprite implements IEnemyTarget {
 
     if (oldMovement !== this.movement || oldDirection !== this.direction) {
       if (this.movement) {
-        const animation = PLAYER_MOVE_ANIMATIONS[key];
-
-        this.anims.play(animation);
+        this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
 
         if (!oldMovement) {
           this.scene.sound.play(PlayerAudio.MOVE, {

@@ -110,11 +110,11 @@ export class Builder extends EventEmitter {
       return;
     }
 
-    const BuildingInstance = BUILDINGS[variant];
-
     if (!this.isBuildingAllowedByTutorial(variant)) {
       return;
     }
+
+    const BuildingInstance = BUILDINGS[variant];
 
     if (!this.isBuildingAllowedByWave(variant)) {
       // eslint-disable-next-line max-len

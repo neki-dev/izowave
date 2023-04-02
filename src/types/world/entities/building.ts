@@ -2,8 +2,7 @@ import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { ComponentCreator } from '~type/interface';
 import { ScreenIcon } from '~type/screen';
-
-import { Vector2D } from '../level';
+import { Vector2D } from '~type/world/level';
 
 export interface IBuildingFactory {
   Name: string
