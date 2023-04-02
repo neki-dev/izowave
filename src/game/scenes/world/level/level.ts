@@ -183,14 +183,16 @@ export class Level extends TileMatrix {
       const variant = Array.isArray(biome.tileIndex)
         ? Phaser.Math.Between(...biome.tileIndex)
         : biome.tileIndex;
-      const tilePosition = { x, y, z: biome.z };
+      const tilePosition: Vector3D = { x, y, z: biome.z };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
       const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant);
 
+      tile.biome = biome;
+
+      // Configure tile
       tile.setOrigin(0.5, TILE_META.origin);
       tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-      tile.biome = biome;
-      this.putTile(tile, TileType.MAP, tilePosition);
+      this.putTile(tile, TileType.MAP, tilePosition, false);
       this.mapTiles.add(tile);
     };
 
@@ -226,20 +228,21 @@ export class Level extends TileMatrix {
     const positions = this.readSpawnPositions(SpawnTarget.TREE);
 
     for (let i = 0; i < this.size * 2; i++) {
-      const positionAtMatrix = Phaser.Utils.Array.GetRandom(positions);
-      const tilePosition = { ...positionAtMatrix, z: 1 };
+      const positionAtMatrix: Vector2D = Phaser.Utils.Array.GetRandom(positions);
+      const tilePosition: Vector3D = { ...positionAtMatrix, z: 1 };
 
       if (!this.getTile(tilePosition)) {
-        const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
+        const positionAtWorld = Level.ToWorldPosition(tilePosition);
         const tile = this.scene.add.image(
           positionAtWorld.x,
-          positionAtWorld.y + 11,
+          positionAtWorld.y - 19,
           LevelTexture.TREE,
           Phaser.Math.Between(0, 3),
         );
 
-        tile.setOrigin(0.5, 1.0);
-        tile.setDepth(Level.GetDepth(positionAtWorld.y + 14, tilePosition.z, tile.displayHeight));
+        // Configure tile
+        tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+        tile.setOrigin(0.5, TILE_META.origin);
         this.putTile(tile, TileType.TREE, tilePosition);
         this.treesTiles.add(tile);
       }
@@ -266,35 +269,34 @@ export class Level extends TileMatrix {
       x: (position.x / (width * 0.5)),
       y: (position.y / (height * origin)),
     };
-    const convertedPosition: Vector2D = {
+    const positionAtMatrix: Vector2D = {
       x: Math.round((n.x + n.y) / 2),
       y: Math.round((n.y - n.x) / 2),
     };
 
-    return convertedPosition;
+    return positionAtMatrix;
   }
 
   /**
    * Convert tile position to world position.
    *
-   * @param position - Position at matrix or tile position
+   * @param position - Tile position
    */
-  static ToWorldPosition(position: Vector3D | Vector2D) {
+  static ToWorldPosition(position: Vector3D) {
     const { width, height, origin } = TILE_META;
-    const z = 'z' in position ? position.z : 0;
-    const convertedPosition: Vector2D = {
+    const positionAtWorld: Vector2D = {
       x: (position.x - position.y) * (width * 0.5),
-      y: (position.x + position.y) * (height * origin) - (z * (height * 0.5)),
+      y: (position.x + position.y) * (height * origin) - (position.z * (height * 0.5)),
     };
 
-    return convertedPosition;
+    return positionAtWorld;
   }
 
   /**
    * Get depth for tile.
    *
-   * @param y - Tile Y
-   * @param z - Tile Z
+   * @param y - Position Y at world
+   * @param z - Tile position Z
    */
   static GetTileDepth(y: number, z: number) {
     return y + (z * LEVEL_MAP_Z_WEIGHT);
@@ -303,8 +305,8 @@ export class Level extends TileMatrix {
   /**
    * Get depth dor dynamic sprite.
    *
-   * @param y - Tile Y
-   * @param z - Tile Z
+   * @param y - Position Y at world
+   * @param z - Tile position Z
    * @param height - Sprite height
    */
   static GetDepth(y: number, z: number, height: number) {

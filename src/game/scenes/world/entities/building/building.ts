@@ -143,13 +143,11 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
 
     // Configure tile
 
-    this.setOrigin(0.5, TILE_META.origin);
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-
+    this.setOrigin(0.5, TILE_META.origin);
     scene.level.putTile(this, TileType.BUILDING, tilePosition);
     scene.level.refreshNavigationMeta();
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.level.removeTile(tilePosition);
       this.scene.level.refreshNavigationMeta();
     });
 

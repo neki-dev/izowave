@@ -237,7 +237,7 @@ export class NPC extends Sprite {
     const [target] = this.currentPath;
 
     if (target) {
-      const positionAtWorld = Level.ToWorldPosition(target);
+      const positionAtWorld = Level.ToWorldPosition({ ...target, z: 0 });
 
       this.moveTo(positionAtWorld);
     }
@@ -298,8 +298,8 @@ export class NPC extends Sprite {
     ];
 
     for (let i = 1; i < points.length; i++) {
-      const prev = Level.ToWorldPosition(points[i - 1]);
-      const next = Level.ToWorldPosition(points[i]);
+      const prev = Level.ToWorldPosition({ ...points[i - 1], z: 0 });
+      const next = Level.ToWorldPosition({ ...points[i], z: 0 });
 
       this.pathDebug.moveTo(prev.x, prev.y);
       this.pathDebug.lineTo(next.x, next.y);

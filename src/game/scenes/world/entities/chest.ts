@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
+import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
@@ -23,23 +24,18 @@ export class Chest extends Phaser.GameObjects.Image {
     positionAtMatrix, variant = 0,
   }: ChestData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition({ ...tilePosition, z: 0 });
+    const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
-    super(scene, positionAtWorld.x, positionAtWorld.y + 2, ChestTexture.CHEST, variant);
+    super(scene, positionAtWorld.x, positionAtWorld.y + 16, ChestTexture.CHEST, variant);
     scene.add.existing(this);
     scene.entityGroups.chests.add(this);
 
     this.positionAtMatrix = positionAtMatrix;
 
     // Configure tile
-
-    this.setDepth(Level.GetDepth(positionAtWorld.y - 10, tilePosition.z, this.displayHeight));
-    this.setOrigin(0.5, 0.75);
-
+    this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    this.setOrigin(0.5, TILE_META.origin);
     scene.level.putTile(this, TileType.CHEST, tilePosition);
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      scene.level.removeTile(tilePosition);
-    });
   }
 
   /**

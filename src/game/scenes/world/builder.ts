@@ -180,11 +180,9 @@ export class Builder extends EventEmitter {
           }
 
           // Remove trees
-          const tilePosition = { x, y, z: 1 };
-          const tile = this.scene.level.getTileWithType(tilePosition, TileType.TREE);
+          const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.TREE);
 
           if (tile) {
-            this.scene.level.removeTile(tilePosition);
             tile.destroy();
           }
         }

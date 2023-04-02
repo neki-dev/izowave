@@ -97,13 +97,16 @@ export class TileMatrix {
    * @param tile - Image
    * @param type - Tile type
    * @param position - Tile position
+   * @param destroyable - Tile can be destroy
    */
   public putTile(
     tile: Phaser.GameObjects.Image,
     type: TileType,
     position: Vector3D,
+    destroyable = true,
   ) {
     const existsTile = this.getTile(position);
+    const { x, y, z } = position;
 
     if (existsTile) {
       existsTile.destroy();
@@ -111,10 +114,13 @@ export class TileMatrix {
 
     // eslint-disable-next-line no-param-reassign
     tile.tileType = type;
-
-    const { x, y, z } = position;
-
     this.tiles[z][y][x] = tile;
+
+    if (destroyable) {
+      tile.on(Phaser.GameObjects.Events.DESTROY, () => {
+        this.removeTile(position);
+      });
+    }
   }
 
   /**
@@ -124,12 +130,11 @@ export class TileMatrix {
    */
   public removeTile(position: Vector3D) {
     const tile = this.getTile(position);
+    const { x, y, z } = position;
 
     if (!tile) {
       return;
     }
-
-    const { x, y, z } = position;
 
     delete this.tiles[z][y][x];
   }
