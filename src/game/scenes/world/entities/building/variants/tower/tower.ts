@@ -237,6 +237,7 @@ export class BuildingTower extends Building {
     const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
       && this.actionsAreaContains(enemy)
+      && !this.scene.level.hasTilesBetweenPositions(this, enemy)
     ));
 
     if (enemies.length === 0) {

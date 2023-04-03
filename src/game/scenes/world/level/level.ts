@@ -7,6 +7,7 @@ import {
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { World } from '~scene/world';
+import { Hexagon } from '~scene/world/hexagon';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D,
 } from '~type/world/level';
@@ -84,7 +85,9 @@ export class Level extends TileMatrix {
   }
 
   /**
-   * Checks is position does not have tile.
+   * Check is position does not have tile.
+   *
+   * @param position - Tile position
    */
   public isFreePoint(position: Vector3D) {
     return !this.getTile(position) || this.tileIs(position, TileType.TREE);
@@ -176,6 +179,22 @@ export class Level extends TileMatrix {
   }
 
   /**
+   * Check is presence of tile between world positions.
+   *
+   * @param positionA - Position at world
+   * @param positionB - Position at world
+   */
+  public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
+    const tiles = (<Phaser.GameObjects.Image[]> this.mapTiles.getChildren())
+      .filter((tile) => (tile.biome.z === 1))
+      .map((tile) => tile.shape);
+    const line = new Phaser.Geom.Line(positionA.x, positionA.y, positionB.x, positionB.y);
+    const point = Phaser.Geom.Intersects.GetLineToPolygon(line, tiles);
+
+    return Boolean(point);
+  }
+
+  /**
    * Add biomes tiles on map.
    */
   private makeMapTiles() {
@@ -194,6 +213,14 @@ export class Level extends TileMatrix {
       tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
       this.putTile(tile, TileType.MAP, tilePosition, false);
       this.mapTiles.add(tile);
+
+      if (biome.z === 1) {
+        tile.shape = new Hexagon(
+          positionAtWorld.x - TILE_META.width * 0.5 - 3,
+          positionAtWorld.y - TILE_META.height * 0.25,
+          TILE_META.height * 0.5,
+        );
+      }
     };
 
     this.mapTiles = this.scene.add.group();

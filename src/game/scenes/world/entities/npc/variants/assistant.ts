@@ -146,7 +146,8 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
 
     const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
-      && Phaser.Math.Distance.BetweenPoints(enemy, this) <= distance
+      && Phaser.Math.Distance.BetweenPoints(this, enemy) <= distance
+      && !this.scene.level.hasTilesBetweenPositions(this, enemy)
     ));
 
     if (enemies.length === 0) {

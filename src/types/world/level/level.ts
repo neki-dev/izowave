@@ -1,3 +1,5 @@
+import { Hexagon } from '~scene/world/hexagon';
+
 export enum TileType {
   MAP = 'MAP',
   BUILDING = 'BUILDING',
@@ -60,6 +62,7 @@ declare global {
     namespace GameObjects {
       interface Image {
         biome?: LevelBiome
+        shape?: Hexagon
         tileType: TileType
       }
     }
