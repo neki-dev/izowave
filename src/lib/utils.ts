@@ -38,11 +38,12 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
 /**
  * Format timestamp to string time.
  *
- * @param value - Timestamp in seconds
+ * @param value - Timestamp in miliseconds
  */
 export function formatTime(value: number) {
-  const h = Math.floor(value / 60);
-  const m = value % 60;
+  const s = Math.floor(value / 1000);
+  const h = Math.floor(s / 60);
+  const m = s % 60;
 
   return `${(h < 10 ? '0' : '')}${h}:${(m < 10 ? '0' : '')}${m}`;
 }

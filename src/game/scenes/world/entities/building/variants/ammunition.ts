@@ -1,7 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType, ScreenIcon } from '~type/screen';
 import {
   BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
@@ -75,7 +74,7 @@ export class BuildingAmmunition extends Building {
       const left = this.amountLeft;
 
       this.scene.sound.play(BuildingAudio.OVER);
-      this.scene.game.screen.message(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
 
       this.destroy();
 

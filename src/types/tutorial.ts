@@ -15,7 +15,7 @@ export enum TutorialStepState {
   END = 'END',
 }
 
-export enum TutorialEvent {
+export enum TutorialEvents {
   BEG = 'beg',
   END = 'end',
 }

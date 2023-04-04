@@ -6,8 +6,7 @@ import { BuildingAmmunition } from '~entity/building/variants/ammunition';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType, ScreenIcon } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { BuildingAudio, BuildingData, BuildingVariant } from '~type/world/entities/building';
 import { IShot, ShotParams } from '~type/world/entities/shot';
@@ -83,9 +82,7 @@ export class BuildingTower extends Building {
     info.push({
       label: 'AMMO',
       icon: ScreenIcon.AMMO,
-      color: (this.ammoLeft === 0)
-        ? INTERFACE_TEXT_COLOR.WARN
-        : undefined,
+      attention: (this.ammoLeft === 0),
       value: `${this.ammoLeft}/${this.getMaxAmmo()}`,
     });
 
@@ -208,7 +205,7 @@ export class BuildingTower extends Building {
     const ammunition = this.getAmmunition();
 
     if (!ammunition) {
-      this.scene.game.screen.message(NoticeType.ERROR, 'NO AMMUNITION NEARBY');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NO AMMUNITION NEARBY');
 
       return;
     }

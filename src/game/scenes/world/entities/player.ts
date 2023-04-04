@@ -10,7 +10,7 @@ import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { aroundPosition, calcGrowth } from '~lib/utils';
 import { World } from '~scene/world';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType } from '~type/screen';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import {
   PlayerEvents, PlayerTexture, MovementDirection, PlayerAudio, PlayerData,
@@ -143,6 +143,19 @@ export class Player extends Sprite implements IEnemyTarget {
   }
 
   /**
+   * ...
+   *
+   * @param level - Level offset
+   */
+  public getNextExperience(level = 0) {
+    return calcGrowth(
+      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL,
+      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
+      this.level + level + 1,
+    );
+  }
+
+  /**
    * Give player experince.
    * If enough experience, the level will be increased.
    *
@@ -156,20 +169,14 @@ export class Player extends Sprite implements IEnemyTarget {
     this.experience += amount;
     this.emit(PlayerEvents.UPDATE_EXPERIENCE, amount);
 
-    const calcNext = (level: number) => calcGrowth(
-      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL,
-      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
-      this.level + level + 1,
-    );
-
-    let experienceNeed = calcNext(0);
+    let experienceNeed = this.getNextExperience();
     let experienceLeft = this.experience;
     let level = 0;
 
     while (experienceLeft >= experienceNeed) {
       level++;
       experienceLeft -= experienceNeed;
-      experienceNeed = calcNext(level);
+      experienceNeed = this.getNextExperience(level);
     }
 
     if (level > 0) {
@@ -269,7 +276,7 @@ export class Player extends Sprite implements IEnemyTarget {
     this.live.heal();
 
     this.scene.sound.play(PlayerAudio.LEVEL_UP);
-    this.scene.game.screen.message(NoticeType.INFO, 'LEVEL UP');
+    this.scene.game.screen.notice(NoticeType.INFO, 'LEVEL UP');
   }
 
   /**

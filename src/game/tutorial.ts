@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import { TutorialEvent, TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialEvents, TutorialStep, TutorialStepState } from '~type/tutorial';
 
 export class Tutorial extends EventEmitter {
   /**
@@ -13,9 +13,13 @@ export class Tutorial extends EventEmitter {
    */
   private _isDisabled: boolean = false;
 
-  public get isDisabled() { return this._isDisabled; }
+  public get isDisabled() {
+    return this._isDisabled;
+  }
 
-  private set isDisabled(v) { this._isDisabled = v; }
+  private set isDisabled(v) {
+    this._isDisabled = v;
+  }
 
   /**
    * Tutorial constructor.
@@ -40,7 +44,8 @@ export class Tutorial extends EventEmitter {
 
     this.progress[step] = true;
 
-    this.emit(TutorialEvent.BEG, step);
+    this.emit(TutorialEvents.BEG, step);
+    this.emit(`${TutorialEvents.BEG}_${step}`);
   }
 
   /**
@@ -55,7 +60,8 @@ export class Tutorial extends EventEmitter {
 
     this.progress[step] = false;
 
-    this.emit(TutorialEvent.END, step);
+    this.emit(TutorialEvents.END, step);
+    this.emit(`${TutorialEvents.END}_${step}`);
   }
 
   /**
@@ -72,9 +78,7 @@ export class Tutorial extends EventEmitter {
       return TutorialStepState.IDLE;
     }
 
-    return this.progress[step]
-      ? TutorialStepState.BEG
-      : TutorialStepState.END;
+    return this.progress[step] ? TutorialStepState.BEG : TutorialStepState.END;
   }
 
   /**
@@ -88,11 +92,7 @@ export class Tutorial extends EventEmitter {
       return;
     }
 
-    this.on(TutorialEvent.BEG, (stepBeg: TutorialStep) => {
-      if (step === stepBeg) {
-        callback();
-      }
-    });
+    this.once(`${TutorialEvents.BEG}_${step}`, callback);
   }
 
   /**
@@ -105,7 +105,7 @@ export class Tutorial extends EventEmitter {
       return;
     }
 
-    this.on(TutorialEvent.BEG, callback);
+    this.on(TutorialEvents.BEG, callback);
   }
 
   /**
@@ -119,11 +119,7 @@ export class Tutorial extends EventEmitter {
       return;
     }
 
-    this.on(TutorialEvent.END, (stepEnd: TutorialStep) => {
-      if (step === stepEnd) {
-        callback();
-      }
-    });
+    this.once(`${TutorialEvents.END}_${step}`, callback);
   }
 
   /**
@@ -136,7 +132,7 @@ export class Tutorial extends EventEmitter {
       return;
     }
 
-    this.on(TutorialEvent.END, callback);
+    this.on(TutorialEvents.END, callback);
   }
 
   /**

@@ -68,7 +68,7 @@ export type BuildingParamItem = {
   label: string
   value: string | number
   icon: ScreenIcon
-  color?: string
+  attention?: boolean
 };
 
 export type BuildingAction = {

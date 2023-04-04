@@ -3,6 +3,7 @@
     "outDir": "./app",
     "module": "es6",
     "target": "es6",
+    "jsx": "react",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,

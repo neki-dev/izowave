@@ -16,8 +16,7 @@ import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
-import { ScreenIcon } from '~type/screen';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType, ScreenIcon } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
@@ -355,7 +354,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     const waveAllowed = this.getWaveAllowUpgrade();
 
     if (waveAllowed > this.scene.wave.getCurrentNumber()) {
-      this.scene.game.screen.message(NoticeType.ERROR, `UPGRADE BE AVAILABLE ON ${waveAllowed} WAVE`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE BE AVAILABLE ON ${waveAllowed} WAVE`);
 
       return;
     }
@@ -363,7 +362,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     const cost = this.getUpgradeLevelCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
 
       return;
     }
@@ -380,7 +379,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
     this.scene.sound.play(BuildingAudio.UPGRADE);
-    this.scene.game.screen.message(NoticeType.INFO, 'BUILDING UPGRADED');
+    this.scene.game.screen.notice(NoticeType.INFO, 'BUILDING UPGRADED');
 
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
   }
@@ -411,7 +410,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * Event dead.
    */
   private onDead() {
-    this.scene.game.screen.message(NoticeType.WARN, `${this.getMeta().Name} HAS BEEN DESTROYED`);
+    this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} HAS BEEN DESTROYED`);
 
     if (this.visible) {
       new Effect(this.scene, {

@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/world/entities/enemy';
+import { WAVE_ALARM_TIMELEFT } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
 import { calcGrowth } from '~lib/utils';
@@ -59,6 +60,11 @@ export class Wave extends EventEmitter {
   private nextSpawnTimestamp: number = 0;
 
   /**
+   * Timeleft alarm interval.
+   */
+  private alarmInterval: Nullable<NodeJS.Timer> = null;
+
+  /**
    * Wave constructor.
    */
   constructor(scene: World) {
@@ -95,8 +101,17 @@ export class Wave extends EventEmitter {
       } else if (this.scene.entityGroups.enemies.getTotalUsed() === 0) {
         this.complete();
       }
-    } else if (this.nextWaveTimestamp <= now) {
-      this.start();
+    } else {
+      const left = this.nextWaveTimestamp - now;
+
+      if (left <= 0) {
+        this.start();
+      } else if (left <= WAVE_ALARM_TIMELEFT && !this.alarmInterval) {
+        this.scene.sound.play(WaveAudio.TICK);
+        this.alarmInterval = setInterval(() => {
+          this.scene.sound.play(WaveAudio.TICK);
+        }, 1000);
+      }
     }
   }
 
@@ -124,6 +139,16 @@ export class Wave extends EventEmitter {
    */
   public getCurrentNumber() {
     return this.isGoing ? this.number : this.number + 1;
+  }
+
+  /**
+   * Get count of enemies left.
+   */
+  public getEnemiesLeft() {
+    const currentEnemies = this.scene.entityGroups.enemies.getTotalUsed();
+    const killedEnemies = this.spawnedCount - currentEnemies;
+
+    return this.maxSpawnedCount - killedEnemies;
   }
 
   /**
@@ -158,6 +183,11 @@ export class Wave extends EventEmitter {
       DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
       this.number,
     );
+
+    if (this.alarmInterval) {
+      clearInterval(this.alarmInterval);
+      this.alarmInterval = null;
+    }
 
     this.scene.sound.play(WaveAudio.START);
 

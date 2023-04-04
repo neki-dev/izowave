@@ -31,7 +31,7 @@ describe('utils.ts / equalPositions', () => {
 describe('utils.ts / formatTime', () => {
   it('should convert timestamp seconds to string time', () => {
     expect(formatTime(0)).toEqual('00:00');
-    expect(formatTime(125)).toEqual('02:05');
+    expect(formatTime(125000)).toEqual('02:05');
   });
 });
 

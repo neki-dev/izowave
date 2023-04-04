@@ -86,7 +86,7 @@ export const ComponentParams = Component<Props>(function (container, {
    */
 
   for (const {
-    label, value, color, icon,
+    label, value, icon,
   } of params()) {
     ref[label] = {};
     state.values[label] = value;
@@ -152,7 +152,7 @@ export const ComponentParams = Component<Props>(function (container, {
       ref[label].label = this.add.text(0, 0, label, {
         // resolution: window.devicePixelRatio,
         fontFamily: INTERFACE_FONT.MONOSPACE,
-        color: color || '#fff',
+        color: '#fff',
       }),
     );
 
@@ -173,7 +173,7 @@ export const ComponentParams = Component<Props>(function (container, {
       ref[label].value = this.add.text(0, 0, String(value), {
         resolution: window.devicePixelRatio,
         fontFamily: INTERFACE_FONT.PIXEL,
-        color: color || '#fff',
+        color: '#fff',
       }),
     );
 

@@ -9,7 +9,7 @@ import { calcGrowth, equalPositions } from '~lib/utils';
 import { ComponentBuildingPreview } from '~scene/screen/components/builder/building-preview';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { BuilderEvents } from '~type/world/builder';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
@@ -118,13 +118,13 @@ export class Builder extends EventEmitter {
 
     if (!this.isBuildingAllowedByWave(variant)) {
       // eslint-disable-next-line max-len
-      this.scene.game.screen.message(NoticeType.ERROR, `${BuildingInstance.Name} BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `${BuildingInstance.Name} BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
 
       return;
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.message(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
 
       return;
     }
@@ -324,7 +324,7 @@ export class Builder extends EventEmitter {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.message(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
 
       return;
     }

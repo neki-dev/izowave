@@ -4,7 +4,5 @@ export enum MenuAudio {
 
 export type MenuItem = {
   label: string
-  active?: boolean
-  content?: () => Phaser.GameObjects.Container
-  onClick?: () => void
+  onClick: () => void
 };

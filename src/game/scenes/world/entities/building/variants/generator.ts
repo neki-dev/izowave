@@ -4,8 +4,7 @@ import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
-import { ScreenIcon } from '~type/screen';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType, ScreenIcon } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
 import {
   BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
@@ -81,7 +80,7 @@ export class BuildingGenerator extends Building {
 
     if (this.amountLeft === 0) {
       this.scene.sound.play(BuildingAudio.OVER);
-      this.scene.game.screen.message(NoticeType.WARN, `${this.getMeta().Name} RESOURCES ARE OVER`);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} RESOURCES ARE OVER`);
 
       this.destroy();
     } else {
