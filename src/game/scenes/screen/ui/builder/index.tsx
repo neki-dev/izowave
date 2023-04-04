@@ -12,15 +12,11 @@ import { Variant, Info, Wrapper } from './styles';
 export const ComponentBuilder: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [isWaveGoing, setWaveGoing] = useState(game.world.wave.isGoing);
+  const [isWaveGoing, setWaveGoing] = useState(false);
   const [hint, setHint] = useState<{
     variant: BuildingVariant
     text: string
   }>(null);
-
-  useWorldUpdate(() => {
-    setWaveGoing(game.world.wave.isGoing);
-  });
 
   const showHint = (step: TutorialStep) => {
     switch (step) {
@@ -52,6 +48,10 @@ export const ComponentBuilder: React.FC = () => {
   const hideHint = () => {
     setHint(null);
   };
+
+  useWorldUpdate(() => {
+    setWaveGoing(game.world.wave.isGoing);
+  });
 
   useEffect(() => {
     game.tutorial.onBegAny(showHint);

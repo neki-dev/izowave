@@ -7,7 +7,7 @@ import { Particles } from '~scene/world/effects';
 import { NoticeType, ScreenIcon } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -15,7 +15,7 @@ export class BuildingGenerator extends Building {
 
   static Description = 'Resource generation for builds and upgrades';
 
-  static Params: BuildingParamItem[] = [
+  static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: ScreenIcon.HEALTH },
     { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: ScreenIcon.RESOURCES },
   ];

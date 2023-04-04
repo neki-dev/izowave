@@ -23,6 +23,7 @@ import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { IGameScene, SceneKey } from '~type/game';
+import { WorldEvents, WorldHint } from '~type/world';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
 import { BuildingVariant } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
@@ -157,6 +158,22 @@ export class World extends Phaser.Scene implements IGameScene {
     this.wave.update();
 
     this.updateNPCPath();
+  }
+
+  /**
+   * Show hint on world.
+   *
+   * @param hint - Hint data
+   */
+  public showHint(hint: WorldHint) {
+    this.events.emit(WorldEvents.SHOW_HINT, hint);
+  }
+
+  /**
+   * Hide hint from world.
+   */
+  public hideHint() {
+    this.events.emit(WorldEvents.HIDE_HINT);
   }
 
   /**

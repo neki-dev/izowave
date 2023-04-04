@@ -3,7 +3,7 @@ import React from 'react';
 import { ComponentBarExperience } from './bar-experience';
 import { ComponentBarHealth } from './bar-health';
 import { ComponentBuilder } from './builder';
-import { ComponentFPSCounter } from './fps-counter';
+import { ComponentDebugCounter } from './debug-counter';
 import { ComponentNotices } from './notices';
 import { ComponentResources } from './resources';
 import {
@@ -25,7 +25,7 @@ export const ScreenUI: React.FC = () => (
         <ComponentResources />
       </Info>
 
-      <ComponentFPSCounter />
+      <ComponentDebugCounter />
     </Column>
 
     <Column>

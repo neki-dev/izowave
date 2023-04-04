@@ -28,7 +28,7 @@ export class Tutorial extends EventEmitter {
     super();
 
     if (IS_DEV_MODE) {
-      // this.disable();
+      this.disable();
     }
   }
 

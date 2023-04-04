@@ -16,7 +16,7 @@ export const ComponentWave: React.FC = () => {
     game.world.wave.getCurrentNumber(),
   );
   const [value, setValue] = useState(null);
-  const [isGoing, setGoing] = useState(game.world.wave.isGoing);
+  const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isHintVisible, setHintVisible] = useState(false);
 

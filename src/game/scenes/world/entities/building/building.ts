@@ -13,13 +13,13 @@ import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
 import { NoticeType, ScreenIcon } from '~type/screen';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
-  BuildingTexture, BuildingVariant, BuildingParamItem, BuildingAction,
+  BuildingTexture, BuildingVariant, BuildingParam, BuildingAction,
   BuildingOutlineState, IBuildingFactory,
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
@@ -245,7 +245,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       label: 'HEALTH',
       icon: ScreenIcon.HEALTH,
       value: this.live.health,
-    }] as BuildingParamItem[];
+    }] as BuildingParam[];
   }
 
   /**
@@ -257,6 +257,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     if (this.isAllowUpgrade()) {
       actions.push({
         label: 'UPGRADE',
+        cost: this.getUpgradeLevelCost(),
         onClick: () => {
           this.nextUpgrade();
         },
@@ -313,11 +314,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * Check is building allow upgrade.
    */
   private isAllowUpgrade() {
-    return (
-      this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL
-      && !this.scene.wave.isGoing
-      && this.scene.game.tutorial.state(TutorialStep.UPGRADE_BUILDING) === TutorialStepState.END
-    );
+    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
   /**
@@ -447,9 +444,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     if (this.actionsArea) {
       this.actionsArea.setVisible(true);
     }
-
-    this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
-    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
 
     this.scene.events.emit(WorldEvents.SELECT_BUILDING, this);
   }

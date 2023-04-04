@@ -1,10 +1,11 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { TILE_META } from '~const/world/level';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import {
-  BuildingParamItem, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { BuildingTower } from '../tower';
@@ -14,7 +15,7 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Description = 'Basic fire attack of enemies';
 
-  static Params: BuildingParamItem[] = [
+  static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: ScreenIcon.HEALTH },
     { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS, icon: ScreenIcon.RADIUS },
     { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE, icon: ScreenIcon.DAMAGE },
@@ -48,14 +49,32 @@ export class BuildingTowerFire extends BuildingTower {
     }, shot);
 
     this.scene.game.tutorial.onBeg(TutorialStep.UPGRADE_BUILDING, () => {
-      // TODO
-      // this.addHelp('Hover on building and press [U] to upgrade');
+      this.scene.showHint({
+        side: 'top',
+        text: 'Hover on building and press [U] to upgrade',
+        position: {
+          x: this.x,
+          y: this.y + TILE_META.height,
+        },
+      });
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.UPGRADE_BUILDING, () => {
+      this.scene.hideHint();
     });
     this.scene.game.tutorial.onBeg(TutorialStep.RELOAD_BUILDING, () => {
       if (this.ammoLeft === 0) {
-        // TODO
-        // this.addHelp('Hover on building and press [R] to reload ammo');
+        this.scene.showHint({
+          side: 'top',
+          text: 'Hover on building and press [R] to reload ammo',
+          position: {
+            x: this.x,
+            y: this.y + TILE_META.height,
+          },
+        });
       }
+    });
+    this.scene.game.tutorial.onEnd(TutorialStep.RELOAD_BUILDING, () => {
+      this.scene.hideHint();
     });
   }
 }

@@ -40,11 +40,12 @@ Stats.Item = styled.div`
   color: #fff;
   font-family: ${INTERFACE_FONT.PIXEL};
   &:not(:last-child) {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 `;
 
 Stats.Value = styled.div`
+  margin-top: -3px;
   font-size: 26px;
   line-height: 26px;
   text-shadow: 4px 4px 0 #000;

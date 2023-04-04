@@ -14,6 +14,18 @@ const animationKickRight = keyframes`
   100% { transform: translate(0, 0) }
 `;
 
+const animationKickTop = keyframes`
+  0% { transform: translate(0, 0) }
+  50% { transform: translate(0, 10px) }
+  100% { transform: translate(0, 0) }
+`;
+
+const animationKickBottom = keyframes`
+  0% { transform: translate(0, 0) }
+  50% { transform: translate(0, -10px) }
+  100% { transform: translate(0, 0) }
+`;
+
 export const Wrapper = styled.div`
   position: relative;
 `;
@@ -67,7 +79,9 @@ export const Positioner = styled.div`
   }
   &.top {
     padding-top: 10px;
+    transform: translate(-50%, 0);
     ${Container} {
+      animation: ${animationKickTop} 1s infinite;
       &::after {
         top: 0;
         left: 50%;
@@ -80,11 +94,13 @@ export const Positioner = styled.div`
   }
   &.bottom {
     padding-bottom: 10px;
+    transform: translate(-50%, -100%);
     ${Container} {
+      animation: ${animationKickBottom} 1s infinite;
       &::after {
         bottom: 0;
         left: 50%;
-        transform: translate(-50%, -100%);
+        transform: translate(-50%, 100%);
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
         border-top: 10px solid #000;

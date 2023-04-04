@@ -6,7 +6,7 @@ import { Vector2D } from '~type/world/level';
 export interface IBuildingFactory {
   Name: string
   Description: string
-  Params: BuildingParamItem[]
+  Params: BuildingParam[]
   Texture: BuildingTexture
   Cost: number
   Health: number
@@ -63,7 +63,7 @@ export type BuildingActionsParams = {
   pause?: number
 };
 
-export type BuildingParamItem = {
+export type BuildingParam = {
   label: string
   value: string | number
   icon: ScreenIcon
@@ -72,6 +72,7 @@ export type BuildingParamItem = {
 
 export type BuildingAction = {
   label: string
+  cost?: number
   onClick: () => void
 };
 

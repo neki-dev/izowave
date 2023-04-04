@@ -2,7 +2,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { World } from '~scene/world';
 import { NoticeType, ScreenIcon } from '~type/screen';
 import {
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -12,7 +12,7 @@ export class BuildingAmmunition extends Building {
 
   static Description = 'Reloading towers ammo, that are in radius of this building';
 
-  static Params: BuildingParamItem[] = [
+  static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: ScreenIcon.HEALTH },
     { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: ScreenIcon.AMMO },
   ];

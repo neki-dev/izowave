@@ -7,9 +7,9 @@ import { ComponentBar } from '../bar';
 export const ComponentBarExperience: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [level, setLevel] = useState(game.world.player.level);
-  const [experience, setExperience] = useState(game.world.player.experience);
-  const [nextExperience, setNextExperience] = useState(game.world.player.getNextExperience());
+  const [level, setLevel] = useState(0);
+  const [experience, setExperience] = useState(0);
+  const [nextExperience, setNextExperience] = useState(0);
 
   useWorldUpdate(() => {
     setLevel(game.world.player.level);

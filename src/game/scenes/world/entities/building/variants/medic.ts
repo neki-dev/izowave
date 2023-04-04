@@ -5,7 +5,7 @@ import { Particles } from '~scene/world/effects';
 import { ScreenIcon } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
 import {
-  BuildingVariant, BuildingTexture, BuildingParamItem, BuildingVariantData,
+  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -15,7 +15,7 @@ export class BuildingMedic extends Building {
 
   static Description = 'Heals player, that are in radius of this building';
 
-  static Params: BuildingParamItem[] = [
+  static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: ScreenIcon.HEALTH },
     { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: ScreenIcon.HEAL },
   ];

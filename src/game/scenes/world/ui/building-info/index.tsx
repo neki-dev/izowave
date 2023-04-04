@@ -6,28 +6,21 @@ import React, {
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { Building } from '~entity/building';
 import { GameContext, useWorldUpdate } from '~lib/ui';
+import { getMutable } from '~lib/utils';
 import { WorldEvents } from '~type/world';
-// import { Vector2D } from '~type/world/level';
-import { BuildingAction, BuildingParamItem } from '~type/world/entities/building';
+import { BuildingAction, BuildingParam } from '~type/world/entities/building';
 
-import {
-  Action,
-  Actions,
-  Name,
-  Parameter,
-  Parameters,
-  UpgradeLevel,
-  Wrapper,
-} from './styles';
+import { ComponentBuildingParameters } from '../building-parameters';
+import { ComponentBuildingActions } from './building-actions';
+import { Name, UpgradeLevel, Wrapper } from './styles';
 
 export const ComponentBuildingInfo: React.FC = () => {
   const game = useContext(GameContext);
 
   const [building, setBuilding] = useState<Building>(null);
   const [upgradeLevel, setUpgradeLevel] = useState(1);
-  const [params, setParams] = useState<BuildingParamItem[]>([]);
+  const [params, setParams] = useState<BuildingParam[]>([]);
   const [actions, setActions] = useState<BuildingAction[]>([]);
-  // const [position, setPosition] = useState<Vector2D>({ x: 0, y: 0 });
 
   const refBuilding = useRef<Building>(null);
   const refWrapper = useRef<HTMLDivElement>(null);
@@ -40,6 +33,8 @@ export const ComponentBuildingInfo: React.FC = () => {
   const onUnselect = () => {
     refBuilding.current = null;
     setBuilding(null);
+    setParams([]);
+    setActions([]);
   };
 
   useWorldUpdate(() => {
@@ -48,29 +43,8 @@ export const ComponentBuildingInfo: React.FC = () => {
     }
 
     setUpgradeLevel(refBuilding.current.upgradeLevel);
-    setParams((currentParams) => {
-      const newParams = refBuilding.current.getInfo();
-
-      if (currentParams.length !== newParams.length) {
-        return newParams;
-      }
-
-      for (let i = 0; i < currentParams.length; i++) {
-        if (
-          currentParams[i].value !== newParams[i].value
-          || currentParams[i].attention !== newParams[i].attention
-        ) {
-          return newParams;
-        }
-      }
-
-      return currentParams;
-    });
-    setActions((currentActions) => {
-      const newActions = refBuilding.current.getActions();
-
-      return (currentActions.length === newActions.length) ? currentActions : newActions;
-    });
+    setParams((current) => getMutable(current, refBuilding.current.getInfo(), ['value', 'attention']));
+    setActions((current) => getMutable(current, refBuilding.current.getActions(), ['label', 'cost']));
 
     if (refWrapper.current) {
       const camera = game.world.cameras.main;
@@ -80,14 +54,6 @@ export const ComponentBuildingInfo: React.FC = () => {
       refWrapper.current.style.left = `${x}px`;
       refWrapper.current.style.top = `${y}px`;
     }
-
-    // setPosition((currentPosition) => {
-    //   const camera = game.world.cameras.main;
-    //   const x = Math.round((building.x - camera.worldView.x) * camera.zoom);
-    //   const y = Math.round((building.y - camera.worldView.y) * camera.zoom);
-
-    //   return (currentPosition.x === x && currentPosition.y === y) ? currentPosition : { x, y };
-    // });
   });
 
   useEffect(() => {
@@ -110,29 +76,8 @@ export const ComponentBuildingInfo: React.FC = () => {
         ))}
       </UpgradeLevel>
 
-      <Parameters>
-        {params.map((param) => (
-          <Parameter key={param.label}>
-            <Parameter.IconWrapper>
-              <Parameter.Icon
-                style={{ backgroundPositionX: `${-10 * param.icon}px` }}
-              />
-            </Parameter.IconWrapper>
-            <Parameter.Info className={cn({ attention: param.attention })}>
-              <Parameter.Label>{param.label}</Parameter.Label>
-              <Parameter.Value>{param.value}</Parameter.Value>
-            </Parameter.Info>
-          </Parameter>
-        ))}
-      </Parameters>
-
-      <Actions>
-        {actions.map((action) => (
-          <Action key={action.label} onClick={action.onClick}>
-            {action.label}
-          </Action>
-        ))}
-      </Actions>
+      <ComponentBuildingParameters params={params} />
+      <ComponentBuildingActions actions={actions} />
     </Wrapper>
   );
 };

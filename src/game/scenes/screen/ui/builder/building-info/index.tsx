@@ -1,9 +1,9 @@
-import cn from 'classnames';
 import React, { useContext, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { GameContext, useWorldUpdate } from '~lib/ui';
-import { ScreenTexture } from '~type/screen';
+import { ComponentBuildingParameters } from '~scene/world/ui/building-parameters';
+import { ComponentCost } from '~scene/world/ui/cost';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
@@ -12,8 +12,6 @@ import {
   Header,
   Limit,
   Name,
-  Parameter,
-  Parameters,
   Wrapper,
 } from './styles';
 
@@ -24,7 +22,6 @@ type Props = {
 export const ComponentBuildingInfo: React.FC<Props> = ({ variant }) => {
   const game = useContext(GameContext);
 
-  const [playerResources, setPlayerResources] = useState(0);
   const [limit, setLimit] = useState(0);
   const [existCount, setExistCount] = useState(0);
   const [isAllow, setAllow] = useState(false);
@@ -42,8 +39,6 @@ export const ComponentBuildingInfo: React.FC<Props> = ({ variant }) => {
       if (currentLimit) {
         setExistCount(game.world.getBuildingsByVariant(variant).length);
       }
-
-      setPlayerResources(game.world.player.resources);
     }
   });
 
@@ -61,32 +56,9 @@ export const ComponentBuildingInfo: React.FC<Props> = ({ variant }) => {
 
       {isAllow && (
         <>
-          <Parameters>
-            {BUILDINGS[variant].Params.map((param) => (
-              <Parameter key={param.label}>
-                <Parameter.IconWrapper>
-                  <Parameter.Icon
-                    style={{ backgroundPositionX: `${-10 * param.icon}px` }}
-                  />
-                </Parameter.IconWrapper>
-                <Parameter.Info className={cn({ attention: param.attention })}>
-                  <Parameter.Label>{param.label}</Parameter.Label>
-                  <Parameter.Value>{param.value}</Parameter.Value>
-                </Parameter.Info>
-              </Parameter>
-            ))}
-          </Parameters>
-
+          <ComponentBuildingParameters params={BUILDINGS[variant].Params} />
           <Cost>
-            BUILDING COST
-            <Cost.Icon src={`assets/sprites/${ScreenTexture.RESOURCES}.png`} />
-            <Cost.Value
-              className={cn({
-                attention: playerResources < BUILDINGS[variant].Cost,
-              })}
-            >
-              {BUILDINGS[variant].Cost}
-            </Cost.Value>
+            <ComponentCost label='BUILDING COST' amount={BUILDINGS[variant].Cost} />
           </Cost>
         </>
       )}

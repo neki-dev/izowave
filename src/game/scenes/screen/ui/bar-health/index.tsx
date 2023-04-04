@@ -7,8 +7,8 @@ import { ComponentBar } from '../bar';
 export const ComponentBarHealth: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [health, setHealth] = useState(game.world.player.live.health);
-  const [maxHealth, setMaxHealth] = useState(game.world.player.live.maxHealth);
+  const [health, setHealth] = useState(0);
+  const [maxHealth, setMaxHealth] = useState(0);
 
   useWorldUpdate(() => {
     setHealth(game.world.player.live.health);

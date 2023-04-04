@@ -3,7 +3,7 @@ import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
 import { World } from '~scene/world';
 import { ScreenIcon } from '~type/screen';
 import {
-  BuildingParamItem, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { BuildingTower } from '../tower';
@@ -13,7 +13,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Description = 'Freezing enemies for some time';
 
-  static Params: BuildingParamItem[] = [
+  static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: ScreenIcon.HEALTH },
     { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS, icon: ScreenIcon.RADIUS },
     // eslint-disable-next-line max-len

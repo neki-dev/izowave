@@ -125,6 +125,29 @@ export function rawAmount(value: string) {
 }
 
 /**
+ * Get mutable array.
+ *
+ * @param current - Current array
+ * @param target - New array
+ * @param keys - Keys to compare
+ */
+export function getMutable<T>(current: T[], target: T[], keys: (keyof T)[]) {
+  if (current.length !== target.length) {
+    return target;
+  }
+
+  for (let i = 0; i < current.length; i++) {
+    for (const key of keys) {
+      if (current[i][key] !== target[i][key]) {
+        return target;
+      }
+    }
+  }
+
+  return current;
+}
+
+/**
  * Call function with frequency limit.
  *
  * @param fn - Function
