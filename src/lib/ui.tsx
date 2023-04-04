@@ -12,12 +12,14 @@ export function useWorldUpdate(callback: () => void) {
   const game = useContext(GameContext);
 
   useEffect(() => {
+    callback();
+
     game.world.events.on(Phaser.Scenes.Events.UPDATE, callback);
 
     return () => {
       game.world.events.off(Phaser.Scenes.Events.UPDATE, callback);
     };
-  });
+  }, []);
 }
 
 export class UI<T> {

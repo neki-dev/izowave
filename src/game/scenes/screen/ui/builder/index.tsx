@@ -22,37 +22,46 @@ export const ComponentBuilder: React.FC = () => {
     setWaveGoing(game.world.wave.isGoing);
   });
 
-  useEffect(() => {
-    game.tutorial.onBegAny((step: TutorialStep) => {
-      switch (step) {
-        case TutorialStep.BUILD_GENERATOR: {
-          setHint({
-            variant: BuildingVariant.GENERATOR,
-            text: 'Build generator to get resources',
-          });
-          break;
-        }
-        case TutorialStep.BUILD_TOWER_FIRE: {
-          setHint({
-            variant: BuildingVariant.TOWER_FIRE,
-            text: 'Build tower to defend yourself from enemies',
-          });
-          break;
-        }
-        case TutorialStep.BUILD_AMMUNITION: {
-          setHint({
-            variant: BuildingVariant.AMMUNITION,
-            text: 'Build ammunition to reload tower ammo',
-          });
-          break;
-        }
-        default: break;
+  const showHint = (step: TutorialStep) => {
+    switch (step) {
+      case TutorialStep.BUILD_GENERATOR: {
+        setHint({
+          variant: BuildingVariant.GENERATOR,
+          text: 'Build generator to get resources',
+        });
+        break;
       }
-    });
-    game.tutorial.onEndAny(() => {
-      setHint(null);
-    });
-  });
+      case TutorialStep.BUILD_TOWER_FIRE: {
+        setHint({
+          variant: BuildingVariant.TOWER_FIRE,
+          text: 'Build tower to defend yourself from enemies',
+        });
+        break;
+      }
+      case TutorialStep.BUILD_AMMUNITION: {
+        setHint({
+          variant: BuildingVariant.AMMUNITION,
+          text: 'Build ammunition to reload tower ammo',
+        });
+        break;
+      }
+      default: break;
+    }
+  };
+
+  const hideHint = () => {
+    setHint(null);
+  };
+
+  useEffect(() => {
+    game.tutorial.onBegAny(showHint);
+    game.tutorial.onEndAny(hideHint);
+
+    return () => {
+      game.tutorial.offBegAny(showHint);
+      game.tutorial.offEndAny(hideHint);
+    };
+  }, []);
 
   return (
     <Wrapper>

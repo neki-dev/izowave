@@ -1,15 +1,11 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { WORLD_DEPTH_UI } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { ComponentBuildingInfo } from '~scene/screen/components/building-info';
-import { ComponentCost } from '~scene/screen/components/building-info/cost';
-import { ComponentHelp } from '~scene/screen/components/help';
 import { World } from '~scene/world';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
@@ -17,7 +13,8 @@ import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
 import { NoticeType, ScreenIcon } from '~type/screen';
-import { TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import {
@@ -65,23 +62,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * Action pause.
    */
   private nextActionTimestamp: number = 0;
-
-  /**
-   * Building info UI component.
-   */
-  private info: Nullable<Phaser.GameObjects.Container> = null;
-
-  /**
-   * Building help UI component.
-   */
-  private _help: Nullable<{
-    message: string
-    container: Phaser.GameObjects.Container
-  }> = null;
-
-  public get help() { return this._help; }
-
-  private set help(v) { this._help = v; }
 
   /**
    * Current outline state.
@@ -277,13 +257,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     if (this.isAllowUpgrade()) {
       actions.push({
         label: 'UPGRADE',
-        addon: {
-          component: ComponentCost,
-          props: {
-            player: this.scene.player,
-            amount: () => this.getUpgradeLevelCost(),
-          },
-        },
         onClick: () => {
           this.nextUpgrade();
         },
@@ -340,7 +313,11 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
    * Check is building allow upgrade.
    */
   private isAllowUpgrade() {
-    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
+    return (
+      this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL
+      && !this.scene.wave.isGoing
+      && this.scene.game.tutorial.state(TutorialStep.UPGRADE_BUILDING) === TutorialStepState.END
+    );
   }
 
   /**
@@ -467,13 +444,14 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
 
     this.isSelected = true;
 
-    this.addInfo();
     if (this.actionsArea) {
       this.actionsArea.setVisible(true);
     }
 
     this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
+
+    this.scene.events.emit(WorldEvents.SELECT_BUILDING, this);
   }
 
   /**
@@ -486,10 +464,11 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
 
     this.isSelected = false;
 
-    this.removeInfo();
     if (this.actionsArea) {
       this.actionsArea.setVisible(false);
     }
+
+    this.scene.events.emit(WorldEvents.UNSELECT_BUILDING, this);
   }
 
   /**
@@ -556,48 +535,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   }
 
   /**
-   * Add information component.
-   */
-  private addInfo() {
-    if (this.info) {
-      return;
-    }
-
-    if (this.help) {
-      this.help.container.setVisible(false);
-    }
-
-    this.info = ComponentBuildingInfo(this.scene, {
-      name: this.getMeta().Name,
-      upgradeLevel: () => this.upgradeLevel,
-      params: () => this.getInfo(),
-      actions: () => this.getActions(),
-    });
-
-    this.info.setDepth(WORLD_DEPTH_UI);
-    this.info.setPosition(
-      this.x - this.info.width / 2,
-      this.y - this.info.height - (TILE_META.height * 0.5),
-    );
-  }
-
-  /**
-   * Remove information component.
-   */
-  private removeInfo() {
-    if (!this.info) {
-      return;
-    }
-
-    this.info.destroy();
-    this.info = null;
-
-    if (this.help) {
-      this.help.container.setVisible(true);
-    }
-  }
-
-  /**
    * Add action area.
    */
   private addActionArea() {
@@ -632,50 +569,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.actionsArea.setSize(d, d * persperctive);
     this.actionsArea.setDepth(Level.GetDepth(this.y + TILE_META.height * 0.5, 1, d * persperctive + out));
     this.actionsArea.updateDisplayOrigin();
-  }
-
-  /**
-   * Add tutorial help.
-   *
-   * @param message - Text
-   */
-  public addHelp(message: string) {
-    const isExist = this.scene.getBuildings()
-      .some((building) => (building.help?.message === message));
-
-    if (isExist) {
-      return;
-    }
-
-    if (this.help) {
-      this.help.container.destroy();
-    }
-
-    this.help = {
-      message,
-      container: ComponentHelp(this.scene, {
-        message,
-        side: 'top',
-      }),
-    };
-
-    this.help.container.setDepth(WORLD_DEPTH_UI);
-    this.help.container.setPosition(
-      this.x,
-      this.y + TILE_META.height,
-    );
-  }
-
-  /**
-   * Remove tutorial help.
-   */
-  public removeHelp() {
-    if (!this.help) {
-      return;
-    }
-
-    this.help.container.destroy();
-    this.help = null;
   }
 
   /**

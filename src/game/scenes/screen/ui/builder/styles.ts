@@ -9,6 +9,7 @@ export const Info: any = styled.div`
   transform: translate(-100%, 50%);
   margin: -58px 0 0 -15px;
   display: none;
+  z-index: 2;
 `;
 
 export const Variant = styled.div`

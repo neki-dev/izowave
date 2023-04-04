@@ -58,12 +58,12 @@ export const ComponentNotices: React.FC = () => {
   });
 
   useEffect(() => {
-    game.events.on(ScreenEvents.NOTICE, addNotice);
+    game.screen.events.on(ScreenEvents.NOTICE, addNotice);
 
     return () => {
-      game.events.off(ScreenEvents.NOTICE, addNotice);
+      game.screen.events.off(ScreenEvents.NOTICE, addNotice);
     };
-  });
+  }, []);
 
   return (
     <Wrapper>

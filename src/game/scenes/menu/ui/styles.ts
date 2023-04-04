@@ -12,6 +12,7 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: all;
 `;
 
 export const Wrapper = styled.div`
@@ -20,6 +21,7 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   position: relative;
+  pointer-events: none;
 `;
 
 export const Sidebar = styled.div`

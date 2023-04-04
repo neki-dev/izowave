@@ -37,14 +37,23 @@ export const ComponentWave: React.FC = () => {
     }
   });
 
+  const showHint = () => {
+    setHintVisible(true);
+  };
+
+  const hideHint = () => {
+    setHintVisible(false);
+  };
+
   useEffect(() => {
-    game.tutorial.onBeg(TutorialStep.WAVE_TIMELEFT, () => {
-      setHintVisible(true);
-    });
-    game.tutorial.onEnd(TutorialStep.WAVE_TIMELEFT, () => {
-      setHintVisible(false);
-    });
-  });
+    game.tutorial.onBeg(TutorialStep.WAVE_TIMELEFT, showHint);
+    game.tutorial.onEnd(TutorialStep.WAVE_TIMELEFT, hideHint);
+
+    return () => {
+      game.tutorial.offBeg(TutorialStep.WAVE_TIMELEFT, showHint);
+      game.tutorial.offEnd(TutorialStep.WAVE_TIMELEFT, hideHint);
+    };
+  }, []);
 
   return (
     <Wrapper>

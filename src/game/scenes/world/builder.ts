@@ -6,7 +6,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { TILE_META } from '~const/world/level';
 import { calcGrowth, equalPositions } from '~lib/utils';
-import { ComponentBuildingPreview } from '~scene/screen/components/builder/building-preview';
 import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
@@ -36,7 +35,7 @@ export class Builder extends EventEmitter {
   /**
    * Building preview.
    */
-  private buildingPreview: Nullable<Phaser.GameObjects.Container> = null;
+  private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
 
   /**
    * Current building variant.
@@ -132,6 +131,10 @@ export class Builder extends EventEmitter {
     this.scene.sound.play(BuildingAudio.SELECT);
 
     this.variant = variant;
+
+    if (this.buildingPreview) {
+      this.buildingPreview.setTexture(BuildingInstance.Texture);
+    }
   }
 
   /**
@@ -464,10 +467,10 @@ export class Builder extends EventEmitter {
    * Create building variant preview on map.
    */
   private createBuildingPreview() {
-    this.buildingPreview = ComponentBuildingPreview(this.scene, {
-      image: () => BUILDINGS[this.variant].Texture,
-      cost: () => BUILDINGS[this.variant].Cost,
-    });
+    const BuildingInstance = BUILDINGS[this.variant];
+
+    this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
+    this.buildingPreview.setOrigin(0.5, TILE_META.origin);
     this.updateBuildingPreview();
   }
 

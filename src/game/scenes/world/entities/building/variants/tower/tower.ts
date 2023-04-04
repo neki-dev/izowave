@@ -1,5 +1,4 @@
 import { CONTROL_KEY } from '~const/controls';
-import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';

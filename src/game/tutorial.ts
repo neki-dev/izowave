@@ -28,7 +28,7 @@ export class Tutorial extends EventEmitter {
     super();
 
     if (IS_DEV_MODE) {
-      this.disable();
+      // this.disable();
     }
   }
 
@@ -96,6 +96,20 @@ export class Tutorial extends EventEmitter {
   }
 
   /**
+   * Unbind callback on begin step.
+   *
+   * @param step - Step to unbind
+   * @param callback - Callback function
+   */
+  public offBeg(step: TutorialStep, callback: () => void) {
+    if (this.isDisabled) {
+      return;
+    }
+
+    this.off(`${TutorialEvents.BEG}_${step}`, callback);
+  }
+
+  /**
    * Bind callback on begin steps.
    *
    * @param callback - Callback function
@@ -106,6 +120,15 @@ export class Tutorial extends EventEmitter {
     }
 
     this.on(TutorialEvents.BEG, callback);
+  }
+
+  /**
+   * Unbind callback on begin steps.
+   *
+   * @param callback - Callback function
+   */
+  public offBegAny(callback: (step: TutorialStep) => void) {
+    this.off(TutorialEvents.BEG, callback);
   }
 
   /**
@@ -123,6 +146,20 @@ export class Tutorial extends EventEmitter {
   }
 
   /**
+   * Unbind callback on end step.
+   *
+   * @param step - Step to unbind
+   * @param callback - Callback function
+   */
+  public offEnd(step: TutorialStep, callback: () => void) {
+    if (this.isDisabled) {
+      return;
+    }
+
+    this.off(`${TutorialEvents.END}_${step}`, callback);
+  }
+
+  /**
    * Bind callback on end steps.
    *
    * @param callback - Callback function
@@ -133,6 +170,15 @@ export class Tutorial extends EventEmitter {
     }
 
     this.on(TutorialEvents.END, callback);
+  }
+
+  /**
+   * Unbind callback on end steps.
+   *
+   * @param callback - Callback function
+   */
+  public offEndAny(callback: (step: TutorialStep) => void) {
+    this.off(TutorialEvents.END, callback);
   }
 
   /**

@@ -1,6 +1,5 @@
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
-import { ComponentCreator } from '~type/interface';
 import { ScreenIcon } from '~type/screen';
 import { Vector2D } from '~type/world/level';
 
@@ -73,10 +72,6 @@ export type BuildingParamItem = {
 
 export type BuildingAction = {
   label: string
-  addon?: {
-    component: ComponentCreator
-    props?: any
-  }
   onClick: () => void
 };
 
