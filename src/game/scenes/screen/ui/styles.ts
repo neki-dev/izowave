@@ -18,7 +18,7 @@ export const Column = styled.div`
   align-items: flex-start;
 `;
 
-export const Info = styled.div`
+export const HUD = styled.div`
   &> div:not(:last-child) {
     margin-bottom: 32px;
   }

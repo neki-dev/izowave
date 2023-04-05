@@ -15,6 +15,7 @@
     "paths": {
       "~entity/*": ["./src/game/scenes/world/entities/*"],
       "~scene/*": ["./src/game/scenes/*"],
+      "~interface/*": ["./src/game/interface/*"],
       "~game/*": ["./src/game/*"],
       "~game": ["./src/game"],
       "~type/*": ["./src/types/*"],

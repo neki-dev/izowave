@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { ComponentBuildingInfo } from './building-info';
-import { ComponentRelativeHint } from './relative-hint';
+import { ComponentBuildingInfo } from '~interface/building/info';
+import { ComponentRelativeHint } from '~interface/plates/relative-hint';
+
 import { Overlay } from './styles';
 
 export const WorldUI: React.FC = () => (

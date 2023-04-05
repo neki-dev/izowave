@@ -2,11 +2,12 @@ import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
 import { registerAudioAssets } from '~lib/assets';
-import { UI } from '~lib/ui';
-import { MenuUI } from '~scene/menu/ui';
+import { Interface } from '~lib/interface';
 import { Level } from '~scene/world/level';
 import { IGameScene, SceneKey } from '~type/game';
 import { MenuAudio } from '~type/menu';
+
+import { MenuUI } from './ui';
 
 import { Game } from '~game';
 
@@ -18,7 +19,7 @@ export class Menu extends Phaser.Scene implements IGameScene {
   }
 
   public create() {
-    new UI(this, MenuUI);
+    new Interface(this, MenuUI);
 
     if (!this.game.paused) {
       this.setCameraPreview();

@@ -7,6 +7,7 @@ import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
 import { eachEntries } from '~lib/system';
 import { Basic } from '~scene/basic';
+import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
@@ -100,7 +101,7 @@ export class Game extends Phaser.Game {
    */
   constructor() {
     super({
-      scene: [Basic, World, Screen, Menu],
+      scene: [Basic, World, Screen, Menu, Gameover],
       pixelArt: true,
       autoRound: true,
       disableContextMenu: true,

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { UI } from '~lib/ui';
+import { Interface } from '~lib/interface';
 import { IGameScene, SceneKey } from '~type/game';
 import {
   NoticeType, ScreenAudio, ScreenEvents, ScreenTexture,
@@ -19,7 +19,7 @@ export class Screen extends Phaser.Scene implements IGameScene {
   }
 
   create() {
-    new UI(this, ScreenUI);
+    new Interface(this, ScreenUI);
   }
 
   /**

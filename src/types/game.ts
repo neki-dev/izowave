@@ -8,6 +8,7 @@ export interface IGameScene extends Phaser.Scene {
 
 export enum SceneKey {
   BASIC = 'BASIC',
+  GAMEOVER = 'GAMEOVER',
   WORLD = 'WORLD',
   SCREEN = 'SCREEN',
   MENU = 'MENU',

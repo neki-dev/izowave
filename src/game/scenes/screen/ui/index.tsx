@@ -1,31 +1,32 @@
 import React from 'react';
 
-import { ComponentBarExperience } from './bar-experience';
-import { ComponentBarHealth } from './bar-health';
-import { ComponentBuilder } from './builder';
-import { ComponentDebugCounter } from './debug-counter';
-import { ComponentNotices } from './notices';
-import { ComponentResources } from './resources';
+import { ComponentBuilder } from '~interface/builder';
+import { ComponentDebug } from '~interface/debug';
+import { ComponentBarExperience } from '~interface/hud/bar-experience';
+import { ComponentBarHealth } from '~interface/hud/bar-health';
+import { ComponentResources } from '~interface/hud/resources';
+import { ComponentWave } from '~interface/hud/wave';
+import { ComponentNotices } from '~interface/plates/notices';
+
 import {
-  Bars, Column, Info, Overlay,
+  Bars, Column, HUD, Overlay,
 } from './styles';
-import { ComponentWave } from './wave';
 
 export const ScreenUI: React.FC = () => (
   <Overlay>
     <ComponentNotices />
 
     <Column>
-      <Info>
+      <HUD>
         <ComponentWave />
         <Bars>
           <ComponentBarHealth />
           <ComponentBarExperience />
         </Bars>
         <ComponentResources />
-      </Info>
+      </HUD>
 
-      <ComponentDebugCounter />
+      <ComponentDebug />
     </Column>
 
     <Column>

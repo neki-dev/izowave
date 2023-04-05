@@ -16,8 +16,8 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Player } from '~entity/player';
 import { ShotBall } from '~entity/shot/ball';
+import { Interface } from '~lib/interface';
 import { eachEntries } from '~lib/system';
-import { UI } from '~lib/ui';
 import { selectClosest } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
@@ -130,7 +130,7 @@ export class World extends Phaser.Scene implements IGameScene {
    * Start world.
    */
   public start() {
-    new UI(this, WorldUI);
+    new Interface(this, WorldUI);
 
     this.wave = new Wave(this);
     this.builder = new Builder(this);

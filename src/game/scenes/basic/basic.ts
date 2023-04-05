@@ -4,10 +4,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { INTERFACE_FONT } from '~const/interface';
 import { getAssetsPack, loadFontFace } from '~lib/assets';
 import { removeLoading, setLoadingStatus } from '~lib/state';
-import { UI } from '~lib/ui';
 import { GameEvents, GameStat, SceneKey } from '~type/game';
-
-import { GameOverUI } from './ui';
 
 import { Game } from '~game';
 
@@ -49,14 +46,14 @@ export class Basic extends Phaser.Scene {
       }
     });
 
+    removeLoading();
+
     this.game.events.on(GameEvents.FINISH, (stat: GameStat, record: Nullable<GameStat>) => {
-      const ui = new UI(this, GameOverUI, { stat, record });
+      this.scene.launch(SceneKey.GAMEOVER, { stat, record });
 
       this.game.events.once(GameEvents.START, () => {
-        ui.destroy();
+        this.scene.stop(SceneKey.GAMEOVER);
       });
     });
-
-    removeLoading();
   }
 }
