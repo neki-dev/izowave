@@ -12,7 +12,7 @@ import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
-import { NoticeType, ScreenIcon } from '~type/screen';
+import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -20,7 +20,7 @@ import { EffectTexture } from '~type/world/effects';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingAction,
-  BuildingOutlineState, IBuildingFactory,
+  BuildingOutlineState, IBuildingFactory, BuildingIcon,
 } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
@@ -243,7 +243,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   public getInfo() {
     return [{
       label: 'HEALTH',
-      icon: ScreenIcon.HEALTH,
+      icon: BuildingIcon.HEALTH,
       value: this.live.health,
     }] as BuildingParam[];
   }

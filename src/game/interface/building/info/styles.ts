@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   position: absolute;

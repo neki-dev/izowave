@@ -1,6 +1,5 @@
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
 import { Vector2D } from '~type/world/level';
 
 export interface IBuildingFactory {
@@ -51,6 +50,17 @@ export enum BuildingAudio {
   RELOAD = 'building/reload',
 }
 
+export enum BuildingIcon {
+  HEALTH = 0,
+  RADIUS = 1,
+  AMMO = 2,
+  HEAL = 3,
+  DAMAGE = 4,
+  RESOURCES = 5,
+  PAUSE = 6,
+  SPEED = 7,
+}
+
 export enum BuildingOutlineState {
   NONE = 'NONE',
   FOCUSED = 'FOCUSED',
@@ -66,7 +76,7 @@ export type BuildingActionsParams = {
 export type BuildingParam = {
   label: string
   value: string | number
-  icon: ScreenIcon
+  icon: BuildingIcon
   attention?: boolean
 };
 

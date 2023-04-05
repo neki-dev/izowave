@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { InterfaceFont } from '~type/interface';
 import { getAssetsPack, loadFontFace } from '~lib/assets';
 import { removeLoading, setLoadingStatus } from '~lib/state';
 import { GameEvents, GameStat, SceneKey } from '~type/game';
+import { InterfaceFont } from '~type/interface';
 
 import { Game } from '~game';
 

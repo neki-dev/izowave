@@ -5,9 +5,11 @@ import { BuildingAmmunition } from '~entity/building/variants/ammunition';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { calcGrowth, selectClosest } from '~lib/utils';
 import { World } from '~scene/world';
-import { NoticeType, ScreenIcon } from '~type/screen';
+import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { BuildingAudio, BuildingData, BuildingVariant } from '~type/world/entities/building';
+import {
+  BuildingAudio, BuildingData, BuildingIcon, BuildingVariant,
+} from '~type/world/entities/building';
 import { IShot, ShotParams } from '~type/world/entities/shot';
 
 export class BuildingTower extends Building {
@@ -57,7 +59,7 @@ export class BuildingTower extends Building {
     if (params.damage) {
       info.push({
         label: 'DAMAGE',
-        icon: ScreenIcon.DAMAGE,
+        icon: BuildingIcon.DAMAGE,
         value: params.damage,
       });
     }
@@ -65,7 +67,7 @@ export class BuildingTower extends Building {
     if (params.freeze) {
       info.push({
         label: 'FREEZE',
-        icon: ScreenIcon.DAMAGE,
+        icon: BuildingIcon.DAMAGE,
         value: (params.freeze / 1000).toFixed(1),
       });
     }
@@ -73,14 +75,14 @@ export class BuildingTower extends Building {
     if (params.speed) {
       info.push({
         label: 'SPEED',
-        icon: ScreenIcon.SPEED,
+        icon: BuildingIcon.SPEED,
         value: params.speed,
       });
     }
 
     info.push({
       label: 'AMMO',
-      icon: ScreenIcon.AMMO,
+      icon: BuildingIcon.AMMO,
       attention: (this.ammoLeft === 0),
       value: `${this.ammoLeft}/${this.getMaxAmmo()}`,
     });

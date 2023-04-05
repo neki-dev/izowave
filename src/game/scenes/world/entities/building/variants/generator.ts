@@ -1,13 +1,13 @@
-import { InterfaceColor } from '~type/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
-import { NoticeType, ScreenIcon } from '~type/screen';
+import { InterfaceColor } from '~type/interface';
+import { NoticeType } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -16,8 +16,8 @@ export class BuildingGenerator extends Building {
   static Description = 'Resource generation for builds and upgrades';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: ScreenIcon.HEALTH },
-    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: ScreenIcon.RESOURCES },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
@@ -57,7 +57,7 @@ export class BuildingGenerator extends Building {
     return [
       ...super.getInfo(), {
         label: 'RESOURCES',
-        icon: ScreenIcon.RESOURCES,
+        icon: BuildingIcon.RESOURCES,
         color: (this.amountLeft < BUILDING_RESOURCES_LEFT_ALERT)
           ? InterfaceColor.WARN
           : undefined,

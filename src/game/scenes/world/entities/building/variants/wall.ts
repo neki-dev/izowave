@@ -1,8 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
 import {
-  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData,
+  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -13,7 +12,7 @@ export class BuildingWall extends Building {
   static Description = 'Wall with more health to defend other buildings';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: ScreenIcon.HEALTH },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;

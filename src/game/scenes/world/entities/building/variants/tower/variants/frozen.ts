@@ -1,8 +1,8 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
 import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
 import {
+  BuildingIcon,
   BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
@@ -14,11 +14,11 @@ export class BuildingTowerFrozen extends BuildingTower {
   static Description = 'Freezing enemies for some time';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS, icon: ScreenIcon.RADIUS },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS, icon: BuildingIcon.RADIUS },
     // eslint-disable-next-line max-len
-    { label: 'FREEZE', value: `${(DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION / 1000).toFixed(1)} s`, icon: ScreenIcon.DAMAGE },
-    { label: 'SPEED', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED, icon: ScreenIcon.SPEED },
+    { label: 'FREEZE', value: `${(DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION / 1000).toFixed(1)} s`, icon: BuildingIcon.DAMAGE },
+    { label: 'SPEED', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED, icon: BuildingIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FROZEN;

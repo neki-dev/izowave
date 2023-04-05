@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import { ScreenTexture } from '~type/screen';
 
 import { Icon, State, Wrapper } from './styles';
 
@@ -16,7 +15,7 @@ export const ComponentResources: React.FC = () => {
 
   return (
     <Wrapper>
-      <Icon src={`assets/sprites/${ScreenTexture.RESOURCES}.png`} />
+      <Icon src={'assets/sprites/icons/resources.png'} />
       <State>
         <State.Label>RESOURCES</State.Label>
         <State.Amount>{amount}</State.Amount>

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
-import { ScreenTexture } from '~type/screen';
 
 export const Parameters = styled.div`
   margin-top: 15px;
@@ -30,7 +29,7 @@ Parameter.IconWrapper = styled.div`
 Parameter.Icon = styled.div`
   width: 10px;
   height: 10px;
-  background: url(assets/sprites/${ScreenTexture.ICON}.png);
+  background: url(assets/sprites/icons/building.png);
 `;
 
 Parameter.Info = styled.div`

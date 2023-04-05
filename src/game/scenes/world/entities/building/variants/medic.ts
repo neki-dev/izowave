@@ -2,10 +2,9 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { Player } from '~entity/player';
 import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
-import { ScreenIcon } from '~type/screen';
 import { ParticlesType } from '~type/world/effects';
 import {
-  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData,
+  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -16,8 +15,8 @@ export class BuildingMedic extends Building {
   static Description = 'Heals player, that are in radius of this building';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: ScreenIcon.HEALTH },
-    { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: ScreenIcon.HEAL },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: BuildingIcon.HEAL },
   ];
 
   static Texture = BuildingTexture.MEDIC;
@@ -75,7 +74,7 @@ export class BuildingMedic extends Building {
     return [
       ...super.getInfo(), {
         label: 'HEAL',
-        icon: ScreenIcon.HEAL,
+        icon: BuildingIcon.HEAL,
         value: this.getHealAmount(),
       },
     ];

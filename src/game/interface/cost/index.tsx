@@ -2,7 +2,6 @@ import cn from 'classnames';
 import React, { useContext, useState } from 'react';
 
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import { ScreenTexture } from '~type/screen';
 
 import { Cost } from './styles';
 
@@ -28,7 +27,7 @@ export const ComponentCost: React.FC<Props> = ({
   return (
     <Cost className={view}>
       {label && <Cost.Label>{label}</Cost.Label>}
-      <Cost.Icon src={`assets/sprites/${ScreenTexture.RESOURCES}.png`} />
+      <Cost.Icon src={'assets/sprites/icons/resources.png'} />
       <Cost.Value
         className={cn({
           attention: playerResources < amount,

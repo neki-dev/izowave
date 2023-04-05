@@ -1,8 +1,8 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotLazer } from '~entity/shot/lazer';
 import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
 import {
+  BuildingIcon,
   BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
@@ -14,9 +14,9 @@ export class BuildingTowerLazer extends BuildingTower {
   static Description = 'Instant and continuous laser attack of enemies';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: ScreenIcon.HEALTH },
-    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_RADIUS, icon: ScreenIcon.RADIUS },
-    { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE, icon: ScreenIcon.DAMAGE },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_RADIUS, icon: BuildingIcon.RADIUS },
+    { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE, icon: BuildingIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
