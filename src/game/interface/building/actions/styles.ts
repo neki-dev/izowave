@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT } from '~const/interface';
+import { InterfaceFont } from '~type/interface';
 
 export const Actions = styled.div`
   margin-top: 100px;
@@ -26,7 +26,7 @@ export const Action: any = styled.div`
 
 Action.Label = styled.div`
   color: #fff;
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
 `;

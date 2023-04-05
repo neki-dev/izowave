@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT } from '~const/interface';
+import { InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   background: #000;
@@ -15,7 +15,7 @@ export const Progress = styled.div`
 
 export const Value = styled.div`
   position: absolute;
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   color: #fff;
   font-size: 12px;
   line-height: 12px;

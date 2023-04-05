@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { INTERFACE_FONT } from '~const/interface';
+import { InterfaceFont } from '~type/interface';
 import { getAssetsPack, loadFontFace } from '~lib/assets';
 import { removeLoading, setLoadingStatus } from '~lib/state';
 import { GameEvents, GameStat, SceneKey } from '~type/game';
@@ -27,7 +27,7 @@ export class Basic extends Phaser.Scene {
    * Create basic.
    */
   public async create() {
-    await loadFontFace(INTERFACE_FONT.PIXEL, 'retro');
+    await loadFontFace(InterfaceFont.PIXEL, 'retro');
 
     this.scene.launch(SceneKey.WORLD);
     this.scene.launch(SceneKey.MENU);

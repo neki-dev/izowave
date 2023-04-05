@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { InterfaceScreenSize } from '~type/interface';
+
 export const Overlay = styled.div`
   position: fixed;
   left: 0;
@@ -9,6 +11,12 @@ export const Overlay = styled.div`
   padding: 32px;
   display: flex;
   justify-content: space-between;
+  @media ${InterfaceScreenSize.M} {
+    zoom: 0.9;
+  }
+  @media ${InterfaceScreenSize.S} {
+    zoom: 0.8;
+  }
 `;
 
 export const Column = styled.div`
@@ -18,13 +26,13 @@ export const Column = styled.div`
   align-items: flex-start;
 `;
 
-export const HUD = styled.div`
+export const HUD: any = styled.div`
   &> div:not(:last-child) {
     margin-bottom: 32px;
   }
 `;
 
-export const Bars = styled.div`
+HUD.Bars = styled.div`
   &> div:not(:last-child) {
     margin-bottom: 8px;
   }

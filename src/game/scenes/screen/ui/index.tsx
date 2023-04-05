@@ -8,9 +8,7 @@ import { ComponentResources } from '~interface/hud/resources';
 import { ComponentWave } from '~interface/hud/wave';
 import { ComponentNotices } from '~interface/plates/notices';
 
-import {
-  Bars, Column, HUD, Overlay,
-} from './styles';
+import { Column, HUD, Overlay } from './styles';
 
 export const ScreenUI: React.FC = () => (
   <Overlay>
@@ -19,10 +17,10 @@ export const ScreenUI: React.FC = () => (
     <Column>
       <HUD>
         <ComponentWave />
-        <Bars>
+        <HUD.Bars>
           <ComponentBarHealth />
           <ComponentBarExperience />
-        </Bars>
+        </HUD.Bars>
         <ComponentResources />
       </HUD>
 

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 
 export const Wrapper = styled.div`
   position: absolute;
   width: 280px;
-  background: ${INTERFACE_TEXT_COLOR.BLUE_DARK}cc;
+  background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 20px;
   transform: translate(-50%, -100%);
   margin-top: -32px;
@@ -18,13 +18,13 @@ export const Wrapper = styled.div`
     transform: translate(-50%, 100%);
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-top: 15px solid ${INTERFACE_TEXT_COLOR.BLUE_DARK}cc;
+    border-top: 15px solid ${InterfaceColor.BLUE_DARK}cc;
   }
 `;
 
 export const Name = styled.div`
-  font-family: ${INTERFACE_FONT.PIXEL};
-  color: ${INTERFACE_TEXT_COLOR.PRIMARY};
+  font-family: ${InterfaceFont.PIXEL};
+  color: ${InterfaceColor.PRIMARY};
   font-size: 19px;
   line-height: 19px;
   text-shadow: 3px 3px 0 #332717;
@@ -42,6 +42,6 @@ UpgradeLevel.Item = styled.div`
   border: 1px solid #000;
   background: #000;
   &.active {
-    background: ${INTERFACE_TEXT_COLOR.INFO_DARK};
+    background: ${InterfaceColor.INFO_DARK};
   }
 `;

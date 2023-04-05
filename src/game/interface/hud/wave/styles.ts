@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 const animationPulse = keyframes`
   0% { transform: scale(0.8) }
@@ -8,7 +8,7 @@ const animationPulse = keyframes`
 `;
 
 export const Wrapper = styled.div`
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   display: flex;
   color: #fff;
   align-items: center;
@@ -19,9 +19,9 @@ export const CurrentNumber = styled.div`
   line-height: 24px;
   text-shadow: 2px 2px 0 #000;
   padding: 6px 17px 10px 17px;
-  background: ${INTERFACE_TEXT_COLOR.INFO_DARK};
+  background: ${InterfaceColor.INFO_DARK};
   &.going {
-    background: ${INTERFACE_TEXT_COLOR.ERROR_DARK};
+    background: ${InterfaceColor.ERROR_DARK};
   }
 `;
 
@@ -43,7 +43,7 @@ State.Value = styled.div`
   line-height: 20px;
   text-shadow: 3px 3px 0 #000;
   &.alarm {
-    color: ${INTERFACE_TEXT_COLOR.ERROR};
+    color: ${InterfaceColor.ERROR};
     animation: ${animationPulse} 1s infinite;
   }
 `;

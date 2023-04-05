@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Building: any = styled.div`
   width: 60px;
@@ -23,7 +23,7 @@ export const Building: any = styled.div`
   }
   &.active {
     opacity: 1.0;
-    background: ${INTERFACE_TEXT_COLOR.BLUE_DARK};
+    background: ${InterfaceColor.BLUE_DARK};
   }
 `;
 
@@ -39,7 +39,7 @@ Building.Preview = styled.div`
 Building.Number = styled.div`
   position: absolute;
   color: #fff;
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
   right: 4px;

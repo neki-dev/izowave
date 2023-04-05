@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Select: any = styled.ul`
   list-style: none;
@@ -13,7 +13,7 @@ export const Select: any = styled.ul`
 
 Select.Item = styled.li`
   color: #fff;
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 18px;
   line-height: 18px;
   text-shadow: 4px 4px 0 #000;
@@ -22,9 +22,9 @@ Select.Item = styled.li`
   }
   &:hover {
     cursor: pointer;
-    color: ${INTERFACE_TEXT_COLOR.ACTIVE};
+    color: ${InterfaceColor.ACTIVE};
   }
   &.active {
-    color: ${INTERFACE_TEXT_COLOR.ACTIVE};
+    color: ${InterfaceColor.ACTIVE};
   }
 `;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   width: 90%;
@@ -19,8 +19,8 @@ export const Sidebar = styled.div`
 `;
 
 export const Logotype = styled.div`
-  color: ${INTERFACE_TEXT_COLOR.BLUE};
-  font-family: ${INTERFACE_FONT.PIXEL};
+  color: ${InterfaceColor.BLUE};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 46px;
   line-height: 46px;
   text-shadow: 6px 6px 0 #000;
@@ -35,7 +35,7 @@ export const Menu: any = styled.ul`
 
 Menu.Item = styled.li`
   color: #fff;
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 22px;
   line-height: 22px;
   text-shadow: 4px 4px 0 #000;
@@ -44,17 +44,17 @@ Menu.Item = styled.li`
   }
   &:hover {
     cursor: pointer;
-    color: ${INTERFACE_TEXT_COLOR.PRIMARY};
+    color: ${InterfaceColor.PRIMARY};
   }
   &.active {
-    color: ${INTERFACE_TEXT_COLOR.PRIMARY};
+    color: ${InterfaceColor.PRIMARY};
   }
 `;
 
 export const Copyright = styled.div`
   margin-top: 100px;
   color: rgba(255, 255, 255, 0.5);
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   white-space: pre-line;
   text-align: right;
 `;
@@ -75,7 +75,7 @@ export const Content: any = styled.div`
 Content.Title = styled.div`
   color: #fff;
   opacity: 0.3;
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 46px;
   line-height: 46px;
   text-shadow: 6px 6px 0 #000;

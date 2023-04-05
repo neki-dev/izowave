@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { INTERFACE_FONT } from '~const/interface';
+import { InterfaceFont } from '~type/interface';
 
 const animationKickLeft = keyframes`
   0% { transform: translate(0, 0) }
@@ -34,7 +34,7 @@ export const Container = styled.div`
   background: #000;
   padding: 10px 12px;
   color: #fff;
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
   text-transform: uppercase;

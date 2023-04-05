@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Cost: any = styled.div`
   color: #fff;
@@ -12,7 +12,7 @@ export const Cost: any = styled.div`
 `;
 
 Cost.Label = styled.div`
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 13px;
   line-height: 13px;
   margin: -1px 10px 0 0;
@@ -25,10 +25,10 @@ Cost.Icon = styled.img`
 
 Cost.Value = styled.div`
   margin-top: -2px;
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 14px;
   line-height: 14px;
   &.attention {
-    color: ${INTERFACE_TEXT_COLOR.ERROR};
+    color: ${InterfaceColor.ERROR};
   }
 `;

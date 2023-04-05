@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 import { ScreenTexture } from '~type/screen';
 
 export const Parameters = styled.div`
@@ -36,12 +36,12 @@ Parameter.Icon = styled.div`
 Parameter.Info = styled.div`
   color: #fff;
   &.attention {
-    color: ${INTERFACE_TEXT_COLOR.WARN};
+    color: ${InterfaceColor.WARN};
   }
 `;
 
 Parameter.Label = styled.div`
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 11px;
   line-height: 11px;
   opacity: 0.75;
@@ -49,7 +49,7 @@ Parameter.Label = styled.div`
 `;
 
 Parameter.Value = styled.div`
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 14px;
   line-height: 14px;
 `;

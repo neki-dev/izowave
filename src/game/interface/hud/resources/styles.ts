@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT } from '~const/interface';
+import { InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   display: flex;
   color: #fff;
 `;

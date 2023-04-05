@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -10,8 +10,8 @@ export const Wrapper = styled.div`
 `;
 
 export const Label = styled.div`
-  color: ${INTERFACE_TEXT_COLOR.ERROR_DARK};
-  font-family: ${INTERFACE_FONT.PIXEL};
+  color: ${InterfaceColor.ERROR_DARK};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 66px;
   line-height: 66px;
   text-shadow: 8px 8px 0 #000;
@@ -26,7 +26,7 @@ Stats.Item = styled.div`
   display: flex;
   align-items: center;
   color: #fff;
-  font-family: ${INTERFACE_FONT.PIXEL};
+  font-family: ${InterfaceFont.PIXEL};
   &:not(:last-child) {
     margin-bottom: 15px;
   }
@@ -50,15 +50,15 @@ Stats.Record = styled.div`
   margin-left: 15px;
   font-size: 12px;
   line-height: 12px;
-  color: ${INTERFACE_TEXT_COLOR.INFO};
+  color: ${InterfaceColor.INFO};
   text-shadow: 2px 2px 0 #000;
 `;
 
 export const Restart = styled.div`
   margin-top: 70px;
   color: #fff;
-  background: ${INTERFACE_TEXT_COLOR.BLUE_DARK};
-  font-family: ${INTERFACE_FONT.PIXEL};
+  background: ${InterfaceColor.BLUE_DARK};
+  font-family: ${InterfaceFont.PIXEL};
   font-size: 22px;
   line-height: 22px;
   text-shadow: 2px 2px 0 #000;

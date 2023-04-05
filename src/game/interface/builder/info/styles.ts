@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import { INTERFACE_FONT, INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   width: 280px;
-  background: ${INTERFACE_TEXT_COLOR.BLUE_DARK}cc;
+  background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 20px;
   &::after {
     position: absolute;
@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
     transform: translate(100%, -50%);
     border-top: 12px solid transparent;
     border-bottom: 12px solid transparent;
-    border-left: 15px solid ${INTERFACE_TEXT_COLOR.BLUE_DARK}cc;
+    border-left: 15px solid ${InterfaceColor.BLUE_DARK}cc;
   }
 `;
 
@@ -25,8 +25,8 @@ export const Header = styled.div`
 `;
 
 export const Name = styled.div`
-  font-family: ${INTERFACE_FONT.PIXEL};
-  color: ${INTERFACE_TEXT_COLOR.PRIMARY};
+  font-family: ${InterfaceFont.PIXEL};
+  color: ${InterfaceColor.PRIMARY};
   font-size: 18px;
   line-height: 18px;
   text-shadow: 3px 3px 0 #332717;
@@ -34,18 +34,18 @@ export const Name = styled.div`
 
 export const Limit = styled.div`
   color: #fff;
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 13px;
   line-height: 13px;
   &.attention {
-    color: ${INTERFACE_TEXT_COLOR.WARN};
+    color: ${InterfaceColor.WARN};
   }
 `;
 
 export const Description = styled.div`
   margin-top: 10px;
   color: #fff;
-  font-family: ${INTERFACE_FONT.MONOSPACE};
+  font-family: ${InterfaceFont.MONOSPACE};
   font-size: 14px;
   line-height: 16px;
   text-shadow: 2px 2px 0 #000;

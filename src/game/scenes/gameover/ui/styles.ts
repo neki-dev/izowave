@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { InterfaceScreenSize } from '~type/interface';
+
 export const Overlay = styled.div`
   position: fixed;
   left: 0;
@@ -10,4 +12,10 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  @media ${InterfaceScreenSize.M} {
+    zoom: 0.9;
+  }
+  @media ${InterfaceScreenSize.S} {
+    zoom: 0.8;
+  }
 `;

@@ -1,4 +1,4 @@
-import { INTERFACE_TEXT_COLOR } from '~const/interface';
+import { InterfaceColor } from '~type/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
@@ -59,7 +59,7 @@ export class BuildingGenerator extends Building {
         label: 'RESOURCES',
         icon: ScreenIcon.RESOURCES,
         color: (this.amountLeft < BUILDING_RESOURCES_LEFT_ALERT)
-          ? INTERFACE_TEXT_COLOR.WARN
+          ? InterfaceColor.WARN
           : undefined,
         value: this.amountLeft,
       },
