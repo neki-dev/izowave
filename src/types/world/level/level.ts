@@ -1,4 +1,46 @@
-import { Hexagon } from '~scene/world/hexagon';
+import { INavigator } from '~type/world/level/navigator';
+import { ITileMatrix } from '~type/world/level/tile-matrix';
+
+export interface ILevel extends ITileMatrix {
+  /**
+   * Path finder.
+   */
+  readonly navigator: INavigator
+
+  /**
+   * Update area of visible tiles.
+   */
+  updateVisibleTiles(): void
+
+  /**
+   * Hide all tiles.
+   */
+  hideTiles(): void
+
+  /**
+   * Check is position doesn`t have tile.
+   * @param position - Tile position
+   */
+  isFreePoint(position: Vector3D): boolean
+
+  /**
+   * Get spawn positions at matrix.
+   * @param target - Spawn target
+   */
+  readSpawnPositions(target: SpawnTarget): Vector2D[]
+
+  /**
+   * Update navigation points costs.
+   */
+  refreshNavigationMeta(): void
+
+  /**
+   * Check is presence of tile between world positions.
+   * @param positionA - Position at world
+   * @param positionB - Position at world
+   */
+  hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D): boolean
+}
 
 export enum TileType {
   MAP = 'MAP',
@@ -57,14 +99,14 @@ export type Vector3D = {
   z: number
 };
 
-declare global {
-  namespace Phaser {
-    namespace GameObjects {
-      interface Image {
-        biome?: LevelBiome
-        shape?: Hexagon
-        tileType: TileType
-      }
-    }
-  }
-}
+// declare global {
+//   namespace Phaser {
+//     namespace GameObjects {
+//       interface Image {
+//         biome?: LevelBiome
+//         shape?: Phaser.Geom.Polygon
+//         tileType: TileType
+//       }
+//     }
+//   }
+// }

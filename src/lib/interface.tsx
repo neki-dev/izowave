@@ -1,11 +1,9 @@
 import React, { createContext, useContext, useEffect } from 'react';
 import { Root, createRoot } from 'react-dom/client';
 
-import { IGameScene } from '~type/game';
+import { IGame, IScene } from '~type/game';
 
-import { Game } from '~game';
-
-export const GameContext = createContext<Game>(null);
+export const GameContext = createContext<IGame>(null);
 const gameUI = document.getElementById('game-ui');
 
 export function useWorldUpdate(callback: () => void) {
@@ -27,10 +25,10 @@ export class Interface<T> {
 
   readonly root: Root;
 
-  readonly scene: IGameScene;
+  readonly scene: IScene;
 
   constructor(
-    scene: IGameScene,
+    scene: IScene,
     Component: React.FC<T>,
     props?: T,
   ) {

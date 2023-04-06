@@ -1,5 +1,5 @@
-import Phaser from 'phaser';
+import { ITile } from '~type/world/level/tile-matrix';
 
-const tile = {} as Phaser.GameObjects.Image;
+const tile = {} as ITile;
 
 export default tile;

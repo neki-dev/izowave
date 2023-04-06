@@ -1,8 +1,8 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { TILE_META } from '~const/world/level';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { World } from '~scene/world';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 import {
   BuildingIcon,
   BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
@@ -28,10 +28,7 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Health = DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH;
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
       damage: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE,
       speed: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED,
@@ -62,7 +59,7 @@ export class BuildingTowerFire extends BuildingTower {
       this.scene.hideHint();
     });
     this.scene.game.tutorial.onBeg(TutorialStep.RELOAD_BUILDING, () => {
-      if (this.ammoLeft === 0) {
+      if (this.ammo === 0) {
         this.scene.showHint({
           side: 'top',
           text: 'Hover on building and press [R] to reload ammo',

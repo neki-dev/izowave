@@ -1,10 +1,10 @@
-import { World } from '~scene/world/world';
+import { IWorld } from '~type/world';
 import { ShotBallAudio, ShotBallTexture, ShotParams } from '~type/world/entities/shot';
 
 import { ShotBall } from '../ball';
 
 export class ShotBallFire extends ShotBall {
-  constructor(scene: World, params: ShotParams) {
+  constructor(scene: IWorld, params: ShotParams) {
     super(scene, params, {
       texture: ShotBallTexture.FIRE,
       audio: ShotBallAudio.FIRE,

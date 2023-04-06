@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotLazer } from '~entity/shot/lazer';
-import { World } from '~scene/world';
+import { IWorld } from '~type/world';
 import {
   BuildingIcon,
   BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
@@ -27,10 +27,7 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static AllowByWave = DIFFICULTY.BUILDING_TOWER_LAZER_ALLOW_BY_WAVE;
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotLazer(scene, {
       damage: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE,
     });

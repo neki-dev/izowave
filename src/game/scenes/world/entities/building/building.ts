@@ -6,7 +6,6 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { World } from '~scene/world';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
@@ -14,93 +13,56 @@ import { Live } from '~scene/world/live';
 import { GameEvents } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { WorldEvents } from '~type/world';
+import { IWorld, WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
-  BuildingTexture, BuildingVariant, BuildingParam, BuildingAction,
-  BuildingOutlineState, IBuildingFactory, BuildingIcon,
+  BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
+  BuildingOutlineState, IBuildingFactory, BuildingIcon, IBuilding,
 } from '~type/world/entities/building';
-import { LiveEvents } from '~type/world/entities/live';
-import { IEnemyTarget } from '~type/world/entities/npc/enemy';
+import { ILive, LiveEvents } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
+import { ITile } from '~type/world/level/tile-matrix';
 
-export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
-  readonly scene: World;
+export class Building extends Phaser.GameObjects.Image implements IBuilding, ITile {
+  readonly scene: IWorld;
 
-  /**
-   * Health managment.
-   */
-  readonly live: Live;
+  readonly live: ILive;
 
-  /**
-   * Variant name.
-   */
   readonly variant: BuildingVariant;
 
-  /**
-   * Position at matrix.
-   */
   readonly positionAtMatrix: Vector2D;
 
-  /**
-   * Current upgrade level.
-   */
+  readonly tileType: TileType = TileType.BUILDING;
+
   private _upgradeLevel: number = 1;
 
   public get upgradeLevel() { return this._upgradeLevel; }
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  /**
-   * Actions parameters.
-   */
   private actions: Nullable<BuildingActionsParams>;
 
-  /**
-   * Action pause.
-   */
   private nextActionTimestamp: number = 0;
 
-  /**
-   * Current outline state.
-   */
   private outlineState: BuildingOutlineState = BuildingOutlineState.NONE;
 
-  /**
-   *
-   */
   private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
 
-  /**
-   * Action area.
-   */
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
-  /**
-   * Alert state.
-   */
-  public alert: boolean = false;
+  public hasAlert: boolean = false;
 
-  /**
-   * Focus state.
-   */
   private _isFocused: boolean = false;
 
   public get isFocused() { return this._isFocused; }
 
   private set isFocused(v) { this._isFocused = v; }
 
-  /**
-   * Select state.
-   */
   private isSelected: boolean = false;
 
-  /**
-   * Building constructor.
-   */
-  constructor(scene: World, {
+  constructor(scene: IWorld, {
     positionAtMatrix, health, texture, variant, actions = null,
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
@@ -120,30 +82,24 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
 
     scene.builder.addFoundation(positionAtMatrix);
 
-    // Configure tile
-
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.setOrigin(0.5, TILE_META.origin);
-    scene.level.putTile(this, TileType.BUILDING, tilePosition);
+    scene.level.putTile(this, tilePosition);
     scene.level.refreshNavigationMeta();
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.level.refreshNavigationMeta();
     });
 
-    // Add keyboard events
-
     scene.input.keyboard.on(CONTROL_KEY.BUILDING_DESTROY, () => {
       if (this.isFocused) {
-        this.remove();
+        this.break();
       }
     });
     scene.input.keyboard.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
       if (this.isFocused) {
-        this.nextUpgrade();
+        this.upgrade();
       }
     });
-
-    // Add events callbacks
 
     this.live.on(LiveEvents.DAMAGE, () => {
       this.onDamage();
@@ -151,7 +107,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.live.on(LiveEvents.DEAD, () => {
       this.onDead();
     });
-
     this.on(Phaser.Input.Events.POINTER_OVER, () => {
       this.onFocus();
     });
@@ -166,44 +121,30 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
         this.onUnclick();
       }
     });
-
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.onUnfocus();
       this.onUnclick();
     });
-
     this.scene.game.events.on(GameEvents.FINISH, () => {
       this.onUnfocus();
       this.onUnclick();
     });
-
     this.scene.builder.on(BuilderEvents.BUILD_START, () => {
       this.onUnfocus();
       this.onUnclick();
     });
   }
 
-  /**
-   * Set interactive by hexagon shape.
-   */
   public setInteractive() {
     const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
 
     return super.setInteractive(shape, Hexagon.Contains);
   }
 
-  /**
-   * Event update.
-   */
   public update() {
     this.updateOutline();
   }
 
-  /**
-   * Check is position inside action area.
-   *
-   * @param position - Position at world
-   */
   public actionsAreaContains(position: Vector2D) {
     if (!this.actionsArea) {
       return false;
@@ -215,31 +156,22 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     return contains;
   }
 
-  /**
-   * Pause actions.
-   */
   public pauseActions() {
     if (!this.actions?.pause) {
       return;
     }
 
-    this.nextActionTimestamp = this.scene.getTimerNow() + this.getActionsPause();
+    this.nextActionTimestamp = this.scene.getTime() + this.getActionsPause();
   }
 
-  /**
-   * Check is actions is not pused.
-   */
   public isAllowAction() {
     if (!this.actions?.pause) {
       return true;
     }
 
-    return (this.nextActionTimestamp < this.scene.getTimerNow());
+    return (this.nextActionTimestamp < this.scene.getTime());
   }
 
-  /**
-   * Get building information params.
-   */
   public getInfo() {
     return [{
       label: 'HEALTH',
@@ -248,18 +180,15 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     }] as BuildingParam[];
   }
 
-  /**
-   * Get building actions.
-   */
-  public getActions() {
-    const actions: BuildingAction[] = [];
+  public getControls() {
+    const actions: BuildingControl[] = [];
 
     if (this.isAllowUpgrade()) {
       actions.push({
         label: 'UPGRADE',
         cost: this.getUpgradeLevelCost(),
         onClick: () => {
-          this.nextUpgrade();
+          this.upgrade();
         },
       });
     }
@@ -267,26 +196,10 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     return actions;
   }
 
-  /**
-   * Get next upgrade cost.
-   */
-  public getUpgradeLevelCost() {
-    const nextLevel = this.upgradeLevel + 1;
-    const costGrow = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
-
-    return Math.round(costGrow * nextLevel);
-  }
-
-  /**
-   * Get building meta.
-   */
   public getMeta() {
     return this.constructor as IBuildingFactory;
   }
 
-  /**
-   * Get actions radius.
-   */
   public getActionsRadius() {
     return this.actions?.radius
       ? calcGrowth(
@@ -297,9 +210,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       : 0;
   }
 
-  /**
-   * Get actions pause.
-   */
   private getActionsPause() {
     return this.actions?.pause
       ? calcGrowth(
@@ -310,9 +220,13 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       : 0;
   }
 
-  /**
-   * Check is building allow upgrade.
-   */
+  private getUpgradeLevelCost() {
+    const nextLevel = this.upgradeLevel + 1;
+    const costGrow = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+
+    return Math.round(costGrow * nextLevel);
+  }
+
   private isAllowUpgrade() {
     return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
@@ -320,14 +234,14 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
   /**
    * Upgrade building to next level.
    */
-  private nextUpgrade() {
+  private upgrade() {
     if (!this.isAllowUpgrade()) {
       return;
     }
 
     const waveAllowed = this.getWaveAllowUpgrade();
 
-    if (waveAllowed > this.scene.wave.getCurrentNumber()) {
+    if (waveAllowed > this.scene.wave.getTargetNumber()) {
       this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE BE AVAILABLE ON ${waveAllowed} WAVE`);
 
       return;
@@ -358,16 +272,10 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
   }
 
-  /**
-   *
-   */
   private getWaveAllowUpgrade() {
     return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
-  /**
-   * Event damage.
-   */
   private onDamage() {
     if (!this.visible) {
       return;
@@ -380,9 +288,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     });
   }
 
-  /**
-   * Event dead.
-   */
   private onDead() {
     this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} HAS BEEN DESTROYED`);
 
@@ -401,9 +306,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.destroy();
   }
 
-  /**
-   * Event focus.
-   */
   private onFocus() {
     if (
       this.isFocused
@@ -418,9 +320,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.scene.input.setDefaultCursor('pointer');
   }
 
-  /**
-   * Event unfocus.
-   */
   private onUnfocus() {
     if (!this.isFocused) {
       return;
@@ -431,9 +330,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.scene.input.setDefaultCursor('default');
   }
 
-  /**
-   * Event click.
-   */
   private onClick() {
     if (!this.isFocused || this.isSelected) {
       return;
@@ -448,9 +344,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.scene.events.emit(WorldEvents.SELECT_BUILDING, this);
   }
 
-  /**
-   * Event unclick.
-   */
   private onUnclick() {
     if (!this.isSelected) {
       return;
@@ -465,9 +358,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.scene.events.emit(WorldEvents.UNSELECT_BUILDING, this);
   }
 
-  /**
-   * Set outline state.
-   */
   private setOutline(state: BuildingOutlineState) {
     if (this.outlineState === state) {
       return;
@@ -512,9 +402,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.outlineState = state;
   }
 
-  /**
-   * Update current outline state.
-   */
   private updateOutline() {
     let outlineState = BuildingOutlineState.NONE;
 
@@ -522,15 +409,12 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
       outlineState = BuildingOutlineState.SELECTED;
     } else if (this.isFocused) {
       outlineState = BuildingOutlineState.FOCUSED;
-    } else if (this.alert) {
+    } else if (this.hasAlert) {
       outlineState = BuildingOutlineState.ALERT;
     }
     this.setOutline(outlineState);
   }
 
-  /**
-   * Add action area.
-   */
   private addActionArea() {
     if (!this.actions?.radius || this.actionsArea) {
       return;
@@ -548,9 +432,6 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     });
   }
 
-  /**
-   * Update size and depth of action area.
-   */
   private updateActionArea() {
     if (!this.actionsArea) {
       return;
@@ -565,10 +446,7 @@ export class Building extends Phaser.GameObjects.Image implements IEnemyTarget {
     this.actionsArea.updateDisplayOrigin();
   }
 
-  /**
-   * Break building.
-   */
-  private remove() {
+  private break() {
     if (this.visible) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,

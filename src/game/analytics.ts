@@ -1,15 +1,9 @@
 import { ANALYTICS_SERVER } from '~const/analytics';
-import { AnalyticData } from '~type/analytics';
+import { AnalyticData, IAnalytics } from '~type/analytics';
 
-export class Analytics {
-  /**
-   * User unique id.
-   */
+export class Analytics implements IAnalytics {
   private userId: string;
 
-  /**
-   * Analytics constructor.
-   */
   constructor() {
     const userId = localStorage.getItem('USER_ID');
 
@@ -21,11 +15,6 @@ export class Analytics {
     }
   }
 
-  /**
-   * Track progression event.
-   *
-   * @param data - Event data
-   */
   public track(data: AnalyticData) {
     const payload = {
       userId: this.userId,

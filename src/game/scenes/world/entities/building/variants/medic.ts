@@ -1,11 +1,11 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { Player } from '~entity/player';
-import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
+import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import {
   BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
+import { IPlayer } from '~type/world/entities/player';
 
 import { Building } from '../building';
 
@@ -29,10 +29,7 @@ export class BuildingMedic extends Building {
 
   static AllowByWave = DIFFICULTY.BUILDING_MEDIC_ALLOW_BY_WAVE;
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.MEDIC,
@@ -45,9 +42,6 @@ export class BuildingMedic extends Building {
     });
   }
 
-  /**
-   * Check is player inside action area and heal him.
-   */
   public update() {
     super.update();
 
@@ -67,9 +61,6 @@ export class BuildingMedic extends Building {
     this.pauseActions();
   }
 
-  /**
-   * Add heal amount to building info.
-   */
   public getInfo() {
     return [
       ...super.getInfo(), {
@@ -80,19 +71,11 @@ export class BuildingMedic extends Building {
     ];
   }
 
-  /**
-   * Get heal amount.
-   */
   private getHealAmount() {
     return DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT * this.upgradeLevel;
   }
 
-  /**
-   * Heal player.
-   *
-   * @param player - Player
-   */
-  private heal(player: Player) {
+  private heal(player: IPlayer) {
     const health = this.getHealAmount();
 
     player.live.setHealth(player.live.health + health);

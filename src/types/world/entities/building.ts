@@ -1,6 +1,103 @@
-import { Building } from '~entity/building';
-import { World } from '~scene/world';
+import Phaser from 'phaser';
+
+import { IWorld } from '~type/world';
+import { IParticlesParent } from '~type/world/effects';
+import { IEnemyTarget } from '~type/world/entities/npc/enemy';
+import { IShotInitiator } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
+
+import { ILive } from './live';
+
+export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IParticlesParent, IShotInitiator {
+  readonly scene: IWorld
+
+  /**
+   * Health management.
+   */
+  readonly live: ILive
+
+  /**
+   * Current upgrade level.
+   */
+  readonly upgradeLevel: number
+
+  /**
+   * Position at matrix.
+   */
+  readonly positionAtMatrix: Vector2D
+
+  /**
+   * Variant name.
+   */
+  readonly variant: BuildingVariant
+
+  /**
+   * Has alert state.
+   */
+  readonly hasAlert: boolean
+
+  /**
+   * Is cursor on building.
+   */
+  readonly isFocused: boolean
+
+  /**
+   * Check is position inside action area.
+   * @param position - Position at world
+   */
+  actionsAreaContains(position: Vector2D): boolean
+
+  /**
+   * Pause actions.
+   */
+  pauseActions(): void
+
+  /**
+   * Check is actions not paused.
+   */
+  isAllowAction(): boolean
+
+  /**
+   * Get building information params.
+   */
+  getInfo(): BuildingParam[]
+
+  /**
+   * Get building controls.
+   */
+  getControls(): BuildingControl[]
+
+  /**
+   * Get building meta.
+   */
+  getMeta(): IBuildingFactory
+
+  /**
+   * Get actions radius.
+   */
+  getActionsRadius(): number
+
+}
+
+export interface IBuildingAmmunition extends IBuilding {
+  /**
+   * Current ammo count.
+   */
+  readonly ammo: number
+
+  /**
+   * Use ammunition.
+   * Returns count of ammo which was used.
+   */
+  use(amount: number): number
+}
+
+export interface IBuildingTower extends IBuilding {
+  /**
+   * Current ammo in clip.
+   */
+  readonly ammo: number
+}
 
 export interface IBuildingFactory {
   Name: string
@@ -11,7 +108,7 @@ export interface IBuildingFactory {
   Health: number
   Limit?: number
   AllowByWave?: number
-  new (scene: World, data: BuildingVariantData): Building
+  new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
 
 export enum BuildingEvents {
@@ -80,7 +177,7 @@ export type BuildingParam = {
   attention?: boolean
 };
 
-export type BuildingAction = {
+export type BuildingControl = {
   label: string
   cost?: number
   onClick: () => void

@@ -3,17 +3,14 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { getAssetsPack, loadFontFace } from '~lib/assets';
 import { removeLoading, setLoadingStatus } from '~lib/state';
-import { GameEvents, GameStat, SceneKey } from '~type/game';
+import {
+  GameEvents, GameStat, IGame, IScene, SceneKey,
+} from '~type/game';
 import { InterfaceFont } from '~type/interface';
 
-import { Game } from '~game';
+export class Basic extends Phaser.Scene implements IScene {
+  readonly game: IGame;
 
-export class Basic extends Phaser.Scene {
-  readonly game: Game;
-
-  /**
-   * Basic constructor.
-   */
   constructor() {
     super({
       key: SceneKey.BASIC,
@@ -23,9 +20,6 @@ export class Basic extends Phaser.Scene {
     setLoadingStatus('ASSETS LOADING');
   }
 
-  /**
-   * Create basic.
-   */
   public async create() {
     await loadFontFace(InterfaceFont.PIXEL, 'retro');
 
@@ -35,10 +29,10 @@ export class Basic extends Phaser.Scene {
     this.scene.bringToTop();
 
     this.input.keyboard.on(CONTROL_KEY.PAUSE, () => {
-      if (this.game.finished) {
+      if (this.game.isFinished) {
         this.game.restartGame();
-      } else if (this.game.started) {
-        if (this.game.paused) {
+      } else if (this.game.isStarted) {
+        if (this.game.isPaused) {
           this.game.resumeGame();
         } else {
           this.game.pauseGame();

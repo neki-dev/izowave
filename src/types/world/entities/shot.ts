@@ -1,18 +1,40 @@
-import { Enemy } from '~entity/npc/variants/enemy';
-import { World } from '~scene/world';
+import { IWorld } from '~type/world';
+import { IParticlesParent } from '~type/world/effects';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 
-export interface IShot {
+export interface IShot extends IParticlesParent {
+  /**
+   * Shot params.
+   */
   params: ShotParams
+
+  /**
+   * Set shoots initiator.
+   * @param initiator - Initiator
+   */
   setInitiator(parent: IShotInitiator): void
-  shoot(target: Enemy): void
+
+  /**
+   * Make shoot to target.
+   * @param target - Enemy
+   */
+  shoot(target: IEnemy): void
 }
 
-export interface IShotInitiator {
-  readonly scene: World
+export interface IShotLazer extends Phaser.GameObjects.Line, IShot {
+  readonly scene: IWorld
+}
+
+export interface IShotBall extends Phaser.Physics.Arcade.Image, IShot {
+  readonly scene: IWorld
+  readonly body: Phaser.Physics.Arcade.Body
+}
+
+export interface IShotInitiator extends Phaser.GameObjects.GameObject {
+  readonly scene: IWorld
   x: number
   y: number
   visible: boolean
-  on(event: string, callback: () => void): void
 }
 
 export enum ShotLazerAudio {

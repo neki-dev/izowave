@@ -1,6 +1,14 @@
-import { World } from '~scene/world';
+import { IWorld } from '~type/world';
+
+export interface IAnalytics {
+  /**
+   * Track progression event.
+   * @param data - Event data
+   */
+  track(data: AnalyticData): void
+}
 
 export type AnalyticData = {
-  world: World
+  world: IWorld
   success: boolean
 };

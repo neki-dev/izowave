@@ -1,7 +1,6 @@
 import positions from '../__mocks__/positions';
 import {
-  aroundPosition,
-  calcGrowth, equalPositions, formatTime, selectClosest,
+  aroundPosition, calcGrowth, equalPositions, formatTime, getClosest,
 } from '../utils';
 
 describe('utils.ts / calcGrowth', () => {
@@ -35,14 +34,9 @@ describe('utils.ts / formatTime', () => {
   });
 });
 
-describe('utils.ts / selectClosest', () => {
-  it('should returns specified count positions', () => {
-    expect(selectClosest(positions, { x: 4, y: 4 }, 2).length).toEqual(2);
-    expect(selectClosest(positions, { x: 4, y: 4 }).length).toEqual(1);
-  });
-
+describe('utils.ts / getClosest', () => {
   it('should returns sorted positions', () => {
-    const [closest] = selectClosest(positions, { x: 4, y: 4 });
+    const closest = getClosest(positions, { x: 4, y: 4 });
 
     expect(`${closest.x},${closest.y}`).toEqual('0,0');
   });

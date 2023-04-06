@@ -1,9 +1,9 @@
 import { World } from '../world';
 
 const world = {
-  getTimerNow: jest.fn(),
-  isTimerPaused: jest.fn(() => false),
-  setTimerPause: jest.fn(),
+  getTime: jest.fn(),
+  isTimePaused: jest.fn(() => false),
+  setTimePause: jest.fn(),
   spawnEnemy: jest.fn(),
   game: {
     difficulty: 1,

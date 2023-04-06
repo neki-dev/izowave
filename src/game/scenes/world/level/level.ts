@@ -6,51 +6,35 @@ import {
   LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST, LEVEL_MAP_Z_WEIGHT,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
-import { World } from '~scene/world';
 import { Hexagon } from '~scene/world/hexagon';
+import { IWorld } from '~type/world';
 import {
-  BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D,
+  BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D, ILevel,
 } from '~type/world/level';
+import { INavigator } from '~type/world/level/navigator';
+import { ITile } from '~type/world/level/tile-matrix';
 
 import { Navigator } from './navigator';
 import { TileMatrix } from './tile-matrix';
 
-export class Level extends TileMatrix {
-  readonly scene: World;
+export class Level extends TileMatrix implements ILevel {
+  readonly scene: IWorld;
 
-  /**
-   * Map matrix.
-   */
-  readonly matrix: LevelBiome[][] = [];
+  private matrix: LevelBiome[][] = [];
 
-  /**
-   * Map tiles group.
-   */
   private mapTiles: Phaser.GameObjects.Group;
 
-  /**
-   * Vegetation tiles group.
-   */
   private treesTiles: Phaser.GameObjects.Group;
 
-  /**
-   * Visible tiles group.
-   */
   private visibleTiles: Phaser.GameObjects.Group;
 
-  /**
-   * Path finder.
-   */
-  private _navigator: Navigator;
+  private _navigator: INavigator;
 
   public get navigator() { return this._navigator; }
 
   private set navigator(v) { this._navigator = v; }
 
-  /**
-   * Level constructor.
-   */
-  constructor(scene: World) {
+  constructor(scene: IWorld) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT);
 
     const generator = new WorldGenerator<LevelBiome>({
@@ -77,27 +61,10 @@ export class Level extends TileMatrix {
     this.makeTrees();
   }
 
-  /**
-   * Event update.
-   */
-  public update() {
-    this.updateVisibleTiles();
-  }
-
-  /**
-   * Check is position does not have tile.
-   *
-   * @param position - Tile position
-   */
   public isFreePoint(position: Vector3D) {
     return !this.getTile(position) || this.tileIs(position, TileType.TREE);
   }
 
-  /**
-   * Get spawn positions at matrix.
-   *
-   * @param target - Spawn target
-   */
   public readSpawnPositions(target: SpawnTarget) {
     const positions: Vector2D[] = [];
     const step = LEVEL_SPAWN_POSITIONS_STEP;
@@ -118,9 +85,6 @@ export class Level extends TileMatrix {
     return positions;
   }
 
-  /**
-   * Hide all tiles.
-   */
   public hideTiles() {
     for (let z = 0; z < this.height; z++) {
       for (let y = 0; y < this.size; y++) {
@@ -135,10 +99,25 @@ export class Level extends TileMatrix {
     }
   }
 
-  /**
-   * Update area of visible tiles.
-   */
-  private updateVisibleTiles() {
+  public refreshNavigationMeta() {
+    this.navigator.resetPointsCost();
+
+    for (const building of this.scene.getBuildings()) {
+      this.navigator.setPointCost(building.positionAtMatrix, LEVEL_BUILDING_PATH_COST);
+    }
+  }
+
+  public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
+    const tiles = (<ITile[]> this.mapTiles.getChildren())
+      .filter((tile) => (tile.biome.z === 1))
+      .map((tile) => tile.shape);
+    const line = new Phaser.Geom.Line(positionA.x, positionA.y, positionB.x, positionB.y);
+    const point = Phaser.Geom.Intersects.GetLineToPolygon(line, tiles);
+
+    return Boolean(point);
+  }
+
+  public updateVisibleTiles() {
     const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
     const c = Math.ceil(d / 52);
     const center = this.scene.player.getBottomCenter();
@@ -163,40 +142,6 @@ export class Level extends TileMatrix {
     }
   }
 
-  /**
-   * Update navigation points costs.
-   */
-  public refreshNavigationMeta() {
-    this.navigator.resetPointsCost();
-
-    for (const building of this.scene.getBuildings()) {
-      this.navigator.setPointCost(
-        building.positionAtMatrix.x,
-        building.positionAtMatrix.y,
-        LEVEL_BUILDING_PATH_COST,
-      );
-    }
-  }
-
-  /**
-   * Check is presence of tile between world positions.
-   *
-   * @param positionA - Position at world
-   * @param positionB - Position at world
-   */
-  public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
-    const tiles = (<Phaser.GameObjects.Image[]> this.mapTiles.getChildren())
-      .filter((tile) => (tile.biome.z === 1))
-      .map((tile) => tile.shape);
-    const line = new Phaser.Geom.Line(positionA.x, positionA.y, positionB.x, positionB.y);
-    const point = Phaser.Geom.Intersects.GetLineToPolygon(line, tiles);
-
-    return Boolean(point);
-  }
-
-  /**
-   * Add biomes tiles on map.
-   */
   private makeMapTiles() {
     const make = (x: number, y: number, biome: LevelBiome) => {
       const variant = Array.isArray(biome.tileIndex)
@@ -204,14 +149,15 @@ export class Level extends TileMatrix {
         : biome.tileIndex;
       const tilePosition: Vector3D = { x, y, z: biome.z };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
-      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant);
+      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant) as ITile;
 
+      // @ts-ignore
+      tile.tileType = TileType.MAP;
       tile.biome = biome;
 
-      // Configure tile
       tile.setOrigin(0.5, TILE_META.origin);
       tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-      this.putTile(tile, TileType.MAP, tilePosition, false);
+      this.putTile(tile, tilePosition, false);
       this.mapTiles.add(tile);
 
       if (biome.z === 1) {
@@ -246,9 +192,6 @@ export class Level extends TileMatrix {
     }
   }
 
-  /**
-   * Add trees on map.
-   */
   private makeTrees() {
     this.treesTiles = this.scene.add.group();
 
@@ -265,36 +208,31 @@ export class Level extends TileMatrix {
           positionAtWorld.y - 19,
           LevelTexture.TREE,
           Phaser.Math.Between(0, 3),
-        );
+        ) as ITile;
+
+        // @ts-ignore
+        tile.tileType = TileType.TREE;
 
         // Configure tile
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
         tile.setOrigin(0.5, TILE_META.origin);
-        this.putTile(tile, TileType.TREE, tilePosition);
+        this.putTile(tile, tilePosition);
         this.treesTiles.add(tile);
       }
     }
   }
 
-  /**
-   * Create path finder.
-   */
   private makePathFinder() {
     const grid = this.matrix.map((y) => y.map((x) => Number(x.collide)));
 
     this.navigator = new Navigator(grid);
   }
 
-  /**
-   * Convert world position to matrix position.
-   *
-   * @param position - Position at world
-   */
-  static ToMatrixPosition(position: Vector2D) {
+  static ToMatrixPosition(positionAtWorld: Vector2D) {
     const { width, height, origin } = TILE_META;
     const n = {
-      x: (position.x / (width * 0.5)),
-      y: (position.y / (height * origin)),
+      x: (positionAtWorld.x / (width * 0.5)),
+      y: (positionAtWorld.y / (height * origin)),
     };
     const positionAtMatrix: Vector2D = {
       x: Math.round((n.x + n.y) / 2),
@@ -304,47 +242,24 @@ export class Level extends TileMatrix {
     return positionAtMatrix;
   }
 
-  /**
-   * Convert tile position to world position.
-   *
-   * @param position - Tile position
-   */
-  static ToWorldPosition(position: Vector3D) {
+  static ToWorldPosition(tilePosition: Vector3D) {
     const { width, height, origin } = TILE_META;
     const positionAtWorld: Vector2D = {
-      x: (position.x - position.y) * (width * 0.5),
-      y: (position.x + position.y) * (height * origin) - (position.z * (height * 0.5)),
+      x: (tilePosition.x - tilePosition.y) * (width * 0.5),
+      y: (tilePosition.x + tilePosition.y) * (height * origin) - (tilePosition.z * (height * 0.5)),
     };
 
     return positionAtWorld;
   }
 
-  /**
-   * Get depth for tile.
-   *
-   * @param y - Position Y at world
-   * @param z - Tile position Z
-   */
-  static GetTileDepth(y: number, z: number) {
-    return y + (z * LEVEL_MAP_Z_WEIGHT);
+  static GetTileDepth(YAtWorld: number, tileZ: number) {
+    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT);
   }
 
-  /**
-   * Get depth dor dynamic sprite.
-   *
-   * @param y - Position Y at world
-   * @param z - Tile position Z
-   * @param height - Sprite height
-   */
-  static GetDepth(y: number, z: number, height: number) {
-    return y + (z * LEVEL_MAP_Z_WEIGHT) - (height / 2);
+  static GetDepth(YAtWorld: number, tileZ: number, height: number) {
+    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT) - (height / 2);
   }
 
-  /**
-   * Get biome by type
-   *
-   * @param type - Biome type
-   */
   static GetBiome(type: BiomeType): Nullable<LevelBiome> {
     return LEVEL_BIOMES.find((biome) => (biome.data.type === type))?.data ?? null;
   }

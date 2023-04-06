@@ -4,28 +4,27 @@ import React, {
 } from 'react';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { Building } from '~entity/building';
-import { ComponentBuildingActions } from '~interface/building/actions';
+import { ComponentBuildingControls } from '~interface/building/controls';
 import { ComponentBuildingParameters } from '~interface/building/parameters';
 import { GameContext, useWorldUpdate } from '~lib/interface';
 import { getMutable } from '~lib/utils';
 import { WorldEvents } from '~type/world';
-import { BuildingAction, BuildingParam } from '~type/world/entities/building';
+import { BuildingControl, BuildingParam, IBuilding } from '~type/world/entities/building';
 
 import { Name, UpgradeLevel, Wrapper } from './styles';
 
 export const ComponentBuildingInfo: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [building, setBuilding] = useState<Building>(null);
+  const [building, setBuilding] = useState<IBuilding>(null);
   const [upgradeLevel, setUpgradeLevel] = useState(1);
   const [params, setParams] = useState<BuildingParam[]>([]);
-  const [actions, setActions] = useState<BuildingAction[]>([]);
+  const [controls, setControls] = useState<BuildingControl[]>([]);
 
-  const refBuilding = useRef<Building>(null);
+  const refBuilding = useRef<IBuilding>(null);
   const refWrapper = useRef<HTMLDivElement>(null);
 
-  const onSelect = (target: Building) => {
+  const onSelect = (target: IBuilding) => {
     refBuilding.current = target;
     setBuilding(target);
   };
@@ -34,7 +33,7 @@ export const ComponentBuildingInfo: React.FC = () => {
     refBuilding.current = null;
     setBuilding(null);
     setParams([]);
-    setActions([]);
+    setControls([]);
   };
 
   useWorldUpdate(() => {
@@ -44,7 +43,7 @@ export const ComponentBuildingInfo: React.FC = () => {
 
     setUpgradeLevel(refBuilding.current.upgradeLevel);
     setParams((current) => getMutable(current, refBuilding.current.getInfo(), ['value', 'attention']));
-    setActions((current) => getMutable(current, refBuilding.current.getActions(), ['label', 'cost']));
+    setControls((current) => getMutable(current, refBuilding.current.getControls(), ['label', 'cost']));
 
     if (refWrapper.current) {
       const camera = game.world.cameras.main;
@@ -77,7 +76,7 @@ export const ComponentBuildingInfo: React.FC = () => {
       </UpgradeLevel>
 
       <ComponentBuildingParameters params={params} />
-      <ComponentBuildingActions actions={actions} />
+      <ComponentBuildingControls actions={controls} />
     </Wrapper>
   );
 };

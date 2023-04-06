@@ -1,41 +1,28 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { BuildingAmmunition } from '~entity/building/variants/ammunition';
-import { Enemy } from '~entity/npc/variants/enemy';
-import { calcGrowth, selectClosest } from '~lib/utils';
-import { World } from '~scene/world';
+import { calcGrowth, getClosest } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 import {
-  BuildingAudio, BuildingData, BuildingIcon, BuildingVariant,
+  BuildingAudio, BuildingData, BuildingIcon, BuildingVariant, IBuildingAmmunition, IBuildingTower,
 } from '~type/world/entities/building';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IShot, ShotParams } from '~type/world/entities/shot';
 
-export class BuildingTower extends Building {
-  /**
-   * Tower shot item.
-   */
-  readonly shot: IShot;
+export class BuildingTower extends Building implements IBuildingTower {
+  private shot: IShot;
 
-  /**
-   * Default shot params.
-   */
-  readonly shotDefaultParams: ShotParams;
+  private shotDefaultParams: ShotParams;
 
-  /**
-   * Ammo left in clip.
-   */
-  private _ammoLeft: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+  private _ammo: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
 
-  public get ammoLeft() { return this._ammoLeft; }
+  public get ammo() { return this._ammo; }
 
-  private set ammoLeft(v) { this._ammoLeft = v; }
+  private set ammo(v) { this._ammo = v; }
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingData, shot: IShot) {
+  constructor(scene: IWorld, data: BuildingData, shot: IShot) {
     super(scene, data);
 
     shot.setInitiator(this);
@@ -49,9 +36,6 @@ export class BuildingTower extends Building {
     });
   }
 
-  /**
-   * Add ammo left and reload to building info.
-   */
   public getInfo() {
     const info = super.getInfo();
     const params = this.getShotCurrentParams();
@@ -83,20 +67,17 @@ export class BuildingTower extends Building {
     info.push({
       label: 'AMMO',
       icon: BuildingIcon.AMMO,
-      attention: (this.ammoLeft === 0),
-      value: `${this.ammoLeft}/${this.getMaxAmmo()}`,
+      attention: (this.ammo === 0),
+      value: `${this.ammo}/${this.getMaxAmmo()}`,
     });
 
     return info;
   }
 
-  /**
-   * Add reload to building actions.
-   */
   public getActions() {
-    const actions = super.getActions();
+    const actions = super.getControls();
 
-    if (this.ammoLeft < this.getMaxAmmo()) {
+    if (this.ammo < this.getMaxAmmo()) {
       actions.push({
         label: 'RELOAD',
         onClick: () => this.reload(),
@@ -106,14 +87,11 @@ export class BuildingTower extends Building {
     return actions;
   }
 
-  /**
-   * Find target and shoot.
-   */
   public update() {
     super.update();
 
     if (
-      this.ammoLeft === 0
+      this.ammo === 0
       || !this.isAllowAction()
       || this.scene.player.live.isDead()
     ) {
@@ -129,18 +107,15 @@ export class BuildingTower extends Building {
     this.shoot(target);
     this.pauseActions();
 
-    this.ammoLeft--;
+    this.ammo--;
 
-    if (this.ammoLeft === 0) {
-      this.alert = true;
+    if (this.ammo === 0) {
+      this.hasAlert = true;
 
       this.scene.game.tutorial.beg(TutorialStep.RELOAD_BUILDING);
     }
   }
 
-  /**
-   * Get shot params.
-   */
   private getShotCurrentParams(level?: number) {
     const params: ShotParams = {
       maxDistance: this.getActionsRadius(),
@@ -173,31 +148,27 @@ export class BuildingTower extends Building {
     return params;
   }
 
-  /**
-   * Get nearby ammunition.
-   */
   private getAmmunition() {
-    const ammunitions = <BuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION);
-    const nearby = ammunitions.filter((building: Building) => building.actionsAreaContains(this));
+    const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
+      .filter((building) => building.actionsAreaContains(this));
 
-    if (nearby.length === 0) {
+    let priorityAmmunition: IBuildingAmmunition = null;
+
+    for (const ammunition of ammunitions) {
+      if (!priorityAmmunition || ammunition.ammo > priorityAmmunition.ammo) {
+        priorityAmmunition = ammunition;
+      }
+    }
+
+    if (priorityAmmunition.ammo === 0) {
       return null;
     }
 
-    const ammunition = nearby.sort((a, b) => (b.amountLeft - a.amountLeft))[0];
-
-    if (ammunition.amountLeft === 0) {
-      return null;
-    }
-
-    return ammunition;
+    return priorityAmmunition;
   }
 
-  /**
-   * Reload ammo.
-   */
   private reload() {
-    const needAmmo = this.getMaxAmmo() - this.ammoLeft;
+    const needAmmo = this.getMaxAmmo() - this.ammo;
 
     if (needAmmo <= 0) {
       return;
@@ -211,26 +182,18 @@ export class BuildingTower extends Building {
       return;
     }
 
-    const ammo = ammunition.use(needAmmo);
-
-    this.ammoLeft += ammo;
+    this.ammo += ammunition.use(needAmmo);
+    this.hasAlert = false;
 
     this.scene.sound.play(BuildingAudio.RELOAD);
-    this.alert = false;
 
     this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
   }
 
-  /**
-   * Get maximum ammo in clip.
-   */
   private getMaxAmmo() {
     return DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT * this.upgradeLevel;
   }
 
-  /**
-   * Find nearby enemy for shoot.
-   */
   private getTarget() {
     const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
@@ -238,19 +201,10 @@ export class BuildingTower extends Building {
       && !this.scene.level.hasTilesBetweenPositions(this, enemy)
     ));
 
-    if (enemies.length === 0) {
-      return null;
-    }
-
-    return selectClosest(enemies, this)[0];
+    return getClosest(enemies, this);
   }
 
-  /**
-   * Shoot to enemy.
-   *
-   * @param target - Enemy
-   */
-  private shoot(target: Enemy) {
+  private shoot(target: IEnemy) {
     this.shot.params = this.getShotCurrentParams();
     this.shot.shoot(target);
   }

@@ -2,42 +2,27 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
-import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets } from '~lib/assets';
-import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
+import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  IShot, IShotInitiator, ShotLazerAudio, ShotParams,
+  IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
 } from '~type/world/entities/shot';
 
-export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
-  readonly scene: World;
+export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
+  readonly scene: IWorld;
 
-  /**
-   * Shot initiator.
-   */
-  private initiator: Nullable<IShotInitiator> = null;
-
-  /**
-   * Shot params.
-   */
   public params: ShotParams;
 
-  /**
-   * Timer of shoot processing.
-   */
+  private initiator: Nullable<IShotInitiator> = null;
+
   private timer: Nullable<Phaser.Time.TimerEvent> = null;
 
-  /**
-   * Target enemy.
-   */
-  private target: Nullable<Enemy> = null;
+  private target: Nullable<IEnemy> = null;
 
-  /**
-   * Shot constructor.
-   */
-  constructor(scene: World, params: ShotParams) {
+  constructor(scene: IWorld, params: ShotParams) {
     super(scene);
     scene.add.existing(this);
     scene.entityGroups.shots.add(this);
@@ -56,11 +41,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
     });
   }
 
-  /**
-   * Set initiator for next shoots.
-   *
-   * @param initiator - Initiator
-   */
   public setInitiator(initiator: IShotInitiator) {
     this.initiator = initiator;
 
@@ -69,9 +49,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
     });
   }
 
-  /**
-   * Update lazer target position.
-   */
   public update() {
     if (!this.initiator || !this.target) {
       return;
@@ -80,12 +57,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
     this.setTo(this.initiator.x, this.initiator.y, this.target.x, this.target.y);
   }
 
-  /**
-   * Make shoot to target.
-   *
-   * @param target - Enemy
-   */
-  public shoot(target: Enemy) {
+  public shoot(target: IEnemy) {
     if (!this.initiator) {
       return;
     }
@@ -106,9 +78,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
     }
   }
 
-  /**
-   * Stop shooting.
-   */
   private stop() {
     this.target = null;
 
@@ -120,9 +89,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
     this.setVisible(false);
   }
 
-  /**
-   * Handle hit to target.
-   */
   private hit() {
     const momentDamage = this.params.damage / SHOT_LAZER_REPEAT;
 
@@ -143,9 +109,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
     }
   }
 
-  /**
-   * Process of shooting.
-   */
   private processing() {
     if (
       this.target.live.isDead()

@@ -13,7 +13,7 @@ export const ComponentWave: React.FC = () => {
   const game = useContext(GameContext);
 
   const [currentNumber, setCurrentNumber] = useState(
-    game.world.wave.getCurrentNumber(),
+    game.world.wave.getTargetNumber(),
   );
   const [value, setValue] = useState(null);
   const [isGoing, setGoing] = useState(false);
@@ -21,7 +21,7 @@ export const ComponentWave: React.FC = () => {
   const [isHintVisible, setHintVisible] = useState(false);
 
   useWorldUpdate(() => {
-    setCurrentNumber(game.world.wave.getCurrentNumber());
+    setCurrentNumber(game.world.wave.getTargetNumber());
     setGoing(game.world.wave.isGoing);
 
     if (game.world.wave.isGoing) {
@@ -33,7 +33,7 @@ export const ComponentWave: React.FC = () => {
       const timeleft = game.world.wave.getTimeleft();
 
       setValue(formatTime(timeleft));
-      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !game.world.isTimerPaused());
+      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !game.world.isTimePaused());
     }
   });
 

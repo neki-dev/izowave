@@ -4,23 +4,20 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
-import { ChestTexture, ChestData, ChestAudio } from '~type/world/entities/chest';
-import { TileType, Vector2D } from '~type/world/level';
+import { IWorld } from '~type/world';
+import {
+  ChestTexture, ChestData, ChestAudio, IChest,
+} from '~type/world/entities/chest';
+import { TileType } from '~type/world/level';
+import { ITile } from '~type/world/level/tile-matrix';
 
-export class Chest extends Phaser.GameObjects.Image {
-  readonly scene: World;
+export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
+  readonly scene: IWorld;
 
-  /**
-   * Position at matrix.
-   */
-  readonly positionAtMatrix: Vector2D;
+  readonly tileType: TileType = TileType.CHEST;
 
-  /**
-   * Chest constructor.
-   */
-  constructor(scene: World, {
+  constructor(scene: IWorld, {
     positionAtMatrix, variant = 0,
   }: ChestData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
@@ -30,21 +27,18 @@ export class Chest extends Phaser.GameObjects.Image {
     scene.add.existing(this);
     scene.entityGroups.chests.add(this);
 
-    this.positionAtMatrix = positionAtMatrix;
+    const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
 
-    // Configure tile
+    this.setVisible(isVisibleTile);
+
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.setOrigin(0.5, TILE_META.origin);
-    scene.level.putTile(this, TileType.CHEST, tilePosition);
+    scene.level.putTile(this, tilePosition);
   }
 
-  /**
-   * Take resources from chest and destroy him.
-   */
   public open() {
-    const waveNumber = this.scene.wave.getCurrentNumber();
+    const waveNumber = this.scene.wave.getTargetNumber();
 
-    // Give resources
     const resources = calcGrowth(
       Phaser.Math.Between(
         DIFFICULTY.CHEST_RESOURCES - Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
@@ -56,7 +50,6 @@ export class Chest extends Phaser.GameObjects.Image {
 
     this.scene.player.giveResources(resources);
 
-    // Give experience
     const experience = calcGrowth(
       DIFFICULTY.CHEST_EXPERIENCE,
       DIFFICULTY.CHEST_EXPERIENCE_GROWTH,

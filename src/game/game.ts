@@ -11,94 +11,68 @@ import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
-import { GameDifficulty, GameEvents, GameStat } from '~type/game';
+import { IAnalytics } from '~type/analytics';
+import {
+  GameDifficulty, GameEvents, GameStat, IGame,
+} from '~type/game';
+import { IMenu } from '~type/menu';
+import { IScreen } from '~type/screen';
+import { ITutorial } from '~type/tutorial';
+import { IWorld } from '~type/world';
 
-export class Game extends Phaser.Game {
-  /**
-   * Tutorial manager.
-   */
-  readonly tutorial: Tutorial;
+export class Game extends Phaser.Game implements IGame {
+  readonly tutorial: ITutorial;
 
-  /**
-   * Analytics manager.
-   */
-  readonly analytics: Analytics;
+  readonly analytics: IAnalytics;
 
-  /**
-   * Game is started.
-   */
-  private _started: boolean = false;
+  private _isStarted: boolean = false;
 
-  public get started() { return this._started; }
+  public get isStarted() { return this._isStarted; }
 
-  private set started(v) { this._started = v; }
+  private set isStarted(v) { this._isStarted = v; }
 
-  /**
-   * Game is paused.
-   */
-  private _paused: boolean = false;
+  private _isPaused: boolean = false;
 
-  public get paused() { return this._paused; }
+  public get isPaused() { return this._isPaused; }
 
-  private set paused(v) { this._paused = v; }
+  private set isPaused(v) { this._isPaused = v; }
 
-  /**
-   * Game is finished.
-   */
-  private _finished: boolean = false;
+  private _isFinished: boolean = false;
 
-  public get finished() { return this._finished; }
+  public get isFinished() { return this._isFinished; }
 
-  private set finished(v) { this._finished = v; }
+  private set isFinished(v) { this._isFinished = v; }
 
-  /**
-   * Game difficulty type.
-   */
   private _difficultyType: GameDifficulty;
 
   public get difficultyType() { return this._difficultyType; }
 
   private set difficultyType(v) { this._difficultyType = v; }
 
-  /**
-   * Game difficulty multiply.
-   */
   private _difficulty: number;
 
   public get difficulty() { return this._difficulty; }
 
   private set difficulty(v) { this._difficulty = v; }
 
-  /**
-   * Menu scene.
-   */
-  private _menu: Menu;
+  private _menu: IMenu;
 
   public get menu() { return this._menu; }
 
   private set menu(v) { this._menu = v; }
 
-  /**
-   * Screen scene.
-   */
-  private _screen: Screen;
+  private _screen: IScreen;
 
   public get screen() { return this._screen; }
 
   private set screen(v) { this._screen = v; }
 
-  /**
-   * World scene.
-   */
-  private _world: World;
+  private _world: IWorld;
 
   public get world() { return this._world; }
 
   private set world(v) { this._world = v; }
 
-  /**
-   * Game constructor.
-   */
   constructor() {
     super({
       scene: [Basic, World, Screen, Menu, Gameover],
@@ -125,7 +99,7 @@ export class Game extends Phaser.Game {
     this.tutorial = new Tutorial();
     this.analytics = new Analytics();
 
-    this.readDifficulty();
+    this.readAndUpdateDifficulty();
 
     this.events.on(Phaser.Core.Events.READY, () => {
       this.screen = <Screen> this.scene.keys.SCREEN;
@@ -138,11 +112,8 @@ export class Game extends Phaser.Game {
     });
   }
 
-  /**
-   * Pause game.
-   */
   public pauseGame() {
-    this.paused = true;
+    this.isPaused = true;
 
     this.world.scene.pause();
     this.screen.scene.pause();
@@ -150,11 +121,8 @@ export class Game extends Phaser.Game {
     this.scene.systemScene.scene.launch(this.menu);
   }
 
-  /**
-   * Resume game.
-   */
   public resumeGame() {
-    this.paused = false;
+    this.isPaused = false;
 
     this.scene.systemScene.scene.stop(this.menu);
 
@@ -162,12 +130,9 @@ export class Game extends Phaser.Game {
     this.screen.scene.resume();
   }
 
-  /**
-   * Start game.
-   */
   public startGame() {
-    this.finished = false;
-    this.started = true;
+    this.isFinished = false;
+    this.isStarted = true;
 
     this.world.start();
 
@@ -183,11 +148,8 @@ export class Game extends Phaser.Game {
     }
   }
 
-  /**
-   * Stop game.
-   */
   public stopGame() {
-    this.started = false;
+    this.isStarted = false;
 
     this.scene.systemScene.scene.stop(this.menu);
     this.scene.systemScene.scene.stop(this.screen);
@@ -199,11 +161,8 @@ export class Game extends Phaser.Game {
     }
   }
 
-  /**
-   * Restart game.
-   */
   public restartGame() {
-    if (this.started) {
+    if (this.isStarted) {
       this.stopGame();
     }
 
@@ -214,13 +173,10 @@ export class Game extends Phaser.Game {
     });
   }
 
-  /**
-   * Finish game.
-   */
   public finishGame() {
     this.stopGame();
 
-    this.finished = true;
+    this.isFinished = true;
 
     const record = this.readBestStat();
     const stat = this.getCurrentStat();
@@ -237,11 +193,6 @@ export class Game extends Phaser.Game {
     });
   }
 
-  /**
-   * Set game difficulty.
-   *
-   * @param type - Difficulty type
-   */
   public setDifficulty(type: GameDifficulty) {
     localStorage.setItem('DIFFICULTY', type);
 
@@ -249,18 +200,12 @@ export class Game extends Phaser.Game {
     this.difficulty = DIFFICULTY_POWERS[this.difficultyType];
   }
 
-  /**
-   * Set saved game difficulty.
-   */
-  private readDifficulty() {
+  private readAndUpdateDifficulty() {
     const difficultyType = <GameDifficulty> localStorage.getItem('DIFFICULTY') || GameDifficulty.NORMAL;
 
     this.setDifficulty(difficultyType);
   }
 
-  /**
-   * Get best game stat.
-   */
   private readBestStat(): Nullable<GameStat> {
     try {
       const recordValue = localStorage.getItem(`BEST_STAT.${this.difficultyType}`);
@@ -271,9 +216,6 @@ export class Game extends Phaser.Game {
     }
   }
 
-  /**
-   * Save best game stat.
-   */
   private writeBestStat(stat: GameStat, record: Nullable<GameStat>) {
     localStorage.setItem(`BEST_STAT.${this.difficultyType}`, JSON.stringify(
       Object.keys(stat).reduce((curr, param: keyof GameStat) => ({
@@ -283,21 +225,15 @@ export class Game extends Phaser.Game {
     ));
   }
 
-  /**
-   * Get current game stat.
-   */
   private getCurrentStat() {
     return {
-      waves: this.world.wave.getCurrentNumber() - 1,
+      waves: this.world.wave.getTargetNumber() - 1,
       kills: this.world.player.kills,
       level: this.world.player.level,
-      lived: this.world.getTimerNow() / 1000 / 60,
+      lived: this.world.getTime() / 1000 / 60,
     } as GameStat;
   }
 
-  /**
-   * Add shaders to renderer pipelines.
-   */
   private registerShaders() {
     const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.renderer;
 

@@ -4,15 +4,13 @@ import { CONTROL_KEY } from '~const/controls';
 import { registerAudioAssets } from '~lib/assets';
 import { Interface } from '~lib/interface';
 import { Level } from '~scene/world/level';
-import { IGameScene, SceneKey } from '~type/game';
-import { MenuAudio } from '~type/menu';
+import { IGame, SceneKey } from '~type/game';
+import { IMenu, MenuAudio } from '~type/menu';
 
 import { MenuUI } from './ui';
 
-import { Game } from '~game';
-
-export class Menu extends Phaser.Scene implements IGameScene {
-  readonly game: Game;
+export class Menu extends Phaser.Scene implements IMenu {
+  readonly game: IGame;
 
   constructor() {
     super(SceneKey.MENU);
@@ -21,7 +19,7 @@ export class Menu extends Phaser.Scene implements IGameScene {
   public create() {
     new Interface(this, MenuUI);
 
-    if (!this.game.paused) {
+    if (!this.game.isPaused) {
       this.setCameraPreview();
 
       this.input.keyboard.once(CONTROL_KEY.START, () => {

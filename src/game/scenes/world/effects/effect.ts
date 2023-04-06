@@ -1,12 +1,14 @@
 import Phaser from 'phaser';
 
 import { registerSpriteAssets } from '~lib/assets';
-import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
-import { EffectData, EffectTexture } from '~type/world/effects';
+import { IWorld } from '~type/world';
+import { EffectData, EffectTexture, IEffect } from '~type/world/effects';
 
-export class Effect extends Phaser.GameObjects.Sprite {
-  constructor(scene: World, {
+export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
+  readonly scene: IWorld;
+
+  constructor(scene: IWorld, {
     texture, position, audio, rate = 16,
   }: EffectData) {
     super(scene, position.x, position.y, texture);

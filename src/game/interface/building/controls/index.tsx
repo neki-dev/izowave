@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { ComponentCost } from '~interface/cost';
-import { BuildingAction } from '~type/world/entities/building';
+import { BuildingControl } from '~type/world/entities/building';
 
 import { Actions, Action } from './styles';
 
 type Props = {
-  actions: BuildingAction[]
+  actions: BuildingControl[]
 };
 
-export const ComponentBuildingActions: React.FC<Props> = ({ actions }) => (
+export const ComponentBuildingControls: React.FC<Props> = ({ actions }) => (
   <Actions>
     {actions.map((action) => (
       <Action key={action.label} onClick={action.onClick}>
@@ -25,4 +25,4 @@ export const ComponentBuildingActions: React.FC<Props> = ({ actions }) => (
   </Actions>
 );
 
-ComponentBuildingActions.displayName = 'ComponentBuildingActions';
+ComponentBuildingControls.displayName = 'ComponentBuildingControls';

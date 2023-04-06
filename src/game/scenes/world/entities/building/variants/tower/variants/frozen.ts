@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFrozen } from '~entity/shot/ball/variants/frozen';
-import { World } from '~scene/world';
+import { IWorld } from '~type/world';
 import {
   BuildingIcon,
   BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
@@ -29,10 +29,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static AllowByWave = DIFFICULTY.BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE;
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFrozen(scene, {
       freeze: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION,
       speed: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED,

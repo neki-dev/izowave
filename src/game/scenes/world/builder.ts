@@ -6,50 +6,35 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { TILE_META } from '~const/world/level';
 import { calcGrowth, equalPositions } from '~lib/utils';
-import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
-import { BuilderEvents } from '~type/world/builder';
+import { IWorld } from '~type/world';
+import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
-export class Builder extends EventEmitter {
-  readonly scene: World;
+export class Builder extends EventEmitter implements IBuilder {
+  readonly scene: IWorld;
 
-  /**
-   * Build state.
-   */
   private _isBuild: boolean = false;
 
   public get isBuild() { return this._isBuild; }
 
   private set isBuild(v) { this._isBuild = v; }
 
-  /**
-   * Permitted build area.
-   */
   private buildArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
-  /**
-   * Building preview.
-   */
   private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
 
-  /**
-   * Current building variant.
-   */
   private _variant: Nullable<BuildingVariant> = null;
 
   public get variant() { return this._variant; }
 
   private set variant(v) { this._variant = v; }
 
-  /**
-   * Builder constructor.
-   */
-  constructor(scene: World) {
+  constructor(scene: IWorld) {
     super();
 
     this.scene = scene;
@@ -71,14 +56,14 @@ export class Builder extends EventEmitter {
     });
 
     this.scene.game.tutorial.onBeg(TutorialStep.BUILD_AMMUNITION, () => {
-      this.scene.setTimerPause(true);
+      this.scene.setTimePause(true);
     });
     this.scene.game.tutorial.onEnd(TutorialStep.BUILD_AMMUNITION, () => {
-      this.scene.setTimerPause(false);
+      this.scene.setTimePause(false);
       this.clearBuildingVariant();
     });
     this.scene.game.tutorial.onEnd(TutorialStep.BUILD_GENERATOR, () => {
-      this.scene.setTimerPause(false);
+      this.scene.setTimePause(false);
       this.clearBuildingVariant();
     });
     this.scene.game.tutorial.onEnd(TutorialStep.BUILD_TOWER_FIRE, () => {
@@ -86,9 +71,6 @@ export class Builder extends EventEmitter {
     });
   }
 
-  /**
-   * Toggle build state and update build area.
-   */
   public update() {
     if (this.isCanBuild()) {
       if (this.isBuild) {
@@ -101,9 +83,6 @@ export class Builder extends EventEmitter {
     }
   }
 
-  /**
-   * Set current building variant.
-   */
   public setBuildingVariant(variant: BuildingVariant) {
     if (this.scene.wave.isGoing || this.variant === variant) {
       return;
@@ -137,9 +116,6 @@ export class Builder extends EventEmitter {
     }
   }
 
-  /**
-   * Unset current building variant.
-   */
   public unsetBuildingVariant() {
     if (this.scene.wave.isGoing || this.variant === null) {
       return;
@@ -150,19 +126,6 @@ export class Builder extends EventEmitter {
     this.clearBuildingVariant();
   }
 
-  /**
-   * Clear current building variant.
-   */
-  public clearBuildingVariant() {
-    this.closeBuilder();
-    this.variant = null;
-  }
-
-  /**
-   * Add rubble foundation on position.
-   *
-   * @param position - Position at matrix
-   */
   public addFoundation(position: Vector2D) {
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
@@ -193,10 +156,40 @@ export class Builder extends EventEmitter {
     }
   }
 
-  /**
-   * Get current pointer world position
-   * and converting to build grided position.
-   */
+  public isBuildingAllowedByTutorial(variant: BuildingVariant) {
+    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
+      return false;
+    }
+
+    for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
+      [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
+      [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
+      [TutorialStep.BUILD_AMMUNITION, BuildingVariant.AMMUNITION],
+    ]) {
+      if (this.scene.game.tutorial.state(step) === TutorialStepState.BEG) {
+        return (variant === allowedVariant);
+      }
+    }
+
+    return true;
+  }
+
+  public isBuildingAllowedByWave(variant: BuildingVariant) {
+    const waveAllowed = BUILDINGS[variant].AllowByWave;
+
+    if (waveAllowed) {
+      return (waveAllowed <= this.scene.wave.getTargetNumber());
+    }
+
+    return true;
+  }
+
+  public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
+    const limit = BUILDINGS[variant].Limit;
+
+    return limit ? limit * (Math.floor(this.scene.wave.number / 5) + 1) : null;
+  }
+
   private getAssumedPosition() {
     return Level.ToMatrixPosition({
       x: this.scene.input.activePointer.worldX,
@@ -204,9 +197,6 @@ export class Builder extends EventEmitter {
     });
   }
 
-  /**
-   * Create builder interface and allow build.
-   */
   private openBuilder() {
     if (this.isBuild) {
       return;
@@ -223,9 +213,6 @@ export class Builder extends EventEmitter {
     this.emit(BuilderEvents.BUILD_START);
   }
 
-  /**
-   * Remove builder interface and disallow build.
-   */
   private closeBuilder() {
     if (!this.isBuild) {
       return;
@@ -242,11 +229,11 @@ export class Builder extends EventEmitter {
     this.emit(BuilderEvents.BUILD_STOP);
   }
 
-  /**
-   * Switch current building variant.
-   *
-   * @param index - Variant index
-   */
+  private clearBuildingVariant() {
+    this.closeBuilder();
+    this.variant = null;
+  }
+
   private switchBuildingVariant(index: number) {
     const variant = Object.values(BuildingVariant)[index];
 
@@ -259,9 +246,6 @@ export class Builder extends EventEmitter {
     }
   }
 
-  /**
-   * Check is player can build.
-   */
   private isCanBuild() {
     return (
       this.variant !== null
@@ -271,9 +255,6 @@ export class Builder extends EventEmitter {
     );
   }
 
-  /**
-   * Check is allow to build on estimated position.
-   */
   private isAllowBuild() {
     const positionAtMatrix = this.getAssumedPosition();
 
@@ -310,9 +291,6 @@ export class Builder extends EventEmitter {
     return true;
   }
 
-  /**
-   * Build in assumed position.
-   */
   private build() {
     if (!this.buildingPreview.visible) {
       return;
@@ -364,49 +342,6 @@ export class Builder extends EventEmitter {
     }
   }
 
-  /**
-   * Check is tutorial is allowed building variant.
-   *
-   * @param variant - Building variant
-   */
-  public isBuildingAllowedByTutorial(variant: BuildingVariant) {
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
-      return false;
-    }
-
-    for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
-      [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
-      [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
-      [TutorialStep.BUILD_AMMUNITION, BuildingVariant.AMMUNITION],
-    ]) {
-      if (this.scene.game.tutorial.state(step) === TutorialStepState.BEG) {
-        return (variant === allowedVariant);
-      }
-    }
-
-    return true;
-  }
-
-  /**
-   * Check is current wave is allowed building variant.
-   *
-   * @param variant - Building variant
-   */
-  public isBuildingAllowedByWave(variant: BuildingVariant) {
-    const waveAllowed = BUILDINGS[variant].AllowByWave;
-
-    if (waveAllowed) {
-      return (waveAllowed <= this.scene.wave.getCurrentNumber());
-    }
-
-    return true;
-  }
-
-  /**
-   * Check is count of buildings variants reached limit.
-   *
-   * @param variant - Building variant
-   */
   private isBuildingLimitReached(variant: BuildingVariant) {
     const limit = this.getBuildingLimit(variant);
 
@@ -417,20 +352,6 @@ export class Builder extends EventEmitter {
     return false;
   }
 
-  /**
-   * Get building limit on current wave.
-   *
-   * @param variant - Building variant
-   */
-  public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
-    const limit = BUILDINGS[variant].Limit;
-
-    return limit ? limit * (Math.floor(this.scene.wave.number / 5) + 1) : null;
-  }
-
-  /**
-   * Create permitted build area on map.
-   */
   private createBuildArea() {
     const d = calcGrowth(
       DIFFICULTY.BUILDING_BUILD_AREA / this.scene.game.difficulty,
@@ -443,9 +364,6 @@ export class Builder extends EventEmitter {
     this.updateBuildArea();
   }
 
-  /**
-   * Update build area position.
-   */
   private updateBuildArea() {
     const position = this.scene.player.getBottomCenter();
     const out = TILE_META.height * 2;
@@ -455,17 +373,11 @@ export class Builder extends EventEmitter {
     this.buildArea.setDepth(depth);
   }
 
-  /**
-   * Destroy build area.
-   */
   private destroyBuildArea() {
     this.buildArea.destroy();
     this.buildArea = null;
   }
 
-  /**
-   * Create building variant preview on map.
-   */
   private createBuildingPreview() {
     const BuildingInstance = BUILDINGS[this.variant];
 
@@ -474,9 +386,6 @@ export class Builder extends EventEmitter {
     this.updateBuildingPreview();
   }
 
-  /**
-   * Update position and visible of building preview.
-   */
   private updateBuildingPreview() {
     const positionAtMatrix = this.getAssumedPosition();
     const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
@@ -493,9 +402,6 @@ export class Builder extends EventEmitter {
     }
   }
 
-  /**
-   * Destroy building preview.
-   */
   private destroyBuildingPreview() {
     this.buildingPreview.destroy();
     this.buildingPreview = null;
