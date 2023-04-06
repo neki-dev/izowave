@@ -74,7 +74,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     return info;
   }
 
-  public getActions() {
+  public getControls() {
     const actions = super.getControls();
 
     if (this.ammo < this.getMaxAmmo()) {
