@@ -1,6 +1,7 @@
 import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
+import { WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
 import { calcGrowth } from '~lib/utils';
 
 import world from '../__mocks__/world';
@@ -26,11 +27,11 @@ describe('wave.ts', () => {
   it('should return timeleft to wave start after skip', () => {
     wave.skipTimeleft();
 
-    expect(wave.getTimeleft()).toEqual(3000);
+    expect(wave.getTimeleft()).toEqual(WAVE_TIMELEFT_AFTER_SKIP);
   });
 
   it('should start wave', async () => {
-    world.getTimerNow = jest.fn(() => 3000);
+    world.getTimerNow = jest.fn(() => WAVE_TIMELEFT_AFTER_SKIP);
 
     wave.update();
 

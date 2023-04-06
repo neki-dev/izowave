@@ -5,7 +5,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_VARIANTS_META } from '~const/world/entities/enemy';
-import { WAVE_ALARM_TIMELEFT } from '~const/world/wave';
+import { WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
 import { calcGrowth } from '~lib/utils';
@@ -75,7 +75,7 @@ export class Wave extends EventEmitter {
     this.runTimeleft();
 
     // Add keyboard events
-    this.scene.input.keyboard.on(CONTROL_KEY.WAVE_SKIP_TIMELEFT, this.skipTimeleft, this);
+    this.scene.input.keyboard.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, this.skipTimeleft, this);
   }
 
   /**
@@ -106,7 +106,7 @@ export class Wave extends EventEmitter {
 
       if (left <= 0) {
         this.start();
-      } else if (left <= WAVE_ALARM_TIMELEFT && !this.alarmInterval) {
+      } else if (left <= WAVE_TIMELEFT_ALARM && !this.alarmInterval) {
         this.scene.sound.play(WaveAudio.TICK);
         this.alarmInterval = setInterval(() => {
           this.scene.sound.play(WaveAudio.TICK);
@@ -122,7 +122,7 @@ export class Wave extends EventEmitter {
     let pause: number;
 
     if (this.scene.isTimerPaused()) {
-      pause = 5000;
+      pause = WAVE_TIMELEFT_ALARM;
     } else {
       pause = calcGrowth(
         DIFFICULTY.WAVE_PAUSE,
@@ -152,6 +152,17 @@ export class Wave extends EventEmitter {
   }
 
   /**
+   * Skip spawn enemies.
+   */
+  public skipEnemies() {
+    if (!this.isGoing) {
+      return;
+    }
+
+    this.spawnedCount = this.maxSpawnedCount;
+  }
+
+  /**
    * Skip timeleft.
    */
   public skipTimeleft() {
@@ -161,11 +172,11 @@ export class Wave extends EventEmitter {
 
     const now = this.scene.getTimerNow();
 
-    if (this.nextWaveTimestamp - now <= 3000) {
+    if (this.nextWaveTimestamp - now <= WAVE_TIMELEFT_AFTER_SKIP) {
       return;
     }
 
-    this.nextWaveTimestamp = now + 3000;
+    this.nextWaveTimestamp = now + WAVE_TIMELEFT_AFTER_SKIP;
   }
 
   /**

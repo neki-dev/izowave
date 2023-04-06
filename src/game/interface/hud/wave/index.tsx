@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 
-import { WAVE_ALARM_TIMELEFT } from '~const/world/wave';
+import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { ComponentHint } from '~interface/plates/hint';
 import { GameContext, useWorldUpdate } from '~lib/interface';
 import { formatTime } from '~lib/utils';
@@ -33,7 +33,7 @@ export const ComponentWave: React.FC = () => {
       const timeleft = game.world.wave.getTimeleft();
 
       setValue(formatTime(timeleft));
-      setAlarm(timeleft <= WAVE_ALARM_TIMELEFT && !game.world.isTimerPaused());
+      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !game.world.isTimerPaused());
     }
   });
 
