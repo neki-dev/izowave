@@ -41,7 +41,9 @@ UpgradeLevel.Item = styled.div`
   height: 10px;
   border: 1px solid #000;
   background: #000;
+  box-shadow: 0 4px 0 #222 inset;
   &.active {
     background: ${InterfaceColor.INFO_DARK};
+    box-shadow: 0 4px 0 ${InterfaceColor.INFO} inset;
   }
 `;

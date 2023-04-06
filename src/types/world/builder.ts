@@ -48,13 +48,13 @@ export interface IBuilder extends EventEmitter {
    * Check is tutorial allow building variant.
    * @param variant - Building variant
    */
-  isBuildingAllowedByTutorial(variant: BuildingVariant): boolean
+  isBuildingAllowByTutorial(variant: BuildingVariant): boolean
 
   /**
    * Check is current wave allow building variant.
    * @param variant - Building variant
    */
-  isBuildingAllowedByWave(variant: BuildingVariant): boolean
+  isBuildingAllowByWave(variant: BuildingVariant): boolean
 }
 
 export enum BuilderEvents {

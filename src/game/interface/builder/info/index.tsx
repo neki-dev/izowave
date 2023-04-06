@@ -7,6 +7,7 @@ import { GameContext, useWorldUpdate } from '~lib/interface';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
+  Allowance,
   Cost,
   Description,
   Header,
@@ -24,15 +25,17 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
 
   const [limit, setLimit] = useState(0);
   const [existCount, setExistCount] = useState(0);
-  const [isAllow, setAllow] = useState(false);
+  const [isAllowByWave, setAllowByWave] = useState(false);
+  const [isAllowByTutorial, setAllowByTutorial] = useState(false);
 
   useWorldUpdate(() => {
-    const currentIsAllow = game.world.builder.isBuildingAllowedByTutorial(variant)
-      && game.world.builder.isBuildingAllowedByWave(variant);
+    const currentIsAllowByWave = game.world.builder.isBuildingAllowByWave(variant);
+    const currentIsAllowByTutorial = game.world.builder.isBuildingAllowByTutorial(variant);
 
-    setAllow(currentIsAllow);
+    setAllowByWave(currentIsAllowByWave);
+    setAllowByTutorial(currentIsAllowByTutorial);
 
-    if (currentIsAllow) {
+    if (currentIsAllowByWave && currentIsAllowByTutorial) {
       const currentLimit = game.world.builder.getBuildingLimit(variant);
 
       setLimit(currentLimit);
@@ -46,7 +49,7 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
     <Wrapper>
       <Header>
         <Name>{BUILDINGS[variant].Name}</Name>
-        {(isAllow && limit) && (
+        {(isAllowByWave && isAllowByTutorial && limit) && (
           <Limit>
             {existCount}/{limit}
           </Limit>
@@ -54,7 +57,11 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
       </Header>
       <Description>{BUILDINGS[variant].Description}</Description>
 
-      {isAllow && (
+      {!isAllowByWave && (
+        <Allowance>Will be available on {BUILDINGS[variant].AllowByWave} wave</Allowance>
+      )}
+
+      {isAllowByWave && isAllowByTutorial && (
         <>
           <ComponentBuildingParameters params={BUILDINGS[variant].Params} />
           <Cost>

@@ -1,7 +1,12 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 import { NoticeType } from '~type/screen';
+
+const animationOpacity = keyframes`
+  0% { opacity: 0; margin-top: -30px }
+  100% { opacity: 1; margin-top: 0 }
+`;
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -19,6 +24,7 @@ export const Item = styled.div`
   font-size: 16px;
   line-height: 16px;
   text-shadow: 2px 2px 0 #000;
+  animation: ${animationOpacity} 0.2s ease-in;
   &:not(:last-child) {
     margin-bottom: 8px;
   }

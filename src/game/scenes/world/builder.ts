@@ -88,15 +88,15 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    if (!this.isBuildingAllowedByTutorial(variant)) {
+    if (!this.isBuildingAllowByTutorial(variant)) {
       return;
     }
 
     const BuildingInstance = BUILDINGS[variant];
 
-    if (!this.isBuildingAllowedByWave(variant)) {
+    if (!this.isBuildingAllowByWave(variant)) {
       // eslint-disable-next-line max-len
-      this.scene.game.screen.notice(NoticeType.ERROR, `${BuildingInstance.Name} BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
 
       return;
     }
@@ -156,7 +156,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  public isBuildingAllowedByTutorial(variant: BuildingVariant) {
+  public isBuildingAllowByTutorial(variant: BuildingVariant) {
     if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
       return false;
     }
@@ -174,7 +174,7 @@ export class Builder extends EventEmitter implements IBuilder {
     return true;
   }
 
-  public isBuildingAllowedByWave(variant: BuildingVariant) {
+  public isBuildingAllowByWave(variant: BuildingVariant) {
     const waveAllowed = BUILDINGS[variant].AllowByWave;
 
     if (waveAllowed) {

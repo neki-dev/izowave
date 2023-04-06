@@ -38,8 +38,8 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
   useWorldUpdate(() => {
     setActive(game.world.builder.variant === variant);
     setDisallow(
-      !game.world.builder.isBuildingAllowedByTutorial(variant)
-      || !game.world.builder.isBuildingAllowedByWave(variant),
+      !game.world.builder.isBuildingAllowByTutorial(variant)
+      || !game.world.builder.isBuildingAllowByWave(variant),
     );
   });
 

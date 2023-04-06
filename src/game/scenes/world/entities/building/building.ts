@@ -242,7 +242,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveAllowed = this.getWaveAllowUpgrade();
 
     if (waveAllowed > this.scene.wave.getTargetNumber()) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE BE AVAILABLE ON ${waveAllowed} WAVE`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveAllowed} WAVE`);
 
       return;
     }

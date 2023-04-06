@@ -1,11 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
+
+const animationOpacity = keyframes`
+  0% { opacity: 0; margin-right: -15px }
+  100% { opacity: 1; margin-right: 0 }
+`;
 
 export const Wrapper = styled.div`
   width: 280px;
   background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 20px;
+  animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
     content: '';
@@ -49,6 +55,10 @@ export const Description = styled.div`
   font-size: 14px;
   line-height: 16px;
   text-shadow: 2px 2px 0 #000;
+`;
+
+export const Allowance = styled(Description)`
+  opacity: 0.75;
 `;
 
 export const Cost: any = styled.div`
