@@ -1,3 +1,5 @@
+import 'jest-canvas-mock';
+
 import { TileType } from '~type/world/level';
 
 import tile from '../__mocks__/tile';
@@ -11,7 +13,9 @@ describe('tile-matrix.ts', () => {
   });
 
   it('should put tile', () => {
-    matrix.putTile(tile, TileType.MAP, { x: 0, y: 0, z: 0 });
+    // @ts-ignore
+    tile.tileType = TileType.MAP;
+    matrix.putTile(tile, { x: 0, y: 0, z: 0 });
     expect(tile.tileType).toEqual(TileType.MAP);
   });
 

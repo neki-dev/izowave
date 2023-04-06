@@ -1,4 +1,4 @@
-import { World } from '../world';
+import { IWorld } from '~type/world';
 
 const world = {
   getTime: jest.fn(),
@@ -30,6 +30,6 @@ const world = {
   sound: {
     play: jest.fn(),
   },
-} as unknown as World;
+} as unknown as IWorld;
 
 export default world;

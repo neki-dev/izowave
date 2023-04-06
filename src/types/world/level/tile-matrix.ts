@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { LevelBiome, TileType, Vector3D } from '~type/world/level';
 
 export interface ITileMatrix {

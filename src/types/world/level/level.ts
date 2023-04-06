@@ -98,15 +98,3 @@ export type Vector3D = {
   y: number
   z: number
 };
-
-// declare global {
-//   namespace Phaser {
-//     namespace GameObjects {
-//       interface Image {
-//         biome?: LevelBiome
-//         shape?: Phaser.Geom.Polygon
-//         tileType: TileType
-//       }
-//     }
-//   }
-// }

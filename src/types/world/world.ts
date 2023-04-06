@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { IGame, IScene } from '~type/game';
 import { IBuilder } from '~type/world/builder';
 import { ParticlesList } from '~type/world/effects';

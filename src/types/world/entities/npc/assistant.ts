@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { INPC } from '~type/world/entities/npc';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IShotInitiator } from '~type/world/entities/shot';

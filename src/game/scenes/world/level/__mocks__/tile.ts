@@ -1,5 +1,7 @@
 import { ITile } from '~type/world/level/tile-matrix';
 
-const tile = {} as ITile;
+const tile = {
+  on: jest.fn(),
+} as unknown as ITile;
 
 export default tile;

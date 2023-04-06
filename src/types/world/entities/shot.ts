@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';

@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { Vector2D } from '~type/world/level';
 
 import { IWorld } from '../world';
