@@ -1,49 +1,69 @@
 const path = require('path');
 
 const alias = require('alias-reuse');
+const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 const tsconfig = require('./tsconfig.json');
 
-module.exports = (_, { mode }) => ({
-  resolve: {
-    extensions: ['.js', '.ts', '.tsx'],
-    alias: alias.fromFile(__dirname, './tsconfig.json').toWebpack(),
-  },
-  entry: path.join(__dirname, 'src/index.ts'),
-  output: {
-    path: path.join(__dirname, tsconfig.compilerOptions.outDir, 'dist'),
-    filename: 'bundle.js',
-  },
-  module: {
-    rules: [{
-      test: /\.tsx?$/,
-      use: ['babel-loader', 'ts-loader'],
-      exclude: /node_modules/,
-    }],
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      IS_DEV_MODE: JSON.stringify(mode === 'development'),
-    }),
-  ],
-  devServer: {
-    static: {
-      directory: path.join(__dirname, tsconfig.compilerOptions.outDir),
+module.exports = (_, options) => {
+  const isDev = options.mode === 'development';
+  const entryDir = path.resolve(__dirname, 'src');
+  const outputDir = path.resolve(__dirname, tsconfig.compilerOptions.outDir);
+
+  return {
+    target: 'web',
+    resolve: {
+      extensions: ['.js', '.ts', '.tsx'],
+      alias: alias.fromFile(__dirname, './tsconfig.json').toWebpack(),
     },
-    compress: true,
-    port: 9000,
-  },
-  devtool: mode === 'development' ? 'inline-source-map' : undefined,
-  optimization: mode === 'production' ? {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          output: { comments: false },
-        },
+    entry: path.join(entryDir, 'index.ts'),
+    output: {
+      path: outputDir,
+      filename: 'bundle.[fullhash].js',
+      clean: true,
+    },
+    module: {
+      rules: [{
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: ['babel-loader', 'ts-loader'],
+      }],
+    },
+    plugins: [
+      new webpack.DefinePlugin({
+        IS_DEV_MODE: JSON.stringify(isDev),
+      }),
+      new HtmlWebpackPlugin({
+        template: path.join(entryDir, 'index.html'),
+        filename: 'index.html',
+        inject: 'body',
+      }),
+      new CopyPlugin({
+        patterns: [
+          { from: path.join(entryDir, 'assets'), to: 'assets' },
+        ],
       }),
     ],
-  } : undefined,
-});
+    devServer: {
+      static: {
+        directory: outputDir,
+      },
+      compress: true,
+      port: 9000,
+    },
+    devtool: isDev ? 'inline-source-map' : undefined,
+    optimization: isDev ? undefined : {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            output: { comments: false },
+          },
+        }),
+      ],
+    },
+  };
+};

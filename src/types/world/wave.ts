@@ -16,6 +16,12 @@ export interface IWave extends EventEmitter {
   number: number
 
   /**
+   * Mod that stops start of wave.
+   * Used for cheats and tests.
+   */
+  isPeaceMode: boolean
+
+  /**
    * Update wave process.
    */
   update(): void
