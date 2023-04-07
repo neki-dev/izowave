@@ -29,7 +29,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
+    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
         this.reload();
       }

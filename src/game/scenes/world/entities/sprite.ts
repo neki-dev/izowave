@@ -51,7 +51,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.addHealthIndicator();
 
-    scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
+    this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.setPushable(false);
 
     this.live.on(LiveEvents.DAMAGE, () => {

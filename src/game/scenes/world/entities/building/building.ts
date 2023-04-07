@@ -102,18 +102,18 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         this.upgrade();
       }
     });
-    this.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.onFocus();
-    });
-    this.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.onUnfocus();
-    });
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
       if (this.isFocused) {
         this.onClick();
       } else {
         this.onUnclick();
       }
+    });
+    this.on(Phaser.Input.Events.POINTER_OVER, () => {
+      this.onFocus();
+    });
+    this.on(Phaser.Input.Events.POINTER_OUT, () => {
+      this.onUnfocus();
     });
 
     this.live.on(LiveEvents.DAMAGE, () => {
@@ -122,15 +122,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live.on(LiveEvents.DEAD, () => {
       this.onDead();
     });
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.onUnfocus();
-      this.onUnclick();
-    });
     this.scene.game.events.on(GameEvents.FINISH, () => {
       this.onUnfocus();
       this.onUnclick();
     });
     this.scene.builder.on(BuilderEvents.BUILD_START, () => {
+      this.onUnfocus();
+      this.onUnclick();
+    });
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.onUnfocus();
       this.onUnclick();
     });

@@ -33,7 +33,7 @@ export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
 
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.setOrigin(0.5, TILE_META.origin);
-    scene.level.putTile(this, tilePosition);
+    this.scene.level.putTile(this, tilePosition);
   }
 
   public open() {
