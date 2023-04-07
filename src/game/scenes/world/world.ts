@@ -301,6 +301,9 @@ export class World extends Phaser.Scene implements IWorld {
         this.wave.number += Phaser.Math.Between(3, 7);
         this.wave.runTimeleft();
       },
+      PEACE: () => {
+        this.wave.isPeaceMode = !this.wave.isPeaceMode;
+      },
     };
 
     eachEntries(scheme, (code, callback) => {

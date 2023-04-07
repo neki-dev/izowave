@@ -23,6 +23,8 @@ export class Wave extends EventEmitter implements IWave {
 
   private set isGoing(v) { this._isGoing = v; }
 
+  public isPeaceMode: boolean = false;
+
   public number: number = 0;
 
   private spawnedEnemiesCount: number = 0;
@@ -126,6 +128,10 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private start() {
+    if (this.isPeaceMode) {
+      return;
+    }
+
     this.number++;
     this.isGoing = true;
 
