@@ -87,6 +87,8 @@ export class World extends Phaser.Scene implements IWorld {
     this.makeLevel();
     this.addLifecycleTime();
     this.enableCheats();
+
+    this.input.setPollAlways();
   }
 
   public start() {

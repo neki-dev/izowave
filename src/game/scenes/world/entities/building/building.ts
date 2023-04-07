@@ -60,6 +60,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private set isFocused(v) { this._isFocused = v; }
 
+  private toFocus: boolean = false;
+
   private isSelected: boolean = false;
 
   constructor(scene: IWorld, {
@@ -80,24 +82,37 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setInteractive();
     this.addActionArea();
 
-    scene.builder.addFoundation(positionAtMatrix);
+    this.scene.builder.addFoundation(positionAtMatrix);
 
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.setOrigin(0.5, TILE_META.origin);
-    scene.level.putTile(this, tilePosition);
-    scene.level.refreshNavigationMeta();
+    this.scene.level.putTile(this, tilePosition);
+    this.scene.level.refreshNavigationMeta();
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.level.refreshNavigationMeta();
     });
 
-    scene.input.keyboard.on(CONTROL_KEY.BUILDING_DESTROY, () => {
+    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_DESTROY, () => {
       if (this.isFocused) {
         this.break();
       }
     });
-    scene.input.keyboard.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
+    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
       if (this.isFocused) {
         this.upgrade();
+      }
+    });
+    this.on(Phaser.Input.Events.POINTER_OVER, () => {
+      this.onFocus();
+    });
+    this.on(Phaser.Input.Events.POINTER_OUT, () => {
+      this.onUnfocus();
+    });
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      if (this.isFocused) {
+        this.onClick();
+      } else {
+        this.onUnclick();
       }
     });
 
@@ -106,20 +121,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
     this.live.on(LiveEvents.DEAD, () => {
       this.onDead();
-    });
-    this.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.onFocus();
-    });
-    this.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.onUnfocus();
-    });
-    this.on(Phaser.Input.Events.POINTER_UP, () => {
-      this.onClick();
-    });
-    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      if (!this.isFocused) {
-        this.onUnclick();
-      }
     });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.onUnfocus();
@@ -143,6 +144,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
+
+    if (this.toFocus) {
+      this.onFocus();
+    }
   }
 
   public actionsAreaContains(position: Vector2D) {
@@ -307,6 +312,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private onFocus() {
+    this.toFocus = true;
+
     if (
       this.isFocused
       || this.scene.player.live.isDead()
@@ -321,6 +328,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private onUnfocus() {
+    this.toFocus = false;
+
     if (!this.isFocused) {
       return;
     }
