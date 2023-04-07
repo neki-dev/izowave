@@ -27,11 +27,6 @@ export interface IWave extends EventEmitter {
   update(): void
 
   /**
-   * Get target wave number.
-   */
-  getTargetNumber(): number
-
-  /**
    * Get timeleft to next wave.
    */
   getTimeleft(): number

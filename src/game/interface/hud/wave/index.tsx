@@ -12,16 +12,14 @@ import { CurrentNumber, State, Wrapper } from './styles';
 export const ComponentWave: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [currentNumber, setCurrentNumber] = useState(
-    game.world.wave.getTargetNumber(),
-  );
+  const [currentNumber, setCurrentNumber] = useState(1);
   const [value, setValue] = useState(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isHintVisible, setHintVisible] = useState(false);
 
   useWorldUpdate(() => {
-    setCurrentNumber(game.world.wave.getTargetNumber());
+    setCurrentNumber(game.world.wave.number);
     setGoing(game.world.wave.isGoing);
 
     if (game.world.wave.isGoing) {

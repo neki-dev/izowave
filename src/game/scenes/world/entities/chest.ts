@@ -37,15 +37,13 @@ export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
   }
 
   public open() {
-    const waveNumber = this.scene.wave.getTargetNumber();
-
     const resources = calcGrowth(
       Phaser.Math.Between(
         DIFFICULTY.CHEST_RESOURCES - Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
         DIFFICULTY.CHEST_RESOURCES + Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
       ),
       DIFFICULTY.CHEST_RESOURCES_GROWTH,
-      waveNumber,
+      this.scene.wave.number,
     );
 
     this.scene.player.giveResources(resources);
@@ -53,7 +51,7 @@ export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
     const experience = calcGrowth(
       DIFFICULTY.CHEST_EXPERIENCE,
       DIFFICULTY.CHEST_EXPERIENCE_GROWTH,
-      waveNumber,
+      this.scene.wave.number,
     );
 
     this.scene.player.giveExperience(experience);
