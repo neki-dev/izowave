@@ -10,7 +10,7 @@ export const CONTROL_KEY = {
   BUILDING_DESTROY: 'keyup-BACKSPACE',
   BUILDING_RELOAD: 'keyup-R',
 
-  WAVE_SKIP_TIMELEFT: 'keyup-N',
+  WAVE_TIMELEFT_AFTER_SKIP: 'keyup-N',
 
   ZOOM_IN: 'keyup-PLUS',
   ZOOM_OUT: 'keyup-MINUS',

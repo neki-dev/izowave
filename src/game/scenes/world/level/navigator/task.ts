@@ -44,8 +44,8 @@ export class NavigatorTask {
     this.tree[node.y][node.x] = node;
   }
 
-  public pickNode(x: number, y: number) {
-    return this.tree[y]?.[x];
+  public pickNode(position: Vector2D) {
+    return this.tree[position.y]?.[position.x];
   }
 
   public upNode(node: PathNode) {

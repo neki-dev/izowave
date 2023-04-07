@@ -1,14 +1,13 @@
 /* eslint-disable no-continue */
-
 import { eachEntries } from '~lib/system';
 import { equalPositions } from '~lib/utils';
 import { Vector2D } from '~type/world/level';
-import { NavigatorTaskState } from '~type/world/level/navigator';
+import { INavigator, NavigatorTaskState } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 import { NavigatorTask } from './task';
 
-export class Navigator {
+export class Navigator implements INavigator {
   readonly matrix: number[][] = [];
 
   private pointsToCost: number[][] = [];
@@ -19,26 +18,26 @@ export class Navigator {
     this.matrix = matrix;
   }
 
-  public setPointCost(x: number, y: number, cost: number) {
-    if (!this.pointsToCost[y]) {
-      this.pointsToCost[y] = [];
+  public setPointCost(position: Vector2D, cost: number) {
+    if (!this.pointsToCost[position.y]) {
+      this.pointsToCost[position.y] = [];
     }
-    this.pointsToCost[y][x] = cost;
+    this.pointsToCost[position.y][position.x] = cost;
   }
 
-  public resetPointCost(x: number, y: number) {
-    if (!this.pointsToCost[y]) {
+  public resetPointCost(position: Vector2D) {
+    if (!this.pointsToCost[position.y]) {
       return;
     }
-    delete this.pointsToCost[y][x];
+    delete this.pointsToCost[position.y][position.x];
   }
 
   public resetPointsCost() {
     this.pointsToCost = [];
   }
 
-  public getPointCost(x: number, y: number) {
-    return this.pointsToCost[y]?.[x] ?? 1.0;
+  public getPointCost(position: Vector2D) {
+    return this.pointsToCost[position.y]?.[position.x] ?? 1.0;
   }
 
   public createTask(
@@ -112,7 +111,10 @@ export class Navigator {
     const allowedDirs: Vector2D[] = [];
 
     eachEntries(straightDirs, (key, dir) => {
-      if (this.isWalkable(currentNode.x + dir.x, currentNode.y + dir.y)) {
+      if (this.isWalkable({
+        x: currentNode.x + dir.x,
+        y: currentNode.y + dir.y,
+      })) {
         straightFlags[key] = true;
         allowedDirs.push(dir);
       }
@@ -121,7 +123,10 @@ export class Navigator {
     eachEntries(diagonalDirs, (key, dir) => {
       const dontCross = key.split('').every((flag) => straightFlags[flag]);
 
-      if (dontCross && this.isWalkable(currentNode.x + dir.x, currentNode.y + dir.y)) {
+      if (dontCross && this.isWalkable({
+        x: currentNode.x + dir.x,
+        y: currentNode.y + dir.y,
+      })) {
         allowedDirs.push(dir);
       }
     });
@@ -130,13 +135,15 @@ export class Navigator {
   }
 
   private checkAdjacentNode(task: NavigatorTask, currentNode: PathNode, shift: Vector2D) {
-    const x = currentNode.x + shift.x;
-    const y = currentNode.y + shift.y;
+    const position: Vector2D = {
+      x: currentNode.x + shift.x,
+      y: currentNode.y + shift.y,
+    };
 
     const c = (Math.abs(shift.x) + Math.abs(shift.y) === 1) ? 1.0 : Math.SQRT2;
-    const cost = currentNode.getCost() + (this.getPointCost(x, y) * c);
+    const cost = currentNode.getCost() + (this.getPointCost(position) * c);
 
-    const existNode = task.pickNode(x, y);
+    const existNode = task.pickNode(position);
 
     if (existNode) {
       if (cost < existNode.getCost()) {
@@ -146,9 +153,9 @@ export class Navigator {
       }
     } else {
       const node = new PathNode(currentNode, {
-        position: { x, y },
+        position,
         cost,
-        distance: Phaser.Math.Distance.BetweenPoints({ x, y }, task.to),
+        distance: Phaser.Math.Distance.BetweenPoints(position, task.to),
       });
 
       node.openList();
@@ -156,7 +163,7 @@ export class Navigator {
     }
   }
 
-  private isWalkable(x: number, y: number) {
-    return (this.matrix[y]?.[x] === 0);
+  private isWalkable(position: Vector2D) {
+    return (this.matrix[position.y]?.[position.x] === 0);
   }
 }

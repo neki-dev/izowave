@@ -3,58 +3,31 @@ import Phaser from 'phaser';
 import { WORLD_DEPTH_UI } from '~const/world';
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
-import { World } from '~scene/world';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
-import { NPCData } from '~type/world/entities/npc';
+import { IWorld } from '~type/world';
+import { INPC, NPCData } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
 
-export class NPC extends Sprite {
-  /**
-   * Current finded path to target.
-   */
-  private currentPath: Vector2D[] = [];
-
-  /**
-   * Current task of path finding.
-   */
-  private pathFindingTask: Nullable<NavigatorTask> = null;
-
-  /**
-   * Distance to target for start find path.
-   */
-  private pathBreakpoint: number;
-
-  /**
-   * Damage power.
-   */
+export class NPC extends Sprite implements INPC {
   public damage: Nullable<number> = null;
 
-  /**
-   * Maximum speed.
-   */
   public speed: number;
 
-  /**
-   * Pause for pursuit and attacks.
-   */
-  private stopCalmTimestamp: number = 0;
+  public isPathPassed: boolean = false;
 
-  /**
-   * Finded path is completed.
-   */
-  public pathComplete: boolean = false;
+  private pathToTarget: Vector2D[] = [];
 
-  /**
-   * Path debug graphics.
-   */
+  private pathFindingTask: Nullable<NavigatorTask> = null;
+
+  private pathFindTriggerDistance: number;
+
   private pathDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
-  /**
-   * NPC constructor.
-   */
-  constructor(scene: World, {
-    positionAtMatrix, texture, health, speed, pathBreakpoint,
+  private calmEndTimestamp: number = 0;
+
+  constructor(scene: IWorld, {
+    positionAtMatrix, texture, health, speed, pathFindTriggerDistance,
     damage = null, frameRate = 4,
   }: NPCData) {
     super(scene, { texture, positionAtMatrix, health });
@@ -63,12 +36,11 @@ export class NPC extends Sprite {
 
     this.damage = damage;
     this.speed = speed;
-    this.pathBreakpoint = pathBreakpoint;
+    this.pathFindTriggerDistance = pathFindTriggerDistance;
 
     this.setVisible(this.atVisibleTile());
     this.addDebugPath();
 
-    // Add animations
     this.anims.create({
       key: 'idle',
       frames: this.anims.generateFrameNumbers(texture, {}),
@@ -79,9 +51,6 @@ export class NPC extends Sprite {
     this.anims.play('idle');
   }
 
-  /**
-   * Update visible state and pursuit process.
-   */
   public update() {
     super.update();
 
@@ -89,55 +58,43 @@ export class NPC extends Sprite {
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
-      this.pathComplete = false;
+      this.isPathPassed = false;
 
       return;
     }
 
-    if (this.getDistanceToTarget() > this.pathBreakpoint) {
+    if (this.getDistanceToTarget() > this.pathFindTriggerDistance) {
       this.moveByPath();
-      this.pathComplete = false;
+      this.isPathPassed = false;
 
       return;
     }
 
     this.resetPath();
-    this.pathComplete = true;
+    this.isPathPassed = true;
   }
 
-  /**
-   * Pause NPC pursuit and attacks.
-   *
-   * @param duration - Pause duration
-   */
-  public calm(duration: number) {
-    this.stopCalmTimestamp = this.scene.getTimerNow() + duration;
+  public calmDown(duration: number) {
+    this.calmEndTimestamp = this.scene.getTime() + duration;
   }
 
-  /**
-   * Check is NPC pursuit and attacks is paused.
-   */
-  public isCalm() {
-    return (this.stopCalmTimestamp > this.scene.getTimerNow());
+  public isCalmed() {
+    return (this.calmEndTimestamp > this.scene.getTime());
   }
 
-  /**
-   * Find new path and move.
-   */
-  public updatePath() {
+  public findPathToTarget() {
     if (this.pathFindingTask) {
       return;
     }
 
-    if (this.getDistanceToTarget() <= this.pathBreakpoint) {
+    if (this.getDistanceToTarget() <= this.pathFindTriggerDistance) {
       return;
     }
 
-    if (this.currentPath.length > 0) {
-      // Check if target position is not changed
-      const prev = this.currentPath[this.currentPath.length - 1];
+    if (this.pathToTarget.length > 0) {
+      const prevPosition = this.pathToTarget[this.pathToTarget.length - 1];
 
-      if (equalPositions(prev, this.scene.player.positionAtMatrix)) {
+      if (equalPositions(prevPosition, this.scene.player.positionAtMatrix)) {
         return;
       }
     }
@@ -153,7 +110,7 @@ export class NPC extends Sprite {
       }
 
       path.shift();
-      this.currentPath = path;
+      this.pathToTarget = path;
 
       if (this.isCanPursuit()) {
         this.moveToTile();
@@ -169,18 +126,10 @@ export class NPC extends Sprite {
     );
   }
 
-  /**
-   * Get distance to target.
-   */
   public getDistanceToTarget() {
     return Phaser.Math.Distance.BetweenPoints(this.scene.player, this);
   }
 
-  /**
-   * Move NPC to world position.
-   *
-   * @param position - Position at world
-   */
   public moveTo(position: Vector2D) {
     const direction = Phaser.Math.Angle.Between(this.x, this.y, position.x, position.y);
     const velocity = this.scene.physics.velocityFromRotation(direction, this.speed);
@@ -197,22 +146,16 @@ export class NPC extends Sprite {
     this.setVelocity(velocity.x, velocity.y);
   }
 
-  /**
-   * Check is path waypoint has been reached.
-   */
   private nextPathTile() {
-    const [target] = this.currentPath;
+    const [firstNode] = this.pathToTarget;
 
-    if (equalPositions(target, this.positionAtMatrix)) {
-      this.currentPath.shift();
+    if (equalPositions(firstNode, this.positionAtMatrix)) {
+      this.pathToTarget.shift();
     }
   }
 
-  /**
-   * Clear finded path.
-   */
   private resetPath() {
-    this.currentPath = [];
+    this.pathToTarget = [];
 
     if (this.pathFindingTask) {
       this.pathFindingTask.cancel();
@@ -220,43 +163,31 @@ export class NPC extends Sprite {
     }
   }
 
-  /**
-   * Move NPC by finded path.
-   */
   private moveByPath() {
-    if (this.currentPath.length > 0) {
+    if (this.pathToTarget.length > 0) {
       this.nextPathTile();
       this.moveToTile();
     }
   }
 
-  /**
-   * Move NPC to target tile position.
-   */
   private moveToTile() {
-    const [target] = this.currentPath;
+    const [target] = this.pathToTarget;
 
     if (target) {
-      const positionAtWorld = Level.ToWorldPosition(target);
+      const positionAtWorld = Level.ToWorldPosition({ ...target, z: 0 });
 
       this.moveTo(positionAtWorld);
     }
   }
 
-  /**
-   * Check is NPC can pursuit target.
-   */
   private isCanPursuit() {
     return (
-      !this.isCalm()
+      !this.isCalmed()
       && !this.live.isDead()
       && !this.scene.player.live.isDead()
     );
   }
 
-  /**
-   * Check is current ground tile is visible.
-   */
   private atVisibleTile() {
     return this.scene.level.isVisibleTile({
       ...this.positionAtMatrix,
@@ -264,9 +195,6 @@ export class NPC extends Sprite {
     });
   }
 
-  /**
-   * Add path debugger.
-   */
   private addDebugPath() {
     if (!this.scene.physics.world.drawDebug) {
       return;
@@ -280,9 +208,6 @@ export class NPC extends Sprite {
     });
   }
 
-  /**
-   * Draw debug path lines.
-   */
   private drawDebugPath() {
     if (!this.pathDebug) {
       return;
@@ -294,12 +219,12 @@ export class NPC extends Sprite {
 
     const points = [
       this.positionAtMatrix,
-      ...this.currentPath,
+      ...this.pathToTarget,
     ];
 
     for (let i = 1; i < points.length; i++) {
-      const prev = Level.ToWorldPosition(points[i - 1]);
-      const next = Level.ToWorldPosition(points[i]);
+      const prev = Level.ToWorldPosition({ ...points[i - 1], z: 0 });
+      const next = Level.ToWorldPosition({ ...points[i], z: 0 });
 
       this.pathDebug.moveTo(prev.x, prev.y);
       this.pathDebug.lineTo(next.x, next.y);

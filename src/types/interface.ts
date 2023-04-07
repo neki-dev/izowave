@@ -1,38 +1,24 @@
-import Phaser from 'phaser';
+export enum InterfaceColor {
+  PRIMARY = '#ff9600',
+  BLUE = '#0076ad',
+  BLUE_LIGHT = '#a8f0ff',
+  BLUE_DARK = '#18324f',
+  ACTIVE = '#a7cc43',
+  INFO = '#d0ff4f',
+  INFO_DARK = '#83a81c',
+  WARN = '#ffba3b',
+  WARN_DARK = '#ff9000',
+  ERROR = '#ff6d6d',
+  ERROR_DARK = '#db2323',
+}
 
-import { IGameScene } from './game';
+export enum InterfaceFont {
+  PIXEL = 'Retro',
+  MONOSPACE = 'Monospace',
+}
 
-export type ComponentCreator<T = undefined> = (scene: IGameScene, props?: T) => Phaser.GameObjects.Container;
-
-export type ComponentControl = {
-  update?: () => void
-  destroy?: () => void
-};
-
-export type ComponentInstance<T> = (
-  this: IGameScene,
-  container: Phaser.GameObjects.Container,
-  props: T
-) => ComponentControl | void;
-
-export type ResizeCallback = (width: number, height: number) => void;
-
-declare global {
-  namespace Phaser {
-    namespace GameObjects {
-      interface Container {
-        registerAdaptive: () => void
-      }
-
-      interface GameObject {
-        refreshAdaptation: (deep?: boolean) => void
-        useAdaptationBefore: (callback: ResizeCallback) => void
-        useAdaptationAfter: (callback: ResizeCallback) => void
-        adaptives?: {
-          before: ResizeCallback[]
-          after: ResizeCallback[]
-        }
-      }
-    }
-  }
+export enum InterfaceScreenSize {
+  L = '',
+  M = '(max-width: 1365px)',
+  S = '(max-width: 1023px)',
 }

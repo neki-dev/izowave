@@ -8,7 +8,7 @@ const tsconfig = require('./tsconfig.json');
 
 module.exports = (_, { mode }) => ({
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js', '.ts', '.tsx'],
     alias: alias.fromFile(__dirname, './tsconfig.json').toWebpack(),
   },
   entry: path.join(__dirname, 'src/index.ts'),
@@ -18,7 +18,7 @@ module.exports = (_, { mode }) => ({
   },
   module: {
     rules: [{
-      test: /\.ts$/,
+      test: /\.tsx?$/,
       use: ['babel-loader', 'ts-loader'],
       exclude: /node_modules/,
     }],

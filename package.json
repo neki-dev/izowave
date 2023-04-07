@@ -2,7 +2,14 @@
   "name": "izowave",
   "description": "Isometric game. Build and defence in open world",
   "version": "0.22.1",
-  "keywords": [],
+  "keywords": [
+    "game",
+    "isometric",
+    "defence",
+    "build",
+    "open-world",
+    "phaser"
+  ],
   "license": "GNU",
   "author": {
     "name": "Nikita Galadiy",
@@ -15,14 +22,18 @@
     "watch": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "test": "jest",
-    "lint": "eslint \"./**/*.{js,ts}\" --ignore-path .gitignore --fix"
+    "lint": "eslint \"./**/*.{js,ts,tsx}\" --ignore-path .gitignore --fix"
   },
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
     "@types/heap": "^0.2.31",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.11",
+    "@types/react": "^18.0.32",
+    "@types/react-dom": "^18.0.11",
+    "@types/styled-components": "^5.1.26",
     "alias-reuse": "^2.0.0",
     "babel-loader": "^9.1.2",
     "eslint": "^8.37.0",
@@ -39,9 +50,13 @@
     "webpack-dev-server": "^4.13.2"
   },
   "dependencies": {
+    "classnames": "^2.3.2",
     "gen-biome": "^2.1.1",
     "heap": "^0.2.7",
-    "phaser": "^3.60.0-beta.12"
+    "phaser": "^3.60.0-beta.12",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "styled-components": "^5.3.9"
   },
   "repository": {
     "type": "git",

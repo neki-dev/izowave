@@ -1,0 +1,2 @@
+export const WAVE_TIMELEFT_ALARM = 5000;
+export const WAVE_TIMELEFT_AFTER_SKIP = 3000;

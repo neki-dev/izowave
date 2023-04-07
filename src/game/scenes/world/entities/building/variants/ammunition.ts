@@ -1,21 +1,21 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
-import { NoticeType } from '~type/screen/notice';
+import { NoticeType } from '~type/screen';
+import { IWorld } from '~type/world';
 import {
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
+  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
 
-export class BuildingAmmunition extends Building {
+export class BuildingAmmunition extends Building implements IBuildingAmmunition {
   static Name = 'Ammunition';
 
   static Description = 'Reloading towers ammo, that are in radius of this building';
 
-  static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: ScreenIcon.HEALTH },
-    { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: ScreenIcon.AMMO },
+  static Params: BuildingParam[] = [
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -28,19 +28,13 @@ export class BuildingAmmunition extends Building {
 
   static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
 
-  /**
-   * Ammo amount left.
-   */
-  private _amountLeft: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
+  private _ammo: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
 
-  public get amountLeft() { return this._amountLeft; }
+  public get ammo() { return this._ammo; }
 
-  private set amountLeft(v) { this._amountLeft = v; }
+  private set ammo(v) { this._ammo = v; }
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.AMMUNITION,
@@ -51,46 +45,37 @@ export class BuildingAmmunition extends Building {
       },
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeAmount, this);
+    this.on(BuildingEvents.UPGRADE, this.upgradeAmmoCount, this);
   }
 
-  /**
-   * Add amount left to building info.
-   */
   public getInfo() {
     return [
       ...super.getInfo(), {
         label: 'AMMO',
-        icon: ScreenIcon.AMMO,
-        value: this.amountLeft,
+        icon: BuildingIcon.AMMO,
+        value: this.ammo,
       },
     ];
   }
 
-  /**
-   * Use ammo.
-   */
   public use(amount: number) {
-    if (this.amountLeft <= amount) {
-      const left = this.amountLeft;
+    if (this.ammo <= amount) {
+      const left = this.ammo;
 
       this.scene.sound.play(BuildingAudio.OVER);
-      this.scene.game.screen.message(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
 
       this.destroy();
 
       return left;
     }
 
-    this.amountLeft -= amount;
+    this.ammo -= amount;
 
     return amount;
   }
 
-  /**
-   * Update amount left by upgrade level.
-   */
-  private upgradeAmount() {
-    this.amountLeft += DIFFICULTY.BUILDING_AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
+  private upgradeAmmoCount() {
+    this.ammo += DIFFICULTY.BUILDING_AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
   }
 }

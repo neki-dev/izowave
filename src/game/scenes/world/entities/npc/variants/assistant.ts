@@ -1,37 +1,26 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
-import { Enemy } from '~entity/npc/variants/enemy';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth, selectClosest } from '~lib/utils';
-import { World } from '~scene/world';
+import { calcGrowth, getClosest } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
+import { IWorld } from '~type/world';
 import { EffectTexture } from '~type/world/effects';
-import { AssistantTexture, AssistantData, AssistantAudio } from '~type/world/entities/npc/assistant';
-import { IEnemyTarget } from '~type/world/entities/npc/enemy';
-import { IShot, IShotInitiator, ShotParams } from '~type/world/entities/shot';
+import {
+  AssistantTexture, AssistantData, AssistantAudio, IAssistant,
+} from '~type/world/entities/npc/assistant';
+import { IEnemy } from '~type/world/entities/npc/enemy';
+import { IShot, ShotParams } from '~type/world/entities/shot';
 
-export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
-  /**
-   * Assistant shot item.
-   */
-  readonly shot: IShot;
+export class Assistant extends NPC implements IAssistant {
+  private shot: IShot;
 
-  /**
-   * Default shot params.
-   */
-  readonly shotDefaultParams: ShotParams;
+  private shotDefaultParams: ShotParams;
 
-  /**
-   * Pause for next attack.
-   */
   private nextAttackTimestamp: number = 0;
 
-  /**
-   * Assistant constructor.
-   */
-  constructor(scene: World, {
+  constructor(scene: IWorld, {
     positionAtMatrix,
   }: AssistantData) {
     super(scene, {
@@ -39,7 +28,7 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
       positionAtMatrix,
       speed: DIFFICULTY.ASSISTANT_SPEED,
       health: DIFFICULTY.ASSISTANT_HEALTH,
-      pathBreakpoint: ASSISTANT_PATH_BREAKPOINT,
+      pathFindTriggerDistance: ASSISTANT_PATH_BREAKPOINT,
     });
     scene.add.existing(this);
 
@@ -52,15 +41,16 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
     this.shotDefaultParams = this.shot.params;
 
     this.body.setCircle(this.width / 2, 0, 1);
+
+    this.scene.physics.add.collider(this, this.scene.entityGroups.enemies, (_, enemy: IEnemy) => {
+      enemy.attack(this);
+    });
   }
 
-  /**
-   * Event update.
-   */
   public update() {
     super.update();
 
-    if (this.pathComplete) {
+    if (this.isPathPassed) {
       this.setVelocity(0, 0);
     }
 
@@ -69,11 +59,6 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
     }
   }
 
-  /**
-   * Upgrade by level.
-   *
-   * @param level - Player level
-   */
   public upgrade(level: number) {
     this.speed = calcGrowth(
       DIFFICULTY.ASSISTANT_SPEED,
@@ -91,9 +76,6 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
     this.live.heal();
   }
 
-  /**
-   * Event dead.
-   */
   public onDead() {
     if (this.visible) {
       new Effect(this.scene, {
@@ -106,11 +88,8 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
     super.onDead();
   }
 
-  /**
-   * Attack enemy.
-   */
   private attack() {
-    const now = this.scene.getTimerNow();
+    const now = this.scene.getTime();
 
     if (this.nextAttackTimestamp >= now) {
       return;
@@ -134,11 +113,8 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
     this.nextAttackTimestamp = now + pause;
   }
 
-  /**
-   * Find nearby enemy for shoot.
-   */
-  private getTarget(): Nullable<Enemy> {
-    const distance = calcGrowth(
+  private getTarget(): Nullable<IEnemy> {
+    const maxDistance = calcGrowth(
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
       this.scene.player.level,
@@ -146,19 +122,13 @@ export class Assistant extends NPC implements IShotInitiator, IEnemyTarget {
 
     const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
-      && Phaser.Math.Distance.BetweenPoints(enemy, this) <= distance
+      && Phaser.Math.Distance.BetweenPoints(this, enemy) <= maxDistance
+      && !this.scene.level.hasTilesBetweenPositions(this, enemy)
     ));
 
-    if (enemies.length === 0) {
-      return null;
-    }
-
-    return selectClosest(enemies, this)[0];
+    return getClosest(enemies, this);
   }
 
-  /**
-   * Get shot params.
-   */
   private getShotCurrentParams() {
     const params: ShotParams = {
       maxDistance: calcGrowth(

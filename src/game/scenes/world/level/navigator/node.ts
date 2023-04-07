@@ -1,5 +1,5 @@
 import { Vector2D } from '~type/world/level';
-import { PathNodeParams } from '~type/world/level/navigator';
+import { PathNodeData } from '~type/world/level/navigator';
 
 export class PathNode {
   readonly x: number;
@@ -14,10 +14,9 @@ export class PathNode {
 
   private listOpened: Nullable<boolean> = null;
 
-  constructor(
-    parent: Nullable<PathNode>,
-    { position, cost, distance }: PathNodeParams,
-  ) {
+  constructor(parent: Nullable<PathNode>, {
+    position, cost, distance,
+  }: PathNodeData) {
     this.x = position.x;
     this.y = position.y;
     this.distance = distance;

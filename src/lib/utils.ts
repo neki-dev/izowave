@@ -38,26 +38,56 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
 /**
  * Format timestamp to string time.
  *
- * @param value - Timestamp in seconds
+ * @param value - Timestamp in miliseconds
  */
 export function formatTime(value: number) {
-  const h = Math.floor(value / 60);
-  const m = value % 60;
+  const s = Math.floor(value / 1000);
+  const h = Math.floor(s / 60);
+  const m = s % 60;
 
   return `${(h < 10 ? '0' : '')}${h}:${(m < 10 ? '0' : '')}${m}`;
 }
 
 /**
- * Select closest positions to target.
+ * Get closest position to target.
  *
  * @param positions - Positions list
  * @param target - Target position
- * @param count - Count return positions
  */
-export function selectClosest<T extends Vector2D>(
+export function getClosest<T extends Vector2D>(
   positions: T[],
   target: Vector2D,
-  count: number = 1,
+): Nullable<T> {
+  let closest: {
+    distance: number
+    position: T
+  } = {
+    distance: Infinity,
+    position: null,
+  };
+
+  for (const position of positions) {
+    const dx = position.x - target.x;
+    const dy = position.y - target.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < closest.distance) {
+      closest = { position, distance };
+    }
+  }
+
+  return closest.position;
+}
+
+/**
+ * Sort position by distance to target.
+ *
+ * @param positions - Positions list
+ * @param target - Target position
+ */
+export function sortByDistance<T extends Vector2D>(
+  positions: T[],
+  target: Vector2D,
 ) {
   let meta = positions.map((position) => {
     const dx = position.x - target.x;
@@ -69,9 +99,7 @@ export function selectClosest<T extends Vector2D>(
     };
   });
 
-  // Sort by distance to target
-  meta = meta.sort((a, b) => (a.distance - b.distance))
-    .slice(0, count);
+  meta = meta.sort((a, b) => (a.distance - b.distance));
 
   return meta.map(({ position }) => position);
 }
@@ -121,6 +149,29 @@ export function formatAmount(value: number) {
  */
 export function rawAmount(value: string) {
   return Number(value.replace('+', ''));
+}
+
+/**
+ * Get mutable array.
+ *
+ * @param current - Current array
+ * @param target - New array
+ * @param keys - Keys to compare
+ */
+export function getMutable<T>(current: T[], target: T[], keys: (keyof T)[]) {
+  if (current.length !== target.length) {
+    return target;
+  }
+
+  for (let i = 0; i < current.length; i++) {
+    for (const key of keys) {
+      if (current[i][key] !== target[i][key]) {
+        return target;
+      }
+    }
+  }
+
+  return current;
 }
 
 /**

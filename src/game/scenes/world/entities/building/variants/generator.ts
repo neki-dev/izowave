@@ -1,14 +1,13 @@
-import { INTERFACE_TEXT_COLOR } from '~const/interface';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
-import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
-import { ScreenIcon } from '~type/screen';
-import { NoticeType } from '~type/screen/notice';
+import { InterfaceColor } from '~type/interface';
+import { NoticeType } from '~type/screen';
+import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParamItem, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -16,9 +15,9 @@ export class BuildingGenerator extends Building {
 
   static Description = 'Resource generation for builds and upgrades';
 
-  static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: ScreenIcon.HEALTH },
-    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: ScreenIcon.RESOURCES },
+  static Params: BuildingParam[] = [
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
@@ -29,15 +28,9 @@ export class BuildingGenerator extends Building {
 
   static Limit = DIFFICULTY.BUILDING_GENERATOR_LIMIT;
 
-  /**
-   * Resources amount left.
-   */
-  private amountLeft: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
+  private resources: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.GENERATOR,
@@ -51,25 +44,19 @@ export class BuildingGenerator extends Building {
     this.on(BuildingEvents.UPGRADE, this.upgradeAmount, this);
   }
 
-  /**
-   * Add amount left to building info.
-   */
   public getInfo() {
     return [
       ...super.getInfo(), {
         label: 'RESOURCES',
-        icon: ScreenIcon.RESOURCES,
-        color: (this.amountLeft < BUILDING_RESOURCES_LEFT_ALERT)
-          ? INTERFACE_TEXT_COLOR.WARN
+        icon: BuildingIcon.RESOURCES,
+        color: (this.resources < BUILDING_RESOURCES_LEFT_ALERT)
+          ? InterfaceColor.WARN
           : undefined,
-        value: this.amountLeft,
+        value: this.resources,
       },
     ];
   }
 
-  /**
-   * Generate resource and check amount left.
-   */
   public update() {
     super.update();
 
@@ -79,26 +66,23 @@ export class BuildingGenerator extends Building {
 
     this.generateResource();
 
-    if (this.amountLeft === 0) {
+    if (this.resources === 0) {
       this.scene.sound.play(BuildingAudio.OVER);
-      this.scene.game.screen.message(NoticeType.WARN, `${this.getMeta().Name} RESOURCES ARE OVER`);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} RESOURCES ARE OVER`);
 
       this.destroy();
     } else {
       this.pauseActions();
 
-      if (this.amountLeft === BUILDING_RESOURCES_LEFT_ALERT) {
-        this.alert = true;
+      if (this.resources === BUILDING_RESOURCES_LEFT_ALERT) {
+        this.hasAlert = true;
       }
     }
   }
 
-  /**
-   * Generate resource and give to player.
-   */
   private generateResource() {
     this.scene.player.giveResources(1);
-    this.amountLeft--;
+    this.resources--;
 
     if (this.visible) {
       new Particles(this, {
@@ -117,11 +101,8 @@ export class BuildingGenerator extends Building {
     }
   }
 
-  /**
-   * Update amount left by upgrade level.
-   */
   private upgradeAmount() {
-    this.amountLeft += DIFFICULTY.BUILDING_GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
-    this.alert = false;
+    this.resources += DIFFICULTY.BUILDING_GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
+    this.hasAlert = false;
   }
 }

@@ -1,39 +1,21 @@
 import { registerImageAssets } from '~lib/assets';
-import { World } from '~scene/world';
+import { IWorld } from '~type/world';
 import {
-  ParticlesTexture, ParticlesType, ParticlesData, ParticlesParent,
+  ParticlesTexture, ParticlesType, ParticlesData, IParticlesParent, IParticles,
 } from '~type/world/effects';
 
-export class Particles {
-  /**
-   * Parent scene.
-   */
-  readonly scene: World;
+export class Particles implements IParticles {
+  readonly scene: IWorld;
 
-  /**
-   *
-   */
   private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
-  /**
-   *
-   */
   private type: ParticlesType;
 
-  /**
-   *
-   */
   private timer: Nullable<Phaser.Time.TimerEvent> = null;
 
-  /**
-   *
-   */
-  private parent: Phaser.GameObjects.GameObject;
+  private parent: IParticlesParent;
 
-  /**
-   * Particles constructor.
-   */
-  constructor(parent: ParticlesParent, {
+  constructor(parent: IParticlesParent, {
     type, params, duration,
   }: ParticlesData) {
     this.scene = parent.scene;
@@ -59,16 +41,10 @@ export class Particles {
     }
   }
 
-  /**
-   * Set emitter state of visible.
-   */
   public setVisible(state: boolean) {
     this.emitter.setVisible(state);
   }
 
-  /**
-   * Destroy particles emitter.
-   */
   public destroy() {
     delete this.parent.effects[this.type];
     this.scene.particles[this.type].removeEmitter(this.emitter);

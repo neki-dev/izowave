@@ -3,32 +3,23 @@ import Phaser from 'phaser';
 import { Vector2D } from '~type/world/level';
 
 export class Hexagon extends Phaser.Geom.Polygon {
-  /**
-   * Position X of shape center.
-   */
   public x: number;
 
-  /**
-   * Position Y of shape center.
-   */
   public y: number;
 
-  /**
-   * Distance between center and points.
-   */
-  public size: number;
+  public edgeLength: number;
 
-  constructor(x: number, y: number, size: number) {
+  constructor(x: number, y: number, edgeLength: number) {
     super([]);
 
     this.x = x;
     this.y = y;
-    this.size = size;
+    this.edgeLength = edgeLength;
 
     this.refresh();
   }
 
-  public contains(x: number, y: number) {
+  public contains(x: number, y: number): boolean {
     return Hexagon.Contains(this, x, y);
   }
 
@@ -39,8 +30,8 @@ export class Hexagon extends Phaser.Geom.Polygon {
     this.refresh();
   }
 
-  public setSize(size: number = 0) {
-    this.size = size;
+  public setSize(edgeLength: number = 0) {
+    this.edgeLength = edgeLength;
 
     this.refresh();
   }
@@ -55,8 +46,8 @@ export class Hexagon extends Phaser.Geom.Polygon {
 
     for (let u = 0; u < 6; u++) {
       points.push({
-        x: (this.x + this.size) + Math.sin(u * l) * this.size,
-        y: (this.y + this.size) - Math.cos(u * l) * this.size,
+        x: (this.x + this.edgeLength) + Math.sin(u * l) * this.edgeLength,
+        y: (this.y + this.edgeLength) - Math.cos(u * l) * this.edgeLength,
       });
     }
 

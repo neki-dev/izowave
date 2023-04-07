@@ -2,33 +2,24 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
-import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
+import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
+import { IBuilding } from '~type/world/entities/building';
 import {
-  IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture,
+  IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture, IEnemy,
 } from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
-export class Enemy extends NPC {
-  /**
-   * Player experience multiplier per kill this enemy.
-   */
+export class Enemy extends NPC implements IEnemy {
   private experienceMultiply: number;
 
-  /**
-   * Timer for freeze effect.
-   */
-  private timerTint: Nullable<Phaser.Time.TimerEvent> = null;
+  private freezeTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
-  /**
-   * Enemy constructor.
-   */
-  constructor(scene: World, {
+  constructor(scene: IWorld, {
     positionAtMatrix, texture, health, damage, speed,
     scale = 1.0, experienceMultiply = 1.0,
   }: EnemyData) {
@@ -36,7 +27,7 @@ export class Enemy extends NPC {
       texture,
       positionAtMatrix,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
-      pathBreakpoint: ENEMY_PATH_BREAKPOINT,
+      pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: calcGrowth(
         health * scene.game.difficulty,
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
@@ -58,52 +49,40 @@ export class Enemy extends NPC {
 
     this.experienceMultiply = experienceMultiply;
 
-    // Configure physics
-
     const offset = scale * 2;
 
     this.body.setCircle((this.width / 2) - offset, offset, offset);
     this.setScale(scale);
 
-    this.setTilesCollision([TileType.BUILDING], (tile: Building) => {
+    this.setTilesCollision([TileType.BUILDING], (tile: IBuilding) => {
       this.attack(tile);
     });
-
-    //
 
     if (this.visible) {
       this.addSpawnEffect();
     }
 
-    // Add events callbacks
+    this.scene.physics.add.collider(this, this.scene.entityGroups.npc);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      if (this.timerTint) {
-        this.timerTint.destroy();
+      if (this.freezeTimer) {
+        this.freezeTimer.destroy();
       }
     });
   }
 
-  /**
-   * Event update.
-   */
   public update() {
     super.update();
 
-    if (this.pathComplete) {
+    if (this.isPathPassed) {
       this.moveTo(this.scene.player);
     }
   }
 
-  /**
-   * Pause enemy and add effects.
-   *
-   * @param duration - Pause duration
-   */
   public freeze(duration: number) {
     const finalDuration = duration / this.scale;
 
-    this.calm(finalDuration);
+    this.calmDown(finalDuration);
 
     if (!this.visible) {
       return;
@@ -120,24 +99,19 @@ export class Enemy extends NPC {
       },
     });
 
-    if (this.timerTint) {
-      this.timerTint.elapsed = 0;
+    if (this.freezeTimer) {
+      this.freezeTimer.elapsed = 0;
     } else {
       this.setTint(0x00a8ff);
-      this.timerTint = this.scene.time.delayedCall(finalDuration, () => {
+      this.freezeTimer = this.scene.time.delayedCall(finalDuration, () => {
         this.clearTint();
-        this.timerTint = null;
+        this.freezeTimer = null;
       });
     }
   }
 
-  /**
-   * Give target damage.
-   *
-   * @param target - Target
-   */
   public attack(target: IEnemyTarget) {
-    if (this.isCalm() || target.live.isDead()) {
+    if (this.isCalmed() || target.live.isDead()) {
       return;
     }
 
@@ -147,12 +121,9 @@ export class Enemy extends NPC {
 
     target.live.damage(this.damage);
 
-    this.calm(1000);
+    this.calmDown(1000);
   }
 
-  /**
-   * Event dead.
-   */
   public onDead() {
     const experience = calcGrowth(
       DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.experienceMultiply,
@@ -166,13 +137,10 @@ export class Enemy extends NPC {
     super.onDead();
   }
 
-  /**
-   * Add spawn effect.
-   */
   private addSpawnEffect() {
     const originalScale = this.scale;
 
-    this.calm(750);
+    this.calmDown(750);
 
     this.container.setAlpha(0.0);
     this.setScale(0.1);

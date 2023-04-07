@@ -1,55 +1,34 @@
 import Phaser from 'phaser';
 
-import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
-import { World } from '~scene/world';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
+import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShot,
+  ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShotBall,
 } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
 
-export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
-  readonly scene: World;
+export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
+  readonly scene: IWorld;
 
   readonly body: Phaser.Physics.Arcade.Body;
 
-  /**
-   * Shot initiator.
-   */
-  private initiator: Nullable<IShotInitiator> = null;
-
-  /**
-   * Shot params.
-   */
   public params: ShotParams;
 
-  /**
-   * Shot audio.
-   */
-  private readonly audio: ShotBallAudio;
+  private initiator: Nullable<IShotInitiator> = null;
 
-  /**
-   * Shoot effect.
-   */
+  private audio: ShotBallAudio;
+
   private effect: Nullable<Particles> = null;
 
-  /**
-   * Start shoot position.
-   */
   private startPosition: Nullable<Vector2D> = null;
 
-  /**
-   * Color for initiator glow effect.
-   */
   private glowColor: Nullable<number> = null;
 
-  /**
-   * Shot constructor.
-   */
-  constructor(scene: World, params: ShotParams, {
+  constructor(scene: IWorld, params: ShotParams, {
     texture, audio, glowColor = null,
   }: ShotBallData) {
     super(scene, null, null, texture);
@@ -62,13 +41,12 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
 
     this.setActive(false);
     this.setVisible(false);
+
+    this.scene.physics.add.collider(this, this.scene.entityGroups.enemies, (_, enemy: IEnemy) => {
+      this.hit(enemy);
+    });
   }
 
-  /**
-   * Set initiator for next shoots.
-   *
-   * @param initiator - Initiator
-   */
   public setInitiator(initiator: IShotInitiator) {
     this.initiator = initiator;
 
@@ -77,9 +55,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
     });
   }
 
-  /**
-   * Check shoot distance and update visible state and depth.
-   */
   public update() {
     const distance = Phaser.Math.Distance.BetweenPoints(this, this.startPosition);
 
@@ -106,28 +81,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
     }
   }
 
-  /**
-   * Handle collision of bullet to enemy.
-   *
-   * @param target - Enemy
-   */
-  public hit(target: Enemy) {
-    if (this.params.freeze) {
-      target.freeze(this.params.freeze);
-    }
-    if (this.params.damage) {
-      target.live.damage(this.params.damage);
-    }
-
-    this.stop();
-  }
-
-  /**
-   * Make shoot to target.
-   *
-   * @param target - Enemy
-   */
-  public shoot(target: Enemy) {
+  public shoot(target: IEnemy) {
     if (!this.initiator) {
       return;
     }
@@ -161,9 +115,17 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
     }
   }
 
-  /**
-   * Stop shooting.
-   */
+  private hit(target: IEnemy) {
+    if (this.params.freeze) {
+      target.freeze(this.params.freeze);
+    }
+    if (this.params.damage) {
+      target.live.damage(this.params.damage);
+    }
+
+    this.stop();
+  }
+
   private stop() {
     if (this.effect) {
       this.effect.destroy();

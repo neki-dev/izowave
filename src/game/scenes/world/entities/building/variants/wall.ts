@@ -1,8 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { World } from '~scene/world';
-import { ScreenIcon } from '~type/screen';
+import { IWorld } from '~type/world';
 import {
-  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParamItem, BuildingVariantData,
+  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -12,8 +11,8 @@ export class BuildingWall extends Building {
 
   static Description = 'Wall with more health to defend other buildings';
 
-  static Params: BuildingParamItem[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: ScreenIcon.HEALTH },
+  static Params: BuildingParam[] = [
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;
@@ -22,10 +21,7 @@ export class BuildingWall extends Building {
 
   static Health = DIFFICULTY.BUILDING_WALL_HEALTH;
 
-  /**
-   * Building variant constructor.
-   */
-  constructor(scene: World, data: BuildingVariantData) {
+  constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.WALL,
@@ -33,13 +29,10 @@ export class BuildingWall extends Building {
       texture: BuildingWall.Texture,
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeHealth, this);
+    this.on(BuildingEvents.UPGRADE, this.upgradeMaxHealth, this);
   }
 
-  /**
-   * Update max health by upgrade level.
-   */
-  private upgradeHealth() {
+  private upgradeMaxHealth() {
     const health = DIFFICULTY.BUILDING_WALL_HEALTH + (DIFFICULTY.BUILDING_WALL_HEALTH_UPGRADE * (this.upgradeLevel - 1));
 
     this.live.setMaxHealth(health);

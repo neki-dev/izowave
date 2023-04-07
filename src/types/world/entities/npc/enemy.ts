@@ -1,14 +1,28 @@
-import { Enemy } from '~entity/npc/variants/enemy';
-import { World } from '~scene/world';
-import { Live } from '~scene/world/live';
+import { IWorld } from '~type/world';
+import { ILive } from '~type/world/entities/live';
+import { INPC } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
 
+export interface IEnemy extends INPC {
+  /**
+   * Pause enemy moving and add freeze effect.
+   * @param duration - Pause duration
+   */
+  freeze(duration: number): void
+
+  /**
+   * Give target damage.
+   * @param target - Target
+   */
+  attack(target: IEnemyTarget): void
+}
+
 export interface IEnemyFactory {
-  new (scene: World, data: EnemyVariantData): Enemy
+  new (scene: IWorld, data: EnemyVariantData): IEnemy
 }
 
 export interface IEnemyTarget {
-  live: Live
+  readonly live: ILive
 }
 
 export enum EnemyTexture {

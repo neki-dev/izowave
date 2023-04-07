@@ -1,3 +1,51 @@
+import EventEmitter from 'events';
+
+import { IWorld } from '~type/world';
+
+export interface IWave extends EventEmitter {
+  readonly scene: IWorld
+
+  /**
+   * State of wave starting.
+   */
+  readonly isGoing: boolean
+
+  /**
+   * Current wave number.
+   */
+  number: number
+
+  /**
+   * Update wave process.
+   */
+  update(): void
+
+  /**
+   * Get target wave number.
+   */
+  getTargetNumber(): number
+
+  /**
+   * Get timeleft to next wave.
+   */
+  getTimeleft(): number
+
+  /**
+   * Start timeleft to next wave.
+   */
+  runTimeleft(): void
+
+  /**
+   * Get count of enemies left.
+   */
+  getEnemiesLeft(): number
+
+  /**
+   * Skip spawn enemies.
+   */
+  skipEnemies(): void
+}
+
 export enum WaveEvents {
   START = 'start',
   COMPLETE = 'complete',
