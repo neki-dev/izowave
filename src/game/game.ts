@@ -110,6 +110,11 @@ export class Game extends Phaser.Game implements IGame {
 
       this.registerShaders();
     });
+
+    if (IS_DEV_MODE) {
+      // @ts-ignore
+      window.GAME = this;
+    }
   }
 
   public pauseGame() {
@@ -227,7 +232,7 @@ export class Game extends Phaser.Game implements IGame {
 
   private getCurrentStat() {
     return {
-      waves: this.world.wave.getTargetNumber() - 1,
+      waves: this.world.wave.number - 1,
       kills: this.world.player.kills,
       level: this.world.player.level,
       lived: this.world.getTime() / 1000 / 60,

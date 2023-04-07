@@ -7,7 +7,7 @@ export function throwFailure(type: FailureType) {
 
   const overlay = document.createElement('div');
 
-  overlay.classList.add('overlay');
+  overlay.classList.add('system-overlay');
   overlay.id = `failure-${type}`;
 
   switch (type) {
