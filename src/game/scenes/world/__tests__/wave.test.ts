@@ -18,7 +18,7 @@ describe('wave.ts', () => {
   });
 
   it('should return current number', () => {
-    expect(wave.getTargetNumber()).toEqual(1);
+    expect(wave.number).toEqual(1);
   });
 
   it('should return timeleft to wave start', () => {
@@ -74,7 +74,7 @@ describe('wave.ts', () => {
     expect(wave.getTimeleft()).toEqual(calcGrowth(
       DIFFICULTY.WAVE_PAUSE,
       DIFFICULTY.WAVE_PAUSE_GROWTH,
-      wave.number + 1,
+      wave.number,
     ));
   });
 });

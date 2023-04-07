@@ -26,6 +26,8 @@ export const LEVEL_MAP_VISIBLE_PART = 0.8;
 export const LEVEL_MAP_VISITED_TILE_TINT = 0xDDDDDD;
 export const LEVEL_MAP_Z_WEIGHT = 999;
 
+export const LEVEL_TREES_COUNT = LEVEL_MAP_SIZE * 2;
+
 export const LEVEL_BUILDING_PATH_COST = 16.0;
 
 export const LEVEL_SPAWN_POSITIONS_STEP = 4;

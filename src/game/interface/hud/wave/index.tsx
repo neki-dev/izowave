@@ -12,16 +12,16 @@ import { CurrentNumber, State, Wrapper } from './styles';
 export const ComponentWave: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [currentNumber, setCurrentNumber] = useState(
-    game.world.wave.getTargetNumber(),
-  );
+  const [currentNumber, setCurrentNumber] = useState(1);
   const [value, setValue] = useState(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isHintVisible, setHintVisible] = useState(false);
+  const [isPeaceMode, setPeaceMode] = useState(false);
 
   useWorldUpdate(() => {
-    setCurrentNumber(game.world.wave.getTargetNumber());
+    setPeaceMode(game.world.wave.isPeaceMode);
+    setCurrentNumber(game.world.wave.number);
     setGoing(game.world.wave.isGoing);
 
     if (game.world.wave.isGoing) {
@@ -55,14 +55,16 @@ export const ComponentWave: React.FC = () => {
     };
   }, []);
 
-  return (
+  return !isPeaceMode && (
     <Wrapper>
       <CurrentNumber className={cn({ going: isGoing })}>
         {currentNumber}
       </CurrentNumber>
       <State>
         <State.Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</State.Label>
-        <State.Value className={cn({ alarm: isAlarm })}>{value}</State.Value>
+        <State.Value className={cn({ alarm: isAlarm })}>
+          {value}
+        </State.Value>
       </State>
 
       {isHintVisible && (

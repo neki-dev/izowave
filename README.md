@@ -8,8 +8,8 @@ Between waves build walls to defend, towers to attack, generators to get resourc
 
 * ## __[Play now](https://izowave.neki.guru)__
 
-![Preview 1](./docs/preview/1.png)
-| ![Preview 2](./docs/preview/2.png) | ![Preview 3](./docs/preview/3.png) | ![Preview 4](./docs/preview/4.png) |
+![Preview 1](./docs/preview/image01.png)
+| ![Preview 2](./docs/preview/image02.png) | ![Preview 3](./docs/preview/image03.png) | ![Preview 4](./docs/preview/image04.png) |
 |---|---|---|
 
 .

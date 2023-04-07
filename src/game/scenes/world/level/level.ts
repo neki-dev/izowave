@@ -1,9 +1,9 @@
-import { WorldGenerator } from 'gen-biome';
+import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
-  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST, LEVEL_MAP_Z_WEIGHT,
+  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST, LEVEL_MAP_Z_WEIGHT, LEVEL_TREES_COUNT,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Hexagon } from '~scene/world/hexagon';
@@ -20,7 +20,7 @@ import { TileMatrix } from './tile-matrix';
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;
 
-  private matrix: LevelBiome[][] = [];
+  readonly map: World<LevelBiome>;
 
   private mapTiles: Phaser.GameObjects.Group;
 
@@ -50,9 +50,8 @@ export class Level extends TileMatrix implements ILevel {
       }
     }
 
-    const map = generator.generate();
+    this.map = generator.generate();
 
-    this.matrix = map.getMatrix();
     this.scene = scene;
     this.visibleTiles = scene.add.group();
 
@@ -70,11 +69,11 @@ export class Level extends TileMatrix implements ILevel {
     const step = LEVEL_SPAWN_POSITIONS_STEP;
     const rand = Math.floor(step / 2);
 
-    for (let sY = step; sY < this.size - step; sY += step) {
-      for (let sX = step; sX < this.size - step; sX += step) {
+    for (let sX = step; sX < this.size - step; sX += step) {
+      for (let sY = step; sY < this.size - step; sY += step) {
         const x = sX + Phaser.Math.Between(-rand, rand);
         const y = sY + Phaser.Math.Between(-rand, rand);
-        const targets = this.matrix[y]?.[x]?.spawn;
+        const targets = this.map.getAt({ x, y }).spawn;
 
         if (targets && targets.includes(target)) {
           positions.push({ x, y });
@@ -86,9 +85,9 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   public hideTiles() {
-    for (let z = 0; z < this.height; z++) {
+    for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
-        for (let x = 0; x < this.size; x++) {
+        for (let z = 0; z < this.height; z++) {
           const tile = this.getTile({ x, y, z });
 
           if (tile) {
@@ -143,11 +142,11 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private makeMapTiles() {
-    const make = (x: number, y: number, biome: LevelBiome) => {
+    const make = (position: Vector2D, biome: LevelBiome) => {
       const variant = Array.isArray(biome.tileIndex)
         ? Phaser.Math.Between(...biome.tileIndex)
         : biome.tileIndex;
-      const tilePosition: Vector3D = { x, y, z: biome.z };
+      const tilePosition: Vector3D = { ...position, z: biome.z };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
       const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant) as ITile;
 
@@ -170,26 +169,26 @@ export class Level extends TileMatrix implements ILevel {
     };
 
     this.mapTiles = this.scene.add.group();
-    for (let y = 0; y < this.size; y++) {
-      for (let x = 0; x < this.size; x++) {
-        const biome = this.matrix[y][x];
+    this.map.each((position, biome) => {
+      make(position, biome);
 
-        make(x, y, biome);
+      // Add tile to hole
+      if (biome.z > 1) {
+        const z = biome.z - 1;
+        const insideMap = (position.x + 1 < this.map.width && position.y + 1 < this.map.height);
 
-        // Add tile to hole
-        if (biome.z > 1) {
-          const z = biome.z - 1;
+        if (insideMap && (
+          this.map.getAt({ x: position.x, y: position.y + 1 }).z !== z
+          || this.map.getAt({ x: position.x + 1, y: position.y }).z !== z
+        )) {
+          const neededBiome = LEVEL_BIOMES.find((b) => (b.data.z === z));
 
-          if (this.matrix[y + 1]?.[x]?.z !== z || this.matrix[y]?.[x + 1]?.z !== z) {
-            const neededBiome = LEVEL_BIOMES.find((b) => (b.data.z === z));
-
-            if (neededBiome) {
-              make(x, y, neededBiome.data);
-            }
+          if (neededBiome) {
+            make(position, neededBiome.data);
           }
         }
       }
-    }
+    });
   }
 
   private makeTrees() {
@@ -197,7 +196,7 @@ export class Level extends TileMatrix implements ILevel {
 
     const positions = this.readSpawnPositions(SpawnTarget.TREE);
 
-    for (let i = 0; i < this.size * 2; i++) {
+    for (let i = 0; i < LEVEL_TREES_COUNT; i++) {
       const positionAtMatrix: Vector2D = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition: Vector3D = { ...positionAtMatrix, z: 1 };
 
@@ -223,7 +222,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private makePathFinder() {
-    const grid = this.matrix.map((y) => y.map((x) => Number(x.collide)));
+    const grid = this.map.getMatrix().map((y) => y.map((x) => Number(x.collide)));
 
     this.navigator = new Navigator(grid);
   }

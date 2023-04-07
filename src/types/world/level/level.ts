@@ -1,3 +1,5 @@
+import { World } from 'gen-biome';
+
 import { INavigator } from '~type/world/level/navigator';
 import { ITileMatrix } from '~type/world/level/tile-matrix';
 
@@ -6,6 +8,11 @@ export interface ILevel extends ITileMatrix {
    * Path finder.
    */
   readonly navigator: INavigator
+
+  /**
+   * Map manager.
+   */
+  readonly map: World<LevelBiome>
 
   /**
    * Update area of visible tiles.

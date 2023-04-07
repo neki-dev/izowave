@@ -25,7 +25,7 @@ export class Wave extends EventEmitter implements IWave {
 
   public isPeaceMode: boolean = false;
 
-  public number: number = 0;
+  public number: number = 1;
 
   private spawnedEnemiesCount: number = 0;
 
@@ -87,15 +87,11 @@ export class Wave extends EventEmitter implements IWave {
       pause = calcGrowth(
         DIFFICULTY.WAVE_PAUSE,
         DIFFICULTY.WAVE_PAUSE_GROWTH,
-        this.number + 1,
+        this.number,
       ) / this.scene.game.difficulty;
     }
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
-  }
-
-  public getTargetNumber() {
-    return this.isGoing ? this.number : this.number + 1;
   }
 
   public getEnemiesLeft() {
@@ -132,7 +128,6 @@ export class Wave extends EventEmitter implements IWave {
       return;
     }
 
-    this.number++;
     this.isGoing = true;
 
     this.nextSpawnTimestamp = 0;
@@ -158,6 +153,7 @@ export class Wave extends EventEmitter implements IWave {
 
   private complete() {
     this.isGoing = false;
+    this.number++;
     this.runTimeleft();
 
     this.scene.sound.play(WaveAudio.COMPLETE);

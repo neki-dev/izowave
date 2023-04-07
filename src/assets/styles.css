@@ -23,7 +23,7 @@ img {
   user-select: none;
 }
 
-#loading {
+.system-overlay {
   position: fixed;
   left: 0;
   right: 0;
@@ -35,14 +35,16 @@ img {
   align-items: center;
   flex-direction: column;
   display: flex;
-  padding: 10%;
+  padding: 100px;
   font-family: 'Verdana';
   font-size: 10pt;
   letter-spacing: 2px;
   color: #aaa;
   text-align: center;
+  z-index: 3;
 }
-#loading .loading-animation {
+
+.loading-animation {
   width: 64px;
   height: 64px;
   background: url('./loading.gif') center center no-repeat;
