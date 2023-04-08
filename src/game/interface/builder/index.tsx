@@ -49,19 +49,14 @@ export const ComponentBuilder: React.FC = () => {
     setHint(null);
   };
 
+  useEffect(() => game.tutorial.bindAll({
+    beg: showHint,
+    end: hideHint,
+  }), []);
+
   useWorldUpdate(() => {
     setWaveGoing(game.world.wave.isGoing);
   });
-
-  useEffect(() => {
-    game.tutorial.onBegAny(showHint);
-    game.tutorial.onEndAny(hideHint);
-
-    return () => {
-      game.tutorial.offBegAny(showHint);
-      game.tutorial.offEndAny(hideHint);
-    };
-  }, []);
 
   return (
     <Wrapper>

@@ -45,15 +45,10 @@ export const ComponentWave: React.FC = () => {
     setHintVisible(false);
   };
 
-  useEffect(() => {
-    game.tutorial.onBeg(TutorialStep.WAVE_TIMELEFT, showHint);
-    game.tutorial.onEnd(TutorialStep.WAVE_TIMELEFT, hideHint);
-
-    return () => {
-      game.tutorial.offBeg(TutorialStep.WAVE_TIMELEFT, showHint);
-      game.tutorial.offEnd(TutorialStep.WAVE_TIMELEFT, hideHint);
-    };
-  }, []);
+  useEffect(() => game.tutorial.bind(TutorialStep.WAVE_TIMELEFT, {
+    beg: showHint,
+    end: hideHint,
+  }), []);
 
   return !isPeaceMode && (
     <Wrapper>

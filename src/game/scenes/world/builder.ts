@@ -55,19 +55,25 @@ export class Builder extends EventEmitter implements IBuilder {
       this.clearBuildingVariant();
     });
 
-    this.scene.game.tutorial.onBeg(TutorialStep.BUILD_AMMUNITION, () => {
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_AMMUNITION, {
+      beg: () => {
       this.scene.setTimePause(true);
-    });
-    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_AMMUNITION, () => {
+      },
+      end: () => {
       this.scene.setTimePause(false);
       this.clearBuildingVariant();
+      },
     });
-    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_GENERATOR, () => {
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+      end: () => {
       this.scene.setTimePause(false);
       this.clearBuildingVariant();
+      },
     });
-    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_TOWER_FIRE, () => {
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
+      end: () => {
       this.clearBuildingVariant();
+      },
     });
   }
 

@@ -30,58 +30,28 @@ export interface ITutorial extends EventEmitter {
   state(step: TutorialStep): TutorialStepState
 
   /**
-   * Bind callback on begin step.
+   * Bind callbacks on tutorial step progress.
    * @param step - Step to bind
-   * @param callback - Callback function
+   * @param callback - Callbacks functions
    */
-  onBeg(step: TutorialStep, callback: () => void): void
+  bind(step: TutorialStep, callbacks: TutorialBindCallbacks): () => void
 
   /**
-   * Unbind callback from begin step.
-   * @param step - Step to unbind
-   * @param callback - Callback function
+   * Bind callbacks on tutorial any progress.
+   * @param callback - Callbacks functions
    */
-  offBeg(step: TutorialStep, callback: () => void): void
-
-  /**
-   * Bind callback on begin steps.
-   * @param callback - Callback function
-   */
-  onBegAny(callback: (step: TutorialStep) => void): void
-
-  /**
-   * Unbind callback from begin steps.
-   *
-   * @param callback - Callback function
-   */
-  offBegAny(callback: (step: TutorialStep) => void): void
-
-  /**
-   * Bind callback on end step.
-   * @param step - Step to bind
-   * @param callback - Callback function
-   */
-  onEnd(step: TutorialStep, callback: () => void): void
-
-  /**
-   * Unbind callback from end step.
-   * @param step - Step to unbind
-   * @param callback - Callback function
-   */
-  offEnd(step: TutorialStep, callback: () => void): void
-
-  /**
-   * Bind callback on end steps.
-   * @param callback - Callback function
-   */
-  onEndAny(callback: (step: TutorialStep) => void): void
-
-  /**
-   * Unbind callback from end steps.
-   * @param callback - Callback function
-   */
-  offEndAny(callback: (step: TutorialStep) => void): void
+  bindAll(callbacks: TutorialBindAllCallbacks): () => void
 }
+
+export type TutorialBindCallbacks = {
+  beg?: () => void
+  end?: () => void
+};
+
+export type TutorialBindAllCallbacks = {
+  beg?: (step: TutorialStep) => void
+  end?: (step: TutorialStep) => void
+};
 
 export enum TutorialStep {
   BUILD_TOWER_FIRE = 'BUILD_TOWER_FIRE',

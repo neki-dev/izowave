@@ -1,7 +1,8 @@
 import EventEmitter from 'events';
 
 import {
-  ITutorial, TutorialEvents, TutorialStep, TutorialStepState,
+  ITutorial, TutorialEvents, TutorialStepState, TutorialStep,
+  TutorialBindCallbacks, TutorialBindAllCallbacks,
 } from '~type/tutorial';
 
 export class Tutorial extends EventEmitter implements ITutorial {
@@ -55,60 +56,48 @@ export class Tutorial extends EventEmitter implements ITutorial {
     return this.progress[step] ? TutorialStepState.BEG : TutorialStepState.END;
   }
 
-  public onBeg(step: TutorialStep, callback: () => void) {
+  public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
     if (this.isDisabled) {
-      return;
+      return null;
     }
 
-    this.once(`${TutorialEvents.BEG}_${step}`, callback);
-  }
-
-  public offBeg(step: TutorialStep, callback: () => void) {
-    if (this.isDisabled) {
-      return;
+    if (callbacks.beg) {
+      this.once(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
+    }
+    if (callbacks.end) {
+      this.once(`${TutorialEvents.END}_${step}`, callbacks.end);
     }
 
-    this.off(`${TutorialEvents.BEG}_${step}`, callback);
+    return () => {
+      if (callbacks.beg) {
+        this.off(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
+      }
+      if (callbacks.end) {
+        this.off(`${TutorialEvents.END}_${step}`, callbacks.end);
+      }
+    };
   }
 
-  public onBegAny(callback: (step: TutorialStep) => void) {
+  public bindAll(callbacks: TutorialBindAllCallbacks) {
     if (this.isDisabled) {
-      return;
+      return null;
     }
 
-    this.on(TutorialEvents.BEG, callback);
-  }
-
-  public offBegAny(callback: (step: TutorialStep) => void) {
-    this.off(TutorialEvents.BEG, callback);
-  }
-
-  public onEnd(step: TutorialStep, callback: () => void) {
-    if (this.isDisabled) {
-      return;
+    if (callbacks.beg) {
+      this.once(TutorialEvents.BEG, callbacks.beg);
+    }
+    if (callbacks.end) {
+      this.once(TutorialEvents.END, callbacks.end);
     }
 
-    this.once(`${TutorialEvents.END}_${step}`, callback);
-  }
-
-  public offEnd(step: TutorialStep, callback: () => void) {
-    if (this.isDisabled) {
-      return;
-    }
-
-    this.off(`${TutorialEvents.END}_${step}`, callback);
-  }
-
-  public onEndAny(callback: (step: TutorialStep) => void) {
-    if (this.isDisabled) {
-      return;
-    }
-
-    this.on(TutorialEvents.END, callback);
-  }
-
-  public offEndAny(callback: (step: TutorialStep) => void) {
-    this.off(TutorialEvents.END, callback);
+    return () => {
+      if (callbacks.beg) {
+        this.off(TutorialEvents.BEG, callbacks.beg);
+      }
+      if (callbacks.end) {
+        this.off(TutorialEvents.END, callbacks.end);
+      }
+    };
   }
 
   public disable() {
