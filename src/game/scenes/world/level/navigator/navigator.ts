@@ -29,11 +29,8 @@ export class Navigator implements INavigator {
     if (!this.pointsToCost[position.y]) {
       return;
     }
-    delete this.pointsToCost[position.y][position.x];
-  }
 
-  public resetPointsCost() {
-    this.pointsToCost = [];
+    delete this.pointsToCost[position.y][position.x];
   }
 
   public getPointCost(position: Vector2D) {
