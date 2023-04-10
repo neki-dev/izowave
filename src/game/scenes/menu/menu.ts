@@ -4,7 +4,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { registerAudioAssets } from '~lib/assets';
 import { Interface } from '~lib/interface';
 import { Level } from '~scene/world/level';
-import { IGame, SceneKey } from '~type/game';
+import { IGame, GameScene } from '~type/game';
 import { IMenu, MenuAudio } from '~type/menu';
 
 import { MenuUI } from './ui';
@@ -13,7 +13,7 @@ export class Menu extends Phaser.Scene implements IMenu {
   readonly game: IGame;
 
   constructor() {
-    super(SceneKey.MENU);
+    super(GameScene.MENU);
   }
 
   public create() {

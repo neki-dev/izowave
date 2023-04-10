@@ -17,7 +17,7 @@ import { sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
-import { IGame, SceneKey } from '~type/game';
+import { IGame, GameScene } from '~type/game';
 import { IWorld, WorldEvents, WorldHint } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ParticlesList, ParticlesTexture, ParticlesType } from '~type/world/effects';
@@ -77,7 +77,7 @@ export class World extends Phaser.Scene implements IWorld {
   private nextFindPathTimestamp: number = 0;
 
   constructor() {
-    super(SceneKey.WORLD);
+    super(GameScene.WORLD);
   }
 
   public create() {

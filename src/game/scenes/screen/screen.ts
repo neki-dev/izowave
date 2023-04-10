@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { registerAudioAssets } from '~lib/assets';
 import { Interface } from '~lib/interface';
-import { IGame, SceneKey } from '~type/game';
+import { IGame, GameScene } from '~type/game';
 import {
   IScreen, NoticeType, ScreenAudio, ScreenEvents,
 } from '~type/screen';
@@ -13,7 +13,7 @@ export class Screen extends Phaser.Scene implements IScreen {
   readonly game: IGame;
 
   constructor() {
-    super(SceneKey.SCREEN);
+    super(GameScene.SCREEN);
   }
 
   create() {

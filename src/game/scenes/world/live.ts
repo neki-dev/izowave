@@ -34,6 +34,10 @@ export class Live extends EventEmmiter implements ILive {
     this.setHealth(this.maxHealth);
   }
 
+  public addHealth(amount: number) {
+    this.setHealth(this.health + amount);
+  }
+
   public setHealth(amount: number) {
     const prevHealth = this.health;
 

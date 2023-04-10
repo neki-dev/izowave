@@ -98,7 +98,7 @@ export interface IScene extends Phaser.Scene {
   readonly game: IGame
 }
 
-export enum SceneKey {
+export enum GameScene {
   BASIC = 'BASIC',
   GAMEOVER = 'GAMEOVER',
   WORLD = 'WORLD',

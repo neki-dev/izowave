@@ -78,7 +78,7 @@ export class BuildingMedic extends Building {
   private heal(player: IPlayer) {
     const health = this.getHealAmount();
 
-    player.live.setHealth(player.live.health + health);
+    player.live.addHealth(health);
 
     if (this.visible) {
       new Particles(this, {
