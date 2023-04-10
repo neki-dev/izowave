@@ -18,6 +18,8 @@ export interface IEnemy extends INPC {
 }
 
 export interface IEnemyFactory {
+  SpawnMinWave: number
+  SpawnFrequency: number
   new (scene: IWorld, data: EnemyVariantData): IEnemy
 }
 
@@ -54,20 +56,17 @@ export type EnemyTexturesMeta = Record<EnemyTexture, {
   size: number
 }>;
 
-export type EnemyVariantsMeta = Partial<Record<EnemyVariant, {
-  spawnMinWave: number
-  spawnFrequency: number
-}>>;
-
 export type EnemyVariantData = {
   positionAtMatrix: Vector2D
 };
 
 export type EnemyData = EnemyVariantData & {
   texture: EnemyTexture
-  speed: number
-  damage: number
-  health: number
-  experienceMultiply?: number
   scale?: number
+  multipliers?: {
+    speed?: number
+    damage?: number
+    health?: number
+    experience?: number
+  }
 };

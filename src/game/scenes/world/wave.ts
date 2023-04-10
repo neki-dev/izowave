@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ENEMY_VARIANTS_META } from '~const/world/entities/enemy';
+import { ENEMIES } from '~const/world/entities/enemies';
 import { WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
@@ -198,9 +198,9 @@ export class Wave extends EventEmitter implements IWave {
 
     const variants: EnemyVariant[] = [];
 
-    eachEntries(ENEMY_VARIANTS_META, (type, meta) => {
-      if (meta.spawnMinWave <= this.number) {
-        for (let k = 0; k < meta.spawnFrequency; k++) {
+    eachEntries(ENEMIES, (type, Instance) => {
+      if (Instance.SpawnMinWave <= this.number) {
+        for (let k = 0; k < Instance.SpawnFrequency; k++) {
           variants.push(<EnemyVariant> type);
         }
       }

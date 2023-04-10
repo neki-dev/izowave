@@ -58,8 +58,11 @@ export const DIFFICULTY = {
    * Enemies
    */
 
+  ENEMY_HEALTH: 100, // Enemy default health
   ENEMY_HEALTH_GROWTH: 0.15, // Enemy health growth by wave number
+  ENEMY_SPEED: 100, // Enemy default speed
   ENEMY_SPEED_GROWTH: 0.056, // Enemy speed growth by wave number
+  ENEMY_DAMAGE: 100, // Enemy default damage
   ENEMY_DAMAGE_GROWTH: 0.06, // Enemy damage growth by wave number
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.07, // Experience growth by wave number
@@ -80,7 +83,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_WALL_COST: 10, // Wall cost
-  BUILDING_WALL_HEALTH: 2000, // Default wall health
+  BUILDING_WALL_HEALTH: 2000, // Wall default health
   BUILDING_WALL_HEALTH_UPGRADE: 2000, // Amount of health added per upgrade (N * upgrade_level)
 
   /**
