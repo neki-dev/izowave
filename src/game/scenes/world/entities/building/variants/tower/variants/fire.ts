@@ -62,7 +62,7 @@ export class BuildingTowerFire extends BuildingTower {
     });
     this.scene.game.tutorial.bind(TutorialStep.RELOAD_BUILDING, {
       beg: () => {
-        if (this.getAmmo() === 0) {
+        if (this.ammo === 0) {
           this.scene.showHint({
             side: 'top',
             text: 'Hover on building and press [R] to reload ammo',
