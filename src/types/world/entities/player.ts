@@ -60,11 +60,6 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   takeResources(amount: number): void
 }
 
-export enum PlayerEvents {
-  UPDATE_EXPERIENCE = 'update_experience',
-  UPDATE_RESOURCE = 'update_resource',
-}
-
 export enum PlayerTexture {
   PLAYER = 'player',
 }

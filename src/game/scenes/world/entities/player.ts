@@ -14,7 +14,7 @@ import { IWorld } from '~type/world';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerEvents, PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
@@ -122,7 +122,6 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.experience += amount;
-    this.emit(PlayerEvents.UPDATE_EXPERIENCE, amount);
 
     let experienceNeed = this.getNextExperience();
     let experienceLeft = this.experience;
@@ -146,12 +145,10 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.resources += amount;
-    this.emit(PlayerEvents.UPDATE_RESOURCE, amount);
   }
 
   public takeResources(amount: number) {
     this.resources -= amount;
-    this.emit(PlayerEvents.UPDATE_RESOURCE, -amount);
   }
 
   public incrementKills() {

@@ -58,7 +58,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
     if (this.isDisabled) {
-      return null;
+      return;
     }
 
     if (callbacks.beg) {
@@ -80,14 +80,14 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   public bindAll(callbacks: TutorialBindAllCallbacks) {
     if (this.isDisabled) {
-      return null;
+      return;
     }
 
     if (callbacks.beg) {
-      this.once(TutorialEvents.BEG, callbacks.beg);
+      this.on(TutorialEvents.BEG, callbacks.beg);
     }
     if (callbacks.end) {
-      this.once(TutorialEvents.END, callbacks.end);
+      this.on(TutorialEvents.END, callbacks.end);
     }
 
     return () => {
