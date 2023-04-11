@@ -267,7 +267,7 @@ export class Player extends Sprite implements IPlayer {
         this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
 
         if (!oldMoving) {
-          this.scene.sound.play(PlayerAudio.MOVE, {
+          this.scene.game.sound.play(PlayerAudio.MOVE, {
             loop: true,
             rate: 1.8,
           });

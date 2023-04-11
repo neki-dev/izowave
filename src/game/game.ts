@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
-import { AUDIO_VOLUME, CONTAINER_ID } from '~const/game';
-import { DIFFICULTY_POWERS } from '~const/world/difficulty';
+import { AUDIO_VOLUME, CONTAINER_ID, SETTINGS } from '~const/game';
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
@@ -13,7 +12,7 @@ import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
 import { IAnalytics } from '~type/analytics';
 import {
-  GameDifficulty, GameEvents, GameStat, IGame,
+  GameEvents, GameSettings, GameStat, IGame,
 } from '~type/game';
 import { IMenu } from '~type/menu';
 import { IScreen } from '~type/screen';
@@ -43,18 +42,6 @@ export class Game extends Phaser.Game implements IGame {
 
   private set isFinished(v) { this._isFinished = v; }
 
-  private _difficultyType: GameDifficulty;
-
-  public get difficultyType() { return this._difficultyType; }
-
-  private set difficultyType(v) { this._difficultyType = v; }
-
-  private _difficulty: number;
-
-  public get difficulty() { return this._difficulty; }
-
-  private set difficulty(v) { this._difficulty = v; }
-
   private _menu: IMenu;
 
   public get menu() { return this._menu; }
@@ -72,6 +59,12 @@ export class Game extends Phaser.Game implements IGame {
   public get world() { return this._world; }
 
   private set world(v) { this._world = v; }
+
+  private _settings: Partial<Record<GameSettings, string>> = {};
+
+  public get settings() { return this._settings; }
+
+  private set settings(v) { this._settings = v; }
 
   constructor() {
     super({
@@ -99,7 +92,7 @@ export class Game extends Phaser.Game implements IGame {
     this.tutorial = new Tutorial();
     this.analytics = new Analytics();
 
-    this.readAndUpdateDifficulty();
+    this.readSettings();
 
     this.events.on(Phaser.Core.Events.READY, () => {
       this.screen = <Screen> this.scene.keys.SCREEN;
@@ -109,6 +102,10 @@ export class Game extends Phaser.Game implements IGame {
       this.sound.setVolume(AUDIO_VOLUME);
 
       this.registerShaders();
+    });
+
+    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
+      this.sound.mute = (value === 'off');
     });
 
     if (IS_DEV_MODE) {
@@ -183,7 +180,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.isFinished = true;
 
-    const record = this.readBestStat();
+    const record = this.getRecordStat();
     const stat = this.getCurrentStat();
 
     if (!IS_DEV_MODE) {
@@ -198,22 +195,35 @@ export class Game extends Phaser.Game implements IGame {
     });
   }
 
-  public setDifficulty(type: GameDifficulty) {
-    localStorage.setItem('DIFFICULTY', type);
-
-    this.difficultyType = type;
-    this.difficulty = DIFFICULTY_POWERS[this.difficultyType];
+  public getDifficultyMultiplier() {
+    switch (this.settings[GameSettings.DIFFICULTY]) {
+      case 'EASY': return 0.8;
+      case 'HARD': return 1.3;
+      default: return 1.0;
+    }
   }
 
-  private readAndUpdateDifficulty() {
-    const difficultyType = <GameDifficulty> localStorage.getItem('DIFFICULTY') || GameDifficulty.NORMAL;
+  public updateSetting(key: GameSettings, value: string) {
+    this.settings[key] = value;
+    localStorage.setItem(`SETTINGS.${key}`, value);
 
-    this.setDifficulty(difficultyType);
+    this.events.emit(`${GameEvents.UPDATE_SETTINGS}.${key}`, value);
   }
 
-  private readBestStat(): Nullable<GameStat> {
+  public isSettingEnabled(key: GameSettings) {
+    return (this.settings[key] === 'on');
+  }
+
+  private readSettings() {
+    eachEntries(GameSettings, (key) => {
+      this.settings[key] = localStorage.getItem(`SETTINGS.${key}`) ?? SETTINGS[key].default;
+    });
+  }
+
+  private getRecordStat(): Nullable<GameStat> {
     try {
-      const recordValue = localStorage.getItem(`BEST_STAT.${this.difficultyType}`);
+      const difficulty = this.settings[GameSettings.DIFFICULTY];
+      const recordValue = localStorage.getItem(`BEST_STAT.${difficulty}`);
 
       return JSON.parse(recordValue);
     } catch (error) {
@@ -222,12 +232,13 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   private writeBestStat(stat: GameStat, record: Nullable<GameStat>) {
-    localStorage.setItem(`BEST_STAT.${this.difficultyType}`, JSON.stringify(
-      Object.keys(stat).reduce((curr, param: keyof GameStat) => ({
-        ...curr,
-        [param]: Math.max(stat[param], record?.[param] ?? 0),
-      }), {}),
-    ));
+    const difficulty = this.settings[GameSettings.DIFFICULTY];
+    const betterStat = Object.keys(stat).reduce((curr, param: keyof GameStat) => ({
+      ...curr,
+      [param]: Math.max(stat[param], record?.[param] ?? 0),
+    }), {});
+
+    localStorage.setItem(`BEST_STAT.${difficulty}`, JSON.stringify(betterStat));
   }
 
   private getCurrentStat() {

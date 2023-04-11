@@ -18,3 +18,5 @@ export const ComponentControls: React.FC = () => (
       ))}
     </>
 );
+
+ComponentControls.displayName = 'ComponentControls';

@@ -62,7 +62,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     if (this.ammo <= amount) {
       const left = this.ammo;
 
-      this.scene.sound.play(BuildingAudio.OVER);
+      this.scene.game.sound.play(BuildingAudio.OVER);
       this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
 
       this.destroy();

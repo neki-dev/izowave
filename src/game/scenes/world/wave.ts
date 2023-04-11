@@ -133,7 +133,7 @@ export class Wave extends EventEmitter implements IWave {
         DIFFICULTY.WAVE_PAUSE,
         DIFFICULTY.WAVE_PAUSE_GROWTH,
         this.number,
-      ) / this.scene.game.difficulty;
+      ) / this.scene.game.getDifficultyMultiplier();
     }
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;

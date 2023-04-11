@@ -7,6 +7,7 @@ import {
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Hexagon } from '~scene/world/hexagon';
+import { GameEvents, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D, ILevel,
@@ -60,6 +61,12 @@ export class Level extends TileMatrix implements ILevel {
 
     this.makeMapTiles();
     this.makeTrees();
+
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.BLOOD_ON_MAP}`, (value: string) => {
+      if (value === 'off') {
+        this.effects.clear(true, true);
+      }
+    });
   }
 
   public isFreePoint(position: Vector3D) {

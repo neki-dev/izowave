@@ -7,6 +7,7 @@ import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesType } from '~type/world/effects';
 import { IBuilding } from '~type/world/entities/building';
@@ -29,12 +30,12 @@ export class Enemy extends NPC implements IEnemy {
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: calcGrowth(
-        DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.difficulty,
+        DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
       damage: calcGrowth(
-        DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.difficulty,
+        DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_DAMAGE_GROWTH,
         scene.wave.number,
       ),
@@ -119,8 +120,8 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    if (this.scene.sound.getAll(EnemyAudio.ATTACK).length < 3) {
-      this.scene.sound.play(EnemyAudio.ATTACK);
+    if (this.scene.game.sound.getAll(EnemyAudio.ATTACK).length < 3) {
+      this.scene.game.sound.play(EnemyAudio.ATTACK);
     }
 
     target.live.damage(this.damage);
@@ -144,7 +145,10 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addBloodEffect() {
-    if (!this.currentGroundTile?.biome.solid) {
+    if (
+      !this.currentGroundTile?.biome.solid
+      || !this.scene.game.isSettingEnabled(GameSettings.BLOOD_ON_MAP)
+    ) {
       return;
     }
 

@@ -269,7 +269,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.player.takeResources(cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
-    this.scene.sound.play(BuildingAudio.UPGRADE);
+    this.scene.game.sound.play(BuildingAudio.UPGRADE);
     this.scene.game.screen.notice(NoticeType.INFO, 'BUILDING UPGRADED');
 
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);

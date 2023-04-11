@@ -369,7 +369,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private createBuildArea() {
     const d = calcGrowth(
-      DIFFICULTY.BUILDING_BUILD_AREA / this.scene.game.difficulty,
+      DIFFICULTY.BUILDING_BUILD_AREA / this.scene.game.getDifficultyMultiplier(),
       DIFFICULTY.BUILDING_BUILD_AREA_GROWTH,
       this.scene.player.level,
     ) * 2;

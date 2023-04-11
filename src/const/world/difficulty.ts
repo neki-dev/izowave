@@ -1,5 +1,3 @@
-import { GameDifficultyPowers } from '~type/game';
-
 export const DIFFICULTY = {
   /**
    * Player
@@ -164,10 +162,4 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Medic heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Default medic heal
   BUILDING_MEDIC_HEAL_AMOUNT_UPGRADE: 10, // Amount of heal added per upgrade (N * upgrade_level)
-};
-
-export const DIFFICULTY_POWERS: GameDifficultyPowers = {
-  EASY: 0.8,
-  NORMAL: 1.0,
-  HARD: 1.3,
 };

@@ -189,7 +189,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.ammo += ammunition.use(needAmmo);
     this.hasAlert = false;
 
-    this.scene.sound.play(BuildingAudio.RELOAD);
+    this.scene.game.sound.play(BuildingAudio.RELOAD);
 
     this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
   }
