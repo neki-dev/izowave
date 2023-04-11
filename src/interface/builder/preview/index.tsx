@@ -37,7 +37,12 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
   };
 
   useWorldUpdate(() => {
-    setActive(game.world.builder.variant === variant);
+    const currentIsActive = game.world.builder.variant === variant;
+
+    setActive(currentIsActive);
+    if (currentIsActive) {
+      setNewest(false);
+    }
     setDisallow(
       !game.world.builder.isBuildingAllowByTutorial(variant)
       || !game.world.builder.isBuildingAllowByWave(variant),
