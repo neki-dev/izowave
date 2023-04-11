@@ -181,9 +181,9 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.COMPLETE, this.number);
 
-    if (this.number === 1) {
+    if (this.number === 2) {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
-    } else if (this.number === 2) {
+    } else if (this.number === 3) {
       this.scene.game.tutorial.beg(TutorialStep.UPGRADE_BUILDING);
     }
 
