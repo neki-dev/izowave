@@ -69,7 +69,7 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   public getSeason() {
-    return Math.ceil(this.scene.wave.number / DIFFICULTY.WAVE_SEASON_LENGTH);
+    return Math.ceil(this.number / DIFFICULTY.WAVE_SEASON_LENGTH);
   }
 
   public update() {
