@@ -1,5 +1,6 @@
 import { ANALYTICS_SERVER } from '~const/analytics';
 import { AnalyticData, IAnalytics } from '~type/analytics';
+import { GameSettings } from '~type/game';
 
 export class Analytics implements IAnalytics {
   private userId: string;
@@ -19,7 +20,7 @@ export class Analytics implements IAnalytics {
     const payload = {
       userId: this.userId,
       success: data.success,
-      difficulty: data.world.game.difficultyType,
+      difficulty: data.world.game.settings[GameSettings.DIFFICULTY],
       waveNumber: data.world.wave.number,
       resources: data.world.player.resources,
       level: data.world.player.level,

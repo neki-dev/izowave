@@ -2,12 +2,14 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
+import { TILE_META } from '~const/world/level';
 import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { Particles } from '~scene/world/effects';
+import { Effect, Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { EffectTexture, ParticlesType } from '~type/world/effects';
 import { IBuilding } from '~type/world/entities/building';
 import {
   IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture, IEnemy,
@@ -15,13 +17,12 @@ import {
 import { TileType } from '~type/world/level';
 
 export class Enemy extends NPC implements IEnemy {
-  private experienceMultiply: number;
+  private might: number;
 
   private freezeTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, health, damage, speed,
-    scale = 1.0, experienceMultiply = 1.0,
+    positionAtMatrix, texture, scale = 1.0, multipliers = {},
   }: EnemyData) {
     super(scene, {
       texture,
@@ -29,17 +30,17 @@ export class Enemy extends NPC implements IEnemy {
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: calcGrowth(
-        health * scene.game.difficulty,
+        DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
       damage: calcGrowth(
-        damage * scene.game.difficulty,
+        DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_DAMAGE_GROWTH,
         scene.wave.number,
       ),
       speed: calcGrowth(
-        speed,
+        DIFFICULTY.ENEMY_SPEED * (multipliers.speed ?? 1.0),
         DIFFICULTY.ENEMY_SPEED_GROWTH,
         scene.wave.number,
       ),
@@ -47,7 +48,11 @@ export class Enemy extends NPC implements IEnemy {
     scene.add.existing(this);
     scene.entityGroups.enemies.add(this);
 
-    this.experienceMultiply = experienceMultiply;
+    this.might = (
+      (multipliers.health ?? 1.0)
+      + (multipliers.damage ?? 1.0)
+      + (multipliers.speed ?? 1.0)
+    );
 
     const offset = scale * 2;
 
@@ -115,8 +120,8 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    if (this.scene.sound.getAll(EnemyAudio.ATTACK).length < 3) {
-      this.scene.sound.play(EnemyAudio.ATTACK);
+    if (this.scene.game.sound.getAll(EnemyAudio.ATTACK).length < 3) {
+      this.scene.game.sound.play(EnemyAudio.ATTACK);
     }
 
     target.live.damage(this.damage);
@@ -126,7 +131,7 @@ export class Enemy extends NPC implements IEnemy {
 
   public onDead() {
     const experience = calcGrowth(
-      DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.experienceMultiply,
+      DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
       DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
       this.scene.wave.number,
     );
@@ -134,7 +139,28 @@ export class Enemy extends NPC implements IEnemy {
     this.scene.player.giveExperience(experience);
     this.scene.player.incrementKills();
 
+    this.addBloodEffect();
+
     super.onDead();
+  }
+
+  private addBloodEffect() {
+    if (
+      !this.currentGroundTile?.biome.solid
+      || !this.scene.game.isSettingEnabled(GameSettings.BLOOD_ON_MAP)
+    ) {
+      return;
+    }
+
+    const effect = new Effect(this.scene, {
+      texture: EffectTexture.BLOOD,
+      position: this,
+      permanentFrame: Phaser.Math.Between(0, 3),
+      scale: 0.5 + Math.random(),
+      depth: this.y + (TILE_META.height * 0.5),
+    });
+
+    this.scene.level.effects.add(effect);
   }
 
   private addSpawnEffect() {

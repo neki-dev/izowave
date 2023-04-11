@@ -21,25 +21,22 @@ export const ComponentBuilder: React.FC = () => {
   const showHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR: {
-        setHint({
+        return setHint({
           variant: BuildingVariant.GENERATOR,
           text: 'Build generator to get resources',
         });
-        break;
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
-        setHint({
+        return setHint({
           variant: BuildingVariant.TOWER_FIRE,
           text: 'Build tower to defend yourself from enemies',
         });
-        break;
       }
       case TutorialStep.BUILD_AMMUNITION: {
-        setHint({
+        return setHint({
           variant: BuildingVariant.AMMUNITION,
           text: 'Build ammunition to reload tower ammo',
         });
-        break;
       }
       default: break;
     }
@@ -49,25 +46,20 @@ export const ComponentBuilder: React.FC = () => {
     setHint(null);
   };
 
+  useEffect(() => game.tutorial.bindAll({
+    beg: showHint,
+    end: hideHint,
+  }), []);
+
   useWorldUpdate(() => {
     setWaveGoing(game.world.wave.isGoing);
   });
-
-  useEffect(() => {
-    game.tutorial.onBegAny(showHint);
-    game.tutorial.onEndAny(hideHint);
-
-    return () => {
-      game.tutorial.offBegAny(showHint);
-      game.tutorial.offEndAny(hideHint);
-    };
-  }, []);
 
   return (
     <Wrapper>
       {Object.values(BuildingVariant).map((variant, index) => (
         <Variant key={variant}>
-          {(hint && hint.variant === variant) && (
+          {(hint?.variant === variant) && (
             <ComponentHint side="right">
               {hint.text}
             </ComponentHint>

@@ -23,16 +23,6 @@ export interface IGame extends Phaser.Game {
   readonly menu: IMenu
 
   /**
-   * Game difficulty type.
-   */
-  readonly difficultyType: GameDifficulty
-
-  /**
-   * Game difficulty multiply.
-   */
-  readonly difficulty: number
-
-  /**
    * Game is paused.
    */
   readonly isPaused: boolean
@@ -56,6 +46,11 @@ export interface IGame extends Phaser.Game {
    * Tutorial manager.
    */
   readonly tutorial: ITutorial
+
+  /**
+   * Game settings.
+   */
+  readonly settings: Partial<Record<GameSettings, string>>
 
   /**
    * Pause game.
@@ -88,17 +83,29 @@ export interface IGame extends Phaser.Game {
   finishGame(): void
 
   /**
-   * Set game difficulty.
-   * @param type - Difficulty type
+   * Get difficylty multiplier by settings.
    */
-  setDifficulty(type: GameDifficulty): void
+  getDifficultyMultiplier(): number
+
+  /**
+   * Set game settings value.
+   * @param key - Settings key
+   * @param value - New value
+   */
+  updateSetting(key: GameSettings, value: string): void
+
+  /**
+   * Check is setting enabled.
+   * @param key - Settings key
+   */
+  isSettingEnabled(key: GameSettings): boolean
 }
 
 export interface IScene extends Phaser.Scene {
   readonly game: IGame
 }
 
-export enum SceneKey {
+export enum GameScene {
   BASIC = 'BASIC',
   GAMEOVER = 'GAMEOVER',
   WORLD = 'WORLD',
@@ -109,15 +116,22 @@ export enum SceneKey {
 export enum GameEvents {
   START = 'start',
   FINISH = 'finish',
+  UPDATE_SETTINGS = 'update_settings',
 }
 
-export enum GameDifficulty {
-  EASY = 'EASY',
-  NORMAL = 'NORMAL',
-  HARD = 'HARD',
+export enum GameSettings {
+  DIFFICULTY = 'DIFFICULTY',
+  AUDIO = 'AUDIO',
+  BLOOD_ON_MAP = 'BLOOD_ON_MAP',
+  TUTORIAL = 'TUTORIAL',
 }
 
-export type GameDifficultyPowers = Record<GameDifficulty, number>;
+export type GameSettingsData = {
+  description: string
+  values: string[]
+  default: string
+  runtime: boolean
+};
 
 export type GameStat = {
   waves: number

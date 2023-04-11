@@ -1,11 +1,7 @@
-import {
-  EnemyTexture, EnemyTexturesMeta, EnemyVariant, EnemyVariantsMeta,
-} from '~type/world/entities/npc/enemy';
+import { EnemyTexture, EnemyTexturesMeta } from '~type/world/entities/npc/enemy';
 
 export const ENEMY_SPAWN_POSITIONS = 10;
-
 export const ENEMY_SPAWN_DISTANCE_FROM_PLAYER = 16;
-
 export const ENEMY_SPAWN_DISTANCE_FROM_BUILDING = 8;
 
 export const ENEMY_PATH_BREAKPOINT = 32;
@@ -34,32 +30,5 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
   [EnemyTexture.BOUCHE]: {
     frameRate: 8,
     size: 32,
-  },
-};
-
-export const ENEMY_VARIANTS_META: EnemyVariantsMeta = {
-  [EnemyVariant.BAT]: {
-    spawnMinWave: 1,
-    spawnFrequency: 3,
-  },
-  [EnemyVariant.DEMON]: {
-    spawnMinWave: 1,
-    spawnFrequency: 5,
-  },
-  [EnemyVariant.OVERLORD]: {
-    spawnMinWave: 3,
-    spawnFrequency: 3,
-  },
-  [EnemyVariant.UNDEAD]: {
-    spawnMinWave: 6,
-    spawnFrequency: 2,
-  },
-  [EnemyVariant.IMPURE]: {
-    spawnMinWave: 7,
-    spawnFrequency: 3,
-  },
-  [EnemyVariant.BOUCHE]: {
-    spawnMinWave: 11,
-    spawnFrequency: 2,
   },
 };

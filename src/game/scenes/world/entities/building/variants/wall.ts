@@ -33,7 +33,9 @@ export class BuildingWall extends Building {
   }
 
   private upgradeMaxHealth() {
-    const health = DIFFICULTY.BUILDING_WALL_HEALTH + (DIFFICULTY.BUILDING_WALL_HEALTH_UPGRADE * (this.upgradeLevel - 1));
+    const health = DIFFICULTY.BUILDING_WALL_HEALTH + (
+      DIFFICULTY.BUILDING_WALL_HEALTH_UPGRADE * (this.upgradeLevel - 1)
+    );
 
     this.live.setMaxHealth(health);
   }

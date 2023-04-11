@@ -1,6 +1,12 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
+
+const animationBlink = keyframes`
+  0% { background: ${InterfaceColor.INFO} }
+  50% { background: ${InterfaceColor.INFO_DARK} }
+  100% { background: ${InterfaceColor.INFO} }
+`;
 
 export const Building: any = styled.div`
   width: 60px;
@@ -24,6 +30,17 @@ export const Building: any = styled.div`
   &.active {
     opacity: 1.0;
     background: ${InterfaceColor.BLUE_DARK};
+  }
+  &.newest::after {
+    position: absolute;
+    content: '';
+    left: -2px;
+    top: -2px;
+    border-radius: 50%;
+    background: ${InterfaceColor.INFO};
+    width: 10px;
+    height: 10px;
+    animation: ${animationBlink} 1s infinite;
   }
 `;
 

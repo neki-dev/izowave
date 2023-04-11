@@ -15,6 +15,7 @@ const world = {
     analytics: {
       track: jest.fn(),
     },
+    getDifficultyMultiplier: jest.fn(() => 1.0),
   },
   entityGroups: {
     enemies: {

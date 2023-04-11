@@ -16,13 +16,15 @@ export const ComponentWave: React.FC = () => {
   const [value, setValue] = useState(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
-  const [isHintVisible, setHintVisible] = useState(false);
+  const [isNextSeason, setNextSeason] = useState(false);
   const [isPeaceMode, setPeaceMode] = useState(false);
+  const [hint, setHint] = useState<string>(null);
 
   useWorldUpdate(() => {
     setPeaceMode(game.world.wave.isPeaceMode);
     setCurrentNumber(game.world.wave.number);
     setGoing(game.world.wave.isGoing);
+    setNextSeason(game.world.wave.isNextSeason);
 
     if (game.world.wave.isGoing) {
       const enemiesLeft = game.world.wave.getEnemiesLeft();
@@ -37,23 +39,26 @@ export const ComponentWave: React.FC = () => {
     }
   });
 
-  const showHint = () => {
-    setHintVisible(true);
+  const showHint = (step: TutorialStep) => {
+    switch (step) {
+      case TutorialStep.WAVE_TIMELEFT: {
+        return setHint('Here display timeleft to start enemies attack');
+      }
+      case TutorialStep.WAVE_SEASON: {
+        return setHint('Every end of season, you can choose when to start next wave');
+      }
+      default: break;
+    }
   };
 
   const hideHint = () => {
-    setHintVisible(false);
+    setHint(null);
   };
 
-  useEffect(() => {
-    game.tutorial.onBeg(TutorialStep.WAVE_TIMELEFT, showHint);
-    game.tutorial.onEnd(TutorialStep.WAVE_TIMELEFT, hideHint);
-
-    return () => {
-      game.tutorial.offBeg(TutorialStep.WAVE_TIMELEFT, showHint);
-      game.tutorial.offEnd(TutorialStep.WAVE_TIMELEFT, hideHint);
-    };
-  }, []);
+  useEffect(() => game.tutorial.bindAll({
+    beg: showHint,
+    end: hideHint,
+  }), []);
 
   return !isPeaceMode && (
     <Wrapper>
@@ -62,14 +67,20 @@ export const ComponentWave: React.FC = () => {
       </CurrentNumber>
       <State>
         <State.Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</State.Label>
-        <State.Value className={cn({ alarm: isAlarm })}>
-          {value}
-        </State.Value>
+        {isNextSeason ? (
+          <State.Action onClick={() => game.world.wave.skipTimeleft()}>
+            START
+          </State.Action>
+        ) : (
+          <State.Value className={cn({ alarm: isAlarm })}>
+            {value}
+          </State.Value>
+        )}
       </State>
 
-      {isHintVisible && (
+      {hint && (
         <ComponentHint side="left">
-          Here display time left to start enemies attack
+          {hint}
         </ComponentHint>
       )}
     </Wrapper>

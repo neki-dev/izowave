@@ -14,7 +14,10 @@ export function calcGrowth(
   growthScale: number,
   level: number,
 ) {
-  return Math.round(startValue + (((level - 1) ** 1.1) * (startValue * growthScale)));
+  const step = startValue * growthScale;
+  const weight = (level - 1) ** 1.1;
+
+  return Math.round(startValue + (weight * step));
 }
 
 /**

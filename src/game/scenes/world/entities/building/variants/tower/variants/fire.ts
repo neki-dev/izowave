@@ -45,33 +45,37 @@ export class BuildingTowerFire extends BuildingTower {
       },
     }, shot);
 
-    this.scene.game.tutorial.onBeg(TutorialStep.UPGRADE_BUILDING, () => {
-      this.scene.showHint({
-        side: 'top',
-        text: 'Hover on building and press [U] to upgrade',
-        position: {
-          x: this.x,
-          y: this.y + TILE_META.height,
-        },
-      });
-    });
-    this.scene.game.tutorial.onEnd(TutorialStep.UPGRADE_BUILDING, () => {
-      this.scene.hideHint();
-    });
-    this.scene.game.tutorial.onBeg(TutorialStep.RELOAD_BUILDING, () => {
-      if (this.ammo === 0) {
+    this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
+      beg: () => {
         this.scene.showHint({
           side: 'top',
-          text: 'Hover on building and press [R] to reload ammo',
+          text: 'Hover on building and press [U] to upgrade',
           position: {
             x: this.x,
             y: this.y + TILE_META.height,
           },
         });
-      }
+      },
+      end: () => {
+        this.scene.hideHint();
+      },
     });
-    this.scene.game.tutorial.onEnd(TutorialStep.RELOAD_BUILDING, () => {
-      this.scene.hideHint();
+    this.scene.game.tutorial.bind(TutorialStep.RELOAD_BUILDING, {
+      beg: () => {
+        if (this.ammo === 0) {
+          this.scene.showHint({
+            side: 'top',
+            text: 'Hover on building and press [R] to reload ammo',
+            position: {
+              x: this.x,
+              y: this.y + TILE_META.height,
+            },
+          });
+        }
+      },
+      end: () => {
+        this.scene.hideHint();
+      },
     });
   }
 }

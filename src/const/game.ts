@@ -1,4 +1,5 @@
 import pkg from '../../package.json';
+import { GameSettings, GameSettingsData } from '~type/game';
 
 export const CONTAINER_ID = 'game-container';
 
@@ -12,3 +13,30 @@ export const COPYRIGHT = [
 ];
 
 export const REPOSITORY = pkg.repository.url.replace('git+', '');
+
+export const SETTINGS: Record<GameSettings, GameSettingsData> = {
+  [GameSettings.DIFFICULTY]: {
+    description: 'Difficulty',
+    values: ['easy', 'medium', 'hard'],
+    default: 'medium',
+    runtime: false,
+  },
+  [GameSettings.AUDIO]: {
+    description: 'Audio effects',
+    values: ['on', 'off'],
+    default: 'on',
+    runtime: true,
+  },
+  [GameSettings.BLOOD_ON_MAP]: {
+    description: 'Add blood on map',
+    values: ['on', 'off'],
+    default: 'on',
+    runtime: true,
+  },
+  [GameSettings.TUTORIAL]: {
+    description: 'Game tutorial',
+    values: ['on', 'off'],
+    default: 'on',
+    runtime: false,
+  },
+};

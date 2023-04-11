@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { GameContext, useWorldUpdate } from '~lib/interface';
@@ -22,6 +22,7 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
 
   const [isDisallow, setDisallow] = useState(false);
   const [isActive, setActive] = useState(false);
+  const [isNewest, setNewest] = useState(false);
 
   const selectBuilding = () => {
     if (isDisabled || isDisallow) {
@@ -36,20 +37,33 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
   };
 
   useWorldUpdate(() => {
-    setActive(game.world.builder.variant === variant);
+    const currentIsActive = game.world.builder.variant === variant;
+
+    setActive(currentIsActive);
+    if (currentIsActive) {
+      setNewest(false);
+    }
     setDisallow(
       !game.world.builder.isBuildingAllowByTutorial(variant)
       || !game.world.builder.isBuildingAllowByWave(variant),
     );
   });
 
+  useEffect(() => {
+    if (!isDisallow && game.world.wave.number > 1) {
+      setNewest(true);
+    }
+  }, [isDisallow]);
+
   return (
     <Building
       onClick={selectBuilding}
+      onMouseEnter={() => setNewest(false)}
       className={cn({
         disabled: isDisabled,
         disallow: isDisallow,
         active: isActive,
+        newest: isNewest,
       })}
     >
       <Building.Number>{number}</Building.Number>

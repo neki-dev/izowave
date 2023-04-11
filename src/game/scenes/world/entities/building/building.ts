@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { TILE_META } from '~const/world/level';
+import { LEVEL_BUILDING_PATH_COST, TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
@@ -87,10 +87,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.setOrigin(0.5, TILE_META.origin);
     this.scene.level.putTile(this, tilePosition);
-    this.scene.level.refreshNavigationMeta();
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.level.refreshNavigationMeta();
-    });
+
+    this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
 
     this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_DESTROY, () => {
       if (this.isFocused) {
@@ -133,6 +131,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.onUnfocus();
       this.onUnclick();
+      this.scene.level.navigator.resetPointCost(positionAtMatrix);
     });
   }
 
@@ -226,10 +225,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private getUpgradeLevelCost() {
-    const nextLevel = this.upgradeLevel + 1;
-    const costGrow = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+    const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
 
-    return Math.round(costGrow * nextLevel);
+    return Math.round(this.upgradeLevel * costPerLevel);
   }
 
   private isAllowUpgrade() {
@@ -271,7 +269,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.player.takeResources(cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
-    this.scene.sound.play(BuildingAudio.UPGRADE);
+    this.scene.game.sound.play(BuildingAudio.UPGRADE);
     this.scene.game.screen.notice(NoticeType.INFO, 'BUILDING UPGRADED');
 
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);

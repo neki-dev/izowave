@@ -110,7 +110,7 @@ export class Assistant extends NPC implements IAssistant {
       this.scene.player.level,
     );
 
-    this.nextAttackTimestamp = now + pause;
+    this.nextAttackTimestamp = now + Math.max(pause, 200);
   }
 
   private getTarget(): Nullable<IEnemy> {

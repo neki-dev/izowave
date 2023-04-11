@@ -13,13 +13,18 @@ export interface IWave extends EventEmitter {
   /**
    * Current wave number.
    */
-  number: number
+  readonly number: number
 
   /**
    * Mod that stops start of wave.
-   * Used for cheats and tests.
+   * Used for test.
    */
-  isPeaceMode: boolean
+  readonly isPeaceMode: boolean
+
+  /**
+   * State for pause before next season.
+   */
+  readonly isNextSeason: boolean
 
   /**
    * Update wave process.
@@ -32,19 +37,19 @@ export interface IWave extends EventEmitter {
   getTimeleft(): number
 
   /**
-   * Start timeleft to next wave.
-   */
-  runTimeleft(): void
-
-  /**
    * Get count of enemies left.
    */
   getEnemiesLeft(): number
 
   /**
-   * Skip spawn enemies.
+   * Skip timeleft to next wave.
    */
-  skipEnemies(): void
+  skipTimeleft(): void
+
+  /**
+   * Get current season.
+   */
+  getSeason(): number
 }
 
 export enum WaveEvents {

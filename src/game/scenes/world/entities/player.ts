@@ -14,10 +14,9 @@ import { IWorld } from '~type/world';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerEvents, PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
-import { ITile } from '~type/world/level/tile-matrix';
 import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite implements IPlayer {
@@ -54,8 +53,6 @@ export class Player extends Sprite implements IPlayer {
   private isMoving: boolean = false;
 
   private assistant: Nullable<IAssistant> = null;
-
-  private currentGroundTile: Nullable<ITile> = null;
 
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
@@ -101,8 +98,6 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.currentGroundTile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
-
     this.addVisitedWay();
     this.updateDirection();
     this.updateVelocity();
@@ -122,7 +117,6 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.experience += amount;
-    this.emit(PlayerEvents.UPDATE_EXPERIENCE, amount);
 
     let experienceNeed = this.getNextExperience();
     let experienceLeft = this.experience;
@@ -146,12 +140,10 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.resources += amount;
-    this.emit(PlayerEvents.UPDATE_RESOURCE, amount);
   }
 
   public takeResources(amount: number) {
     this.resources -= amount;
-    this.emit(PlayerEvents.UPDATE_RESOURCE, -amount);
   }
 
   public incrementKills() {
@@ -275,7 +267,7 @@ export class Player extends Sprite implements IPlayer {
         this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
 
         if (!oldMoving) {
-          this.scene.sound.play(PlayerAudio.MOVE, {
+          this.scene.game.sound.play(PlayerAudio.MOVE, {
             loop: true,
             rate: 1.8,
           });

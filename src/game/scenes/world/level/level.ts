@@ -3,10 +3,11 @@ import Phaser from 'phaser';
 
 import {
   TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
-  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_BUILDING_PATH_COST, LEVEL_MAP_Z_WEIGHT, LEVEL_TREES_COUNT,
+  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_MAP_Z_WEIGHT, LEVEL_TREES_COUNT,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Hexagon } from '~scene/world/hexagon';
+import { GameEvents, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D, ILevel,
@@ -20,19 +21,17 @@ import { TileMatrix } from './tile-matrix';
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;
 
+  readonly navigator: INavigator;
+
   readonly map: World<LevelBiome>;
+
+  readonly effects: Phaser.GameObjects.Group;
 
   private mapTiles: Phaser.GameObjects.Group;
 
   private treesTiles: Phaser.GameObjects.Group;
 
   private visibleTiles: Phaser.GameObjects.Group;
-
-  private _navigator: INavigator;
-
-  public get navigator() { return this._navigator; }
-
-  private set navigator(v) { this._navigator = v; }
 
   constructor(scene: IWorld) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT);
@@ -54,10 +53,20 @@ export class Level extends TileMatrix implements ILevel {
 
     this.scene = scene;
     this.visibleTiles = scene.add.group();
+    this.effects = scene.add.group();
+
+    const grid = this.map.getMatrix().map((y) => y.map((x) => Number(x.collide)));
+
+    this.navigator = new Navigator(grid);
 
     this.makeMapTiles();
-    this.makePathFinder();
     this.makeTrees();
+
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.BLOOD_ON_MAP}`, (value: string) => {
+      if (value === 'off') {
+        this.effects.clear(true, true);
+      }
+    });
   }
 
   public isFreePoint(position: Vector3D) {
@@ -95,14 +104,6 @@ export class Level extends TileMatrix implements ILevel {
           }
         }
       }
-    }
-  }
-
-  public refreshNavigationMeta() {
-    this.navigator.resetPointsCost();
-
-    for (const building of this.scene.getBuildings()) {
-      this.navigator.setPointCost(building.positionAtMatrix, LEVEL_BUILDING_PATH_COST);
     }
   }
 
@@ -219,12 +220,6 @@ export class Level extends TileMatrix implements ILevel {
         this.treesTiles.add(tile);
       }
     }
-  }
-
-  private makePathFinder() {
-    const grid = this.map.getMatrix().map((y) => y.map((x) => Number(x.collide)));
-
-    this.navigator = new Navigator(grid);
   }
 
   static ToMatrixPosition(positionAtWorld: Vector2D) {

@@ -1,9 +1,12 @@
 import { World } from 'gen-biome';
 
+import { IWorld } from '~type/world';
 import { INavigator } from '~type/world/level/navigator';
 import { ITileMatrix } from '~type/world/level/tile-matrix';
 
 export interface ILevel extends ITileMatrix {
+  readonly scene: IWorld
+
   /**
    * Path finder.
    */
@@ -13,6 +16,11 @@ export interface ILevel extends ITileMatrix {
    * Map manager.
    */
   readonly map: World<LevelBiome>
+
+  /**
+   * Effects on level map.
+   */
+  readonly effects: Phaser.GameObjects.Group
 
   /**
    * Update area of visible tiles.
@@ -35,11 +43,6 @@ export interface ILevel extends ITileMatrix {
    * @param target - Spawn target
    */
   readSpawnPositions(target: SpawnTarget): Vector2D[]
-
-  /**
-   * Update navigation points costs.
-   */
-  refreshNavigationMeta(): void
 
   /**
    * Check is presence of tile between world positions.

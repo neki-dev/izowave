@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont } from '~type/interface';
 
 export const Control: any = styled.div`
   display: flex;
@@ -11,13 +11,20 @@ export const Control: any = styled.div`
 `;
 
 Control.Keys = styled.div`
-  color: #fff;
-  background: ${InterfaceColor.BLUE_DARK};
-  font-family: ${InterfaceFont.PIXEL};
-  font-size: 18px;
-  line-height: 18px;
-  padding: 4px 8px;
   margin-right: 10px;
+  display: flex;
+`;
+
+Control.Key = styled.div`
+  color: #fff;
+  font-family: ${InterfaceFont.PIXEL};
+  font-size: 17px;
+  line-height: 17px;
+  padding: 4px 8px 6px 8px;
+  border: 1px solid #fff;
+  &:not(:last-child) {
+    margin-right: 3px;
+  }
 `;
 
 Control.Description = styled.div`

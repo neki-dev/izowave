@@ -7,7 +7,7 @@ import { MenuAudio, MenuItem } from '~type/menu';
 
 import { ComponentAbout } from './content/about';
 import { ComponentControls } from './content/controls';
-import { ComponentDifficulty } from './content/difficulty';
+import { ComponentSettings } from './content/settings';
 import {
   Wrapper,
   Content,
@@ -52,8 +52,8 @@ export const ComponentMenu: React.FC = () => {
           },
         ]),
       {
-        label: 'Difficulty',
-        onClick: () => setCurrentContent('Difficulty'),
+        label: 'Settings',
+        onClick: () => setCurrentContent('Settings'),
       },
       {
         label: 'About',
@@ -69,7 +69,7 @@ export const ComponentMenu: React.FC = () => {
 
   const Component = useMemo(() => {
     switch (currentContent) {
-      case 'Difficulty': return <ComponentDifficulty disabled={game.isPaused} />;
+      case 'Settings': return <ComponentSettings disabled={game.isPaused} />;
       case 'About': return <ComponentAbout />;
       case 'Controls': return <ComponentControls />;
       default: return null;

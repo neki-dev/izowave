@@ -9,8 +9,6 @@ export interface INavigator {
 
   resetPointCost(position: Vector2D): void
 
-  resetPointsCost(): void
-
   createTask(from: Vector2D, to: Vector2D, callback: (path: Nullable<Vector2D[]>) => void): NavigatorTask
 
   processing(): void

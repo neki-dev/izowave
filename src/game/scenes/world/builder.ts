@@ -55,19 +55,25 @@ export class Builder extends EventEmitter implements IBuilder {
       this.clearBuildingVariant();
     });
 
-    this.scene.game.tutorial.onBeg(TutorialStep.BUILD_AMMUNITION, () => {
-      this.scene.setTimePause(true);
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_AMMUNITION, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
+      end: () => {
+        this.scene.setTimePause(false);
+        this.clearBuildingVariant();
+      },
     });
-    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_AMMUNITION, () => {
-      this.scene.setTimePause(false);
-      this.clearBuildingVariant();
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+      end: () => {
+        this.scene.setTimePause(false);
+        this.clearBuildingVariant();
+      },
     });
-    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_GENERATOR, () => {
-      this.scene.setTimePause(false);
-      this.clearBuildingVariant();
-    });
-    this.scene.game.tutorial.onEnd(TutorialStep.BUILD_TOWER_FIRE, () => {
-      this.clearBuildingVariant();
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
+      end: () => {
+        this.clearBuildingVariant();
+      },
     });
   }
 
@@ -136,13 +142,13 @@ export class Builder extends EventEmitter implements IBuilder {
           const newBiome = Level.GetBiome(BiomeType.RUBBLE);
 
           if (newBiome) {
-            tileGround.biome = newBiome;
-            tileGround.clearTint();
             const frame = Array.isArray(newBiome.tileIndex)
               ? Phaser.Math.Between(...newBiome.tileIndex)
               : newBiome.tileIndex;
 
             tileGround.setFrame(frame);
+            tileGround.clearTint();
+            tileGround.biome = newBiome;
           }
 
           // Remove trees
@@ -151,6 +157,15 @@ export class Builder extends EventEmitter implements IBuilder {
           if (tile) {
             tile.destroy();
           }
+
+          // Remove effects
+          const effects = <Phaser.GameObjects.Image[]> this.scene.level.effects.getChildren();
+
+          effects.forEach((effect) => {
+            if (equalPositions(Level.ToMatrixPosition(effect), { x, y })) {
+              effect.destroy();
+            }
+          });
         }
       }
     }
@@ -187,7 +202,7 @@ export class Builder extends EventEmitter implements IBuilder {
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
     const limit = BUILDINGS[variant].Limit;
 
-    return limit ? limit * (Math.floor(this.scene.wave.number / 5) + 1) : null;
+    return limit ? limit * this.scene.wave.getSeason() : null;
   }
 
   private getAssumedPosition() {
@@ -354,7 +369,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private createBuildArea() {
     const d = calcGrowth(
-      DIFFICULTY.BUILDING_BUILD_AREA / this.scene.game.difficulty,
+      DIFFICULTY.BUILDING_BUILD_AREA / this.scene.game.getDifficultyMultiplier(),
       DIFFICULTY.BUILDING_BUILD_AREA_GROWTH,
       this.scene.player.level,
     ) * 2;

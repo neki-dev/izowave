@@ -28,6 +28,12 @@ export interface ILive extends EventEmmiter {
   heal(): void
 
   /**
+   * Add current health amount.
+   * @param amount - Health amount
+   */
+  addHealth(amount: number): void
+
+  /**
    * Set current health amount.
    * @param amount - Health amount
    */
