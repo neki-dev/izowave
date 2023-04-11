@@ -18,12 +18,13 @@ export const Wrapper = styled.div`
 `;
 
 export const Item = styled.div`
-  padding: 10px 15px;
+  padding: 8px 15px 10px 15px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 16px;
   line-height: 16px;
   text-shadow: 2px 2px 0 #000;
+  border-bottom: 2px solid #000;
   animation: ${animationOpacity} 0.2s ease-in;
   &:not(:last-child) {
     margin-bottom: 8px;

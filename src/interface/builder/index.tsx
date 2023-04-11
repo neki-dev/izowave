@@ -59,7 +59,7 @@ export const ComponentBuilder: React.FC = () => {
     <Wrapper>
       {Object.values(BuildingVariant).map((variant, index) => (
         <Variant key={variant}>
-          {(hint && hint.variant === variant) && (
+          {(hint?.variant === variant) && (
             <ComponentHint side="right">
               {hint.text}
             </ComponentHint>

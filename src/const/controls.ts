@@ -21,5 +21,5 @@ export const CONTROLS: ControlItem[] = [
   { name: 'U', description: 'Upgrade building' },
   { name: 'R', description: 'Reload tower ammo' },
   { name: 'BACKSPACE', description: 'Destroy building' },
-  { name: 'N', description: 'Skip wave time left' },
+  { name: 'N', description: 'Skip wave timeleft' },
 ];
