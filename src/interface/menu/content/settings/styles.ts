@@ -2,9 +2,7 @@ import styled from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
-export const Wrapper = styled.div`
- 
-`;
+export const Wrapper = styled.div``;
 
 export const Setting: any = styled.div`
   &:not(:last-child) {
@@ -13,12 +11,12 @@ export const Setting: any = styled.div`
 `;
 
 Setting.Description = styled.div`
-  margin-bottom: 8px;
+  margin-bottom: 5px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 14px;
-  line-height: 14px;
-  text-shadow: 3px 3px 0 #000;
+  font-size: 12px;
+  line-height: 12px;
+  text-shadow: 2px 2px 0 #000;
 `;
 
 export const Values: any = styled.ul`
@@ -27,15 +25,15 @@ export const Values: any = styled.ul`
   pointer-events: all;
   &.disabled {
     pointer-events: none;
-    opacity: 0.75;
+    opacity: 0.5;
   }
 `;
 
 Values.Item = styled.li`
   color: rgba(255, 255, 255, 0.75);
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 13px;
+  line-height: 13px;
   border: 1px solid rgba(255, 255, 255, 0.75);
   padding: 2px 5px 4px 5px;
   &:not(:last-child) {

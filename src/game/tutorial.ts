@@ -14,14 +14,6 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   private set isDisabled(v) { this._isDisabled = v; }
 
-  constructor() {
-    super();
-
-    if (IS_DEV_MODE) {
-      this.disable();
-    }
-  }
-
   public beg(step: TutorialStep) {
     if (this.isDisabled || this.progress[step] !== undefined) {
       return;

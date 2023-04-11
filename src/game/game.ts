@@ -136,6 +136,10 @@ export class Game extends Phaser.Game implements IGame {
     this.isFinished = false;
     this.isStarted = true;
 
+    if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
+      this.tutorial.disable();
+    }
+
     this.world.start();
 
     this.scene.systemScene.scene.stop(this.menu);
