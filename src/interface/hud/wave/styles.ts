@@ -50,7 +50,7 @@ State.Value = styled.div`
 `;
 
 State.Action = styled.div`
-  margin-top: 5px;
+  margin-top: 8px;
   font-size: 12px;
   line-height: 12px;
   background: ${InterfaceColor.BLUE_DARK};

@@ -142,13 +142,13 @@ export class Builder extends EventEmitter implements IBuilder {
           const newBiome = Level.GetBiome(BiomeType.RUBBLE);
 
           if (newBiome) {
-            tileGround.biome = newBiome;
-            tileGround.clearTint();
             const frame = Array.isArray(newBiome.tileIndex)
               ? Phaser.Math.Between(...newBiome.tileIndex)
               : newBiome.tileIndex;
 
             tileGround.setFrame(frame);
+            tileGround.clearTint();
+            tileGround.biome = newBiome;
           }
 
           // Remove trees
