@@ -23,9 +23,17 @@ export class Wave extends EventEmitter implements IWave {
 
   private set isGoing(v) { this._isGoing = v; }
 
-  public isPeaceMode: boolean = false;
+  public _isPeaceMode: boolean = false;
 
-  public number: number = 1;
+  public get isPeaceMode() { return this._isPeaceMode; }
+
+  private set isPeaceMode(v) { this._isPeaceMode = v; }
+
+  private _number: number = 1;
+
+  public get number() { return this._number; }
+
+  private set number(v) { this._number = v; }
 
   private spawnedEnemiesCount: number = 0;
 
@@ -53,6 +61,10 @@ export class Wave extends EventEmitter implements IWave {
     return Math.max(0, this.nextWaveTimestamp - now);
   }
 
+  public getSeason() {
+    return Math.ceil(this.scene.wave.number / 5);
+  }
+
   public update() {
     const now = this.scene.getTime();
 
@@ -76,22 +88,6 @@ export class Wave extends EventEmitter implements IWave {
         }, 1000);
       }
     }
-  }
-
-  public runTimeleft() {
-    let pause: number;
-
-    if (this.scene.isTimePaused()) {
-      pause = WAVE_TIMELEFT_ALARM;
-    } else {
-      pause = calcGrowth(
-        DIFFICULTY.WAVE_PAUSE,
-        DIFFICULTY.WAVE_PAUSE_GROWTH,
-        this.number,
-      ) / this.scene.game.difficulty;
-    }
-
-    this.nextWaveTimestamp = this.scene.getTime() + pause;
   }
 
   public getEnemiesLeft() {
@@ -121,6 +117,22 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     this.nextWaveTimestamp = now + WAVE_TIMELEFT_AFTER_SKIP;
+  }
+
+  private runTimeleft() {
+    let pause: number;
+
+    if (this.scene.isTimePaused()) {
+      pause = WAVE_TIMELEFT_ALARM;
+    } else {
+      pause = calcGrowth(
+        DIFFICULTY.WAVE_PAUSE,
+        DIFFICULTY.WAVE_PAUSE_GROWTH,
+        this.number,
+      ) / this.scene.game.difficulty;
+    }
+
+    this.nextWaveTimestamp = this.scene.getTime() + pause;
   }
 
   private start() {

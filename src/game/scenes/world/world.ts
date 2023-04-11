@@ -298,10 +298,13 @@ export class World extends Phaser.Scene implements IWorld {
         }
       },
       FUTURE: () => {
+        // @ts-ignore
         this.wave.number += Phaser.Math.Between(3, 7);
+        // @ts-ignore
         this.wave.runTimeleft();
       },
       PEACE: () => {
+        // @ts-ignore
         this.wave.isPeaceMode = !this.wave.isPeaceMode;
       },
     };
