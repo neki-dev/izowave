@@ -21,25 +21,22 @@ export const ComponentBuilder: React.FC = () => {
   const showHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR: {
-        setHint({
+        return setHint({
           variant: BuildingVariant.GENERATOR,
           text: 'Build generator to get resources',
         });
-        break;
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
-        setHint({
+        return setHint({
           variant: BuildingVariant.TOWER_FIRE,
           text: 'Build tower to defend yourself from enemies',
         });
-        break;
       }
       case TutorialStep.BUILD_AMMUNITION: {
-        setHint({
+        return setHint({
           variant: BuildingVariant.AMMUNITION,
           text: 'Build ammunition to reload tower ammo',
         });
-        break;
       }
       default: break;
     }

@@ -36,11 +36,11 @@ export const DIFFICULTY = {
 
   WAVE_PAUSE: 20000, // Pause in milliseconds between waves
   WAVE_PAUSE_GROWTH: 0.12, // Pause growth by wave number
+  WAVE_SEASON_LENGTH: 5, // Count of wave numbers in season
   WAVE_ENEMIES_COUNT: 5, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.5, // Enemies count growth by wave number
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Default pause in milliseconds between enemies spawn
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.03, // Enemies spawn pause growth by wave number
-  WAVE_BOSS_SPAWN_RATE: 5, // Every Nth wave a boss will spawn
   WAVE_EXPERIENCE: 200, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.1, // Experience count growth by wave number
 
@@ -135,7 +135,7 @@ export const DIFFICULTY = {
 
   BUILDING_GENERATOR_COST: 30, // Generator cost
   BUILDING_GENERATOR_HEALTH: 400, // Generator health
-  BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * (wave_number / 5))
+  BUILDING_GENERATOR_LIMIT: 4, // Maximum count generators on world (N * wave_season)
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Generator pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Maximum amount of resources that generator can
   BUILDING_GENERATOR_RESOURCES_UPGRADE: 100, // Amount of resources added per upgrade (N * upgrade_level)
@@ -146,7 +146,7 @@ export const DIFFICULTY = {
 
   BUILDING_AMMUNITION_COST: 30, // Ammunition cost
   BUILDING_AMMUNITION_HEALTH: 300, // Ammunition health
-  BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * (wave_number / 5))
+  BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * wave_season)
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow ammunition
   BUILDING_AMMUNITION_RELOAD_RADIUS: 150, // Ammunition reload ammo radius
   BUILDING_AMMUNITION_AMMO: 170, // Maximum amount of ammo
@@ -158,7 +158,7 @@ export const DIFFICULTY = {
 
   BUILDING_MEDIC_COST: 80, // Medic cost
   BUILDING_MEDIC_HEALTH: 150, // Medic health
-  BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * (wave_number / 5))
+  BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * wave_season)
   BUILDING_MEDIC_ALLOW_BY_WAVE: 5, // Minimal wave for allow medic
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Medic heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Medic heal pause

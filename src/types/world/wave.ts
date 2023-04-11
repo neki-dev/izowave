@@ -22,6 +22,11 @@ export interface IWave extends EventEmitter {
   readonly isPeaceMode: boolean
 
   /**
+   * State for pause before next season.
+   */
+  readonly isNextSeason: boolean
+
+  /**
    * Update wave process.
    */
   update(): void
@@ -37,12 +42,12 @@ export interface IWave extends EventEmitter {
   getEnemiesLeft(): number
 
   /**
-   * Skip spawn enemies.
+   * Skip timeleft to next wave.
    */
-  skipEnemies(): void
+  skipTimeleft(): void
 
   /**
-   * Get season.
+   * Get current season.
    */
   getSeason(): number
 }

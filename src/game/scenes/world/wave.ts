@@ -9,6 +9,7 @@ import { WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
 import { calcGrowth } from '~lib/utils';
+import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
@@ -28,6 +29,12 @@ export class Wave extends EventEmitter implements IWave {
   public get isPeaceMode() { return this._isPeaceMode; }
 
   private set isPeaceMode(v) { this._isPeaceMode = v; }
+
+  public _isNextSeason: boolean = false;
+
+  public get isNextSeason() { return this._isNextSeason; }
+
+  private set isNextSeason(v) { this._isNextSeason = v; }
 
   private _number: number = 1;
 
@@ -62,7 +69,7 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   public getSeason() {
-    return Math.ceil(this.scene.wave.number / 5);
+    return Math.ceil(this.scene.wave.number / DIFFICULTY.WAVE_SEASON_LENGTH);
   }
 
   public update() {
@@ -76,11 +83,13 @@ export class Wave extends EventEmitter implements IWave {
       } else if (this.scene.entityGroups.enemies.getTotalUsed() === 0) {
         this.complete();
       }
-    } else {
+    } else if (!this.isNextSeason) {
       const left = this.nextWaveTimestamp - now;
 
       if (left <= 0) {
-        this.start();
+        if (!this.isPeaceMode) {
+          this.start();
+        }
       } else if (left <= WAVE_TIMELEFT_ALARM && !this.alarmInterval) {
         this.scene.sound.play(WaveAudio.TICK);
         this.alarmInterval = setInterval(() => {
@@ -97,22 +106,17 @@ export class Wave extends EventEmitter implements IWave {
     return this.enemiesMaxCount - killedEnemies;
   }
 
-  public skipEnemies() {
-    if (!this.isGoing) {
-      return;
-    }
-
-    this.spawnedEnemiesCount = this.enemiesMaxCount;
-  }
-
-  private skipTimeleft() {
+  public skipTimeleft() {
     if (this.isGoing || this.scene.isTimePaused()) {
       return;
     }
 
     const now = this.scene.getTime();
 
-    if (this.nextWaveTimestamp - now <= WAVE_TIMELEFT_AFTER_SKIP) {
+    if (this.isNextSeason) {
+      this.scene.game.tutorial.end(TutorialStep.WAVE_SEASON);
+      this.isNextSeason = false;
+    } else if (this.nextWaveTimestamp - now <= WAVE_TIMELEFT_AFTER_SKIP) {
       return;
     }
 
@@ -136,10 +140,6 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private start() {
-    if (this.isPeaceMode) {
-      return;
-    }
-
     this.isGoing = true;
 
     this.nextSpawnTimestamp = 0;
@@ -164,9 +164,18 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private complete() {
+    const prevSeason = this.getSeason();
+
     this.isGoing = false;
     this.number++;
-    this.runTimeleft();
+
+    if (this.getSeason() === prevSeason) {
+      this.runTimeleft();
+    } else {
+      this.scene.game.tutorial.beg(TutorialStep.WAVE_SEASON);
+      this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${prevSeason} COMPLETED`);
+      this.isNextSeason = true;
+    }
 
     this.scene.sound.play(WaveAudio.COMPLETE);
 
@@ -189,21 +198,20 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.spawnEnemy(variant);
 
-    const now = this.scene.getTime();
     const pause = calcGrowth(
       DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       this.number,
     );
 
-    this.nextSpawnTimestamp = now + Math.max(pause, 500);
+    this.nextSpawnTimestamp = this.scene.getTime() + Math.max(pause, 500);
     this.spawnedEnemiesCount++;
   }
 
   private getEnemyVariant() {
     if (
-      this.number % DIFFICULTY.WAVE_BOSS_SPAWN_RATE === 0
-      && this.spawnedEnemiesCount < Math.ceil(this.number / DIFFICULTY.WAVE_BOSS_SPAWN_RATE)
+      this.number % DIFFICULTY.WAVE_SEASON_LENGTH === 0
+      && this.spawnedEnemiesCount < this.getSeason()
     ) {
       return EnemyVariant.BOSS;
     }

@@ -193,7 +193,7 @@ export class Builder extends EventEmitter implements IBuilder {
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
     const limit = BUILDINGS[variant].Limit;
 
-    return limit ? limit * (Math.floor(this.scene.wave.number / 5) + 1) : null;
+    return limit ? limit * this.scene.wave.getSeason() : null;
   }
 
   private getAssumedPosition() {

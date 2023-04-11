@@ -292,9 +292,12 @@ export class World extends Phaser.Scene implements IWorld {
         this.player.giveExperience(9999);
       },
       GODHAND: () => {
-        this.wave.skipEnemies();
-        for (const enemy of this.getEnemies()) {
-          enemy.live.kill();
+        if (this.wave.isGoing) {
+          // @ts-ignore
+          this.wave.spawnedEnemiesCount = this.wave.enemiesMaxCount;
+          for (const enemy of this.getEnemies()) {
+            enemy.live.kill();
+          }
         }
       },
       FUTURE: () => {

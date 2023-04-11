@@ -48,3 +48,17 @@ State.Value = styled.div`
     animation: ${animationPulse} 1s infinite;
   }
 `;
+
+State.Action = styled.div`
+  margin-top: 5px;
+  font-size: 12px;
+  line-height: 12px;
+  background: ${InterfaceColor.BLUE_DARK};
+  padding: 5px 0;
+  text-align: center;
+  pointer-events: all;
+  &:hover {
+    cursor: pointer;
+    background: #000;
+  }
+`;
