@@ -225,10 +225,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private getUpgradeLevelCost() {
-    const nextLevel = this.upgradeLevel + 1;
-    const costGrow = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+    const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
 
-    return Math.round(costGrow * nextLevel);
+    return Math.round(this.upgradeLevel * costPerLevel);
   }
 
   private isAllowUpgrade() {

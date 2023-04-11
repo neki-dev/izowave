@@ -35,11 +35,11 @@ export const DIFFICULTY = {
    */
 
   WAVE_PAUSE: 20000, // Pause in milliseconds between waves
-  WAVE_PAUSE_GROWTH: 0.135, // Pause growth by wave number
+  WAVE_PAUSE_GROWTH: 0.12, // Pause growth by wave number
   WAVE_ENEMIES_COUNT: 5, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.5, // Enemies count growth by wave number
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Default pause in milliseconds between enemies spawn
-  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.025, // Enemies spawn pause growth by wave number
+  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.03, // Enemies spawn pause growth by wave number
   WAVE_BOSS_SPAWN_RATE: 5, // Every Nth wave a boss will spawn
   WAVE_EXPERIENCE: 200, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.1, // Experience count growth by wave number
@@ -83,7 +83,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_WALL_COST: 10, // Wall cost
-  BUILDING_WALL_HEALTH: 2000, // Wall default health
+  BUILDING_WALL_HEALTH: 1500, // Wall default health
   BUILDING_WALL_HEALTH_UPGRADE: 2000, // Amount of health added per upgrade (N * upgrade_level)
 
   /**
@@ -163,6 +163,7 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Medic heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Medic heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Default medic heal
+  BUILDING_MEDIC_HEAL_AMOUNT_UPGRADE: 10, // Amount of heal added per upgrade (N * upgrade_level)
 };
 
 export const DIFFICULTY_POWERS: GameDifficultyPowers = {

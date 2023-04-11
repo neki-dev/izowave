@@ -72,7 +72,9 @@ export class BuildingMedic extends Building {
   }
 
   private getHealAmount() {
-    return DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT * this.upgradeLevel;
+    return DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT + (
+      DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT_UPGRADE * (this.upgradeLevel - 1)
+    );
   }
 
   private heal(player: IPlayer) {
