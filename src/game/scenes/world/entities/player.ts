@@ -17,7 +17,6 @@ import {
   PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
-import { ITile } from '~type/world/level/tile-matrix';
 import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite implements IPlayer {
@@ -54,8 +53,6 @@ export class Player extends Sprite implements IPlayer {
   private isMoving: boolean = false;
 
   private assistant: Nullable<IAssistant> = null;
-
-  private currentGroundTile: Nullable<ITile> = null;
 
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
@@ -100,8 +97,6 @@ export class Player extends Sprite implements IPlayer {
     if (this.live.isDead()) {
       return;
     }
-
-    this.currentGroundTile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
 
     this.addVisitedWay();
     this.updateDirection();

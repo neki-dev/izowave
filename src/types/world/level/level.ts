@@ -18,6 +18,11 @@ export interface ILevel extends ITileMatrix {
   readonly map: World<LevelBiome>
 
   /**
+   * Effects on level map.
+   */
+  readonly effects: Phaser.GameObjects.Group
+
+  /**
    * Update area of visible tiles.
    */
   updateVisibleTiles(): void

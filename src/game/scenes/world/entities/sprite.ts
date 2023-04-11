@@ -10,6 +10,7 @@ import { ParticlesType } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { ISprite, SpriteData } from '~type/world/entities/sprite';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
+import { ITile } from '~type/world/level/tile-matrix';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly scene: IWorld;
@@ -19,6 +20,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly live: ILive;
 
   readonly container: Phaser.GameObjects.Container;
+
+  public currentGroundTile: Nullable<ITile> = null;
 
   private _positionAtMatrix: Vector2D;
 
@@ -69,6 +72,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     super.update();
 
     this.positionAtMatrix = Level.ToMatrixPosition(this);
+    this.currentGroundTile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
 
     this.container.setVisible(this.visible);
     if (this.visible) {

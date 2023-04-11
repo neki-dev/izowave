@@ -2,12 +2,13 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
+import { TILE_META } from '~const/world/level';
 import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { calcGrowth } from '~lib/utils';
-import { Particles } from '~scene/world/effects';
+import { Effect, Particles } from '~scene/world/effects';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { EffectTexture, ParticlesType } from '~type/world/effects';
 import { IBuilding } from '~type/world/entities/building';
 import {
   IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture, IEnemy,
@@ -137,7 +138,25 @@ export class Enemy extends NPC implements IEnemy {
     this.scene.player.giveExperience(experience);
     this.scene.player.incrementKills();
 
+    this.addBloodEffect();
+
     super.onDead();
+  }
+
+  private addBloodEffect() {
+    if (!this.currentGroundTile?.biome.solid) {
+      return;
+    }
+
+    const effect = new Effect(this.scene, {
+      texture: EffectTexture.BLOOD,
+      position: this,
+      permanentFrame: Phaser.Math.Between(0, 3),
+      scale: 0.5 + Math.random(),
+      depth: this.y + (TILE_META.height * 0.5),
+    });
+
+    this.scene.level.effects.add(effect);
   }
 
   private addSpawnEffect() {

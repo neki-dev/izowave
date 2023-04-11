@@ -8,6 +8,7 @@ export interface IEffect extends Phaser.GameObjects.Sprite {
 }
 
 export enum EffectTexture {
+  BLOOD = 'effect/blood',
   EXPLOSION = 'effect/explosion',
   SMOKE = 'effect/smoke',
   DAMAGE = 'effect/damage',
@@ -18,4 +19,7 @@ export type EffectData = {
   position: Vector2D
   audio?: string
   rate?: number
+  permanentFrame?: number
+  scale?: number
+  depth?: number
 };

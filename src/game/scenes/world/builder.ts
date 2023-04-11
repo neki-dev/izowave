@@ -157,6 +157,15 @@ export class Builder extends EventEmitter implements IBuilder {
           if (tile) {
             tile.destroy();
           }
+
+          // Remove effects
+          const effects = <Phaser.GameObjects.Image[]> this.scene.level.effects.getChildren();
+
+          effects.forEach((effect) => {
+            if (equalPositions(Level.ToMatrixPosition(effect), { x, y })) {
+              effect.destroy();
+            }
+          });
         }
       }
     }

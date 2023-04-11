@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
+import { ILive } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
-
-import { ILive } from './live';
+import { ITile } from '~type/world/level/tile-matrix';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
   readonly scene: IWorld
@@ -24,6 +24,11 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
    * Sprite wrapper.
    */
   readonly container: Phaser.GameObjects.Container
+
+  /**
+   * Tile below sprite.
+   */
+  currentGroundTile: Nullable<ITile>
 
   /**
    * Check is body is stopped.

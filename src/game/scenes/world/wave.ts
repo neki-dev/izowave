@@ -172,9 +172,7 @@ export class Wave extends EventEmitter implements IWave {
     if (this.getSeason() === prevSeason) {
       this.runTimeleft();
     } else {
-      this.scene.game.tutorial.beg(TutorialStep.WAVE_SEASON);
-      this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${prevSeason} COMPLETED`);
-      this.isNextSeason = true;
+      this.nextSeason();
     }
 
     this.scene.sound.play(WaveAudio.COMPLETE);
@@ -191,6 +189,15 @@ export class Wave extends EventEmitter implements IWave {
       world: this.scene,
       success: true,
     });
+  }
+
+  private nextSeason() {
+    this.isNextSeason = true;
+    this.scene.level.effects.clear(true, true);
+
+    this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${this.getSeason() - 1} COMPLETED`);
+
+    this.scene.game.tutorial.beg(TutorialStep.WAVE_SEASON);
   }
 
   private spawnEnemy() {

@@ -24,6 +24,8 @@ export class Level extends TileMatrix implements ILevel {
 
   readonly map: World<LevelBiome>;
 
+  readonly effects: Phaser.GameObjects.Group;
+
   private mapTiles: Phaser.GameObjects.Group;
 
   private treesTiles: Phaser.GameObjects.Group;
@@ -50,6 +52,7 @@ export class Level extends TileMatrix implements ILevel {
 
     this.scene = scene;
     this.visibleTiles = scene.add.group();
+    this.effects = scene.add.group();
 
     const grid = this.map.getMatrix().map((y) => y.map((x) => Number(x.collide)));
 
