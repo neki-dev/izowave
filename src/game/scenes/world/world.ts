@@ -12,7 +12,6 @@ import {
 import { Chest } from '~entity/chest';
 import { Player } from '~entity/player';
 import { Interface } from '~lib/interface';
-import { eachEntries } from '~lib/system';
 import { sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';
@@ -86,7 +85,6 @@ export class World extends Phaser.Scene implements IWorld {
 
     this.makeLevel();
     this.addLifecycleTime();
-    this.enableCheats();
 
     this.input.setPollAlways();
   }
@@ -277,52 +275,6 @@ export class World extends Phaser.Scene implements IWorld {
       if (currentZoom > WORLD_MIN_ZOOM) {
         this.cameras.main.zoomTo(currentZoom - 0.5, 300);
       }
-    });
-  }
-
-  private enableCheats() {
-    const scheme = {
-      HEALPLS: () => {
-        this.player.live.heal();
-      },
-      RICHBITCH: () => {
-        this.player.giveResources(9999);
-      },
-      BOOSTME: () => {
-        this.player.giveExperience(9999);
-      },
-      GODHAND: () => {
-        if (this.wave.isGoing) {
-          // @ts-ignore
-          this.wave.spawnedEnemiesCount = this.wave.enemiesMaxCount;
-          for (const enemy of this.getEnemies()) {
-            enemy.live.kill();
-          }
-        }
-      },
-      FUTURE: () => {
-        // @ts-ignore
-        this.wave.number += Phaser.Math.Between(3, 7);
-        // @ts-ignore
-        this.wave.runTimeleft();
-      },
-      PEACE: () => {
-        // @ts-ignore
-        this.wave.isPeaceMode = !this.wave.isPeaceMode;
-      },
-    };
-
-    eachEntries(scheme, (code, callback) => {
-      // @ts-ignore
-      window[code] = () => {
-        if (this.game.isStarted) {
-          callback();
-
-          return 'Cheat activated';
-        }
-
-        return null;
-      };
     });
   }
 

@@ -17,7 +17,7 @@ export interface IWave extends EventEmitter {
 
   /**
    * Mod that stops start of wave.
-   * Used for cheats and tests.
+   * Used for test.
    */
   readonly isPeaceMode: boolean
 
