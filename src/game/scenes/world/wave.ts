@@ -126,14 +126,14 @@ export class Wave extends EventEmitter implements IWave {
   private runTimeleft() {
     let pause: number;
 
-    if (this.scene.isTimePaused()) {
-      pause = WAVE_TIMELEFT_ALARM;
-    } else {
+    if (this.scene.game.tutorial.isDisabled) {
       pause = calcGrowth(
         DIFFICULTY.WAVE_PAUSE,
         DIFFICULTY.WAVE_PAUSE_GROWTH,
         this.number,
       ) / this.scene.game.getDifficultyMultiplier();
+    } else {
+      pause = WAVE_TIMELEFT_ALARM;
     }
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
