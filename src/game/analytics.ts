@@ -29,7 +29,7 @@ export class Analytics implements IAnalytics {
     if (IS_DEV_MODE) {
       console.log('Track analytic event:', payload);
     } else {
-      fetch(`${ANALYTICS_SERVER}/event`, {
+      fetch(`${ANALYTICS_SERVER}/api/create-event.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
