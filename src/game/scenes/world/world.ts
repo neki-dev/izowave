@@ -95,6 +95,8 @@ export class World extends Phaser.Scene implements IWorld {
     this.wave = new Wave(this);
     this.builder = new Builder(this);
 
+    this.setTimePause(!this.game.tutorial.isDisabled);
+
     this.addEntityGroups();
     this.addPlayer();
     this.addChests();
@@ -196,7 +198,6 @@ export class World extends Phaser.Scene implements IWorld {
   private addLifecycleTime() {
     this.lifecyleTimer = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
-      paused: !this.game.tutorial.isDisabled,
       loop: true,
     });
   }
