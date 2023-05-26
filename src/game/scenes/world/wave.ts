@@ -90,7 +90,11 @@ export class Wave extends EventEmitter implements IWave {
         if (!this.isPeaceMode) {
           this.start();
         }
-      } else if (left <= WAVE_TIMELEFT_ALARM && !this.alarmInterval) {
+      } else if (
+        left <= WAVE_TIMELEFT_ALARM
+        && !this.scene.isTimePaused()
+        && !this.alarmInterval
+      ) {
         this.scene.sound.play(WaveAudio.TICK);
         this.alarmInterval = setInterval(() => {
           this.scene.sound.play(WaveAudio.TICK);
