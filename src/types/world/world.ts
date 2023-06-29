@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 
 import { IGame, IScene } from '~type/game';
 import { IBuilder } from '~type/world/builder';
-import { ParticlesList } from '~type/world/effects';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
@@ -36,11 +35,6 @@ export interface IWorld extends IScene {
    * Groups of entities.
    */
   readonly entityGroups: Record<string, Phaser.GameObjects.Group>
-
-  /**
-   * Particles manager.
-   */
-  readonly particles: ParticlesList
 
   /**
    * Start world.

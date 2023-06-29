@@ -1,7 +1,12 @@
+import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { registerImageAssets } from '~lib/assets';
 import { IWorld } from '~type/world';
 import {
-  ParticlesTexture, ParticlesType, ParticlesData, IParticlesParent, IParticles,
+  ParticlesTexture,
+  ParticlesType,
+  ParticlesData,
+  IParticlesParent,
+  IParticles,
 } from '~type/world/effects';
 
 export class Particles implements IParticles {
@@ -15,14 +20,23 @@ export class Particles implements IParticles {
 
   private parent: IParticlesParent;
 
-  constructor(parent: IParticlesParent, {
-    type, params, duration,
-  }: ParticlesData) {
+  constructor(
+    parent: IParticlesParent,
+    {
+      positionAtWorld, type, params, duration,
+    }: ParticlesData,
+  ) {
     this.scene = parent.scene;
     this.parent = parent;
     this.type = type;
 
-    this.emitter = this.scene.particles[type].createEmitter(params);
+    this.emitter = this.scene.add.particles(
+      positionAtWorld.x,
+      positionAtWorld.y,
+      ParticlesTexture[type],
+      params,
+    );
+    this.emitter.setDepth(WORLD_DEPTH_EFFECT);
 
     if (!this.parent.effects) {
       this.parent.effects = {};
@@ -47,7 +61,7 @@ export class Particles implements IParticles {
 
   public destroy() {
     delete this.parent.effects[this.type];
-    this.scene.particles[this.type].removeEmitter(this.emitter);
+    this.emitter.destroy();
     if (this.timer) {
       this.timer.destroy();
     }

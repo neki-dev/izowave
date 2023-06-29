@@ -95,6 +95,7 @@ export class Enemy extends NPC implements IEnemy {
 
     new Particles(this, {
       type: ParticlesType.GLOW,
+      positionAtWorld: this,
       duration: 250,
       params: {
         follow: this,
@@ -182,10 +183,9 @@ export class Enemy extends NPC implements IEnemy {
     if (this.visible) {
       new Particles(this, {
         type: ParticlesType.GLOW,
+        positionAtWorld: this,
         duration: 500,
         params: {
-          x: this.x,
-          y: this.y,
           lifespan: { min: 150, max: 250 },
           scale: { start: 0.25, end: 0.0 },
           speed: 100,

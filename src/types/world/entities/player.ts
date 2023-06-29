@@ -30,6 +30,12 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly live: ILive
 
   /**
+   * Add additional features.
+   * @param type = Feature type
+   */
+  addFeature(type: PlayerFeature): void
+
+  /**
    * Get experience amount for specified level.
    * @param offset - Level offset
    */
@@ -68,6 +74,12 @@ export enum PlayerAudio {
   LEVEL_UP = 'player/level_up',
   MOVE = 'player/move',
   DEAD = 'player/dead',
+}
+
+export enum PlayerFeature {
+  TOTAL_FROST = 'TOTAL_FROST',
+  MASS_RELOAD = 'MASS_RELOAD',
+  RESPAWN_ASSISTANT = 'RESPAWN_ASSISTANT',
 }
 
 export enum MovementDirection {

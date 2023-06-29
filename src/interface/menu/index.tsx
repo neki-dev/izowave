@@ -25,7 +25,7 @@ export const ComponentMenu: React.FC = () => {
 
   const menuItems = useMemo<MenuItem[]>(
     () => [
-      ...(game.isPaused
+      ...(game.onPause
         ? [
           {
             label: 'Continue',
@@ -69,7 +69,7 @@ export const ComponentMenu: React.FC = () => {
 
   const Component = useMemo(() => {
     switch (currentContent) {
-      case 'Settings': return <ComponentSettings disabled={game.isPaused} />;
+      case 'Settings': return <ComponentSettings disabled={game.onPause} />;
       case 'About': return <ComponentAbout />;
       case 'Controls': return <ComponentControls />;
       default: return null;

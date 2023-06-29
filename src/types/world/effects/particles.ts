@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
 
+import { Vector2D } from '../level';
+
 export interface IParticles {
   readonly scene: IWorld
 
@@ -36,9 +38,8 @@ export enum ParticlesTexture {
   GLOW = 'effect/glow',
 }
 
-export type ParticlesList = Partial<Record<ParticlesType, Phaser.GameObjects.Particles.ParticleEmitterManager>>;
-
 export type ParticlesData = {
+  positionAtWorld: Vector2D
   type: ParticlesType
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
   duration?: number
