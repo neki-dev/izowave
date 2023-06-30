@@ -19,7 +19,7 @@ export const Sidebar = styled.div`
 `;
 
 export const Logotype = styled.div`
-  color: ${InterfaceColor.BLUE};
+  color: #59aed0;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 46px;
   line-height: 46px;

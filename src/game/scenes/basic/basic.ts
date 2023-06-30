@@ -32,7 +32,7 @@ export class Basic extends Phaser.Scene implements IScene {
       if (this.game.isFinished) {
         this.game.restartGame();
       } else if (this.game.isStarted) {
-        if (this.game.isPaused) {
+        if (this.game.onPause) {
           this.game.resumeGame();
         } else {
           this.game.pauseGame();

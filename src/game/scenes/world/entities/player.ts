@@ -14,7 +14,7 @@ import { IWorld } from '~type/world';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerFeature,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -53,6 +53,8 @@ export class Player extends Sprite implements IPlayer {
   private isMoving: boolean = false;
 
   private assistant: Nullable<IAssistant> = null;
+
+  private features: Partial<Record<PlayerFeature, boolean>> = {};
 
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
@@ -101,6 +103,10 @@ export class Player extends Sprite implements IPlayer {
     this.addVisitedWay();
     this.updateDirection();
     this.updateVelocity();
+  }
+
+  public addFeature(type: PlayerFeature) {
+    this.features[type] = true;
   }
 
   public getNextExperience(level = 0) {

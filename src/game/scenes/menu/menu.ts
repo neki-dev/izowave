@@ -19,7 +19,7 @@ export class Menu extends Phaser.Scene implements IMenu {
   public create() {
     new Interface(this, MenuUI);
 
-    if (!this.game.isPaused) {
+    if (!this.game.onPause) {
       this.setCameraPreview();
 
       this.input.keyboard.once(CONTROL_KEY.START, () => {

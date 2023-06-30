@@ -85,10 +85,9 @@ export class BuildingMedic extends Building {
     if (this.visible) {
       new Particles(this, {
         type: ParticlesType.BIT,
+        positionAtWorld: this,
         duration: 500,
         params: {
-          x: this.x,
-          y: this.y,
           lifespan: { min: 100, max: 300 },
           scale: { start: 1.0, end: 0.5 },
           speed: 100,

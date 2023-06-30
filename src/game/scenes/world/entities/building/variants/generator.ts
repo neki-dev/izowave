@@ -87,10 +87,12 @@ export class BuildingGenerator extends Building {
     if (this.visible) {
       new Particles(this, {
         type: ParticlesType.BIT,
-        duration: 300,
-        params: {
+        positionAtWorld: {
           x: this.x,
           y: this.y + 10 - (this.upgradeLevel * 2.5),
+        },
+        duration: 300,
+        params: {
           lifespan: { min: 100, max: 200 },
           scale: { start: 1.0, end: 0.5 },
           speed: 70,

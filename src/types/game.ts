@@ -25,7 +25,7 @@ export interface IGame extends Phaser.Game {
   /**
    * Game is paused.
    */
-  readonly isPaused: boolean
+  readonly onPause: boolean
 
   /**
    * Game is finished.
