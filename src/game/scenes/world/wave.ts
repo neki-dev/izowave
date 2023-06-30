@@ -10,7 +10,7 @@ import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
 import { calcGrowth } from '~lib/utils';
 import { NoticeType } from '~type/screen';
-import { TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IWave, WaveAudio, WaveEvents } from '~type/world/wave';
@@ -130,7 +130,7 @@ export class Wave extends EventEmitter implements IWave {
   private runTimeleft() {
     let pause: number;
 
-    if (this.scene.game.tutorial.isDisabled) {
+    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.END) {
       pause = calcGrowth(
         DIFFICULTY.WAVE_PAUSE,
         DIFFICULTY.WAVE_PAUSE_GROWTH,
