@@ -1,3 +1,4 @@
+import { TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 const world = {
@@ -11,6 +12,7 @@ const world = {
       isDisabled: true,
       beg: jest.fn(),
       end: jest.fn(),
+      state: jest.fn(() => TutorialStepState.END),
     },
     analytics: {
       track: jest.fn(),
