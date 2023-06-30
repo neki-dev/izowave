@@ -45,22 +45,28 @@ export class BuildingTowerFire extends BuildingTower {
       },
     }, shot);
 
-    this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
+    const unbindUpgradeStep = this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
       beg: () => {
-        this.scene.showHint({
-          side: 'top',
-          text: 'Hover on building and press [U] to upgrade',
-          position: {
-            x: this.x,
-            y: this.y + TILE_META.height,
-          },
-        });
+        if (
+          this.upgradeLevel === 1
+          && this.scene.player.resources >= this.getUpgradeLevelCost()
+        ) {
+          this.scene.showHint({
+            side: 'top',
+            text: 'Hover on building and press [U] to upgrade',
+            position: {
+              x: this.x,
+              y: this.y + TILE_META.height,
+            },
+          });
+        }
       },
       end: () => {
         this.scene.hideHint();
       },
     });
-    this.scene.game.tutorial.bind(TutorialStep.RELOAD_BUILDING, {
+
+    const unbindReloadStep = this.scene.game.tutorial.bind(TutorialStep.RELOAD_BUILDING, {
       beg: () => {
         if (this.ammo === 0) {
           this.scene.showHint({
@@ -76,6 +82,11 @@ export class BuildingTowerFire extends BuildingTower {
       end: () => {
         this.scene.hideHint();
       },
+    });
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      unbindUpgradeStep();
+      unbindReloadStep();
     });
   }
 }

@@ -145,7 +145,7 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_COST: 30, // Ammunition cost
   BUILDING_AMMUNITION_HEALTH: 300, // Ammunition health
   BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * wave_season)
-  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow ammunition
+  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow ammunition
   BUILDING_AMMUNITION_RELOAD_RADIUS: 150, // Ammunition reload ammo radius
   BUILDING_AMMUNITION_AMMO: 170, // Maximum amount of ammo
   BUILDING_AMMUNITION_AMMO_UPGRADE: 120, // Amount of ammo added per upgrade (N * upgrade_level)
