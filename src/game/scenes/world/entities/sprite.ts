@@ -197,7 +197,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     new Particles(this, {
       type: ParticlesType.BIT,
-      positionAtWorld: this,
       duration: 250,
       params: {
         follow: this,

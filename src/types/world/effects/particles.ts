@@ -39,7 +39,7 @@ export enum ParticlesTexture {
 }
 
 export type ParticlesData = {
-  positionAtWorld: Vector2D
+  positionAtWorld?: Vector2D
   type: ParticlesType
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
   duration?: number

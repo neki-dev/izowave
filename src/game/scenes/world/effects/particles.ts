@@ -31,8 +31,8 @@ export class Particles implements IParticles {
     this.type = type;
 
     this.emitter = this.scene.add.particles(
-      positionAtWorld.x,
-      positionAtWorld.y,
+      positionAtWorld?.x ?? 0,
+      positionAtWorld?.y ?? 0,
       ParticlesTexture[type],
       params,
     );

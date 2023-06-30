@@ -93,7 +93,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     if (this.glowColor) {
       this.effect = new Particles(this, {
         type: ParticlesType.GLOW,
-        positionAtWorld: this,
         params: {
           follow: this,
           lifespan: { min: 100, max: 200 },

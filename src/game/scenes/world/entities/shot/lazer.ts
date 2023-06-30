@@ -97,7 +97,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     if (this.target.visible) {
       new Particles(this.target, {
         type: ParticlesType.GLOW,
-        positionAtWorld: this.target,
         duration: 150,
         params: {
           follow: this.target,
