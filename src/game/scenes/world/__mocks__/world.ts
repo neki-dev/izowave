@@ -1,8 +1,7 @@
 import { TutorialStepState } from '~type/tutorial';
-import { IWorld } from '~type/world';
 
 const world = {
-  getTime: jest.fn(),
+  getTime: jest.fn(() => 0),
   isTimePaused: jest.fn(() => false),
   setTimePause: jest.fn(),
   spawnEnemy: jest.fn(),
@@ -24,7 +23,12 @@ const world = {
   },
   entityGroups: {
     enemies: {
-      getTotalUsed: jest.fn(),
+      getTotalUsed: jest.fn(() => 0),
+    },
+  },
+  level: {
+    effects: {
+      clear: jest.fn(),
     },
   },
   player: {},
@@ -36,6 +40,6 @@ const world = {
   sound: {
     play: jest.fn(),
   },
-} as unknown as IWorld;
+};
 
 export default world;
