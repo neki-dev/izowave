@@ -175,6 +175,7 @@ export class Wave extends EventEmitter implements IWave {
 
     if (this.getSeason() === prevSeason) {
       this.runTimeleft();
+      this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${this.number - 1} COMPLETED`);
     } else {
       this.nextSeason();
     }
