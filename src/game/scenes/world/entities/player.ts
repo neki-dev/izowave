@@ -6,7 +6,7 @@ import {
   PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_UPGRADES,
 } from '~const/world/entities/player';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/world/level';
-import { Chest } from '~entity/chest';
+import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
@@ -87,10 +87,10 @@ export class Player extends Sprite implements IPlayer {
     this.setTilesCollision([
       TileType.MAP,
       TileType.BUILDING,
-      TileType.CHEST,
+      TileType.CRYSTAL,
     ], (tile) => {
-      if (tile instanceof Chest) {
-        tile.open();
+      if (tile instanceof Crystal) {
+        tile.pickup();
       }
     });
 

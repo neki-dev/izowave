@@ -40,12 +40,12 @@ export const DIFFICULTY = {
   WAVE_EXPERIENCE_GROWTH: 0.1, // Experience count growth by wave number
 
   /**
-   * Chests
+   * Crystals
    */
 
-  CHEST_SPAWN_FACTOR: 0.15, // Chest spawn factor
-  CHEST_RESOURCES: 4, // Default resources count in chest
-  CHEST_RESOURCES_GROWTH: 0.2, // Resources count growth by wave number
+  CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
+  CRYSTAL_RESOURCES: 4, // Default resources count in crystal
+  CRYSTAL_RESOURCES_GROWTH: 0.2, // Resources count growth by wave number
 
   /**
    * Enemies

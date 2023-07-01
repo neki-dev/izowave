@@ -31,7 +31,7 @@ export const ComponentAmount: React.FC<Props> = ({
   return (
     <Wrapper className={view}>
       {label && <Label>{label}</Label>}
-      <Icon src={`assets/sprites/icons/${type}.png`} />
+      <Icon src={`assets/sprites/interface/${type}.png`} />
       <Value
         className={cn({
           attention: haveAmount < value,

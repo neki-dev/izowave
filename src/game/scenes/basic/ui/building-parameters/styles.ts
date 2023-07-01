@@ -29,7 +29,7 @@ Parameter.IconWrapper = styled.div`
 Parameter.Icon = styled.div`
   width: 10px;
   height: 10px;
-  background: url(assets/sprites/icons/building.png);
+  background: url(assets/sprites/interface/building.png);
 `;
 
 Parameter.Info = styled.div`

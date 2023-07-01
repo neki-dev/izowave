@@ -7,25 +7,25 @@ import { progression } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
 import {
-  ChestTexture, ChestData, ChestAudio, IChest,
-} from '~type/world/entities/chest';
+  CrystalTexture, CrystalData, CrystalAudio, ICrystal,
+} from '~type/world/entities/crystal';
 import { TileType } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
-export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
+export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile {
   readonly scene: IWorld;
 
-  readonly tileType: TileType = TileType.CHEST;
+  readonly tileType: TileType = TileType.CRYSTAL;
 
   constructor(scene: IWorld, {
     positionAtMatrix, variant = 0,
-  }: ChestData) {
+  }: CrystalData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
-    super(scene, positionAtWorld.x, positionAtWorld.y + 16, ChestTexture.CHEST, variant);
+    super(scene, positionAtWorld.x, positionAtWorld.y + 4, CrystalTexture.CRYSTAL, variant);
     scene.add.existing(this);
-    scene.entityGroups.chests.add(this);
+    scene.entityGroups.crystals.add(this);
 
     const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
 
@@ -36,26 +36,26 @@ export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
     this.scene.level.putTile(this, tilePosition);
   }
 
-  public open() {
+  public pickup() {
     const resources = progression(
       Phaser.Math.Between(
-        DIFFICULTY.CHEST_RESOURCES - Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
-        DIFFICULTY.CHEST_RESOURCES + Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
+        DIFFICULTY.CRYSTAL_RESOURCES - Math.floor(DIFFICULTY.CRYSTAL_RESOURCES * 0.5),
+        DIFFICULTY.CRYSTAL_RESOURCES + Math.floor(DIFFICULTY.CRYSTAL_RESOURCES * 0.5),
       ),
-      DIFFICULTY.CHEST_RESOURCES_GROWTH,
+      DIFFICULTY.CRYSTAL_RESOURCES_GROWTH,
       this.scene.wave.number,
     );
 
     this.scene.player.giveResources(resources);
 
-    this.scene.sound.play(ChestAudio.OPEN);
+    this.scene.sound.play(CrystalAudio.PICKUP);
 
     this.destroy();
   }
 }
 
-registerAudioAssets(ChestAudio);
-registerSpriteAssets(ChestTexture, {
-  width: 18,
-  height: 20,
+registerAudioAssets(CrystalAudio);
+registerSpriteAssets(CrystalTexture, {
+  width: 32,
+  height: 32,
 });

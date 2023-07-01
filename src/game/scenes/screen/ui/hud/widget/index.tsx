@@ -11,7 +11,7 @@ type Props = {
 export const ComponentWidget: React.FC<Props> = ({ label, children, icon }) => (
   <Wrapper>
     <Icon>
-      <Icon.Image src={`assets/sprites/icons/${icon}.png`} />
+      <Icon.Image src={`assets/sprites/interface/${icon}.png`} />
     </Icon>
     <State>
       <State.Label>{label}</State.Label>

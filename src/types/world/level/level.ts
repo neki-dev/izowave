@@ -55,7 +55,7 @@ export interface ILevel extends ITileMatrix {
 export enum TileType {
   MAP = 'MAP',
   BUILDING = 'BUILDING',
-  CHEST = 'CHEST',
+  CRYSTAL = 'CRYSTAL',
   TREE = 'TREE',
 }
 
@@ -71,7 +71,7 @@ export enum SpawnTarget {
   ENEMY = 'ENEMY',
   PLAYER = 'PLAYER',
   TREE = 'TREE',
-  CHEST = 'CHEST',
+  CRYSTAL = 'CRYSTAL',
 }
 
 export type LevelBiome = {
