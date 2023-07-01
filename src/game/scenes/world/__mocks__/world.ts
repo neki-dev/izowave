@@ -17,6 +17,9 @@ const world = {
     analytics: {
       track: jest.fn(),
     },
+    screen: {
+      notice: jest.fn(),
+    },
     getDifficultyMultiplier: jest.fn(() => 1.0),
   },
   entityGroups: {

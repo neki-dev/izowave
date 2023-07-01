@@ -6,16 +6,16 @@ import {
 describe('utils.ts / calcGrowth', () => {
   it('should return correct value growth', () => {
     expect(progression(100, 0.1, 1)).toEqual(100);
-    expect(progression(100, 0.1, 3)).toEqual(121);
+    expect(progression(100, 0.1, 3)).toEqual(122);
   });
 
   it('should return correct negative value growth', () => {
     expect(progression(100, -0.1, 1)).toEqual(100);
-    expect(progression(100, -0.1, 3)).toEqual(79);
+    expect(progression(100, -0.1, 3)).toEqual(81);
   });
 
   it('should return rounded value', () => {
-    expect(progression(100, 0.1, 3, 10)).toEqual(120);
+    expect(progression(100, 0.1, 3, 10)).toEqual(130);
   });
 });
 

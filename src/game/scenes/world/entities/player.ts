@@ -260,7 +260,8 @@ export class Player extends Sprite implements IPlayer {
 
   private onWaveComplete(number: number) {
     if (this.assistant) {
-      // this.assistant.live.heal();
+      // TODO
+      this.assistant.live.heal();
     } else {
       this.addAssistant();
     }

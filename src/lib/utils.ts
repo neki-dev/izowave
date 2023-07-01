@@ -43,23 +43,6 @@ export function progressionFrom(
     : Math.ceil(value);
 }
 
-// setTimeout(() => {
-//   let prev1 = 15;
-//   let prev2 = 15;
-
-//   console.log('- - -');
-
-//   for (let i = 1; i <= 10; i++) {
-//     const value1 = progression(15, 0.2, i + 1);
-//     const value2 = progressionFrom(prev2, 0.2);
-
-//     console.log(i, [value1, (value1 - prev1)], [value2, (value2 - prev2)]);
-
-//     prev1 = value1;
-//     prev2 = value2;
-//   }
-// }, 1000);
-
 /**
  * Check positions is equals.
  *

@@ -62,7 +62,7 @@ describe('wave.ts', () => {
     expect(world.spawnEnemy).toBeCalledTimes(wave.enemiesMaxCount);
   });
 
-  it('should complete wave', () => {
+  it('should complete wave when all enemies is dead', () => {
     world.entityGroups.enemies.getTotalUsed = jest.fn(() => 0);
 
     wave.update();
@@ -75,6 +75,7 @@ describe('wave.ts', () => {
       DIFFICULTY.WAVE_TIMELEFT,
       DIFFICULTY.WAVE_TIMELEFT_GROWTH,
       wave.number,
+      1000,
     ));
   });
 });
