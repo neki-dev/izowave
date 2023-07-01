@@ -12,6 +12,7 @@ import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { aroundPosition, progression } from '~lib/utils';
 import { NoticeType } from '~type/screen';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
@@ -180,6 +181,8 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public upgrade(type: PlayerUpgrade) {
+    this.scene.game.tutorial.end(TutorialStep.UPGRADE_PLAYER);
+
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
@@ -273,6 +276,10 @@ export class Player extends Sprite implements IPlayer {
     );
 
     this.giveExperience(experience);
+
+    if (number === 1) {
+      this.scene.game.tutorial.beg(TutorialStep.UPGRADE_PLAYER);
+    }
   }
 
   private registerKeyboard() {

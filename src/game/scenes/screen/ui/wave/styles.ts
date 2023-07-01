@@ -19,7 +19,7 @@ export const Container = styled.div`
   color: #fff;
   align-items: center;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.75);
 `;
 
 export const CurrentNumber = styled.div`

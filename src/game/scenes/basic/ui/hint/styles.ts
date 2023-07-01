@@ -47,7 +47,7 @@ export const Container = styled.div`
 export const Positioner = styled.div`
   position: absolute;
   width: 200px;
-  &.left {
+  &.side-left {
     padding-left: 10px;
     transform: translate(0, -50%);
     ${Container} {
@@ -62,7 +62,7 @@ export const Positioner = styled.div`
       }
     }
   }
-  &.right {
+  &.side-right {
     padding-right: 10px;
     transform: translate(-100%, -50%);
     ${Container} {
@@ -77,33 +77,65 @@ export const Positioner = styled.div`
       }
     }
   }
-  &.top {
+  &.side-top {
     padding-top: 10px;
-    transform: translate(-50%, 0);
     ${Container} {
       animation: ${animationKickTop} 1s infinite;
       &::after {
         top: 0;
-        left: 50%;
         transform: translate(-50%, -100%);
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
         border-bottom: 10px solid #000;
       }
     }
+    &.align-left {
+      transform: translate(0, 0);
+      ${Container}::after {
+        left: 39px;
+      }
+    }
+    &.align-center {
+      transform: translate(-50%, 0);
+      ${Container}::after {
+        left: 50%;
+      }
+    }
+    &.align-right {
+      transform: translate(100%, 0);
+      ${Container}::after {
+        right: 39px;
+      }
+    }
   }
-  &.bottom {
+  &.side-bottom {
     padding-bottom: 10px;
-    transform: translate(-50%, -100%);
     ${Container} {
       animation: ${animationKickBottom} 1s infinite;
       &::after {
         bottom: 0;
-        left: 50%;
         transform: translate(-50%, 100%);
         border-left: 8px solid transparent;
         border-right: 8px solid transparent;
         border-top: 10px solid #000;
+      }
+    }
+    &.align-left {
+      transform: translate(0, -100%);
+      ${Container}::after {
+        left: 39px;
+      }
+    }
+    &.align-center {
+      transform: translate(-50%, -100%);
+      ${Container}::after {
+        left: 50%;
+      }
+    }
+    &.align-right {
+      transform: translate(100%, -100%);
+      ${Container}::after {
+        right: 39px;
       }
     }
   }

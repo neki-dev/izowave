@@ -183,7 +183,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.sound.play(WaveAudio.COMPLETE);
 
-    this.emit(WaveEvents.COMPLETE, this.number);
+    this.emit(WaveEvents.COMPLETE, this.number - 1);
 
     if (this.number === 3) {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);

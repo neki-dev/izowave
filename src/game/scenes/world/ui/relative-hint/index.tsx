@@ -2,8 +2,8 @@ import React, {
   useContext, useEffect, useRef, useState,
 } from 'react';
 
-import { ComponentHint } from '~scene/basic/ui/hint';
 import { GameContext, useWorldUpdate } from '~lib/interface';
+import { ComponentHint } from '~scene/basic/ui/hint';
 import { WorldEvents, WorldHint } from '~type/world';
 
 import { Wrapper } from './styles';
