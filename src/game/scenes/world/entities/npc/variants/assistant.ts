@@ -3,7 +3,7 @@ import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/ent
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth, getClosest } from '~lib/utils';
+import { progression, getClosest } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { IWorld } from '~type/world';
 import { EffectTexture } from '~type/world/effects';
@@ -11,23 +11,28 @@ import {
   AssistantTexture, AssistantData, AssistantAudio, IAssistant,
 } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
+import { IPlayer } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
 
 export class Assistant extends NPC implements IAssistant {
   private shot: IShot;
 
+  private owner: IPlayer;
+
   private shotDefaultParams: ShotParams;
 
   private nextAttackTimestamp: number = 0;
 
+  public level: number = 1;
+
   constructor(scene: IWorld, {
-    positionAtMatrix,
+    owner, positionAtMatrix, speed, health, level,
   }: AssistantData) {
     super(scene, {
       texture: AssistantTexture.ASSISTANT,
       positionAtMatrix,
-      speed: DIFFICULTY.ASSISTANT_SPEED,
-      health: DIFFICULTY.ASSISTANT_HEALTH,
+      speed,
+      health,
       pathFindTriggerDistance: ASSISTANT_PATH_BREAKPOINT,
     });
     scene.add.existing(this);
@@ -39,6 +44,9 @@ export class Assistant extends NPC implements IAssistant {
     });
     this.shot.setInitiator(this);
     this.shotDefaultParams = this.shot.params;
+
+    this.owner = owner;
+    this.level = level;
 
     this.body.setCircle(this.width / 2, 0, 1);
 
@@ -54,26 +62,9 @@ export class Assistant extends NPC implements IAssistant {
       this.setVelocity(0, 0);
     }
 
-    if (!this.scene.player.live.isDead()) {
+    if (!this.owner.live.isDead()) {
       this.attack();
     }
-  }
-
-  public upgrade(level: number) {
-    this.speed = calcGrowth(
-      DIFFICULTY.ASSISTANT_SPEED,
-      DIFFICULTY.ASSISTANT_SPEED_GROWTH,
-      level,
-    );
-
-    const maxHealth = calcGrowth(
-      DIFFICULTY.ASSISTANT_HEALTH,
-      DIFFICULTY.ASSISTANT_HEALTH_GROWTH,
-      level,
-    );
-
-    this.live.setMaxHealth(maxHealth);
-    this.live.heal();
   }
 
   public onDead() {
@@ -104,20 +95,20 @@ export class Assistant extends NPC implements IAssistant {
     this.shot.params = this.getShotCurrentParams();
     this.shot.shoot(target);
 
-    const pause = calcGrowth(
+    const pause = progression(
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
-      this.scene.player.level,
+      this.level,
     );
 
     this.nextAttackTimestamp = now + Math.max(pause, 200);
   }
 
   private getTarget(): Nullable<IEnemy> {
-    const maxDistance = calcGrowth(
+    const maxDistance = progression(
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-      this.scene.player.level,
+      this.level,
     );
 
     const enemies = this.scene.getEnemies().filter((enemy) => (
@@ -131,20 +122,20 @@ export class Assistant extends NPC implements IAssistant {
 
   private getShotCurrentParams() {
     const params: ShotParams = {
-      maxDistance: calcGrowth(
+      maxDistance: progression(
         this.shotDefaultParams.maxDistance,
         DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-        this.scene.player.level,
+        this.level,
       ),
-      speed: calcGrowth(
+      speed: progression(
         this.shotDefaultParams.speed,
         DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
-        this.scene.player.level,
+        this.level,
       ),
-      damage: calcGrowth(
+      damage: progression(
         this.shotDefaultParams.damage,
         DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
-        this.scene.player.level,
+        this.level,
       ),
     };
 

@@ -5,7 +5,7 @@ import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { TILE_META } from '~const/world/level';
-import { calcGrowth, equalPositions } from '~lib/utils';
+import { equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
@@ -33,6 +33,8 @@ export class Builder extends EventEmitter implements IBuilder {
   public get variant() { return this._variant; }
 
   private set variant(v) { this._variant = v; }
+
+  public radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
 
   constructor(scene: IWorld) {
     super();
@@ -353,7 +355,6 @@ export class Builder extends EventEmitter implements IBuilder {
         this.scene.game.tutorial.end(TutorialStep.BUILD_AMMUNITION);
         break;
       }
-      default: break;
     }
   }
 
@@ -368,11 +369,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildArea() {
-    const d = calcGrowth(
-      DIFFICULTY.BUILDING_BUILD_AREA / this.scene.game.getDifficultyMultiplier(),
-      DIFFICULTY.BUILDING_BUILD_AREA_GROWTH,
-      this.scene.player.level,
-    ) * 2;
+    const d = this.radius * 2;
 
     this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
@@ -383,8 +380,10 @@ export class Builder extends EventEmitter implements IBuilder {
     const position = this.scene.player.getBottomCenter();
     const out = TILE_META.height * 2;
     const depth = Level.GetDepth(position.y, 1, this.buildArea.height + out);
+    const d = this.radius * 2;
 
     this.buildArea.setPosition(position.x, position.y);
+    this.buildArea.setSize(d, d * TILE_META.persperctive);
     this.buildArea.setDepth(depth);
   }
 

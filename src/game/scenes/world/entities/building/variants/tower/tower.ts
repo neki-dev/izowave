@@ -1,7 +1,7 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { calcGrowth, getClosest } from '~lib/utils';
+import { progression, getClosest } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -122,7 +122,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     };
 
     if (this.shotDefaultParams.speed) {
-      params.speed = calcGrowth(
+      params.speed = progression(
         this.shotDefaultParams.speed,
         DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
         level || this.upgradeLevel,
@@ -130,7 +130,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
 
     if (this.shotDefaultParams.damage) {
-      params.damage = calcGrowth(
+      params.damage = progression(
         this.shotDefaultParams.damage,
         DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         level || this.upgradeLevel,
@@ -138,7 +138,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
 
     if (this.shotDefaultParams.freeze) {
-      params.freeze = calcGrowth(
+      params.freeze = progression(
         this.shotDefaultParams.freeze,
         DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
         level || this.upgradeLevel,

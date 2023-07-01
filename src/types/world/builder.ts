@@ -18,6 +18,11 @@ export interface IBuilder extends EventEmitter {
   readonly variant: Nullable<BuildingVariant>
 
   /**
+   * Radius of build area.
+   */
+  radius: number
+
+  /**
    * Toggle build state and update build area.
    */
   update(): void

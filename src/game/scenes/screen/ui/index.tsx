@@ -1,35 +1,30 @@
 import React from 'react';
 
-import { ComponentBuilder } from '~interface/builder';
-import { ComponentDebug } from '~interface/debug';
-import { ComponentBarExperience } from '~interface/hud/bar-experience';
-import { ComponentBarHealth } from '~interface/hud/bar-health';
-import { ComponentResources } from '~interface/hud/resources';
-import { ComponentWave } from '~interface/hud/wave';
-import { ComponentNotices } from '~interface/plates/notices';
-
-import { Column, HUD, Overlay } from './styles';
+import { ComponentBuilder } from './builder';
+import { ComponentDebug } from './debug';
+import { ComponentHUD } from './hud';
+import { ComponentNotices } from './notices';
+import { Column, Grid, Overlay } from './styles';
+import { ComponentWave } from './wave';
 
 export const ScreenUI: React.FC = () => (
   <Overlay>
-    <ComponentNotices />
+    <Grid>
+      <Column className='left'>
+        <ComponentHUD />
+        <ComponentDebug />
+      </Column>
 
-    <Column>
-      <HUD>
+      <Column className='center'>
         <ComponentWave />
-        <HUD.Bars>
-          <ComponentBarHealth />
-          <ComponentBarExperience />
-        </HUD.Bars>
-        <ComponentResources />
-      </HUD>
+      </Column>
 
-      <ComponentDebug />
-    </Column>
+      <Column className='right'>
+        <ComponentBuilder />
+      </Column>
+    </Grid>
 
-    <Column>
-      <ComponentBuilder />
-    </Column>
+    <ComponentNotices />
   </Overlay>
 );
 

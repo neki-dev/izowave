@@ -19,21 +19,24 @@ export const Overlay = styled.div`
   }
 `;
 
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+`;
+
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-`;
-
-export const HUD: any = styled.div`
-  &> div:not(:last-child) {
-    margin-bottom: 32px;
+  &.left {
+    justify-self: start;
   }
-`;
-
-HUD.Bars = styled.div`
-  &> div:not(:last-child) {
-    margin-bottom: 8px;
+  &.center {
+    justify-self: center;
+  }
+  &.right {
+    justify-self: end;
   }
 `;

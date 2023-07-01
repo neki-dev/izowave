@@ -23,7 +23,6 @@ export class Analytics implements IAnalytics {
       difficulty: data.world.game.settings[GameSettings.DIFFICULTY],
       waveNumber: data.world.wave.number,
       resources: data.world.player.resources,
-      level: data.world.player.level,
     };
 
     if (IS_DEV_MODE) {

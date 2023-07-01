@@ -5,7 +5,7 @@ import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities
 import { TILE_META } from '~const/world/level';
 import { NPC } from '~entity/npc';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -29,17 +29,17 @@ export class Enemy extends NPC implements IEnemy {
       positionAtMatrix,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
-      health: calcGrowth(
+      health: progression(
         DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
-      damage: calcGrowth(
+      damage: progression(
         DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_DAMAGE_GROWTH,
         scene.wave.number,
       ),
-      speed: calcGrowth(
+      speed: progression(
         DIFFICULTY.ENEMY_SPEED * (multipliers.speed ?? 1.0),
         DIFFICULTY.ENEMY_SPEED_GROWTH,
         scene.wave.number,
@@ -130,7 +130,7 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   public onDead() {
-    const experience = calcGrowth(
+    const experience = progression(
       DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
       DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
       this.scene.wave.number,

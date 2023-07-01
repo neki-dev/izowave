@@ -10,12 +10,7 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly kills: number
 
   /**
-   * Current level.
-   */
-  readonly level: number
-
-  /**
-   * Player experience on current level.
+   * Player experience.
    */
   readonly experience: number
 
@@ -30,16 +25,24 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly live: ILive
 
   /**
-   * Add additional features.
-   * @param type = Feature type
+   * Movement speed.
    */
-  addFeature(type: PlayerFeature): void
+  readonly speed: number
 
   /**
-   * Get experience amount for specified level.
-   * @param offset - Level offset
+   * Levels of upgrades.
    */
-  getNextExperience(offset?: number): number
+  readonly upgradeLevel: Record<PlayerUpgrade, number>
+
+  /**
+   * Upgrade player skill.
+   */
+  upgrade(type: PlayerUpgrade): void
+
+  /**
+   * Get experience amount need to upgrade.
+   */
+  getExperienceToUpgrade(type: PlayerUpgrade): number
 
   /**
    * Inremeting number of killed enemies.
@@ -48,7 +51,6 @@ export interface IPlayer extends ISprite, IEnemyTarget {
 
   /**
    * Give player experience.
-   * If enough experience, the level will be increased.
    * @param amount - Amount
    */
   giveExperience(amount: number): void
@@ -71,15 +73,16 @@ export enum PlayerTexture {
 }
 
 export enum PlayerAudio {
-  LEVEL_UP = 'player/level_up',
+  UPGRADE = 'player/upgrade',
   MOVE = 'player/move',
   DEAD = 'player/dead',
 }
 
-export enum PlayerFeature {
-  TOTAL_FROST = 'TOTAL_FROST',
-  MASS_RELOAD = 'MASS_RELOAD',
-  RESPAWN_ASSISTANT = 'RESPAWN_ASSISTANT',
+export enum PlayerUpgrade {
+  MAX_HEALTH = 'MAX_HEALTH',
+  SPEED = 'SPEED',
+  BUILD_AREA = 'BUILD_AREA',
+  ASSISTANT = 'ASSISTANT',
 }
 
 export enum MovementDirection {
@@ -92,4 +95,12 @@ export enum MovementDirection {
 
 export type PlayerData = {
   positionAtMatrix: Vector2D
+};
+
+export type PlayerUpgradeData = {
+  label: string
+  description: string
+  experience: number
+  maxLevel: number
+  level?: number
 };

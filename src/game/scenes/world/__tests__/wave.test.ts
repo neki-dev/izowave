@@ -2,7 +2,7 @@ import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { IWave } from '~type/world/wave';
 
 import world from '../__mocks__/world';
@@ -22,7 +22,7 @@ describe('wave.ts', () => {
   });
 
   it('should return timeleft to wave start', () => {
-    expect(wave.getTimeleft()).toEqual(DIFFICULTY.WAVE_PAUSE);
+    expect(wave.getTimeleft()).toEqual(DIFFICULTY.WAVE_TIMELEFT);
   });
 
   it('should return timeleft to wave start after skip', () => {
@@ -71,9 +71,9 @@ describe('wave.ts', () => {
   });
 
   it('should return timeleft to next wave start', () => {
-    expect(wave.getTimeleft()).toEqual(calcGrowth(
-      DIFFICULTY.WAVE_PAUSE,
-      DIFFICULTY.WAVE_PAUSE_GROWTH,
+    expect(wave.getTimeleft()).toEqual(progression(
+      DIFFICULTY.WAVE_TIMELEFT,
+      DIFFICULTY.WAVE_TIMELEFT_GROWTH,
       wave.number,
     ));
   });

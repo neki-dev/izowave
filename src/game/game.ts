@@ -249,7 +249,6 @@ export class Game extends Phaser.Game implements IGame {
     return {
       waves: this.world.wave.number - 1,
       kills: this.world.player.kills,
-      level: this.world.player.level,
       lived: this.world.getTime() / 1000 / 60,
     } as GameStat;
   }

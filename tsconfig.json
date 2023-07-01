@@ -17,7 +17,6 @@
       "~scene/*": ["./src/game/scenes/*"],
       "~game/*": ["./src/game/*"],
       "~game": ["./src/game"],
-      "~interface/*": ["./src/interface/*"],
       "~type/*": ["./src/types/*"],
       "~const/*": ["./src/const/*"],
       "~lib/*": ["./src/lib/*"]

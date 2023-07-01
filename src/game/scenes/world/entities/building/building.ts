@@ -5,7 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
@@ -206,7 +206,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getActionsRadius() {
     return this.actions?.radius
-      ? calcGrowth(
+      ? progression(
         this.actions.radius,
         DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
         this.upgradeLevel,
@@ -216,7 +216,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private getActionsPause() {
     return this.actions?.pause
-      ? calcGrowth(
+      ? progression(
         this.actions.pause,
         DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         this.upgradeLevel,
@@ -224,7 +224,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       : 0;
   }
 
-  private getUpgradeLevelCost() {
+  public getUpgradeLevelCost() {
     const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
 
     return Math.round(this.upgradeLevel * costPerLevel);

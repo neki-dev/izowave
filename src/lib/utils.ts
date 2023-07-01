@@ -2,23 +2,63 @@ import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 import { Vector2D, Vector3D } from '~type/world/level';
 
 /**
- * Quadratic equation for calculating difficulty
- * relative to the specified level.
+ * Function to progressively increase value,
+ * relative to specified level.
  *
- * @param startValue - Default value for first level
- * @param growthScale - Part of start value for growth
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of start value for growth
  * @param level - Difficulty level
+ * @param roundTo - Round value
  */
-export function calcGrowth(
-  startValue: number,
-  growthScale: number,
+export function progression(
+  defaultValue: number,
+  scale: number,
   level: number,
+  roundTo?: number,
 ) {
-  const step = startValue * growthScale;
-  const weight = (level - 1) ** 1.1;
+  const value = defaultValue * ((scale + 1) ** (level - 1));
 
-  return Math.round(startValue + (weight * step));
+  return roundTo
+    ? Math.ceil(value / roundTo) * roundTo
+    : Math.ceil(value);
 }
+
+/**
+ * Function to progressively increase next value,
+ * relative to current value.
+ *
+ * @param currentValue - Current value
+ * @param scale - Part of current value for growth
+ * @param roundTo - Round value
+ */
+export function progressionFrom(
+  currentValue: number,
+  scale: number,
+  roundTo?: number,
+) {
+  const value = currentValue * (scale + 1);
+
+  return roundTo
+    ? Math.ceil(value / roundTo) * roundTo
+    : Math.ceil(value);
+}
+
+// setTimeout(() => {
+//   let prev1 = 15;
+//   let prev2 = 15;
+
+//   console.log('- - -');
+
+//   for (let i = 1; i <= 10; i++) {
+//     const value1 = progression(15, 0.2, i + 1);
+//     const value2 = progressionFrom(prev2, 0.2);
+
+//     console.log(i, [value1, (value1 - prev1)], [value2, (value2 - prev2)]);
+
+//     prev1 = value1;
+//     prev2 = value2;
+//   }
+// }, 1000);
 
 /**
  * Check positions is equals.

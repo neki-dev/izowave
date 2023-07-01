@@ -8,7 +8,7 @@ import { ENEMIES } from '~const/world/entities/enemies';
 import { WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -131,11 +131,12 @@ export class Wave extends EventEmitter implements IWave {
     let pause: number;
 
     if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.END) {
-      pause = calcGrowth(
-        DIFFICULTY.WAVE_PAUSE,
-        DIFFICULTY.WAVE_PAUSE_GROWTH,
+      pause = progression(
+        DIFFICULTY.WAVE_TIMELEFT,
+        DIFFICULTY.WAVE_TIMELEFT_GROWTH,
         this.number,
-      ) / this.scene.game.getDifficultyMultiplier();
+        1000,
+      );
     } else {
       pause = WAVE_TIMELEFT_ALARM;
     }
@@ -148,7 +149,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.nextSpawnTimestamp = 0;
     this.spawnedEnemiesCount = 0;
-    this.enemiesMaxCount = calcGrowth(
+    this.enemiesMaxCount = progression(
       DIFFICULTY.WAVE_ENEMIES_COUNT,
       DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
       this.number,
@@ -211,7 +212,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.spawnEnemy(variant);
 
-    const pause = calcGrowth(
+    const pause = progression(
       DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       this.number,

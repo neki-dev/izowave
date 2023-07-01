@@ -5,14 +5,15 @@ import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IShotInitiator } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
 
+import { IPlayer } from '../player';
+
 export interface IAssistant extends INPC, IShotInitiator, IEnemyTarget {
   readonly body: Phaser.Physics.Arcade.Body
 
   /**
-   * Upgrade by level.
-   * @param level - Player level
+   * Upgrade level.
    */
-  upgrade(level: number): void
+  level: number
 }
 
 export enum AssistantTexture {
@@ -24,5 +25,9 @@ export enum AssistantAudio {
 }
 
 export type AssistantData = {
+  owner: IPlayer
   positionAtMatrix: Vector2D
+  speed: number
+  health: number
+  level: number
 };

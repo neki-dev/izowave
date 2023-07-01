@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
 import {
@@ -37,7 +37,7 @@ export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
   }
 
   public open() {
-    const resources = calcGrowth(
+    const resources = progression(
       Phaser.Math.Between(
         DIFFICULTY.CHEST_RESOURCES - Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
         DIFFICULTY.CHEST_RESOURCES + Math.floor(DIFFICULTY.CHEST_RESOURCES * 0.5),
@@ -47,14 +47,6 @@ export class Chest extends Phaser.GameObjects.Image implements IChest, ITile {
     );
 
     this.scene.player.giveResources(resources);
-
-    const experience = calcGrowth(
-      DIFFICULTY.CHEST_EXPERIENCE,
-      DIFFICULTY.CHEST_EXPERIENCE_GROWTH,
-      this.scene.wave.number,
-    );
-
-    this.scene.player.giveExperience(experience);
 
     this.scene.sound.play(ChestAudio.OPEN);
 
