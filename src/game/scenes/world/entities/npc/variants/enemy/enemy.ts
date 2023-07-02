@@ -4,7 +4,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
 import { TILE_META } from '~const/world/level';
 import { NPC } from '~entity/npc';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { registerSpriteAssets } from '~lib/assets';
 import { progression } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
@@ -12,7 +12,7 @@ import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesType } from '~type/world/effects';
 import { IBuilding } from '~type/world/entities/building';
 import {
-  IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture, IEnemy,
+  IEnemyTarget, EnemyData, EnemyTexture, IEnemy,
 } from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
@@ -120,10 +120,6 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    if (this.scene.game.sound.getAll(EnemyAudio.ATTACK).length < 3) {
-      this.scene.game.sound.play(EnemyAudio.ATTACK);
-    }
-
     target.live.damage(this.damage);
 
     this.calmDown(1000);
@@ -196,7 +192,6 @@ export class Enemy extends NPC implements IEnemy {
   }
 }
 
-registerAudioAssets(EnemyAudio);
 registerSpriteAssets(EnemyTexture, (texture: EnemyTexture) => ({
   width: ENEMY_TEXTURE_META[texture].size,
   height: ENEMY_TEXTURE_META[texture].size,

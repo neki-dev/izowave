@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import {
-  Notice, NoticeType, ScreenAudio, ScreenEvents,
-} from '~type/screen';
+import { Notice, ScreenEvents } from '~type/screen';
 
 import { Item, Wrapper } from './styles';
 
@@ -13,10 +11,6 @@ export const ComponentNotices: React.FC = () => {
   const [notices, setNotices] = useState<Notice[]>([]);
 
   const addNotice = (data: Notice) => {
-    if (data.type === NoticeType.ERROR) {
-      game.sound.play(ScreenAudio.ERROR);
-    }
-
     setNotices((currentNotices) => {
       let isExist = false;
       const newNotices = currentNotices.map((currentNotice) => {

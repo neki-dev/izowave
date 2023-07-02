@@ -23,7 +23,7 @@ export function registerAudioAssets(files: AssetsSource) {
     normalizeAssetsFiles(files).map((audio) => ({
       key: audio,
       type: 'audio',
-      url: `assets/audio/${audio}.wav`,
+      url: `assets/audio/${audio}.mp3`,
     })),
   );
 }

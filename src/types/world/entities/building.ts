@@ -145,10 +145,10 @@ export enum BuildingAudio {
   BUILD = 'building/build',
   UPGRADE = 'building/upgrade',
   DEAD = 'building/dead',
-  REMOVE = 'building/remove',
-  FAILURE = 'building/failure',
   OVER = 'building/over',
   RELOAD = 'building/reload',
+  DAMAGE_1 = 'building/damage_1',
+  DAMAGE_2 = 'building/damage_2',
 }
 
 export enum BuildingIcon {

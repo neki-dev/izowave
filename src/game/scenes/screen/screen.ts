@@ -22,6 +22,10 @@ export class Screen extends Phaser.Scene implements IScreen {
 
   public notice(type: NoticeType, text: string) {
     this.events.emit(ScreenEvents.NOTICE, { type, text });
+
+    if (type === NoticeType.ERROR) {
+      this.game.sound.play(ScreenAudio.ERROR);
+    }
   }
 }
 

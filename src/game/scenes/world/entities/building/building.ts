@@ -280,15 +280,22 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private onDamage() {
-    if (!this.visible) {
-      return;
+    const audio = Phaser.Utils.Array.GetRandom([
+      BuildingAudio.DAMAGE_1,
+      BuildingAudio.DAMAGE_2,
+    ]);
+
+    if (this.scene.game.sound.getAll(audio).length < 3) {
+      this.scene.game.sound.play(audio);
     }
 
-    new Effect(this.scene, {
-      texture: EffectTexture.DAMAGE,
-      position: this,
-      rate: 14,
-    });
+    if (this.visible) {
+      new Effect(this.scene, {
+        texture: EffectTexture.DAMAGE,
+        position: this,
+        rate: 14,
+      });
+    }
   }
 
   private onDead() {
@@ -322,7 +329,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.isFocused = true;
 
-    this.scene.input.setDefaultCursor('pointer');
+    // TODO
+    // this.scene.input.setDefaultCursor('pointer');
   }
 
   private onUnfocus() {
@@ -334,7 +342,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.isFocused = false;
 
-    this.scene.input.setDefaultCursor('default');
+    // TODO
+    // this.scene.input.setDefaultCursor('default');
   }
 
   private onClick() {
@@ -457,7 +466,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     if (this.visible) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
-        audio: BuildingAudio.REMOVE,
+        audio: BuildingAudio.DEAD,
         position: {
           x: this.x,
           y: this.y + TILE_META.height * 0.5,

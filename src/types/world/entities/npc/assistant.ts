@@ -22,6 +22,8 @@ export enum AssistantTexture {
 
 export enum AssistantAudio {
   DEAD = 'assistant/dead',
+  DAMAGE_1 = 'assistant/damage_1',
+  DAMAGE_2 = 'assistant/damage_2',
 }
 
 export type AssistantData = {

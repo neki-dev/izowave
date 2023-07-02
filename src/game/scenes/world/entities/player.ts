@@ -235,6 +235,18 @@ export class Player extends Sprite implements IPlayer {
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_PLAYER);
   }
 
+  public onDamage() {
+    this.scene.game.sound.play(
+      Phaser.Utils.Array.GetRandom([
+        PlayerAudio.DAMAGE_1,
+        PlayerAudio.DAMAGE_2,
+        PlayerAudio.DAMAGE_3,
+      ]),
+    );
+
+    super.onDamage();
+  }
+
   public onDead() {
     this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
     this.scene.sound.play(PlayerAudio.DEAD);
@@ -339,7 +351,7 @@ export class Player extends Sprite implements IPlayer {
         this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
 
         if (!oldMoving) {
-          this.scene.game.sound.play(PlayerAudio.MOVE, {
+          this.scene.game.sound.play(PlayerAudio.WALK, {
             loop: true,
             rate: 1.8,
           });
@@ -356,7 +368,7 @@ export class Player extends Sprite implements IPlayer {
       this.anims.stop();
     }
 
-    this.scene.sound.stopByKey(PlayerAudio.MOVE);
+    this.scene.sound.stopByKey(PlayerAudio.WALK);
   }
 
   private getKeyboardSingleDirection(

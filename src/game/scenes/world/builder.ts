@@ -312,13 +312,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private build() {
-    if (!this.buildingPreview.visible) {
-      return;
-    }
-
-    if (!this.isAllowBuild()) {
-      this.scene.sound.play(BuildingAudio.FAILURE);
-
+    if (
+      !this.buildingPreview.visible
+      || !this.isAllowBuild()
+    ) {
       return;
     }
 

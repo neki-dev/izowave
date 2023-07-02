@@ -3,7 +3,7 @@ import React, { useContext, useMemo, useState } from 'react';
 
 import { COPYRIGHT } from '~const/game';
 import { GameContext } from '~lib/interface';
-import { MenuAudio, MenuItem } from '~type/menu';
+import { MenuItem } from '~type/menu';
 
 import { ComponentAbout } from './content/about';
 import { ComponentControls } from './content/controls';
@@ -80,7 +80,6 @@ export const MenuUI: React.FC = () => {
   }, [currentContent]);
 
   const handleClick = (item: MenuItem) => {
-    game.sound.play(MenuAudio.CLICK);
     item.onClick();
   };
 

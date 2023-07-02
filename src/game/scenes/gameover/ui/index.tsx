@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { GameContext } from '~lib/interface';
 import { GameStat } from '~type/game';
-import { MenuAudio } from '~type/menu';
 
 import { ComponentStats } from './stats';
 import {
@@ -18,7 +17,6 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
   const game = useContext(GameContext);
 
   const handleRestartClick = () => {
-    game.sound.play(MenuAudio.CLICK);
     game.restartGame();
   };
 

@@ -37,10 +37,6 @@ export enum EnemyTexture {
   BOUCHE = 'enemy/bouche',
 }
 
-export enum EnemyAudio {
-  ATTACK = 'enemy/attack',
-}
-
 export enum EnemyVariant {
   BAT = 'BAT',
   DEMON = 'DEMON',

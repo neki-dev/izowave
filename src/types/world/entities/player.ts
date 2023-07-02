@@ -74,8 +74,11 @@ export enum PlayerTexture {
 
 export enum PlayerAudio {
   UPGRADE = 'player/upgrade',
-  MOVE = 'player/move',
+  WALK = 'player/walk',
   DEAD = 'player/dead',
+  DAMAGE_1 = 'player/damage_1',
+  DAMAGE_2 = 'player/damage_2',
+  DAMAGE_3 = 'player/damage_3',
 }
 
 export enum PlayerUpgrade {

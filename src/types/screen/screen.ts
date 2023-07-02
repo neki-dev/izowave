@@ -12,7 +12,7 @@ export interface IScreen extends IScene {
 }
 
 export enum ScreenAudio {
-  ERROR = 'ui/error',
+  ERROR = 'interface/error',
 }
 
 export enum ScreenEvents {

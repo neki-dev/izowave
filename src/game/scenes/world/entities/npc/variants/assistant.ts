@@ -67,6 +67,17 @@ export class Assistant extends NPC implements IAssistant {
     }
   }
 
+  public onDamage() {
+    this.scene.game.sound.play(
+      Phaser.Utils.Array.GetRandom([
+        AssistantAudio.DAMAGE_1,
+        AssistantAudio.DAMAGE_2,
+      ]),
+    );
+
+    super.onDamage();
+  }
+
   public onDead() {
     if (this.visible) {
       new Effect(this.scene, {
