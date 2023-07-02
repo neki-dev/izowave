@@ -26,7 +26,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
   }
 
   public end(step: TutorialStep) {
-    if (this.isDisabled || this.progress[step] !== true) {
+    if (this.isDisabled || this.progress[step] === false) {
       return;
     }
 
