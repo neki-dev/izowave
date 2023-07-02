@@ -11,6 +11,9 @@ export const ComponentAbout: React.FC = () => (
     Between waves build walls to defend, towers to attack, generators to get
     resources, ammunitions to reload towers, and medics to replenish your
     health.
+    <br />
+    <br />
+    And also upgrade skills of your character and his assistant.
   </Wrapper>
 );
 

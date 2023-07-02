@@ -66,28 +66,37 @@ export const ComponentWave: React.FC = () => {
     [],
   );
 
-  return !isPeaceMode && (
-    <Wrapper>
-      <Container>
-        <CurrentNumber className={cn({ going: isGoing })}>
-          {currentNumber}
-        </CurrentNumber>
-        <State>
-          <State.Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</State.Label>
-          {isNextSeason ? (
-            <State.Action onClick={() => game.world.wave.skipTimeleft()}>
-              START
-            </State.Action>
-          ) : (
-            <State.Value className={cn({ alarm: isAlarm })}>
-              {value}
-            </State.Value>
-          )}
-        </State>
-      </Container>
+  return (
+    !isPeaceMode && (
+      <Wrapper>
+        <Container>
+          <CurrentNumber className={cn({ going: isGoing })}>
+            {currentNumber}
+          </CurrentNumber>
+          <State>
+            {isNextSeason ? (
+              <>
+                <State.Label>NEXT SEASON</State.Label>
+                <State.Action onClick={() => game.world.wave.skipTimeleft()}>
+                  START
+                </State.Action>
+              </>
+            ) : (
+              <>
+                <State.Label>
+                  {isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}
+                </State.Label>
+                <State.Value className={cn({ alarm: isAlarm })}>
+                  {value}
+                </State.Value>
+              </>
+            )}
+          </State>
+        </Container>
 
-      {hint && <ComponentHint side="top">{hint}</ComponentHint>}
-    </Wrapper>
+        {hint && <ComponentHint side="top">{hint}</ComponentHint>}
+      </Wrapper>
+    )
   );
 };
 
