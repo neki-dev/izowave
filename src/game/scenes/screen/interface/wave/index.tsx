@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { GameContext, useWorldUpdate } from '~lib/interface';
 import { formatTime } from '~lib/utils';
-import { ComponentHint } from '~scene/basic/ui/hint';
+import { ComponentHint } from '~scene/basic/interface/hint';
 import { TutorialStep } from '~type/tutorial';
 
 import {

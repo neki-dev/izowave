@@ -6,7 +6,7 @@ import { Level } from '~scene/world/level';
 import { IGame, GameScene } from '~type/game';
 import { IMenu } from '~type/menu';
 
-import { MenuUI } from './ui';
+import { MenuUI } from './interface';
 
 export class Menu extends Phaser.Scene implements IMenu {
   readonly game: IGame;

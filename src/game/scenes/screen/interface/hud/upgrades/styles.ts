@@ -12,17 +12,17 @@ export const Button = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 10px;
   line-height: 10px;
-  text-shadow: 1px 1px 0 #000;
   width: 78px;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: all;
-  &.active,
   &:hover {
     cursor: pointer;
     background: ${InterfaceColor.BLUE_DARK};
-    text-shadow: none;
+  }
+  &.active {
+    background: ${InterfaceColor.INFO_DARK};
   }
 `;

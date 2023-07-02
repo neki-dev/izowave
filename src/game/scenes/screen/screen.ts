@@ -7,7 +7,7 @@ import {
   IScreen, NoticeType, ScreenAudio, ScreenEvents,
 } from '~type/screen';
 
-import { ScreenUI } from './ui';
+import { ScreenUI } from './interface';
 
 export class Screen extends Phaser.Scene implements IScreen {
   readonly game: IGame;

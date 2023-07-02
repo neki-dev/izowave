@@ -2,7 +2,7 @@ import cn from 'classnames';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { GameContext } from '~lib/interface';
-import { ComponentHint } from '~scene/basic/ui/hint';
+import { ComponentHint } from '~scene/basic/interface/hint';
 import { TutorialStep } from '~type/tutorial';
 
 import { ComponentUpgradesList } from './list';

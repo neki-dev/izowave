@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import { ComponentHint } from '~scene/basic/ui/hint';
+import { ComponentHint } from '~scene/basic/interface/hint';
 import { WorldEvents, WorldHint } from '~type/world';
 
 import { Wrapper } from './styles';

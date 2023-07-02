@@ -7,7 +7,7 @@ export const Container = styled.div`
   top: 100%;
   left: 0;
   background: ${InterfaceColor.BLUE_DARK}cc;
-  padding: 15px;
+  padding: 20px;
   margin-top: 20px;
   &::after {
     position: absolute;

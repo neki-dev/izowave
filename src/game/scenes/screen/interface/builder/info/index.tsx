@@ -2,8 +2,8 @@ import React, { useContext, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import { ComponentAmount } from '~scene/basic/ui/amount';
-import { ComponentBuildingParameters } from '~scene/basic/ui/building-parameters';
+import { ComponentAmount } from '~scene/basic/interface/amount';
+import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {

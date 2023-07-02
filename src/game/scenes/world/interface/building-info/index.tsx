@@ -6,7 +6,7 @@ import React, {
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { GameContext, useWorldUpdate } from '~lib/interface';
 import { getMutable } from '~lib/utils';
-import { ComponentBuildingParameters } from '~scene/basic/ui/building-parameters';
+import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
 import { WorldEvents } from '~type/world';
 import { BuildingControl, BuildingParam, IBuilding } from '~type/world/entities/building';
 

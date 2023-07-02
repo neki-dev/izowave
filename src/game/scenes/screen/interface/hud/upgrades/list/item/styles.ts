@@ -33,11 +33,11 @@ Info.Description = styled.div`
   margin-top: 4px;
 `;
 
-Info.Value = styled.div`
+Info.Level = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
-  margin-top: 4px;
+  font-size: 13px;
+  line-height: 13px;
+  margin-top: 6px;
 `;
 
 export const Action: any = styled.div`

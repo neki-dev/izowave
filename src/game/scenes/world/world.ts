@@ -25,7 +25,7 @@ import { IPlayer } from '~type/world/entities/player';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
-import { WorldUI } from './ui';
+import { WorldUI } from './interface';
 
 export class World extends Phaser.Scene implements IWorld {
   readonly game: IGame;

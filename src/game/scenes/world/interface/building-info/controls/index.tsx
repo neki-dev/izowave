@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ComponentAmount } from '~scene/basic/ui/amount';
+import { ComponentAmount } from '~scene/basic/interface/amount';
 import { BuildingControl } from '~type/world/entities/building';
 
 import { Wrapper, Action } from './styles';
