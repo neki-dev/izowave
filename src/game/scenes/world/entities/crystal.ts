@@ -23,7 +23,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
-    super(scene, positionAtWorld.x, positionAtWorld.y + 4, CrystalTexture.CRYSTAL, variant);
+    super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
     scene.add.existing(this);
     scene.entityGroups.crystals.add(this);
 
@@ -56,6 +56,6 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
 registerAudioAssets(CrystalAudio);
 registerSpriteAssets(CrystalTexture, {
-  width: 32,
-  height: 32,
+  width: 40,
+  height: 40,
 });
