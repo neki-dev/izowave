@@ -79,7 +79,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
 
-    this.setInteractive();
+    this.setInteractiveByShape();
     this.addActionArea();
 
     this.scene.builder.addFoundation(positionAtMatrix);
@@ -133,12 +133,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.onUnclick();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
     });
-  }
-
-  public setInteractive() {
-    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
-
-    return super.setInteractive(shape, Hexagon.Contains);
   }
 
   public update() {
@@ -234,9 +228,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
-  /**
-   * Upgrade building to next level.
-   */
+  private setInteractiveByShape() {
+    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
+
+    return this.setInteractive({
+      hitArea: shape,
+      hitAreaCallback: Hexagon.Contains,
+      useHandCursor: true,
+    });
+  }
+
   private upgrade() {
     if (!this.isAllowUpgrade()) {
       return;
@@ -328,9 +329,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.isFocused = true;
-
-    // TODO
-    // this.scene.input.setDefaultCursor('pointer');
   }
 
   private onUnfocus() {
@@ -341,9 +339,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.isFocused = false;
-
-    // TODO
-    // this.scene.input.setDefaultCursor('default');
   }
 
   private onClick() {
