@@ -41,9 +41,12 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene = scene;
 
+    this.setMaxListeners(0);
+
+    // TODO: Add event to check ui ready state
     setTimeout(() => {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_TOWER_FIRE);
-    }, 500);
+    }, 100);
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
       if (e.key === 'Backspace') {
