@@ -4,14 +4,14 @@ import { InterfaceFont, InterfaceColor } from '~type/interface';
 import { NoticeType } from '~type/screen';
 
 const animationOpacity = keyframes`
-  0% { opacity: 0; margin-bottom: -30px }
-  100% { opacity: 1; margin-bottom: 0 }
+  0% { opacity: 0; margin-top: -32px }
+  100% { opacity: 1; margin-top: 0 }
 `;
 
 export const Wrapper = styled.div`
   position: absolute;
   left: 50%;
-  bottom: 32px;
+  top: 128px;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
