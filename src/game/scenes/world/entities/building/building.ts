@@ -162,7 +162,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.nextActionTimestamp = this.scene.getTime() + this.getActionsPause();
   }
 
-  public isAllowAction() {
+  public isActionAllowed() {
     if (!this.actions?.pause) {
       return true;
     }
@@ -181,10 +181,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public getControls() {
     const actions: BuildingControl[] = [];
 
-    if (this.isAllowUpgrade()) {
+    if (this.isUpgradeAllowed()) {
       actions.push({
         label: 'UPGRADE',
-        cost: this.getUpgradeLevelCost(),
+        cost: this.getUpgradeCost(),
         onClick: () => {
           this.upgrade();
         },
@@ -218,40 +218,34 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       : 0;
   }
 
-  public getUpgradeLevelCost() {
+  public getUpgradeCost() {
     const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
 
     return Math.round(this.upgradeLevel * costPerLevel);
   }
 
-  private isAllowUpgrade() {
+  private isUpgradeAllowed() {
     return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
-  private setInteractiveByShape() {
-    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
-
-    return this.setInteractive({
-      hitArea: shape,
-      hitAreaCallback: Hexagon.Contains,
-      useHandCursor: true,
-    });
+  private isUpgradeAllowedByWave() {
+    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
   private upgrade() {
-    if (!this.isAllowUpgrade()) {
+    if (!this.isUpgradeAllowed()) {
       return;
     }
 
-    const waveAllowed = this.getWaveAllowUpgrade();
+    const waveNumber = this.isUpgradeAllowedByWave();
 
-    if (waveAllowed > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveAllowed} WAVE`);
+    if (waveNumber > this.scene.wave.number) {
+      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveNumber} WAVE`);
 
       return;
     }
 
-    const cost = this.getUpgradeLevelCost();
+    const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
       this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
@@ -276,8 +270,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
   }
 
-  private getWaveAllowUpgrade() {
-    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
+  private setInteractiveByShape() {
+    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
+
+    return this.setInteractive({
+      hitArea: shape,
+      hitAreaCallback: Hexagon.Contains,
+      useHandCursor: true,
+    });
   }
 
   private onDamage() {

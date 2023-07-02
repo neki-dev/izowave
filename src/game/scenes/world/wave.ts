@@ -83,13 +83,11 @@ export class Wave extends EventEmitter implements IWave {
       } else if (this.scene.entityGroups.enemies.getTotalUsed() === 0) {
         this.complete();
       }
-    } else if (!this.isNextSeason) {
+    } else if (!this.isNextSeason && !this.isPeaceMode) {
       const left = this.nextWaveTimestamp - now;
 
       if (left <= 0) {
-        if (!this.isPeaceMode) {
-          this.start();
-        }
+        this.start();
       } else if (
         left <= WAVE_TIMELEFT_ALARM
         && !this.scene.isTimePaused()

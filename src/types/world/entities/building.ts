@@ -55,7 +55,7 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Check is actions not paused.
    */
-  isAllowAction(): boolean
+  isActionAllowed(): boolean
 
   /**
    * Get building information params.
@@ -80,7 +80,7 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Get resources need to upgrade level.
    */
-  getUpgradeLevelCost(): number
+  getUpgradeCost(): number
 }
 
 export interface IBuildingAmmunition extends IBuilding {

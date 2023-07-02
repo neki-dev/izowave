@@ -62,7 +62,7 @@ export class Assistant extends NPC implements IAssistant {
       this.setVelocity(0, 0);
     }
 
-    if (!this.owner.live.isDead()) {
+    if (this.isCanAttack()) {
       this.attack();
     }
   }
@@ -90,13 +90,14 @@ export class Assistant extends NPC implements IAssistant {
     super.onDead();
   }
 
+  private isCanAttack() {
+    return (
+      this.nextAttackTimestamp < this.scene.getTime()
+      && !this.owner.live.isDead()
+    );
+  }
+
   private attack() {
-    const now = this.scene.getTime();
-
-    if (this.nextAttackTimestamp >= now) {
-      return;
-    }
-
     const target = this.getTarget();
 
     if (!target) {
@@ -106,6 +107,7 @@ export class Assistant extends NPC implements IAssistant {
     this.shot.params = this.getShotCurrentParams();
     this.shot.shoot(target);
 
+    const now = this.scene.getTime();
     const pause = progression(
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,

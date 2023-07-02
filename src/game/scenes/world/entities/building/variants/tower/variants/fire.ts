@@ -49,7 +49,7 @@ export class BuildingTowerFire extends BuildingTower {
       beg: () => {
         if (
           this.upgradeLevel === 1
-          && this.scene.player.resources >= this.getUpgradeLevelCost()
+          && this.scene.player.resources >= this.getUpgradeCost()
         ) {
           this.scene.showHint({
             side: 'top',

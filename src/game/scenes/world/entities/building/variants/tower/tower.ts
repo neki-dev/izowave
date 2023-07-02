@@ -90,14 +90,20 @@ export class BuildingTower extends Building implements IBuildingTower {
   public update() {
     super.update();
 
-    if (
-      this.ammo === 0
-      || !this.isAllowAction()
-      || this.scene.player.live.isDead()
-    ) {
-      return;
+    if (this.isCanAttack()) {
+      this.attack();
     }
+  }
 
+  private isCanAttack() {
+    return (
+      this.ammo > 0
+      && this.isActionAllowed()
+      && !this.scene.player.live.isDead()
+    );
+  }
+
+  private attack() {
     const target = this.getTarget();
 
     if (!target) {

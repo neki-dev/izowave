@@ -39,13 +39,13 @@ export class Live extends EventEmmiter implements ILive {
   }
 
   public setHealth(amount: number) {
+    if (this.isDead()) {
+      return;
+    }
+
     const prevHealth = this.health;
 
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
-
-    if (this.health === prevHealth) {
-      return;
-    }
 
     if (this.health < prevHealth) {
       this.emit(LiveEvents.DAMAGE);

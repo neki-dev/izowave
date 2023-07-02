@@ -60,7 +60,7 @@ export class BuildingGenerator extends Building {
   public update() {
     super.update();
 
-    if (!this.isAllowAction()) {
+    if (!this.isActionAllowed()) {
       return;
     }
 
