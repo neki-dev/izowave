@@ -181,7 +181,11 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public upgrade(type: PlayerUpgrade) {
-    this.scene.game.tutorial.end(TutorialStep.UPGRADE_PLAYER);
+    if (this.scene.wave.isGoing) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'CANNOT BE UPGRADED WHILE WAVE IS GOING');
+
+      return;
+    }
 
     const experience = this.getExperienceToUpgrade(type);
 
@@ -227,6 +231,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.scene.sound.play(PlayerAudio.UPGRADE);
     this.scene.game.screen.notice(NoticeType.INFO, `${type.toUpperCase().replace('_', ' ')} UPGRADED`);
+
+    this.scene.game.tutorial.end(TutorialStep.UPGRADE_PLAYER);
   }
 
   public onDead() {
