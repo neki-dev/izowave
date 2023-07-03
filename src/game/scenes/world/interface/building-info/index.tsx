@@ -42,8 +42,8 @@ export const ComponentBuildingInfo: React.FC = () => {
     }
 
     setUpgradeLevel(refBuilding.current.upgradeLevel);
-    setParams((current) => getMutable(current, refBuilding.current.getInfo(), ['value', 'attention']));
-    setControls((current) => getMutable(current, refBuilding.current.getControls(), ['label', 'cost']));
+    setParams((current) => getMutable(current, refBuilding.current?.getInfo(), ['value', 'attention']));
+    setControls((current) => getMutable(current, refBuilding.current?.getControls(), ['label', 'cost']));
 
     if (refWrapper.current) {
       const camera = game.world.cameras.main;

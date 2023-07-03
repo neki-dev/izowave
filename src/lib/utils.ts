@@ -180,6 +180,10 @@ export function rawAmount(value: string) {
  * @param keys - Keys to compare
  */
 export function getMutable<T>(current: T[], target: T[], keys: (keyof T)[]) {
+  if (!target) {
+    return current;
+  }
+
   if (current.length !== target.length) {
     return target;
   }
