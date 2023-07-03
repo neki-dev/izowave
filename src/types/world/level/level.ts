@@ -18,9 +18,9 @@ export interface ILevel extends ITileMatrix {
   readonly map: World<LevelBiome>
 
   /**
-   * Remove map tiles effects.
+   * Let loose map tiles effects.
    */
-  removeEffects(): void
+  looseEffects(): void
 
   /**
    * Update area of visible tiles.

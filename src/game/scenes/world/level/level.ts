@@ -66,7 +66,18 @@ export class Level extends TileMatrix implements ILevel {
     });
   }
 
-  public removeEffects() {
+  public looseEffects() {
+    this.mapTiles.getChildren().forEach((tile: ITile) => {
+      tile.mapEffects?.forEach((effect) => {
+        effect.setAlpha(effect.alpha - 0.2);
+        if (effect.alpha <= 0) {
+          effect.destroy();
+        }
+      });
+    });
+  }
+
+  private removeEffects() {
     this.mapTiles.getChildren().forEach((tile: ITile) => {
       tile.mapEffects?.forEach((effect) => {
         effect.destroy();

@@ -152,7 +152,6 @@ export class Enemy extends NPC implements IEnemy {
       texture: EffectTexture.BLOOD,
       position: this,
       permanentFrame: Phaser.Math.Between(0, 3),
-      scale: 0.5 + Math.random(),
       depth: this.y + (TILE_META.height * 0.5),
     });
 

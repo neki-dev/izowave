@@ -183,6 +183,8 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.COMPLETE, this.number - 1);
 
+    this.scene.level.looseEffects();
+
     if (this.number === 3) {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
     } else if (this.number >= 4) {
@@ -198,7 +200,6 @@ export class Wave extends EventEmitter implements IWave {
 
   private nextSeason() {
     this.isNextSeason = true;
-    this.scene.level.removeEffects();
 
     this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${this.getSeason() - 1} COMPLETED`);
 
