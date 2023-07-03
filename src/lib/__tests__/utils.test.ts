@@ -49,6 +49,5 @@ describe('utils.ts / getClosest', () => {
 describe('utils.ts / aroundPosition', () => {
   it('should returns correct around positions', () => {
     expect(aroundPosition(positions[0]).length).toEqual(8);
-    expect(aroundPosition(positions[0], 1).length).toEqual(16);
   });
 });

@@ -198,7 +198,7 @@ export class Wave extends EventEmitter implements IWave {
 
   private nextSeason() {
     this.isNextSeason = true;
-    this.scene.level.effects.clear(true, true);
+    this.scene.level.removeEffects();
 
     this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${this.getSeason() - 1} COMPLETED`);
 

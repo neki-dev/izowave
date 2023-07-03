@@ -156,7 +156,7 @@ export class Enemy extends NPC implements IEnemy {
       depth: this.y + (TILE_META.height * 0.5),
     });
 
-    this.scene.level.effects.add(effect);
+    this.currentGroundTile.mapEffects?.push(effect);
   }
 
   private addSpawnEffect() {

@@ -260,7 +260,7 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private addAssistant() {
-    const positionAtMatrix = aroundPosition(this.positionAtMatrix, 1).find((spawn) => {
+    const positionAtMatrix = aroundPosition(this.positionAtMatrix).find((spawn) => {
       const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
 
       return Boolean(tileGround);

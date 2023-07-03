@@ -164,13 +164,12 @@ export class Builder extends EventEmitter implements IBuilder {
           }
 
           // Remove effects
-          const effects = <Phaser.GameObjects.Image[]> this.scene.level.effects.getChildren();
-
-          effects.forEach((effect) => {
-            if (equalPositions(Level.ToMatrixPosition(effect), { x, y })) {
+          if (tileGround.mapEffects) {
+            tileGround.mapEffects.forEach((effect) => {
               effect.destroy();
-            }
-          });
+            });
+            tileGround.mapEffects = [];
+          }
         }
       }
     }
