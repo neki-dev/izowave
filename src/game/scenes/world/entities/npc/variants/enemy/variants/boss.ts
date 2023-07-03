@@ -14,7 +14,7 @@ export class EnemyBoss extends Enemy {
       texture: EnemyTexture.BOSS,
       scale: 1.5,
       multipliers: {
-        health: 6.0,
+        health: 5.0,
         damage: 0.9,
         speed: 0.24,
       },

@@ -10,6 +10,7 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Default player health
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade player health (N * upgrade level)
   PLAYER_HEALTH_GROWTH: 0.2, // Growth health by upgrade
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade
 
   /**
    * Assistant
@@ -29,15 +30,15 @@ export const DIFFICULTY = {
    * Wave
    */
 
-  WAVE_TIMELEFT: 20000, // Pause in milliseconds between waves
-  WAVE_TIMELEFT_GROWTH: 0.13, // Growth pause by wave number
+  WAVE_TIMELEFT: 21000, // Pause in milliseconds between waves
+  WAVE_TIMELEFT_GROWTH: 0.15, // Growth pause by wave number
   WAVE_SEASON_LENGTH: 5, // Count of wave numbers in season
-  WAVE_ENEMIES_COUNT: 5, // Enemies count on first wave
+  WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.3, // Enemies count growth by wave number
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Default pause in milliseconds between enemies spawn
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.025, // Enemies spawn pause growth by wave number
-  WAVE_EXPERIENCE: 100, // Gained experience per complete wave
-  WAVE_EXPERIENCE_GROWTH: 0.1, // Experience count growth by wave number
+  WAVE_EXPERIENCE: 50, // Gained experience per complete wave
+  WAVE_EXPERIENCE_GROWTH: 0.2, // Experience count growth by wave number
 
   /**
    * Crystals
@@ -51,14 +52,14 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 80, // Enemy default health
-  ENEMY_HEALTH_GROWTH: 0.2, // Enemy health growth by wave number
+  ENEMY_HEALTH: 100, // Enemy default health
+  ENEMY_HEALTH_GROWTH: 0.25, // Enemy health growth by wave number
   ENEMY_SPEED: 100, // Enemy default speed
   ENEMY_SPEED_GROWTH: 0.1, // Enemy speed growth by wave number
-  ENEMY_DAMAGE: 80, // Enemy default damage
-  ENEMY_DAMAGE_GROWTH: 0.12, // Enemy damage growth by wave number
+  ENEMY_DAMAGE: 100, // Enemy default damage
+  ENEMY_DAMAGE_GROWTH: 0.15, // Enemy damage growth by wave number
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
-  ENEMY_KILL_EXPERIENCE_GROWTH: 0.1, // Experience growth by wave number
+  ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number
 
   /**
    * Builder
@@ -73,8 +74,8 @@ export const DIFFICULTY = {
    */
 
   BUILDING_ACTION_RADIUS_GROWTH: 0.2, // Actions radius growth by upgrade
-  BUILDING_ACTION_PAUSE_GROWTH: -0.1, // Actions pause growth by upgrade
-  BUILDING_BUILD_EXPERIENCE: 40, // Gained experience for build
+  BUILDING_ACTION_PAUSE_GROWTH: -0.15, // Actions pause growth by upgrade
+  BUILDING_BUILD_EXPERIENCE: 30, // Gained experience for build
   BUILDING_UPGRADE_EXPERIENCE: 20, // Gained experience per upgrade building (N * upgrade level)
 
   /**
@@ -121,12 +122,12 @@ export const DIFFICULTY = {
    * Building: Tower: Lazer
    */
 
-  BUILDING_TOWER_LAZER_COST: 65, // Tower lazer cost
+  BUILDING_TOWER_LAZER_COST: 70, // Tower lazer cost
   BUILDING_TOWER_LAZER_HEALTH: 300, // Default tower lazer health
-  BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 5, // Minimal wave for allow tower lazer
+  BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow tower lazer
   BUILDING_TOWER_LAZER_ATTACK_RADIUS: 160, // Tower lazer attack radius
   BUILDING_TOWER_LAZER_ATTACK_PAUSE: 1600, // Tower lazer pause between attacks
-  BUILDING_TOWER_LAZER_ATTACK_DAMAGE: 65, // Tower lazer attack damage
+  BUILDING_TOWER_LAZER_ATTACK_DAMAGE: 60, // Tower lazer attack damage
 
   /**
    * Building: Generator
@@ -158,7 +159,7 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_COST: 80, // Medic cost
   BUILDING_MEDIC_HEALTH: 150, // Medic health
   BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * wave_season)
-  BUILDING_MEDIC_ALLOW_BY_WAVE: 5, // Minimal wave for allow medic
+  BUILDING_MEDIC_ALLOW_BY_WAVE: 6, // Minimal wave for allow medic
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Medic heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Medic heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Default medic heal

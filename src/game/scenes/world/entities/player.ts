@@ -140,10 +140,12 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public getExperienceToUpgrade(type: PlayerUpgrade) {
-    const defaultAmount = PLAYER_UPGRADES[type].experience;
-    const currentLevel = this.upgradeLevel[type];
-
-    return defaultAmount * currentLevel;
+    return progression(
+      PLAYER_UPGRADES[type].experience,
+      DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
+      this.upgradeLevel[type],
+      10,
+    );
   }
 
   private getUpgradeNextValue(type: PlayerUpgrade): number {
@@ -163,7 +165,6 @@ export class Player extends Sprite implements IPlayer {
           DIFFICULTY.PLAYER_SPEED,
           DIFFICULTY.PLAYER_SPEED_GROWTH,
           nextLevel,
-          5,
         );
       }
       case PlayerUpgrade.BUILD_AREA: {
@@ -171,7 +172,6 @@ export class Player extends Sprite implements IPlayer {
           DIFFICULTY.BUILDER_BUILD_AREA,
           DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
           nextLevel,
-          5,
         );
       }
       case PlayerUpgrade.ASSISTANT: {
