@@ -26,6 +26,11 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   readonly container: Phaser.GameObjects.Container
 
   /**
+   * Movement speed.
+   */
+  speed: number
+
+  /**
    * Tile below sprite.
    */
   currentGroundTile: Nullable<ITile>
@@ -71,4 +76,5 @@ export type SpriteData = {
   positionAtMatrix: Vector2D
   frame?: number
   health: number
+  speed: number
 };

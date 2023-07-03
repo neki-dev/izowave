@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { WORLD_COLLIDE_LOOK } from '~const/world';
+import { WORLD_COLLIDE_SPEED_FACTOR } from '~const/world';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -9,7 +9,7 @@ import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { ISprite, SpriteData } from '~type/world/entities/sprite';
-import { BiomeType, TileType, Vector2D } from '~type/world/level';
+import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
@@ -20,6 +20,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly live: ILive;
 
   readonly container: Phaser.GameObjects.Container;
+
+  public speed: number = 0;
 
   public currentGroundTile: Nullable<ITile> = null;
 
@@ -38,7 +40,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private healthIndicator: Phaser.GameObjects.Container;
 
   constructor(scene: IWorld, {
-    texture, positionAtMatrix, health, frame = 0,
+    texture, positionAtMatrix, health, speed, frame = 0,
   }: SpriteData) {
     const positionAtWorld = Level.ToWorldPosition({
       ...positionAtMatrix,
@@ -51,6 +53,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionAtMatrix = positionAtMatrix;
     this.live = new Live(health);
     this.container = this.scene.add.container(this.x, this.y);
+    this.speed = speed;
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.setPushable(false);
@@ -117,30 +120,40 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return Boolean(tile);
   }
 
-  // TODO: Fix stuck with low fps
   private getCollidedTile(direction: number) {
     if (this.collisionTargets.length === 0 && !this.collisionGround) {
       return false;
     }
 
-    const target = this.scene.physics.velocityFromAngle(direction, WORLD_COLLIDE_LOOK);
-    const occupiedTiles = this.getCorners().map((point) => Level.ToMatrixPosition({
-      x: point.x + target.x,
-      y: point.y + target.y,
-    }));
+    const friction = this.collisionGround ? this.currentGroundTile?.biome?.friction ?? 1 : 1;
+    const speedPerFrame = (this.speed / friction) * (WORLD_COLLIDE_SPEED_FACTOR * this.scene.deltaTime);
+    const offset = this.scene.physics.velocityFromAngle(direction, speedPerFrame);
 
-    for (const positionAtMatrix of occupiedTiles) {
-      const tile = this.scene.level.getTileWithType({ ...positionAtMatrix, z: 1 }, this.collisionTargets);
+    // Check ground collision
+    if (this.collisionGround) {
+      const positionAtMatrix = Level.ToMatrixPosition({
+        x: this.x + offset.x,
+        y: this.y + offset.y,
+      });
+      const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
 
-      if (tile) {
-        return tile;
+      if (!tileGround || !tileGround.biome?.solid) {
+        return true;
       }
+    }
 
-      if (this.collisionGround) {
-        const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
+    // Check wall collision
+    if (this.collisionTargets.length > 0) {
+      const occupiedTiles = this.getCorners().map((point) => Level.ToMatrixPosition({
+        x: point.x + offset.x,
+        y: point.y + offset.y,
+      }));
 
-        if (!tileGround || tileGround.biome?.type === BiomeType.WATER) {
-          return true;
+      for (const positionAtMatrix of occupiedTiles) {
+        const tile = this.scene.level.getTileWithType({ ...positionAtMatrix, z: 1 }, this.collisionTargets);
+
+        if (tile) {
+          return tile;
         }
       }
     }

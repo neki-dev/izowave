@@ -52,12 +52,6 @@ export class Player extends Sprite implements IPlayer {
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private _speed: number = DIFFICULTY.PLAYER_SPEED;
-
-  public get speed() { return this._speed; }
-
-  private set speed(v) { this._speed = v; }
-
   private movementKeys: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
 
   private direction: number = 0;
@@ -71,6 +65,7 @@ export class Player extends Sprite implements IPlayer {
       ...data,
       texture: PlayerTexture.PLAYER,
       health: DIFFICULTY.PLAYER_HEALTH,
+      speed: DIFFICULTY.PLAYER_SPEED,
     });
     scene.add.existing(this);
 

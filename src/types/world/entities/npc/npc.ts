@@ -10,11 +10,6 @@ export interface INPC extends ISprite {
   damage: Nullable<number>
 
   /**
-   * Maximum speed.
-   */
-  speed: number
-
-  /**
    * State of finded path.
    */
   isPathPassed: boolean

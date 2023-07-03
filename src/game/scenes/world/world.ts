@@ -71,6 +71,12 @@ export class World extends Phaser.Scene implements IWorld {
 
   private currentHintId: Nullable<string> = null;
 
+  private _deltaTime: number = 1;
+
+  public get deltaTime() { return this._deltaTime; }
+
+  private set deltaTime(v) { this._deltaTime = v; }
+
   constructor() {
     super(GameScene.WORLD);
   }
@@ -98,10 +104,12 @@ export class World extends Phaser.Scene implements IWorld {
     this.level.hideTiles();
   }
 
-  public update() {
+  public update(time: number, delta: number) {
     if (!this.game.isStarted) {
       return;
     }
+
+    this.deltaTime = delta;
 
     this.player.update();
     this.builder.update();

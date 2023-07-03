@@ -37,6 +37,11 @@ export interface IWorld extends IScene {
   readonly entityGroups: Record<string, Phaser.GameObjects.Group>
 
   /**
+   * Delta time of frame update.
+   */
+  readonly deltaTime: number
+
+  /**
    * Current active building.
    */
   selectedBuilding: Nullable<IBuilding>

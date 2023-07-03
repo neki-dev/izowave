@@ -12,8 +12,6 @@ import { Vector2D } from '~type/world/level';
 export class NPC extends Sprite implements INPC {
   public damage: Nullable<number> = null;
 
-  public speed: number;
-
   public isPathPassed: boolean = false;
 
   private pathToTarget: Vector2D[] = [];
@@ -30,12 +28,13 @@ export class NPC extends Sprite implements INPC {
     positionAtMatrix, texture, health, speed, pathFindTriggerDistance,
     damage = null, frameRate = 4,
   }: NPCData) {
-    super(scene, { texture, positionAtMatrix, health });
+    super(scene, {
+      texture, positionAtMatrix, health, speed,
+    });
     scene.add.existing(this);
     scene.entityGroups.npc.add(this);
 
     this.damage = damage;
-    this.speed = speed;
     this.pathFindTriggerDistance = pathFindTriggerDistance;
 
     this.setVisible(this.atVisibleTile());
