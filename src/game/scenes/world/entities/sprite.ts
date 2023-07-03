@@ -52,8 +52,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.live = new Live(health);
     this.container = this.scene.add.container(this.x, this.y);
 
-    this.addHealthIndicator();
-
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.setPushable(false);
 
@@ -166,13 +164,13 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return points;
   }
 
-  private addHealthIndicator() {
-    const width = this.displayWidth * 1.5;
+  public addHealthIndicator(color: number, bySpriteSize = false) {
+    const width = bySpriteSize ? this.displayWidth * 1.5 : 24;
     const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
 
     body.setOrigin(0.0, 0.0);
 
-    const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xe4372c);
+    const bar = this.scene.add.rectangle(1, 1, 0, 0, color);
 
     bar.setOrigin(0.0, 0.0);
 

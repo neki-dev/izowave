@@ -59,6 +59,8 @@ export class Enemy extends NPC implements IEnemy {
     this.body.setCircle((this.width / 2) - offset, offset, offset);
     this.setScale(scale);
 
+    this.addHealthIndicator(0xdb2323, true);
+
     this.setTilesCollision([TileType.BUILDING], (tile: IBuilding) => {
       this.attack(tile);
     });
