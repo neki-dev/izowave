@@ -81,6 +81,16 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Get resources need to upgrade level.
    */
   getUpgradeCost(): number
+
+  /**
+   * Set building active state.
+   */
+  select(): void
+
+  /**
+   * Remove building active state.
+   */
+  unselect(): void
 }
 
 export interface IBuildingAmmunition extends IBuilding {

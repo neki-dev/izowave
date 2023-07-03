@@ -37,6 +37,11 @@ export interface IWorld extends IScene {
   readonly entityGroups: Record<string, Phaser.GameObjects.Group>
 
   /**
+   * Current active building.
+   */
+  selectedBuilding: Nullable<IBuilding>
+
+  /**
    * Start world.
    */
   start(): void

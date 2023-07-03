@@ -102,16 +102,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
       if (this.isFocused) {
-        this.onClick();
+        this.select();
       } else {
-        this.onUnclick();
+        this.unselect();
       }
     });
     this.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.onFocus();
+      this.focus();
     });
     this.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.onUnfocus();
+      this.unfocus();
     });
 
     this.live.on(LiveEvents.DAMAGE, () => {
@@ -121,16 +121,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.onDead();
     });
     this.scene.game.events.on(GameEvents.FINISH, () => {
-      this.onUnfocus();
-      this.onUnclick();
+      this.unfocus();
+      this.unselect();
     });
     this.scene.builder.on(BuilderEvents.BUILD_START, () => {
-      this.onUnfocus();
-      this.onUnclick();
+      this.unfocus();
+      this.unselect();
     });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.onUnfocus();
-      this.onUnclick();
+      this.unfocus();
+      this.unselect();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
     });
   }
@@ -138,8 +138,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public update() {
     this.updateOutline();
 
+    // Fix focus by camera moving
     if (this.toFocus) {
-      this.onFocus();
+      this.focus();
     }
   }
 
@@ -317,7 +318,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.destroy();
   }
 
-  private onFocus() {
+  private focus() {
     this.toFocus = true;
 
     if (
@@ -331,7 +332,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.isFocused = true;
   }
 
-  private onUnfocus() {
+  private unfocus() {
     this.toFocus = false;
 
     if (!this.isFocused) {
@@ -341,11 +342,17 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.isFocused = false;
   }
 
-  private onClick() {
+  public select() {
     if (!this.isFocused || this.isSelected) {
       return;
     }
 
+    // Need to fix events order
+    if (this.scene.selectedBuilding) {
+      this.scene.selectedBuilding.unselect();
+    }
+
+    this.scene.selectedBuilding = this;
     this.isSelected = true;
 
     if (this.actionsArea) {
@@ -355,11 +362,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.events.emit(WorldEvents.SELECT_BUILDING, this);
   }
 
-  private onUnclick() {
+  public unselect() {
     if (!this.isSelected) {
       return;
     }
 
+    this.scene.selectedBuilding = null;
     this.isSelected = false;
 
     if (this.actionsArea) {

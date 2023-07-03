@@ -61,6 +61,8 @@ export class World extends Phaser.Scene implements IWorld {
 
   private set builder(v) { this._builder = v; }
 
+  public selectedBuilding: Nullable<IBuilding> = null;
+
   private enemySpawnPositions: Vector2D[] = [];
 
   private lifecyleTimer: Phaser.Time.TimerEvent;
