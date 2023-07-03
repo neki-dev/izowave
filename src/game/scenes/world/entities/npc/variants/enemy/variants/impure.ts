@@ -4,7 +4,7 @@ import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 import { Enemy } from '../enemy';
 
 export class EnemyImpure extends Enemy {
-  static SpawnMinWave = 7;
+  static SpawnMinWave = 8;
 
   static SpawnFrequency = 3;
 

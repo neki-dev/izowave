@@ -29,22 +29,22 @@ export interface IEnemyTarget {
 
 export enum EnemyTexture {
   BAT = 'enemy/bat',
+  JELLYFISH = 'enemy/jellyfish',
   DEMON = 'enemy/demon',
   OVERLORD = 'enemy/overlord',
-  BOSS = 'enemy/overlord',
+  BOSS = 'enemy/boss',
   IMPURE = 'enemy/impure',
   UNDEAD = 'enemy/undead',
-  BOUCHE = 'enemy/bouche',
 }
 
 export enum EnemyVariant {
   BAT = 'BAT',
+  JELLYFISH = 'JELLYFISH',
   DEMON = 'DEMON',
   OVERLORD = 'OVERLORD',
   BOSS = 'BOSS',
   IMPURE = 'IMPURE',
   UNDEAD = 'UNDEAD',
-  BOUCHE = 'BOUCHE',
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {

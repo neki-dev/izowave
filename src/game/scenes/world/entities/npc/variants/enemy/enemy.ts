@@ -52,7 +52,7 @@ export class Enemy extends NPC implements IEnemy {
       (multipliers.health ?? 1.0)
       + (multipliers.damage ?? 1.0)
       + (multipliers.speed ?? 1.0)
-    );
+    ) / 3;
 
     const offset = scale * 2;
 

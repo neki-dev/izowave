@@ -15,6 +15,10 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     frameRate: 4,
     size: 16,
   },
+  [EnemyTexture.JELLYFISH]: {
+    frameRate: 5,
+    size: 32,
+  },
   [EnemyTexture.UNDEAD]: {
     frameRate: 4,
     size: 18,
@@ -27,8 +31,8 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     frameRate: 8,
     size: 32,
   },
-  [EnemyTexture.BOUCHE]: {
-    frameRate: 8,
-    size: 32,
+  [EnemyTexture.BOSS]: {
+    frameRate: 4,
+    size: 50,
   },
 };

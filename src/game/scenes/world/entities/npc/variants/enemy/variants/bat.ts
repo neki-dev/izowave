@@ -6,7 +6,7 @@ import { Enemy } from '../enemy';
 export class EnemyBat extends Enemy {
   static SpawnMinWave = 1;
 
-  static SpawnFrequency = 3;
+  static SpawnFrequency = 2;
 
   constructor(scene: IWorld, data: EnemyVariantData) {
     super(scene, {

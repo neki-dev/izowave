@@ -4,7 +4,7 @@ import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 import { Enemy } from '../enemy';
 
 export class EnemyUndead extends Enemy {
-  static SpawnMinWave = 6;
+  static SpawnMinWave = 7;
 
   static SpawnFrequency = 2;
 

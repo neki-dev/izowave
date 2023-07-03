@@ -3,20 +3,20 @@ import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
 
-export class EnemyBouche extends Enemy {
-  static SpawnMinWave = 11;
+export class EnemyJellyfish extends Enemy {
+  static SpawnMinWave = 2;
 
   static SpawnFrequency = 2;
 
   constructor(scene: IWorld, data: EnemyVariantData) {
     super(scene, {
       ...data,
-      texture: EnemyTexture.BOUCHE,
-      scale: 1.5,
+      texture: EnemyTexture.JELLYFISH,
+      scale: 1.0,
       multipliers: {
-        health: 2.0,
-        damage: 0.6,
-        speed: 0.32,
+        health: 0.4,
+        damage: 0.3,
+        speed: 0.5,
       },
     });
   }
