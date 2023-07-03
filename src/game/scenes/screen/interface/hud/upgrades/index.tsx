@@ -14,8 +14,9 @@ export const ComponentUpgrades: React.FC = () => {
   const [isOpened, setOpened] = useState(false);
   const [hint, setHint] = useState(false);
 
-  const onClickButton = () => {
+  const onClickButton = (event: React.MouseEvent<HTMLDivElement>) => {
     setOpened(!isOpened);
+    event.stopPropagation();
   };
 
   const onClose = () => {

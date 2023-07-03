@@ -9,6 +9,7 @@ export const Container = styled.div`
   background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 20px;
   margin-top: 20px;
+  pointer-events: all;
   &::after {
     position: absolute;
     content: '';

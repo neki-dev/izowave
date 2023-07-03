@@ -46,7 +46,6 @@ export const Action: any = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  pointer-events: all;
   background: rgba(0, 0, 0, 0.35);
   &.active {
     background: rgba(0, 0, 0, 0.5);
