@@ -13,31 +13,15 @@ export const ComponentRelativeHint: React.FC = () => {
 
   const [hint, setHint] = useState<WorldHint>(null);
 
-  const refHint = useRef<WorldHint>(null);
   const refWrapper = useRef<HTMLDivElement>(null);
 
   const showHint = (target: WorldHint) => {
-    refHint.current = target;
     setHint(target);
   };
 
   const hideHint = () => {
-    refHint.current = null;
     setHint(null);
   };
-
-  useWorldUpdate(() => {
-    if (!refHint.current || !refWrapper.current) {
-      return;
-    }
-
-    const camera = game.world.cameras.main;
-    const x = Math.round((refHint.current.position.x - camera.worldView.x) * camera.zoom);
-    const y = Math.round((refHint.current.position.y - camera.worldView.y) * camera.zoom);
-
-    refWrapper.current.style.left = `${x}px`;
-    refWrapper.current.style.top = `${y}px`;
-  });
 
   useEffect(() => {
     game.world.events.on(WorldEvents.SHOW_HINT, showHint);
@@ -48,6 +32,19 @@ export const ComponentRelativeHint: React.FC = () => {
       game.world.events.off(WorldEvents.HIDE_HINT, hideHint);
     };
   }, []);
+
+  useWorldUpdate(() => {
+    if (!hint || !refWrapper.current) {
+      return;
+    }
+
+    const camera = game.world.cameras.main;
+    const x = Math.round((hint.position.x - camera.worldView.x) * camera.zoom);
+    const y = Math.round((hint.position.y - camera.worldView.y) * camera.zoom);
+
+    refWrapper.current.style.left = `${x}px`;
+    refWrapper.current.style.top = `${y}px`;
+  }, [hint]);
 
   return hint && (
     <Wrapper ref={refWrapper}>

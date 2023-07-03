@@ -57,6 +57,13 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
    * Handle tiles collide and return result.
    */
   handleCollide(direction: number): boolean
+
+  /**
+   * Add health indicator above sprite.
+   * @param color - Indicator color
+   * @param bySpriteSize - Indicator size by sprite size
+   */
+  addHealthIndicator(color: number, bySpriteSize?: boolean): void
 }
 
 export type SpriteData = {

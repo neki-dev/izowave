@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 
 import { PLAYER_UPGRADES } from '~const/world/entities/player';
 import { GameContext, useWorldUpdate } from '~lib/interface';
+import { getMutableObject } from '~lib/utils';
 import { ComponentAmount } from '~scene/basic/interface/amount';
 import { PlayerUpgrade, PlayerUpgradeData } from '~type/world/entities/player';
 
@@ -23,13 +24,13 @@ export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
   };
 
   useWorldUpdate(() => {
-    const currentData: PlayerUpgradeData = {
+    const newData: PlayerUpgradeData = {
       ...PLAYER_UPGRADES[type],
       experience: game.world.player.getExperienceToUpgrade(type),
       level: game.world.player.upgradeLevel[type],
     };
 
-    setData(currentData);
+    setData((current) => getMutableObject(current, newData));
   });
 
   return (

@@ -37,6 +37,14 @@ export const ComponentNotices: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    game.screen.events.on(ScreenEvents.NOTICE, addNotice);
+
+    return () => {
+      game.screen.events.off(ScreenEvents.NOTICE, addNotice);
+    };
+  }, []);
+
   useWorldUpdate(() => {
     const now = Date.now();
 
@@ -50,14 +58,6 @@ export const ComponentNotices: React.FC = () => {
         : newNotices;
     });
   });
-
-  useEffect(() => {
-    game.screen.events.on(ScreenEvents.NOTICE, addNotice);
-
-    return () => {
-      game.screen.events.off(ScreenEvents.NOTICE, addNotice);
-    };
-  }, []);
 
   return (
     <Wrapper>

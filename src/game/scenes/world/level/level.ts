@@ -274,11 +274,12 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static GetTileDepth(YAtWorld: number, tileZ: number) {
-    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT);
+    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT) + TILE_META.height;
   }
 
+  // TODO: Fix depth for large sprites
   static GetDepth(YAtWorld: number, tileZ: number, height: number) {
-    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT) - (height / 2);
+    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT) + height;
   }
 
   static GetBiome(type: BiomeType): Nullable<LevelBiome> {

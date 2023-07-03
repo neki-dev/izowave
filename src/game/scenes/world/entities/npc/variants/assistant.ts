@@ -50,6 +50,8 @@ export class Assistant extends NPC implements IAssistant {
 
     this.body.setCircle(this.width / 2, 0, 1);
 
+    this.addHealthIndicator(0xd0ff4f);
+
     this.scene.physics.add.collider(this, this.scene.entityGroups.enemies, (_, enemy: IEnemy) => {
       enemy.attack(this);
     });

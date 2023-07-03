@@ -138,23 +138,29 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public addFoundation(position: Vector2D) {
+    const newBiome = Level.GetBiome(BiomeType.RUBBLE);
+
+    if (!newBiome) {
+      return;
+    }
+
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
         const tileGround = this.scene.level.getTile({ x, y, z: 0 });
 
-        if (tileGround?.biome?.solid) {
+        if (
+          tileGround
+          && tileGround.biome.solid
+          && tileGround.biome.type !== BiomeType.RUBBLE
+        ) {
           // Replace biome
-          const newBiome = Level.GetBiome(BiomeType.RUBBLE);
+          const frame = Array.isArray(newBiome.tileIndex)
+            ? Phaser.Math.Between(...newBiome.tileIndex)
+            : newBiome.tileIndex;
 
-          if (newBiome) {
-            const frame = Array.isArray(newBiome.tileIndex)
-              ? Phaser.Math.Between(...newBiome.tileIndex)
-              : newBiome.tileIndex;
-
-            tileGround.setFrame(frame);
-            tileGround.clearTint();
-            tileGround.biome = newBiome;
-          }
+          tileGround.setFrame(frame);
+          tileGround.clearTint();
+          tileGround.biome = newBiome;
 
           // Remove trees
           const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.TREE);
@@ -377,9 +383,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private updateBuildArea() {
     const position = this.scene.player.getBottomCenter();
-    const out = TILE_META.height * 2;
-    const depth = Level.GetDepth(position.y, 1, this.buildArea.height + out);
     const d = this.radius * 2;
+    const depth = Level.GetDepth(position.y, 0, d * TILE_META.persperctive);
 
     this.buildArea.setPosition(position.x, position.y);
     this.buildArea.setSize(d, d * TILE_META.persperctive);

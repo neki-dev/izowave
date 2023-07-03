@@ -37,6 +37,11 @@ export interface IWorld extends IScene {
   readonly entityGroups: Record<string, Phaser.GameObjects.Group>
 
   /**
+   * Current active building.
+   */
+  selectedBuilding: Nullable<IBuilding>
+
+  /**
    * Start world.
    */
   start(): void
@@ -82,12 +87,13 @@ export interface IWorld extends IScene {
    * Show hint on world.
    * @param hint - Hint data
    */
-  showHint(hint: WorldHint): void
+  showHint(hint: WorldHint): string
 
   /**
    * Hide hint from world.
+   * @param id - Hint id
    */
-  hideHint(): void
+  hideHint(id?: string): void
 }
 
 export enum WorldEvents {

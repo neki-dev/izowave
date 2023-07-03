@@ -5,7 +5,7 @@ import React, {
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import { getMutable } from '~lib/utils';
+import { getMutableArray } from '~lib/utils';
 import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
 import { WorldEvents } from '~type/world';
 import { BuildingControl, BuildingParam, IBuilding } from '~type/world/entities/building';
@@ -21,39 +21,17 @@ export const ComponentBuildingInfo: React.FC = () => {
   const [params, setParams] = useState<BuildingParam[]>([]);
   const [controls, setControls] = useState<BuildingControl[]>([]);
 
-  const refBuilding = useRef<IBuilding>(null);
   const refWrapper = useRef<HTMLDivElement>(null);
 
   const onSelect = (target: IBuilding) => {
-    refBuilding.current = target;
     setBuilding(target);
   };
 
   const onUnselect = () => {
-    refBuilding.current = null;
     setBuilding(null);
     setParams([]);
     setControls([]);
   };
-
-  useWorldUpdate(() => {
-    if (!refBuilding.current) {
-      return;
-    }
-
-    setUpgradeLevel(refBuilding.current.upgradeLevel);
-    setParams((current) => getMutable(current, refBuilding.current?.getInfo(), ['value', 'attention']));
-    setControls((current) => getMutable(current, refBuilding.current?.getControls(), ['label', 'cost']));
-
-    if (refWrapper.current) {
-      const camera = game.world.cameras.main;
-      const x = Math.round((refBuilding.current.x - camera.worldView.x) * camera.zoom);
-      const y = Math.round((refBuilding.current.y - camera.worldView.y) * camera.zoom);
-
-      refWrapper.current.style.left = `${x}px`;
-      refWrapper.current.style.top = `${y}px`;
-    }
-  });
 
   useEffect(() => {
     game.world.events.on(WorldEvents.SELECT_BUILDING, onSelect);
@@ -64,6 +42,25 @@ export const ComponentBuildingInfo: React.FC = () => {
       game.world.events.off(WorldEvents.UNSELECT_BUILDING, onUnselect);
     };
   }, []);
+
+  useWorldUpdate(() => {
+    if (!building) {
+      return;
+    }
+
+    setUpgradeLevel(building.upgradeLevel);
+    setParams((current) => getMutableArray(current, building.getInfo(), ['value', 'attention']));
+    setControls((current) => getMutableArray(current, building.getControls(), ['label', 'cost']));
+
+    if (refWrapper.current) {
+      const camera = game.world.cameras.main;
+      const x = Math.round((building.x - camera.worldView.x) * camera.zoom);
+      const y = Math.round((building.y - camera.worldView.y) * camera.zoom);
+
+      refWrapper.current.style.left = `${x}px`;
+      refWrapper.current.style.top = `${y}px`;
+    }
+  }, [building]);
 
   return building && (
     <Wrapper ref={refWrapper}>

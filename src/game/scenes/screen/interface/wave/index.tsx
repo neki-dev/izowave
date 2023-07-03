@@ -22,25 +22,6 @@ export const ComponentWave: React.FC = () => {
   const [isPeaceMode, setPeaceMode] = useState(false);
   const [hint, setHint] = useState<string>(null);
 
-  useWorldUpdate(() => {
-    setPeaceMode(game.world.wave.isPeaceMode);
-    setCurrentNumber(game.world.wave.number);
-    setGoing(game.world.wave.isGoing);
-    setNextSeason(game.world.wave.isNextSeason);
-
-    if (game.world.wave.isGoing) {
-      const enemiesLeft = game.world.wave.getEnemiesLeft();
-
-      setValue(enemiesLeft);
-      setAlarm(false);
-    } else {
-      const timeleft = game.world.wave.getTimeleft();
-
-      setValue(formatTime(timeleft));
-      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !game.world.isTimePaused());
-    }
-  });
-
   const showHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.WAVE_TIMELEFT: {
@@ -65,6 +46,25 @@ export const ComponentWave: React.FC = () => {
     }),
     [],
   );
+
+  useWorldUpdate(() => {
+    setPeaceMode(game.world.wave.isPeaceMode);
+    setCurrentNumber(game.world.wave.number);
+    setGoing(game.world.wave.isGoing);
+    setNextSeason(game.world.wave.isNextSeason);
+
+    if (game.world.wave.isGoing) {
+      const enemiesLeft = game.world.wave.getEnemiesLeft();
+
+      setValue(enemiesLeft);
+      setAlarm(false);
+    } else {
+      const timeleft = game.world.wave.getTimeleft();
+
+      setValue(formatTime(timeleft));
+      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !game.world.isTimePaused());
+    }
+  });
 
   return (
     !isPeaceMode && (

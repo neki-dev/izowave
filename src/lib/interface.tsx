@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, {
+  createContext, useCallback, useContext, useEffect,
+} from 'react';
 import { Root, createRoot } from 'react-dom/client';
 
 import { IGame, IScene } from '~type/game';
@@ -6,16 +8,16 @@ import { IGame, IScene } from '~type/game';
 export const GameContext = createContext<IGame>(null);
 const gameUI = document.getElementById('game-ui');
 
-export function useWorldUpdate(callback: () => void) {
+export function useWorldUpdate(callback: () => void, depends: any[] = []) {
   const game = useContext(GameContext);
 
-  const safeCallback = () => {
+  const safeCallback = useCallback(() => {
     try {
       callback();
     } catch (error) {
       console.error('Error on world update event:', error);
     }
-  };
+  }, depends);
 
   useEffect(() => {
     safeCallback();
@@ -25,7 +27,7 @@ export function useWorldUpdate(callback: () => void) {
     return () => {
       game.world.events.off(Phaser.Scenes.Events.UPDATE, safeCallback);
     };
-  }, []);
+  }, [safeCallback]);
 }
 
 export class Interface<T> {

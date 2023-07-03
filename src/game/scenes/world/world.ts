@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { v4 as uuidv4 } from 'uuid';
 
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_FIND_PATH_RATE, WORLD_MAX_ZOOM, WORLD_MIN_ZOOM } from '~const/world';
@@ -60,11 +61,15 @@ export class World extends Phaser.Scene implements IWorld {
 
   private set builder(v) { this._builder = v; }
 
+  public selectedBuilding: Nullable<IBuilding> = null;
+
   private enemySpawnPositions: Vector2D[] = [];
 
   private lifecyleTimer: Phaser.Time.TimerEvent;
 
   private nextFindPathTimestamp: number = 0;
+
+  private currentHintId: Nullable<string> = null;
 
   constructor() {
     super(GameScene.WORLD);
@@ -106,11 +111,17 @@ export class World extends Phaser.Scene implements IWorld {
   }
 
   public showHint(hint: WorldHint) {
+    this.currentHintId = uuidv4();
     this.events.emit(WorldEvents.SHOW_HINT, hint);
+
+    return this.currentHintId;
   }
 
-  public hideHint() {
-    this.events.emit(WorldEvents.HIDE_HINT);
+  public hideHint(id?: string) {
+    if (!id || id === this.currentHintId) {
+      this.events.emit(WorldEvents.HIDE_HINT);
+      this.currentHintId = null;
+    }
   }
 
   public getTime() {

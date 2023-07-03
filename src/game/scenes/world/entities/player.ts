@@ -83,6 +83,8 @@ export class Player extends Sprite implements IPlayer {
     this.setScale(2.0);
     this.setOrigin(0.5, 0.75);
 
+    this.addHealthIndicator(0xd0ff4f);
+
     this.setTilesGroundCollision(true);
     this.setTilesCollision([
       TileType.MAP,
