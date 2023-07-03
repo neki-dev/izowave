@@ -45,13 +45,22 @@ export class BuildingTowerFire extends BuildingTower {
       },
     }, shot);
 
+    let hintId: Nullable<string> = null;
+
+    const hideCurrentHint = () => {
+      if (hintId) {
+        this.scene.hideHint(hintId);
+        hintId = null;
+      }
+    };
+
     const unbindUpgradeStep = this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
       beg: () => {
         if (
           this.upgradeLevel === 1
           && this.scene.player.resources >= this.getUpgradeCost()
         ) {
-          this.scene.showHint({
+          hintId = this.scene.showHint({
             side: 'top',
             text: 'Hover on building and press [U] to upgrade',
             position: {
@@ -61,15 +70,13 @@ export class BuildingTowerFire extends BuildingTower {
           });
         }
       },
-      end: () => {
-        this.scene.hideHint();
-      },
+      end: hideCurrentHint,
     });
 
     const unbindReloadStep = this.scene.game.tutorial.bind(TutorialStep.RELOAD_BUILDING, {
       beg: () => {
         if (this.ammo === 0) {
-          this.scene.showHint({
+          hintId = this.scene.showHint({
             side: 'top',
             text: 'Hover on building and press [R] to reload ammo',
             position: {
@@ -79,12 +86,11 @@ export class BuildingTowerFire extends BuildingTower {
           });
         }
       },
-      end: () => {
-        this.scene.hideHint();
-      },
+      end: hideCurrentHint,
     });
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      hideCurrentHint();
       unbindUpgradeStep();
       unbindReloadStep();
     });

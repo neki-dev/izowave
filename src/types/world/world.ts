@@ -82,12 +82,13 @@ export interface IWorld extends IScene {
    * Show hint on world.
    * @param hint - Hint data
    */
-  showHint(hint: WorldHint): void
+  showHint(hint: WorldHint): string
 
   /**
    * Hide hint from world.
+   * @param id - Hint id
    */
-  hideHint(): void
+  hideHint(id?: string): void
 }
 
 export enum WorldEvents {
