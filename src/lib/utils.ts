@@ -145,12 +145,7 @@ export function aroundPosition(
 
   for (let y = position.y - shift; y <= position.y + shift; y++) {
     for (let x = position.x - shift; x <= position.x + shift; x++) {
-      if (
-        x === position.x - shift
-        || x === position.x + shift
-        || y === position.y - shift
-        || y === position.y + shift
-      ) {
+      if (!equalPositions({ x, y }, position)) {
         list.push({ x, y });
       }
     }

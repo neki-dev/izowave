@@ -9,13 +9,21 @@ const gameUI = document.getElementById('game-ui');
 export function useWorldUpdate(callback: () => void) {
   const game = useContext(GameContext);
 
-  useEffect(() => {
-    callback();
+  const safeCallback = () => {
+    try {
+      callback();
+    } catch (error) {
+      console.error('Error on world update event:', error);
+    }
+  };
 
-    game.world.events.on(Phaser.Scenes.Events.UPDATE, callback);
+  useEffect(() => {
+    safeCallback();
+
+    game.world.events.on(Phaser.Scenes.Events.UPDATE, safeCallback);
 
     return () => {
-      game.world.events.off(Phaser.Scenes.Events.UPDATE, callback);
+      game.world.events.off(Phaser.Scenes.Events.UPDATE, safeCallback);
     };
   }, []);
 }

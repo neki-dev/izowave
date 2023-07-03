@@ -43,7 +43,7 @@ export const Restart = styled.div`
   font-size: 22px;
   line-height: 22px;
   text-shadow: 2px 2px 0 #000;
-  padding: 8px 13px 9px 13px;
+  padding: 13px 20px 14px 20px;
   pointer-events: all;
   &:hover {
     cursor: pointer;

@@ -198,11 +198,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const waveAllowed = BUILDINGS[variant].AllowByWave;
 
     if (waveAllowed) {
-      if (this.scene.wave.isGoing) {
-        return (waveAllowed <= this.scene.wave.number);
-      }
-
-      return (waveAllowed < this.scene.wave.number);
+      return (waveAllowed <= this.scene.wave.number);
     }
 
     return true;

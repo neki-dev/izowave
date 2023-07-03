@@ -281,7 +281,6 @@ export class Player extends Sprite implements IPlayer {
 
   private onWaveComplete(number: number) {
     if (this.assistant) {
-      // TODO
       this.assistant.live.heal();
     } else {
       this.addAssistant();

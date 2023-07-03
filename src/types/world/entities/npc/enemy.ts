@@ -63,6 +63,5 @@ export type EnemyData = EnemyVariantData & {
     speed?: number
     damage?: number
     health?: number
-    experience?: number
   }
 };

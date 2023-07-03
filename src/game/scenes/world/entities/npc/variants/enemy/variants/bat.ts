@@ -17,7 +17,6 @@ export class EnemyBat extends Enemy {
         health: 0.35,
         damage: 0.1,
         speed: 0.5,
-        experience: 0.5,
       },
     });
   }

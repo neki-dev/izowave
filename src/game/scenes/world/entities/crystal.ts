@@ -4,8 +4,10 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progression } from '~lib/utils';
+import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
+import { ParticlesType } from '~type/world/effects';
 import {
   CrystalTexture, CrystalData, CrystalAudio, ICrystal,
 } from '~type/world/entities/crystal';
@@ -37,7 +39,33 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
   }
 
   public pickup() {
-    const resources = progression(
+    const resources = this.getResourcesAmount();
+
+    this.scene.player.giveResources(resources);
+
+    this.scene.sound.play(CrystalAudio.PICKUP);
+
+    new Particles(this.scene.player, {
+      type: ParticlesType.BIT,
+      positionAtWorld: {
+        x: this.x,
+        y: this.y + 12,
+      },
+      duration: 300,
+      params: {
+        lifespan: { min: 100, max: 200 },
+        scale: { start: 1.0, end: 0.5 },
+        speed: 100,
+        maxParticles: 6,
+        tint: 0x2dffb2,
+      },
+    });
+
+    this.destroy();
+  }
+
+  private getResourcesAmount() {
+    return progression(
       Phaser.Math.Between(
         DIFFICULTY.CRYSTAL_RESOURCES - Math.floor(DIFFICULTY.CRYSTAL_RESOURCES * 0.5),
         DIFFICULTY.CRYSTAL_RESOURCES + Math.floor(DIFFICULTY.CRYSTAL_RESOURCES * 0.5),
@@ -45,12 +73,6 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       DIFFICULTY.CRYSTAL_RESOURCES_GROWTH,
       this.scene.wave.number,
     );
-
-    this.scene.player.giveResources(resources);
-
-    this.scene.sound.play(CrystalAudio.PICKUP);
-
-    this.destroy();
   }
 }
 

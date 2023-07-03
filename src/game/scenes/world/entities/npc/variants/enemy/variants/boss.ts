@@ -17,7 +17,6 @@ export class EnemyBoss extends Enemy {
         health: 6.0,
         damage: 0.9,
         speed: 0.24,
-        experience: 10.0,
       },
     });
   }
