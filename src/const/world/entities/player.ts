@@ -18,7 +18,7 @@ export const PLAYER_UPGRADES: Record<PlayerUpgrade, PlayerUpgradeData> = {
     label: 'Maximum health',
     description: 'Grow health of player and assistant',
     experience: DIFFICULTY.PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 15,
+    maxLevel: 10,
   },
   [PlayerUpgrade.SPEED]: {
     label: 'Movement speed',

@@ -5,7 +5,7 @@ import React, {
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { GameContext, useWorldUpdate } from '~lib/interface';
-import { getMutable } from '~lib/utils';
+import { getMutableArray } from '~lib/utils';
 import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
 import { WorldEvents } from '~type/world';
 import { BuildingControl, BuildingParam, IBuilding } from '~type/world/entities/building';
@@ -33,14 +33,24 @@ export const ComponentBuildingInfo: React.FC = () => {
     setControls([]);
   };
 
+  useEffect(() => {
+    game.world.events.on(WorldEvents.SELECT_BUILDING, onSelect);
+    game.world.events.on(WorldEvents.UNSELECT_BUILDING, onUnselect);
+
+    return () => {
+      game.world.events.off(WorldEvents.SELECT_BUILDING, onSelect);
+      game.world.events.off(WorldEvents.UNSELECT_BUILDING, onUnselect);
+    };
+  }, []);
+
   useWorldUpdate(() => {
     if (!building) {
       return;
     }
 
     setUpgradeLevel(building.upgradeLevel);
-    setParams((current) => getMutable(current, building.getInfo(), ['value', 'attention']));
-    setControls((current) => getMutable(current, building.getControls(), ['label', 'cost']));
+    setParams((current) => getMutableArray(current, building.getInfo(), ['value', 'attention']));
+    setControls((current) => getMutableArray(current, building.getControls(), ['label', 'cost']));
 
     if (refWrapper.current) {
       const camera = game.world.cameras.main;
@@ -51,16 +61,6 @@ export const ComponentBuildingInfo: React.FC = () => {
       refWrapper.current.style.top = `${y}px`;
     }
   }, [building]);
-
-  useEffect(() => {
-    game.world.events.on(WorldEvents.SELECT_BUILDING, onSelect);
-    game.world.events.on(WorldEvents.UNSELECT_BUILDING, onUnselect);
-
-    return () => {
-      game.world.events.off(WorldEvents.SELECT_BUILDING, onSelect);
-      game.world.events.off(WorldEvents.UNSELECT_BUILDING, onUnselect);
-    };
-  }, []);
 
   return building && (
     <Wrapper ref={refWrapper}>

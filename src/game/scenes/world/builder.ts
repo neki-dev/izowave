@@ -383,9 +383,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private updateBuildArea() {
     const position = this.scene.player.getBottomCenter();
-    const out = TILE_META.height * 2;
-    const depth = Level.GetDepth(position.y, 1, this.buildArea.height + out);
     const d = this.radius * 2;
+    const depth = Level.GetDepth(position.y, 0, d * TILE_META.persperctive);
 
     this.buildArea.setPosition(position.x, position.y);
     this.buildArea.setSize(d, d * TILE_META.persperctive);

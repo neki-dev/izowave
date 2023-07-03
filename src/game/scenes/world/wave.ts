@@ -162,32 +162,35 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.START, this.number);
 
-    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
     this.scene.game.tutorial.end(TutorialStep.WAVE_TIMELEFT);
+    if (this.scene.game.tutorial.state(TutorialStep.UPGRADE_BUILDING) === TutorialStepState.BEG) {
+      this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
+    }
   }
 
   private complete() {
     const prevSeason = this.getSeason();
+    const prevNumber = this.number;
 
     this.isGoing = false;
     this.number++;
 
     if (this.getSeason() === prevSeason) {
       this.runTimeleft();
-      this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${this.number - 1} COMPLETED`);
+      this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${prevNumber} COMPLETED`);
     } else {
       this.nextSeason();
     }
 
     this.scene.sound.play(WaveAudio.COMPLETE);
 
-    this.emit(WaveEvents.COMPLETE, this.number - 1);
+    this.emit(WaveEvents.COMPLETE, prevNumber);
 
     this.scene.level.looseEffects();
 
-    if (this.number === 3) {
+    if (prevNumber === 2) {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
-    } else if (this.number >= 4) {
+    } else if (prevNumber >= 3) {
       // TODO: Call only when there is definitely an upgrade opportunity
       this.scene.game.tutorial.beg(TutorialStep.UPGRADE_BUILDING);
     }

@@ -117,6 +117,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return Boolean(tile);
   }
 
+  // TODO: Fix stuck with low fps
   private getCollidedTile(direction: number) {
     if (this.collisionTargets.length === 0 && !this.collisionGround) {
       return false;

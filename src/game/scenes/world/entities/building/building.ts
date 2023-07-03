@@ -456,12 +456,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const { persperctive, height } = TILE_META;
     const d = this.getActionsRadius() * 2;
-    const out = height * 2;
 
-    this.actionsArea.setSize(d, d * persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(this.y + TILE_META.height * 0.5, 1, d * persperctive + out));
+    this.actionsArea.setSize(d, d * TILE_META.persperctive);
+    this.actionsArea.setDepth(Level.GetDepth(this.y + TILE_META.height * 0.5, 0, d * TILE_META.persperctive));
     this.actionsArea.updateDisplayOrigin();
   }
 
