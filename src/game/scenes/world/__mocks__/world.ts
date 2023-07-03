@@ -27,7 +27,7 @@ const world = {
     },
   },
   level: {
-    removeEffects: jest.fn(),
+    looseEffects: jest.fn(),
   },
   player: {},
   input: {
