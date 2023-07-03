@@ -2,30 +2,27 @@ import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS } from '~const/world/entities/player';
+import {
+  PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_UPGRADES,
+} from '~const/world/entities/player';
 import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/world/level';
-import { Chest } from '~entity/chest';
+import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { aroundPosition, calcGrowth } from '~lib/utils';
+import { aroundPosition, progression } from '~lib/utils';
 import { NoticeType } from '~type/screen';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerFeature,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerUpgrade,
 } from '~type/world/entities/player';
 import { BiomeType, TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite implements IPlayer {
-  private _level: number = 1;
-
-  public get level() { return this._level; }
-
-  private set level(v) { this._level = v; }
-
   private _experience: number = 0;
 
   public get experience() { return this._experience; }
@@ -44,7 +41,22 @@ export class Player extends Sprite implements IPlayer {
 
   private set kills(v) { this._kills = v; }
 
-  private speed: number = DIFFICULTY.PLAYER_SPEED;
+  private _upgradeLevel: Record<PlayerUpgrade, number> = {
+    [PlayerUpgrade.MAX_HEALTH]: 1,
+    [PlayerUpgrade.SPEED]: 1,
+    [PlayerUpgrade.BUILD_AREA]: 1,
+    [PlayerUpgrade.ASSISTANT]: 1,
+  };
+
+  public get upgradeLevel() { return this._upgradeLevel; }
+
+  private set upgradeLevel(v) { this._upgradeLevel = v; }
+
+  private _speed: number = DIFFICULTY.PLAYER_SPEED;
+
+  public get speed() { return this._speed; }
+
+  private set speed(v) { this._speed = v; }
 
   private movementKeys: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
 
@@ -53,8 +65,6 @@ export class Player extends Sprite implements IPlayer {
   private isMoving: boolean = false;
 
   private assistant: Nullable<IAssistant> = null;
-
-  private features: Partial<Record<PlayerFeature, boolean>> = {};
 
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
@@ -77,10 +87,10 @@ export class Player extends Sprite implements IPlayer {
     this.setTilesCollision([
       TileType.MAP,
       TileType.BUILDING,
-      TileType.CHEST,
+      TileType.CRYSTAL,
     ], (tile) => {
-      if (tile instanceof Chest) {
-        tile.open();
+      if (tile instanceof Crystal) {
+        tile.pickup();
       }
     });
 
@@ -105,39 +115,12 @@ export class Player extends Sprite implements IPlayer {
     this.updateVelocity();
   }
 
-  public addFeature(type: PlayerFeature) {
-    this.features[type] = true;
-  }
-
-  public getNextExperience(level = 0) {
-    return calcGrowth(
-      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL,
-      DIFFICULTY.PLAYER_EXPERIENCE_TO_NEXT_LEVEL_GROWTH,
-      this.level + level + 1,
-    );
-  }
-
   public giveExperience(amount: number) {
     if (this.live.isDead()) {
       return;
     }
 
-    this.experience += amount;
-
-    let experienceNeed = this.getNextExperience();
-    let experienceLeft = this.experience;
-    let level = 0;
-
-    while (experienceLeft >= experienceNeed) {
-      level++;
-      experienceLeft -= experienceNeed;
-      experienceNeed = this.getNextExperience(level);
-    }
-
-    if (level > 0) {
-      this.experience = experienceLeft;
-      this.addLevelProgress(level);
-    }
+    this.experience += amount / this.scene.game.getDifficultyMultiplier();
   }
 
   public giveResources(amount: number) {
@@ -156,6 +139,114 @@ export class Player extends Sprite implements IPlayer {
     this.kills++;
   }
 
+  public getExperienceToUpgrade(type: PlayerUpgrade) {
+    return progression(
+      PLAYER_UPGRADES[type].experience,
+      DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
+      this.upgradeLevel[type],
+      10,
+    );
+  }
+
+  private getUpgradeNextValue(type: PlayerUpgrade): number {
+    const nextLevel = this.upgradeLevel[type] + 1;
+
+    switch (type) {
+      case PlayerUpgrade.MAX_HEALTH: {
+        return progression(
+          DIFFICULTY.PLAYER_HEALTH,
+          DIFFICULTY.PLAYER_HEALTH_GROWTH,
+          nextLevel,
+          5,
+        );
+      }
+      case PlayerUpgrade.SPEED: {
+        return progression(
+          DIFFICULTY.PLAYER_SPEED,
+          DIFFICULTY.PLAYER_SPEED_GROWTH,
+          nextLevel,
+        );
+      }
+      case PlayerUpgrade.BUILD_AREA: {
+        return progression(
+          DIFFICULTY.BUILDER_BUILD_AREA,
+          DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
+          nextLevel,
+        );
+      }
+      case PlayerUpgrade.ASSISTANT: {
+        return nextLevel;
+      }
+    }
+  }
+
+  public upgrade(type: PlayerUpgrade) {
+    if (this.scene.wave.isGoing) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'CANNOT BE UPGRADED WHILE WAVE IS GOING');
+
+      return;
+    }
+
+    const experience = this.getExperienceToUpgrade(type);
+
+    if (this.experience < experience) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH EXPERIENCE');
+
+      return;
+    }
+
+    const nextValue = this.getUpgradeNextValue(type);
+
+    switch (type) {
+      case PlayerUpgrade.MAX_HEALTH: {
+        this.live.setMaxHealth(nextValue);
+        this.live.heal();
+        if (this.assistant) {
+          this.assistant.live.setMaxHealth(nextValue);
+          this.assistant.live.heal();
+        }
+        break;
+      }
+      case PlayerUpgrade.SPEED: {
+        this.speed = nextValue;
+        if (this.assistant) {
+          this.assistant.speed = nextValue;
+        }
+        break;
+      }
+      case PlayerUpgrade.BUILD_AREA: {
+        this.scene.builder.radius = nextValue;
+        break;
+      }
+      case PlayerUpgrade.ASSISTANT: {
+        if (this.assistant) {
+          this.assistant.level = nextValue;
+        }
+        break;
+      }
+    }
+
+    this.experience -= experience;
+    this.upgradeLevel[type]++;
+
+    this.scene.sound.play(PlayerAudio.UPGRADE);
+    this.scene.game.screen.notice(NoticeType.INFO, `${type.toUpperCase().replace('_', ' ')} UPGRADED`);
+
+    this.scene.game.tutorial.end(TutorialStep.UPGRADE_PLAYER);
+  }
+
+  public onDamage() {
+    this.scene.game.sound.play(
+      Phaser.Utils.Array.GetRandom([
+        PlayerAudio.DAMAGE_1,
+        PlayerAudio.DAMAGE_2,
+        PlayerAudio.DAMAGE_3,
+      ]),
+    );
+
+    super.onDamage();
+  }
+
   public onDead() {
     this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
     this.scene.sound.play(PlayerAudio.DEAD);
@@ -169,41 +260,23 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private addAssistant() {
-    const positionAtMatrix = aroundPosition(this.positionAtMatrix, 1).find((spawn) => {
+    const positionAtMatrix = aroundPosition(this.positionAtMatrix).find((spawn) => {
       const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
 
       return Boolean(tileGround);
     });
 
     this.assistant = new Assistant(this.scene, {
+      owner: this,
       positionAtMatrix: positionAtMatrix || this.positionAtMatrix,
+      speed: this.speed,
+      health: this.live.maxHealth,
+      level: this.upgradeLevel[PlayerUpgrade.ASSISTANT],
     });
-
-    this.assistant.upgrade(this.level);
 
     this.assistant.on(Phaser.Scenes.Events.DESTROY, () => {
       this.assistant = null;
     });
-  }
-
-  private addLevelProgress(count: number) {
-    this.level += count;
-
-    if (this.assistant) {
-      this.assistant.upgrade(this.level);
-    }
-
-    const maxHealth = calcGrowth(
-      DIFFICULTY.PLAYER_HEALTH,
-      DIFFICULTY.PLAYER_HEALTH_GROWTH,
-      this.level,
-    );
-
-    this.live.setMaxHealth(maxHealth);
-    this.live.heal();
-
-    this.scene.sound.play(PlayerAudio.LEVEL_UP);
-    this.scene.game.screen.notice(NoticeType.INFO, 'LEVEL UP');
   }
 
   private onWaveComplete(number: number) {
@@ -213,13 +286,17 @@ export class Player extends Sprite implements IPlayer {
       this.addAssistant();
     }
 
-    const experience = calcGrowth(
+    const experience = progression(
       DIFFICULTY.WAVE_EXPERIENCE,
       DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
       number,
     );
 
     this.giveExperience(experience);
+
+    if (number === 1) {
+      this.scene.game.tutorial.beg(TutorialStep.UPGRADE_PLAYER);
+    }
   }
 
   private registerKeyboard() {
@@ -273,7 +350,7 @@ export class Player extends Sprite implements IPlayer {
         this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
 
         if (!oldMoving) {
-          this.scene.game.sound.play(PlayerAudio.MOVE, {
+          this.scene.game.sound.play(PlayerAudio.WALK, {
             loop: true,
             rate: 1.8,
           });
@@ -290,7 +367,7 @@ export class Player extends Sprite implements IPlayer {
       this.anims.stop();
     }
 
-    this.scene.sound.stopByKey(PlayerAudio.MOVE);
+    this.scene.sound.stopByKey(PlayerAudio.WALK);
   }
 
   private getKeyboardSingleDirection(

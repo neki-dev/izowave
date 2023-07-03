@@ -25,13 +25,11 @@ export class Level extends TileMatrix implements ILevel {
 
   readonly map: World<LevelBiome>;
 
-  readonly effects: Phaser.GameObjects.Group;
+  private visibleTiles: Phaser.GameObjects.Group;
 
   private mapTiles: Phaser.GameObjects.Group;
 
   private treesTiles: Phaser.GameObjects.Group;
-
-  private visibleTiles: Phaser.GameObjects.Group;
 
   constructor(scene: IWorld) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT);
@@ -53,7 +51,6 @@ export class Level extends TileMatrix implements ILevel {
 
     this.scene = scene;
     this.visibleTiles = scene.add.group();
-    this.effects = scene.add.group();
 
     const grid = this.map.getMatrix().map((y) => y.map((x) => Number(x.collide)));
 
@@ -64,8 +61,29 @@ export class Level extends TileMatrix implements ILevel {
 
     this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.BLOOD_ON_MAP}`, (value: string) => {
       if (value === 'off') {
-        this.effects.clear(true, true);
+        this.removeEffects();
       }
+    });
+  }
+
+  public looseEffects() {
+    this.mapTiles.getChildren().forEach((tile: ITile) => {
+      tile.mapEffects?.forEach((effect) => {
+        effect.setAlpha(effect.alpha - 0.2);
+        if (effect.alpha <= 0) {
+          effect.destroy();
+        }
+      });
+    });
+  }
+
+  private removeEffects() {
+    this.mapTiles.getChildren().forEach((tile: ITile) => {
+      tile.mapEffects?.forEach((effect) => {
+        effect.destroy();
+      });
+      // eslint-disable-next-line no-param-reassign
+      tile.mapEffects = [];
     });
   }
 
@@ -101,6 +119,9 @@ export class Level extends TileMatrix implements ILevel {
 
           if (tile) {
             tile.setVisible(false);
+            tile.mapEffects?.forEach((effect) => {
+              effect.setVisible(false);
+            });
           }
         }
       }
@@ -123,9 +144,12 @@ export class Level extends TileMatrix implements ILevel {
     const center = this.scene.player.getBottomCenter();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
 
-    for (const tile of <Phaser.GameObjects.Image[]> this.visibleTiles.getChildren()) {
+    this.visibleTiles.getChildren().forEach((tile: ITile) => {
       tile.setVisible(false);
-    }
+      tile.mapEffects?.forEach((effect) => {
+        effect.setVisible(false);
+      });
+    });
     this.visibleTiles.clear();
 
     for (let z = 0; z < this.height; z++) {
@@ -136,6 +160,9 @@ export class Level extends TileMatrix implements ILevel {
           if (tile && area.contains(tile.x, tile.y)) {
             this.visibleTiles.add(tile);
             tile.setVisible(true);
+            tile.mapEffects?.forEach((effect) => {
+              effect.setVisible(true);
+            });
           }
         }
       }
@@ -151,8 +178,8 @@ export class Level extends TileMatrix implements ILevel {
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
       const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant) as ITile;
 
-      // @ts-ignore
       tile.tileType = TileType.MAP;
+      tile.mapEffects = [];
       tile.biome = biome;
 
       tile.setOrigin(0.5, TILE_META.origin);

@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { Interface } from '~lib/interface';
 import { IGame, IScene, GameScene } from '~type/game';
 
-import { GameoverUI } from './ui';
+import { GameoverUI } from './interface';
 
 export class Gameover extends Phaser.Scene implements IScene {
   readonly game: IGame;

@@ -3,7 +3,7 @@ import { Live } from '../live';
 describe('live.ts', () => {
   let live: Live;
 
-  beforeAll(() => {
+  beforeEach(() => {
     live = new Live(100);
   });
 

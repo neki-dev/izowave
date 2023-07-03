@@ -1,8 +1,7 @@
 import { TutorialStepState } from '~type/tutorial';
-import { IWorld } from '~type/world';
 
 const world = {
-  getTime: jest.fn(),
+  getTime: jest.fn(() => 0),
   isTimePaused: jest.fn(() => false),
   setTimePause: jest.fn(),
   spawnEnemy: jest.fn(),
@@ -17,12 +16,18 @@ const world = {
     analytics: {
       track: jest.fn(),
     },
+    screen: {
+      notice: jest.fn(),
+    },
     getDifficultyMultiplier: jest.fn(() => 1.0),
   },
   entityGroups: {
     enemies: {
-      getTotalUsed: jest.fn(),
+      getTotalUsed: jest.fn(() => 0),
     },
+  },
+  level: {
+    looseEffects: jest.fn(),
   },
   player: {},
   input: {
@@ -33,6 +38,6 @@ const world = {
   sound: {
     play: jest.fn(),
   },
-} as unknown as IWorld;
+};
 
 export default world;

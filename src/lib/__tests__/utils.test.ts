@@ -1,17 +1,21 @@
 import positions from '../__mocks__/positions';
 import {
-  aroundPosition, calcGrowth, equalPositions, formatTime, getClosest,
+  aroundPosition, progression, equalPositions, formatTime, getClosest,
 } from '../utils';
 
 describe('utils.ts / calcGrowth', () => {
   it('should return correct value growth', () => {
-    expect(calcGrowth(100, 0.1, 1)).toEqual(100);
-    expect(calcGrowth(100, 0.1, 3)).toEqual(121);
+    expect(progression(100, 0.1, 1)).toEqual(100);
+    expect(progression(100, 0.1, 3)).toEqual(122);
   });
 
   it('should return correct negative value growth', () => {
-    expect(calcGrowth(100, -0.1, 1)).toEqual(100);
-    expect(calcGrowth(100, -0.1, 3)).toEqual(79);
+    expect(progression(100, -0.1, 1)).toEqual(100);
+    expect(progression(100, -0.1, 3)).toEqual(81);
+  });
+
+  it('should return rounded value', () => {
+    expect(progression(100, 0.1, 3, 10)).toEqual(130);
   });
 });
 
@@ -45,6 +49,5 @@ describe('utils.ts / getClosest', () => {
 describe('utils.ts / aroundPosition', () => {
   it('should returns correct around positions', () => {
     expect(aroundPosition(positions[0]).length).toEqual(8);
-    expect(aroundPosition(positions[0], 1).length).toEqual(16);
   });
 });

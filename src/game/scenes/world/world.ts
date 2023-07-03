@@ -7,7 +7,7 @@ import { ENEMIES } from '~const/world/entities/enemies';
 import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
 } from '~const/world/entities/enemy';
-import { Chest } from '~entity/chest';
+import { Crystal } from '~entity/crystal';
 import { Player } from '~entity/player';
 import { Interface } from '~lib/interface';
 import { sortByDistance } from '~lib/utils';
@@ -25,7 +25,7 @@ import { IPlayer } from '~type/world/entities/player';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
-import { WorldUI } from './ui';
+import { WorldUI } from './interface';
 
 export class World extends Phaser.Scene implements IWorld {
   readonly game: IGame;
@@ -87,7 +87,7 @@ export class World extends Phaser.Scene implements IWorld {
 
     this.addEntityGroups();
     this.addPlayer();
-    this.addChests();
+    this.addCrystals();
     this.addZoomControl();
 
     this.level.hideTiles();
@@ -192,7 +192,7 @@ export class World extends Phaser.Scene implements IWorld {
 
   private addEntityGroups() {
     this.entityGroups = {
-      chests: this.add.group(),
+      crystals: this.add.group(),
       buildings: this.add.group({ runChildUpdate: true }),
       shots: this.add.group({ runChildUpdate: true }),
       npc: this.add.group({ runChildUpdate: true }),
@@ -222,18 +222,18 @@ export class World extends Phaser.Scene implements IWorld {
     });
   }
 
-  private addChests() {
-    const positions = this.level.readSpawnPositions(SpawnTarget.CHEST);
+  private addCrystals() {
+    const positions = this.level.readSpawnPositions(SpawnTarget.CRYSTAL);
 
     const create = () => {
-      new Chest(this, {
+      new Crystal(this, {
         positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
-        variant: Phaser.Math.Between(0, 14),
+        variant: Phaser.Math.Between(0, 3),
       });
     };
 
     const maxCount = Math.ceil(
-      Math.floor(this.level.size * DIFFICULTY.CHEST_SPAWN_FACTOR) / this.game.getDifficultyMultiplier(),
+      Math.floor(this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR),
     );
 
     for (let i = 0; i < maxCount; i++) {
@@ -241,7 +241,7 @@ export class World extends Phaser.Scene implements IWorld {
     }
 
     this.wave.on(WaveEvents.COMPLETE, () => {
-      const newCount = maxCount - this.entityGroups.chests.getTotalUsed();
+      const newCount = maxCount - this.entityGroups.crystals.getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
         create();

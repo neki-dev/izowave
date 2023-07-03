@@ -136,6 +136,5 @@ export type GameSettingsData = {
 export type GameStat = {
   waves: number
   kills: number
-  level: number
   lived: number
 };

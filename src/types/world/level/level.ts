@@ -18,9 +18,9 @@ export interface ILevel extends ITileMatrix {
   readonly map: World<LevelBiome>
 
   /**
-   * Effects on level map.
+   * Let loose map tiles effects.
    */
-  readonly effects: Phaser.GameObjects.Group
+  looseEffects(): void
 
   /**
    * Update area of visible tiles.
@@ -55,7 +55,7 @@ export interface ILevel extends ITileMatrix {
 export enum TileType {
   MAP = 'MAP',
   BUILDING = 'BUILDING',
-  CHEST = 'CHEST',
+  CRYSTAL = 'CRYSTAL',
   TREE = 'TREE',
 }
 
@@ -71,7 +71,7 @@ export enum SpawnTarget {
   ENEMY = 'ENEMY',
   PLAYER = 'PLAYER',
   TREE = 'TREE',
-  CHEST = 'CHEST',
+  CRYSTAL = 'CRYSTAL',
 }
 
 export type LevelBiome = {

@@ -20,8 +20,6 @@ export function throwFailure(type: FailureType) {
     case FailureType.UNCAUGHT_ERROR:
       overlay.innerText = 'UNCAUGHT ERROR';
       break;
-    default:
-      break;
   }
 
   document.body.prepend(overlay);

@@ -8,7 +8,7 @@ import { ENEMIES } from '~const/world/entities/enemies';
 import { WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -83,13 +83,11 @@ export class Wave extends EventEmitter implements IWave {
       } else if (this.scene.entityGroups.enemies.getTotalUsed() === 0) {
         this.complete();
       }
-    } else if (!this.isNextSeason) {
+    } else if (!this.isNextSeason && !this.isPeaceMode) {
       const left = this.nextWaveTimestamp - now;
 
       if (left <= 0) {
-        if (!this.isPeaceMode) {
-          this.start();
-        }
+        this.start();
       } else if (
         left <= WAVE_TIMELEFT_ALARM
         && !this.scene.isTimePaused()
@@ -131,11 +129,12 @@ export class Wave extends EventEmitter implements IWave {
     let pause: number;
 
     if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.END) {
-      pause = calcGrowth(
-        DIFFICULTY.WAVE_PAUSE,
-        DIFFICULTY.WAVE_PAUSE_GROWTH,
+      pause = progression(
+        DIFFICULTY.WAVE_TIMELEFT,
+        DIFFICULTY.WAVE_TIMELEFT_GROWTH,
         this.number,
-      ) / this.scene.game.getDifficultyMultiplier();
+        1000,
+      );
     } else {
       pause = WAVE_TIMELEFT_ALARM;
     }
@@ -148,7 +147,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.nextSpawnTimestamp = 0;
     this.spawnedEnemiesCount = 0;
-    this.enemiesMaxCount = calcGrowth(
+    this.enemiesMaxCount = progression(
       DIFFICULTY.WAVE_ENEMIES_COUNT,
       DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
       this.number,
@@ -175,17 +174,21 @@ export class Wave extends EventEmitter implements IWave {
 
     if (this.getSeason() === prevSeason) {
       this.runTimeleft();
+      this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${this.number - 1} COMPLETED`);
     } else {
       this.nextSeason();
     }
 
     this.scene.sound.play(WaveAudio.COMPLETE);
 
-    this.emit(WaveEvents.COMPLETE, this.number);
+    this.emit(WaveEvents.COMPLETE, this.number - 1);
 
-    if (this.number === 2) {
+    this.scene.level.looseEffects();
+
+    if (this.number === 3) {
       this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
-    } else if (this.number === 3) {
+    } else if (this.number >= 4) {
+      // TODO: Call only when there is definitely an upgrade opportunity
       this.scene.game.tutorial.beg(TutorialStep.UPGRADE_BUILDING);
     }
 
@@ -197,7 +200,6 @@ export class Wave extends EventEmitter implements IWave {
 
   private nextSeason() {
     this.isNextSeason = true;
-    this.scene.level.effects.clear(true, true);
 
     this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${this.getSeason() - 1} COMPLETED`);
 
@@ -209,7 +211,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.spawnEnemy(variant);
 
-    const pause = calcGrowth(
+    const pause = progression(
       DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       this.number,

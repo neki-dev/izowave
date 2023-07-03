@@ -5,7 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, TILE_META } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { progression } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
@@ -79,7 +79,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
 
-    this.setInteractive();
+    this.setInteractiveByShape();
     this.addActionArea();
 
     this.scene.builder.addFoundation(positionAtMatrix);
@@ -135,12 +135,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public setInteractive() {
-    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
-
-    return super.setInteractive(shape, Hexagon.Contains);
-  }
-
   public update() {
     this.updateOutline();
 
@@ -168,7 +162,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.nextActionTimestamp = this.scene.getTime() + this.getActionsPause();
   }
 
-  public isAllowAction() {
+  public isActionAllowed() {
     if (!this.actions?.pause) {
       return true;
     }
@@ -187,10 +181,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public getControls() {
     const actions: BuildingControl[] = [];
 
-    if (this.isAllowUpgrade()) {
+    if (this.isUpgradeAllowed()) {
       actions.push({
         label: 'UPGRADE',
-        cost: this.getUpgradeLevelCost(),
+        cost: this.getUpgradeCost(),
         onClick: () => {
           this.upgrade();
         },
@@ -206,7 +200,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getActionsRadius() {
     return this.actions?.radius
-      ? calcGrowth(
+      ? progression(
         this.actions.radius,
         DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
         this.upgradeLevel,
@@ -216,7 +210,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private getActionsPause() {
     return this.actions?.pause
-      ? calcGrowth(
+      ? progression(
         this.actions.pause,
         DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         this.upgradeLevel,
@@ -224,33 +218,34 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       : 0;
   }
 
-  private getUpgradeLevelCost() {
+  public getUpgradeCost() {
     const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
 
     return Math.round(this.upgradeLevel * costPerLevel);
   }
 
-  private isAllowUpgrade() {
+  private isUpgradeAllowed() {
     return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
   }
 
-  /**
-   * Upgrade building to next level.
-   */
+  private isUpgradeAllowedByWave() {
+    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
+  }
+
   private upgrade() {
-    if (!this.isAllowUpgrade()) {
+    if (!this.isUpgradeAllowed()) {
       return;
     }
 
-    const waveAllowed = this.getWaveAllowUpgrade();
+    const waveNumber = this.isUpgradeAllowedByWave();
 
-    if (waveAllowed > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveAllowed} WAVE`);
+    if (waveNumber > this.scene.wave.number) {
+      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveNumber} WAVE`);
 
       return;
     }
 
-    const cost = this.getUpgradeLevelCost();
+    const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
       this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
@@ -275,20 +270,33 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
   }
 
-  private getWaveAllowUpgrade() {
-    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
+  private setInteractiveByShape() {
+    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
+
+    return this.setInteractive({
+      hitArea: shape,
+      hitAreaCallback: Hexagon.Contains,
+      useHandCursor: true,
+    });
   }
 
   private onDamage() {
-    if (!this.visible) {
-      return;
+    const audio = Phaser.Utils.Array.GetRandom([
+      BuildingAudio.DAMAGE_1,
+      BuildingAudio.DAMAGE_2,
+    ]);
+
+    if (this.scene.game.sound.getAll(audio).length < 3) {
+      this.scene.game.sound.play(audio);
     }
 
-    new Effect(this.scene, {
-      texture: EffectTexture.DAMAGE,
-      position: this,
-      rate: 14,
-    });
+    if (this.visible) {
+      new Effect(this.scene, {
+        texture: EffectTexture.DAMAGE,
+        position: this,
+        rate: 14,
+      });
+    }
   }
 
   private onDead() {
@@ -321,8 +329,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.isFocused = true;
-
-    this.scene.input.setDefaultCursor('pointer');
   }
 
   private onUnfocus() {
@@ -333,8 +339,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.isFocused = false;
-
-    this.scene.input.setDefaultCursor('default');
   }
 
   private onClick() {
@@ -457,7 +461,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     if (this.visible) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
-        audio: BuildingAudio.REMOVE,
+        audio: BuildingAudio.DEAD,
         position: {
           x: this.x,
           y: this.y + TILE_META.height * 0.5,

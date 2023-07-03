@@ -45,7 +45,7 @@ export class BuildingMedic extends Building {
   public update() {
     super.update();
 
-    if (!this.isAllowAction()) {
+    if (!this.isActionAllowed()) {
       return;
     }
 

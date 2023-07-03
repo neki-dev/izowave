@@ -4,15 +4,15 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
 import { TILE_META } from '~const/world/level';
 import { NPC } from '~entity/npc';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { calcGrowth } from '~lib/utils';
+import { registerSpriteAssets } from '~lib/assets';
+import { progression } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesType } from '~type/world/effects';
 import { IBuilding } from '~type/world/entities/building';
 import {
-  IEnemyTarget, EnemyAudio, EnemyData, EnemyTexture, IEnemy,
+  IEnemyTarget, EnemyData, EnemyTexture, IEnemy,
 } from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
@@ -29,17 +29,17 @@ export class Enemy extends NPC implements IEnemy {
       positionAtMatrix,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
-      health: calcGrowth(
+      health: progression(
         DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
-      damage: calcGrowth(
+      damage: progression(
         DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_DAMAGE_GROWTH,
         scene.wave.number,
       ),
-      speed: calcGrowth(
+      speed: progression(
         DIFFICULTY.ENEMY_SPEED * (multipliers.speed ?? 1.0),
         DIFFICULTY.ENEMY_SPEED_GROWTH,
         scene.wave.number,
@@ -52,7 +52,7 @@ export class Enemy extends NPC implements IEnemy {
       (multipliers.health ?? 1.0)
       + (multipliers.damage ?? 1.0)
       + (multipliers.speed ?? 1.0)
-    );
+    ) / 3;
 
     const offset = scale * 2;
 
@@ -120,17 +120,13 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    if (this.scene.game.sound.getAll(EnemyAudio.ATTACK).length < 3) {
-      this.scene.game.sound.play(EnemyAudio.ATTACK);
-    }
-
     target.live.damage(this.damage);
 
     this.calmDown(1000);
   }
 
   public onDead() {
-    const experience = calcGrowth(
+    const experience = progression(
       DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
       DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
       this.scene.wave.number,
@@ -156,11 +152,10 @@ export class Enemy extends NPC implements IEnemy {
       texture: EffectTexture.BLOOD,
       position: this,
       permanentFrame: Phaser.Math.Between(0, 3),
-      scale: 0.5 + Math.random(),
       depth: this.y + (TILE_META.height * 0.5),
     });
 
-    this.scene.level.effects.add(effect);
+    this.currentGroundTile.mapEffects?.push(effect);
   }
 
   private addSpawnEffect() {
@@ -196,7 +191,6 @@ export class Enemy extends NPC implements IEnemy {
   }
 }
 
-registerAudioAssets(EnemyAudio);
 registerSpriteAssets(EnemyTexture, (texture: EnemyTexture) => ({
   width: ENEMY_TEXTURE_META[texture].size,
   height: ENEMY_TEXTURE_META[texture].size,

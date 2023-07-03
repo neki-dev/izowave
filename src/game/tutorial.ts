@@ -26,7 +26,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
   }
 
   public end(step: TutorialStep) {
-    if (this.isDisabled || this.progress[step] !== true) {
+    if (this.isDisabled || this.progress[step] === false) {
       return;
     }
 
@@ -50,7 +50,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
     if (this.isDisabled) {
-      return;
+      return () => {};
     }
 
     if (callbacks.beg) {
@@ -72,7 +72,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   public bindAll(callbacks: TutorialBindAllCallbacks) {
     if (this.isDisabled) {
-      return;
+      return () => {};
     }
 
     if (callbacks.beg) {

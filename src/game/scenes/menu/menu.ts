@@ -1,13 +1,12 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { registerAudioAssets } from '~lib/assets';
 import { Interface } from '~lib/interface';
 import { Level } from '~scene/world/level';
 import { IGame, GameScene } from '~type/game';
-import { IMenu, MenuAudio } from '~type/menu';
+import { IMenu } from '~type/menu';
 
-import { MenuUI } from './ui';
+import { MenuUI } from './interface';
 
 export class Menu extends Phaser.Scene implements IMenu {
   readonly game: IGame;
@@ -41,5 +40,3 @@ export class Menu extends Phaser.Scene implements IMenu {
     }, 0);
   }
 }
-
-registerAudioAssets(MenuAudio);

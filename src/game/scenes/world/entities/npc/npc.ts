@@ -144,6 +144,7 @@ export class NPC extends Sprite implements INPC {
 
     this.body.setImmovable(false);
     this.setVelocity(velocity.x, velocity.y);
+    this.flipX = velocity.x < 0;
   }
 
   private nextPathTile() {

@@ -6,6 +6,8 @@ Your task is to survive in open world as many waves as possible. With each wave 
 
 Between waves build walls to defend, towers to attack, generators to get resources, ammunitions to reload towers, and medics to replenish your health.
 
+And also upgrade skills of your character and his assistant.
+
 * ## __[Play now](https://izowave.neki.guru)__
 
 ![Preview 1](./docs/preview/image01.png)

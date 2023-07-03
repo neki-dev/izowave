@@ -2,22 +2,41 @@ import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 import { Vector2D, Vector3D } from '~type/world/level';
 
 /**
- * Quadratic equation for calculating difficulty
- * relative to the specified level.
+ * Function to progressively increase value,
+ * relative to specified level.
  *
- * @param startValue - Default value for first level
- * @param growthScale - Part of start value for growth
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of start value for growth
  * @param level - Difficulty level
+ * @param roundTo - Round value
  */
-export function calcGrowth(
-  startValue: number,
-  growthScale: number,
+export function progression(
+  defaultValue: number,
+  scale: number,
   level: number,
+  roundTo?: number,
 ) {
-  const step = startValue * growthScale;
-  const weight = (level - 1) ** 1.1;
+  const value = defaultValue * (scale + 1) ** (level - 1);
 
-  return Math.round(startValue + (weight * step));
+  return roundTo ? Math.ceil(value / roundTo) * roundTo : Math.ceil(value);
+}
+
+/**
+ * Function to progressively increase next value,
+ * relative to current value.
+ *
+ * @param currentValue - Current value
+ * @param scale - Part of current value for growth
+ * @param roundTo - Round value
+ */
+export function progressionFrom(
+  currentValue: number,
+  scale: number,
+  roundTo?: number,
+) {
+  const value = currentValue * (scale + 1);
+
+  return roundTo ? Math.ceil(value / roundTo) * roundTo : Math.ceil(value);
 }
 
 /**
@@ -29,13 +48,13 @@ export function calcGrowth(
 export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
   if ('z' in a) {
     if ('z' in b) {
-      return (a.x === b.x && a.y === b.y && a.z === b.z);
+      return a.x === b.x && a.y === b.y && a.z === b.z;
     }
 
     return false;
   }
 
-  return (a.x === b.x && a.y === b.y);
+  return a.x === b.x && a.y === b.y;
 }
 
 /**
@@ -48,7 +67,7 @@ export function formatTime(value: number) {
   const h = Math.floor(s / 60);
   const m = s % 60;
 
-  return `${(h < 10 ? '0' : '')}${h}:${(m < 10 ? '0' : '')}${m}`;
+  return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
 }
 
 /**
@@ -102,7 +121,7 @@ export function sortByDistance<T extends Vector2D>(
     };
   });
 
-  meta = meta.sort((a, b) => (a.distance - b.distance));
+  meta = meta.sort((a, b) => a.distance - b.distance);
 
   return meta.map(({ position }) => position);
 }
@@ -111,23 +130,13 @@ export function sortByDistance<T extends Vector2D>(
  * Get array of positions around source position.
  *
  * @param position - Source position
- * @param space - Space between source position and around positions
  */
-export function aroundPosition(
-  position: Vector2D,
-  space: number = 0,
-) {
+export function aroundPosition(position: Vector2D) {
   const list: Vector2D[] = [];
-  const shift = space + 1;
 
-  for (let y = position.y - shift; y <= position.y + shift; y++) {
-    for (let x = position.x - shift; x <= position.x + shift; x++) {
-      if (
-        x === position.x - shift
-        || x === position.x + shift
-        || y === position.y - shift
-        || y === position.y + shift
-      ) {
+  for (let y = position.y - 1; y <= position.y + 1; y++) {
+    for (let x = position.x - 1; x <= position.x + 1; x++) {
+      if (!equalPositions({ x, y }, position)) {
         list.push({ x, y });
       }
     }
@@ -142,7 +151,7 @@ export function aroundPosition(
  * @param value - Amount
  */
 export function formatAmount(value: number) {
-  return `${(value > 0) ? '+' : ''}${value}`;
+  return `${value > 0 ? '+' : ''}${value}`;
 }
 
 /**
@@ -162,6 +171,10 @@ export function rawAmount(value: string) {
  * @param keys - Keys to compare
  */
 export function getMutable<T>(current: T[], target: T[], keys: (keyof T)[]) {
+  if (!target) {
+    return current;
+  }
+
   if (current.length !== target.length) {
     return target;
   }
@@ -220,5 +233,7 @@ export function isValidScreenSize() {
  * Check device OS.
  */
 export function isMobileDevice() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  );
 }
