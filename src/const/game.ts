@@ -9,7 +9,7 @@ export const MIN_VALID_SCREEN_SIZE = [800, 480];
 
 export const COPYRIGHT = [
   `© ${pkg.author.name}, 2022-2023`,
-  `Version ${pkg.version} beta`,
+  `Version ${pkg.version}`,
 ];
 
 export const REPOSITORY = pkg.repository.url.replace('git+', '');
