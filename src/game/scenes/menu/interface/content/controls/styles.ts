@@ -6,22 +6,24 @@ export const Control: any = styled.div`
   display: flex;
   align-items: center;
   &:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
   }
 `;
 
 Control.Keys = styled.div`
-  margin-right: 10px;
+  margin-right: 8px;
   display: flex;
 `;
 
 Control.Key = styled.div`
-  color: #fff;
+  color: #000;
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 17px;
-  line-height: 17px;
+  font-size: 15px;
+  line-height: 15px;
   padding: 4px 8px 6px 8px;
-  border: 1px solid #fff;
+  background: #fff;
+  min-width: 28px;
+  text-align: center;
   &:not(:last-child) {
     margin-right: 3px;
   }

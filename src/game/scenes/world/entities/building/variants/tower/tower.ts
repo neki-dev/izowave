@@ -207,8 +207,8 @@ export class BuildingTower extends Building implements IBuildingTower {
   private getTarget() {
     const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
-      && this.actionsAreaContains(enemy)
-      && !this.scene.level.hasTilesBetweenPositions(this, enemy)
+      && this.actionsAreaContains(enemy.body.position)
+      && !this.scene.level.hasTilesBetweenPositions(this, enemy.body.position)
     ));
 
     return getClosest(enemies, this);

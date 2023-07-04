@@ -2,8 +2,8 @@ import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  TILE_META, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT,
-  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_MAP_Z_WEIGHT, LEVEL_TREES_COUNT,
+  LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
+  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_Z_WEIGHT, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Hexagon } from '~scene/world/hexagon';
@@ -32,7 +32,7 @@ export class Level extends TileMatrix implements ILevel {
   private treesTiles: Phaser.GameObjects.Group;
 
   constructor(scene: IWorld) {
-    super(LEVEL_MAP_SIZE, LEVEL_MAP_HEIGHT);
+    super(LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT);
 
     const generator = new WorldGenerator<LevelBiome>({
       width: LEVEL_MAP_SIZE,
@@ -142,7 +142,7 @@ export class Level extends TileMatrix implements ILevel {
     const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
     const c = Math.ceil(d / 52);
     const center = this.scene.player.getBottomCenter();
-    const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * TILE_META.persperctive);
+    const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * LEVEL_TILE_SIZE.persperctive);
 
     this.visibleTiles.getChildren().forEach((tile: ITile) => {
       tile.setVisible(false);
@@ -182,16 +182,16 @@ export class Level extends TileMatrix implements ILevel {
       tile.mapEffects = [];
       tile.biome = biome;
 
-      tile.setOrigin(0.5, TILE_META.origin);
       tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+      tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
       this.putTile(tile, tilePosition, false);
       this.mapTiles.add(tile);
 
       if (biome.z === 1) {
         tile.shape = new Hexagon(
-          positionAtWorld.x - TILE_META.width * 0.5 - 3,
-          positionAtWorld.y - TILE_META.height * 0.25,
-          TILE_META.height * 0.5,
+          positionAtWorld.x - LEVEL_TILE_SIZE.width * 0.5 - 3,
+          positionAtWorld.y - LEVEL_TILE_SIZE.height * 0.25,
+          LEVEL_TILE_SIZE.height * 0.5,
         );
       }
     };
@@ -232,7 +232,7 @@ export class Level extends TileMatrix implements ILevel {
         const positionAtWorld = Level.ToWorldPosition(tilePosition);
         const tile = this.scene.add.image(
           positionAtWorld.x,
-          positionAtWorld.y - 19,
+          positionAtWorld.y,
           LevelTexture.TREE,
           Phaser.Math.Between(0, 3),
         ) as ITile;
@@ -242,7 +242,7 @@ export class Level extends TileMatrix implements ILevel {
 
         // Configure tile
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-        tile.setOrigin(0.5, TILE_META.origin);
+        tile.setOrigin(0.5, LEVEL_TREE_TILE_SIZE.origin);
         this.putTile(tile, tilePosition);
         this.treesTiles.add(tile);
       }
@@ -250,7 +250,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static ToMatrixPosition(positionAtWorld: Vector2D) {
-    const { width, height, origin } = TILE_META;
+    const { width, height, origin } = LEVEL_TILE_SIZE;
     const n = {
       x: (positionAtWorld.x / (width * 0.5)),
       y: (positionAtWorld.y / (height * origin)),
@@ -264,7 +264,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static ToWorldPosition(tilePosition: Vector3D) {
-    const { width, height, origin } = TILE_META;
+    const { width, height, origin } = LEVEL_TILE_SIZE;
     const positionAtWorld: Vector2D = {
       x: (tilePosition.x - tilePosition.y) * (width * 0.5),
       y: (tilePosition.x + tilePosition.y) * (height * origin) - (tilePosition.z * (height * 0.5)),
@@ -273,13 +273,12 @@ export class Level extends TileMatrix implements ILevel {
     return positionAtWorld;
   }
 
-  static GetTileDepth(YAtWorld: number, tileZ: number) {
-    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT) + TILE_META.height;
+  static GetDepth(YAtWorld: number, tileZ: number, offset: number = 0) {
+    return YAtWorld + (tileZ * LEVEL_Z_WEIGHT) + offset;
   }
 
-  // TODO: Fix depth for large sprites
-  static GetDepth(YAtWorld: number, tileZ: number, height: number) {
-    return YAtWorld + (tileZ * LEVEL_MAP_Z_WEIGHT) + height;
+  static GetTileDepth(YAtWorld: number, tileZ: number) {
+    return YAtWorld + (tileZ * LEVEL_Z_WEIGHT) + LEVEL_TILE_SIZE.height * 0.5;
   }
 
   static GetBiome(type: BiomeType): Nullable<LevelBiome> {
@@ -287,11 +286,5 @@ export class Level extends TileMatrix implements ILevel {
   }
 }
 
-registerSpriteAssets(LevelTexture.TILESET, {
-  width: TILE_META.width,
-  height: TILE_META.height,
-});
-registerSpriteAssets(LevelTexture.TREE, {
-  width: TILE_META.width,
-  height: TILE_META.height * 1.5,
-});
+registerSpriteAssets(LevelTexture.TILESET, LEVEL_TILE_SIZE);
+registerSpriteAssets(LevelTexture.TREE, LEVEL_TREE_TILE_SIZE);

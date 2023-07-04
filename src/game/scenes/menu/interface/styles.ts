@@ -93,7 +93,7 @@ export const Content: any = styled.div`
 
 Content.Title = styled.div`
   color: #fff;
-  opacity: 0.3;
+  opacity: 0.5;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 46px;
   line-height: 46px;

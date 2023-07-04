@@ -7,6 +7,12 @@ export const AUDIO_VOLUME = 0.1;
 
 export const MIN_VALID_SCREEN_SIZE = [800, 480];
 
+export const DEBUG_MODS = {
+  basic: false,
+  position: false,
+  path: false,
+};
+
 export const COPYRIGHT = [
   `© ${pkg.author.name}, 2022-2023`,
   `Version ${pkg.version}`,

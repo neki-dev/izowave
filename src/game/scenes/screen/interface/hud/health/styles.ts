@@ -1,28 +1,28 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~type/interface';
+import { InterfaceColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
   background: #000;
-  padding: 2px;
-  width: 130px;
+  width: 80px;
   position: relative;
 `;
 
 export const Progress = styled.div`
-  height: 24px;
-  background: #e4372c;
+  height: 20px;
+  background: ${InterfaceColor.INFO_DARK};
 `;
 
 export const Value = styled.div`
   position: absolute;
   font-family: ${InterfaceFont.PIXEL};
   color: #fff;
-  font-size: 12px;
-  line-height: 12px;
-  text-shadow: 2px 2px 0 #000;
+  font-size: 11px;
+  line-height: 11px;
+  text-shadow: 1px 1px 0 #000;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  margin-top: -1px;
+  width: 100%;
+  text-align: center;
 `;

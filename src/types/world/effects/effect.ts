@@ -21,5 +21,4 @@ export type EffectData = {
   rate?: number
   permanentFrame?: number
   scale?: number
-  depth?: number
 };

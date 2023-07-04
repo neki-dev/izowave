@@ -13,11 +13,7 @@ export const ComponentResources: React.FC = () => {
     setAmount(game.world.player.resources);
   });
 
-  return (
-    <ComponentWidget label="RESOURCES" icon="resources">
-      {amount}
-    </ComponentWidget>
-  );
+  return <ComponentWidget icon="resources">{amount}</ComponentWidget>;
 };
 
 ComponentResources.displayName = 'ComponentResources';

@@ -25,11 +25,6 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly live: ILive
 
   /**
-   * Movement speed.
-   */
-  readonly speed: number
-
-  /**
    * Levels of upgrades.
    */
   readonly upgradeLevel: Record<PlayerUpgrade, number>

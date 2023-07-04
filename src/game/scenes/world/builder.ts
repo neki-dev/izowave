@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { TILE_META } from '~const/world/level';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
@@ -376,7 +376,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private createBuildArea() {
     const d = this.radius * 2;
 
-    this.buildArea = this.scene.add.ellipse(0, 0, d, d * TILE_META.persperctive);
+    this.buildArea = this.scene.add.ellipse(0, 0, d, d * LEVEL_TILE_SIZE.persperctive);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
     this.updateBuildArea();
   }
@@ -384,10 +384,10 @@ export class Builder extends EventEmitter implements IBuilder {
   private updateBuildArea() {
     const position = this.scene.player.getBottomCenter();
     const d = this.radius * 2;
-    const depth = Level.GetDepth(position.y, 0, d * TILE_META.persperctive);
+    const depth = Level.GetDepth(position.y, 0, d * LEVEL_TILE_SIZE.persperctive);
 
     this.buildArea.setPosition(position.x, position.y);
-    this.buildArea.setSize(d, d * TILE_META.persperctive);
+    this.buildArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
     this.buildArea.setDepth(depth);
   }
 
@@ -400,7 +400,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
-    this.buildingPreview.setOrigin(0.5, TILE_META.origin);
+    this.buildingPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.updateBuildingPreview();
   }
 

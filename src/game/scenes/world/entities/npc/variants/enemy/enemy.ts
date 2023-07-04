@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
-import { TILE_META } from '~const/world/level';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
 import { progression } from '~lib/utils';
@@ -22,7 +21,7 @@ export class Enemy extends NPC implements IEnemy {
   private freezeTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, scale = 1.0, multipliers = {},
+    positionAtMatrix, texture, multipliers = {},
   }: EnemyData) {
     super(scene, {
       texture,
@@ -48,12 +47,14 @@ export class Enemy extends NPC implements IEnemy {
     scene.add.existing(this);
     scene.entityGroups.enemies.add(this);
 
+    this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
       (multipliers.health ?? 1.0)
       + (multipliers.damage ?? 1.0)
       + (multipliers.speed ?? 1.0)
     ) / 3;
 
+    const scale = ENEMY_TEXTURE_META[texture].scale ?? 1.0;
     const offset = scale * 2;
 
     this.body.setCircle((this.width / 2) - offset, offset, offset);
@@ -82,7 +83,7 @@ export class Enemy extends NPC implements IEnemy {
     super.update();
 
     if (this.isPathPassed) {
-      this.moveTo(this.scene.player);
+      this.moveTo(this.scene.player.getPositionOnGround());
     }
   }
 
@@ -98,6 +99,7 @@ export class Enemy extends NPC implements IEnemy {
     new Particles(this, {
       type: ParticlesType.GLOW,
       duration: 250,
+      positionAtWorld: this.getBodyOffset(),
       params: {
         follow: this,
         lifespan: { min: 100, max: 150 },
@@ -152,9 +154,8 @@ export class Enemy extends NPC implements IEnemy {
 
     const effect = new Effect(this.scene, {
       texture: EffectTexture.BLOOD,
-      position: this,
+      position: this.getPositionOnGround(),
       permanentFrame: Phaser.Math.Between(0, 3),
-      depth: this.y + (TILE_META.height * 0.5),
     });
 
     this.currentGroundTile.mapEffects?.push(effect);
@@ -193,7 +194,4 @@ export class Enemy extends NPC implements IEnemy {
   }
 }
 
-registerSpriteAssets(EnemyTexture, (texture: EnemyTexture) => ({
-  width: ENEMY_TEXTURE_META[texture].size,
-  height: ENEMY_TEXTURE_META[texture].size,
-}));
+registerSpriteAssets(EnemyTexture, (texture: EnemyTexture) => ENEMY_TEXTURE_META[texture].size);

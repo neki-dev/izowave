@@ -1,12 +1,9 @@
 import styled from 'styled-components';
 
-import { InterfaceColor } from '~type/interface';
-
 export const Container = styled.div`
-  width: 78px;
-  height: 78px;
-  background: ${InterfaceColor.BLUE_DARK};
-  border: 2px solid #000;
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.75);
 `;
 
 export const Image = styled.img`

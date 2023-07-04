@@ -9,12 +9,12 @@ export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
   readonly scene: IWorld;
 
   constructor(scene: IWorld, {
-    texture, position, audio, permanentFrame, depth, scale = 1.0, rate = 16,
+    texture, position, audio, permanentFrame, scale = 1.0, rate = 16,
   }: EffectData) {
     super(scene, position.x, position.y, texture, permanentFrame ?? 0);
     scene.add.existing(this);
 
-    this.setDepth(depth ?? Level.GetTileDepth(this.y, 1));
+    this.setDepth(Level.GetDepth(this.y, 1));
     this.setScale(scale);
 
     if (audio) {

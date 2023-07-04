@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_UI } from '~const/world';
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
@@ -11,8 +12,6 @@ import { Vector2D } from '~type/world/level';
 
 export class NPC extends Sprite implements INPC {
   public damage: Nullable<number> = null;
-
-  public speed: number;
 
   public isPathPassed: boolean = false;
 
@@ -30,12 +29,13 @@ export class NPC extends Sprite implements INPC {
     positionAtMatrix, texture, health, speed, pathFindTriggerDistance,
     damage = null, frameRate = 4,
   }: NPCData) {
-    super(scene, { texture, positionAtMatrix, health });
+    super(scene, {
+      texture, positionAtMatrix, health, speed,
+    });
     scene.add.existing(this);
     scene.entityGroups.npc.add(this);
 
     this.damage = damage;
-    this.speed = speed;
     this.pathFindTriggerDistance = pathFindTriggerDistance;
 
     this.setVisible(this.atVisibleTile());
@@ -127,11 +127,14 @@ export class NPC extends Sprite implements INPC {
   }
 
   public getDistanceToTarget() {
-    return Phaser.Math.Distance.BetweenPoints(this.scene.player, this);
+    return Phaser.Math.Distance.BetweenPoints(
+      this.getPositionOnGround(),
+      this.scene.player.getPositionOnGround(),
+    );
   }
 
   public moveTo(position: Vector2D) {
-    const direction = Phaser.Math.Angle.Between(this.x, this.y, position.x, position.y);
+    const direction = Phaser.Math.Angle.BetweenPoints(this.getPositionOnGround(), position);
     const velocity = this.scene.physics.velocityFromRotation(direction, this.speed);
     const collide = this.handleCollide(direction);
 
@@ -144,7 +147,6 @@ export class NPC extends Sprite implements INPC {
 
     this.body.setImmovable(false);
     this.setVelocity(velocity.x, velocity.y);
-    this.flipX = velocity.x < 0;
   }
 
   private nextPathTile() {
@@ -197,7 +199,7 @@ export class NPC extends Sprite implements INPC {
   }
 
   private addDebugPath() {
-    if (!this.scene.physics.world.drawDebug) {
+    if (!DEBUG_MODS.path) {
       return;
     }
 

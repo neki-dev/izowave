@@ -29,7 +29,7 @@ export interface IEnemyTarget {
 
 export enum EnemyTexture {
   BAT = 'enemy/bat',
-  JELLYFISH = 'enemy/jellyfish',
+  SPIKE = 'enemy/spike',
   DEMON = 'enemy/demon',
   OVERLORD = 'enemy/overlord',
   BOSS = 'enemy/boss',
@@ -39,7 +39,7 @@ export enum EnemyTexture {
 
 export enum EnemyVariant {
   BAT = 'BAT',
-  JELLYFISH = 'JELLYFISH',
+  SPIKE = 'SPIKE',
   DEMON = 'DEMON',
   OVERLORD = 'OVERLORD',
   BOSS = 'BOSS',
@@ -49,7 +49,12 @@ export enum EnemyVariant {
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {
   frameRate: number
-  size: number
+  scale?: number
+  size: {
+    width: number
+    height: number
+    gamut: number
+  }
 }>;
 
 export type EnemyVariantData = {
@@ -58,7 +63,6 @@ export type EnemyVariantData = {
 
 export type EnemyData = EnemyVariantData & {
   texture: EnemyTexture
-  scale?: number
   multipliers?: {
     speed?: number
     damage?: number

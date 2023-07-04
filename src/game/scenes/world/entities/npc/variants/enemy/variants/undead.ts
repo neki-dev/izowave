@@ -12,7 +12,6 @@ export class EnemyUndead extends Enemy {
     super(scene, {
       ...data,
       texture: EnemyTexture.UNDEAD,
-      scale: 1.8,
       multipliers: {
         health: 1.6,
         damage: 0.2,

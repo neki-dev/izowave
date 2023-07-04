@@ -26,6 +26,16 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   readonly container: Phaser.GameObjects.Container
 
   /**
+   * Movement speed.
+   */
+  speed: number
+
+  /**
+   * Depth of sprite size.
+   */
+  gamut: number
+
+  /**
    * Tile below sprite.
    */
   currentGroundTile: Nullable<ITile>
@@ -39,6 +49,16 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
    * Get all occupied positions by body.
    */
   getAllPositionsAtMatrix(): Vector2D[]
+
+  /**
+   * Get position with gamut offset.
+   */
+  getPositionOnGround(): Vector2D
+
+  /**
+   * Get body offset by position.
+   */
+  getBodyOffset(): Vector2D
 
   /**
    * Set collision for tiles.
@@ -71,4 +91,5 @@ export type SpriteData = {
   positionAtMatrix: Vector2D
   frame?: number
   health: number
+  speed: number
 };

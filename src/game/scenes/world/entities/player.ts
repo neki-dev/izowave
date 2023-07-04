@@ -5,7 +5,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import {
   PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_UPGRADES,
 } from '~const/world/entities/player';
-import { LEVEL_MAP_VISITED_TILE_TINT } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
@@ -52,12 +51,6 @@ export class Player extends Sprite implements IPlayer {
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private _speed: number = DIFFICULTY.PLAYER_SPEED;
-
-  public get speed() { return this._speed; }
-
-  private set speed(v) { this._speed = v; }
-
   private movementKeys: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
 
   private direction: number = 0;
@@ -71,6 +64,7 @@ export class Player extends Sprite implements IPlayer {
       ...data,
       texture: PlayerTexture.PLAYER,
       health: DIFFICULTY.PLAYER_HEALTH,
+      speed: DIFFICULTY.PLAYER_SPEED,
     });
     scene.add.existing(this);
 
@@ -79,9 +73,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.addAssistant();
 
-    this.body.setCircle(3, 5, 10);
-    this.setScale(2.0);
-    this.setOrigin(0.5, 0.75);
+    this.body.setSize(10, 14);
+    this.gamut = PLAYER_TILE_SIZE.gamut;
 
     this.addHealthIndicator(0xd0ff4f);
 
@@ -253,6 +246,9 @@ export class Player extends Sprite implements IPlayer {
     this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
     this.scene.sound.play(PlayerAudio.DEAD);
 
+    this.setVelocity(0, 0);
+    this.body.setImmovable(true);
+
     this.stopMovement();
     this.scene.tweens.add({
       targets: [this, this.container],
@@ -364,6 +360,8 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private stopMovement() {
+    this.isMoving = false;
+
     if (this.anims.currentAnim) {
       this.anims.setProgress(0);
       this.anims.stop();
@@ -390,7 +388,7 @@ export class Player extends Sprite implements IPlayer {
     }
 
     if ([BiomeType.SAND, BiomeType.GRASS].includes(this.currentGroundTile.biome.type)) {
-      this.currentGroundTile.setTint(LEVEL_MAP_VISITED_TILE_TINT);
+      this.currentGroundTile.setTint(0xDDDDDD);
     }
   }
 
@@ -413,7 +411,4 @@ export class Player extends Sprite implements IPlayer {
 }
 
 registerAudioAssets(PlayerAudio);
-registerSpriteAssets(PlayerTexture, {
-  width: PLAYER_TILE_SIZE[0],
-  height: PLAYER_TILE_SIZE[1],
-});
+registerSpriteAssets(PlayerTexture, PLAYER_TILE_SIZE);

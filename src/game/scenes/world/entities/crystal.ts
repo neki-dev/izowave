@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { TILE_META } from '~const/world/level';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progression } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
@@ -32,9 +32,8 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
 
     this.setVisible(isVisibleTile);
-
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-    this.setOrigin(0.5, TILE_META.origin);
+    this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
   }
 
@@ -49,7 +48,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       type: ParticlesType.BIT,
       positionAtWorld: {
         x: this.x,
-        y: this.y + 12,
+        y: this.y + 16,
       },
       duration: 300,
       params: {
@@ -77,7 +76,4 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 }
 
 registerAudioAssets(CrystalAudio);
-registerSpriteAssets(CrystalTexture, {
-  width: 40,
-  height: 40,
-});
+registerSpriteAssets(CrystalTexture, LEVEL_TILE_SIZE);

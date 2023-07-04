@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 
-import { AUDIO_VOLUME, CONTAINER_ID, SETTINGS } from '~const/game';
+import {
+  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, SETTINGS,
+} from '~const/game';
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
@@ -82,7 +84,7 @@ export class Game extends Phaser.Game implements IGame {
       physics: {
         default: 'arcade',
         arcade: {
-          // debug: IS_DEV_MODE,
+          debug: DEBUG_MODS.basic,
           fps: 60,
           gravity: { y: 0 },
         },

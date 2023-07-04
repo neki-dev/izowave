@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
+import { WORLD_MAX_ZOOM } from '~const/world';
 import { Interface } from '~lib/interface';
 import { Level } from '~scene/world/level';
 import { IGame, GameScene } from '~type/game';
@@ -33,7 +34,7 @@ export class Menu extends Phaser.Scene implements IMenu {
     const beg = Level.ToWorldPosition({ x: 0, y: size, z: 0 });
     const end = Level.ToWorldPosition({ x: size, y: 0, z: 0 });
 
-    camera.setZoom(1.8);
+    camera.setZoom(WORLD_MAX_ZOOM);
     camera.pan(beg.x + (this.sys.canvas.width / 2), beg.y, 0);
     setTimeout(() => {
       camera.pan(end.x - (this.sys.canvas.width / 2), end.y, 2 * 60 * 1000);

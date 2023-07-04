@@ -54,7 +54,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       return;
     }
 
-    this.setTo(this.initiator.x, this.initiator.y, this.target.x, this.target.y);
+    this.setTo(this.initiator.x, this.initiator.y, this.target.body.position.x, this.target.body.position.y);
   }
 
   public shoot(target: IEnemy) {
@@ -70,7 +70,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       callback: () => this.processing(),
     });
 
-    this.setTo(this.initiator.x, this.initiator.y, target.x, target.y);
+    this.setTo(this.initiator.x, this.initiator.y, target.body.position.x, target.body.position.y);
     this.setVisible(this.initiator.visible && target.visible);
 
     if (this.scene.game.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
@@ -98,6 +98,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       new Particles(this.target, {
         type: ParticlesType.GLOW,
         duration: 150,
+        positionAtWorld: this.target.getBodyOffset(),
         params: {
           follow: this.target,
           lifespan: { min: 100, max: 150 },
@@ -112,7 +113,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   private processing() {
     if (
       this.target.live.isDead()
-      || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target) > this.params.maxDistance
+      || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target.body.position) > this.params.maxDistance
     ) {
       this.stop();
 

@@ -75,7 +75,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     }
 
     if (isVisibleTile) {
-      const depth = Level.GetDepth(this.y, 1, this.displayHeight);
+      const depth = Level.GetDepth(this.y, 1);
 
       this.setDepth(depth);
     }
@@ -108,7 +108,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.startPosition = { x: this.x, y: this.y };
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.scene.physics.moveTo(this, target.x, target.y, Math.min(this.params.speed, 1200));
+    this.scene.physics.moveTo(this, target.body.position.x, target.body.position.y, Math.min(this.params.speed, 1200));
 
     if (this.scene.game.sound.getAll(this.audio).length < 3) {
       this.scene.game.sound.play(this.audio);
