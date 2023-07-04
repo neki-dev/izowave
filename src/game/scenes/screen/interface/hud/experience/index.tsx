@@ -13,11 +13,7 @@ export const ComponentExperience: React.FC = () => {
     setAmount(game.world.player.experience);
   });
 
-  return (
-    <ComponentWidget label="EXPERIENCE" icon="experience">
-      {amount}
-    </ComponentWidget>
-  );
+  return <ComponentWidget icon="experience">{amount}</ComponentWidget>;
 };
 
 ComponentExperience.displayName = 'ComponentExperience';

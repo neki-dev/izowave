@@ -4,11 +4,12 @@ export const Wrapper = styled.div`
   display: flex;
 `;
 
-export const Column = styled.div`
+export const Group = styled.div`
   &:not(:last-child) {
     margin-right: 16px;
   }
-  > div:not(:last-child) {
-    margin-bottom: 10px;
-  }
+`;
+
+export const Space = styled.div`
+  height: 6px;
 `;

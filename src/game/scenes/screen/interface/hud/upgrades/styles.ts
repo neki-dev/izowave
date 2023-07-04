@@ -12,7 +12,8 @@ export const Button = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 10px;
   line-height: 10px;
-  width: 78px;
+  text-shadow: 1px 1px 0 #000;
+  width: 80px;
   height: 24px;
   display: flex;
   align-items: center;
@@ -23,6 +24,6 @@ export const Button = styled.div`
     background: ${InterfaceColor.BLUE_DARK};
   }
   &.active {
-    background: ${InterfaceColor.INFO_DARK};
+    background: ${InterfaceColor.BLUE};
   }
 `;

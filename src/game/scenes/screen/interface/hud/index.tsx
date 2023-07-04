@@ -4,20 +4,22 @@ import { ComponentAvatar } from './avatar';
 import { ComponentExperience } from './experience';
 import { ComponentHealth } from './health';
 import { ComponentResources } from './resources';
-import { Wrapper, Column } from './styles';
+import { Wrapper, Space, Group } from './styles';
 import { ComponentUpgrades } from './upgrades';
 
 export const ComponentHUD: React.FC = () => (
   <Wrapper>
-    <Column>
+    <Group>
       <ComponentAvatar />
-      <ComponentUpgrades />
-    </Column>
-    <Column>
       <ComponentHealth />
+      <Space />
+      <ComponentUpgrades />
+    </Group>
+    <Group>
       <ComponentExperience />
+      <Space />
       <ComponentResources />
-    </Column>
+    </Group>
   </Wrapper>
 );
 

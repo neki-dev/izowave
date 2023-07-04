@@ -206,8 +206,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public addHealthIndicator(color: number, bySpriteSize = false) {
-    const width = bySpriteSize ? this.displayWidth : 24;
-    const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
+    const width = bySpriteSize ? this.displayWidth : 20;
+    const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
 
     body.setOrigin(0.0, 0.0);
 

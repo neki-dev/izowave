@@ -1,22 +1,20 @@
 import React from 'react';
 
-import { Icon, State, Wrapper } from './styles';
+import { Icon, Value, Wrapper } from './styles';
 
 type Props = {
-  label: string
   children: string | number
   icon: string
 };
 
-export const ComponentWidget: React.FC<Props> = ({ label, children, icon }) => (
+export const ComponentWidget: React.FC<Props> = ({ children, icon }) => (
   <Wrapper>
     <Icon>
       <Icon.Image src={`assets/sprites/interface/${icon}.png`} />
     </Icon>
-    <State>
-      <State.Label>{label}</State.Label>
-      <State.Amount>{children}</State.Amount>
-    </State>
+    <Value>
+      {children}
+    </Value>
   </Wrapper>
 );
 
