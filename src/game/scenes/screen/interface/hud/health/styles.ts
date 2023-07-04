@@ -4,7 +4,6 @@ import { InterfaceColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
   background: #000;
-  padding: 1px;
   width: 80px;
   position: relative;
 `;
