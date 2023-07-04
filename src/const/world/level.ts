@@ -43,7 +43,7 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: false,
-    friction: 5.0,
+    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -54,7 +54,7 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: false,
-    friction: 5.0,
+    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -65,7 +65,7 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: false,
-    friction: 5.0,
+    friction: 1.0,
     spawn: [],
   },
 }, {

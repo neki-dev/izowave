@@ -7,7 +7,11 @@ import {
 
 import { DIFFICULTY } from '../difficulty';
 
-export const PLAYER_TILE_SIZE = [16, 16];
+export const PLAYER_TILE_SIZE = {
+  width: 16,
+  height: 16,
+  gamut: 4,
+};
 
 const {
   RIGHT, LEFT, UP, DOWN, NONE,

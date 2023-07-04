@@ -9,30 +9,59 @@ export const ENEMY_PATH_BREAKPOINT = 32;
 export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
   [EnemyTexture.BAT]: {
     frameRate: 4,
-    size: 16,
+    size: {
+      width: 12,
+      height: 18,
+      gamut: 4,
+    },
   },
   [EnemyTexture.DEMON]: {
     frameRate: 4,
-    size: 16,
+    size: {
+      width: 16,
+      height: 24,
+      gamut: 4,
+    },
   },
-  [EnemyTexture.JELLYFISH]: {
-    frameRate: 5,
-    size: 32,
+  [EnemyTexture.SPIKE]: {
+    frameRate: 4,
+    size: {
+      width: 16,
+      height: 26,
+      gamut: 4,
+    },
   },
   [EnemyTexture.UNDEAD]: {
     frameRate: 4,
-    size: 18,
+    size: {
+      width: 18,
+      height: 26,
+      gamut: 4,
+    },
   },
   [EnemyTexture.OVERLORD]: {
     frameRate: 8,
-    size: 32,
+    size: {
+      width: 32,
+      height: 40,
+      gamut: 6,
+    },
   },
   [EnemyTexture.IMPURE]: {
     frameRate: 8,
-    size: 32,
+    size: {
+      width: 32,
+      height: 40,
+      gamut: 6,
+    },
   },
   [EnemyTexture.BOSS]: {
     frameRate: 4,
-    size: 50,
+    scale: 2.0,
+    size: {
+      width: 32,
+      height: 40,
+      gamut: 6,
+    },
   },
 };

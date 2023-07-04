@@ -12,7 +12,6 @@ export class EnemyBat extends Enemy {
     super(scene, {
       ...data,
       texture: EnemyTexture.BAT,
-      scale: 1.5,
       multipliers: {
         health: 0.35,
         damage: 0.1,

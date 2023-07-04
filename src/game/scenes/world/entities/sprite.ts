@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
-import { WORLD_COLLIDE_SPEED_FACTOR } from '~const/world';
+import { DEBUG_MODS } from '~const/game';
+import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_UI } from '~const/world';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -21,6 +22,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   readonly container: Phaser.GameObjects.Container;
 
+  public gamut: number = 0;
+
   public speed: number = 0;
 
   public currentGroundTile: Nullable<ITile> = null;
@@ -38,6 +41,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private collisionGround: boolean = false;
 
   private healthIndicator: Phaser.GameObjects.Container;
+
+  private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   constructor(scene: IWorld, {
     texture, positionAtMatrix, health, speed, frame = 0,
@@ -57,6 +62,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.setPushable(false);
+    this.setOrigin(0.5, 1.0);
+    this.addDebugPosition();
 
     this.live.on(LiveEvents.DAMAGE, () => {
       this.onDamage();
@@ -72,7 +79,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public update() {
     super.update();
 
-    this.positionAtMatrix = Level.ToMatrixPosition(this);
+    this.positionAtMatrix = Level.ToMatrixPosition(this.getPositionOnGround());
     this.currentGroundTile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
 
     this.container.setVisible(this.visible);
@@ -88,6 +95,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
       this.updateHealthIndicator();
     }
+
+    this.drawDebugGroundPosition();
   }
 
   public isStopped() {
@@ -95,7 +104,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public getAllPositionsAtMatrix() {
-    return this.getCorners().map((point) => Level.ToMatrixPosition(point));
+    return this.getGamutCorners().map((point) => Level.ToMatrixPosition(point));
   }
 
   public setTilesCollision(
@@ -120,6 +129,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return Boolean(tile);
   }
 
+  // TODO: Fix sticking enemies in buildings
   private getCollidedTile(direction: number) {
     if (this.collisionTargets.length === 0 && !this.collisionGround) {
       return false;
@@ -131,9 +141,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check ground collision
     if (this.collisionGround) {
+      const currentPositionAtWorld = this.getPositionOnGround();
       const positionAtMatrix = Level.ToMatrixPosition({
-        x: this.x + offset.x,
-        y: this.y + offset.y,
+        x: currentPositionAtWorld.x + offset.x,
+        y: currentPositionAtWorld.y + offset.y,
       });
       const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
 
@@ -144,9 +155,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check wall collision
     if (this.collisionTargets.length > 0) {
-      const occupiedTiles = this.getCorners().map((point) => Level.ToMatrixPosition({
+      const occupiedTiles = this.getGamutCorners().map((point) => Level.ToMatrixPosition({
         x: point.x + offset.x,
-        y: point.y + offset.y,
+        y: point.y - this.getGamutOffset() + offset.y,
       }));
 
       for (const positionAtMatrix of occupiedTiles) {
@@ -161,17 +172,36 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return false;
   }
 
-  private getCorners() {
-    const count = 8;
-    const r = this.body.width / 2;
-    const l = Phaser.Math.PI2 / count;
+  public getPositionOnGround(): Vector2D {
+    return {
+      x: this.x,
+      y: this.y - this.getGamutOffset(),
+    };
+  }
 
+  public getBodyOffset(): Vector2D {
+    return {
+      x: 0,
+      y: this.body.position.y - this.y,
+    };
+  }
+
+  private getGamutOffset(): number {
+    return this.gamut * this.scaleY * 0.5;
+  }
+
+  private getGamutCorners() {
+    const count = 8;
+    const rX = this.displayWidth * 0.4;
+    const rY = this.getGamutOffset();
+    const l = Phaser.Math.PI2 / count;
+    const position = this.getPositionOnGround();
     const points: Vector2D[] = [];
 
     for (let u = 0; u < count; u++) {
       points.push({
-        x: (this.body.position.x + r) + Math.sin(u * l) * r,
-        y: (this.body.position.y + r) - Math.cos(u * l) * r,
+        x: position.x + Math.sin(u * l) * rX,
+        y: position.y - Math.cos(u * l) * rY,
       });
     }
 
@@ -179,7 +209,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public addHealthIndicator(color: number, bySpriteSize = false) {
-    const width = bySpriteSize ? this.displayWidth * 1.5 : 24;
+    const width = bySpriteSize ? this.displayWidth : 24;
     const body = this.scene.add.rectangle(0, 0, width, 6, 0x000000);
 
     body.setOrigin(0.0, 0.0);
@@ -202,6 +232,60 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     bar.setSize((this.healthIndicator.width - 2) * value, this.healthIndicator.height - 2);
   }
 
+  private addDebugPosition() {
+    if (!DEBUG_MODS.position) {
+      return;
+    }
+
+    this.positionDebug = this.scene.add.graphics();
+    this.positionDebug.setDepth(WORLD_DEPTH_UI);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.positionDebug?.destroy();
+    });
+  }
+
+  private drawDebugGroundPosition() {
+    if (!this.positionDebug) {
+      return;
+    }
+
+    this.positionDebug.clear();
+
+    // Position
+    this.positionDebug.lineStyle(1, 0xff0000);
+    this.positionDebug.beginPath();
+
+    const position = this.getPositionOnGround();
+
+    this.positionDebug.moveTo(position.x, position.y);
+    this.positionDebug.lineTo(position.x + 10, position.y);
+    this.positionDebug.moveTo(position.x, position.y);
+    this.positionDebug.lineTo(position.x, position.y + 10);
+
+    this.positionDebug.closePath();
+    this.positionDebug.strokePath();
+
+    // Corners
+    this.positionDebug.lineStyle(1, 0xffffff);
+    this.positionDebug.beginPath();
+
+    const corners = this.getGamutCorners();
+
+    const points = [
+      ...corners,
+      corners[0],
+    ];
+
+    for (let i = 1; i < points.length; i++) {
+      this.positionDebug.moveTo(points[i - 1].x, points[i - 1].y);
+      this.positionDebug.lineTo(points[i].x, points[i].y);
+    }
+
+    this.positionDebug.closePath();
+    this.positionDebug.strokePath();
+  }
+
   public onDamage() {
     if (!this.visible) {
       return;
@@ -210,6 +294,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     new Particles(this, {
       type: ParticlesType.BIT,
       duration: 250,
+      positionAtWorld: this.getBodyOffset(),
       params: {
         follow: this,
         lifespan: { min: 100, max: 250 },

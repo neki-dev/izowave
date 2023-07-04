@@ -233,8 +233,8 @@ export class World extends Phaser.Scene implements IWorld {
 
     this.cameras.main.resetFX();
     this.cameras.main.startFollow(this.player);
-    this.cameras.main.setZoom(1.3);
-    this.cameras.main.zoomTo(1.0, 100);
+    this.cameras.main.setZoom(WORLD_MIN_ZOOM);
+    this.cameras.main.zoomTo(WORLD_MAX_ZOOM, 100);
 
     this.player.live.on(LiveEvents.DEAD, () => {
       this.game.finishGame();
@@ -270,18 +270,14 @@ export class World extends Phaser.Scene implements IWorld {
 
   private addZoomControl() {
     this.input.keyboard.on(CONTROL_KEY.ZOOM_IN, () => {
-      const currentZoom = this.cameras.main.zoom;
-
-      if (currentZoom < WORLD_MAX_ZOOM) {
-        this.cameras.main.zoomTo(currentZoom + 0.5, 300);
+      if (this.cameras.main.zoom < WORLD_MAX_ZOOM) {
+        this.cameras.main.zoomTo(WORLD_MIN_ZOOM, 300);
       }
     });
 
     this.input.keyboard.on(CONTROL_KEY.ZOOM_OUT, () => {
-      const currentZoom = this.cameras.main.zoom;
-
-      if (currentZoom > WORLD_MIN_ZOOM) {
-        this.cameras.main.zoomTo(currentZoom - 0.5, 300);
+      if (this.cameras.main.zoom > WORLD_MIN_ZOOM) {
+        this.cameras.main.zoomTo(WORLD_MAX_ZOOM, 300);
       }
     });
   }

@@ -12,7 +12,6 @@ export class EnemyImpure extends Enemy {
     super(scene, {
       ...data,
       texture: EnemyTexture.IMPURE,
-      scale: 1.35,
       multipliers: {
         health: 1.3,
         damage: 0.6,

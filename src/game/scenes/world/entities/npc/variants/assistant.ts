@@ -45,6 +45,7 @@ export class Assistant extends NPC implements IAssistant {
     this.shot.setInitiator(this);
     this.shotDefaultParams = this.shot.params;
 
+    this.gamut = ASSISTANT_TILE_SIZE.gamut;
     this.owner = owner;
     this.level = level;
 
@@ -85,7 +86,7 @@ export class Assistant extends NPC implements IAssistant {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
         audio: AssistantAudio.DEAD,
-        position: this,
+        position: this.body.position,
       });
     }
 
@@ -128,8 +129,8 @@ export class Assistant extends NPC implements IAssistant {
 
     const enemies = this.scene.getEnemies().filter((enemy) => (
       !enemy.live.isDead()
-      && Phaser.Math.Distance.BetweenPoints(this, enemy) <= maxDistance
-      && !this.scene.level.hasTilesBetweenPositions(this, enemy)
+      && Phaser.Math.Distance.BetweenPoints(this.body.position, enemy.body.position) <= maxDistance
+      && !this.scene.level.hasTilesBetweenPositions(this.body.position, enemy.body.position)
     ));
 
     return getClosest(enemies, this);
@@ -159,7 +160,4 @@ export class Assistant extends NPC implements IAssistant {
 }
 
 registerAudioAssets(AssistantAudio);
-registerSpriteAssets(AssistantTexture, {
-  width: ASSISTANT_TILE_SIZE[0],
-  height: ASSISTANT_TILE_SIZE[1],
-});
+registerSpriteAssets(AssistantTexture, ASSISTANT_TILE_SIZE);

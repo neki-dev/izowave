@@ -287,10 +287,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 }
 
-registerSpriteAssets(LevelTexture.TILESET, {
-  width: TILE_META.width,
-  height: TILE_META.height,
-});
+registerSpriteAssets(LevelTexture.TILESET, TILE_META);
 registerSpriteAssets(LevelTexture.TREE, {
   width: TILE_META.width,
   height: TILE_META.height * 1.5,

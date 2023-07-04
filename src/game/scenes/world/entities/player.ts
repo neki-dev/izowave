@@ -74,9 +74,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.addAssistant();
 
-    this.body.setCircle(3, 5, 10);
-    this.setScale(2.0);
-    this.setOrigin(0.5, 0.75);
+    this.body.setSize(10, 14);
+    this.gamut = PLAYER_TILE_SIZE.gamut;
 
     this.addHealthIndicator(0xd0ff4f);
 
@@ -248,6 +247,9 @@ export class Player extends Sprite implements IPlayer {
     this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
     this.scene.sound.play(PlayerAudio.DEAD);
 
+    this.setVelocity(0, 0);
+    this.body.setImmovable(true);
+
     this.stopMovement();
     this.scene.tweens.add({
       targets: [this, this.container],
@@ -359,6 +361,8 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private stopMovement() {
+    this.isMoving = false;
+
     if (this.anims.currentAnim) {
       this.anims.setProgress(0);
       this.anims.stop();
@@ -408,7 +412,4 @@ export class Player extends Sprite implements IPlayer {
 }
 
 registerAudioAssets(PlayerAudio);
-registerSpriteAssets(PlayerTexture, {
-  width: PLAYER_TILE_SIZE[0],
-  height: PLAYER_TILE_SIZE[1],
-});
+registerSpriteAssets(PlayerTexture, PLAYER_TILE_SIZE);

@@ -234,6 +234,7 @@ export class Wave extends EventEmitter implements IWave {
 
     const variants: EnemyVariant[] = [];
 
+    // TODO: Fix frequency
     eachEntries(ENEMIES, (type, Instance) => {
       if (Instance.SpawnMinWave <= this.number) {
         for (let k = 0; k < Instance.SpawnFrequency; k++) {

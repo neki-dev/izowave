@@ -49,7 +49,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       type: ParticlesType.BIT,
       positionAtWorld: {
         x: this.x,
-        y: this.y + 12,
+        y: this.y + 10,
       },
       duration: 300,
       params: {
@@ -77,7 +77,4 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 }
 
 registerAudioAssets(CrystalAudio);
-registerSpriteAssets(CrystalTexture, {
-  width: 40,
-  height: 40,
-});
+registerSpriteAssets(CrystalTexture, TILE_META);
