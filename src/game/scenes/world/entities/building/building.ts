@@ -50,6 +50,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
 
+  private alertTween: Nullable<Phaser.Tweens.Tween> = null;
+
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
   public hasAlert: boolean = false;
@@ -137,8 +139,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
+    this.updateAlert();
 
-    // Fix focus by camera moving
+    // Catch focus by camera moving
     if (this.toFocus) {
       this.focus();
     }
@@ -393,12 +396,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       const color: number = {
         [BuildingOutlineState.FOCUSED]: 0xffffff,
         [BuildingOutlineState.SELECTED]: 0xd0ff4f,
-        [BuildingOutlineState.ALERT]: 0xffa200,
       }[state];
 
       if (this.outlineState === BuildingOutlineState.NONE) {
         this.addShader('OutlineShader', {
-          size: 0.0,
+          size: 3.0,
           color,
         });
 
@@ -421,6 +423,33 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.outlineState = state;
   }
 
+  private updateAlert() {
+    if (this.hasAlert) {
+      if (!this.alertTween) {
+        const targetColor = [255, 160, 160];
+
+        this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+          targets: this,
+          tintForce: { from: 0.0, to: 1.0 },
+          duration: 600,
+          ease: 'Linear',
+          yoyo: true,
+          repeat: -1,
+          onUpdate: (_, __, ___, force: number) => {
+            const [r, g, b] = targetColor.map((c) => c + (255 - c) * force);
+            const color = Phaser.Display.Color.GetColor(r, g, b);
+
+            this.setTint(color);
+          },
+        });
+      }
+    } else if (this.alertTween) {
+      this.clearTint();
+      this.alertTween.destroy();
+      this.alertTween = null;
+    }
+  }
+
   private updateOutline() {
     let outlineState = BuildingOutlineState.NONE;
 
@@ -428,9 +457,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       outlineState = BuildingOutlineState.SELECTED;
     } else if (this.isFocused) {
       outlineState = BuildingOutlineState.FOCUSED;
-    } else if (this.hasAlert) {
-      outlineState = BuildingOutlineState.ALERT;
     }
+
     this.setOutline(outlineState);
   }
 

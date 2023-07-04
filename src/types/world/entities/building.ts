@@ -176,7 +176,6 @@ export enum BuildingOutlineState {
   NONE = 'NONE',
   FOCUSED = 'FOCUSED',
   SELECTED = 'SELECTED',
-  ALERT = 'ALERT',
 }
 
 export type BuildingActionsParams = {
