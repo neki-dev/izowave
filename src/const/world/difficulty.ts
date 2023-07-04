@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade player speed (N * upgrade level)
   PLAYER_SPEED_GROWTH: 0.08, // Growth speed by upgrade
   PLAYER_HEALTH: 100, // Default player health
-  PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade player health (N * upgrade level)
+  PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade player health (N * upgrade level)
   PLAYER_HEALTH_GROWTH: 0.2, // Growth health by upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade
 
@@ -16,9 +16,9 @@ export const DIFFICULTY = {
    * Assistant
    */
 
-  ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade assistant (N * upgrade level)
+  ASSISTANT_EXPERIENCE_TO_UPGRADE: 120, // Experience need to upgrade assistant (N * upgrade level)
   ASSISTANT_ATTACK_DAMAGE: 15, // Default assistant damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.2, // Assistant damage growth by upgrade level
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.3, // Assistant damage growth by upgrade level
   ASSISTANT_ATTACK_SPEED: 500, // Assistant attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level
   ASSISTANT_ATTACK_DISTANCE: 70, // Assistant maximum attack distance
@@ -34,7 +34,7 @@ export const DIFFICULTY = {
   WAVE_TIMELEFT_GROWTH: 0.15, // Growth pause by wave number
   WAVE_SEASON_LENGTH: 5, // Count of wave numbers in season
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
-  WAVE_ENEMIES_COUNT_GROWTH: 0.3, // Enemies count growth by wave number
+  WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Default pause in milliseconds between enemies spawn
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.025, // Enemies spawn pause growth by wave number
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
@@ -53,11 +53,11 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 100, // Enemy default health
-  ENEMY_HEALTH_GROWTH: 0.25, // Enemy health growth by wave number
+  ENEMY_HEALTH_GROWTH: 0.22, // Enemy health growth by wave number
   ENEMY_SPEED: 100, // Enemy default speed
   ENEMY_SPEED_GROWTH: 0.1, // Enemy speed growth by wave number
   ENEMY_DAMAGE: 100, // Enemy default damage
-  ENEMY_DAMAGE_GROWTH: 0.15, // Enemy damage growth by wave number
+  ENEMY_DAMAGE_GROWTH: 0.14, // Enemy damage growth by wave number
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number
 
