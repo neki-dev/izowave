@@ -34,7 +34,11 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private set variant(v) { this._variant = v; }
 
-  public radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
+  private _radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
+
+  public get radius() { return this._radius; }
+
+  private set radius(v) { this._radius = v; }
 
   constructor(scene: IWorld) {
     super();
@@ -84,9 +88,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   public update() {
     if (this.isCanBuild()) {
-      if (this.isBuild) {
-        this.updateBuildArea();
-      } else {
+      if (!this.isBuild) {
         this.openBuilder();
       }
     } else if (this.isBuild) {
@@ -374,20 +376,30 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildArea() {
-    const d = this.radius * 2;
+    const position = this.scene.player.getPositionOnGround();
 
-    this.buildArea = this.scene.add.ellipse(0, 0, d, d * LEVEL_TILE_SIZE.persperctive);
+    this.buildArea = this.scene.add.ellipse(position.x, position.y);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
+    this.buildArea.setScale(1.0, LEVEL_TILE_SIZE.persperctive);
+    this.buildArea.setOrigin(0.5, 0.5);
+
     this.updateBuildArea();
   }
 
-  private updateBuildArea() {
-    const position = this.scene.player.getBottomCenter();
-    const d = this.radius * 2;
-    const depth = Level.GetDepth(position.y, 0, d * LEVEL_TILE_SIZE.persperctive);
+  public setBuildAreaRadius(radius: number) {
+    this.radius = radius;
 
-    this.buildArea.setPosition(position.x, position.y);
-    this.buildArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
+    if (this.buildArea) {
+      this.updateBuildArea();
+    }
+  }
+
+  private updateBuildArea() {
+    this.buildArea.setSize(this.radius * 2, this.radius * 2);
+    this.buildArea.updateDisplayOrigin();
+
+    const depth = Level.GetDepth(this.buildArea.y, 0, this.buildArea.displayHeight);
+
     this.buildArea.setDepth(depth);
   }
 

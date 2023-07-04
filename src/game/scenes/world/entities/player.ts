@@ -210,7 +210,7 @@ export class Player extends Sprite implements IPlayer {
         break;
       }
       case PlayerUpgrade.BUILD_AREA: {
-        this.scene.builder.radius = nextValue;
+        this.scene.builder.setBuildAreaRadius(nextValue);
         break;
       }
       case PlayerUpgrade.ASSISTANT: {
