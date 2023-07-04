@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { LEVEL_BUILDING_PATH_COST, TILE_META } from '~const/world/level';
+import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progression } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
@@ -85,7 +85,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.builder.addFoundation(positionAtMatrix);
 
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-    this.setOrigin(0.5, TILE_META.origin);
+    this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
@@ -272,7 +272,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private setInteractiveByShape() {
-    const shape = new Hexagon(0, 0, TILE_META.height * 0.5);
+    const shape = new Hexagon(0, 0, LEVEL_TILE_SIZE.height * 0.5);
 
     return this.setInteractive({
       hitArea: shape,
@@ -309,7 +309,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         audio: BuildingAudio.DEAD,
         position: {
           x: this.x,
-          y: this.y + TILE_META.height * 0.5,
+          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
         },
         rate: 18,
       });
@@ -439,7 +439,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y + TILE_META.height * 0.5);
+    this.actionsArea = this.scene.add.ellipse(this.x, this.y + LEVEL_TILE_SIZE.height * 0.5);
     this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
     this.actionsArea.setFillStyle(0xffffff, 0.2);
     this.actionsArea.setVisible(false);
@@ -457,9 +457,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     const d = this.getActionsRadius() * 2;
+    const positionY = this.y + LEVEL_TILE_SIZE.height * 0.5;
 
-    this.actionsArea.setSize(d, d * TILE_META.persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(this.y + TILE_META.height * 0.5, 0, d * TILE_META.persperctive));
+    this.actionsArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
+    this.actionsArea.setDepth(Level.GetDepth(positionY, 0, d * LEVEL_TILE_SIZE.persperctive));
     this.actionsArea.updateDisplayOrigin();
   }
 
@@ -470,7 +471,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         audio: BuildingAudio.DEAD,
         position: {
           x: this.x,
-          y: this.y + TILE_META.height * 0.5,
+          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
         },
         rate: 18,
       });
@@ -482,6 +483,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
 registerAudioAssets(BuildingAudio);
 registerSpriteAssets(BuildingTexture, {
-  width: TILE_META.width,
-  height: TILE_META.height,
+  width: LEVEL_TILE_SIZE.width,
+  height: LEVEL_TILE_SIZE.height,
 });

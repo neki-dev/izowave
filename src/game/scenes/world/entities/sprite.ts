@@ -84,14 +84,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.container.setVisible(this.visible);
     if (this.visible) {
+      const depth = Level.GetDepth(this.y, 1);
       const position = this.getTopCenter();
 
-      this.container.setPosition(position.x, position.y);
-
-      const depth = Level.GetDepth(this.y, 1, this.displayHeight);
-
       this.setDepth(depth);
-      this.container.setDepth(depth);
+      this.container.setDepth(depth + 19);
+      this.container.setPosition(position.x, position.y);
 
       this.updateHealthIndicator();
     }
@@ -129,7 +127,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return Boolean(tile);
   }
 
-  // TODO: Fix sticking enemies in buildings
   private getCollidedTile(direction: number) {
     if (this.collisionTargets.length === 0 && !this.collisionGround) {
       return false;

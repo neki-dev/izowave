@@ -1,4 +1,4 @@
-import { TILE_META } from '~const/world/level';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import {
   MovementDirection,
   PlayerUpgrade,
@@ -45,14 +45,14 @@ export const PLAYER_UPGRADES: Record<PlayerUpgrade, PlayerUpgradeData> = {
 };
 
 export const PLAYER_MOVE_DIRECTIONS = {
-  [`${LEFT}|${UP}`]: 180 + TILE_META.deg,
+  [`${LEFT}|${UP}`]: 180 + LEVEL_TILE_SIZE.deg,
   [`${LEFT}|${NONE}`]: 180,
-  [`${LEFT}|${DOWN}`]: 180 - TILE_META.deg,
+  [`${LEFT}|${DOWN}`]: 180 - LEVEL_TILE_SIZE.deg,
   [`${NONE}|${UP}`]: 270,
   [`${NONE}|${DOWN}`]: 90,
-  [`${RIGHT}|${UP}`]: -TILE_META.deg,
+  [`${RIGHT}|${UP}`]: -LEVEL_TILE_SIZE.deg,
   [`${RIGHT}|${NONE}`]: 0,
-  [`${RIGHT}|${DOWN}`]: TILE_META.deg,
+  [`${RIGHT}|${DOWN}`]: LEVEL_TILE_SIZE.deg,
 };
 
 export const PLAYER_MOVE_ANIMATIONS = {

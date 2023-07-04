@@ -6,7 +6,6 @@ import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
 import { progression } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
-import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesType } from '~type/world/effects';
@@ -153,12 +152,10 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    const position = this.getPositionOnGround();
     const effect = new Effect(this.scene, {
       texture: EffectTexture.BLOOD,
-      position,
+      position: this.getPositionOnGround(),
       permanentFrame: Phaser.Math.Between(0, 3),
-      depth: Level.GetTileDepth(position.y, 0), // TODO: Fix depth
     });
 
     this.currentGroundTile.mapEffects?.push(effect);

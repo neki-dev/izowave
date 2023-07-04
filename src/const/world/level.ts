@@ -6,14 +6,6 @@ import {
   BiomeType, LevelBiome, SpawnTarget, TileMeta,
 } from '~type/world/level';
 
-export const TILE_META: TileMeta = {
-  width: 42,
-  height: 48,
-  origin: 0.25,
-  persperctive: 0.571,
-  deg: 29.726,
-};
-
 export const LEVEL_MAP_SIZE = (() => {
   switch (getPerformance()) {
     case PerformanceLevel.HIGH: return 110;
@@ -21,12 +13,28 @@ export const LEVEL_MAP_SIZE = (() => {
     default: return 90;
   }
 })();
-export const LEVEL_MAP_HEIGHT = 4;
+
+export const LEVEL_TILE_SIZE: TileMeta = {
+  width: 42,
+  height: 48,
+  origin: 0.25,
+  persperctive: 0.571,
+  deg: 29.726,
+};
+
+export const LEVEL_MAP_MAX_HEIGHT = 4;
+
 export const LEVEL_MAP_VISIBLE_PART = 0.8;
-export const LEVEL_MAP_VISITED_TILE_TINT = 0xDDDDDD;
-export const LEVEL_MAP_Z_WEIGHT = 999;
+
+export const LEVEL_Z_WEIGHT = 999;
 
 export const LEVEL_TREES_COUNT = LEVEL_MAP_SIZE * 2;
+
+export const LEVEL_TREE_TILE_SIZE = {
+  width: 42,
+  height: 72,
+  origin: 0.5,
+};
 
 export const LEVEL_BUILDING_PATH_COST = 16.0;
 

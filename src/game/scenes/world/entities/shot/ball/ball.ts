@@ -75,7 +75,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     }
 
     if (isVisibleTile) {
-      const depth = Level.GetDepth(this.y, 1, this.displayHeight);
+      const depth = Level.GetDepth(this.y, 1);
 
       this.setDepth(depth);
     }

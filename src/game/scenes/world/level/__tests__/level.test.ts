@@ -18,8 +18,8 @@ describe('level.ts', () => {
   });
 
   it('should return tile depth', () => {
-    expect(Level.GetTileDepth(100, 1)).toEqual(1147);
-    expect(Level.GetTileDepth(100, 2)).toEqual(2146);
+    expect(Level.GetTileDepth(100, 1)).toEqual(1123);
+    expect(Level.GetTileDepth(100, 2)).toEqual(2122);
   });
 
   it('should convert matrix position to world position', () => {

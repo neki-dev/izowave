@@ -269,14 +269,14 @@ export class World extends Phaser.Scene implements IWorld {
   }
 
   private addZoomControl() {
-    this.input.keyboard.on(CONTROL_KEY.ZOOM_IN, () => {
-      if (this.cameras.main.zoom < WORLD_MAX_ZOOM) {
+    this.input.keyboard.on(CONTROL_KEY.ZOOM_OUT, () => {
+      if (this.cameras.main.zoom === WORLD_MAX_ZOOM) {
         this.cameras.main.zoomTo(WORLD_MIN_ZOOM, 300);
       }
     });
 
-    this.input.keyboard.on(CONTROL_KEY.ZOOM_OUT, () => {
-      if (this.cameras.main.zoom > WORLD_MIN_ZOOM) {
+    this.input.keyboard.on(CONTROL_KEY.ZOOM_IN, () => {
+      if (this.cameras.main.zoom === WORLD_MIN_ZOOM) {
         this.cameras.main.zoomTo(WORLD_MAX_ZOOM, 300);
       }
     });
