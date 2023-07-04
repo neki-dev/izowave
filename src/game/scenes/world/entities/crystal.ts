@@ -48,7 +48,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       type: ParticlesType.BIT,
       positionAtWorld: {
         x: this.x,
-        y: this.y + 10,
+        y: this.y + 16,
       },
       duration: 300,
       params: {
