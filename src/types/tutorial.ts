@@ -12,16 +12,22 @@ export interface ITutorial extends EventEmitter {
   disable(): void
 
   /**
-   * Begin step.
+   * Start tutorial step.
    * @param step - Step
    */
-  beg(step: TutorialStep): void
+  start(step: TutorialStep): void
 
   /**
-   * End step.
+   * Pause tutorial step.
    * @param step - Step
    */
-  end(step: TutorialStep): void
+  pause(step: TutorialStep): void
+
+  /**
+   * Complete tutorial step.
+   * @param step - Step
+   */
+  complete(step: TutorialStep): void
 
   /**
    * Check step state.
@@ -66,8 +72,9 @@ export enum TutorialStep {
 
 export enum TutorialStepState {
   IDLE = 'IDLE',
-  BEG = 'BEG',
-  END = 'END',
+  IN_PROGRESS = 'IN_PROGRESS',
+  PAUSED = 'PAUSED',
+  COMPLETED = 'COMPLETED',
 }
 
 export enum TutorialEvents {

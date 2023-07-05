@@ -118,7 +118,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (this.ammo === 0) {
       this.hasAlert = true;
 
-      this.scene.game.tutorial.beg(TutorialStep.RELOAD_BUILDING);
+      this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
     }
   }
 
@@ -196,8 +196,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.hasAlert = false;
 
     this.scene.game.sound.play(BuildingAudio.RELOAD);
-
-    this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
+    this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
   }
 
   private getMaxAmmo() {

@@ -59,7 +59,9 @@ export class Wave extends EventEmitter implements IWave {
 
     this.runTimeleft();
 
-    this.scene.input.keyboard.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, this.skipTimeleft, this);
+    this.scene.input.keyboard.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, () => {
+      this.skipTimeleft();
+    });
   }
 
   public getTimeleft() {
@@ -116,7 +118,7 @@ export class Wave extends EventEmitter implements IWave {
     const now = this.scene.getTime();
 
     if (this.isNextSeason) {
-      this.scene.game.tutorial.end(TutorialStep.WAVE_SEASON);
+      this.scene.game.tutorial.complete(TutorialStep.WAVE_SEASON);
       this.isNextSeason = false;
     } else if (this.nextWaveTimestamp - now <= WAVE_TIMELEFT_AFTER_SKIP) {
       return;
@@ -128,7 +130,7 @@ export class Wave extends EventEmitter implements IWave {
   private runTimeleft() {
     let pause: number;
 
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.END) {
+    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.COMPLETED) {
       pause = progression(
         DIFFICULTY.WAVE_TIMELEFT,
         DIFFICULTY.WAVE_TIMELEFT_GROWTH,
@@ -162,10 +164,9 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.START, this.number);
 
-    this.scene.game.tutorial.end(TutorialStep.WAVE_TIMELEFT);
-    if (this.scene.game.tutorial.state(TutorialStep.UPGRADE_BUILDING) === TutorialStepState.BEG) {
-      this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
-    }
+    this.scene.game.tutorial.complete(TutorialStep.WAVE_TIMELEFT);
+    this.scene.game.tutorial.pause(TutorialStep.UPGRADE_PLAYER);
+    this.scene.game.tutorial.pause(TutorialStep.UPGRADE_BUILDING);
   }
 
   private complete() {
@@ -189,10 +190,10 @@ export class Wave extends EventEmitter implements IWave {
     this.scene.level.looseEffects();
 
     if (prevNumber === 2) {
-      this.scene.game.tutorial.beg(TutorialStep.BUILD_AMMUNITION);
+      this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
     } else if (prevNumber >= 3) {
       // TODO: Call only when there is definitely an upgrade opportunity
-      this.scene.game.tutorial.beg(TutorialStep.UPGRADE_BUILDING);
+      this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
     }
 
     this.scene.game.analytics.track({
@@ -206,7 +207,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.game.screen.notice(NoticeType.INFO, `SEASON ${this.getSeason() - 1} COMPLETED`);
 
-    this.scene.game.tutorial.beg(TutorialStep.WAVE_SEASON);
+    this.scene.game.tutorial.start(TutorialStep.WAVE_SEASON);
   }
 
   private spawnEnemy() {

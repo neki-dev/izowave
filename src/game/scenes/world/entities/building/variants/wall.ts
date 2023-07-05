@@ -29,7 +29,9 @@ export class BuildingWall extends Building {
       texture: BuildingWall.Texture,
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeMaxHealth, this);
+    this.on(BuildingEvents.UPGRADE, () => {
+      this.upgradeMaxHealth();
+    });
   }
 
   private upgradeMaxHealth() {

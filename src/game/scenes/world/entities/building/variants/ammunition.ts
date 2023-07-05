@@ -45,7 +45,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       },
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeAmmoCount, this);
+    this.on(BuildingEvents.UPGRADE, () => {
+      this.upgradeAmmoCount();
+    });
   }
 
   public getInfo() {

@@ -49,7 +49,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     // TODO: Add event to check ui ready state
     setTimeout(() => {
-      this.scene.game.tutorial.beg(TutorialStep.BUILD_TOWER_FIRE);
+      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
     }, 100);
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
@@ -184,7 +184,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
+    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.IN_PROGRESS) {
       return false;
     }
 
@@ -193,7 +193,7 @@ export class Builder extends EventEmitter implements IBuilder {
       [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
       [TutorialStep.BUILD_AMMUNITION, BuildingVariant.AMMUNITION],
     ]) {
-      if (this.scene.game.tutorial.state(step) === TutorialStepState.BEG) {
+      if (this.scene.game.tutorial.state(step) === TutorialStepState.IN_PROGRESS) {
         return (variant === allowedVariant);
       }
     }
@@ -347,19 +347,19 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    switch (TutorialStepState.BEG) {
+    switch (TutorialStepState.IN_PROGRESS) {
       case this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE): {
-        this.scene.game.tutorial.end(TutorialStep.BUILD_TOWER_FIRE);
-        this.scene.game.tutorial.beg(TutorialStep.BUILD_GENERATOR);
+        this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
+        this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
         break;
       }
       case this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR): {
-        this.scene.game.tutorial.end(TutorialStep.BUILD_GENERATOR);
-        this.scene.game.tutorial.beg(TutorialStep.WAVE_TIMELEFT);
+        this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
+        this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
         break;
       }
       case this.scene.game.tutorial.state(TutorialStep.BUILD_AMMUNITION): {
-        this.scene.game.tutorial.end(TutorialStep.BUILD_AMMUNITION);
+        this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
         break;
       }
     }

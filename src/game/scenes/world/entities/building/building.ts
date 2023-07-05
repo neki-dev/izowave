@@ -268,10 +268,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.player.takeResources(cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
-    this.scene.game.sound.play(BuildingAudio.UPGRADE);
     this.scene.game.screen.notice(NoticeType.INFO, 'BUILDING UPGRADED');
-
-    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
+    this.scene.game.sound.play(BuildingAudio.UPGRADE);
+    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
   }
 
   private setInteractiveByShape() {
@@ -426,7 +425,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private updateAlert() {
     if (this.hasAlert) {
       if (!this.alertTween) {
-        const targetColor = [255, 160, 160];
+        const targetColor = [255, 140, 140];
 
         this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
           targets: this,

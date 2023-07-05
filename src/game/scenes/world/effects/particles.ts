@@ -46,7 +46,9 @@ export class Particles implements IParticles {
 
     this.parent.effects[type] = this;
 
-    this.parent.on(Phaser.GameObjects.Events.DESTROY, this.destroy, this);
+    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.destroy();
+    });
 
     if (duration) {
       this.timer = this.scene.time.delayedCall(duration, () => {

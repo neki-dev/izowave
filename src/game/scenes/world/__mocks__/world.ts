@@ -11,7 +11,7 @@ const world = {
       isDisabled: true,
       beg: jest.fn(),
       end: jest.fn(),
-      state: jest.fn(() => TutorialStepState.END),
+      state: jest.fn(() => TutorialStepState.COMPLETED),
     },
     analytics: {
       track: jest.fn(),

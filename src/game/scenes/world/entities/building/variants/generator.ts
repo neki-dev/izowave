@@ -41,7 +41,9 @@ export class BuildingGenerator extends Building {
       },
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeAmount, this);
+    this.on(BuildingEvents.UPGRADE, () => {
+      this.upgradeAmount();
+    });
   }
 
   public getInfo() {
