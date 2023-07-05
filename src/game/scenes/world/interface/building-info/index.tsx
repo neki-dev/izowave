@@ -8,7 +8,7 @@ import { GameContext, useWorldUpdate } from '~lib/interface';
 import { getMutableArray } from '~lib/utils';
 import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
 import { WorldEvents } from '~type/world';
-import { BuildingControl, BuildingParam, IBuilding } from '~type/world/entities/building';
+import { BuildingParam, IBuilding } from '~type/world/entities/building';
 
 import { ComponentBuildingControls } from './controls';
 import { Name, UpgradeLevel, Wrapper } from './styles';
@@ -19,7 +19,6 @@ export const ComponentBuildingInfo: React.FC = () => {
   const [building, setBuilding] = useState<IBuilding>(null);
   const [upgradeLevel, setUpgradeLevel] = useState(1);
   const [params, setParams] = useState<BuildingParam[]>([]);
-  const [controls, setControls] = useState<BuildingControl[]>([]);
 
   const refWrapper = useRef<HTMLDivElement>(null);
 
@@ -30,7 +29,6 @@ export const ComponentBuildingInfo: React.FC = () => {
   const onUnselect = () => {
     setBuilding(null);
     setParams([]);
-    setControls([]);
   };
 
   useEffect(() => {
@@ -50,7 +48,6 @@ export const ComponentBuildingInfo: React.FC = () => {
 
     setUpgradeLevel(building.upgradeLevel);
     setParams((current) => getMutableArray(current, building.getInfo(), ['value', 'attention']));
-    setControls((current) => getMutableArray(current, building.getControls(), ['label', 'cost']));
 
     if (refWrapper.current) {
       const camera = game.world.cameras.main;
@@ -73,7 +70,7 @@ export const ComponentBuildingInfo: React.FC = () => {
       </UpgradeLevel>
 
       <ComponentBuildingParameters params={params} />
-      <ComponentBuildingControls actions={controls} />
+      <ComponentBuildingControls building={building} />
     </Wrapper>
   );
 };

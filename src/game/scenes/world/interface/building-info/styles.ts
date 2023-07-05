@@ -34,16 +34,15 @@ export const UpgradeLevel: any = styled.div`
   margin-top: 15px;
   display: grid;
   grid-template-columns: repeat(${BUILDING_MAX_UPGRADE_LEVEL}, 1fr);
-  grid-gap: 2px;
+  grid-gap: 3px;
 `;
 
 UpgradeLevel.Item = styled.div`
   height: 10px;
-  border: 1px solid #000;
   background: #000;
-  box-shadow: 0 4px 0 #222 inset;
+  box-shadow: 0 5px 0 #222 inset;
   &.active {
     background: ${InterfaceColor.INFO_DARK};
-    box-shadow: 0 4px 0 ${InterfaceColor.INFO} inset;
+    box-shadow: 0 5px 0 ${InterfaceColor.INFO} inset;
   }
 `;

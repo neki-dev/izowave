@@ -1,32 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { useWorldUpdate } from '~lib/interface';
+import { getMutableArray } from '~lib/utils';
 import { ComponentAmount } from '~scene/basic/interface/amount';
-import { BuildingControl } from '~type/world/entities/building';
+import { BuildingControl, IBuilding } from '~type/world/entities/building';
 
 import { Wrapper, Action } from './styles';
 
 type Props = {
-  actions: BuildingControl[]
+  building: IBuilding
 };
 
-export const ComponentBuildingControls: React.FC<Props> = ({ actions }) => (
-  <Wrapper>
-    {actions.map((action) => (
-      <Action key={action.label} onClick={action.onClick}>
-        <Action.Label>{action.label}</Action.Label>
+export const ComponentBuildingControls: React.FC<Props> = ({ building }) => {
+  const [controls, setControls] = useState<BuildingControl[]>([]);
 
-        {action.cost && (
-          <Action.Addon>
-            <ComponentAmount
-              type="resources"
-              value={action.cost}
-              view="small"
-            />
-          </Action.Addon>
-        )}
-      </Action>
-    ))}
-  </Wrapper>
-);
+  useWorldUpdate(() => {
+    setControls((current) => getMutableArray(current, building.getControls(), ['label', 'cost']));
+  });
+
+  return (
+    <Wrapper>
+      {controls.map((control) => (
+        <Action key={control.label} onClick={control.onClick}>
+          <Action.Label>{control.label}</Action.Label>
+
+          {control.cost && (
+            <Action.Addon>
+              <ComponentAmount
+                type="resources"
+                value={control.cost}
+                view="small"
+              />
+            </Action.Addon>
+          )}
+        </Action>
+      ))}
+    </Wrapper>
+  );
+};
 
 ComponentBuildingControls.displayName = 'ComponentBuildingControls';
