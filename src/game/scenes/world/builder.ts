@@ -380,8 +380,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildArea = this.scene.add.ellipse(position.x, position.y);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
-    this.buildArea.setScale(1.0, LEVEL_TILE_SIZE.persperctive);
-    this.buildArea.setOrigin(0.5, 0.5);
 
     this.updateBuildArea();
   }
@@ -395,7 +393,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private updateBuildArea() {
-    this.buildArea.setSize(this.radius * 2, this.radius * 2);
+    this.buildArea.setSize(
+      this.radius * 2,
+      this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
+    );
     this.buildArea.updateDisplayOrigin();
 
     const depth = Level.GetDepth(this.buildArea.y, 0, this.buildArea.displayHeight);
@@ -413,6 +414,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildingPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
+
     this.updateBuildingPreview();
   }
 
@@ -422,12 +424,13 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildingPreview.setVisible(isVisibleTile);
 
-    if (this.buildingPreview.visible) {
+    if (isVisibleTile) {
       const tilePosition = { ...positionAtMatrix, z: 1 };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
+      const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z);
 
       this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
-      this.buildingPreview.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+      this.buildingPreview.setDepth(depth);
       this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
     }
   }
