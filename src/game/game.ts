@@ -5,6 +5,7 @@ import {
 } from '~const/game';
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
+import { shaders } from '~lib/shaders';
 import { eachEntries } from '~lib/system';
 import { Basic } from '~scene/basic';
 import { Gameover } from '~scene/gameover';
@@ -101,6 +102,8 @@ export class Game extends Phaser.Game implements IGame {
       this.world = <World> this.scene.keys.WORLD;
 
       this.sound.setVolume(AUDIO_VOLUME);
+
+      this.registerShaders();
     });
 
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
@@ -250,5 +253,13 @@ export class Game extends Phaser.Game implements IGame {
       kills: this.world.player.kills,
       lived: this.world.getTime() / 1000 / 60,
     } as GameStat;
+  }
+
+  private registerShaders() {
+    const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.renderer;
+
+    eachEntries(shaders, (name, Shader) => {
+      renderer.pipelines.addPostPipeline(name, Shader);
+    });
   }
 }
