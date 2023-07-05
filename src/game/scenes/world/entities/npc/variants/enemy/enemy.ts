@@ -54,11 +54,7 @@ export class Enemy extends NPC implements IEnemy {
       + (multipliers.speed ?? 1.0)
     ) / 3;
 
-    const scale = ENEMY_TEXTURE_META[texture].scale ?? 1.0;
-    const offset = scale * 2;
-
-    this.body.setCircle((this.width / 2) - offset, offset, offset);
-    this.setScale(scale);
+    this.body.setCircle((this.width / 2) - 2, 1, 1);
 
     this.addHealthIndicator(0xdb2323, true);
 

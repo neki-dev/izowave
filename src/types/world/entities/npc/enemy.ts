@@ -49,7 +49,6 @@ export enum EnemyVariant {
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {
   frameRate: number
-  scale?: number
   size: {
     width: number
     height: number
