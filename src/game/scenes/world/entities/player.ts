@@ -73,7 +73,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.addAssistant();
 
-    this.body.setSize(10, 14);
+    this.body.setSize(14, 26);
     this.gamut = PLAYER_TILE_SIZE.gamut;
 
     this.addHealthIndicator(0xd0ff4f);

@@ -46,8 +46,8 @@ img {
 }
 
 .loading-animation {
-  width: 96px;
-  height: 180px;
+  width: 49px;
+  height: 90px;
   background: url('./loading.gif') center top no-repeat;
   background-size: 100%;
   margin-bottom: 40px;
