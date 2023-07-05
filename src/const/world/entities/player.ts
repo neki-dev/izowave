@@ -8,8 +8,8 @@ import {
 import { DIFFICULTY } from '../difficulty';
 
 export const PLAYER_TILE_SIZE = {
-  width: 16,
-  height: 16,
+  width: 20,
+  height: 30,
   gamut: 4,
 };
 

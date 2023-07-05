@@ -1,4 +1,4 @@
-## ![IZOWAVE](./docs/logotype-s.png)
+## ![IZOWAVE](./docs/logotype.png)
 [![Testing](https://github.com/neki-dev/izowave/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/test.yml)
 [![Building](https://github.com/neki-dev/izowave/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/build.yml)
 
