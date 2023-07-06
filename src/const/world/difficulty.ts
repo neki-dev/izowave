@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.08, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.2, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.3, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade
 
@@ -53,7 +53,7 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 100, // Health
-  ENEMY_HEALTH_GROWTH: 0.23, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.25, // Health growth by wave number (Quadratic)
   ENEMY_SPEED: 100, // Movement speed
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Quadratic)
   ENEMY_DAMAGE: 100, // Attack damage
@@ -65,8 +65,8 @@ export const DIFFICULTY = {
    * Builder
    */
 
-  BUILDER_BUILD_AREA: 160, // Radius of build area
-  BUILDER_BUILD_AREA_GROWTH: 0.12, // Growth radius by upgrade (Quadratic)
+  BUILDER_BUILD_AREA: 140, // Radius of build area
+  BUILDER_BUILD_AREA_GROWTH: 0.13, // Growth radius by upgrade (Quadratic)
   BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade radius
 
   /**
@@ -125,7 +125,7 @@ export const DIFFICULTY = {
    * Building: Tower: Lazer
    */
 
-  BUILDING_TOWER_LAZER_COST: 70, // Building cost
+  BUILDING_TOWER_LAZER_COST: 80, // Building cost
   BUILDING_TOWER_LAZER_HEALTH: 300, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_ATTACK_RADIUS: 160, // Attack radius
@@ -159,12 +159,12 @@ export const DIFFICULTY = {
    * Building: Medic
    */
 
-  BUILDING_MEDIC_COST: 80, // Building cost
+  BUILDING_MEDIC_COST: 70, // Building cost
   BUILDING_MEDIC_HEALTH: 150, // Health
   BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * wave_season)
   BUILDING_MEDIC_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Heal amount
-  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 1.0, // Heal amount growth by level (Linear)
+  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.0, // Heal amount growth by level (Linear)
 };
