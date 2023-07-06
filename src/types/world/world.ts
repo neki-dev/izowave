@@ -5,6 +5,7 @@ import { IBuilder } from '~type/world/builder';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
+import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, Vector2D } from '~type/world/level';
 import { IWave } from '~type/world/wave';
 
@@ -99,6 +100,13 @@ export interface IWorld extends IScene {
    * @param id - Hint id
    */
   hideHint(id?: string): void
+
+  /**
+   * Precalculate sprite position after specified time.
+   * @param sprite - Sprite
+   * @param seconds - Time in seconds
+   */
+  getFuturePosition(sprite: ISprite, seconds: number): Vector2D
 }
 
 export enum WorldEvents {
