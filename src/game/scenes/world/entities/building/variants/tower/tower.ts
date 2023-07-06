@@ -156,7 +156,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getAmmunition() {
     const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
-      .filter((building) => building.actionsAreaContains(this));
+      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
 
     if (ammunitions.length === 0) {
       return null;
