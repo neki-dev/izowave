@@ -36,6 +36,7 @@ export const Name = styled.div`
   font-size: 18px;
   line-height: 18px;
   text-shadow: 3px 3px 0 #332717;
+  padding-bottom: 3px;
 `;
 
 export const Limit = styled.div`
@@ -43,8 +44,10 @@ export const Limit = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 13px;
   line-height: 13px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 3px 5px;
   &.attention {
-    color: ${InterfaceColor.WARN};
+    background: ${InterfaceColor.ERROR_DARK};
   }
 `;
 
