@@ -1,4 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { progressionLinear } from '~lib/utils';
 import { IWorld } from '~type/world';
 import {
   BuildingEvents, BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
@@ -21,6 +22,8 @@ export class BuildingWall extends Building {
 
   static Health = DIFFICULTY.BUILDING_WALL_HEALTH;
 
+  static AllowByWave = DIFFICULTY.BUILDING_WALL_ALLOW_BY_WAVE;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
@@ -29,14 +32,19 @@ export class BuildingWall extends Building {
       texture: BuildingWall.Texture,
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeMaxHealth, this);
+    this.on(BuildingEvents.UPGRADE, () => {
+      this.upgradeMaxHealth();
+    });
   }
 
   private upgradeMaxHealth() {
-    const health = DIFFICULTY.BUILDING_WALL_HEALTH + (
-      DIFFICULTY.BUILDING_WALL_HEALTH_UPGRADE * (this.upgradeLevel - 1)
+    const health = progressionLinear(
+      DIFFICULTY.BUILDING_WALL_HEALTH,
+      DIFFICULTY.BUILDING_WALL_HEALTH_GROWTH,
+      this.upgradeLevel,
     );
 
     this.live.setMaxHealth(health);
+    this.live.heal();
   }
 }

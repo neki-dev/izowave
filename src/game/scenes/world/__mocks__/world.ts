@@ -9,9 +9,10 @@ const world = {
     difficulty: 1,
     tutorial: {
       isDisabled: true,
-      beg: jest.fn(),
-      end: jest.fn(),
-      state: jest.fn(() => TutorialStepState.END),
+      start: jest.fn(),
+      pause: jest.fn(),
+      complete: jest.fn(),
+      state: jest.fn(() => TutorialStepState.COMPLETED),
     },
     analytics: {
       track: jest.fn(),

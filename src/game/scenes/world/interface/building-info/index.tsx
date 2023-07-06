@@ -8,7 +8,11 @@ import { GameContext, useWorldUpdate } from '~lib/interface';
 import { getMutableArray } from '~lib/utils';
 import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
 import { WorldEvents } from '~type/world';
-import { BuildingControl, BuildingParam, IBuilding } from '~type/world/entities/building';
+import {
+  BuildingControl,
+  BuildingParam,
+  IBuilding,
+} from '~type/world/entities/building';
 
 import { ComponentBuildingControls } from './controls';
 import { Name, UpgradeLevel, Wrapper } from './styles';
@@ -62,19 +66,26 @@ export const ComponentBuildingInfo: React.FC = () => {
     }
   }, [building]);
 
-  return building && (
-    <Wrapper ref={refWrapper}>
-      <Name>{building.getMeta().Name}</Name>
+  return (
+    building && (
+      <Wrapper ref={refWrapper}>
+        <Name>{building.getMeta().Name}</Name>
 
-      <UpgradeLevel>
-        {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map((_, level) => (
-          <UpgradeLevel.Item key={level} className={cn({ active: level < upgradeLevel })} />
-        ))}
-      </UpgradeLevel>
+        <UpgradeLevel>
+          {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map(
+            (_, level) => (
+              <UpgradeLevel.Item
+                key={level}
+                className={cn({ active: level < upgradeLevel })}
+              />
+            ),
+          )}
+        </UpgradeLevel>
 
-      <ComponentBuildingParameters params={params} />
-      <ComponentBuildingControls actions={controls} />
-    </Wrapper>
+        <ComponentBuildingParameters params={params} />
+        <ComponentBuildingControls actions={controls} />
+      </Wrapper>
+    )
   );
 };
 

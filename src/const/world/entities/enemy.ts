@@ -57,11 +57,10 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
   },
   [EnemyTexture.BOSS]: {
     frameRate: 4,
-    scale: 2.0,
     size: {
-      width: 32,
-      height: 40,
-      gamut: 6,
+      width: 64,
+      height: 80,
+      gamut: 12,
     },
   },
 };

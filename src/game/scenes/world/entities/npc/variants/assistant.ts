@@ -3,7 +3,7 @@ import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/ent
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progression, getClosest } from '~lib/utils';
+import { progressionQuadratic, getClosest } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { IWorld } from '~type/world';
 import { EffectTexture } from '~type/world/effects';
@@ -111,7 +111,7 @@ export class Assistant extends NPC implements IAssistant {
     this.shot.shoot(target);
 
     const now = this.scene.getTime();
-    const pause = progression(
+    const pause = progressionQuadratic(
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
       DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
       this.level,
@@ -121,34 +121,42 @@ export class Assistant extends NPC implements IAssistant {
   }
 
   private getTarget(): Nullable<IEnemy> {
-    const maxDistance = progression(
+    const maxDistance = progressionQuadratic(
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
       this.level,
     );
 
-    const enemies = this.scene.getEnemies().filter((enemy) => (
-      !enemy.live.isDead()
-      && Phaser.Math.Distance.BetweenPoints(this.body.position, enemy.body.position) <= maxDistance
-      && !this.scene.level.hasTilesBetweenPositions(this.body.position, enemy.body.position)
-    ));
+    const enemies = this.scene.getEnemies().filter((enemy) => {
+      if (enemy.live.isDead()) {
+        return false;
+      }
+
+      const positionFrom = this.getPositionOnGround();
+      const positionTo = enemy.getPositionOnGround();
+
+      return (
+        Phaser.Math.Distance.BetweenPoints(positionFrom, positionTo) <= maxDistance
+        && !this.scene.level.hasTilesBetweenPositions(positionFrom, positionTo)
+      );
+    });
 
     return getClosest(enemies, this);
   }
 
   private getShotCurrentParams() {
     const params: ShotParams = {
-      maxDistance: progression(
+      maxDistance: progressionQuadratic(
         this.shotDefaultParams.maxDistance,
         DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
         this.level,
       ),
-      speed: progression(
+      speed: progressionQuadratic(
         this.shotDefaultParams.speed,
         DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
         this.level,
       ),
-      damage: progression(
+      damage: progressionQuadratic(
         this.shotDefaultParams.damage,
         DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
         this.level,

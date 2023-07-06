@@ -1,4 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { progressionLinear } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
@@ -62,18 +63,20 @@ export class BuildingMedic extends Building {
   }
 
   public getInfo() {
-    return [
-      ...super.getInfo(), {
-        label: 'HEAL',
-        icon: BuildingIcon.HEAL,
-        value: this.getHealAmount(),
-      },
-    ];
+    const info: BuildingParam[] = [{
+      label: 'HEAL',
+      icon: BuildingIcon.HEAL,
+      value: this.getHealAmount(),
+    }];
+
+    return super.getInfo().concat(info);
   }
 
   private getHealAmount() {
-    return DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT + (
-      DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT_UPGRADE * (this.upgradeLevel - 1)
+    return progressionLinear(
+      DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT,
+      DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT_GROWTH,
+      this.upgradeLevel,
     );
   }
 

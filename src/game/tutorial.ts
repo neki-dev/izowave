@@ -6,7 +6,7 @@ import {
 } from '~type/tutorial';
 
 export class Tutorial extends EventEmitter implements ITutorial {
-  private progress: Partial<Record<TutorialStep, boolean>> = {};
+  private progress: Partial<Record<TutorialStep, TutorialStepState>> = {};
 
   private _isDisabled: boolean = false;
 
@@ -14,23 +14,44 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   private set isDisabled(v) { this._isDisabled = v; }
 
-  public beg(step: TutorialStep) {
-    if (this.isDisabled || this.progress[step] !== undefined) {
+  public start(step: TutorialStep) {
+    if (
+      this.isDisabled
+      || this.progress[step] === TutorialStepState.IN_PROGRESS
+      || this.progress[step] === TutorialStepState.COMPLETED
+    ) {
       return;
     }
 
-    this.progress[step] = true;
+    this.progress[step] = TutorialStepState.IN_PROGRESS;
 
     this.emit(TutorialEvents.BEG, step);
     this.emit(`${TutorialEvents.BEG}_${step}`);
   }
 
-  public end(step: TutorialStep) {
-    if (this.isDisabled || this.progress[step] === false) {
+  public pause(step: TutorialStep) {
+    if (
+      this.isDisabled
+      || this.progress[step] !== TutorialStepState.IN_PROGRESS
+    ) {
       return;
     }
 
-    this.progress[step] = false;
+    this.progress[step] = TutorialStepState.PAUSED;
+
+    this.emit(TutorialEvents.END, step);
+    this.emit(`${TutorialEvents.END}_${step}`);
+  }
+
+  public complete(step: TutorialStep) {
+    if (
+      this.isDisabled
+      || this.progress[step] === TutorialStepState.COMPLETED
+    ) {
+      return;
+    }
+
+    this.progress[step] = TutorialStepState.COMPLETED;
 
     this.emit(TutorialEvents.END, step);
     this.emit(`${TutorialEvents.END}_${step}`);
@@ -38,14 +59,14 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   public state(step: TutorialStep) {
     if (this.isDisabled) {
-      return TutorialStepState.END;
+      return TutorialStepState.COMPLETED;
     }
 
     if (this.progress[step] === undefined) {
       return TutorialStepState.IDLE;
     }
 
-    return this.progress[step] ? TutorialStepState.BEG : TutorialStepState.END;
+    return this.progress[step];
   }
 
   public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
@@ -54,10 +75,10 @@ export class Tutorial extends EventEmitter implements ITutorial {
     }
 
     if (callbacks.beg) {
-      this.once(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
+      this.on(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
     }
     if (callbacks.end) {
-      this.once(`${TutorialEvents.END}_${step}`, callbacks.end);
+      this.on(`${TutorialEvents.END}_${step}`, callbacks.end);
     }
 
     return () => {

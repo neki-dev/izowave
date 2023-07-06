@@ -1,5 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { progressionLinearFrom } from '~lib/utils';
 import { NoticeType } from '~type/screen';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
@@ -45,17 +47,21 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       },
     });
 
-    this.on(BuildingEvents.UPGRADE, this.upgradeAmmoCount, this);
+    this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
+
+    this.on(BuildingEvents.UPGRADE, () => {
+      this.upgradeAmmoCount();
+    });
   }
 
   public getInfo() {
-    return [
-      ...super.getInfo(), {
-        label: 'AMMO',
-        icon: BuildingIcon.AMMO,
-        value: this.ammo,
-      },
-    ];
+    const info: BuildingParam[] = [{
+      label: 'AMMO',
+      icon: BuildingIcon.AMMO,
+      value: this.ammo,
+    }];
+
+    return super.getInfo().concat(info);
   }
 
   public use(amount: number) {
@@ -76,6 +82,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   private upgradeAmmoCount() {
-    this.ammo += DIFFICULTY.BUILDING_AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
+    this.ammo = progressionLinearFrom(
+      this.ammo,
+      DIFFICULTY.BUILDING_AMMUNITION_AMMO,
+      DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
+      this.upgradeLevel,
+    );
   }
 }

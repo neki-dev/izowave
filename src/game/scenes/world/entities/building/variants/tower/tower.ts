@@ -1,12 +1,12 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progression, getClosest } from '~lib/utils';
+import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
-  BuildingAudio, BuildingData, BuildingIcon, BuildingVariant, IBuildingAmmunition, IBuildingTower,
+  BuildingAudio, BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuildingAmmunition, IBuildingTower,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IShot, ShotParams } from '~type/world/entities/shot';
@@ -37,7 +37,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   public getInfo() {
-    const info = super.getInfo();
+    const info: BuildingParam[] = [];
     const params = this.getShotCurrentParams();
 
     if (params.damage) {
@@ -71,7 +71,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       value: `${this.ammo}/${this.getMaxAmmo()}`,
     });
 
-    return info;
+    return super.getInfo().concat(info);
   }
 
   public getControls() {
@@ -118,36 +118,36 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (this.ammo === 0) {
       this.hasAlert = true;
 
-      this.scene.game.tutorial.beg(TutorialStep.RELOAD_BUILDING);
+      this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
     }
   }
 
-  private getShotCurrentParams(level?: number) {
+  private getShotCurrentParams() {
     const params: ShotParams = {
       maxDistance: this.getActionsRadius(),
     };
 
     if (this.shotDefaultParams.speed) {
-      params.speed = progression(
+      params.speed = progressionQuadratic(
         this.shotDefaultParams.speed,
         DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
-        level || this.upgradeLevel,
+        this.upgradeLevel,
       );
     }
 
     if (this.shotDefaultParams.damage) {
-      params.damage = progression(
+      params.damage = progressionQuadratic(
         this.shotDefaultParams.damage,
         DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
-        level || this.upgradeLevel,
+        this.upgradeLevel,
       );
     }
 
     if (this.shotDefaultParams.freeze) {
-      params.freeze = progression(
+      params.freeze = progressionQuadratic(
         this.shotDefaultParams.freeze,
         DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
-        level || this.upgradeLevel,
+        this.upgradeLevel,
       );
     }
 
@@ -156,7 +156,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getAmmunition() {
     const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
-      .filter((building) => building.actionsAreaContains(this));
+      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
 
     if (ammunitions.length === 0) {
       return null;
@@ -196,20 +196,30 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.hasAlert = false;
 
     this.scene.game.sound.play(BuildingAudio.RELOAD);
-
-    this.scene.game.tutorial.end(TutorialStep.RELOAD_BUILDING);
+    this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
   }
 
   private getMaxAmmo() {
-    return DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT * this.upgradeLevel;
+    return progressionLinear(
+      DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT,
+      DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT_GROWTH,
+      this.upgradeLevel,
+    );
   }
 
   private getTarget() {
-    const enemies = this.scene.getEnemies().filter((enemy) => (
-      !enemy.live.isDead()
-      && this.actionsAreaContains(enemy.body.position)
-      && !this.scene.level.hasTilesBetweenPositions(this, enemy.body.position)
-    ));
+    const enemies = this.scene.getEnemies().filter((enemy) => {
+      if (enemy.live.isDead()) {
+        return false;
+      }
+
+      const position = enemy.getPositionOnGround();
+
+      return (
+        this.actionsAreaContains(position)
+        && !this.scene.level.hasTilesBetweenPositions(position, this.getPositionOnGround())
+      );
+    });
 
     return getClosest(enemies, this);
   }

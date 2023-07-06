@@ -79,17 +79,19 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public update() {
     super.update();
 
-    this.positionAtMatrix = Level.ToMatrixPosition(this.getPositionOnGround());
+    const positionOnGround = this.getPositionOnGround();
+
+    this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentGroundTile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
 
     this.container.setVisible(this.visible);
     if (this.visible) {
-      const depth = Level.GetDepth(this.y, 1);
-      const position = this.getTopCenter();
+      const depth = Level.GetDepth(positionOnGround.y, 1);
+      const positionOfTop = this.getTopCenter();
 
       this.setDepth(depth);
       this.container.setDepth(depth + 19);
-      this.container.setPosition(position.x, position.y);
+      this.container.setPosition(positionOfTop.x, positionOfTop.y);
 
       this.updateHealthIndicator();
     }

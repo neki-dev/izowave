@@ -36,8 +36,9 @@ img {
   flex-direction: column;
   display: flex;
   padding: 100px;
-  font-family: 'Verdana';
-  font-size: 10pt;
+  font: 20px 'Verdana';
+  font-weight: bold;
+  line-height: 20pt;
   letter-spacing: 2px;
   color: #aaa;
   text-align: center;
@@ -45,8 +46,10 @@ img {
 }
 
 .loading-animation {
-  width: 64px;
-  height: 64px;
-  background: url('./loading.gif') center center no-repeat;
-  margin-bottom: 30px;
+  width: 49px;
+  height: 90px;
+  background: url('./loading.gif') center top no-repeat;
+  background-size: 100%;
+  margin-bottom: 40px;
+  position: relative;
 }

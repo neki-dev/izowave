@@ -13,7 +13,6 @@ import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
-import { WaveEvents } from '~type/world/wave';
 
 export class Builder extends EventEmitter implements IBuilder {
   readonly scene: IWorld;
@@ -34,7 +33,11 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private set variant(v) { this._variant = v; }
 
-  public radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
+  private _radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
+
+  public get radius() { return this._radius; }
+
+  private set radius(v) { this._radius = v; }
 
   constructor(scene: IWorld) {
     super();
@@ -45,8 +48,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
     // TODO: Add event to check ui ready state
     setTimeout(() => {
-      this.scene.game.tutorial.beg(TutorialStep.BUILD_TOWER_FIRE);
-    }, 100);
+      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
+    }, 150);
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
       if (e.key === 'Backspace') {
@@ -56,19 +59,6 @@ export class Builder extends EventEmitter implements IBuilder {
       }
     });
 
-    this.scene.wave.on(WaveEvents.START, () => {
-      this.clearBuildingVariant();
-    });
-
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_AMMUNITION, {
-      beg: () => {
-        this.scene.setTimePause(true);
-      },
-      end: () => {
-        this.scene.setTimePause(false);
-        this.clearBuildingVariant();
-      },
-    });
     this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
       end: () => {
         this.scene.setTimePause(false);
@@ -84,9 +74,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   public update() {
     if (this.isCanBuild()) {
-      if (this.isBuild) {
-        this.updateBuildArea();
-      } else {
+      if (!this.isBuild) {
         this.openBuilder();
       }
     } else if (this.isBuild) {
@@ -95,7 +83,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public setBuildingVariant(variant: BuildingVariant) {
-    if (this.scene.wave.isGoing || this.variant === variant) {
+    if (this.variant === variant) {
       return;
     }
 
@@ -128,7 +116,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public unsetBuildingVariant() {
-    if (this.scene.wave.isGoing || this.variant === null) {
+    if (this.variant === null) {
       return;
     }
 
@@ -182,16 +170,11 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.BEG) {
-      return false;
-    }
-
     for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
       [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
       [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
-      [TutorialStep.BUILD_AMMUNITION, BuildingVariant.AMMUNITION],
     ]) {
-      if (this.scene.game.tutorial.state(step) === TutorialStepState.BEG) {
+      if (this.scene.game.tutorial.state(step) === TutorialStepState.IN_PROGRESS) {
         return (variant === allowedVariant);
       }
     }
@@ -274,7 +257,6 @@ export class Builder extends EventEmitter implements IBuilder {
   private isCanBuild() {
     return (
       this.variant !== null
-      && !this.scene.wave.isGoing
       && !this.scene.player.live.isDead()
       && this.scene.player.isStopped()
     );
@@ -345,21 +327,12 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    switch (TutorialStepState.BEG) {
-      case this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE): {
-        this.scene.game.tutorial.end(TutorialStep.BUILD_TOWER_FIRE);
-        this.scene.game.tutorial.beg(TutorialStep.BUILD_GENERATOR);
-        break;
-      }
-      case this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR): {
-        this.scene.game.tutorial.end(TutorialStep.BUILD_GENERATOR);
-        this.scene.game.tutorial.beg(TutorialStep.WAVE_TIMELEFT);
-        break;
-      }
-      case this.scene.game.tutorial.state(TutorialStep.BUILD_AMMUNITION): {
-        this.scene.game.tutorial.end(TutorialStep.BUILD_AMMUNITION);
-        break;
-      }
+    if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
+      this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
+    } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
+      this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
     }
   }
 
@@ -374,20 +347,31 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildArea() {
-    const d = this.radius * 2;
+    const position = this.scene.player.getPositionOnGround();
 
-    this.buildArea = this.scene.add.ellipse(0, 0, d, d * LEVEL_TILE_SIZE.persperctive);
+    this.buildArea = this.scene.add.ellipse(position.x, position.y);
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
+
     this.updateBuildArea();
   }
 
-  private updateBuildArea() {
-    const position = this.scene.player.getBottomCenter();
-    const d = this.radius * 2;
-    const depth = Level.GetDepth(position.y, 0, d * LEVEL_TILE_SIZE.persperctive);
+  public setBuildAreaRadius(radius: number) {
+    this.radius = radius;
 
-    this.buildArea.setPosition(position.x, position.y);
-    this.buildArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
+    if (this.buildArea) {
+      this.updateBuildArea();
+    }
+  }
+
+  private updateBuildArea() {
+    this.buildArea.setSize(
+      this.radius * 2,
+      this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
+    );
+    this.buildArea.updateDisplayOrigin();
+
+    const depth = Level.GetDepth(this.buildArea.y, 0, this.buildArea.displayHeight);
+
     this.buildArea.setDepth(depth);
   }
 
@@ -401,6 +385,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildingPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
+
     this.updateBuildingPreview();
   }
 
@@ -410,12 +395,13 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildingPreview.setVisible(isVisibleTile);
 
-    if (this.buildingPreview.visible) {
+    if (isVisibleTile) {
       const tilePosition = { ...positionAtMatrix, z: 1 };
       const positionAtWorld = Level.ToWorldPosition(tilePosition);
+      const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z);
 
       this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
-      this.buildingPreview.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+      this.buildingPreview.setDepth(depth);
       this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
     }
   }

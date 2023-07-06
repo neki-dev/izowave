@@ -22,11 +22,6 @@ export interface IWave extends EventEmitter {
   readonly isPeaceMode: boolean
 
   /**
-   * State for pause before next season.
-   */
-  readonly isNextSeason: boolean
-
-  /**
    * Update wave process.
    */
   update(): void

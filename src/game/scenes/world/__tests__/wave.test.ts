@@ -2,7 +2,7 @@ import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
-import { progression } from '~lib/utils';
+import { progressionLinear } from '~lib/utils';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -29,14 +29,6 @@ describe('wave.ts', () => {
     expect(wave.number).toEqual(2);
   });
 
-  it('should return current wave season', () => {
-    expect(wave.getSeason()).toEqual(1);
-
-    helper.skipWaves(DIFFICULTY.WAVE_SEASON_LENGTH);
-
-    expect(wave.getSeason()).toEqual(2);
-  });
-
   it('should return timeleft to wave start', () => {
     expect(wave.getTimeleft()).toEqual(DIFFICULTY.WAVE_TIMELEFT);
   });
@@ -51,7 +43,7 @@ describe('wave.ts', () => {
   it('should return timeleft to next wave start', () => {
     helper.skipWaves(1);
 
-    expect(wave.getTimeleft()).toEqual(progression(
+    expect(wave.getTimeleft()).toEqual(progressionLinear(
       DIFFICULTY.WAVE_TIMELEFT,
       DIFFICULTY.WAVE_TIMELEFT_GROWTH,
       2,

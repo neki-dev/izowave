@@ -1,5 +1,4 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -63,10 +62,7 @@ export class BuildingTowerFire extends BuildingTower {
           hintId = this.scene.showHint({
             side: 'top',
             text: 'Hover on building and press [U] to upgrade',
-            position: {
-              x: this.x,
-              y: this.y + LEVEL_TILE_SIZE.height,
-            },
+            position: this.getPositionOnGround(),
           });
         }
       },
@@ -79,10 +75,7 @@ export class BuildingTowerFire extends BuildingTower {
           hintId = this.scene.showHint({
             side: 'top',
             text: 'Hover on building and press [R] to reload ammo',
-            position: {
-              x: this.x,
-              y: this.y + LEVEL_TILE_SIZE.height,
-            },
+            position: this.getPositionOnGround(),
           });
         }
       },

@@ -54,7 +54,9 @@ export class Interface<T> {
     );
 
     this.scene = scene;
-    this.scene.events.on(Phaser.Scenes.Events.SHUTDOWN, this.destroy, this);
+    this.scene.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.destroy();
+    });
   }
 
   public destroy() {

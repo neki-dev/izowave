@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import React, { useContext, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
@@ -50,7 +51,9 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
       <Header>
         <Name>{BUILDINGS[variant].Name}</Name>
         {isAllowByWave && isAllowByTutorial && limit && (
-          <Limit>
+          <Limit className={cn({
+            attention: existCount >= limit,
+          })}>
             {existCount}/{limit}
           </Limit>
         )}

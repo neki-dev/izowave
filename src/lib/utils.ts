@@ -1,42 +1,62 @@
 import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 import { Vector2D, Vector3D } from '~type/world/level';
 
+export function roundToScale(value: number, scale?: number) {
+  return scale ? Math.ceil(value / scale) * scale : Math.ceil(value);
+}
+
 /**
- * Function to progressively increase value,
+ * Function to quadratic progressively increase value,
  * relative to specified level.
  *
  * @param defaultValue - Default value for first level
- * @param scale - Part of start value for growth
+ * @param scale - Part of default value for growth
  * @param level - Difficulty level
  * @param roundTo - Round value
  */
-export function progression(
+export function progressionQuadratic(
   defaultValue: number,
   scale: number,
   level: number,
   roundTo?: number,
 ) {
-  const value = defaultValue * (scale + 1) ** (level - 1);
+  const value = defaultValue * ((scale + 1) ** (level - 1));
 
-  return roundTo ? Math.ceil(value / roundTo) * roundTo : Math.ceil(value);
+  return roundToScale(value, roundTo);
 }
 
-/**
- * Function to progressively increase next value,
- * relative to current value.
- *
- * @param currentValue - Current value
- * @param scale - Part of current value for growth
- * @param roundTo - Round value
- */
-export function progressionFrom(
-  currentValue: number,
+export function progressionQuadraticForce(
+  defaultValue: number,
   scale: number,
+  level: number,
   roundTo?: number,
 ) {
-  const value = currentValue * (scale + 1);
+  const value = defaultValue * (level ** (scale + 1));
 
-  return roundTo ? Math.ceil(value / roundTo) * roundTo : Math.ceil(value);
+  return roundToScale(value, roundTo);
+}
+
+export function progressionLinear(
+  defaultValue: number,
+  scale: number,
+  level: number,
+  roundTo?: number,
+) {
+  const value = defaultValue + (defaultValue * scale * (level - 1));
+
+  return roundToScale(value, roundTo);
+}
+
+export function progressionLinearFrom(
+  currentValue: number,
+  defaultValue: number,
+  scale: number,
+  level: number,
+  roundTo?: number,
+) {
+  const value = currentValue + (defaultValue * scale * (level - 1));
+
+  return roundToScale(value, roundTo);
 }
 
 /**

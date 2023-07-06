@@ -5,7 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progression } from '~lib/utils';
+import { progressionLinear, progressionQuadratic } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
@@ -49,6 +49,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private outlineState: BuildingOutlineState = BuildingOutlineState.NONE;
 
   private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
+
+  private alertTween: Nullable<Phaser.Tweens.Tween> = null;
 
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
@@ -137,8 +139,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
+    this.updateAlert();
 
-    // Fix focus by camera moving
+    // Catch focus by camera moving
     if (this.toFocus) {
       this.focus();
     }
@@ -172,11 +175,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getInfo() {
-    return [{
+    const params: BuildingParam[] = [{
       label: 'HEALTH',
       icon: BuildingIcon.HEALTH,
       value: this.live.health,
-    }] as BuildingParam[];
+    }];
+
+    return params;
   }
 
   public getControls() {
@@ -201,7 +206,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getActionsRadius() {
     return this.actions?.radius
-      ? progression(
+      ? progressionQuadratic(
         this.actions.radius,
         DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
         this.upgradeLevel,
@@ -211,7 +216,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private getActionsPause() {
     return this.actions?.pause
-      ? progression(
+      ? progressionQuadratic(
         this.actions.pause,
         DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         this.upgradeLevel,
@@ -221,12 +226,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getUpgradeCost() {
     const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+    const nextLevel = this.upgradeLevel + 1;
 
-    return Math.round(this.upgradeLevel * costPerLevel);
+    return Math.round(costPerLevel * nextLevel);
   }
 
   private isUpgradeAllowed() {
-    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
+    return this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL;
   }
 
   private isUpgradeAllowedByWave() {
@@ -263,12 +269,18 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live.heal();
 
     this.scene.player.takeResources(cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
 
-    this.scene.game.sound.play(BuildingAudio.UPGRADE);
+    const experience = progressionLinear(
+      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
+      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
+      this.upgradeLevel,
+    );
+
+    this.scene.player.giveExperience(experience);
+
     this.scene.game.screen.notice(NoticeType.INFO, 'BUILDING UPGRADED');
-
-    this.scene.game.tutorial.end(TutorialStep.UPGRADE_BUILDING);
+    this.scene.game.sound.play(BuildingAudio.UPGRADE);
+    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
   }
 
   private setInteractiveByShape() {
@@ -307,10 +319,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
-        position: {
-          x: this.x,
-          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
-        },
+        position: this.getPositionOnGround(),
         rate: 18,
       });
     }
@@ -340,6 +349,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.isFocused = false;
+  }
+
+  public getPositionOnGround(): Vector2D {
+    return {
+      x: this.x,
+      y: this.y + LEVEL_TILE_SIZE.height * 0.5,
+    };
   }
 
   public select() {
@@ -393,12 +409,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       const color: number = {
         [BuildingOutlineState.FOCUSED]: 0xffffff,
         [BuildingOutlineState.SELECTED]: 0xd0ff4f,
-        [BuildingOutlineState.ALERT]: 0xffa200,
       }[state];
 
       if (this.outlineState === BuildingOutlineState.NONE) {
         this.addShader('OutlineShader', {
-          size: 0.0,
+          size: 3.0,
           color,
         });
 
@@ -421,6 +436,33 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.outlineState = state;
   }
 
+  private updateAlert() {
+    if (this.hasAlert) {
+      if (!this.alertTween) {
+        const targetColor = [255, 140, 140];
+
+        this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+          targets: this,
+          tintForce: { from: 0.0, to: 1.0 },
+          duration: 600,
+          ease: 'Linear',
+          yoyo: true,
+          repeat: -1,
+          onUpdate: (_, __, ___, force: number) => {
+            const [r, g, b] = targetColor.map((c) => c + (255 - c) * force);
+            const color = Phaser.Display.Color.GetColor(r, g, b);
+
+            this.setTint(color);
+          },
+        });
+      }
+    } else if (this.alertTween) {
+      this.clearTint();
+      this.alertTween.destroy();
+      this.alertTween = null;
+    }
+  }
+
   private updateOutline() {
     let outlineState = BuildingOutlineState.NONE;
 
@@ -428,9 +470,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       outlineState = BuildingOutlineState.SELECTED;
     } else if (this.isFocused) {
       outlineState = BuildingOutlineState.FOCUSED;
-    } else if (this.hasAlert) {
-      outlineState = BuildingOutlineState.ALERT;
     }
+
     this.setOutline(outlineState);
   }
 
@@ -439,7 +480,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y + LEVEL_TILE_SIZE.height * 0.5);
+    const position = this.getPositionOnGround();
+
+    this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
     this.actionsArea.setFillStyle(0xffffff, 0.2);
     this.actionsArea.setVisible(false);
@@ -457,10 +500,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     const d = this.getActionsRadius() * 2;
-    const positionY = this.y + LEVEL_TILE_SIZE.height * 0.5;
+    const position = this.getPositionOnGround();
 
     this.actionsArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(positionY, 0, d * LEVEL_TILE_SIZE.persperctive));
+    this.actionsArea.setDepth(Level.GetDepth(position.y, 0, this.actionsArea.displayHeight));
     this.actionsArea.updateDisplayOrigin();
   }
 
@@ -469,10 +512,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
-        position: {
-          x: this.x,
-          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
-        },
+        position: this.getPositionOnGround(),
         rate: 18,
       });
     }

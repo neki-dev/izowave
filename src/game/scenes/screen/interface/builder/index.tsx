@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
+import { GameContext } from '~lib/interface';
 import { ComponentHint } from '~scene/basic/interface/hint';
 import { TutorialStep } from '~type/tutorial';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -12,7 +12,6 @@ import { Variant, Info, Wrapper } from './styles';
 export const ComponentBuilder: React.FC = () => {
   const game = useContext(GameContext);
 
-  const [isWaveGoing, setWaveGoing] = useState(false);
   const [hint, setHint] = useState<{
     variant: BuildingVariant
     text: string
@@ -51,36 +50,27 @@ export const ComponentBuilder: React.FC = () => {
     }
   };
 
-  useEffect(() => game.tutorial.bindAll({
-    beg: showHint,
-    end: hideHint,
-  }), []);
-
-  useWorldUpdate(() => {
-    setWaveGoing(game.world.wave.isGoing);
-  });
+  useEffect(
+    () => game.tutorial.bindAll({
+      beg: showHint,
+      end: hideHint,
+    }),
+    [],
+  );
 
   return (
     <Wrapper>
       {Object.values(BuildingVariant).map((variant, index) => (
         <Variant key={variant}>
-          {(hint?.variant === variant) && (
-            <ComponentHint side="right">
-              {hint.text}
-            </ComponentHint>
+          {hint?.variant === variant && (
+            <ComponentHint side="right">{hint.text}</ComponentHint>
           )}
 
-          {!isWaveGoing && (
-            <Info>
-              <ComponentBuilderInfo variant={variant} />
-            </Info>
-          )}
+          <Info>
+            <ComponentBuilderInfo variant={variant} />
+          </Info>
 
-          <ComponentBuilderPreview
-            variant={variant}
-            number={index + 1}
-            isDisabled={isWaveGoing}
-          />
+          <ComponentBuilderPreview variant={variant} number={index + 1} />
         </Variant>
       ))}
     </Wrapper>

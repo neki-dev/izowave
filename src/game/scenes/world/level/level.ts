@@ -141,7 +141,7 @@ export class Level extends TileMatrix implements ILevel {
   public updateVisibleTiles() {
     const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
     const c = Math.ceil(d / 52);
-    const center = this.scene.player.getBottomCenter();
+    const center = this.scene.player.getPositionOnGround();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * LEVEL_TILE_SIZE.persperctive);
 
     this.visibleTiles.getChildren().forEach((tile: ITile) => {

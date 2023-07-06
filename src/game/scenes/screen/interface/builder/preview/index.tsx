@@ -10,13 +10,11 @@ import { Building } from './styles';
 type Props = {
   number: number
   variant: BuildingVariant
-  isDisabled?: boolean
 };
 
 export const ComponentBuilderPreview: React.FC<Props> = ({
   number,
   variant,
-  isDisabled,
 }) => {
   const game = useContext(GameContext);
 
@@ -24,10 +22,10 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
   const [isActive, setActive] = useState(false);
   const [isUsed, setUsed] = useState(false);
 
-  const isNewest = !isUsed && !isDisabled && !isDisallow;
+  const isNewest = !isUsed && !isDisallow;
 
   const selectBuilding = () => {
-    if (isDisabled || isDisallow) {
+    if (isDisallow) {
       return;
     }
 
@@ -56,7 +54,6 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
       onClick={selectBuilding}
       onMouseEnter={() => setUsed(true)}
       className={cn({
-        disabled: isDisabled,
         disallow: isDisallow,
         active: isActive,
         newest: isNewest,

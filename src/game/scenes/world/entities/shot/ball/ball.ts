@@ -107,8 +107,13 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     this.startPosition = { x: this.x, y: this.y };
 
+    const distanceToTarget = Phaser.Math.Distance.BetweenPoints(this, target.body.position);
+    const speed = Math.min(this.params.speed, 1200);
+    const timeToTarget = (distanceToTarget / speed);
+    const targetPosition = this.scene.getFuturePosition(target, timeToTarget);
+
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.scene.physics.moveTo(this, target.body.position.x, target.body.position.y, Math.min(this.params.speed, 1200));
+    this.scene.physics.moveTo(this, targetPosition.x, targetPosition.y, speed);
 
     if (this.scene.game.sound.getAll(this.audio).length < 3) {
       this.scene.game.sound.play(this.audio);

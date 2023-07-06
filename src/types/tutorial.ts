@@ -12,16 +12,22 @@ export interface ITutorial extends EventEmitter {
   disable(): void
 
   /**
-   * Begin step.
+   * Start tutorial step.
    * @param step - Step
    */
-  beg(step: TutorialStep): void
+  start(step: TutorialStep): void
 
   /**
-   * End step.
+   * Pause tutorial step.
    * @param step - Step
    */
-  end(step: TutorialStep): void
+  pause(step: TutorialStep): void
+
+  /**
+   * Complete tutorial step.
+   * @param step - Step
+   */
+  complete(step: TutorialStep): void
 
   /**
    * Check step state.
@@ -55,7 +61,6 @@ export type TutorialBindAllCallbacks = {
 
 export enum TutorialStep {
   WAVE_TIMELEFT = 'WAVE_TIMELEFT',
-  WAVE_SEASON = 'WAVE_SEASON',
   BUILD_TOWER_FIRE = 'BUILD_TOWER_FIRE',
   BUILD_AMMUNITION = 'BUILD_AMMUNITION',
   BUILD_GENERATOR = 'BUILD_GENERATOR',
@@ -66,8 +71,9 @@ export enum TutorialStep {
 
 export enum TutorialStepState {
   IDLE = 'IDLE',
-  BEG = 'BEG',
-  END = 'END',
+  IN_PROGRESS = 'IN_PROGRESS',
+  PAUSED = 'PAUSED',
+  COMPLETED = 'COMPLETED',
 }
 
 export enum TutorialEvents {

@@ -23,6 +23,7 @@ import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
+import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
@@ -180,6 +181,21 @@ export class World extends Phaser.Scene implements IWorld {
     return new EnemyInstance(this, {
       positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
+  }
+
+  public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {
+    const fps = this.game.loop.actualFps;
+    const drag = 0.3 ** (1 / fps);
+    const per = 1 - drag ** (seconds * fps);
+    const offset = {
+      x: ((sprite.body.velocity.x / fps) * per) / (1 - drag),
+      y: ((sprite.body.velocity.y / fps) * per) / (1 - drag),
+    };
+
+    return {
+      x: sprite.body.position.x + offset.x,
+      y: sprite.body.position.y + offset.y,
+    };
   }
 
   private updateNPCPath() {
