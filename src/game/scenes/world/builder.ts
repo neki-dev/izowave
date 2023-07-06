@@ -59,15 +59,6 @@ export class Builder extends EventEmitter implements IBuilder {
       }
     });
 
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_AMMUNITION, {
-      beg: () => {
-        this.scene.setTimePause(true);
-      },
-      end: () => {
-        this.scene.setTimePause(false);
-        this.clearBuildingVariant();
-      },
-    });
     this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
       end: () => {
         this.scene.setTimePause(false);
@@ -182,7 +173,6 @@ export class Builder extends EventEmitter implements IBuilder {
     for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
       [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
       [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
-      [TutorialStep.BUILD_AMMUNITION, BuildingVariant.AMMUNITION],
     ]) {
       if (this.scene.game.tutorial.state(step) === TutorialStepState.IN_PROGRESS) {
         return (variant === allowedVariant);
@@ -337,21 +327,12 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    switch (TutorialStepState.IN_PROGRESS) {
-      case this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE): {
-        this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
-        this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
-        break;
-      }
-      case this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR): {
-        this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
-        this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
-        break;
-      }
-      case this.scene.game.tutorial.state(TutorialStep.BUILD_AMMUNITION): {
-        this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
-        break;
-      }
+    if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
+      this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
+    } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
+      this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
     }
   }
 

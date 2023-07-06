@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinearFrom } from '~lib/utils';
 import { NoticeType } from '~type/screen';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
@@ -45,6 +46,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
         radius: DIFFICULTY.BUILDING_AMMUNITION_RELOAD_RADIUS,
       },
     });
+
+    this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
 
     this.on(BuildingEvents.UPGRADE, () => {
       this.upgradeAmmoCount();

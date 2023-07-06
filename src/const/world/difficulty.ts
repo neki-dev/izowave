@@ -84,6 +84,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_WALL_COST: 10, // Building cost
+  BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_WALL_HEALTH: 1500, // Health
   BUILDING_WALL_HEALTH_GROWTH: 1.4, // Health growth by level (Linear)
 
@@ -149,7 +150,7 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_COST: 30, // Building cost
   BUILDING_AMMUNITION_HEALTH: 300, // Health
   BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * wave_season)
-  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
+  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_AMMUNITION_RELOAD_RADIUS: 150, // Reload ammo radius
   BUILDING_AMMUNITION_AMMO: 170, // Ammo amount
   BUILDING_AMMUNITION_AMMO_GROWTH: 1.0, // Ammo amount growth by level (Linear)
