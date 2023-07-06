@@ -319,10 +319,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
-        position: {
-          x: this.x,
-          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
-        },
+        position: this.getPositionOnGround(),
         rate: 18,
       });
     }
@@ -352,6 +349,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.isFocused = false;
+  }
+
+  public getPositionOnGround(): Vector2D {
+    return {
+      x: this.x,
+      y: this.y + LEVEL_TILE_SIZE.height * 0.5,
+    };
   }
 
   public select() {
@@ -476,7 +480,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y + LEVEL_TILE_SIZE.height * 0.5);
+    const position = this.getPositionOnGround();
+
+    this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
     this.actionsArea.setFillStyle(0xffffff, 0.2);
     this.actionsArea.setVisible(false);
@@ -494,10 +500,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     const d = this.getActionsRadius() * 2;
-    const positionY = this.y + LEVEL_TILE_SIZE.height * 0.5;
+    const position = this.getPositionOnGround();
 
     this.actionsArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(positionY, 0, this.actionsArea.displayHeight));
+    this.actionsArea.setDepth(Level.GetDepth(position.y, 0, this.actionsArea.displayHeight));
     this.actionsArea.updateDisplayOrigin();
   }
 
@@ -506,10 +512,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
-        position: {
-          x: this.x,
-          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
-        },
+        position: this.getPositionOnGround(),
         rate: 18,
       });
     }
