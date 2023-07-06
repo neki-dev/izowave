@@ -51,13 +51,13 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   public getInfo() {
-    return [
-      ...super.getInfo(), {
+    const info: BuildingParam[] = [{
         label: 'AMMO',
         icon: BuildingIcon.AMMO,
         value: this.ammo,
-      },
-    ];
+    }];
+
+    return super.getInfo().concat(info);
   }
 
   public use(amount: number) {

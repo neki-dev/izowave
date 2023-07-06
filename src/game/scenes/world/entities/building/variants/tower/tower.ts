@@ -37,7 +37,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   public getInfo() {
-    const info = super.getInfo();
+    const info: BuildingParam[] = [];
     const params = this.getShotCurrentParams();
 
     if (params.damage) {
@@ -71,7 +71,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       value: `${this.ammo}/${this.getMaxAmmo()}`,
     });
 
-    return info;
+    return super.getInfo().concat(info);
   }
 
   public getControls() {

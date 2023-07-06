@@ -62,13 +62,13 @@ export class BuildingMedic extends Building {
   }
 
   public getInfo() {
-    return [
-      ...super.getInfo(), {
+    const info: BuildingParam[] = [{
         label: 'HEAL',
         icon: BuildingIcon.HEAL,
         value: this.getHealAmount(),
-      },
-    ];
+    }];
+
+    return super.getInfo().concat(info);
   }
 
   private getHealAmount() {

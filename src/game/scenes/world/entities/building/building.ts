@@ -175,11 +175,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getInfo() {
-    return [{
+    const params: BuildingParam[] = [{
       label: 'HEALTH',
       icon: BuildingIcon.HEALTH,
       value: this.live.health,
-    }] as BuildingParam[];
+    }];
+
+    return params;
   }
 
   public getControls() {

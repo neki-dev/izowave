@@ -47,16 +47,14 @@ export class BuildingGenerator extends Building {
   }
 
   public getInfo() {
-    return [
-      ...super.getInfo(), {
+    const info: BuildingParam[] = [{
         label: 'RESOURCES',
         icon: BuildingIcon.RESOURCES,
-        color: (this.resources < BUILDING_RESOURCES_LEFT_ALERT)
-          ? InterfaceColor.WARN
-          : undefined,
+      attention: (this.resources < BUILDING_RESOURCES_LEFT_ALERT),
         value: this.resources,
-      },
-    ];
+    }];
+
+    return super.getInfo().concat(info);
   }
 
   public update() {

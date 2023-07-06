@@ -40,5 +40,6 @@ export class BuildingWall extends Building {
     );
 
     this.live.setMaxHealth(health);
+    this.live.heal();
   }
 }
