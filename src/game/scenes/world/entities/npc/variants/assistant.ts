@@ -127,11 +127,19 @@ export class Assistant extends NPC implements IAssistant {
       this.level,
     );
 
-    const enemies = this.scene.getEnemies().filter((enemy) => (
-      !enemy.live.isDead()
-      && Phaser.Math.Distance.BetweenPoints(this.body.position, enemy.body.position) <= maxDistance
-      && !this.scene.level.hasTilesBetweenPositions(this.body.position, enemy.body.position)
-    ));
+    const enemies = this.scene.getEnemies().filter((enemy) => {
+      if (enemy.live.isDead()) {
+        return false;
+      }
+
+      const positionFrom = this.getPositionOnGround();
+      const positionTo = enemy.getPositionOnGround();
+
+      return (
+        Phaser.Math.Distance.BetweenPoints(positionFrom, positionTo) <= maxDistance
+        && !this.scene.level.hasTilesBetweenPositions(positionFrom, positionTo)
+      );
+    });
 
     return getClosest(enemies, this);
   }

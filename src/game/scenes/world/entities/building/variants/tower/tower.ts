@@ -1,5 +1,6 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
 import { NoticeType } from '~type/screen';
@@ -208,11 +209,21 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getTarget() {
-    const enemies = this.scene.getEnemies().filter((enemy) => (
-      !enemy.live.isDead()
-      && this.actionsAreaContains(enemy.body.position)
-      && !this.scene.level.hasTilesBetweenPositions(this, enemy.body.position)
-    ));
+    const enemies = this.scene.getEnemies().filter((enemy) => {
+      if (enemy.live.isDead()) {
+        return false;
+      }
+
+      const position = enemy.getPositionOnGround();
+
+      return (
+        this.actionsAreaContains(position)
+        && !this.scene.level.hasTilesBetweenPositions(position, {
+          x: this.x,
+          y: this.y + LEVEL_TILE_SIZE.height * 0.5,
+        })
+      );
+    });
 
     return getClosest(enemies, this);
   }
