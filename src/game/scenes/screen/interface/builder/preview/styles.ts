@@ -24,9 +24,6 @@ export const Building: any = styled.div`
     opacity: 0.5;
     filter: grayscale(100%);
   }
-  &.disabled {
-    opacity: 0.25;
-  }
   &.active {
     opacity: 1.0;
     background: ${InterfaceColor.BLUE_DARK};

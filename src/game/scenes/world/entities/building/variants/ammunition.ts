@@ -1,4 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { progressionLinearFrom } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { IWorld } from '~type/world';
 import {
@@ -52,9 +53,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   public getInfo() {
     const info: BuildingParam[] = [{
-        label: 'AMMO',
-        icon: BuildingIcon.AMMO,
-        value: this.ammo,
+      label: 'AMMO',
+      icon: BuildingIcon.AMMO,
+      value: this.ammo,
     }];
 
     return super.getInfo().concat(info);
@@ -78,6 +79,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   private upgradeAmmoCount() {
-    this.ammo += DIFFICULTY.BUILDING_AMMUNITION_AMMO_UPGRADE * (this.upgradeLevel - 1);
+    this.ammo = progressionLinearFrom(
+      this.ammo,
+      DIFFICULTY.BUILDING_AMMUNITION_AMMO,
+      DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
+      this.upgradeLevel,
+    );
   }
 }

@@ -1,8 +1,8 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
+import { progressionLinearFrom } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
-import { InterfaceColor } from '~type/interface';
 import { NoticeType } from '~type/screen';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
@@ -48,10 +48,10 @@ export class BuildingGenerator extends Building {
 
   public getInfo() {
     const info: BuildingParam[] = [{
-        label: 'RESOURCES',
-        icon: BuildingIcon.RESOURCES,
+      label: 'RESOURCES',
+      icon: BuildingIcon.RESOURCES,
       attention: (this.resources < BUILDING_RESOURCES_LEFT_ALERT),
-        value: this.resources,
+      value: this.resources,
     }];
 
     return super.getInfo().concat(info);
@@ -104,7 +104,12 @@ export class BuildingGenerator extends Building {
   }
 
   private upgradeAmount() {
-    this.resources += DIFFICULTY.BUILDING_GENERATOR_RESOURCES_UPGRADE * (this.upgradeLevel - 1);
     this.hasAlert = false;
+    this.resources = progressionLinearFrom(
+      this.resources,
+      DIFFICULTY.BUILDING_GENERATOR_RESOURCES,
+      DIFFICULTY.BUILDING_GENERATOR_RESOURCES_GROWTH,
+      this.upgradeLevel,
+    );
   }
 }

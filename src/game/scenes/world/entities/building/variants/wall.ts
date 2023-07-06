@@ -1,4 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { progressionLinear } from '~lib/utils';
 import { IWorld } from '~type/world';
 import {
   BuildingEvents, BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
@@ -35,8 +36,10 @@ export class BuildingWall extends Building {
   }
 
   private upgradeMaxHealth() {
-    const health = DIFFICULTY.BUILDING_WALL_HEALTH + (
-      DIFFICULTY.BUILDING_WALL_HEALTH_UPGRADE * (this.upgradeLevel - 1)
+    const health = progressionLinear(
+      DIFFICULTY.BUILDING_WALL_HEALTH,
+      DIFFICULTY.BUILDING_WALL_HEALTH_GROWTH,
+      this.upgradeLevel,
     );
 
     this.live.setMaxHealth(health);

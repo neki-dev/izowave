@@ -4,7 +4,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
-import { progression } from '~lib/utils';
+import { progressionQuadratic } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -28,17 +28,17 @@ export class Enemy extends NPC implements IEnemy {
       positionAtMatrix,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
-      health: progression(
+      health: progressionQuadratic(
         DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
-      damage: progression(
+      damage: progressionQuadratic(
         DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_DAMAGE_GROWTH,
         scene.wave.number,
       ),
-      speed: progression(
+      speed: progressionQuadratic(
         DIFFICULTY.ENEMY_SPEED * (multipliers.speed ?? 1.0),
         DIFFICULTY.ENEMY_SPEED_GROWTH,
         scene.wave.number,
@@ -126,7 +126,7 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   public onDead() {
-    const experience = progression(
+    const experience = progressionQuadratic(
       DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
       DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
       this.scene.wave.number,

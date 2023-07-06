@@ -1,12 +1,12 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progression, getClosest } from '~lib/utils';
+import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
-  BuildingAudio, BuildingData, BuildingIcon, BuildingVariant, IBuildingAmmunition, IBuildingTower,
+  BuildingAudio, BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuildingAmmunition, IBuildingTower,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IShot, ShotParams } from '~type/world/entities/shot';
@@ -122,32 +122,32 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
   }
 
-  private getShotCurrentParams(level?: number) {
+  private getShotCurrentParams() {
     const params: ShotParams = {
       maxDistance: this.getActionsRadius(),
     };
 
     if (this.shotDefaultParams.speed) {
-      params.speed = progression(
+      params.speed = progressionQuadratic(
         this.shotDefaultParams.speed,
         DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
-        level || this.upgradeLevel,
+        this.upgradeLevel,
       );
     }
 
     if (this.shotDefaultParams.damage) {
-      params.damage = progression(
+      params.damage = progressionQuadratic(
         this.shotDefaultParams.damage,
         DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
-        level || this.upgradeLevel,
+        this.upgradeLevel,
       );
     }
 
     if (this.shotDefaultParams.freeze) {
-      params.freeze = progression(
+      params.freeze = progressionQuadratic(
         this.shotDefaultParams.freeze,
         DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
-        level || this.upgradeLevel,
+        this.upgradeLevel,
       );
     }
 
@@ -200,7 +200,11 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getMaxAmmo() {
-    return DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT * this.upgradeLevel;
+    return progressionLinear(
+      DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT,
+      DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT_GROWTH,
+      this.upgradeLevel,
+    );
   }
 
   private getTarget() {

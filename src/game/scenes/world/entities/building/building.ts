@@ -5,7 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progression } from '~lib/utils';
+import { progressionLinear, progressionQuadratic } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
@@ -206,7 +206,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getActionsRadius() {
     return this.actions?.radius
-      ? progression(
+      ? progressionQuadratic(
         this.actions.radius,
         DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
         this.upgradeLevel,
@@ -216,7 +216,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private getActionsPause() {
     return this.actions?.pause
-      ? progression(
+      ? progressionQuadratic(
         this.actions.pause,
         DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         this.upgradeLevel,
@@ -226,12 +226,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getUpgradeCost() {
     const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+    const nextLevel = this.upgradeLevel + 1;
 
-    return Math.round(this.upgradeLevel * costPerLevel);
+    return Math.round(costPerLevel * nextLevel);
   }
 
   private isUpgradeAllowed() {
-    return (this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL && !this.scene.wave.isGoing);
+    return this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL;
   }
 
   private isUpgradeAllowedByWave() {
@@ -268,7 +269,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live.heal();
 
     this.scene.player.takeResources(cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE * (this.upgradeLevel - 1));
+
+    const experience = progressionLinear(
+      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
+      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
+      this.upgradeLevel,
+    );
+
+    this.scene.player.giveExperience(experience);
 
     this.scene.game.screen.notice(NoticeType.INFO, 'BUILDING UPGRADED');
     this.scene.game.sound.play(BuildingAudio.UPGRADE);

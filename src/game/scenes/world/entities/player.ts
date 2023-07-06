@@ -9,7 +9,7 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { aroundPosition, progression } from '~lib/utils';
+import { aroundPosition, progressionQuadratic } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -135,7 +135,7 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public getExperienceToUpgrade(type: PlayerUpgrade) {
-    return progression(
+    return progressionQuadratic(
       PLAYER_UPGRADES[type].experience,
       DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
       this.upgradeLevel[type],
@@ -148,7 +148,7 @@ export class Player extends Sprite implements IPlayer {
 
     switch (type) {
       case PlayerUpgrade.MAX_HEALTH: {
-        return progression(
+        return progressionQuadratic(
           DIFFICULTY.PLAYER_HEALTH,
           DIFFICULTY.PLAYER_HEALTH_GROWTH,
           nextLevel,
@@ -156,14 +156,14 @@ export class Player extends Sprite implements IPlayer {
         );
       }
       case PlayerUpgrade.SPEED: {
-        return progression(
+        return progressionQuadratic(
           DIFFICULTY.PLAYER_SPEED,
           DIFFICULTY.PLAYER_SPEED_GROWTH,
           nextLevel,
         );
       }
       case PlayerUpgrade.BUILD_AREA: {
-        return progression(
+        return progressionQuadratic(
           DIFFICULTY.BUILDER_BUILD_AREA,
           DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
           nextLevel,
@@ -283,7 +283,7 @@ export class Player extends Sprite implements IPlayer {
       this.addAssistant();
     }
 
-    const experience = progression(
+    const experience = progressionQuadratic(
       DIFFICULTY.WAVE_EXPERIENCE,
       DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
       number,

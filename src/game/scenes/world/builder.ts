@@ -13,7 +13,6 @@ import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
-import { WaveEvents } from '~type/world/wave';
 
 export class Builder extends EventEmitter implements IBuilder {
   readonly scene: IWorld;
@@ -50,7 +49,7 @@ export class Builder extends EventEmitter implements IBuilder {
     // TODO: Add event to check ui ready state
     setTimeout(() => {
       this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
-    }, 100);
+    }, 150);
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
       if (e.key === 'Backspace') {
@@ -58,10 +57,6 @@ export class Builder extends EventEmitter implements IBuilder {
       } else if (Number(e.key)) {
         this.switchBuildingVariant(Number(e.key) - 1);
       }
-    });
-
-    this.scene.wave.on(WaveEvents.START, () => {
-      this.clearBuildingVariant();
     });
 
     this.scene.game.tutorial.bind(TutorialStep.BUILD_AMMUNITION, {
@@ -97,7 +92,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public setBuildingVariant(variant: BuildingVariant) {
-    if (this.scene.wave.isGoing || this.variant === variant) {
+    if (this.variant === variant) {
       return;
     }
 
@@ -130,7 +125,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public unsetBuildingVariant() {
-    if (this.scene.wave.isGoing || this.variant === null) {
+    if (this.variant === null) {
       return;
     }
 
@@ -184,10 +179,6 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.IN_PROGRESS) {
-      return false;
-    }
-
     for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
       [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
       [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
@@ -276,7 +267,6 @@ export class Builder extends EventEmitter implements IBuilder {
   private isCanBuild() {
     return (
       this.variant !== null
-      && !this.scene.wave.isGoing
       && !this.scene.player.live.isDead()
       && this.scene.player.isStopped()
     );

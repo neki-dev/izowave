@@ -18,31 +18,13 @@ export const ComponentWave: React.FC = () => {
   const [value, setValue] = useState(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
-  const [isNextSeason, setNextSeason] = useState(false);
   const [isPeaceMode, setPeaceMode] = useState(false);
-  const [hint, setHint] = useState<string>(null);
-
-  const showHint = (step: TutorialStep) => {
-    switch (step) {
-      case TutorialStep.WAVE_TIMELEFT: {
-        return setHint('Here display timeleft to start enemies attack');
-      }
-      case TutorialStep.WAVE_SEASON: {
-        return setHint(
-          'Every end of season, you can choose when to start next wave',
-        );
-      }
-    }
-  };
-
-  const hideHint = () => {
-    setHint(null);
-  };
+  const [hint, setHint] = useState(false);
 
   useEffect(
-    () => game.tutorial.bindAll({
-      beg: showHint,
-      end: hideHint,
+    () => game.tutorial.bind(TutorialStep.WAVE_TIMELEFT, {
+      beg: () => setHint(true),
+      end: () => setHint(false),
     }),
     [],
   );
@@ -51,7 +33,6 @@ export const ComponentWave: React.FC = () => {
     setPeaceMode(game.world.wave.isPeaceMode);
     setCurrentNumber(game.world.wave.number);
     setGoing(game.world.wave.isGoing);
-    setNextSeason(game.world.wave.isNextSeason);
 
     if (game.world.wave.isGoing) {
       const enemiesLeft = game.world.wave.getEnemiesLeft();
@@ -74,27 +55,20 @@ export const ComponentWave: React.FC = () => {
             {currentNumber}
           </CurrentNumber>
           <State>
-            {isNextSeason ? (
-              <>
-                <State.Label>NEXT SEASON</State.Label>
-                <State.Action onClick={() => game.world.wave.skipTimeleft()}>
-                  START
-                </State.Action>
-              </>
-            ) : (
-              <>
-                <State.Label>
-                  {isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}
-                </State.Label>
-                <State.Value className={cn({ alarm: isAlarm })}>
-                  {value}
-                </State.Value>
-              </>
-            )}
+              <State.Label>
+                {isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}
+              </State.Label>
+              <State.Value className={cn({ alarm: isAlarm })}>
+                {value}
+              </State.Value>
           </State>
         </Container>
 
-        {hint && <ComponentHint side="top">{hint}</ComponentHint>}
+        {hint && (
+          <ComponentHint side="top">
+            Here display timeleft to start enemies attack
+          </ComponentHint>
+        )}
       </Wrapper>
     )
   );
