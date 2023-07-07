@@ -10,8 +10,8 @@ And also upgrade skills of your character and his assistant.
 
 * ## __[Play now](https://izowave.neki.guru)__
 
-![Preview 1](./docs/preview/image01.png)
-| ![Preview 2](./docs/preview/image02.png) | ![Preview 3](./docs/preview/image03.png) | ![Preview 4](./docs/preview/image04.png) |
+![Preview 1](./docs/preview/full.png)
+| ![Preview 2](./docs/preview/snap01.png) | ![Preview 3](./docs/preview/snap02.png) | ![Preview 4](./docs/preview/snap03.png) |
 |---|---|---|
 
 .
