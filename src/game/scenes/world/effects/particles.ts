@@ -3,7 +3,6 @@ import { registerImageAssets } from '~lib/assets';
 import { IWorld } from '~type/world';
 import {
   ParticlesTexture,
-  ParticlesType,
   ParticlesData,
   IParticlesParent,
   IParticles,
@@ -12,61 +11,52 @@ import {
 export class Particles implements IParticles {
   readonly scene: IWorld;
 
-  private emitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  readonly emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
-  private type: ParticlesType;
-
-  private timer: Nullable<Phaser.Time.TimerEvent> = null;
+  private key: string;
 
   private parent: IParticlesParent;
 
   constructor(
     parent: IParticlesParent,
     {
-      positionAtWorld, type, params, duration,
+      key, positionAtWorld, texture, params,
     }: ParticlesData,
   ) {
     this.scene = parent.scene;
     this.parent = parent;
-    this.type = type;
+    this.key = key;
 
     this.emitter = this.scene.add.particles(
       positionAtWorld?.x ?? 0,
       positionAtWorld?.y ?? 0,
-      ParticlesTexture[type],
+      texture,
       params,
     );
     this.emitter.setDepth(WORLD_DEPTH_EFFECT);
 
     if (!this.parent.effects) {
       this.parent.effects = {};
-    } else if (this.parent.effects[type]) {
-      this.parent.effects[type].destroy();
+    } else if (this.parent.effects[key]) {
+      this.parent.effects[key].destroy();
     }
 
-    this.parent.effects[type] = this;
+    this.parent.effects[key] = this;
 
     this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
     });
 
-    if (duration) {
-      this.timer = this.scene.time.delayedCall(duration, () => {
+    if (params.duration) {
+      this.emitter.on(Phaser.GameObjects.Particles.Events.COMPLETE, () => {
         this.destroy();
       });
     }
   }
 
-  public setVisible(state: boolean) {
-    this.emitter.setVisible(state);
-  }
-
   public destroy() {
-    delete this.parent.effects[this.type];
+    delete this.parent.effects[this.key];
     this.emitter.destroy();
-    if (this.timer) {
-      this.timer.destroy();
-    }
 
     this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);
   }

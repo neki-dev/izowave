@@ -4,8 +4,9 @@ import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { registerAudioAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { ParticlesTexture } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
@@ -50,11 +51,11 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   public update() {
-    if (!this.initiator || !this.target) {
+    if (!this.initiator || !this.target?.body) {
       return;
     }
 
-    this.setTo(this.initiator.x, this.initiator.y, this.target.body.position.x, this.target.body.position.y);
+    this.setTo(this.initiator.x, this.initiator.y, this.target.body.center.x, this.target.body.center.y);
   }
 
   public shoot(target: IEnemy) {
@@ -70,7 +71,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       callback: () => this.processing(),
     });
 
-    this.setTo(this.initiator.x, this.initiator.y, target.body.position.x, target.body.position.y);
+    this.setTo(this.initiator.x, this.initiator.y, target.body.center.x, target.body.center.y);
     this.setVisible(this.initiator.visible && target.visible);
 
     if (this.scene.game.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
@@ -94,26 +95,33 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.target.live.damage(momentDamage);
 
-    if (this.target.visible) {
-      new Particles(this.target, {
-        type: ParticlesType.GLOW,
-        duration: 150,
-        positionAtWorld: this.target.getBodyOffset(),
-        params: {
-          follow: this.target,
-          lifespan: { min: 100, max: 150 },
-          scale: { start: 0.2, end: 0.1 },
-          speed: 80,
-          tint: 0xb136ff,
-        },
-      });
+    if (
+      !this.target.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
+      return;
     }
+
+    new Particles(this.target, {
+      key: 'glow',
+      texture: ParticlesTexture.GLOW,
+      params: {
+        duration: 150,
+        follow: this.target,
+        followOffset: this.target.getBodyOffset(),
+        lifespan: { min: 100, max: 150 },
+        scale: { start: 0.2, end: 0.1 },
+        speed: 80,
+        tint: 0xb136ff,
+      },
+    });
   }
 
   private processing() {
     if (
-      this.target.live.isDead()
-      || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target.body.position) > this.params.maxDistance
+      !this.target?.body
+      || this.target.live.isDead()
+      || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target.body.center) > this.params.maxDistance
     ) {
       this.stop();
 

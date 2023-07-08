@@ -10,15 +10,19 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { aroundPosition, progressionQuadratic } from '~lib/utils';
+import { Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
-import { TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { IParticles, ParticlesTexture } from '~type/world/effects';
+import { BuildingVariant } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerUpgrade,
 } from '~type/world/entities/player';
-import { BiomeType, TileType } from '~type/world/level';
+import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 export class Player extends Sprite implements IPlayer {
@@ -59,6 +63,8 @@ export class Player extends Sprite implements IPlayer {
 
   private assistant: Nullable<IAssistant> = null;
 
+  private dustEffect: Nullable<IParticles> = null;
+
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
       ...data,
@@ -71,12 +77,12 @@ export class Player extends Sprite implements IPlayer {
     this.registerKeyboard();
     this.registerAnimations();
 
-    this.addAssistant();
-
     this.body.setSize(14, 26);
     this.gamut = PLAYER_TILE_SIZE.gamut;
 
+    this.addAssistant();
     this.addHealthIndicator(0xd0ff4f);
+    this.addDustEffect();
 
     this.setTilesGroundCollision(true);
     this.setTilesCollision([
@@ -105,7 +111,10 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.addVisitedWay();
+    if (this.dustEffect) {
+      this.dustEffect.emitter.setDepth(this.depth - 1);
+    }
+
     this.updateDirection();
     this.updateVelocity();
   }
@@ -124,10 +133,21 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.resources += amount;
+
+    if (this.scene.game.tutorial.state(TutorialStep.RESOURCES) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.RESOURCES);
+    }
   }
 
   public takeResources(amount: number) {
     this.resources -= amount;
+
+    if (
+      this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
+      && this.scene.getBuildingsByVariant(BuildingVariant.GENERATOR).length === 0
+    ) {
+      this.scene.game.tutorial.start(TutorialStep.RESOURCES);
+    }
   }
 
   public incrementKills() {
@@ -345,6 +365,10 @@ export class Player extends Sprite implements IPlayer {
         this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
 
         if (!oldMoving) {
+          if (this.dustEffect) {
+            this.dustEffect.emitter.start();
+          }
+
           this.scene.game.sound.play(PlayerAudio.WALK, {
             loop: true,
             rate: 1.8,
@@ -364,6 +388,10 @@ export class Player extends Sprite implements IPlayer {
       this.anims.stop();
     }
 
+    if (this.dustEffect) {
+      this.dustEffect.emitter.stop();
+    }
+
     this.scene.sound.stopByKey(PlayerAudio.WALK);
   }
 
@@ -379,23 +407,37 @@ export class Player extends Sprite implements IPlayer {
     return MovementDirection.NONE;
   }
 
-  private addVisitedWay() {
-    if (!this.currentGroundTile?.biome) {
+  private addDustEffect() {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 
-    if ([BiomeType.SAND, BiomeType.GRASS].includes(this.currentGroundTile.biome.type)) {
-      this.currentGroundTile.setTint(0xDDDDDD);
-    }
+    this.dustEffect = new Particles(this, {
+      key: 'dust',
+      texture: ParticlesTexture.BIT,
+      params: {
+        follow: this,
+        followOffset: {
+          x: 0,
+          y: -this.gamut * this.scaleY * 0.5,
+        },
+        lifespan: { min: 150, max: 300 },
+        scale: 0.5,
+        speed: 10,
+        frequency: 150,
+        alpha: 0.75,
+        emitting: false,
+      },
+    });
   }
 
   private registerAnimations() {
     let frameIndex = 0;
 
     for (const key of Object.values(PLAYER_MOVE_ANIMATIONS)) {
-      this.scene.anims.create({
+      this.anims.create({
         key,
-        frames: this.scene.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
+        frames: this.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
           start: frameIndex * 4,
           end: (frameIndex + 1) * 4 - 1,
         }),

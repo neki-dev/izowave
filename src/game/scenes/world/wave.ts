@@ -40,6 +40,8 @@ export class Wave extends EventEmitter implements IWave {
 
   private enemiesMaxCount: number = 0;
 
+  private lastSpawnedEnemyVariant: Nullable<EnemyVariant> = null;
+
   private nextWaveTimestamp: number = 0;
 
   private nextSpawnTimestamp: number = 0;
@@ -212,18 +214,21 @@ export class Wave extends EventEmitter implements IWave {
 
     const variants: EnemyVariant[] = [];
 
-    // TODO: Fix frequency
-    eachEntries(ENEMIES, (type, Instance) => {
-      if (Instance.SpawnMinWave <= this.number) {
-        for (let k = 0; k < Instance.SpawnFrequency; k++) {
-          variants.push(<EnemyVariant> type);
+    eachEntries(ENEMIES, (variant, Instance) => {
+      if (variant !== this.lastSpawnedEnemyVariant) {
+        const [min, max] = Instance.SpawnWaveRange;
+
+        if (this.number >= min && (!max || this.number <= max)) {
+          variants.push(variant);
         }
       }
     });
 
-    const variant: EnemyVariant = Phaser.Utils.Array.GetRandom(variants);
+    if (variants.length > 0) {
+      this.lastSpawnedEnemyVariant = Phaser.Utils.Array.GetRandom(variants);
+    }
 
-    return variant;
+    return this.lastSpawnedEnemyVariant;
   }
 }
 

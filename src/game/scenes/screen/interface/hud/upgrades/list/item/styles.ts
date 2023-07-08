@@ -20,9 +20,11 @@ export const Info: any = styled.div`
 
 Info.Label = styled.div`
   font-family: ${InterfaceFont.PIXEL};
+  color: ${InterfaceColor.INFO};
   font-size: 14px;
   line-height: 14px;
-  color: ${InterfaceColor.ACTIVE};
+  text-shadow: 2px 2px 0 #000;
+  padding-bottom: 2px;
 `;
 
 Info.Description = styled.div`

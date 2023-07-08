@@ -6,8 +6,9 @@ import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { ParticlesTexture } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { ISprite, SpriteData } from '~type/world/entities/sprite';
 import { TileType, Vector2D } from '~type/world/level';
@@ -181,7 +182,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public getBodyOffset(): Vector2D {
     return {
       x: 0,
-      y: this.body.position.y - this.y,
+      y: this.body ? (this.body.center.y - this.y) : 0,
     };
   }
 
@@ -217,7 +218,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     bar.setOrigin(0.0, 0.0);
 
-    this.healthIndicator = this.scene.add.container(-width / 2, -13);
+    this.healthIndicator = this.scene.add.container(-width / 2, -10);
     this.healthIndicator.setSize(body.width, body.height);
     this.healthIndicator.add([body, bar]);
 
@@ -286,20 +287,24 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public onDamage() {
-    if (!this.visible) {
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
       return;
     }
 
     new Particles(this, {
-      type: ParticlesType.BIT,
-      duration: 250,
-      positionAtWorld: this.getBodyOffset(),
+      key: 'blood',
+      texture: ParticlesTexture.BIT,
       params: {
+        duration: 200,
         follow: this,
+        followOffset: this.getBodyOffset(),
         lifespan: { min: 100, max: 250 },
         scale: { start: 1.0, end: 0.5 },
-        speed: 100,
-        maxParticles: 6,
+        speed: 60,
+        maxAliveParticles: 6,
         tint: 0xdd1e1e,
       },
     });

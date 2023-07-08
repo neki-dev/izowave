@@ -19,6 +19,6 @@ export type EffectData = {
   position: Vector2D
   audio?: string
   rate?: number
-  permanentFrame?: number
+  staticFrame?: number
   scale?: number
 };

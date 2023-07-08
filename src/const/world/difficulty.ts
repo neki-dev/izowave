@@ -53,11 +53,11 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 100, // Health
-  ENEMY_HEALTH_GROWTH: 0.25, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.3, // Health growth by wave number (Quadratic)
   ENEMY_SPEED: 100, // Movement speed
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Quadratic)
   ENEMY_DAMAGE: 100, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.14, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
@@ -166,5 +166,5 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 10, // Heal amount
-  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.0, // Heal amount growth by level (Linear)
+  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.5, // Heal amount growth by level (Linear)
 };

@@ -3,7 +3,6 @@ export enum InterfaceColor {
   BLUE = '#0076ad',
   BLUE_LIGHT = '#a8f0ff',
   BLUE_DARK = '#18324f',
-  ACTIVE = '#a7cc43',
   INFO = '#d0ff4f',
   INFO_DARK = '#83a81c',
   WARN = '#ffba3b',

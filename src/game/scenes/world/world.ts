@@ -97,10 +97,11 @@ export class World extends Phaser.Scene implements IWorld {
 
     this.setTimePause(!this.game.tutorial.isDisabled);
 
+    this.addZoomControl();
     this.addEntityGroups();
+
     this.addPlayer();
     this.addCrystals();
-    this.addZoomControl();
 
     this.level.hideTiles();
   }
@@ -193,8 +194,8 @@ export class World extends Phaser.Scene implements IWorld {
     };
 
     return {
-      x: sprite.body.position.x + offset.x,
-      y: sprite.body.position.y + offset.y,
+      x: sprite.body.center.x + offset.x,
+      y: sprite.body.center.y + offset.y,
     };
   }
 

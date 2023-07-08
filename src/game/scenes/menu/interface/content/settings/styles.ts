@@ -45,7 +45,7 @@ Values.Item = styled.li`
     border-color: ${InterfaceColor.PRIMARY};
   }
   &.active {
-    color: ${InterfaceColor.ACTIVE};
-    border-color: ${InterfaceColor.ACTIVE};
+    color: ${InterfaceColor.INFO};
+    border-color: ${InterfaceColor.INFO};
   }
 `;
