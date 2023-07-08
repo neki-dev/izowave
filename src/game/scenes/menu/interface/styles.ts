@@ -66,7 +66,7 @@ Menu.Item = styled.li`
     color: ${InterfaceColor.PRIMARY};
   }
   &.active {
-    color: ${InterfaceColor.ACTIVE};
+    color: ${InterfaceColor.INFO};
   }
 `;
 

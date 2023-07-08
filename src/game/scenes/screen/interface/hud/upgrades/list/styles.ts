@@ -1,6 +1,11 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 import { InterfaceColor } from '~type/interface';
+
+const animationOpacity = keyframes`
+  0% { opacity: 0; margin-top: 0 }
+  100% { opacity: 1; margin-top: 20px }
+`;
 
 export const Container = styled.div`
   position: absolute;
@@ -10,6 +15,7 @@ export const Container = styled.div`
   padding: 20px;
   margin-top: 20px;
   pointer-events: all;
+  animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
     content: '';

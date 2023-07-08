@@ -62,7 +62,7 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
 
       {!isAllowByWave && (
         <Allowance>
-          Will be available on {BUILDINGS[variant].AllowByWave} wave
+          Available from {BUILDINGS[variant].AllowByWave} wave
         </Allowance>
       )}
 

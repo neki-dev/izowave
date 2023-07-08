@@ -32,11 +32,11 @@ export const Header = styled.div`
 
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL};
-  color: ${InterfaceColor.PRIMARY};
+  color: ${InterfaceColor.INFO};
   font-size: 18px;
   line-height: 18px;
-  text-shadow: 3px 3px 0 #332717;
-  padding-bottom: 3px;
+  text-shadow: 2px 2px 0 #000;
+  padding-bottom: 2px;
 `;
 
 export const Limit = styled.div`
@@ -57,11 +57,10 @@ export const Description = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 14px;
   line-height: 16px;
-  text-shadow: 2px 2px 0 #000;
 `;
 
 export const Allowance = styled(Description)`
-  opacity: 0.75;
+  color: ${InterfaceColor.WARN};
 `;
 
 export const Cost: any = styled.div`

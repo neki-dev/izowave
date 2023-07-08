@@ -24,10 +24,11 @@ export const Wrapper = styled.div`
 
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL};
-  color: ${InterfaceColor.PRIMARY};
+  color: ${InterfaceColor.INFO};
   font-size: 19px;
   line-height: 19px;
-  text-shadow: 3px 3px 0 #332717;
+  text-shadow: 2px 2px 0 #000;
+  padding-bottom: 2px;
 `;
 
 export const UpgradeLevel: any = styled.div`
