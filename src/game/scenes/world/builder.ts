@@ -52,9 +52,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }, 150);
 
     this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
-      if (e.key === 'Backspace') {
-        this.unsetBuildingVariant();
-      } else if (Number(e.key)) {
+      if (Number(e.key)) {
         this.switchBuildingVariant(Number(e.key) - 1);
       }
     });
@@ -205,6 +203,18 @@ export class Builder extends EventEmitter implements IBuilder {
     });
   }
 
+  private onMouseClick(pointer: Phaser.Input.Pointer) {
+    if (pointer.button === 0) {
+      this.build();
+    } else if (pointer.button === 2) {
+      this.unsetBuildingVariant();
+    }
+  }
+
+  private onMouseMove() {
+    this.updateBuildingPreview();
+  }
+
   private openBuilder() {
     if (this.isBuild) {
       return;
@@ -213,8 +223,8 @@ export class Builder extends EventEmitter implements IBuilder {
     this.createBuildArea();
     this.createBuildingPreview();
 
-    this.scene.input.on(Phaser.Input.Events.POINTER_UP, this.build, this);
-    this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview, this);
+    this.scene.input.on(Phaser.Input.Events.POINTER_UP, this.onMouseClick, this);
+    this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
 
     this.isBuild = true;
 
@@ -226,8 +236,8 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    this.scene.input.off(Phaser.Input.Events.POINTER_UP, this.build);
-    this.scene.input.off(Phaser.Input.Events.POINTER_MOVE, this.updateBuildingPreview);
+    this.scene.input.off(Phaser.Input.Events.POINTER_UP, this.onMouseClick);
+    this.scene.input.off(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove);
 
     this.destroyBuildingPreview();
     this.destroyBuildArea();
