@@ -35,6 +35,7 @@ export enum EnemyTexture {
   BOSS = 'enemy/boss',
   IMPURE = 'enemy/impure',
   UNDEAD = 'enemy/undead',
+  TERMER = 'enemy/termer',
 }
 
 export enum EnemyVariant {
@@ -45,6 +46,7 @@ export enum EnemyVariant {
   BOSS = 'BOSS',
   IMPURE = 'IMPURE',
   UNDEAD = 'UNDEAD',
+  TERMER = 'TERMER',
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {
