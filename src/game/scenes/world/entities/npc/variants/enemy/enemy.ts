@@ -166,10 +166,25 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      new Particles(this, {
+        key: 'spawn',
+        texture: ParticlesTexture.GLOW,
+        positionAtWorld: this.body.center,
+        params: {
+          duration: 400,
+          lifespan: { min: 150, max: 250 },
+          scale: { start: 0.25, end: 0.0 },
+          speed: 100,
+          quantity: 2,
+          tint: 0x00000,
+        },
+      });
+    }
+
     const originalScale = this.scale;
 
     this.calmDown(750);
-
     this.container.setAlpha(0.0);
     this.setScale(0.1);
     this.scene.tweens.add({
@@ -178,24 +193,6 @@ export class Enemy extends NPC implements IEnemy {
       duration: 750,
       onComplete: () => {
         this.container.setAlpha(1.0);
-      },
-    });
-
-    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      return;
-    }
-
-    new Particles(this, {
-      key: 'spawn',
-      texture: ParticlesTexture.GLOW,
-      positionAtWorld: this,
-      params: {
-        duration: 500,
-        lifespan: { min: 150, max: 250 },
-        scale: { start: 0.25, end: 0.0 },
-        speed: 100,
-        quantity: 2,
-        tint: 0x000,
       },
     });
   }
