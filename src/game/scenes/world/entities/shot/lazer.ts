@@ -6,7 +6,7 @@ import { registerAudioAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { ParticlesTexture } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
@@ -103,11 +103,12 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
 
     new Particles(this.target, {
-      type: ParticlesType.GLOW,
-      duration: 150,
-      positionAtWorld: this.target.getBodyOffset(),
+      key: 'glow',
+      texture: ParticlesTexture.GLOW,
       params: {
+        duration: 150,
         follow: this.target,
+        followOffset: this.target.getBodyOffset(),
         lifespan: { min: 100, max: 150 },
         scale: { start: 0.2, end: 0.1 },
         speed: 80,

@@ -3,7 +3,7 @@ import { progressionLinear } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { ParticlesTexture } from '~type/world/effects';
 import {
   BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
@@ -94,14 +94,15 @@ export class BuildingMedic extends Building {
     }
 
     new Particles(this, {
-      type: ParticlesType.BIT,
+      key: 'heal',
+      texture: ParticlesTexture.BIT,
       positionAtWorld: this,
-      duration: 500,
       params: {
+        duration: 500,
         lifespan: { min: 100, max: 300 },
         scale: { start: 1.0, end: 0.5 },
         speed: 100,
-        maxParticles: 6,
+        maxAliveParticles: 6,
         alpha: 0.75,
       },
     });

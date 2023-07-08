@@ -8,7 +8,7 @@ import { progressionQuadratic } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { EffectTexture, ParticlesType } from '~type/world/effects';
+import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { IBuilding } from '~type/world/entities/building';
 import {
   IEnemyTarget, EnemyData, EnemyTexture, IEnemy,
@@ -86,25 +86,9 @@ export class Enemy extends NPC implements IEnemy {
 
     this.calmDown(finalDuration);
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.visible) {
       return;
     }
-
-    new Particles(this, {
-      type: ParticlesType.GLOW,
-      duration: 250,
-      positionAtWorld: this.getBodyOffset(),
-      params: {
-        follow: this,
-        lifespan: { min: 100, max: 150 },
-        scale: { start: 0.2, end: 0.1 },
-        speed: 80,
-        tint: 0x00a1ff,
-      },
-    });
 
     if (this.freezeTimer) {
       this.freezeTimer.elapsed = 0;
@@ -115,6 +99,24 @@ export class Enemy extends NPC implements IEnemy {
         this.freezeTimer = null;
       });
     }
+
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      return;
+    }
+
+    new Particles(this, {
+      key: 'freeze',
+      texture: ParticlesTexture.GLOW,
+      params: {
+        duration: 200,
+        follow: this,
+        followOffset: this.getBodyOffset(),
+        lifespan: { min: 100, max: 150 },
+        scale: 0.2,
+        speed: 80,
+        tint: 0x00ddff,
+      },
+    });
   }
 
   public attack(target: IEnemyTarget) {
@@ -184,10 +186,11 @@ export class Enemy extends NPC implements IEnemy {
     }
 
     new Particles(this, {
-      type: ParticlesType.GLOW,
+      key: 'spawn',
+      texture: ParticlesTexture.GLOW,
       positionAtWorld: this,
-      duration: 500,
       params: {
+        duration: 500,
         lifespan: { min: 150, max: 250 },
         scale: { start: 0.25, end: 0.0 },
         speed: 100,

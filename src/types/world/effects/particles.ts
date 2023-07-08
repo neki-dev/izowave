@@ -8,10 +8,9 @@ export interface IParticles {
   readonly scene: IWorld
 
   /**
-   * Set emitter visible state.
-   * @param state - Visible state
+   * Particles emitter.
    */
-  setVisible(state: boolean): void
+  readonly emitter: Phaser.GameObjects.Particles.ParticleEmitter
 
   /**
    * Destroy emitter.
@@ -25,12 +24,7 @@ export interface IParticlesParent extends Phaser.GameObjects.GameObject {
   /**
    * Record of current effects.
    */
-  effects?: Partial<Record<ParticlesType, IParticles>>
-}
-
-export enum ParticlesType {
-  BIT = 'BIT',
-  GLOW = 'GLOW',
+  effects?: Partial<Record<string, IParticles>>
 }
 
 export enum ParticlesTexture {
@@ -39,8 +33,8 @@ export enum ParticlesTexture {
 }
 
 export type ParticlesData = {
+  key: string
   positionAtWorld?: Vector2D
-  type: ParticlesType
+  texture: ParticlesTexture
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
-  duration?: number
 };

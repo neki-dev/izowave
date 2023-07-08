@@ -5,7 +5,7 @@ import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { ParticlesTexture } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShotBall,
@@ -72,7 +72,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     this.setVisible(isVisibleTile);
     if (this.effect) {
-      this.effect.setVisible(isVisibleTile);
+      this.effect.emitter.setVisible(isVisibleTile);
     }
 
     if (isVisibleTile) {
@@ -96,7 +96,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
     ) {
       this.effect = new Particles(this, {
-        type: ParticlesType.GLOW,
+        key: 'glow',
+        texture: ParticlesTexture.GLOW,
         params: {
           follow: this,
           lifespan: { min: 100, max: 200 },
@@ -104,9 +105,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
           quantity: 2,
           blendMode: 'ADD',
           tint: this.glowColor,
+          visible: this.visible,
         },
       });
-      this.effect.setVisible(this.visible);
     }
 
     this.startPosition = { x: this.x, y: this.y };

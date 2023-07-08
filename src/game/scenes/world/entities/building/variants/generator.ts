@@ -5,7 +5,7 @@ import { progressionLinearFrom } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesType } from '~type/world/effects';
+import { ParticlesTexture } from '~type/world/effects';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
@@ -91,17 +91,18 @@ export class BuildingGenerator extends Building {
     }
 
     new Particles(this, {
-      type: ParticlesType.BIT,
+      key: 'generate',
+      texture: ParticlesTexture.BIT,
       positionAtWorld: {
         x: this.x,
         y: this.y + 10 - (this.upgradeLevel * 2.5),
       },
-      duration: 300,
       params: {
+        duration: 200,
         lifespan: { min: 100, max: 200 },
         scale: { start: 1.0, end: 0.5 },
-        speed: 70,
-        maxParticles: 6,
+        speed: 50,
+        maxAliveParticles: 6,
         tint: 0x2dffb2,
       },
     });
