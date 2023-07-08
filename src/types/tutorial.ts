@@ -67,6 +67,7 @@ export enum TutorialStep {
   UPGRADE_BUILDING = 'UPGRADE_BUILDING',
   RELOAD_BUILDING = 'RELOAD_BUILDING',
   UPGRADE_PLAYER = 'UPGRADE_PLAYER',
+  RESOURCES = 'RESOURCES',
 }
 
 export enum TutorialStepState {

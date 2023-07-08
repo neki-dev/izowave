@@ -11,8 +11,9 @@ import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { aroundPosition, progressionQuadratic } from '~lib/utils';
 import { NoticeType } from '~type/screen';
-import { TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { BuildingVariant } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
@@ -124,10 +125,21 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.resources += amount;
+
+    if (this.scene.game.tutorial.state(TutorialStep.RESOURCES) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.RESOURCES);
+    }
   }
 
   public takeResources(amount: number) {
     this.resources -= amount;
+
+    if (
+      this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
+      && this.scene.getBuildingsByVariant(BuildingVariant.GENERATOR).length === 0
+    ) {
+      this.scene.game.tutorial.start(TutorialStep.RESOURCES);
+    }
   }
 
   public incrementKills() {

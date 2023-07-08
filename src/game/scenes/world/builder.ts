@@ -324,12 +324,12 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    this.scene.player.takeResources(BuildingInstance.Cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
-
     new BuildingInstance(this.scene, {
       positionAtMatrix: this.getAssumedPosition(),
     });
+
+    this.scene.player.takeResources(BuildingInstance.Cost);
+    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
     if (this.isBuildingLimitReached(this.variant)) {
       this.clearBuildingVariant();
