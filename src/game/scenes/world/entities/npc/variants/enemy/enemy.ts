@@ -54,17 +54,15 @@ export class Enemy extends NPC implements IEnemy {
       + (multipliers.speed ?? 1.0)
     ) / 3;
 
-    this.body.setCircle((this.width / 2) - 2, 1, 1);
+    this.body.setCircle((this.width * 0.5) - 2);
+    this.body.setOffset(2, 2);
 
     this.addHealthIndicator(0xdb2323, true);
+    this.addSpawnEffect();
 
     this.setTilesCollision([TileType.BUILDING], (tile: IBuilding) => {
       this.attack(tile);
     });
-
-    if (this.visible) {
-      this.addSpawnEffect();
-    }
 
     this.scene.physics.add.collider(this, this.scene.entityGroups.npc);
 
@@ -104,6 +102,7 @@ export class Enemy extends NPC implements IEnemy {
         lifespan: { min: 100, max: 150 },
         scale: { start: 0.2, end: 0.1 },
         speed: 80,
+        tint: 0x00a1ff,
       },
     });
 
@@ -154,13 +153,17 @@ export class Enemy extends NPC implements IEnemy {
     const effect = new Effect(this.scene, {
       texture: EffectTexture.BLOOD,
       position: this.getPositionOnGround(),
-      permanentFrame: Phaser.Math.Between(0, 3),
+      staticFrame: Phaser.Math.Between(0, 3),
     });
 
     this.currentGroundTile.mapEffects?.push(effect);
   }
 
   private addSpawnEffect() {
+    if (!this.visible) {
+      return;
+    }
+
     const originalScale = this.scale;
 
     this.calmDown(750);
@@ -176,25 +179,22 @@ export class Enemy extends NPC implements IEnemy {
       },
     });
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 
-      new Particles(this, {
-        type: ParticlesType.GLOW,
-        positionAtWorld: this,
-        duration: 500,
-        params: {
-          lifespan: { min: 150, max: 250 },
-          scale: { start: 0.25, end: 0.0 },
-          speed: 100,
-          quantity: 2,
-          tint: 0x000,
-        },
-      });
+    new Particles(this, {
+      type: ParticlesType.GLOW,
+      positionAtWorld: this,
+      duration: 500,
+      params: {
+        lifespan: { min: 150, max: 250 },
+        scale: { start: 0.25, end: 0.0 },
+        speed: 100,
+        quantity: 2,
+        tint: 0x000,
+      },
+    });
   }
 }
 

@@ -97,10 +97,11 @@ export class World extends Phaser.Scene implements IWorld {
 
     this.setTimePause(!this.game.tutorial.isDisabled);
 
+    this.addZoomControl();
     this.addEntityGroups();
+
     this.addPlayer();
     this.addCrystals();
-    this.addZoomControl();
 
     this.level.hideTiles();
   }

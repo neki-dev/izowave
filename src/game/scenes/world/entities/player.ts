@@ -405,9 +405,9 @@ export class Player extends Sprite implements IPlayer {
     let frameIndex = 0;
 
     for (const key of Object.values(PLAYER_MOVE_ANIMATIONS)) {
-      this.scene.anims.create({
+      this.anims.create({
         key,
-        frames: this.scene.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
+        frames: this.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
           start: frameIndex * 4,
           end: (frameIndex + 1) * 4 - 1,
         }),

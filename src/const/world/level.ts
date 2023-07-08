@@ -107,7 +107,7 @@ export const LEVEL_BIOMES: Array<{
     collide: false,
     solid: true,
     friction: 1.0,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CRYSTAL, SpawnTarget.TREE],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.TREE],
   },
 }, {
   params: { lowerBound: 0.34, upperBound: 0.44 },
@@ -118,7 +118,7 @@ export const LEVEL_BIOMES: Array<{
     collide: false,
     solid: true,
     friction: 1.0,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CRYSTAL, SpawnTarget.TREE],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.TREE],
   },
 }, {
   params: { lowerBound: 0.44, upperBound: 0.54 },
@@ -129,7 +129,7 @@ export const LEVEL_BIOMES: Array<{
     collide: false,
     solid: true,
     friction: 1.0,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.CRYSTAL, SpawnTarget.TREE],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.TREE],
   },
 }, {
   params: { lowerBound: 0.54, upperBound: 0.59 },

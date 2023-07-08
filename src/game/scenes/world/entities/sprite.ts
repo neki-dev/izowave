@@ -182,7 +182,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public getBodyOffset(): Vector2D {
     return {
       x: 0,
-      y: this.body.position.y - this.y,
+      y: -this.displayHeight + this.body.offset.y + this.body.halfHeight,
     };
   }
 
@@ -218,7 +218,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     bar.setOrigin(0.0, 0.0);
 
-    this.healthIndicator = this.scene.add.container(-width / 2, -13);
+    this.healthIndicator = this.scene.add.container(-width / 2, -10);
     this.healthIndicator.setSize(body.width, body.height);
     this.healthIndicator.add([body, bar]);
 

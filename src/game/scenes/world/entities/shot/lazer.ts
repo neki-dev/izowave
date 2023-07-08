@@ -51,7 +51,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   public update() {
-    if (!this.initiator || !this.target) {
+    if (!this.initiator || !this.target?.body) {
       return;
     }
 
@@ -102,23 +102,24 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       return;
     }
 
-      new Particles(this.target, {
-        type: ParticlesType.GLOW,
-        duration: 150,
-        positionAtWorld: this.target.getBodyOffset(),
-        params: {
-          follow: this.target,
-          lifespan: { min: 100, max: 150 },
-          scale: { start: 0.2, end: 0.1 },
-          speed: 80,
-          tint: 0xb136ff,
-        },
-      });
+    new Particles(this.target, {
+      type: ParticlesType.GLOW,
+      duration: 150,
+      positionAtWorld: this.target.getBodyOffset(),
+      params: {
+        follow: this.target,
+        lifespan: { min: 100, max: 150 },
+        scale: { start: 0.2, end: 0.1 },
+        speed: 80,
+        tint: 0xb136ff,
+      },
+    });
   }
 
   private processing() {
     if (
-      this.target.live.isDead()
+      !this.target?.body
+      || this.target.live.isDead()
       || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target.body.position) > this.params.maxDistance
     ) {
       this.stop();
