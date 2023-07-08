@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinear } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import {
@@ -85,19 +86,24 @@ export class BuildingMedic extends Building {
 
     player.live.addHealth(health);
 
-    if (this.visible) {
-      new Particles(this, {
-        type: ParticlesType.BIT,
-        positionAtWorld: this,
-        duration: 500,
-        params: {
-          lifespan: { min: 100, max: 300 },
-          scale: { start: 1.0, end: 0.5 },
-          speed: 100,
-          maxParticles: 6,
-          alpha: 0.75,
-        },
-      });
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
+      return;
     }
+
+    new Particles(this, {
+      type: ParticlesType.BIT,
+      positionAtWorld: this,
+      duration: 500,
+      params: {
+        lifespan: { min: 100, max: 300 },
+        scale: { start: 1.0, end: 0.5 },
+        speed: 100,
+        maxParticles: 6,
+        alpha: 0.75,
+      },
+    });
   }
 }

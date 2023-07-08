@@ -59,7 +59,7 @@ export class Level extends TileMatrix implements ILevel {
     this.makeMapTiles();
     this.makeTrees();
 
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.BLOOD_ON_MAP}`, (value: string) => {
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
       if (value === 'off') {
         this.removeEffects();
       }

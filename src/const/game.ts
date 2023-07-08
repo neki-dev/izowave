@@ -27,22 +27,22 @@ export const SETTINGS: Record<GameSettings, GameSettingsData> = {
     default: 'medium',
     runtime: false,
   },
-  [GameSettings.AUDIO]: {
-    description: 'Audio effects',
-    values: ['on', 'off'],
-    default: 'on',
-    runtime: true,
-  },
-  [GameSettings.BLOOD_ON_MAP]: {
-    description: 'Add blood on map',
-    values: ['on', 'off'],
-    default: 'on',
-    runtime: true,
-  },
   [GameSettings.TUTORIAL]: {
-    description: 'Game tutorial',
+    description: 'Tutorial',
     values: ['on', 'off'],
     default: 'on',
     runtime: false,
+  },
+  [GameSettings.AUDIO]: {
+    description: 'Audio',
+    values: ['on', 'off'],
+    default: 'on',
+    runtime: true,
+  },
+  [GameSettings.EFFECTS]: {
+    description: 'Effects',
+    values: ['on', 'off'],
+    default: 'on',
+    runtime: true,
   },
 };

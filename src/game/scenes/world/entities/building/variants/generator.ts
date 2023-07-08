@@ -3,6 +3,7 @@ import { BUILDING_RESOURCES_LEFT_ALERT } from '~const/world/entities/building';
 import { Building } from '~entity/building';
 import { progressionLinearFrom } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import {
@@ -82,23 +83,28 @@ export class BuildingGenerator extends Building {
     this.scene.player.giveResources(1);
     this.resources--;
 
-    if (this.visible) {
-      new Particles(this, {
-        type: ParticlesType.BIT,
-        positionAtWorld: {
-          x: this.x,
-          y: this.y + 10 - (this.upgradeLevel * 2.5),
-        },
-        duration: 300,
-        params: {
-          lifespan: { min: 100, max: 200 },
-          scale: { start: 1.0, end: 0.5 },
-          speed: 70,
-          maxParticles: 6,
-          tint: 0x2dffb2,
-        },
-      });
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
+      return;
     }
+
+    new Particles(this, {
+      type: ParticlesType.BIT,
+      positionAtWorld: {
+        x: this.x,
+        y: this.y + 10 - (this.upgradeLevel * 2.5),
+      },
+      duration: 300,
+      params: {
+        lifespan: { min: 100, max: 200 },
+        scale: { start: 1.0, end: 0.5 },
+        speed: 70,
+        maxParticles: 6,
+        tint: 0x2dffb2,
+      },
+    });
   }
 
   private upgradeAmount() {

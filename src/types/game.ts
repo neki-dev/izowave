@@ -122,7 +122,7 @@ export enum GameEvents {
 export enum GameSettings {
   DIFFICULTY = 'DIFFICULTY',
   AUDIO = 'AUDIO',
-  BLOOD_ON_MAP = 'BLOOD_ON_MAP',
+  EFFECTS = 'EFFECTS',
   TUTORIAL = 'TUTORIAL',
 }
 

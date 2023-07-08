@@ -6,6 +6,7 @@ import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import {
@@ -44,21 +45,23 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
     this.scene.sound.play(CrystalAudio.PICKUP);
 
-    new Particles(this.scene.player, {
-      type: ParticlesType.BIT,
-      positionAtWorld: {
-        x: this.x,
-        y: this.y + 16,
-      },
-      duration: 300,
-      params: {
-        lifespan: { min: 100, max: 200 },
-        scale: { start: 1.0, end: 0.5 },
-        speed: 100,
-        maxParticles: 6,
-        tint: 0x2dffb2,
-      },
-    });
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      new Particles(this.scene.player, {
+        type: ParticlesType.BIT,
+        positionAtWorld: {
+          x: this.x,
+          y: this.y + 16,
+        },
+        duration: 300,
+        params: {
+          lifespan: { min: 100, max: 200 },
+          scale: { start: 1.0, end: 0.5 },
+          speed: 100,
+          maxParticles: 6,
+          tint: 0x2dffb2,
+        },
+      });
+    }
 
     this.destroy();
   }

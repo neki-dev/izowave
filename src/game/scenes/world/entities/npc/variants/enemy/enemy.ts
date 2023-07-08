@@ -88,7 +88,10 @@ export class Enemy extends NPC implements IEnemy {
 
     this.calmDown(finalDuration);
 
-    if (!this.visible) {
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
       return;
     }
 
@@ -143,7 +146,7 @@ export class Enemy extends NPC implements IEnemy {
   private addBloodEffect() {
     if (
       !this.currentGroundTile?.biome.solid
-      || !this.scene.game.isSettingEnabled(GameSettings.BLOOD_ON_MAP)
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
     ) {
       return;
     }
@@ -173,7 +176,13 @@ export class Enemy extends NPC implements IEnemy {
       },
     });
 
-    if (this.visible) {
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
+      return;
+    }
+
       new Particles(this, {
         type: ParticlesType.GLOW,
         positionAtWorld: this,
@@ -186,7 +195,6 @@ export class Enemy extends NPC implements IEnemy {
           tint: 0x000,
         },
       });
-    }
   }
 }
 

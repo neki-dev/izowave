@@ -6,6 +6,7 @@ import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
@@ -286,7 +287,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public onDamage() {
-    if (!this.visible) {
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
       return;
     }
 

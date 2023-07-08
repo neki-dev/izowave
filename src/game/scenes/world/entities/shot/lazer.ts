@@ -4,6 +4,7 @@ import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { registerAudioAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';
@@ -94,7 +95,13 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.target.live.damage(momentDamage);
 
-    if (this.target.visible) {
+    if (
+      !this.target.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
+      return;
+    }
+
       new Particles(this.target, {
         type: ParticlesType.GLOW,
         duration: 150,
@@ -107,7 +114,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
           tint: 0xb136ff,
         },
       });
-    }
   }
 
   private processing() {

@@ -5,6 +5,7 @@ import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, getClosest } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture } from '~type/world/effects';
 import {
@@ -82,7 +83,7 @@ export class Assistant extends NPC implements IAssistant {
   }
 
   public onDead() {
-    if (this.visible) {
+    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
         audio: AssistantAudio.DEAD,

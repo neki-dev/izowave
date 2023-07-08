@@ -10,7 +10,7 @@ import { Effect } from '~scene/world/effects';
 import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
-import { GameEvents } from '~type/game';
+import { GameEvents, GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents } from '~type/world';
@@ -303,19 +303,24 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.game.sound.play(audio);
     }
 
-    if (this.visible) {
-      new Effect(this.scene, {
-        texture: EffectTexture.DAMAGE,
-        position: this,
-        rate: 14,
-      });
+    if (
+      !this.visible
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
+      return;
     }
+
+    new Effect(this.scene, {
+      texture: EffectTexture.DAMAGE,
+      position: this,
+      rate: 14,
+    });
   }
 
   private onDead() {
     this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} HAS BEEN DESTROYED`);
 
-    if (this.visible) {
+    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
@@ -508,7 +513,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private break() {
-    if (this.visible) {
+    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,

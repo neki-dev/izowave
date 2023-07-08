@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesType } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';
@@ -90,7 +91,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.setPosition(this.initiator.x, this.initiator.y);
     this.setActive(true);
 
-    if (this.glowColor) {
+    if (
+      this.glowColor
+      && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
       this.effect = new Particles(this, {
         type: ParticlesType.GLOW,
         params: {
