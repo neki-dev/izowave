@@ -111,7 +111,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     this.startPosition = { x: this.x, y: this.y };
 
-    const distanceToTarget = Phaser.Math.Distance.BetweenPoints(this, target.body.position);
+    const distanceToTarget = Phaser.Math.Distance.BetweenPoints(this, target.body.center);
     const speed = Math.min(this.params.speed, 1200);
     const timeToTarget = (distanceToTarget / speed);
     const targetPosition = this.scene.getFuturePosition(target, timeToTarget);

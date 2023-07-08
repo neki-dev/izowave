@@ -182,7 +182,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public getBodyOffset(): Vector2D {
     return {
       x: 0,
-      y: -this.displayHeight + this.body.offset.y + this.body.halfHeight,
+      y: this.body ? (this.body.center.y - this.y) : 0,
     };
   }
 

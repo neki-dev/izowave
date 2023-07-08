@@ -194,8 +194,8 @@ export class World extends Phaser.Scene implements IWorld {
     };
 
     return {
-      x: sprite.body.position.x + offset.x,
-      y: sprite.body.position.y + offset.y,
+      x: sprite.body.center.x + offset.x,
+      y: sprite.body.center.y + offset.y,
     };
   }
 

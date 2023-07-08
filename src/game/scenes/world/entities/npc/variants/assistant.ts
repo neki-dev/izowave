@@ -87,7 +87,7 @@ export class Assistant extends NPC implements IAssistant {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
         audio: AssistantAudio.DEAD,
-        position: this.body.position,
+        position: this.body.center,
       });
     }
 
