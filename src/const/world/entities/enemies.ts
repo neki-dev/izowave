@@ -10,8 +10,8 @@ import { EnemyVariant, IEnemyFactory } from '~type/world/entities/npc/enemy';
 
 export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
   [EnemyVariant.BAT]: EnemyBat,
-  [EnemyVariant.SPIKE]: EnemySpike,
   [EnemyVariant.DEMON]: EnemyDemon,
+  [EnemyVariant.SPIKE]: EnemySpike,
   [EnemyVariant.OVERLORD]: EnemyOverlord,
   [EnemyVariant.BOSS]: EnemyBoss,
   [EnemyVariant.UNDEAD]: EnemyUndead,
