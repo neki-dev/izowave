@@ -18,7 +18,7 @@ export interface IEnemy extends INPC {
 }
 
 export interface IEnemyFactory {
-  SpawnWaveRange: number[]
+  SpawnWaveRange?: number[]
   new (scene: IWorld, data: EnemyVariantData): IEnemy
 }
 

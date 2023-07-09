@@ -215,10 +215,12 @@ export class Wave extends EventEmitter implements IWave {
 
     eachEntries(ENEMIES, (variant, Instance) => {
       if (variant !== this.lastSpawnedEnemyVariant) {
-        const [min, max] = Instance.SpawnWaveRange;
+        if (Instance.SpawnWaveRange) {
+          const [min, max] = Instance.SpawnWaveRange;
 
-        if (this.number >= min && (!max || this.number <= max)) {
-          variants.push(variant);
+          if (this.number >= min && (!max || this.number <= max)) {
+            variants.push(variant);
+          }
         }
       }
     });
