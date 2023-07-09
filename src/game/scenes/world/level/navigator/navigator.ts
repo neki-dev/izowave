@@ -8,13 +8,13 @@ import { PathNode } from './node';
 import { NavigatorTask } from './task';
 
 export class Navigator implements INavigator {
-  readonly matrix: number[][] = [];
+  readonly matrix: boolean[][] = [];
 
   private pointsToCost: number[][] = [];
 
   private taskQueue: NavigatorTask[] = [];
 
-  constructor(matrix: number[][]) {
+  constructor(matrix: boolean[][]) {
     this.matrix = matrix;
   }
 
@@ -161,6 +161,6 @@ export class Navigator implements INavigator {
   }
 
   private isWalkable(position: Vector2D) {
-    return (this.matrix[position.y]?.[position.x] === 0);
+    return !this.matrix[position.y]?.[position.x];
   }
 }
