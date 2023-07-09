@@ -5,7 +5,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
-import { WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
+import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
 import { progressionLinear, progressionQuadratic, progressionQuadraticForce } from '~lib/utils';
@@ -112,12 +112,11 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     const now = this.scene.getTime();
+    const timeleft = now + WAVE_TIMELEFT_ALARM;
 
-    if (this.nextWaveTimestamp - now <= WAVE_TIMELEFT_AFTER_SKIP) {
-      return;
+    if (this.nextWaveTimestamp > timeleft) {
+      this.nextWaveTimestamp = timeleft;
     }
-
-    this.nextWaveTimestamp = now + WAVE_TIMELEFT_AFTER_SKIP;
   }
 
   private runTimeleft() {

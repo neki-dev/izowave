@@ -21,3 +21,7 @@ export enum InterfaceScreenSize {
   M = '(max-width: 1365px)',
   S = '(max-width: 1023px)',
 }
+
+export enum InterfaceEvents {
+  MOUNT = 'mount',
+}

@@ -43,7 +43,10 @@ export const ComponentWave: React.FC = () => {
       const timeleft = game.world.wave.getTimeleft();
 
       setValue(formatTime(timeleft));
-      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !game.world.isTimePaused());
+      setAlarm(
+        timeleft <= WAVE_TIMELEFT_ALARM
+        && !game.world.isTimePaused(),
+      );
     }
   });
 

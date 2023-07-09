@@ -52,7 +52,7 @@ export class Level extends TileMatrix implements ILevel {
     this.scene = scene;
     this.visibleTiles = scene.add.group();
 
-    const grid = this.map.getMatrix().map((y) => y.map((x) => Number(x.collide)));
+    const grid = this.map.getMatrix().map((y) => y.map((x) => x.collide));
 
     this.navigator = new Navigator(grid);
 

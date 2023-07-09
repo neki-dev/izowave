@@ -134,8 +134,9 @@ export class NPC extends Sprite implements INPC {
   }
 
   public moveTo(position: Vector2D) {
-    const direction = Phaser.Math.Angle.BetweenPoints(this.getPositionOnGround(), position);
-    const velocity = this.scene.physics.velocityFromRotation(direction, this.speed);
+    const rotation = Phaser.Math.Angle.BetweenPoints(this.getPositionOnGround(), position);
+    const velocity = this.scene.physics.velocityFromRotation(rotation, this.speed);
+    const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
 
     if (collide) {

@@ -6,7 +6,7 @@ export const Control: any = styled.div`
   display: flex;
   align-items: center;
   &:not(:last-child) {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -18,11 +18,10 @@ Control.Keys = styled.div`
 Control.Key = styled.div`
   color: #000;
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 15px;
-  line-height: 15px;
-  padding: 4px 8px 6px 8px;
+  font-size: 13px;
+  line-height: 13px;
+  padding: 3px 7px 4px 7px;
   background: #fff;
-  min-width: 28px;
   text-align: center;
   &:not(:last-child) {
     margin-right: 3px;
@@ -32,7 +31,7 @@ Control.Key = styled.div`
 Control.Description = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 14px;
-  line-height: 14px;
-  text-shadow: 3px 3px 0 #000;
+  font-size: 11px;
+  line-height: 11px;
+  text-shadow: 2px 2px 0 #000;
 `;
