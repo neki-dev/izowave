@@ -105,7 +105,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public getAllPositionsAtMatrix() {
-    return this.getGamutCorners().map((point) => Level.ToMatrixPosition(point));
+    return this.getProjectionOnGround().map((point) => Level.ToMatrixPosition(point));
   }
 
   public setTilesCollision(
@@ -155,12 +155,13 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check wall collision
     if (this.collisionTargets.length > 0) {
-      const occupiedTiles = this.getGamutCorners().map((point) => Level.ToMatrixPosition({
-        x: point.x + offset.x,
-        y: point.y - this.getGamutOffset() + offset.y,
-      }));
+      const positions = this.getProjectionOnGround();
 
-      for (const positionAtMatrix of occupiedTiles) {
+      for (const position of positions) {
+        const positionAtMatrix = Level.ToMatrixPosition({
+          x: position.x + offset.x,
+          y: position.y + offset.y,
+        });
         const tile = this.scene.level.getTileWithType({ ...positionAtMatrix, z: 1 }, this.collisionTargets);
 
         if (tile) {
@@ -190,7 +191,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return this.gamut * this.scaleY * 0.5;
   }
 
-  private getGamutCorners() {
+  private getProjectionOnGround() {
     const count = 8;
     const rX = this.displayWidth * 0.4;
     const rY = this.getGamutOffset();
@@ -266,15 +267,15 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.closePath();
     this.positionDebug.strokePath();
 
-    // Corners
+    // Projection
     this.positionDebug.lineStyle(1, 0xffffff);
     this.positionDebug.beginPath();
 
-    const corners = this.getGamutCorners();
+    const positions = this.getProjectionOnGround();
 
     const points = [
-      ...corners,
-      corners[0],
+      ...positions,
+      positions[0],
     ];
 
     for (let i = 1; i < points.length; i++) {

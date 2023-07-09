@@ -75,6 +75,7 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
 
   /**
    * Handle tiles collide and return result.
+   * @param direction - Rotation in degrees
    */
   handleCollide(direction: number): boolean
 
