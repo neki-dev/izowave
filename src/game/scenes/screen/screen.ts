@@ -16,7 +16,7 @@ export class Screen extends Phaser.Scene implements IScreen {
     super(GameScene.SCREEN);
   }
 
-  create() {
+  public create() {
     new Interface(this, ScreenUI);
   }
 

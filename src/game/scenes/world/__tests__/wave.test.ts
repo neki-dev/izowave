@@ -1,7 +1,7 @@
 import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { WAVE_TIMELEFT_AFTER_SKIP } from '~const/world/wave';
+import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { progressionLinear } from '~lib/utils';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
@@ -37,7 +37,7 @@ describe('wave.ts', () => {
     // @ts-ignore
     wave.skipTimeleft();
 
-    expect(wave.getTimeleft()).toEqual(WAVE_TIMELEFT_AFTER_SKIP);
+    expect(wave.getTimeleft()).toEqual(WAVE_TIMELEFT_ALARM);
   });
 
   it('should return timeleft to next wave start', () => {

@@ -4,6 +4,7 @@ import React, {
 import { Root, createRoot } from 'react-dom/client';
 
 import { IGame, IScene } from '~type/game';
+import { InterfaceEvents } from '~type/interface';
 
 export const GameContext = createContext<IGame>(null);
 const gameUI = document.getElementById('game-ui');
@@ -46,10 +47,18 @@ export class Interface<T> {
     this.container.setAttribute('data-component', Component.displayName);
     gameUI.appendChild(this.container);
 
+    const ComponentMiddleware: React.FC<T> = (propsMiddleware: T) => {
+      useEffect(() => {
+        this.scene.events.emit(InterfaceEvents.MOUNT);
+      }, []);
+
+      return <Component {...propsMiddleware} />;
+    };
+
     this.root = createRoot(this.container);
     this.root.render(
       <GameContext.Provider value={scene.game}>
-        <Component {...props} />
+        <ComponentMiddleware {...props} />
       </GameContext.Provider>,
     );
 
