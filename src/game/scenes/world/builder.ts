@@ -60,12 +60,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
       end: () => {
         this.scene.setTimePause(false);
-        this.clearBuildingVariant();
-      },
-    });
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
-      end: () => {
-        this.clearBuildingVariant();
+        this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
       },
     });
   }
@@ -119,6 +114,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
+    this.scene.game.tutorial.complete(TutorialStep.UNSET_BUILDING);
 
     this.clearBuildingVariant();
   }

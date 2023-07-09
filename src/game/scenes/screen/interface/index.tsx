@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ComponentBuilder } from './builder';
 import { ComponentDebug } from './debug';
+import { ComponentGeneralHints } from './general-hints';
 import { ComponentHUD } from './hud';
 import { ComponentNotices } from './notices';
 import { Column, Grid, Overlay } from './styles';
@@ -25,6 +26,7 @@ export const ScreenUI: React.FC = () => (
     </Grid>
 
     <ComponentNotices />
+    <ComponentGeneralHints />
   </Overlay>
 );
 
