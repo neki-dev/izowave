@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/utils';
@@ -158,7 +159,7 @@ export class Enemy extends NPC implements IEnemy {
       texture: EffectTexture.BLOOD,
       position,
       staticFrame: Phaser.Math.Between(0, 3),
-      depth: Level.GetDepth(position.y, 1),
+      depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height),
     });
 
     this.currentGroundTile.mapEffects?.push(effect);
