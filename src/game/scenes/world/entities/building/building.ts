@@ -7,7 +7,6 @@ import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
-import { Hexagon } from '~scene/world/hexagon';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
 import { GameEvents, GameSettings } from '~type/game';
@@ -81,8 +80,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
 
-    this.setInteractiveByShape();
     this.addActionArea();
+    this.setInteractive({
+      pixelPerfect: true,
+      useHandCursor: true,
+    });
 
     this.scene.builder.addFoundation(positionAtMatrix);
 
@@ -281,16 +283,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.game.screen.notice(NoticeType.INFO, `${this.getMeta().Name.toUpperCase()} UPGRADED`);
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
-  }
-
-  private setInteractiveByShape() {
-    const shape = new Hexagon(0, 0, LEVEL_TILE_SIZE.height * 0.5);
-
-    return this.setInteractive({
-      hitArea: shape,
-      hitAreaCallback: Hexagon.Contains,
-      useHandCursor: true,
-    });
   }
 
   private onDamage() {

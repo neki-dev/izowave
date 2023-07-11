@@ -188,6 +188,7 @@ export class Level extends TileMatrix implements ILevel {
       this.mapTiles.add(tile);
 
       if (biome.z === 1) {
+        // Add shape to check collisions
         tile.shape = new Hexagon(
           positionAtWorld.x - LEVEL_TILE_SIZE.width * 0.5 - 3,
           positionAtWorld.y - LEVEL_TILE_SIZE.height * 0.25,
@@ -240,7 +241,6 @@ export class Level extends TileMatrix implements ILevel {
         // @ts-ignore
         tile.tileType = TileType.TREE;
 
-        // Configure tile
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
         tile.setOrigin(0.5, LEVEL_TREE_TILE_SIZE.origin);
         this.putTile(tile, tilePosition);

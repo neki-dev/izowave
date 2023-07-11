@@ -92,7 +92,7 @@ export const DIFFICULTY = {
    * Building: Towers
    */
 
-  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.6, // Shot damage growth by level (Quadratic)
+  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.5, // Shot damage growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.5, // Frozen duration growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.25, // Shot speed growth by level (Quadratic)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
@@ -104,7 +104,7 @@ export const DIFFICULTY = {
 
   BUILDING_TOWER_FIRE_COST: 30, // Building cost
   BUILDING_TOWER_FIRE_HEALTH: 600, // Health
-  BUILDING_TOWER_FIRE_ATTACK_RADIUS: 190, // Attack radius
+  BUILDING_TOWER_FIRE_ATTACK_RADIUS: 170, // Attack radius
   BUILDING_TOWER_FIRE_ATTACK_PAUSE: 1400, // Pause between attacks
   BUILDING_TOWER_FIRE_ATTACK_DAMAGE: 35, // Attack damage
   BUILDING_TOWER_FIRE_ATTACK_SPEED: 550, // Attack speed
@@ -116,7 +116,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FROZEN_COST: 40, // Building cost
   BUILDING_TOWER_FROZEN_HEALTH: 900, // Health
   BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
-  BUILDING_TOWER_FROZEN_FREEZE_RADIUS: 180, // Freeze radius
+  BUILDING_TOWER_FROZEN_FREEZE_RADIUS: 160, // Freeze radius
   BUILDING_TOWER_FROZEN_FREEZE_PAUSE: 1400, // Pause between freezes
   BUILDING_TOWER_FROZEN_FREEZE_DURATION: 900, // Freeze duration
   BUILDING_TOWER_FROZEN_FREEZE_SPEED: 550, // Freeze speed
@@ -128,7 +128,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_COST: 80, // Building cost
   BUILDING_TOWER_LAZER_HEALTH: 300, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
-  BUILDING_TOWER_LAZER_ATTACK_RADIUS: 160, // Attack radius
+  BUILDING_TOWER_LAZER_ATTACK_RADIUS: 140, // Attack radius
   BUILDING_TOWER_LAZER_ATTACK_PAUSE: 1600, // Pause between attacks
   BUILDING_TOWER_LAZER_ATTACK_DAMAGE: 60, // Attack damage
 

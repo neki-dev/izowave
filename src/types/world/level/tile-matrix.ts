@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { Effect } from '~scene/world/effects';
+import { Hexagon } from '~scene/world/hexagon';
 import { LevelBiome, TileType, Vector3D } from '~type/world/level';
 
 export interface ITileMatrix {
@@ -63,7 +64,7 @@ export interface ITileMatrix {
 
 export interface ITile extends Phaser.GameObjects.Image {
   biome?: LevelBiome
-  shape?: Phaser.Geom.Polygon
+  shape?: Hexagon
   mapEffects?: Effect[]
   tileType: TileType
 }
