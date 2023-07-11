@@ -17,8 +17,8 @@ export enum EffectTexture {
 export type EffectData = {
   texture: EffectTexture
   position: Vector2D
+  depth: number
   audio?: string
   rate?: number
   staticFrame?: number
-  scale?: number
 };

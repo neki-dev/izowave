@@ -305,6 +305,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     new Effect(this.scene, {
       texture: EffectTexture.DAMAGE,
       position: this,
+      depth: this.depth + 1,
       rate: 14,
     });
   }
@@ -317,6 +318,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
         position: this.getPositionOnGround(),
+        depth: this.depth + 1,
         rate: 18,
       });
     }
@@ -510,6 +512,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         texture: EffectTexture.SMOKE,
         audio: BuildingAudio.DEAD,
         position: this.getPositionOnGround(),
+        depth: this.depth + 1,
         rate: 18,
       });
     }

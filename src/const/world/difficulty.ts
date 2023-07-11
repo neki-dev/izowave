@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.08, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.3, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.35, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade
 
@@ -18,7 +18,7 @@ export const DIFFICULTY = {
 
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 120, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.3, // Damage growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.35, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
@@ -36,7 +36,7 @@ export const DIFFICULTY = {
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Force)
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Pause between enemies spawn
-  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.025, // Enemies spawn pause growth by wave number (Quadratic)
+  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.035, // Enemies spawn pause growth by wave number (Quadratic)
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
 
@@ -53,11 +53,11 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 100, // Health
-  ENEMY_HEALTH_GROWTH: 0.3, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.33, // Health growth by wave number (Quadratic)
   ENEMY_SPEED: 100, // Movement speed
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Quadratic)
   ENEMY_DAMAGE: 100, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
