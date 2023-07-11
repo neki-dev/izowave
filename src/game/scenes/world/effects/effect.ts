@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import { registerSpriteAssets } from '~lib/assets';
-import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
 import { EffectData, EffectTexture, IEffect } from '~type/world/effects';
 
@@ -9,13 +8,12 @@ export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
   readonly scene: IWorld;
 
   constructor(scene: IWorld, {
-    texture, position, audio, staticFrame, scale = 1.0, rate = 16,
+    texture, position, audio, staticFrame, depth, rate = 16,
   }: EffectData) {
     super(scene, position.x, position.y, texture, staticFrame ?? 0);
     scene.add.existing(this);
 
-    this.setDepth(Level.GetDepth(this.y, 1));
-    this.setScale(scale);
+    this.setDepth(depth);
 
     if (audio) {
       this.scene.sound.play(audio);
