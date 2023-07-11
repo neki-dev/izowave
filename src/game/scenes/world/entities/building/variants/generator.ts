@@ -95,6 +95,7 @@ export class BuildingGenerator extends Building {
       texture: ParticlesTexture.BIT,
       positionAtWorld: {
         x: this.x,
+        // TODO: Fix position
         y: this.y + 10 - (this.upgradeLevel * 2.5),
       },
       params: {
