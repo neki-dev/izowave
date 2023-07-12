@@ -43,7 +43,7 @@ __About:__
 
 - Interface
 
-For more convenient drawing of interface using [React](https://react.dev/) library. Сonnection of components with the game is implemented through the React context. State of components is updated using scene events.
+For more convenient drawing of interface using [phaser-react-ui](https://github.com/neki-dev/phaser-react-ui) library. Сonnection of components with the game is implemented through the React context. State of components is updated using scene events.
 
 - Map
 

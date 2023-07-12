@@ -1,4 +1,4 @@
-import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import { TranslateToCamera, useScene } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { ComponentHint } from '~scene/basic/interface/hint';
@@ -32,23 +32,12 @@ export const ComponentRelativeHint: React.FC = () => {
     };
   }, []);
 
-  useSceneUpdate(world, () => {
-    if (!hint || !refWrapper.current) {
-      return;
-    }
-
-    const camera = world.cameras.main;
-    const x = Math.round((hint.position.x - camera.worldView.x) * camera.zoom);
-    const y = Math.round((hint.position.y - camera.worldView.y) * camera.zoom);
-
-    refWrapper.current.style.left = `${x}px`;
-    refWrapper.current.style.top = `${y}px`;
-  }, [hint]);
-
   return hint && (
-    <Wrapper ref={refWrapper}>
-      <ComponentHint side={hint.side}>{hint.text}</ComponentHint>
-    </Wrapper>
+    <TranslateToCamera position={hint.position}>
+      <Wrapper ref={refWrapper}>
+        <ComponentHint side={hint.side}>{hint.text}</ComponentHint>
+      </Wrapper>
+    </TranslateToCamera>
   );
 };
 

@@ -58,7 +58,7 @@
     "gen-biome": "2.1.1",
     "heap": "0.2.7",
     "phaser": "3.60.0",
-    "phaser-react-ui": "1.0.1",
+    "phaser-react-ui": "1.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "6.0.1",

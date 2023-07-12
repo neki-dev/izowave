@@ -9,7 +9,7 @@ export const ComponentControls: React.FC = () => (
       {CONTROLS.map((control, index) => (
         <Control key={index}>
           <Control.Keys>
-            {control.name.split(' ').map((key) => (
+            {control.name.split(',').map((key) => (
               <Control.Key key={key}>{key}</Control.Key>
             ))}
           </Control.Keys>
