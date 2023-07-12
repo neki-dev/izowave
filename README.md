@@ -9,9 +9,9 @@ Build walls to defend, towers to attack, generators to get resources, ammunition
 And also upgrade skills of your character and his assistant.
 
 ## 🎮 [PLAY NOW](https://izowave.neki.guru/)
-  * #### https://neki-dev.itch.io/izowave
-  * #### https://gamejolt.com/games/izowave/822933
-  * #### https://webgamer.io/en/g/izowave
+  * *GameJolt* / https://gamejolt.com/games/izowave/822933
+  * *Itch.io* / https://neki-dev.itch.io/izowave
+  * *WebGamer* / https://webgamer.io/en/g/izowave
 
 .
 
