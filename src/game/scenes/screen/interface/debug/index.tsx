@@ -1,16 +1,19 @@
-import React, { useContext, useState } from 'react';
+import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
+import { GameScene, IGame } from '~type/game';
+import { IWorld } from '~type/world';
 
 import { Value } from './styles';
 
 export const ComponentDebug: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [frames, setFrames] = useState(0);
   const [memory, setMemory] = useState<string>();
 
-  useWorldUpdate(() => {
+  useSceneUpdate(world, () => {
     setFrames(Math.round(game.loop.actualFps));
 
     // @ts-ignore

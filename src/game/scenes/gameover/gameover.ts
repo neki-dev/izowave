@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
+import { Interface } from 'phaser-react-ui';
 
-import { Interface } from '~lib/interface';
 import { IGame, IScene, GameScene } from '~type/game';
 
 import { GameoverUI } from './interface';

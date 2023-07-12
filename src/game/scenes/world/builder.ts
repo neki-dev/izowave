@@ -7,7 +7,6 @@ import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
-import { InterfaceEvents } from '~type/interface';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -47,7 +46,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.setMaxListeners(0);
 
-    this.scene.game.screen.events.on(InterfaceEvents.MOUNT, () => {
+    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
       this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
     });
 

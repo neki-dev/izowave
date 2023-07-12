@@ -1,8 +1,10 @@
 import cn from 'classnames';
-import React, { useContext, useState } from 'react';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { GameContext, useWorldUpdate } from '~lib/interface';
+import { GameScene } from '~type/game';
+import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import { Building } from './styles';
@@ -16,7 +18,7 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
   number,
   variant,
 }) => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [isDisallow, setDisallow] = useState(false);
   const [isActive, setActive] = useState(false);
@@ -29,23 +31,23 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
       return;
     }
 
-    if (game.world.builder.variant === variant) {
-      game.world.builder.unsetBuildingVariant();
+    if (world.builder.variant === variant) {
+      world.builder.unsetBuildingVariant();
     } else {
-      game.world.builder.setBuildingVariant(variant);
+      world.builder.setBuildingVariant(variant);
     }
   };
 
-  useWorldUpdate(() => {
-    const currentIsActive = game.world.builder.variant === variant;
+  useSceneUpdate(world, () => {
+    const currentIsActive = world.builder.variant === variant;
 
     setActive(currentIsActive);
     if (currentIsActive) {
       setUsed(true);
     }
     setDisallow(
-      !game.world.builder.isBuildingAllowByTutorial(variant)
-      || !game.world.builder.isBuildingAllowByWave(variant),
+      !world.builder.isBuildingAllowByTutorial(variant)
+      || !world.builder.isBuildingAllowByWave(variant),
     );
   });
 

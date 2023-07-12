@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
+import { useGame } from 'phaser-react-ui';
+import React from 'react';
 
-import { GameContext } from '~lib/interface';
-import { GameStat } from '~type/game';
+import { GameStat, IGame } from '~type/game';
 
 import { ComponentStats } from './stats';
 import {
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
 
   const handleRestartClick = () => {
     game.restartGame();

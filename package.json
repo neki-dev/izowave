@@ -33,7 +33,7 @@
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "@types/styled-components": "5.1.26",
-    "@types/uuid": "^9.0.2",
+    "@types/uuid": "9.0.2",
     "alias-reuse": "2.0.0",
     "babel-loader": "9.1.2",
     "copy-webpack-plugin": "11.0.0",
@@ -44,7 +44,7 @@
     "jest": "29.5.0",
     "jest-canvas-mock": "2.5.2",
     "jest-environment-jsdom": "29.5.0",
-    "phaser3spectorjs": "^0.0.8",
+    "phaser3spectorjs": "0.0.8",
     "terser-webpack-plugin": "5.3.9",
     "ts-jest": "29.1.0",
     "ts-loader": "9.4.4",
@@ -58,10 +58,11 @@
     "gen-biome": "2.1.1",
     "heap": "0.2.7",
     "phaser": "3.60.0",
+    "phaser-react-ui": "1.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "6.0.1",
-    "uuid": "^9.0.0"
+    "uuid": "9.0.0"
   },
   "repository": {
     "type": "git",

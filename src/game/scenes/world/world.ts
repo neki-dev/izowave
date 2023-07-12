@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CONTROL_KEY } from '~const/controls';
@@ -10,7 +11,6 @@ import {
 } from '~const/world/entities/enemy';
 import { Crystal } from '~entity/crystal';
 import { Player } from '~entity/player';
-import { Interface } from '~lib/interface';
 import { sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Level } from '~scene/world/level';

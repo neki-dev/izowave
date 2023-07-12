@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
+import { Interface } from 'phaser-react-ui';
 
 import { registerAudioAssets } from '~lib/assets';
-import { Interface } from '~lib/interface';
 import { IGame, GameScene } from '~type/game';
 import {
   IScreen, NoticeType, ScreenAudio, ScreenEvents,

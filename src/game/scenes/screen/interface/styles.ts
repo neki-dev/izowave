@@ -3,11 +3,8 @@ import styled from 'styled-components';
 import { InterfaceScreenSize } from '~type/interface';
 
 export const Overlay = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   padding: 32px;
   display: flex;
   justify-content: space-between;

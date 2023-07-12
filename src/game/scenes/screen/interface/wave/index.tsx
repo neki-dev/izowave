@@ -1,18 +1,21 @@
 import cn from 'classnames';
-import React, { useContext, useEffect, useState } from 'react';
+import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useEffect, useState } from 'react';
 
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
-import { GameContext, useWorldUpdate } from '~lib/interface';
 import { formatTime } from '~lib/utils';
 import { ComponentHint } from '~scene/basic/interface/hint';
+import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 
 import {
   CurrentNumber, Container, State, Wrapper,
 } from './styles';
 
 export const ComponentWave: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [currentNumber, setCurrentNumber] = useState(1);
   const [value, setValue] = useState(null);
@@ -29,23 +32,23 @@ export const ComponentWave: React.FC = () => {
     [],
   );
 
-  useWorldUpdate(() => {
-    setPeaceMode(game.world.wave.isPeaceMode);
-    setCurrentNumber(game.world.wave.number);
-    setGoing(game.world.wave.isGoing);
+  useSceneUpdate(world, () => {
+    setPeaceMode(world.wave.isPeaceMode);
+    setCurrentNumber(world.wave.number);
+    setGoing(world.wave.isGoing);
 
-    if (game.world.wave.isGoing) {
-      const enemiesLeft = game.world.wave.getEnemiesLeft();
+    if (world.wave.isGoing) {
+      const enemiesLeft = world.wave.getEnemiesLeft();
 
       setValue(enemiesLeft);
       setAlarm(false);
     } else {
-      const timeleft = game.world.wave.getTimeleft();
+      const timeleft = world.wave.getTimeleft();
 
       setValue(formatTime(timeleft));
       setAlarm(
         timeleft <= WAVE_TIMELEFT_ALARM
-        && !game.world.isTimePaused(),
+        && !world.isTimePaused(),
       );
     }
   });

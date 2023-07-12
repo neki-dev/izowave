@@ -1,8 +1,9 @@
 import cn from 'classnames';
-import React, { useContext, useMemo, useState } from 'react';
+import { useGame } from 'phaser-react-ui';
+import React, { useMemo, useState } from 'react';
 
 import { COPYRIGHT } from '~const/game';
-import { GameContext } from '~lib/interface';
+import { IGame } from '~type/game';
 import { MenuItem } from '~type/menu';
 
 import { ComponentAbout } from './content/about';
@@ -20,7 +21,7 @@ import {
 } from './styles';
 
 export const MenuUI: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
 
   const [currentContent, setCurrentContent] = useState('About');
 

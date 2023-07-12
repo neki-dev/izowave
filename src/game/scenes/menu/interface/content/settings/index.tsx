@@ -1,9 +1,9 @@
 import cn from 'classnames';
-import React, { useContext, useState } from 'react';
+import { useGame } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
 import { SETTINGS } from '~const/game';
-import { GameContext } from '~lib/interface';
-import { GameSettings, GameSettingsData } from '~type/game';
+import { GameSettings, GameSettingsData, IGame } from '~type/game';
 
 import { Wrapper, Setting, Values } from './styles';
 
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const ComponentSettings: React.FC<Props> = ({ disabled }) => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
 
   const [settings, setSettings] = useState(game.settings);
 

@@ -184,61 +184,6 @@ export function rawAmount(value: string) {
 }
 
 /**
- * Get mutable array.
- *
- * @param current - Current array
- * @param target - New array
- * @param keys - Keys to compare
- */
-export function getMutableArray<T>(current: T[], target: T[], keys: (keyof T)[]) {
-  if (!target) {
-    return current;
-  }
-  if (!current) {
-    return target;
-  }
-
-  if (current.length !== target.length) {
-    return target;
-  }
-
-  for (let i = 0; i < current.length; i++) {
-    for (const key of keys) {
-      if (current[i][key] !== target[i][key]) {
-        return target;
-      }
-    }
-  }
-
-  return current;
-}
-
-/**
- * Get mutable object.
- *
- * @param current - Current object
- * @param target - New object
- */
-export function getMutableObject<T>(current: T, target: T) {
-  if (!target) {
-    return current;
-  }
-  if (!current) {
-    return target;
-  }
-
-  const keys = <(keyof T)[]> Object.keys(current);
-
-  for (const key of keys) {
-    if (current[key] !== target[key]) {
-      return target;
-    }
-  }
-
-  return current;
-}
-
-/**
  * Call function with frequency limit.
  *
  * @param fn - Function
