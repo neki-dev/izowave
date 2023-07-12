@@ -1,4 +1,4 @@
-## ![IZOWAVE](./docs/logotype.png)
+## ![IZOWAVE](./docs/logotype-large.png)
 [![Testing](https://github.com/neki-dev/izowave/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/test.yml)
 [![Building](https://github.com/neki-dev/izowave/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/build.yml)
 
@@ -8,7 +8,12 @@ Build walls to defend, towers to attack, generators to get resources, ammunition
 
 And also upgrade skills of your character and his assistant.
 
-* ## __[Play now](https://izowave.neki.guru)__
+## 🎮 [PLAY NOW](https://izowave.neki.guru/)
+  * *GameJolt* / https://gamejolt.com/games/izowave/822933
+  * *Itch.io* / https://neki-dev.itch.io/izowave
+  * *WebGamer* / https://webgamer.io/en/g/izowave
+
+.
 
 ![Preview 1](./docs/preview/full.png)
 | ![Preview 2](./docs/preview/snap01.png) | ![Preview 3](./docs/preview/snap02.png) | ![Preview 4](./docs/preview/snap03.png) |
