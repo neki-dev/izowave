@@ -1,4 +1,4 @@
-import { TranslateToCamera, useScene } from 'phaser-react-ui';
+import { RelativePosition, useScene } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { ComponentHint } from '~scene/basic/interface/hint';
@@ -33,11 +33,11 @@ export const ComponentRelativeHint: React.FC = () => {
   }, []);
 
   return hint && (
-    <TranslateToCamera position={hint.position}>
+    <RelativePosition x={hint.position.x} y={hint.position.y}>
       <Wrapper ref={refWrapper}>
         <ComponentHint side={hint.side}>{hint.text}</ComponentHint>
       </Wrapper>
-    </TranslateToCamera>
+    </RelativePosition>
   );
 };
 

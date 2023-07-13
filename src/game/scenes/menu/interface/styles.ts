@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceScreenSize, InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Overlay = styled.div`
   width: 100%;
@@ -9,12 +9,6 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  @media ${InterfaceScreenSize.M} {
-    zoom: 0.9;
-  }
-  @media ${InterfaceScreenSize.S} {
-    zoom: 0.8;
-  }
 `;
 
 export const Wrapper = styled.div`

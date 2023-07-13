@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import {
   getModifiedArray,
-  TranslateToCamera,
+  RelativePosition,
   useScene,
   useSceneUpdate,
 } from 'phaser-react-ui';
@@ -64,7 +64,7 @@ export const ComponentBuildingInfo: React.FC = () => {
 
   return (
     building && (
-      <TranslateToCamera position={building}>
+      <RelativePosition x={building.x} y={building.y}>
         <Wrapper>
           <Name>{building.getMeta().Name}</Name>
 
@@ -82,7 +82,7 @@ export const ComponentBuildingInfo: React.FC = () => {
           <ComponentBuildingParameters params={params} />
           <ComponentBuildingControls actions={controls} />
         </Wrapper>
-      </TranslateToCamera>
+      </RelativePosition>
     )
   );
 };
