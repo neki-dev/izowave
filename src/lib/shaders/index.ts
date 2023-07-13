@@ -1,9 +1,9 @@
-import { GrayscaleShader } from './grayscale';
+// import { GrayscaleShader } from './grayscale';
 import { OutlineShader } from './outline';
 
 export const shaders: Record<string, any> = {
   OutlineShader,
-  GrayscaleShader,
+  // GrayscaleShader,
 };
 
 Phaser.GameObjects.Image.prototype.addShader = function (shader: string, config?: object) {

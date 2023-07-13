@@ -18,7 +18,7 @@ export const ComponentWave: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [currentNumber, setCurrentNumber] = useState(1);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState<Nullable<number | string>>(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isPeaceMode, setPeaceMode] = useState(false);

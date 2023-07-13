@@ -14,9 +14,8 @@ import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
 import { IAnalytics } from '~type/analytics';
 import {
-  GameEvents, GameSettings, GameStat, IGame,
+  GameEvents, GameScene, GameSettings, GameStat, IGame,
 } from '~type/game';
-import { IMenu } from '~type/menu';
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -43,12 +42,6 @@ export class Game extends Phaser.Game implements IGame {
   public get isFinished() { return this._isFinished; }
 
   private set isFinished(v) { this._isFinished = v; }
-
-  private _menu: IMenu;
-
-  public get menu() { return this._menu; }
-
-  private set menu(v) { this._menu = v; }
 
   private _screen: IScreen;
 
@@ -97,9 +90,8 @@ export class Game extends Phaser.Game implements IGame {
     this.readSettings();
 
     this.events.on(Phaser.Core.Events.READY, () => {
-      this.screen = <Screen> this.scene.keys.SCREEN;
-      this.menu = <Menu> this.scene.keys.MENU;
-      this.world = <World> this.scene.keys.WORLD;
+      this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
+      this.world = <IWorld> this.scene.getScene(GameScene.WORLD);
 
       this.sound.setVolume(AUDIO_VOLUME);
 
@@ -109,11 +101,6 @@ export class Game extends Phaser.Game implements IGame {
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
       this.sound.mute = (value === 'off');
     });
-
-    if (IS_DEV_MODE) {
-      // @ts-ignore
-      window.GAME = this;
-    }
   }
 
   public pauseGame() {
@@ -122,13 +109,17 @@ export class Game extends Phaser.Game implements IGame {
     this.world.scene.pause();
     this.screen.scene.pause();
 
-    this.scene.systemScene.scene.launch(this.menu);
+    const menu = this.scene.getScene(GameScene.MENU);
+
+    this.scene.systemScene.scene.launch(menu);
   }
 
   public resumeGame() {
     this.onPause = false;
 
-    this.scene.systemScene.scene.stop(this.menu);
+    const menu = this.scene.getScene(GameScene.MENU);
+
+    this.scene.systemScene.scene.stop(menu);
 
     this.world.scene.resume();
     this.screen.scene.resume();
@@ -144,7 +135,9 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.start();
 
-    this.scene.systemScene.scene.stop(this.menu);
+    const menu = this.scene.getScene(GameScene.MENU);
+
+    this.scene.systemScene.scene.stop(menu);
     this.scene.systemScene.scene.launch(this.screen);
 
     this.events.emit(GameEvents.START);
@@ -159,13 +152,15 @@ export class Game extends Phaser.Game implements IGame {
   public stopGame() {
     this.isStarted = false;
 
-    this.scene.systemScene.scene.stop(this.menu);
+    const menu = this.scene.getScene(GameScene.MENU);
+
+    this.scene.systemScene.scene.stop(menu);
     this.scene.systemScene.scene.stop(this.screen);
 
     this.tutorial.disable();
 
     if (!IS_DEV_MODE) {
-      delete window.onbeforeunload;
+      window.onbeforeunload = null;
     }
   }
 
@@ -231,7 +226,7 @@ export class Game extends Phaser.Game implements IGame {
       const difficulty = this.settings[GameSettings.DIFFICULTY];
       const recordValue = localStorage.getItem(`BEST_STAT.${difficulty}`);
 
-      return JSON.parse(recordValue);
+      return recordValue && JSON.parse(recordValue);
     } catch (error) {
       return null;
     }
@@ -239,7 +234,8 @@ export class Game extends Phaser.Game implements IGame {
 
   private writeBestStat(stat: GameStat, record: Nullable<GameStat>) {
     const difficulty = this.settings[GameSettings.DIFFICULTY];
-    const betterStat = Object.keys(stat).reduce((curr, param: keyof GameStat) => ({
+    const params = Object.keys(stat) as (keyof GameStat)[];
+    const betterStat = params.reduce((curr, param) => ({
       ...curr,
       [param]: Math.max(stat[param], record?.[param] ?? 0),
     }), {});
@@ -256,7 +252,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   private registerShaders() {
-    const renderer = <Phaser.Renderer.WebGL.WebGLRenderer> this.renderer;
+    const renderer = this.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
 
     eachEntries(shaders, (name, Shader) => {
       renderer.pipelines.addPostPipeline(name, Shader);

@@ -8,10 +8,8 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "strictBindCallApply": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
     "paths": {
       "~entity/*": ["./src/game/scenes/world/entities/*"],
       "~scene/*": ["./src/game/scenes/*"],

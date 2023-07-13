@@ -23,7 +23,7 @@ import { Name, UpgradeLevel, Wrapper } from './styles';
 export const ComponentBuildingInfo: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [building, setBuilding] = useState<IBuilding>(null);
+  const [building, setBuilding] = useState<Nullable<IBuilding>>(null);
   const [upgradeLevel, setUpgradeLevel] = useState(1);
   const [params, setParams] = useState<BuildingParam[]>([]);
   const [controls, setControls] = useState<BuildingControl[]>([]);

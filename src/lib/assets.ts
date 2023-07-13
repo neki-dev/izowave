@@ -8,11 +8,9 @@ const ASSETS_PACK: {
   files: [],
 };
 
-function normalizeAssetsFiles(files: AssetsSource) {
+function normalizeAssetsFiles<T extends string>(files: AssetsSource<T>) {
   if (typeof files === 'string') {
     return [files];
-  } if (Array.isArray(files)) {
-    return files;
   }
 
   return Object.values(files);
@@ -38,7 +36,7 @@ export function registerImageAssets(files: AssetsSource) {
   );
 }
 
-export function registerSpriteAssets(files: AssetsSource, params: AssetsSpriteParams) {
+export function registerSpriteAssets<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
   ASSETS_PACK.files = ASSETS_PACK.files.concat(
     normalizeAssetsFiles(files).map((sprite) => {
       const { width, height } = (typeof params === 'function') ? params(sprite) : params;

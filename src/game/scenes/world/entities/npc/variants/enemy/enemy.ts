@@ -1,8 +1,12 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ENEMY_PATH_BREAKPOINT, ENEMY_TEXTURE_META } from '~const/world/entities/enemy';
+import {
+  ENEMY_PATH_BREAKPOINT,
+  ENEMY_TEXTURE_META,
+} from '~const/world/entities/enemy';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/utils';
@@ -11,13 +15,18 @@ import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
-import { IBuilding } from '~type/world/entities/building';
+import { EntityType } from '~type/world/entities';
 import {
-  IEnemyTarget, EnemyData, EnemyTexture, IEnemy,
+  IEnemyTarget,
+  EnemyData,
+  EnemyTexture,
+  IEnemy,
 } from '~type/world/entities/npc/enemy';
 import { TileType } from '~type/world/level';
 
 export class Enemy extends NPC implements IEnemy {
+  private damage: number;
+
   private might: number;
 
   private freezeTimer: Nullable<Phaser.Time.TimerEvent> = null;
@@ -35,11 +44,6 @@ export class Enemy extends NPC implements IEnemy {
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
-      damage: progressionQuadratic(
-        DIFFICULTY.ENEMY_DAMAGE * (multipliers.damage ?? 1.0) * scene.game.getDifficultyMultiplier(),
-        DIFFICULTY.ENEMY_DAMAGE_GROWTH,
-        scene.wave.number,
-      ),
       speed: progressionQuadratic(
         DIFFICULTY.ENEMY_SPEED * (multipliers.speed ?? 1.0),
         DIFFICULTY.ENEMY_SPEED_GROWTH,
@@ -47,8 +51,15 @@ export class Enemy extends NPC implements IEnemy {
       ),
     });
     scene.add.existing(this);
-    scene.entityGroups.enemies.add(this);
+    scene.addEntity(EntityType.ENEMY, this);
 
+    this.damage = progressionQuadratic(
+      DIFFICULTY.ENEMY_DAMAGE
+        * (multipliers.damage ?? 1.0)
+        * scene.game.getDifficultyMultiplier(),
+      DIFFICULTY.ENEMY_DAMAGE_GROWTH,
+      scene.wave.number,
+    );
     this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
       (multipliers.health ?? 1.0)
@@ -62,11 +73,16 @@ export class Enemy extends NPC implements IEnemy {
     this.addHealthIndicator(0xdb2323, true);
     this.addSpawnEffect();
 
-    this.setTilesCollision([TileType.BUILDING], (tile: IBuilding) => {
-      this.attack(tile);
+    this.setTilesCollision([TileType.BUILDING], (tile) => {
+      if (tile instanceof Building) {
+        this.attack(tile);
+      }
     });
 
-    this.scene.physics.add.collider(this, this.scene.entityGroups.npc);
+    this.scene.physics.add.collider(
+      this,
+      this.scene.getEntitiesGroup(EntityType.NPC),
+    );
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.freezeTimer) {
@@ -148,7 +164,7 @@ export class Enemy extends NPC implements IEnemy {
 
   private addBloodEffect() {
     if (
-      !this.currentGroundTile?.biome.solid
+      !this.currentGroundTile?.biome?.solid
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
     ) {
       return;
@@ -202,4 +218,4 @@ export class Enemy extends NPC implements IEnemy {
   }
 }
 
-registerSpriteAssets(EnemyTexture, (texture: EnemyTexture) => ENEMY_TEXTURE_META[texture].size);
+registerSpriteAssets(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);

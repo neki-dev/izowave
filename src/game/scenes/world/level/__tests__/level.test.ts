@@ -8,8 +8,8 @@ describe('level.ts', () => {
   it('should return biome data', () => {
     const biome = Level.GetBiome(BiomeType.SNOW);
 
-    expect(biome.collide).toEqual(true);
-    expect(biome.solid).toEqual(false);
+    expect(biome?.collide).toEqual(true);
+    expect(biome?.solid).toEqual(false);
   });
 
   it('should return depth', () => {

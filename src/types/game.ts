@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import { IAnalytics } from '~type/analytics';
-import { IMenu } from '~type/menu';
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -16,11 +15,6 @@ export interface IGame extends Phaser.Game {
    * Screen scene.
    */
   readonly screen: IScreen
-
-  /**
-   * Menu scene.
-   */
-  readonly menu: IMenu
 
   /**
    * Game is paused.
@@ -101,10 +95,6 @@ export interface IGame extends Phaser.Game {
   isSettingEnabled(key: GameSettings): boolean
 }
 
-export interface IScene extends Phaser.Scene {
-  readonly game: IGame
-}
-
 export enum GameScene {
   BASIC = 'BASIC',
   GAMEOVER = 'GAMEOVER',
@@ -138,3 +128,11 @@ export type GameStat = {
   kills: number
   lived: number
 };
+
+declare global {
+  const IS_DEV_MODE: boolean;
+
+  interface Window {
+    GAME: IGame
+  }
+}

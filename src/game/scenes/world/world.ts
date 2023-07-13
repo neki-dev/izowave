@@ -11,13 +11,16 @@ import {
 } from '~const/world/entities/enemy';
 import { Crystal } from '~entity/crystal';
 import { Player } from '~entity/player';
+import { Scene } from '~game/scenes';
 import { sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
+import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
-import { IGame, GameScene } from '~type/game';
+import { GameScene } from '~type/game';
 import { IWorld, WorldEvents, WorldHint } from '~type/world';
 import { IBuilder } from '~type/world/builder';
+import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
@@ -27,16 +30,8 @@ import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
-import { WorldUI } from './interface';
-
-export class World extends Phaser.Scene implements IWorld {
-  readonly game: IGame;
-
-  private _entityGroups: Record<string, Phaser.GameObjects.Group>;
-
-  public get entityGroups() { return this._entityGroups; }
-
-  private set entityGroups(v) { this._entityGroups = v; }
+export class World extends Scene implements IWorld {
+  private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;
 
   private _player: IPlayer;
 
@@ -146,22 +141,26 @@ export class World extends Phaser.Scene implements IWorld {
     this.lifecyleTimer.paused = state;
   }
 
-  public getBuildings() {
-    return this.entityGroups.buildings.getChildren() as IBuilding[];
+  public addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject) {
+    this.entityGroups[type].add(gameObject);
+  }
+
+  public getEntitiesGroup(type: EntityType) {
+    return this.entityGroups[type];
+  }
+
+  public getEntities<T = Phaser.GameObjects.GameObject>(type: EntityType) {
+    return this.entityGroups[type].getChildren() as T[];
   }
 
   public getBuildingsByVariant(variant: BuildingVariant) {
-    const buildings = this.getBuildings();
+    const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
 
     return buildings.filter((building) => (building.variant === variant));
   }
 
-  public getEnemies() {
-    return this.entityGroups.enemies.getChildren() as IEnemy[];
-  }
-
-  public spawnEnemy(variant: EnemyVariant): IEnemy {
-    const buildings = this.getBuildings();
+  public spawnEnemy(variant: EnemyVariant) {
+    const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
     const allowedPositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building) => (
@@ -178,10 +177,11 @@ export class World extends Phaser.Scene implements IWorld {
     const EnemyInstance = ENEMIES[variant];
     const positions = sortByDistance(allowedPositions, this.player.positionAtMatrix)
       .slice(0, ENEMY_SPAWN_POSITIONS);
-
-    return new EnemyInstance(this, {
+    const enemy: IEnemy = new EnemyInstance(this, {
       positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
+
+    return enemy;
   }
 
   public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {
@@ -206,7 +206,9 @@ export class World extends Phaser.Scene implements IWorld {
       return;
     }
 
-    for (const npc of <INPC[]> this.entityGroups.npc.getChildren()) {
+    const npcs = this.getEntities<INPC>(EntityType.NPC);
+
+    for (const npc of npcs) {
       try {
         npc.findPathToTarget();
       } catch (e) {
@@ -228,11 +230,11 @@ export class World extends Phaser.Scene implements IWorld {
 
   private addEntityGroups() {
     this.entityGroups = {
-      crystals: this.add.group(),
-      buildings: this.add.group({ runChildUpdate: true }),
-      shots: this.add.group({ runChildUpdate: true }),
-      npc: this.add.group({ runChildUpdate: true }),
-      enemies: this.add.group(),
+      [EntityType.BUILDING]: this.add.group({ runChildUpdate: true }),
+      [EntityType.NPC]: this.add.group({ runChildUpdate: true }),
+      [EntityType.ENEMY]: this.add.group(),
+      [EntityType.SHOT]: this.add.group({ runChildUpdate: true }),
+      [EntityType.CRYSTAL]: this.add.group(),
     };
   }
 
@@ -277,7 +279,7 @@ export class World extends Phaser.Scene implements IWorld {
     }
 
     this.wave.on(WaveEvents.COMPLETE, () => {
-      const newCount = maxCount - this.entityGroups.crystals.getTotalUsed();
+      const newCount = maxCount - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
         create();
@@ -286,13 +288,13 @@ export class World extends Phaser.Scene implements IWorld {
   }
 
   private addZoomControl() {
-    this.input.keyboard.on(CONTROL_KEY.ZOOM_OUT, () => {
+    this.input.keyboard?.on(CONTROL_KEY.ZOOM_OUT, () => {
       if (this.cameras.main.zoom === WORLD_MAX_ZOOM) {
         this.cameras.main.zoomTo(WORLD_MIN_ZOOM, 300);
       }
     });
 
-    this.input.keyboard.on(CONTROL_KEY.ZOOM_IN, () => {
+    this.input.keyboard?.on(CONTROL_KEY.ZOOM_IN, () => {
       if (this.cameras.main.zoom === WORLD_MIN_ZOOM) {
         this.cameras.main.zoomTo(WORLD_MAX_ZOOM, 300);
       }

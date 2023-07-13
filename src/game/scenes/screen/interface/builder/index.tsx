@@ -13,10 +13,10 @@ import { Variant, Info, Wrapper } from './styles';
 export const ComponentBuilder: React.FC = () => {
   const game = useGame<IGame>();
 
-  const [hint, setHint] = useState<{
+  const [hint, setHint] = useState<Nullable<{
     variant: BuildingVariant
     text: string
-  }>(null);
+  }>>(null);
 
   const showHint = (step: TutorialStep) => {
     switch (step) {

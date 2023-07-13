@@ -10,7 +10,7 @@ import { Wrapper } from './styles';
 export const ComponentGeneralHints: React.FC = () => {
   const game = useGame<IGame>();
 
-  const [hint, setHint] = useState<string>(null);
+  const [hint, setHint] = useState<Nullable<string>>(null);
 
   const showHint = (step: TutorialStep) => {
     switch (step) {

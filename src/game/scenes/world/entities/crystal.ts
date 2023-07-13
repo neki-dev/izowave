@@ -9,6 +9,7 @@ import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import {
   CrystalTexture, CrystalData, CrystalAudio, ICrystal,
 } from '~type/world/entities/crystal';
@@ -28,7 +29,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
     super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
     scene.add.existing(this);
-    scene.entityGroups.crystals.add(this);
+    scene.addEntity(EntityType.CRYSTAL, this);
 
     const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
 

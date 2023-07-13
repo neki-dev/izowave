@@ -7,12 +7,11 @@ import { equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
 import { IWorld } from '~type/world';
+import { EntityType } from '~type/world/entities';
 import { INPC, NPCData } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
 
 export class NPC extends Sprite implements INPC {
-  public damage: Nullable<number> = null;
-
   public isPathPassed: boolean = false;
 
   private pathToTarget: Vector2D[] = [];
@@ -26,16 +25,14 @@ export class NPC extends Sprite implements INPC {
   private calmEndTimestamp: number = 0;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, health, speed, pathFindTriggerDistance,
-    damage = null, frameRate = 4,
+    positionAtMatrix, texture, health, speed, pathFindTriggerDistance, frameRate = 4,
   }: NPCData) {
     super(scene, {
       texture, positionAtMatrix, health, speed,
     });
     scene.add.existing(this);
-    scene.entityGroups.npc.add(this);
+    scene.addEntity(EntityType.NPC, this);
 
-    this.damage = damage;
     this.pathFindTriggerDistance = pathFindTriggerDistance;
 
     this.setVisible(this.atVisibleTile());
@@ -99,7 +96,7 @@ export class NPC extends Sprite implements INPC {
       }
     }
 
-    const onComplete = (path: Vector2D[]) => {
+    const onComplete = (path: Nullable<Vector2D[]>) => {
       this.pathFindingTask = null;
 
       if (!path) {

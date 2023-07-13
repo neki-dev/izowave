@@ -209,5 +209,5 @@ export type BuildingData = BuildingVariantData & {
   variant: BuildingVariant
   health: number
   texture: BuildingTexture
-  actions?: BuildingActionsParams
+  actions?: Nullable<BuildingActionsParams>
 };

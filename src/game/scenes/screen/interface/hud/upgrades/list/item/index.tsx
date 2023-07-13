@@ -16,9 +16,9 @@ type Props = {
 export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [data, setData] = useState<PlayerUpgradeData>(null);
+  const [data, setData] = useState<Nullable<PlayerUpgradeData>>(null);
 
-  const limit = data && data.maxLevel <= data.level;
+  const limit = data?.currentLevel && data.maxLevel <= data.currentLevel;
 
   const onUpgrade = () => {
     world.player.upgrade(type);
@@ -28,7 +28,7 @@ export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
     const newData: PlayerUpgradeData = {
       ...PLAYER_UPGRADES[type],
       experience: world.player.getExperienceToUpgrade(type),
-      level: world.player.upgradeLevel[type],
+      currentLevel: world.player.upgradeLevel[type],
     };
 
     setData((current) => getModifiedObject(current, newData));
@@ -40,7 +40,7 @@ export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
         <Info>
           <Info.Label>{data.label}</Info.Label>
           <Info.Description>{data.description}</Info.Description>
-          <Info.Level>LEVEL {data.level}</Info.Level>
+          <Info.Level>LEVEL {data.currentLevel}</Info.Level>
         </Info>
         {limit ? (
           <Action>

@@ -10,7 +10,7 @@ import { Wrapper } from './styles';
 export const ComponentRelativeHint: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [hint, setHint] = useState<WorldHint>(null);
+  const [hint, setHint] = useState<Nullable<WorldHint>>(null);
 
   const refWrapper = useRef<HTMLDivElement>(null);
 

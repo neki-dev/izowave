@@ -7,6 +7,7 @@ import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
@@ -26,7 +27,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   constructor(scene: IWorld, params: ShotParams) {
     super(scene);
     scene.add.existing(this);
-    scene.entityGroups.shots.add(this);
+    scene.addEntity(EntityType.SHOT, this);
 
     this.params = params;
 
@@ -91,6 +92,10 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   private hit() {
+    if (!this.target || !this.params.damage) {
+      return;
+    }
+
     const momentDamage = this.params.damage / SHOT_LAZER_REPEAT;
 
     this.target.live.damage(momentDamage);
@@ -119,7 +124,9 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   private processing() {
     if (
-      !this.target?.body
+      !this.initiator
+      || !this.params.maxDistance
+      || !this.target?.body
       || this.target.live.isDead()
       || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target.body.center) > this.params.maxDistance
     ) {

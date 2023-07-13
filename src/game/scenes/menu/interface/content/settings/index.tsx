@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { useGame } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { SETTINGS } from '~const/game';
 import { GameSettings, GameSettingsData, IGame } from '~type/game';
@@ -13,6 +13,8 @@ type Props = {
 
 export const ComponentSettings: React.FC<Props> = ({ disabled }) => {
   const game = useGame<IGame>();
+
+  const settingList = useMemo(() => Object.entries(SETTINGS) as [GameSettings, GameSettingsData][], []);
 
   const [settings, setSettings] = useState(game.settings);
 
@@ -27,7 +29,7 @@ export const ComponentSettings: React.FC<Props> = ({ disabled }) => {
 
   return (
     <Wrapper>
-      {Object.entries(SETTINGS).map(([key, data]: [GameSettings, GameSettingsData]) => (
+      {settingList.map(([key, data]) => (
         <Setting key={key}>
           <Setting.Description>{data.description}</Setting.Description>
           <Values className={cn({

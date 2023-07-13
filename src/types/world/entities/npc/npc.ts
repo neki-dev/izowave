@@ -5,11 +5,6 @@ import { Vector2D } from '~type/world/level';
 
 export interface INPC extends ISprite {
   /**
-   * Damage amount.
-   */
-  damage: Nullable<number>
-
-  /**
    * State of finded path.
    */
   isPathPassed: boolean
@@ -46,7 +41,6 @@ export type NPCData = {
   positionAtMatrix: Vector2D
   texture: EnemyTexture | AssistantTexture
   speed: number
-  damage?: Nullable<number>
   health: number
   pathFindTriggerDistance: number
   frameRate?: number

@@ -1,13 +1,11 @@
-import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 
-import { IGame, IScene, GameScene } from '~type/game';
+import { Scene } from '~game/scenes';
+import { GameScene } from '~type/game';
 
 import { GameoverUI } from './interface';
 
-export class Gameover extends Phaser.Scene implements IScene {
-  readonly game: IGame;
-
+export class Gameover extends Scene {
   constructor() {
     super(GameScene.GAMEOVER);
   }

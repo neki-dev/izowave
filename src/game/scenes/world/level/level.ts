@@ -41,11 +41,11 @@ export class Level extends TileMatrix implements ILevel {
 
     const layer = generator.addLayer(LEVEL_BIOME_PARAMETERS);
 
-    for (const { params, data } of LEVEL_BIOMES) {
-      if (params) {
-        layer.addBiome(params, data);
+    LEVEL_BIOMES.forEach((biome) => {
+      if (biome.params) {
+        layer.addBiome(biome.params, biome.data);
       }
-    }
+    });
 
     this.map = generator.generate();
 
@@ -59,15 +59,18 @@ export class Level extends TileMatrix implements ILevel {
     this.makeMapTiles();
     this.makeTrees();
 
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
-      if (value === 'off') {
-        this.removeEffects();
-      }
-    });
+    this.scene.game.events.on(
+      `${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`,
+      (value: string) => {
+        if (value === 'off') {
+          this.removeEffects();
+        }
+      },
+    );
   }
 
   public looseEffects() {
-    this.mapTiles.getChildren().forEach((tile: ITile) => {
+    this.getTiles().forEach((tile) => {
       tile.mapEffects?.forEach((effect) => {
         effect.setAlpha(effect.alpha - 0.2);
         if (effect.alpha <= 0) {
@@ -78,13 +81,17 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private removeEffects() {
-    this.mapTiles.getChildren().forEach((tile: ITile) => {
+    this.getTiles().forEach((tile) => {
       tile.mapEffects?.forEach((effect) => {
         effect.destroy();
       });
       // eslint-disable-next-line no-param-reassign
       tile.mapEffects = [];
     });
+  }
+
+  private getTiles() {
+    return this.mapTiles.getChildren() as ITile[];
   }
 
   public isFreePoint(position: Vector3D) {
@@ -129,9 +136,9 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
-    const tiles = (<ITile[]> this.mapTiles.getChildren())
-      .filter((tile) => (tile.biome.z === 1))
-      .map((tile) => tile.shape);
+    const tiles = this.getTiles()
+      .filter((tile) => (tile?.biome?.z === 1))
+      .map((tile) => tile.shape) as Hexagon[];
     const line = new Phaser.Geom.Line(positionA.x, positionA.y, positionB.x, positionB.y);
     const point = Phaser.Geom.Intersects.GetLineToPolygon(line, tiles);
 
@@ -143,8 +150,9 @@ export class Level extends TileMatrix implements ILevel {
     const c = Math.ceil(d / 52);
     const center = this.scene.player.getPositionOnGround();
     const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * LEVEL_TILE_SIZE.persperctive);
+    const visibleTiles = this.visibleTiles.getChildren() as ITile[];
 
-    this.visibleTiles.getChildren().forEach((tile: ITile) => {
+    visibleTiles.forEach((tile) => {
       tile.setVisible(false);
       tile.mapEffects?.forEach((effect) => {
         effect.setVisible(false);
@@ -238,7 +246,6 @@ export class Level extends TileMatrix implements ILevel {
           Phaser.Math.Between(0, 3),
         ) as ITile;
 
-        // @ts-ignore
         tile.tileType = TileType.TREE;
 
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));

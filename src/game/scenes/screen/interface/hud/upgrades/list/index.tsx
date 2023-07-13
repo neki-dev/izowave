@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
 import { PLAYER_UPGRADES } from '~const/world/entities/player';
 import { PlayerUpgrade } from '~type/world/entities/player';
@@ -12,6 +12,11 @@ type Props = {
 
 export const ComponentUpgradesList: React.FC<Props> = ({ onClose }) => {
   const refContainer = useRef<HTMLDivElement>(null);
+
+  const upgradeTypes = useMemo(
+    () => Object.keys(PLAYER_UPGRADES) as PlayerUpgrade[],
+    [],
+  );
 
   const onClickOutside = (event: MouseEvent) => {
     const isOutside = event
@@ -33,7 +38,7 @@ export const ComponentUpgradesList: React.FC<Props> = ({ onClose }) => {
 
   return (
     <Container ref={refContainer}>
-      {Object.keys(PLAYER_UPGRADES).map((type: PlayerUpgrade) => (
+      {upgradeTypes.map((type) => (
         <ComponentUpgradesListItem key={type} type={type} />
       ))}
     </Container>

@@ -24,7 +24,7 @@ export interface IParticlesParent extends Phaser.GameObjects.GameObject {
   /**
    * Record of current effects.
    */
-  effects?: Partial<Record<string, IParticles>>
+  effects?: Record<string, IParticles>
 }
 
 export enum ParticlesTexture {

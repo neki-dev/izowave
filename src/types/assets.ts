@@ -1,9 +1,10 @@
-export type AssetsSource = string | string[] | Record<string, string>;
+export type AssetsSource<T = string> = T | Record<string, T>;
 
-export type AssetsSpriteParams = {
+export type AssetsSpriteSize = {
   width: number
   height: number
-} | ((sprite: string) => {
-  width: number
-  height: number
-});
+};
+
+export type AssetsSpriteParams<T = string> =
+  | AssetsSpriteSize
+  | ((sprite: T) => AssetsSpriteSize);

@@ -26,7 +26,7 @@ type Props = {
 export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [limit, setLimit] = useState(0);
+  const [limit, setLimit] = useState<Nullable<number>>(null);
   const [existCount, setExistCount] = useState(0);
   const [isAllowByWave, setAllowByWave] = useState(false);
   const [isAllowByTutorial, setAllowByTutorial] = useState(false);

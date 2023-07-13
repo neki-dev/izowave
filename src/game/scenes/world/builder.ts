@@ -50,7 +50,7 @@ export class Builder extends EventEmitter implements IBuilder {
       this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
     });
 
-    this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
+    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
       if (Number(e.key)) {
         this.switchBuildingVariant(Number(e.key) - 1);
       }
@@ -130,7 +130,7 @@ export class Builder extends EventEmitter implements IBuilder {
         const tileGround = this.scene.level.getTile({ x, y, z: 0 });
 
         if (
-          tileGround
+          tileGround?.biome
           && tileGround.biome.solid
           && tileGround.biome.type !== BiomeType.RUBBLE
         ) {
@@ -163,16 +163,19 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
-    for (const [step, allowedVariant] of <[TutorialStep, BuildingVariant][]> [
-      [TutorialStep.BUILD_TOWER_FIRE, BuildingVariant.TOWER_FIRE],
-      [TutorialStep.BUILD_GENERATOR, BuildingVariant.GENERATOR],
-    ]) {
-      if (this.scene.game.tutorial.state(step) === TutorialStepState.IN_PROGRESS) {
-        return (variant === allowedVariant);
-      }
-    }
+    const links: {
+      step: TutorialStep
+      variant: BuildingVariant
+    }[] = [
+      { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
+      { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
+    ];
 
-    return true;
+    const current = links.find((link) => (
+      this.scene.game.tutorial.state(link.step) === TutorialStepState.IN_PROGRESS
+    ));
+
+    return (!current || current.variant === variant);
   }
 
   public isBuildingAllowByWave(variant: BuildingVariant) {
@@ -268,11 +271,15 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private isAllowBuild() {
+    if (!this.buildArea) {
+      return false;
+    }
+
     const positionAtMatrix = this.getAssumedPosition();
 
     // Pointer in build area
     const positionAtWorldDown = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
-    const offset = this.buildArea.getTopLeft();
+    const offset = this.buildArea.getTopLeft() as Vector2D;
     const inArea = this.buildArea.geom.contains(
       positionAtWorldDown.x - offset.x,
       positionAtWorldDown.y - offset.y,
@@ -305,7 +312,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private build() {
     if (
-      !this.buildingPreview.visible
+      !this.variant
+      || !this.buildingPreview?.visible
       || !this.isAllowBuild()
     ) {
       return;
@@ -369,6 +377,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private updateBuildArea() {
+    if (!this.buildArea) {
+      return;
+    }
+
     this.buildArea.setSize(
       this.radius * 2,
       this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
@@ -381,11 +393,19 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private destroyBuildArea() {
+    if (!this.buildArea) {
+      return;
+    }
+
     this.buildArea.destroy();
     this.buildArea = null;
   }
 
   private createBuildingPreview() {
+    if (!this.variant) {
+      return;
+    }
+
     const BuildingInstance = BUILDINGS[this.variant];
 
     this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
@@ -395,6 +415,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private updateBuildingPreview() {
+    if (!this.buildingPreview) {
+      return;
+    }
+
     const positionAtMatrix = this.getAssumedPosition();
     const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
 
@@ -412,6 +436,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private destroyBuildingPreview() {
+    if (!this.buildingPreview) {
+      return;
+    }
+
     this.buildingPreview.destroy();
     this.buildingPreview = null;
   }

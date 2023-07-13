@@ -1,7 +1,8 @@
 import Phaser from 'phaser';
 
-import { IGame, IScene } from '~type/game';
+import { IScene } from '~type/scene';
 import { IBuilder } from '~type/world/builder';
+import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
@@ -10,8 +11,6 @@ import { ILevel, Vector2D } from '~type/world/level';
 import { IWave } from '~type/world/wave';
 
 export interface IWorld extends IScene {
-  readonly game: IGame
-
   /**
    * Wave.
    */
@@ -31,11 +30,6 @@ export interface IWorld extends IScene {
    * Builder.
    */
   readonly builder: IBuilder
-
-  /**
-   * Groups of entities.
-   */
-  readonly entityGroups: Record<string, Phaser.GameObjects.Group>
 
   /**
    * Delta time of frame update.
@@ -69,20 +63,25 @@ export interface IWorld extends IScene {
   setTimePause(state: boolean): void
 
   /**
-   * Get list of buildings
+   * Add entity to group.
    */
-  getBuildings(): IBuilding[]
+  addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject): void
+
+  /**
+   * Get entities group.
+   */
+  getEntitiesGroup(type: EntityType): Phaser.GameObjects.Group
+
+  /**
+   * Get entities list from group.
+   */
+  getEntities<T>(type: EntityType): T[]
 
   /**
    * Get list of buildings with a specific variant.
    * @param variant - Varaint
    */
   getBuildingsByVariant(variant: BuildingVariant): IBuilding[]
-
-  /**
-   * Get list of enemies
-   */
-  getEnemies(): IEnemy[]
 
   /**
    * Spawn enemy in random position.

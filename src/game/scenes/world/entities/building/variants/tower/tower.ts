@@ -1,10 +1,13 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
+import {
+  progressionQuadratic, getClosest, progressionLinear, getMax,
+} from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio, BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuildingAmmunition, IBuildingTower,
 } from '~type/world/entities/building';
@@ -29,7 +32,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
         this.reload();
       }
@@ -158,19 +161,9 @@ export class BuildingTower extends Building implements IBuildingTower {
     const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
       .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
 
-    if (ammunitions.length === 0) {
-      return null;
-    }
+    const priorityAmmunition = getMax(ammunitions, 'ammo');
 
-    let priorityAmmunition: IBuildingAmmunition = null;
-
-    for (const ammunition of ammunitions) {
-      if (!priorityAmmunition || ammunition.ammo > priorityAmmunition.ammo) {
-        priorityAmmunition = ammunition;
-      }
-    }
-
-    if (priorityAmmunition.ammo === 0) {
+    if (!priorityAmmunition || priorityAmmunition.ammo === 0) {
       return null;
     }
 
@@ -208,7 +201,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getTarget() {
-    const enemies = this.scene.getEnemies().filter((enemy) => {
+    const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
       if (enemy.live.isDead()) {
         return false;
       }

@@ -12,6 +12,7 @@ import { progressionLinear, progressionQuadratic, progressionQuadraticForce } fr
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IWave, WaveAudio, WaveEvents } from '~type/world/wave';
 
@@ -55,7 +56,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.runTimeleft();
 
-    this.scene.input.keyboard.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, () => {
+    this.scene.input.keyboard?.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, () => {
       this.skipTimeleft();
     });
   }
@@ -78,7 +79,7 @@ export class Wave extends EventEmitter implements IWave {
         if (this.nextSpawnTimestamp <= now) {
           this.spawnEnemy();
         }
-      } else if (this.scene.entityGroups.enemies.getTotalUsed() === 0) {
+      } else if (this.scene.getEntitiesGroup(EntityType.ENEMY).getTotalUsed() === 0) {
         this.complete();
       }
     } else if (!this.isPeaceMode) {
@@ -100,7 +101,7 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   public getEnemiesLeft() {
-    const currentEnemies = this.scene.entityGroups.enemies.getTotalUsed();
+    const currentEnemies = this.scene.getEntitiesGroup(EntityType.ENEMY).getTotalUsed();
     const killedEnemies = this.spawnedEnemiesCount - currentEnemies;
 
     return this.enemiesMaxCount - killedEnemies;
@@ -190,6 +191,10 @@ export class Wave extends EventEmitter implements IWave {
 
   private spawnEnemy() {
     const variant = this.getEnemyVariant();
+
+    if (!variant) {
+      return;
+    }
 
     this.scene.spawnEnemy(variant);
 
