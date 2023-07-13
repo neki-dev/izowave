@@ -105,11 +105,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         this.upgrade();
       }
     });
-    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      if (this.isFocused) {
-        this.select();
-      } else {
-        this.unselect();
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      if (pointer.button === 0) {
+        if (this.isFocused) {
+          this.select();
+        } else {
+          this.unselect();
+        }
       }
     });
     this.on(Phaser.Input.Events.POINTER_OVER, () => {

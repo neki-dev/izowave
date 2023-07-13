@@ -1,9 +1,7 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import {
-  progressionQuadratic, getClosest, progressionLinear, getMax,
-} from '~lib/utils';
+import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -161,9 +159,15 @@ export class BuildingTower extends Building implements IBuildingTower {
     const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
       .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
 
-    const priorityAmmunition = getMax(ammunitions, 'ammo');
+    if (ammunitions.length === 0) {
+      return null;
+    }
 
-    if (!priorityAmmunition || priorityAmmunition.ammo === 0) {
+    const priorityAmmunition = ammunitions.reduce((max, current) => (
+      max.ammo > current.ammo ? max : current
+    ));
+
+    if (priorityAmmunition.ammo === 0) {
       return null;
     }
 

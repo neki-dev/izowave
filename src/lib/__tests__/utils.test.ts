@@ -7,7 +7,6 @@ import {
   getClosest,
   progressionLinear,
   progressionLinearFrom,
-  getMax,
 } from '../utils';
 
 describe('utils.ts / progression', () => {
@@ -51,20 +50,6 @@ describe('utils.ts / formatTime', () => {
   it('should convert timestamp seconds to string time', () => {
     expect(formatTime(0)).toEqual('00:00');
     expect(formatTime(125000)).toEqual('02:05');
-  });
-});
-
-describe('utils.ts / getMax', () => {
-  it('should return item with max value', () => {
-    const max = getMax([{ a: 0 }, { a: 20 }, { a: 10 }], 'a');
-
-    expect(max?.a).toEqual(20);
-  });
-
-  it('should return empty item', () => {
-    const max = getMax([], 'a');
-
-    expect(max).toEqual(null);
   });
 });
 

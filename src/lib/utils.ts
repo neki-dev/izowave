@@ -88,19 +88,6 @@ export function formatTime(value: number) {
 }
 
 /**
- * Get item with max value of param.
- * @param list - Array
- * @param key - Param key
- */
-export function getMax<T>(list: T[], key: keyof T): Nullable<T> {
-  if (list.length === 0) {
-    return null;
-  }
-
-  return list.reduce((max, current) => (max[key] > current[key] ? max : current));
-}
-
-/**
  * Get closest position to target.
  * @param positions - Positions list
  * @param target - Target position
