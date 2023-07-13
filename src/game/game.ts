@@ -14,7 +14,7 @@ import { Screen } from '~scene/screen';
 import { World } from '~scene/world';
 import { IAnalytics } from '~type/analytics';
 import {
-  GameEvents, GameScene, GameSettings, GameStat, IGame,
+  GameEvents, GameFlag, GameScene, GameSettings, GameStat, IGame,
 } from '~type/game';
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
@@ -24,6 +24,8 @@ export class Game extends Phaser.Game implements IGame {
   readonly tutorial: ITutorial;
 
   readonly analytics: IAnalytics;
+
+  private flags: string[];
 
   private _isStarted: boolean = false;
 
@@ -87,6 +89,7 @@ export class Game extends Phaser.Game implements IGame {
     this.tutorial = new Tutorial();
     this.analytics = new Analytics();
 
+    this.readFlags();
     this.readSettings();
 
     this.events.on(Phaser.Core.Events.READY, () => {
@@ -219,6 +222,17 @@ export class Game extends Phaser.Game implements IGame {
     eachEntries(GameSettings, (key) => {
       this.settings[key] = localStorage.getItem(`SETTINGS.${key}`) ?? SETTINGS[key].default;
     });
+  }
+
+  public isFlagEnabled(key: GameFlag) {
+    return this.flags.includes(key);
+  }
+
+  private readFlags() {
+    const query = new URLSearchParams(window.location.search);
+    const rawFlags = query.get('flags');
+
+    this.flags = rawFlags?.toUpperCase().split(',') ?? [];
   }
 
   private getRecordStat(): Nullable<GameStat> {

@@ -12,7 +12,7 @@ import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameSettings } from '~type/game';
+import { GameFlag, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
@@ -166,6 +166,7 @@ export class Enemy extends NPC implements IEnemy {
     if (
       !this.currentGroundTile?.biome?.solid
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+      || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
     ) {
       return;
     }

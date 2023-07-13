@@ -93,6 +93,12 @@ export interface IGame extends Phaser.Game {
    * @param key - Settings key
    */
   isSettingEnabled(key: GameSettings): boolean
+
+  /**
+   * Check is flag enabled.
+   * @param key - Flag key
+   */
+  isFlagEnabled(key: GameFlag): boolean
 }
 
 export enum GameScene {
@@ -114,6 +120,10 @@ export enum GameSettings {
   AUDIO = 'AUDIO',
   EFFECTS = 'EFFECTS',
   TUTORIAL = 'TUTORIAL',
+}
+
+export enum GameFlag {
+  NO_BLOOD = 'NO_BLOOD',
 }
 
 export type GameSettingsData = {
