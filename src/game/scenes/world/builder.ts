@@ -75,11 +75,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public setBuildingVariant(variant: BuildingVariant) {
-    if (this.variant === variant) {
-      return;
-    }
-
-    if (!this.isBuildingAllowByTutorial(variant)) {
+    if (
+      this.variant === variant
+      || !this.isBuildingAllowByTutorial(variant)
+    ) {
       return;
     }
 
@@ -277,7 +276,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
     const positionAtMatrix = this.getAssumedPosition();
 
-    // Pointer in build area
     const positionAtWorldDown = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
     const offset = this.buildArea.getTopLeft() as Vector2D;
     const inArea = this.buildArea.geom.contains(
@@ -289,21 +287,23 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    // Pointer biome is solid
     const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
+    const isSolid = tileGround?.biome?.solid;
 
-    if (!tileGround?.biome?.solid) {
+    if (!isSolid) {
       return false;
     }
 
-    // Pointer is not contains player or other buildings
-    const playerPositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
-    const isFree = (
-      this.scene.level.isFreePoint({ ...positionAtMatrix, z: 1 })
-      && !playerPositionsAtMatrix.some((point) => equalPositions(positionAtMatrix, point))
-    );
+    const isFreeFromTile = this.scene.level.isFreePoint({ ...positionAtMatrix, z: 1 });
 
-    if (!isFree) {
+    if (!isFreeFromTile) {
+      return false;
+    }
+
+    const playerPositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
+    const isFreeFromPlayer = playerPositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+
+    if (!isFreeFromPlayer) {
       return false;
     }
 
@@ -352,7 +352,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private isBuildingLimitReached(variant: BuildingVariant) {
     const limit = this.getBuildingLimit(variant);
 
-    if (limit !== null) {
+    if (limit) {
       return (this.scene.getBuildingsByVariant(variant).length >= limit);
     }
 

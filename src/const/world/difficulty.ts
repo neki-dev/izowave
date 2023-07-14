@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.08, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.35, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade
 
