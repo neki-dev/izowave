@@ -1,5 +1,9 @@
 import { TutorialStepState } from '~type/tutorial';
 
+const entityGroup = {
+  getTotalUsed: jest.fn(() => 0),
+};
+
 const world = {
   getTime: jest.fn(() => 0),
   isTimePaused: jest.fn(() => false),
@@ -23,10 +27,10 @@ const world = {
     getDifficultyMultiplier: jest.fn(() => 1.0),
   },
   entityGroups: {
-    enemies: {
-      getTotalUsed: jest.fn(() => 0),
-    },
+    enemy: entityGroup,
   },
+  getEntities: jest.fn(() => 0),
+  getEntitiesGroup: jest.fn(() => entityGroup),
   level: {
     looseEffects: jest.fn(),
   },

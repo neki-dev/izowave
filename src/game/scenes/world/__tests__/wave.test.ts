@@ -7,9 +7,9 @@ import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IWave, WaveEvents } from '~type/world/wave';
 
+import { registerHelper } from './helpers/wave';
 import world from '../__mocks__/world';
 import { Wave } from '../wave';
-import { registerHelper } from './helpers/wave';
 
 describe('wave.ts', () => {
   let wave: IWave;

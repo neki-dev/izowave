@@ -12,16 +12,16 @@ export function registerHelper(wave: IWave) {
     spawnAllEnemies() {
       // @ts-ignore
       for (let i = 0; i < wave.enemiesMaxCount; i++) {
-        const currentCount = world.entityGroups.enemies.getTotalUsed();
+        const currentCount = world.entityGroups.enemy.getTotalUsed();
 
         this.skipTime(DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE);
         wave.update();
-        world.entityGroups.enemies.getTotalUsed = jest.fn(() => currentCount + 1);
+        world.entityGroups.enemy.getTotalUsed = jest.fn(() => currentCount + 1);
       }
     },
 
     killAllEnemies() {
-      world.entityGroups.enemies.getTotalUsed = jest.fn(() => 0);
+      world.entityGroups.enemy.getTotalUsed = jest.fn(() => 0);
     },
 
     skipTime(ms: number) {
