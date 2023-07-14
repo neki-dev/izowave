@@ -40,7 +40,9 @@ export class Enemy extends NPC implements IEnemy {
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: progressionQuadratic(
-        DIFFICULTY.ENEMY_HEALTH * (multipliers.health ?? 1.0) * scene.game.getDifficultyMultiplier(),
+        DIFFICULTY.ENEMY_HEALTH
+          * (multipliers.health ?? 1.0)
+          * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),

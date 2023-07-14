@@ -6,9 +6,10 @@ export const CONTROL_KEY = {
   PAUSE: 'keyup-ESC',
   START: 'keyup-ENTER',
 
-  BUILDING_UPGRADE: 'keyup-U',
   BUILDING_DESTROY: 'keyup-BACKSPACE',
   BUILDING_RELOAD: 'keyup-R',
+  BUILDING_UPGRADE: 'keyup-E',
+  BUILDING_UPGRADE_ANALOG: 'keyup-U',
 
   WAVE_TIMELEFT_AFTER_SKIP: 'keyup-N',
 
@@ -20,7 +21,7 @@ export const CONTROLS: ControlItem[] = [
   { name: 'W,A,S,D', description: 'Move player' },
   { name: 'LEFT CLICK', description: 'Build' },
   { name: 'RIGHT CLICK', description: 'Unset current building' },
-  { name: 'U', description: 'Upgrade active building' },
+  { name: 'E', description: 'Upgrade active building' },
   { name: 'R', description: 'Reload active tower ammo' },
   { name: 'BACKSPACE', description: 'Destroy active building' },
   { name: 'N', description: 'Skip wave timeleft' },

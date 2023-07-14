@@ -94,16 +94,22 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
 
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, () => {
-      if (this.isFocused) {
-        this.break();
-      }
-    });
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
+    const handleBreak = () => {
       if (this.isFocused) {
         this.upgrade();
       }
-    });
+    };
+
+    const handleUpgrade = () => {
+      if (this.isFocused) {
+        this.upgrade();
+      }
+    };
+
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak, this);
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade, this);
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade, this);
+
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
       if (pointer.button === 0) {
         if (this.isFocused) {
@@ -243,7 +249,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
-  private upgrade() {
+  public upgrade() {
     if (!this.isUpgradeAllowed()) {
       return;
     }
@@ -508,7 +514,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.actionsArea.updateDisplayOrigin();
   }
 
-  private break() {
+  public break() {
     if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
