@@ -1,17 +1,16 @@
-import React, {
-  useContext, useEffect, useRef, useState,
-} from 'react';
+import { RelativePosition, useScene } from 'phaser-react-ui';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
 import { ComponentHint } from '~scene/basic/interface/hint';
-import { WorldEvents, WorldHint } from '~type/world';
+import { GameScene } from '~type/game';
+import { IWorld, WorldEvents, WorldHint } from '~type/world';
 
 import { Wrapper } from './styles';
 
 export const ComponentRelativeHint: React.FC = () => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [hint, setHint] = useState<WorldHint>(null);
+  const [hint, setHint] = useState<Nullable<WorldHint>>(null);
 
   const refWrapper = useRef<HTMLDivElement>(null);
 
@@ -24,32 +23,21 @@ export const ComponentRelativeHint: React.FC = () => {
   };
 
   useEffect(() => {
-    game.world.events.on(WorldEvents.SHOW_HINT, showHint);
-    game.world.events.on(WorldEvents.HIDE_HINT, hideHint);
+    world.events.on(WorldEvents.SHOW_HINT, showHint);
+    world.events.on(WorldEvents.HIDE_HINT, hideHint);
 
     return () => {
-      game.world.events.off(WorldEvents.SHOW_HINT, showHint);
-      game.world.events.off(WorldEvents.HIDE_HINT, hideHint);
+      world.events.off(WorldEvents.SHOW_HINT, showHint);
+      world.events.off(WorldEvents.HIDE_HINT, hideHint);
     };
   }, []);
 
-  useWorldUpdate(() => {
-    if (!hint || !refWrapper.current) {
-      return;
-    }
-
-    const camera = game.world.cameras.main;
-    const x = Math.round((hint.position.x - camera.worldView.x) * camera.zoom);
-    const y = Math.round((hint.position.y - camera.worldView.y) * camera.zoom);
-
-    refWrapper.current.style.left = `${x}px`;
-    refWrapper.current.style.top = `${y}px`;
-  }, [hint]);
-
   return hint && (
-    <Wrapper ref={refWrapper}>
-      <ComponentHint side={hint.side}>{hint.text}</ComponentHint>
-    </Wrapper>
+    <RelativePosition x={hint.position.x} y={hint.position.y}>
+      <Wrapper ref={refWrapper}>
+        <ComponentHint side={hint.side}>{hint.text}</ComponentHint>
+      </Wrapper>
+    </RelativePosition>
   );
 };
 

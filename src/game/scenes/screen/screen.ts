@@ -1,17 +1,15 @@
-import Phaser from 'phaser';
+import { Interface } from 'phaser-react-ui';
 
+import { Scene } from '~game/scenes';
 import { registerAudioAssets } from '~lib/assets';
-import { Interface } from '~lib/interface';
-import { IGame, GameScene } from '~type/game';
+import { GameScene } from '~type/game';
 import {
   IScreen, NoticeType, ScreenAudio, ScreenEvents,
 } from '~type/screen';
 
 import { ScreenUI } from './interface';
 
-export class Screen extends Phaser.Scene implements IScreen {
-  readonly game: IGame;
-
+export class Screen extends Scene implements IScreen {
   constructor() {
     super(GameScene.SCREEN);
   }

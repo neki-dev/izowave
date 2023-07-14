@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useGame } from 'phaser-react-ui';
+import React, { useEffect, useState } from 'react';
 
-import { GameContext } from '~lib/interface';
 import { ComponentHint } from '~scene/basic/interface/hint';
+import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { BuildingVariant } from '~type/world/entities/building';
 
@@ -10,12 +11,12 @@ import { ComponentBuilderPreview } from './preview';
 import { Variant, Info, Wrapper } from './styles';
 
 export const ComponentBuilder: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
 
-  const [hint, setHint] = useState<{
+  const [hint, setHint] = useState<Nullable<{
     variant: BuildingVariant
     text: string
-  }>(null);
+  }>>(null);
 
   const showHint = (step: TutorialStep) => {
     switch (step) {

@@ -1,8 +1,10 @@
 import cn from 'classnames';
-import React, { useContext, useMemo, useState } from 'react';
+import { useGame, useRelativeScale } from 'phaser-react-ui';
+import React, { useMemo, useState } from 'react';
 
 import { COPYRIGHT } from '~const/game';
-import { GameContext } from '~lib/interface';
+import { INTERFACE_SCALE } from '~const/interface';
+import { IGame } from '~type/game';
 import { MenuItem } from '~type/menu';
 
 import { ComponentAbout } from './content/about';
@@ -20,7 +22,9 @@ import {
 } from './styles';
 
 export const MenuUI: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
+
+  const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);
 
   const [currentContent, setCurrentContent] = useState('About');
 
@@ -84,7 +88,7 @@ export const MenuUI: React.FC = () => {
   };
 
   return (
-    <Overlay>
+    <Overlay ref={refScale}>
       <Wrapper>
         <Sidebar>
           <Logotype>IZOWAVE</Logotype>

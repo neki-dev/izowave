@@ -15,6 +15,7 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
@@ -72,13 +73,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
-    scene.add.existing(this);
-    scene.entityGroups.buildings.add(this);
+    scene.addEntity(EntityType.BUILDING, this);
 
-    this.live = new Live(health);
     this.actions = actions;
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
+    this.live = new Live(health);
 
     this.addActionArea();
     this.setInteractive({
@@ -94,21 +94,23 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
 
-    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_DESTROY, () => {
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, () => {
       if (this.isFocused) {
         this.break();
       }
     });
-    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, () => {
       if (this.isFocused) {
         this.upgrade();
       }
     });
-    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-      if (this.isFocused) {
-        this.select();
-      } else {
-        this.unselect();
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      if (pointer.button === 0) {
+        if (this.isFocused) {
+          this.select();
+        } else {
+          this.unselect();
+        }
       }
     });
     this.on(Phaser.Input.Events.POINTER_OVER, () => {
@@ -154,7 +156,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return false;
     }
 
-    const offset = this.actionsArea.getTopLeft();
+    const offset = this.actionsArea.getTopLeft() as Vector2D;
     const contains: boolean = this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
 
     return contains;

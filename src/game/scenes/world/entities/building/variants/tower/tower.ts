@@ -5,6 +5,7 @@ import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils'
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio, BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuildingAmmunition, IBuildingTower,
 } from '~type/world/entities/building';
@@ -29,7 +30,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    this.scene.input.keyboard.on(CONTROL_KEY.BUILDING_RELOAD, () => {
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_RELOAD, () => {
       if (this.isFocused) {
         this.reload();
       }
@@ -162,13 +163,9 @@ export class BuildingTower extends Building implements IBuildingTower {
       return null;
     }
 
-    let priorityAmmunition: IBuildingAmmunition = null;
-
-    for (const ammunition of ammunitions) {
-      if (!priorityAmmunition || ammunition.ammo > priorityAmmunition.ammo) {
-        priorityAmmunition = ammunition;
-      }
-    }
+    const priorityAmmunition = ammunitions.reduce((max, current) => (
+      max.ammo > current.ammo ? max : current
+    ));
 
     if (priorityAmmunition.ammo === 0) {
       return null;
@@ -208,7 +205,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getTarget() {
-    const enemies = this.scene.getEnemies().filter((enemy) => {
+    const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
       if (enemy.live.isDead()) {
         return false;
       }

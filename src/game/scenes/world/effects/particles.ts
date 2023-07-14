@@ -55,7 +55,7 @@ export class Particles implements IParticles {
   }
 
   public destroy() {
-    delete this.parent.effects[this.key];
+    delete this.parent.effects?.[this.key];
     this.emitter.destroy();
 
     this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);

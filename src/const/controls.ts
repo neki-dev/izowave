@@ -17,12 +17,12 @@ export const CONTROL_KEY = {
 };
 
 export const CONTROLS: ControlItem[] = [
-  { name: 'W A S D', description: 'Move player' },
-  { name: 'L-MOUSE', description: 'Build' },
-  { name: 'R-MOUSE', description: 'Unset current building' },
+  { name: 'W,A,S,D', description: 'Move player' },
+  { name: 'LEFT CLICK', description: 'Build' },
+  { name: 'RIGHT CLICK', description: 'Unset current building' },
   { name: 'U', description: 'Upgrade active building' },
   { name: 'R', description: 'Reload active tower ammo' },
   { name: 'BACKSPACE', description: 'Destroy active building' },
   { name: 'N', description: 'Skip wave timeleft' },
-  { name: '- +', description: 'Change zoom' },
+  { name: '-,+', description: 'Change zoom' },
 ];

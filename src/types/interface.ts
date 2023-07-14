@@ -15,13 +15,3 @@ export enum InterfaceFont {
   PIXEL = 'Retro',
   MONOSPACE = 'Monospace',
 }
-
-export enum InterfaceScreenSize {
-  L = '',
-  M = '(max-width: 1365px)',
-  S = '(max-width: 1023px)',
-}
-
-export enum InterfaceEvents {
-  MOUNT = 'mount',
-}

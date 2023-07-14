@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
+import { getModifiedObject, useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
 import { PLAYER_UPGRADES } from '~const/world/entities/player';
-import { GameContext, useWorldUpdate } from '~lib/interface';
-import { getMutableObject } from '~lib/utils';
 import { ComponentAmount } from '~scene/basic/interface/amount';
+import { GameScene } from '~type/game';
+import { IWorld } from '~type/world';
 import { PlayerUpgrade, PlayerUpgradeData } from '~type/world/entities/player';
 
 import { Item, Info, Action } from './styles';
@@ -13,24 +14,24 @@ type Props = {
 };
 
 export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [data, setData] = useState<PlayerUpgradeData>(null);
+  const [data, setData] = useState<Nullable<PlayerUpgradeData>>(null);
 
-  const limit = data && data.maxLevel <= data.level;
+  const limit = data?.currentLevel && data.maxLevel <= data.currentLevel;
 
   const onUpgrade = () => {
-    game.world.player.upgrade(type);
+    world.player.upgrade(type);
   };
 
-  useWorldUpdate(() => {
+  useSceneUpdate(world, () => {
     const newData: PlayerUpgradeData = {
       ...PLAYER_UPGRADES[type],
-      experience: game.world.player.getExperienceToUpgrade(type),
-      level: game.world.player.upgradeLevel[type],
+      experience: world.player.getExperienceToUpgrade(type),
+      currentLevel: world.player.upgradeLevel[type],
     };
 
-    setData((current) => getMutableObject(current, newData));
+    setData((current) => getModifiedObject(current, newData));
   });
 
   return (
@@ -39,7 +40,7 @@ export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
         <Info>
           <Info.Label>{data.label}</Info.Label>
           <Info.Description>{data.description}</Info.Description>
-          <Info.Level>LEVEL {data.level}</Info.Level>
+          <Info.Level>LEVEL {data.currentLevel}</Info.Level>
         </Info>
         {limit ? (
           <Action>

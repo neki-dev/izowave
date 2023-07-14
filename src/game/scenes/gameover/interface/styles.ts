@@ -1,23 +1,14 @@
 import styled from 'styled-components';
 
-import { InterfaceColor, InterfaceFont, InterfaceScreenSize } from '~type/interface';
+import { InterfaceColor, InterfaceFont } from '~type/interface';
 
 export const Overlay = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
-  @media ${InterfaceScreenSize.M} {
-    zoom: 0.9;
-  }
-  @media ${InterfaceScreenSize.S} {
-    zoom: 0.8;
-  }
 `;
 
 export const Wrapper = styled.div`

@@ -8,7 +8,6 @@ export function roundToScale(value: number, scale?: number) {
 /**
  * Function to quadratic progressively increase value,
  * relative to specified level.
- *
  * @param defaultValue - Default value for first level
  * @param scale - Part of default value for growth
  * @param level - Difficulty level
@@ -20,7 +19,7 @@ export function progressionQuadratic(
   level: number,
   roundTo?: number,
 ) {
-  const value = defaultValue * ((scale + 1) ** (level - 1));
+  const value = defaultValue * (scale + 1) ** (level - 1);
 
   return roundToScale(value, roundTo);
 }
@@ -31,7 +30,7 @@ export function progressionQuadraticForce(
   level: number,
   roundTo?: number,
 ) {
-  const value = defaultValue * (level ** (scale + 1));
+  const value = defaultValue * level ** (scale + 1);
 
   return roundToScale(value, roundTo);
 }
@@ -42,7 +41,7 @@ export function progressionLinear(
   level: number,
   roundTo?: number,
 ) {
-  const value = defaultValue + (defaultValue * scale * (level - 1));
+  const value = defaultValue + defaultValue * scale * (level - 1);
 
   return roundToScale(value, roundTo);
 }
@@ -54,14 +53,13 @@ export function progressionLinearFrom(
   level: number,
   roundTo?: number,
 ) {
-  const value = currentValue + (defaultValue * scale * (level - 1));
+  const value = currentValue + defaultValue * scale * (level - 1);
 
   return roundToScale(value, roundTo);
 }
 
 /**
  * Check positions is equals.
- *
  * @param a - First position
  * @param b - Second position
  */
@@ -79,7 +77,6 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
 
 /**
  * Format timestamp to string time.
- *
  * @param value - Timestamp in miliseconds
  */
 export function formatTime(value: number) {
@@ -92,7 +89,6 @@ export function formatTime(value: number) {
 
 /**
  * Get closest position to target.
- *
  * @param positions - Positions list
  * @param target - Target position
  */
@@ -102,13 +98,13 @@ export function getClosest<T extends Vector2D>(
 ): Nullable<T> {
   let closest: {
     distance: number
-    position: T
+    position: Nullable<T>
   } = {
     distance: Infinity,
     position: null,
   };
 
-  for (const position of positions) {
+  positions.forEach((position) => {
     const dx = position.x - target.x;
     const dy = position.y - target.y;
     const distance = Math.sqrt(dx * dx + dy * dy);
@@ -116,14 +112,13 @@ export function getClosest<T extends Vector2D>(
     if (distance < closest.distance) {
       closest = { position, distance };
     }
-  }
+  });
 
   return closest.position;
 }
 
 /**
  * Sort position by distance to target.
- *
  * @param positions - Positions list
  * @param target - Target position
  */
@@ -148,7 +143,6 @@ export function sortByDistance<T extends Vector2D>(
 
 /**
  * Get array of positions around source position.
- *
  * @param position - Source position
  */
 export function aroundPosition(position: Vector2D) {
@@ -167,7 +161,6 @@ export function aroundPosition(position: Vector2D) {
 
 /**
  * Add sign to amount.
- *
  * @param value - Amount
  */
 export function formatAmount(value: number) {
@@ -176,7 +169,6 @@ export function formatAmount(value: number) {
 
 /**
  * Remove sign from amount.
- *
  * @param value - Amount
  */
 export function rawAmount(value: string) {
@@ -184,63 +176,7 @@ export function rawAmount(value: string) {
 }
 
 /**
- * Get mutable array.
- *
- * @param current - Current array
- * @param target - New array
- * @param keys - Keys to compare
- */
-export function getMutableArray<T>(current: T[], target: T[], keys: (keyof T)[]) {
-  if (!target) {
-    return current;
-  }
-  if (!current) {
-    return target;
-  }
-
-  if (current.length !== target.length) {
-    return target;
-  }
-
-  for (let i = 0; i < current.length; i++) {
-    for (const key of keys) {
-      if (current[i][key] !== target[i][key]) {
-        return target;
-      }
-    }
-  }
-
-  return current;
-}
-
-/**
- * Get mutable object.
- *
- * @param current - Current object
- * @param target - New object
- */
-export function getMutableObject<T>(current: T, target: T) {
-  if (!target) {
-    return current;
-  }
-  if (!current) {
-    return target;
-  }
-
-  const keys = <(keyof T)[]> Object.keys(current);
-
-  for (const key of keys) {
-    if (current[key] !== target[key]) {
-      return target;
-    }
-  }
-
-  return current;
-}
-
-/**
  * Call function with frequency limit.
- *
  * @param fn - Function
  * @param delay - Call delay
  */

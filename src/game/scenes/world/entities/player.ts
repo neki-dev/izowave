@@ -7,6 +7,7 @@ import {
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
+import { Enemy } from '~entity/npc/variants/enemy';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { aroundPosition, progressionQuadratic } from '~lib/utils';
@@ -16,9 +17,9 @@ import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerUpgrade,
 } from '~type/world/entities/player';
@@ -55,7 +56,7 @@ export class Player extends Sprite implements IPlayer {
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private movementKeys: Nullable<Record<string, Phaser.Input.Keyboard.Key>> = null;
+  private movementKeys: Record<string, Phaser.Input.Keyboard.Key>;
 
   private direction: number = 0;
 
@@ -95,9 +96,15 @@ export class Player extends Sprite implements IPlayer {
       }
     });
 
-    this.scene.physics.add.collider(this, this.scene.entityGroups.enemies, (_, enemy: IEnemy) => {
-      enemy.attack(this);
-    });
+    this.scene.physics.add.collider(
+      this,
+      this.scene.getEntitiesGroup(EntityType.ENEMY),
+      (_, subject) => {
+        if (subject instanceof Enemy) {
+          subject.attack(this);
+        }
+      },
+    );
 
     this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => {
       this.onWaveComplete(number);
@@ -315,9 +322,9 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private registerKeyboard() {
-    this.movementKeys = <Record<string, Phaser.Input.Keyboard.Key>> this.scene.input.keyboard.addKeys(
+    this.movementKeys = this.scene.input.keyboard?.addKeys(
       CONTROL_KEY.MOVEMENT,
-    );
+    ) as Record<string, Phaser.Input.Keyboard.Key>;
   }
 
   private updateVelocity() {
@@ -398,13 +405,11 @@ export class Player extends Sprite implements IPlayer {
   private getKeyboardSingleDirection(
     controls: [keyof typeof MovementDirection, string][],
   ) {
-    for (const [core, alias] of controls) {
-      if (this.movementKeys[core].isDown || this.movementKeys[alias].isDown) {
-        return MovementDirection[core];
-      }
-    }
+    const direction = controls.find(([core, alias]) => (
+      this.movementKeys[core].isDown || this.movementKeys[alias].isDown
+    ));
 
-    return MovementDirection.NONE;
+    return MovementDirection[direction ? direction[0] : 'NONE'];
   }
 
   private addDustEffect() {
@@ -432,20 +437,17 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private registerAnimations() {
-    let frameIndex = 0;
-
-    for (const key of Object.values(PLAYER_MOVE_ANIMATIONS)) {
+    Object.values(PLAYER_MOVE_ANIMATIONS).forEach((key, index) => {
       this.anims.create({
         key,
         frames: this.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
-          start: frameIndex * 4,
-          end: (frameIndex + 1) * 4 - 1,
+          start: index * 4,
+          end: (index + 1) * 4 - 1,
         }),
         frameRate: 8,
         repeat: -1,
       });
-      frameIndex++;
-    }
+    });
   }
 }
 

@@ -6,7 +6,7 @@ import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
-import { GameSettings } from '~type/game';
+import { GameFlag, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
@@ -291,6 +291,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     if (
       !this.visible
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+      || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
     ) {
       return;
     }

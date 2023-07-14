@@ -1,6 +1,12 @@
 import positions from '../__mocks__/positions';
 import {
-  aroundPosition, progressionQuadratic, equalPositions, formatTime, getClosest, progressionLinear, progressionLinearFrom,
+  aroundPosition,
+  progressionQuadratic,
+  equalPositions,
+  formatTime,
+  getClosest,
+  progressionLinear,
+  progressionLinearFrom,
 } from '../utils';
 
 describe('utils.ts / progression', () => {
@@ -33,7 +39,9 @@ describe('utils.ts / equalPositions', () => {
   });
 
   it('should equal 3D positions', () => {
-    expect(equalPositions({ x: 1, y: 1, z: 1 }, { x: 1, y: 1, z: 1 })).toEqual(true);
+    expect(equalPositions({ x: 1, y: 1, z: 1 }, { x: 1, y: 1, z: 1 })).toEqual(
+      true,
+    );
     expect(equalPositions({ x: 1, y: 1, z: 1 }, { x: 1, y: 1 })).toEqual(false);
   });
 });
@@ -46,15 +54,21 @@ describe('utils.ts / formatTime', () => {
 });
 
 describe('utils.ts / getClosest', () => {
-  it('should returns sorted positions', () => {
+  it('should return closes position', () => {
     const closest = getClosest(positions, { x: 4, y: 4 });
 
-    expect(`${closest.x},${closest.y}`).toEqual('0,0');
+    expect(`${closest?.x},${closest?.y}`).toEqual('0,0');
+  });
+
+  it('should return empty positions', () => {
+    const closest = getClosest([], { x: 4, y: 4 });
+
+    expect(closest).toEqual(null);
   });
 });
 
 describe('utils.ts / aroundPosition', () => {
-  it('should returns correct around positions', () => {
+  it('should return correct around positions', () => {
     expect(aroundPosition(positions[0]).length).toEqual(8);
   });
 });

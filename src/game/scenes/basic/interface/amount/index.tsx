@@ -1,7 +1,9 @@
 import cn from 'classnames';
-import React, { useContext, useState } from 'react';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
+import { GameScene } from '~type/game';
+import { IWorld } from '~type/world';
 
 import {
   Wrapper, Label, Icon, Value,
@@ -20,12 +22,12 @@ export const ComponentAmount: React.FC<Props> = ({
   value,
   view = 'large',
 }) => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [haveAmount, setHaveAmount] = useState(0);
 
-  useWorldUpdate(() => {
-    setHaveAmount(game.world.player[type]);
+  useSceneUpdate(world, () => {
+    setHaveAmount(world.player[type]);
   });
 
   return (

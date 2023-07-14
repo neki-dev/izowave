@@ -1,14 +1,17 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState, useEffect } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
 import { ComponentHint } from '~scene/basic/interface/hint';
+import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 
-import { ComponentWidget } from '../widget';
 import { Wrapper } from './styles';
+import { ComponentWidget } from '../widget';
 
 export const ComponentResources: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [amount, setAmount] = useState(0);
   const [hint, setHint] = useState(false);
@@ -21,8 +24,8 @@ export const ComponentResources: React.FC = () => {
     [],
   );
 
-  useWorldUpdate(() => {
-    setAmount(game.world.player.resources);
+  useSceneUpdate(world, () => {
+    setAmount(world.player.resources);
   });
 
   return (

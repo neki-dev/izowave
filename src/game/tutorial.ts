@@ -62,11 +62,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
       return TutorialStepState.COMPLETED;
     }
 
-    if (this.progress[step] === undefined) {
-      return TutorialStepState.IDLE;
-    }
-
-    return this.progress[step];
+    return this.progress[step] ?? TutorialStepState.IDLE;
   }
 
   public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {

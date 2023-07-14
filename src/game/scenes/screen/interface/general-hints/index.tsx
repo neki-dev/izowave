@@ -1,15 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useGame } from 'phaser-react-ui';
+import React, { useState, useEffect } from 'react';
 
-import { GameContext } from '~lib/interface';
 import { ComponentHint } from '~scene/basic/interface/hint';
+import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 
 import { Wrapper } from './styles';
 
 export const ComponentGeneralHints: React.FC = () => {
-  const game = useContext(GameContext);
+  const game = useGame<IGame>();
 
-  const [hint, setHint] = useState<string>(null);
+  const [hint, setHint] = useState<Nullable<string>>(null);
 
   const showHint = (step: TutorialStep) => {
     switch (step) {

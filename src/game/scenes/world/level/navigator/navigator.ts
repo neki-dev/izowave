@@ -84,9 +84,9 @@ export class Navigator implements INavigator {
       }
 
       currentNode.closeList();
-      for (const offset of this.getAllowedDirections(currentNode)) {
+      this.getAllowedDirections(currentNode).forEach((offset) => {
         this.checkAdjacentNode(task, currentNode, offset);
-      }
+      });
     }
   }
 

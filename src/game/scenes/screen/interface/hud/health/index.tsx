@@ -1,18 +1,20 @@
-import React, { useContext, useState } from 'react';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
+import { GameScene } from '~type/game';
+import { IWorld } from '~type/world';
 
 import { Container, Progress, Value } from './styles';
 
 export const ComponentHealth: React.FC = () => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [health, setHealth] = useState(0);
   const [maxHealth, setMaxHealth] = useState(0);
 
-  useWorldUpdate(() => {
-    setHealth(game.world.player.live.health);
-    setMaxHealth(game.world.player.live.maxHealth);
+  useSceneUpdate(world, () => {
+    setHealth(world.player.live.health);
+    setMaxHealth(world.player.live.maxHealth);
   });
 
   return (

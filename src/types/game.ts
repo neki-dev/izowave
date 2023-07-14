@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import { IAnalytics } from '~type/analytics';
-import { IMenu } from '~type/menu';
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -16,11 +15,6 @@ export interface IGame extends Phaser.Game {
    * Screen scene.
    */
   readonly screen: IScreen
-
-  /**
-   * Menu scene.
-   */
-  readonly menu: IMenu
 
   /**
    * Game is paused.
@@ -99,10 +93,12 @@ export interface IGame extends Phaser.Game {
    * @param key - Settings key
    */
   isSettingEnabled(key: GameSettings): boolean
-}
 
-export interface IScene extends Phaser.Scene {
-  readonly game: IGame
+  /**
+   * Check is flag enabled.
+   * @param key - Flag key
+   */
+  isFlagEnabled(key: GameFlag): boolean
 }
 
 export enum GameScene {
@@ -126,6 +122,10 @@ export enum GameSettings {
   TUTORIAL = 'TUTORIAL',
 }
 
+export enum GameFlag {
+  NO_BLOOD = 'NO_BLOOD',
+}
+
 export type GameSettingsData = {
   description: string
   values: string[]
@@ -138,3 +138,11 @@ export type GameStat = {
   kills: number
   lived: number
 };
+
+declare global {
+  const IS_DEV_MODE: boolean;
+
+  interface Window {
+    GAME: IGame
+  }
+}

@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
 
+import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShotBall,
@@ -32,9 +34,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   constructor(scene: IWorld, params: ShotParams, {
     texture, audio, glowColor = null,
   }: ShotBallData) {
-    super(scene, null, null, texture);
-    scene.add.existing(this);
-    scene.entityGroups.shots.add(this);
+    super(scene, 0, 0, texture);
+    scene.addEntity(EntityType.SHOT, this);
 
     this.params = params;
     this.audio = audio;
@@ -43,9 +44,15 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.setActive(false);
     this.setVisible(false);
 
-    this.scene.physics.add.collider(this, this.scene.entityGroups.enemies, (_, enemy: IEnemy) => {
-      this.hit(enemy);
-    });
+    this.scene.physics.add.collider(
+      this,
+      this.scene.getEntitiesGroup(EntityType.ENEMY),
+      (_, subject) => {
+        if (subject instanceof Enemy) {
+          this.hit(subject);
+        }
+      },
+    );
   }
 
   public setInitiator(initiator: IShotInitiator) {
@@ -57,6 +64,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   public update() {
+    if (!this.params.maxDistance || !this.startPosition) {
+      return;
+    }
+
     const distance = Phaser.Math.Distance.BetweenPoints(this, this.startPosition);
 
     if (distance > this.params.maxDistance) {
@@ -83,7 +94,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   public shoot(target: IEnemy) {
-    if (!this.initiator) {
+    if (!this.initiator || !this.params.speed) {
       return;
     }
 

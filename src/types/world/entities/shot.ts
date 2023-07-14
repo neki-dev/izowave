@@ -63,5 +63,5 @@ export type ShotParams = {
 export type ShotBallData = {
   texture: ShotBallTexture
   audio: ShotBallAudio
-  glowColor?: number
+  glowColor?: Nullable<number>
 };

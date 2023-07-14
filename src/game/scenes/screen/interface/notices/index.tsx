@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useCurrentScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useEffect, useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
-import { Notice, ScreenEvents } from '~type/screen';
+import { IScreen, Notice, ScreenEvents } from '~type/screen';
 
 import { Item, Wrapper } from './styles';
 
 export const ComponentNotices: React.FC = () => {
-  const game = useContext(GameContext);
+  const screen = useCurrentScene<IScreen>();
 
   const [notices, setNotices] = useState<Notice[]>([]);
 
@@ -38,14 +38,14 @@ export const ComponentNotices: React.FC = () => {
   };
 
   useEffect(() => {
-    game.screen.events.on(ScreenEvents.NOTICE, addNotice);
+    screen.events.on(ScreenEvents.NOTICE, addNotice);
 
     return () => {
-      game.screen.events.off(ScreenEvents.NOTICE, addNotice);
+      screen.events.off(ScreenEvents.NOTICE, addNotice);
     };
   }, []);
 
-  useWorldUpdate(() => {
+  useSceneUpdate(screen, () => {
     const now = Date.now();
 
     setNotices((currentNotices) => {

@@ -1,8 +1,6 @@
-import { IGame, IScene } from '~type/game';
+import { IScene } from '~type/scene';
 
 export interface IScreen extends IScene {
-  readonly game: IGame
-
   /**
    * Send notice message.
    * @param type - Notice type
@@ -28,5 +26,5 @@ export enum NoticeType {
 export type Notice = {
   type: NoticeType
   text: string
-  timestamp?: number
+  timestamp: number
 };

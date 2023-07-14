@@ -1,10 +1,12 @@
 import cn from 'classnames';
-import React, { useContext, useState } from 'react';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { GameContext, useWorldUpdate } from '~lib/interface';
 import { ComponentAmount } from '~scene/basic/interface/amount';
 import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
+import { GameScene } from '~type/game';
+import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
@@ -22,26 +24,26 @@ type Props = {
 };
 
 export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [limit, setLimit] = useState(0);
+  const [limit, setLimit] = useState<Nullable<number>>(null);
   const [existCount, setExistCount] = useState(0);
   const [isAllowByWave, setAllowByWave] = useState(false);
   const [isAllowByTutorial, setAllowByTutorial] = useState(false);
 
-  useWorldUpdate(() => {
-    const currentIsAllowByWave = game.world.builder.isBuildingAllowByWave(variant);
-    const currentIsAllowByTutorial = game.world.builder.isBuildingAllowByTutorial(variant);
+  useSceneUpdate(world, () => {
+    const currentIsAllowByWave = world.builder.isBuildingAllowByWave(variant);
+    const currentIsAllowByTutorial = world.builder.isBuildingAllowByTutorial(variant);
 
     setAllowByWave(currentIsAllowByWave);
     setAllowByTutorial(currentIsAllowByTutorial);
 
     if (currentIsAllowByWave && currentIsAllowByTutorial) {
-      const currentLimit = game.world.builder.getBuildingLimit(variant);
+      const currentLimit = world.builder.getBuildingLimit(variant);
 
       setLimit(currentLimit);
       if (currentLimit) {
-        setExistCount(game.world.getBuildingsByVariant(variant).length);
+        setExistCount(world.getBuildingsByVariant(variant).length);
       }
     }
   });
@@ -51,9 +53,11 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
       <Header>
         <Name>{BUILDINGS[variant].Name}</Name>
         {isAllowByWave && isAllowByTutorial && limit && (
-          <Limit className={cn({
-            attention: existCount >= limit,
-          })}>
+          <Limit
+            className={cn({
+              attention: existCount >= limit,
+            })}
+          >
             {existCount}/{limit}
           </Limit>
         )}

@@ -1,4 +1,7 @@
+import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
+
+import { INTERFACE_SCALE } from '~const/interface';
 
 import { ComponentBuilder } from './builder';
 import { ComponentDebug } from './debug';
@@ -8,26 +11,30 @@ import { ComponentNotices } from './notices';
 import { Column, Grid, Overlay } from './styles';
 import { ComponentWave } from './wave';
 
-export const ScreenUI: React.FC = () => (
-  <Overlay>
-    <Grid>
-      <Column className='left'>
-        <ComponentHUD />
-        <ComponentDebug />
-      </Column>
+export const ScreenUI: React.FC = () => {
+  const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);
 
-      <Column className='center'>
-        <ComponentWave />
-      </Column>
+  return (
+    <Overlay ref={refScale}>
+      <Grid>
+        <Column className="left">
+          <ComponentHUD />
+          <ComponentDebug />
+        </Column>
 
-      <Column className='right'>
-        <ComponentBuilder />
-      </Column>
-    </Grid>
+        <Column className="center">
+          <ComponentWave />
+        </Column>
 
-    <ComponentNotices />
-    <ComponentGeneralHints />
-  </Overlay>
-);
+        <Column className="right">
+          <ComponentBuilder />
+        </Column>
+      </Grid>
+
+      <ComponentNotices />
+      <ComponentGeneralHints />
+    </Overlay>
+  );
+};
 
 ScreenUI.displayName = 'ScreenUI';

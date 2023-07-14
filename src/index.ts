@@ -5,10 +5,6 @@ import { FailureType } from '~type/state';
 
 import { Game } from '~game';
 
-declare global {
-  const IS_DEV_MODE: boolean;
-}
-
 (async () => {
   console.clear();
   console.log([...COPYRIGHT, `Source at ${REPOSITORY}`].join('\n'));
@@ -30,5 +26,9 @@ declare global {
   checkScreenSize();
   window.addEventListener('resize', checkScreenSize);
 
-  new Game();
+  const game = new Game();
+
+  if (IS_DEV_MODE) {
+    window.GAME = game;
+  }
 })();

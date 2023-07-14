@@ -100,5 +100,5 @@ export type PlayerUpgradeData = {
   description: string
   experience: number
   maxLevel: number
-  level?: number
+  currentLevel?: number
 };

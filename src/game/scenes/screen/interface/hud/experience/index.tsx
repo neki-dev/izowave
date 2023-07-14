@@ -1,16 +1,18 @@
-import React, { useContext, useState } from 'react';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
-import { GameContext, useWorldUpdate } from '~lib/interface';
+import { GameScene } from '~type/game';
+import { IWorld } from '~type/world';
 
 import { ComponentWidget } from '../widget';
 
 export const ComponentExperience: React.FC = () => {
-  const game = useContext(GameContext);
+  const world = useScene<IWorld>(GameScene.WORLD);
 
   const [amount, setAmount] = useState(0);
 
-  useWorldUpdate(() => {
-    setAmount(game.world.player.experience);
+  useSceneUpdate(world, () => {
+    setAmount(world.player.experience);
   });
 
   return <ComponentWidget icon="experience">{amount}</ComponentWidget>;

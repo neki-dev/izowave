@@ -1,6 +1,10 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
+import {
+  ASSISTANT_PATH_BREAKPOINT,
+  ASSISTANT_TILE_SIZE,
+} from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
+import { Enemy } from '~entity/npc/variants/enemy';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, getClosest } from '~lib/utils';
@@ -8,8 +12,12 @@ import { Effect } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import {
-  AssistantTexture, AssistantData, AssistantAudio, IAssistant,
+  AssistantTexture,
+  AssistantData,
+  AssistantAudio,
+  IAssistant,
 } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
@@ -54,9 +62,15 @@ export class Assistant extends NPC implements IAssistant {
 
     this.addHealthIndicator(0xd0ff4f);
 
-    this.scene.physics.add.collider(this, this.scene.entityGroups.enemies, (_, enemy: IEnemy) => {
-      enemy.attack(this);
-    });
+    this.scene.physics.add.collider(
+      this,
+      this.scene.getEntitiesGroup(EntityType.ENEMY),
+      (_, subject) => {
+        if (subject instanceof Enemy) {
+          subject.attack(this);
+        }
+      },
+    );
   }
 
   public update() {
@@ -83,7 +97,10 @@ export class Assistant extends NPC implements IAssistant {
   }
 
   public onDead() {
-    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+    if (
+      this.visible
+      && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
         audio: AssistantAudio.DEAD,
@@ -129,7 +146,7 @@ export class Assistant extends NPC implements IAssistant {
       this.level,
     );
 
-    const enemies = this.scene.getEnemies().filter((enemy) => {
+    const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
       if (enemy.live.isDead()) {
         return false;
       }
@@ -148,21 +165,27 @@ export class Assistant extends NPC implements IAssistant {
 
   private getShotCurrentParams() {
     const params: ShotParams = {
-      maxDistance: progressionQuadratic(
-        this.shotDefaultParams.maxDistance,
-        DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-        this.level,
-      ),
-      speed: progressionQuadratic(
-        this.shotDefaultParams.speed,
-        DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
-        this.level,
-      ),
-      damage: progressionQuadratic(
-        this.shotDefaultParams.damage,
-        DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
-        this.level,
-      ),
+      maxDistance:
+        this.shotDefaultParams.maxDistance
+        && progressionQuadratic(
+          this.shotDefaultParams.maxDistance,
+          DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
+          this.level,
+        ),
+      speed:
+        this.shotDefaultParams.speed
+        && progressionQuadratic(
+          this.shotDefaultParams.speed,
+          DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
+          this.level,
+        ),
+      damage:
+        this.shotDefaultParams.damage
+        && progressionQuadratic(
+          this.shotDefaultParams.damage,
+          DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
+          this.level,
+        ),
     };
 
     return params;
