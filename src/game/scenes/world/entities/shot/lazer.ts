@@ -26,7 +26,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   constructor(scene: IWorld, params: ShotParams) {
     super(scene);
-    scene.add.existing(this);
     scene.addEntity(EntityType.SHOT, this);
 
     this.params = params;

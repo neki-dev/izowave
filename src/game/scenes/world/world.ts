@@ -142,6 +142,7 @@ export class World extends Scene implements IWorld {
   }
 
   public addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject) {
+    this.add.existing(gameObject);
     this.entityGroups[type].add(gameObject);
   }
 

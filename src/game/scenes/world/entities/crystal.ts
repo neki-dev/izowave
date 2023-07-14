@@ -28,7 +28,6 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
-    scene.add.existing(this);
     scene.addEntity(EntityType.CRYSTAL, this);
 
     const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });

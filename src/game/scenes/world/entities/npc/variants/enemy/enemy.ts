@@ -50,7 +50,6 @@ export class Enemy extends NPC implements IEnemy {
         scene.wave.number,
       ),
     });
-    scene.add.existing(this);
     scene.addEntity(EntityType.ENEMY, this);
 
     this.damage = progressionQuadratic(

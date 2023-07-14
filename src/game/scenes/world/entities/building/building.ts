@@ -73,7 +73,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
-    scene.add.existing(this);
     scene.addEntity(EntityType.BUILDING, this);
 
     this.actions = actions;

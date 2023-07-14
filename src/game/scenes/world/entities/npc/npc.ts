@@ -28,9 +28,11 @@ export class NPC extends Sprite implements INPC {
     positionAtMatrix, texture, health, speed, pathFindTriggerDistance, frameRate = 4,
   }: NPCData) {
     super(scene, {
-      texture, positionAtMatrix, health, speed,
+      texture,
+      positionAtMatrix,
+      health,
+      speed,
     });
-    scene.add.existing(this);
     scene.addEntity(EntityType.NPC, this);
 
     this.pathFindTriggerDistance = pathFindTriggerDistance;
