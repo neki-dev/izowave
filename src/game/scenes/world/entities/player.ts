@@ -131,7 +131,7 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.experience += amount / this.scene.game.getDifficultyMultiplier();
+    this.experience += Math.round(amount / this.scene.game.getDifficultyMultiplier());
   }
 
   public giveResources(amount: number) {
