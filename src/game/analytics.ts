@@ -8,6 +8,8 @@ import { GameSettings } from '~type/game';
 export class Analytics implements IAnalytics {
   private userId: string;
 
+  private host: string;
+
   constructor() {
     const userId = localStorage.getItem('USER_ID');
 
@@ -16,6 +18,12 @@ export class Analytics implements IAnalytics {
     } else {
       this.userId = uuidv4();
       localStorage.setItem('USER_ID', this.userId);
+    }
+
+    if (document.referrer) {
+      this.host = document.referrer.replace(/(https?:\/\/)?([^/?]+).*/, '$2');
+    } else {
+      this.host = window.location.host;
     }
   }
 
@@ -44,8 +52,8 @@ export class Analytics implements IAnalytics {
       resources: data.world.player.resources,
       // System info
       userId: this.userId,
+      host: this.host,
       version: pkg.version,
-      host: window.location.host,
     };
   }
 }

@@ -1,4 +1,3 @@
-import pkg from '../../package.json';
 import { GameSettings, GameSettingsData } from '~type/game';
 
 export const CONTAINER_ID = 'game-container';
@@ -12,13 +11,6 @@ export const DEBUG_MODS = {
   position: false,
   path: false,
 };
-
-export const COPYRIGHT = [
-  `© ${pkg.author.name}, 2022-2023`,
-  `Version ${pkg.version}`,
-];
-
-export const REPOSITORY = pkg.repository.url.replace('git+', '');
 
 export const SETTINGS: Record<GameSettings, GameSettingsData> = {
   [GameSettings.DIFFICULTY]: {

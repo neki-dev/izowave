@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { useGame, useRelativeScale } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { COPYRIGHT } from '~const/game';
+import pkg from '../../../../../package.json';
 import { INTERFACE_SCALE } from '~const/interface';
 import { IGame } from '~type/game';
 import { MenuItem } from '~type/menu';
@@ -105,7 +105,11 @@ export const MenuUI: React.FC = () => {
               </Menu.Item>
             ))}
           </Menu>
-          <Copyright>{COPYRIGHT.join('\n')}</Copyright>
+          <Copyright>
+            Created by <a href={pkg.author.url} target='_blank'>{pkg.author.name}</a>
+            <br />
+            Version {pkg.version}
+          </Copyright>
         </Sidebar>
         <Line />
         <Content>
