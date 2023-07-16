@@ -1,13 +1,13 @@
-import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
-  BuildingAudio, BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuildingAmmunition, IBuildingTower,
+  BuildingAudio,
+  BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuilding, IBuildingAmmunition, IBuildingTower,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IShot, ShotParams } from '~type/world/entities/shot';
@@ -16,6 +16,8 @@ export class BuildingTower extends Building implements IBuildingTower {
   private shot: IShot;
 
   private shotDefaultParams: ShotParams;
+
+  private needReload: boolean = false;
 
   private _ammo: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
 
@@ -30,11 +32,8 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_RELOAD, () => {
-      if (this.isFocused) {
-        this.reload();
-      }
-    });
+    this.scene.builder.on(BuilderEvents.UPGRADE, this.checkAmmunitionRelease.bind(this));
+    this.scene.builder.on(BuilderEvents.BUILD, this.checkAmmunitionRelease.bind(this));
   }
 
   public getInfo() {
@@ -75,24 +74,17 @@ export class BuildingTower extends Building implements IBuildingTower {
     return super.getInfo().concat(info);
   }
 
-  public getControls() {
-    const actions = super.getControls();
-
-    if (this.ammo < this.getMaxAmmo()) {
-      actions.push({
-        label: 'RELOAD',
-        onClick: () => this.reload(),
-      });
-    }
-
-    return actions;
-  }
-
   public update() {
     super.update();
 
     if (this.isCanAttack()) {
       this.attack();
+    }
+  }
+
+  private checkAmmunitionRelease(building: IBuilding) {
+    if (this.needReload && building.variant === BuildingVariant.AMMUNITION) {
+      this.reload();
     }
   }
 
@@ -117,9 +109,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.ammo--;
 
     if (this.ammo === 0) {
-      this.hasAlert = true;
-
-      this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
+      this.reload();
     }
   }
 
@@ -175,25 +165,25 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private reload() {
-    const needAmmo = this.getMaxAmmo() - this.ammo;
-
-    if (needAmmo <= 0) {
-      return;
-    }
-
     const ammunition = this.getAmmunition();
 
-    if (!ammunition) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NO AMMUNITION NEARBY');
+    if (ammunition) {
+      this.ammo += ammunition.use(this.getMaxAmmo());
 
-      return;
+      if (this.needReload) {
+        this.hasAlert = false;
+        this.needReload = false;
+
+        this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
+      }
+    } else if (!this.needReload) {
+      this.hasAlert = true;
+      this.needReload = true;
+
+      this.scene.game.sound.play(BuildingAudio.RELOAD);
+
+      this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
     }
-
-    this.ammo += ammunition.use(needAmmo);
-    this.hasAlert = false;
-
-    this.scene.game.sound.play(BuildingAudio.RELOAD);
-    this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
   }
 
   private getMaxAmmo() {

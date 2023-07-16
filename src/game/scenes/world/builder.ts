@@ -327,7 +327,7 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    new BuildingInstance(this.scene, {
+    const building = new BuildingInstance(this.scene, {
       positionAtMatrix: this.getAssumedPosition(),
     });
 
@@ -339,6 +339,8 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.sound.play(BuildingAudio.BUILD);
+
+    this.emit(BuilderEvents.BUILD, building);
 
     if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);

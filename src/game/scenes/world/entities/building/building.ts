@@ -273,6 +273,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.upgradeLevel++;
 
     this.emit(BuildingEvents.UPGRADE);
+    this.scene.builder.emit(BuilderEvents.UPGRADE, this);
 
     this.updateActionArea();
     this.setFrame(this.upgradeLevel - 1);
