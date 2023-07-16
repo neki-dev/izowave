@@ -19,7 +19,7 @@ export const Container = styled.div`
   &::after {
     position: absolute;
     content: '';
-    top: -14px;
+    top: -13px;
     left: 39px;
     transform: translateX(-50%);
     border-left: 10px solid transparent;

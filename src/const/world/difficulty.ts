@@ -18,7 +18,7 @@ export const DIFFICULTY = {
 
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 120, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.35, // Damage growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.5, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
@@ -86,7 +86,7 @@ export const DIFFICULTY = {
   BUILDING_WALL_COST: 10, // Building cost
   BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_WALL_HEALTH: 1500, // Health
-  BUILDING_WALL_HEALTH_GROWTH: 1.4, // Health growth by level (Linear)
+  BUILDING_WALL_HEALTH_GROWTH: 1.2, // Health growth by level (Linear)
 
   /**
    * Building: Towers
@@ -152,7 +152,7 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * wave_season)
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_AMMUNITION_RELOAD_RADIUS: 150, // Reload ammo radius
-  BUILDING_AMMUNITION_AMMO: 170, // Ammo amount
+  BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
   BUILDING_AMMUNITION_AMMO_GROWTH: 1.0, // Ammo amount growth by level (Linear)
 
   /**

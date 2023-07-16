@@ -74,7 +74,7 @@ export class BuildingTowerFire extends BuildingTower {
         if (this.ammo === 0) {
           hintId = this.scene.showHint({
             side: 'top',
-            text: 'Hover on building and press [R] to reload ammo',
+            text: 'Out of ammo\nBuild ammunition nearby',
             position: this.getPositionOnGround(),
           });
         }
