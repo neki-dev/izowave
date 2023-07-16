@@ -38,6 +38,7 @@ export const Container = styled.div`
   font-size: 12px;
   line-height: 12px;
   text-transform: uppercase;
+  white-space: pre-line;
   &::after {
     position: absolute;
     content: '';
