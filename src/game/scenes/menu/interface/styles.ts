@@ -65,6 +65,10 @@ export const Copyright = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   white-space: pre-line;
   text-align: right;
+  a {
+    color: rgba(255, 255, 255, 0.75);
+    pointer-events: all;
+  }
 `;
 
 export const Line = styled.div`
