@@ -12,7 +12,7 @@ import {
 export class BuildingGenerator extends Building {
   static Name = 'Generator';
 
-  static Description = 'Resource generation for builds and upgrades';
+  static Description = 'Generates resources for builds and upgrades';
 
   static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },

@@ -15,7 +15,7 @@ import { Building } from '../building';
 export class BuildingMedic extends Building {
   static Name = 'Medic';
 
-  static Description = 'Heals player, that are in radius of this building';
+  static Description = 'Heals player and assistant within building radius';
 
   static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingIcon.HEALTH },
