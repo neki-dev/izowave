@@ -13,12 +13,11 @@ export const Parameter: any = styled.div`
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
-  padding: 5px;
 `;
 
 Parameter.IconWrapper = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   background: rgba(0, 0, 0, 0.5);
   margin-right: 5px;
   display: flex;
@@ -30,6 +29,7 @@ Parameter.Icon = styled.div`
   width: 10px;
   height: 10px;
   background: url(assets/sprites/interface/building.png);
+  zoom: 1.25;
 `;
 
 Parameter.Info = styled.div`
@@ -41,14 +41,14 @@ Parameter.Info = styled.div`
 
 Parameter.Label = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 11px;
-  line-height: 11px;
+  font-size: 10px;
+  line-height: 10px;
   opacity: 0.75;
-  margin-top: -2px;
+  margin-top: -1px;
 `;
 
 Parameter.Value = styled.div`
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 12px;
 `;
