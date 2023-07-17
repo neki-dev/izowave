@@ -12,7 +12,7 @@ import { Live } from '~scene/world/live';
 import { GameEvents, GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldEvents } from '~type/world';
+import { IWorld, WorldEvents, WorldIcon } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
@@ -50,11 +50,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
 
+  private alert: Nullable<Phaser.GameObjects.Image> = null;
+
   private alertTween: Nullable<Phaser.Tweens.Tween> = null;
 
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
-
-  public hasAlert: boolean = false;
 
   private _isFocused: boolean = false;
 
@@ -366,6 +366,43 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     };
   }
 
+  public addAlert() {
+    if (this.alert) {
+      return;
+    }
+
+    this.alert = this.scene.add.image(this.x, this.y, WorldIcon.ALERT);
+    this.alert.setDepth(this.depth + 1);
+    this.alert.setVisible(this.visible);
+
+    this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+      targets: this.alert,
+      alpha: { from: 1.0, to: 0.0 },
+      duration: 500,
+      ease: 'Linear',
+      yoyo: true,
+      repeat: -1,
+    });
+  }
+
+  public removeAlert() {
+    if (!this.alert) {
+      return;
+    }
+
+    this.alert.destroy();
+    this.alert = null;
+
+    this.alertTween?.destroy();
+    this.alertTween = null;
+  }
+
+  private updateAlert() {
+    if (this.alert) {
+      this.alert.setVisible(this.visible);
+    }
+  }
+
   public select() {
     if (!this.isFocused || this.isSelected) {
       return;
@@ -442,33 +479,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.outlineState = state;
-  }
-
-  private updateAlert() {
-    if (this.hasAlert) {
-      if (!this.alertTween) {
-        const targetColor = [255, 140, 140];
-
-        this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-          targets: this,
-          tintForce: { from: 0.0, to: 1.0 },
-          duration: 600,
-          ease: 'Linear',
-          yoyo: true,
-          repeat: -1,
-          onUpdate: (_, __, ___, force: number) => {
-            const [r, g, b] = targetColor.map((c) => c + (255 - c) * force);
-            const color = Phaser.Display.Color.GetColor(r, g, b);
-
-            this.setTint(color);
-          },
-        });
-      }
-    } else if (this.alertTween) {
-      this.clearTint();
-      this.alertTween.destroy();
-      this.alertTween = null;
-    }
   }
 
   private updateOutline() {

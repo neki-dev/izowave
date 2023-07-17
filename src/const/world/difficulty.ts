@@ -114,7 +114,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_FROZEN_COST: 40, // Building cost
-  BUILDING_TOWER_FROZEN_HEALTH: 900, // Health
+  BUILDING_TOWER_FROZEN_HEALTH: 800, // Health
   BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_TOWER_FROZEN_FREEZE_RADIUS: 160, // Freeze radius
   BUILDING_TOWER_FROZEN_FREEZE_PAUSE: 1400, // Pause between freezes
@@ -160,11 +160,11 @@ export const DIFFICULTY = {
    */
 
   BUILDING_MEDIC_COST: 70, // Building cost
-  BUILDING_MEDIC_HEALTH: 150, // Health
+  BUILDING_MEDIC_HEALTH: 200, // Health
   BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * wave_season)
-  BUILDING_MEDIC_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
+  BUILDING_MEDIC_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause
-  BUILDING_MEDIC_HEAL_AMOUNT: 10, // Heal amount
+  BUILDING_MEDIC_HEAL_AMOUNT: 20, // Heal amount
   BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.5, // Heal amount growth by level (Linear)
 };

@@ -32,7 +32,7 @@ img {
   letter-spacing: 2px;
   color: #aaa;
   text-align: center;
-  z-index: 3;
+  z-index: 999;
 }
 
 .loading-animation {

@@ -7,6 +7,7 @@ import { ParticlesTexture } from '~type/world/effects';
 import {
   BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
+import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IPlayer } from '~type/world/entities/player';
 
 import { Building } from '../building';
@@ -14,7 +15,7 @@ import { Building } from '../building';
 export class BuildingMedic extends Building {
   static Name = 'Medic';
 
-  static Description = 'Heals player, that are in radius of this building';
+  static Description = 'Heals player and assistant within building radius';
 
   static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingIcon.HEALTH },
@@ -51,15 +52,13 @@ export class BuildingMedic extends Building {
       return;
     }
 
-    if (this.scene.player.live.isMaxHealth()) {
+    const target = this.getTarget();
+
+    if (!target) {
       return;
     }
 
-    if (!this.actionsAreaContains(this.scene.player)) {
-      return;
-    }
-
-    this.heal(this.scene.player);
+    this.heal(target);
     this.pauseActions();
   }
 
@@ -73,6 +72,17 @@ export class BuildingMedic extends Building {
     return super.getInfo().concat(info);
   }
 
+  private getTarget() {
+    const candidates = [this.scene.player, this.scene.player.assistant];
+
+    return candidates.find((candidate) => (
+      candidate
+      && !candidate.live.isDead()
+      && !candidate.live.isMaxHealth()
+      && this.actionsAreaContains(candidate)
+    ));
+  }
+
   private getHealAmount() {
     return progressionLinear(
       DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT,
@@ -81,10 +91,10 @@ export class BuildingMedic extends Building {
     );
   }
 
-  private heal(player: IPlayer) {
+  private heal(target: IPlayer | IAssistant) {
     const health = this.getHealAmount();
 
-    player.live.addHealth(health);
+    target.live.addHealth(health);
 
     if (
       !this.visible

@@ -62,7 +62,11 @@ export class Player extends Sprite implements IPlayer {
 
   private isMoving: boolean = false;
 
-  private assistant: Nullable<IAssistant> = null;
+  private _assistant: Nullable<IAssistant> = null;
+
+  public get assistant() { return this._assistant; }
+
+  private set assistant(v) { this._assistant = v; }
 
   private dustEffect: Nullable<IParticles> = null;
 

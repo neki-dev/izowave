@@ -12,13 +12,16 @@ import {
 import { Crystal } from '~entity/crystal';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
+import { registerImageAssets } from '~lib/assets';
 import { sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
-import { IWorld, WorldEvents, WorldHint } from '~type/world';
+import {
+  IWorld, WorldEvents, WorldHint, WorldIcon,
+} from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
@@ -302,3 +305,5 @@ export class World extends Scene implements IWorld {
     });
   }
 }
+
+registerImageAssets(WorldIcon.ALERT);

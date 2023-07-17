@@ -10,7 +10,7 @@ import { Building } from '../building';
 export class BuildingWall extends Building {
   static Name = 'Wall';
 
-  static Description = 'Wall with more health to defend other buildings';
+  static Description = 'Defends other buildings';
 
   static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },

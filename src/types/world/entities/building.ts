@@ -32,11 +32,6 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   readonly variant: BuildingVariant
 
   /**
-   * Has alert state.
-   */
-  readonly hasAlert: boolean
-
-  /**
    * Is cursor on building.
    */
   readonly isFocused: boolean
@@ -96,6 +91,16 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Remove building active state.
    */
   unselect(): void
+
+  /**
+   * Add alert icon.
+   */
+  addAlert(): void
+
+  /**
+   * Remove alert icon.
+   */
+  removeAlert(): void
 }
 
 export interface IBuildingAmmunition extends IBuilding {

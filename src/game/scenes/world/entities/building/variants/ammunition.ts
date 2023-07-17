@@ -12,7 +12,7 @@ import { Building } from '../building';
 export class BuildingAmmunition extends Building implements IBuildingAmmunition {
   static Name = 'Ammunition';
 
-  static Description = 'Reloading towers ammo, that are in radius of this building';
+  static Description = 'Reloads towers ammo within building radius';
 
   static Params: BuildingParam[] = [
     { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
