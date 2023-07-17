@@ -115,6 +115,10 @@ export enum WorldEvents {
   HIDE_HINT = 'hide_hint',
 }
 
+export enum WorldIcon {
+  ALERT = 'alert',
+}
+
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string

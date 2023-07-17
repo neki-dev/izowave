@@ -171,16 +171,16 @@ export class BuildingTower extends Building implements IBuildingTower {
       this.ammo += ammunition.use(this.getMaxAmmo());
 
       if (this.needReload) {
-        this.hasAlert = false;
+        this.removeAlert();
         this.needReload = false;
+
+        this.scene.game.sound.play(BuildingAudio.RELOAD);
 
         this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
       }
     } else if (!this.needReload) {
-      this.hasAlert = true;
+      this.addAlert();
       this.needReload = true;
-
-      this.scene.game.sound.play(BuildingAudio.RELOAD);
 
       this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
     }
