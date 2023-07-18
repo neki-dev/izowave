@@ -96,7 +96,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     const handleBreak = () => {
       if (this.isFocused) {
-        this.upgrade();
+        this.break();
       }
     };
 

@@ -25,7 +25,7 @@ export const Value = styled.div`
   background: rgba(0, 0, 0, 0.25);
   font-size: 16px;
   line-height: 16px;
-  text-shadow: 2px 2px 0 #000;
+  text-shadow: 1px 1px 0 #000;
   height: 32px;
   padding: 0 9px;
   display: flex;

@@ -30,7 +30,9 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.params = params;
 
+    this.setActive(false);
     this.setVisible(false);
+
     this.setStrokeStyle(2, 0xb136ff, 0.5);
     this.setDepth(WORLD_DEPTH_EFFECT);
     this.setOrigin(0.0, 0.0);
@@ -51,11 +53,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   public update() {
-    if (!this.initiator || !this.target?.body) {
-      return;
-    }
-
-    this.setTo(this.initiator.x, this.initiator.y, this.target.body.center.x, this.target.body.center.y);
+    this.updateLine();
   }
 
   public shoot(target: IEnemy) {
@@ -71,8 +69,8 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       callback: () => this.processing(),
     });
 
-    this.setTo(this.initiator.x, this.initiator.y, target.body.center.x, target.body.center.y);
-    this.setVisible(this.initiator.visible && target.visible);
+    this.setActive(true);
+    this.updateLine();
 
     if (this.scene.game.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
       this.scene.game.sound.play(ShotLazerAudio.LAZER);
@@ -88,6 +86,21 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
 
     this.setVisible(false);
+    this.setActive(false);
+  }
+
+  private updateLine() {
+    if (!this.initiator || !this.target?.body) {
+      return;
+    }
+
+    const isVisible = this.initiator.visible && this.target.visible;
+
+    if (isVisible) {
+      this.setTo(this.initiator.x, this.initiator.y, this.target.body.center.x, this.target.body.center.y);
+    }
+
+    this.setVisible(isVisible);
   }
 
   private hit() {
