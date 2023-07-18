@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
-import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_UI } from '~const/world';
+import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_DEBUG } from '~const/world';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -239,7 +239,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     }
 
     this.positionDebug = this.scene.add.graphics();
-    this.positionDebug.setDepth(WORLD_DEPTH_UI);
+    this.positionDebug.setDepth(WORLD_DEPTH_DEBUG);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.positionDebug?.destroy();
