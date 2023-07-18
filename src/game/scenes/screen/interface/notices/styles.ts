@@ -25,7 +25,7 @@ export const Item = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 16px;
   line-height: 16px;
-  text-shadow: 2px 2px 0 #000;
+  text-shadow: 1px 1px 0 #000;
   border-bottom: 2px solid #000;
   animation: ${animationOpacity} 0.2s ease-in;
   &:not(:last-child) {
