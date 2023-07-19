@@ -4,9 +4,12 @@ import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_DEBUG } from '~const/world';
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
+import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
+import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { INPC, NPCData } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
@@ -22,7 +25,9 @@ export class NPC extends Sprite implements INPC {
 
   private pathDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
-  private calmEndTimestamp: number = 0;
+  private freezeTimestamp: number = 0;
+
+  private freezeEffectTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
     positionAtMatrix, texture, health, speed, pathFindTriggerDistance, frameRate = 4,
@@ -48,6 +53,12 @@ export class NPC extends Sprite implements INPC {
       delay: Math.random() * 500,
     });
     this.anims.play('idle');
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      if (this.freezeEffectTimer) {
+        this.freezeEffectTimer.destroy();
+      }
+    });
   }
 
   public update() {
@@ -73,12 +84,44 @@ export class NPC extends Sprite implements INPC {
     this.isPathPassed = true;
   }
 
-  public calmDown(duration: number) {
-    this.calmEndTimestamp = this.scene.getTime() + duration;
+  public freeze(duration: number, effects = false) {
+    this.freezeTimestamp = this.scene.getTime() + duration;
+
+    if (!effects || !this.visible) {
+      return;
+    }
+
+    if (this.freezeEffectTimer) {
+      this.freezeEffectTimer.elapsed = 0;
+    } else {
+      this.setTint(0x00a8ff);
+      this.freezeEffectTimer = this.scene.time.delayedCall(duration, () => {
+        this.clearTint();
+        this.freezeEffectTimer = null;
+      });
+    }
+
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      return;
+    }
+
+    new Particles(this, {
+      key: 'freeze',
+      texture: ParticlesTexture.GLOW,
+      params: {
+        duration: 200,
+        follow: this,
+        followOffset: this.getBodyOffset(),
+        lifespan: { min: 100, max: 150 },
+        scale: 0.2,
+        speed: 80,
+        tint: 0x00ddff,
+      },
+    });
   }
 
-  public isCalmed() {
-    return (this.calmEndTimestamp > this.scene.getTime());
+  public isFreezed() {
+    return (this.freezeTimestamp > this.scene.getTime());
   }
 
   public findPathToTarget() {
@@ -185,7 +228,7 @@ export class NPC extends Sprite implements INPC {
 
   private isCanPursuit() {
     return (
-      !this.isCalmed()
+      !this.isFreezed()
       && !this.live.isDead()
       && !this.scene.player.live.isDead()
     );

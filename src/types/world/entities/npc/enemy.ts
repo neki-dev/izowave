@@ -5,12 +5,6 @@ import { Vector2D } from '~type/world/level';
 
 export interface IEnemy extends INPC {
   /**
-   * Pause enemy moving and add freeze effect.
-   * @param duration - Pause duration
-   */
-  freeze(duration: number): void
-
-  /**
    * Give target damage.
    * @param target - Target
    */

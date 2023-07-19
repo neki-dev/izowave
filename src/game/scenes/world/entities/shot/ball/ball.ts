@@ -138,7 +138,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private hit(target: IEnemy) {
     if (this.params.freeze) {
-      target.freeze(this.params.freeze);
+      const duration = this.params.freeze / this.scale;
+
+      target.freeze(duration, true);
     }
     if (this.params.damage) {
       target.live.damage(this.params.damage);

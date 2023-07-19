@@ -6,8 +6,13 @@ import { IWorld } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
-  BuildingAudio,
-  BuildingData, BuildingIcon, BuildingParam, BuildingVariant, IBuilding, IBuildingAmmunition, IBuildingTower,
+  BuildingData,
+  BuildingIcon,
+  BuildingParam,
+  BuildingVariant,
+  IBuilding,
+  IBuildingAmmunition,
+  IBuildingTower,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IShot, ShotParams } from '~type/world/entities/shot';
@@ -174,7 +179,7 @@ export class BuildingTower extends Building implements IBuildingTower {
         this.removeAlert();
         this.needReload = false;
 
-        this.scene.game.sound.play(BuildingAudio.RELOAD);
+        // this.scene.game.sound.play(BuildingAudio.RELOAD);
 
         this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
       }
