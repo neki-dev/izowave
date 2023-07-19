@@ -18,14 +18,16 @@ export const Column = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
   &.left {
     justify-self: start;
+    align-items: flex-start;
   }
   &.center {
     justify-self: center;
+    align-items: center;
   }
   &.right {
     justify-self: end;
+    align-items: flex-end;
   }
 `;

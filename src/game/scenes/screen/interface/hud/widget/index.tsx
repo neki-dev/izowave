@@ -10,7 +10,7 @@ type Props = {
 export const ComponentWidget: React.FC<Props> = ({ children, icon }) => (
   <Wrapper>
     <Icon>
-      <Icon.Image src={`assets/sprites/interface/${icon}.png`} />
+      <Icon.Image src={`assets/sprites/interface/hud/${icon}.png`} />
     </Icon>
     <Value>
       {children}
