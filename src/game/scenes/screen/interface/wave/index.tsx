@@ -10,7 +10,7 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 import {
-  CurrentNumber, Container, State, Wrapper,
+  CurrentNumber, Peace, Container, State, Wrapper,
 } from './styles';
 
 export const ComponentWave: React.FC = () => {
@@ -46,37 +46,30 @@ export const ComponentWave: React.FC = () => {
       const timeleft = world.wave.getTimeleft();
 
       setValue(formatTime(timeleft));
-      setAlarm(
-        timeleft <= WAVE_TIMELEFT_ALARM
-        && !world.isTimePaused(),
-      );
+      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !world.isTimePaused());
     }
   });
 
-  return (
-    !isPeaceMode && (
-      <Wrapper>
-        <Container>
-          <CurrentNumber className={cn({ going: isGoing })}>
-            {currentNumber}
-          </CurrentNumber>
-          <State>
-              <State.Label>
-                {isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}
-              </State.Label>
-              <State.Value className={cn({ alarm: isAlarm })}>
-                {value}
-              </State.Value>
-          </State>
-        </Container>
+  return isPeaceMode ? (
+    <Peace>PEACE MODE</Peace>
+  ) : (
+    <Wrapper>
+      <Container>
+        <CurrentNumber className={cn({ going: isGoing })}>
+          {currentNumber}
+        </CurrentNumber>
+        <State>
+          <State.Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</State.Label>
+          <State.Value className={cn({ alarm: isAlarm })}>{value}</State.Value>
+        </State>
+      </Container>
 
-        {hint && (
-          <ComponentHint side="top">
-            Here display timeleft to start enemies attack
-          </ComponentHint>
-        )}
-      </Wrapper>
-    )
+      {hint && (
+        <ComponentHint side="top">
+          Here display timeleft to start enemies attack
+        </ComponentHint>
+      )}
+    </Wrapper>
   );
 };
 

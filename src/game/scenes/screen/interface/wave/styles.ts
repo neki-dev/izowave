@@ -7,6 +7,12 @@ const animationPulse = keyframes`
   100% { transform: scale(1.0) }
 `;
 
+export const Peace = styled.div`
+  font-family: ${InterfaceFont.PIXEL};
+  color: #fff;
+  opacity: 0.5;
+`;
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
