@@ -141,6 +141,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unselect();
     });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.removeAlert();
       this.unfocus();
       this.unselect();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
