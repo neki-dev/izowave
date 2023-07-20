@@ -72,10 +72,6 @@ export class Tutorial extends EventEmitter implements ITutorial {
   }
 
   public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
-    if (!this.isEnabled) {
-      return () => {};
-    }
-
     if (callbacks.beg) {
       this.on(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
     }
@@ -94,10 +90,6 @@ export class Tutorial extends EventEmitter implements ITutorial {
   }
 
   public bindAll(callbacks: TutorialBindAllCallbacks) {
-    if (!this.isEnabled) {
-      return () => {};
-    }
-
     if (callbacks.beg) {
       this.on(TutorialEvents.BEG, callbacks.beg);
     }
