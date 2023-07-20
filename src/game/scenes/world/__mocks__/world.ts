@@ -12,7 +12,9 @@ const world = {
   game: {
     difficulty: 1,
     tutorial: {
-      isDisabled: true,
+      isEnabled: false,
+      enable: jest.fn(),
+      disable: jest.fn(),
       start: jest.fn(),
       pause: jest.fn(),
       complete: jest.fn(),
