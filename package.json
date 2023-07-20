@@ -54,7 +54,6 @@
     "webpack-dev-server": "4.15.1"
   },
   "dependencies": {
-    "classnames": "2.3.2",
     "gen-biome": "2.1.1",
     "heap": "0.2.7",
     "phaser": "3.60.0",

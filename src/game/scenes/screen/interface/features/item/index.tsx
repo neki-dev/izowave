@@ -1,9 +1,8 @@
-import cn from 'classnames';
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { WORLD_FEATURES } from '~const/world';
-import { Amount } from '~scene/basic/interface/amount';
+import { Cost } from '~scene/system/interface/cost';
 import { GameScene, IGame } from '~type/game';
 import { IWorld, WorldFeature } from '~type/world';
 
@@ -26,8 +25,8 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.BASIC);
 
-  const [paused, setPaused] = useState(false);
-  const [active, setActive] = useState(false);
+  const [isPaused, setPaused] = useState(false);
+  const [isActive, setActive] = useState(false);
 
   const { description, cost } = WORLD_FEATURES[type];
 
@@ -41,19 +40,19 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
   });
 
   return (
-    <Container onClick={onClick} className={cn({ active })}>
+    <Container onClick={onClick} $active={isActive}>
       <Info>
         <Head>
           <Name>{type}</Name>
-          <Amount type="resources" view="small" value={cost} />
+          <Cost type="resources" view="small" value={cost} />
         </Head>
         <Description>{description}</Description>
       </Info>
-      {active && (
+      {isActive && (
         <Timeout
           style={{
             animationDuration: `${WORLD_FEATURES[type].duration}ms`,
-            animationPlayState: paused ? 'paused' : 'running',
+            animationPlayState: isPaused ? 'paused' : 'running',
           }}
         />
       )}

@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
@@ -25,48 +25,38 @@ export const Container = styled.div`
   background: rgba(0, 0, 0, 0.75);
 `;
 
-export const CurrentNumber = styled.div`
+export const CurrentNumber = styled.div<{
+  $going?: boolean
+}>`
   font-size: 24px;
   line-height: 24px;
   padding: 6px 17px 10px 17px;
-  background: ${InterfaceColor.INFO_DARK};
+  background: ${(props) => (props.$going
+    ? InterfaceColor.ERROR_DARK
+    : InterfaceColor.INFO_DARK
+  )};
   box-shadow: 0 20px 0 rgba(255, 255, 255, 0.15) inset;
-  &.going {
-    background: ${InterfaceColor.ERROR_DARK};
-  }
 `;
 
-export const State: any = styled.div`
+export const State = styled.div`
   margin-left: 10px;
 `;
 
-State.Label = styled.div`
+export const Label = styled.div`
   font-size: 11px;
   line-height: 11px;
   opacity: 0.5;
   margin-top: -1px;
 `;
 
-State.Value = styled.div`
+export const Value = styled.div<{
+  $attention?: boolean
+}>`
   margin-top: 3px;
   font-size: 20px;
   line-height: 20px;
-  &.alarm {
+  ${(props) => (props.$attention && css`
     color: ${InterfaceColor.ERROR};
     animation: ${animationPulse} 1s infinite;
-  }
-`;
-
-State.Action = styled.div`
-  margin-top: 8px;
-  font-size: 12px;
-  line-height: 12px;
-  background: ${InterfaceColor.BLUE_DARK};
-  padding: 5px 0;
-  text-align: center;
-  pointer-events: all;
-  &:hover {
-    cursor: pointer;
-    background: #000;
-  }
+  `)}
 `;

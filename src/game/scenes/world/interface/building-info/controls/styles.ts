@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   left: 50%;
 `;
 
-export const Action: any = styled.div`
+export const Action = styled.div`
   padding: 3px 7px 4px 7px;
   background: rgba(0, 0, 0, 0.75);
   transform: translateX(-50%);
@@ -24,13 +24,13 @@ export const Action: any = styled.div`
   }
 `;
 
-Action.Label = styled.div`
+export const Label = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
 `;
 
-Action.Addon = styled.div`
+export const Addon = styled.div`
   margin: 1px 0 0 6px;
 `;

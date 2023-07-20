@@ -1,16 +1,15 @@
-import cn from 'classnames';
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { formatTime } from '~lib/utils';
-import { Hint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/system/interface/hint';
 import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 import {
-  CurrentNumber, Empty, Container, State, Wrapper,
+  CurrentNumber, Empty, Container, State, Wrapper, Label, Value,
 } from './styles';
 
 export const Wave: React.FC = () => {
@@ -55,12 +54,12 @@ export const Wave: React.FC = () => {
   ) : (
     <Wrapper>
       <Container>
-        <CurrentNumber className={cn({ going: isGoing })}>
+        <CurrentNumber $going={isGoing}>
           {currentNumber}
         </CurrentNumber>
         <State>
-          <State.Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</State.Label>
-          <State.Value className={cn({ alarm: isAlarm })}>{value}</State.Value>
+          <Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</Label>
+          <Value $attention={isAlarm}>{value}</Value>
         </State>
       </Container>
 

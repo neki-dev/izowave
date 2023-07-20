@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
-  margin-top: 60px;
+  margin-top: 100px;
   list-style: none;
 `;
 
-export const Item: any = styled.div`
+export const Item = styled.div`
   display: flex;
   align-items: center;
   color: #fff;
@@ -17,19 +17,19 @@ export const Item: any = styled.div`
   }
 `;
 
-Item.Value = styled.div`
+export const Value = styled.div`
   margin-top: -3px;
   font-size: 26px;
   line-height: 26px;
 `;
 
-Item.Label = styled.div`
+export const Label = styled.div`
   margin-left: 10px;
   font-size: 16px;
   line-height: 16px;
 `;
 
-Item.Record = styled.div`
+export const Record = styled.div`
   margin-left: 15px;
   font-size: 12px;
   line-height: 12px;

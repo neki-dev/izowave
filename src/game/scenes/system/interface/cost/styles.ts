@@ -23,12 +23,15 @@ export const Icon = styled.img`
   margin-right: 5px;
 `;
 
-export const Value = styled.div`
+export const Value = styled.div<{
+  $attention?: boolean
+}>`
   margin-top: -2px;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 15px;
   line-height: 15px;
-  &.attention {
-    color: ${InterfaceColor.ERROR};
-  }
+  color: ${(props) => (props.$attention
+    ? InterfaceColor.ERROR
+    : '#fff'
+  )};
 `;

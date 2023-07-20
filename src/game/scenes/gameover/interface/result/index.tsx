@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { GameStat } from '~type/game';
 
 import {
-  Wrapper, Item,
+  Wrapper, Item, Value, Label, Record,
 } from './styles';
 
 type Props = {
@@ -26,16 +26,16 @@ export const Result: React.FC<Props> = ({ stat, record }) => {
   );
 
   return (
-      <Wrapper>
-        {statItems.map((item) => (
-          <Item key={item.key}>
-            <Item.Value>{item.value}</Item.Value>
-            <Item.Label>{item.label}</Item.Label>
-            {(record?.[item.key] ?? 0) < stat[item.key] && (
-              <Item.Record>RECORD</Item.Record>
-            )}
-          </Item>
-        ))}
-      </Wrapper>
+    <Wrapper>
+      {statItems.map((item) => (
+        <Item key={item.key}>
+          <Value>{item.value}</Value>
+          <Label>{item.label}</Label>
+          {(record?.[item.key] ?? 0) < stat[item.key] && (
+            <Record>RECORD</Record>
+          )}
+        </Item>
+      ))}
+    </Wrapper>
   );
 };

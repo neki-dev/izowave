@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Icon, Value, Wrapper } from './styles';
+import {
+  Icon, IconContainer, Value, Wrapper,
+} from './styles';
 
 type Props = {
   children: string | number
@@ -9,9 +11,9 @@ type Props = {
 
 export const Amount: React.FC<Props> = ({ children, icon }) => (
   <Wrapper>
-    <Icon>
-      <Icon.Image src={`assets/sprites/interface/hud/${icon}.png`} />
-    </Icon>
+    <IconContainer>
+      <Icon src={`assets/sprites/interface/hud/${icon}.png`} />
+    </IconContainer>
     <Value>
       {children}
     </Value>

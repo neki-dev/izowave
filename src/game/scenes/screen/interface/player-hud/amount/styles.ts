@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   color: #fff;
 `;
 
-export const Icon: any = styled.div`
+export const IconContainer = styled.div`
   background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
@@ -17,7 +17,7 @@ export const Icon: any = styled.div`
   height: 32px;
 `;
 
-Icon.Image = styled.img`
+export const Icon = styled.img`
   width: 16px;
 `;
 

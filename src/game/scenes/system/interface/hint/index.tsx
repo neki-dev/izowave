@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import React, { useMemo } from 'react';
 
 import {
@@ -40,8 +39,8 @@ export const Hint: React.FC<Props> = ({
 
   return (
   <Wrapper role="hint">
-    <Positioner className={cn(`side-${side}`, `align-${align}`)}>
-      <Container style={{ width }}>{content}</Container>
+    <Positioner $side={side} $align={align}>
+      <Container $width={width}>{content}</Container>
     </Positioner>
   </Wrapper>
   );

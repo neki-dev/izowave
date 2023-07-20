@@ -51,13 +51,15 @@ export const Description = styled.div`
   font-weight: bold;
 `;
 
-export const Alert = styled.div`
-  color: #fff;
+export const Alert = styled.div<{
+  $attention?: boolean
+}>`
+  color: ${(props) => (props.$attention
+    ? InterfaceColor.WARN
+    : '#fff'
+  )};
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 14px;
   line-height: 14px;
   margin-top: 5px;
-  &.attention {
-    color: ${InterfaceColor.WARN};
-  }
 `;

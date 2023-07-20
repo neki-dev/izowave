@@ -4,7 +4,7 @@ export const Wrapper = styled.div`
   pointer-events: all;
 `;
 
-export const Info: any = styled.div`
+export const Info = styled.div`
   position: absolute;
   transform: translate(-100%, 50%);
   margin: -58px 0 0 -15px;

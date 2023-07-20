@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
@@ -7,7 +6,9 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { Building, Number, Preview } from './styles';
+import {
+  Container, Number, Preview, Image,
+} from './styles';
 
 type Props = {
   number: number
@@ -57,20 +58,18 @@ export const BuilderPreview: React.FC<Props> = ({
   });
 
   return (
-    <Building
+    <Container
       onClick={selectBuilding}
       onMouseEnter={onHover}
-      className={cn({
-        disallow: isDisallow,
-        disabled: isDisabled,
-        active: isActive,
-        newest: isNewest,
-      })}
+      $disallow={isDisallow}
+      $disabled={isDisabled}
+      $active={isActive}
+      $newest={isNewest}
     >
       <Number>{number}</Number>
       <Preview>
-        <img src={`assets/sprites/${BUILDINGS[variant].Texture}.png`} />
+        <Image src={`assets/sprites/${BUILDINGS[variant].Texture}.png`} />
       </Preview>
-    </Building>
+    </Container>
   );
 };

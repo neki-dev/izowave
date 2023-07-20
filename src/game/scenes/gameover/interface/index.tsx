@@ -2,11 +2,12 @@ import { useGame, useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
+import { Button } from '~scene/system/interface/button';
 import { GameStat, IGame } from '~type/game';
 
 import { Result } from './result';
 import {
-  Overlay, Wrapper, Label, Restart,
+  Overlay, Wrapper, Label,
 } from './styles';
 
 type Props = {
@@ -27,8 +28,8 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
     <Overlay ref={refScale}>
       <Wrapper>
         <Label>GAME OVER</Label>
+        <Button onClick={handleRestartClick} size='large'>PLAY AGAIN</Button>
         <Result stat={stat} record={record} />
-        <Restart onClick={handleRestartClick}>PLAY AGAIN</Restart>
       </Wrapper>
     </Overlay>
   );

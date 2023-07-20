@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
@@ -16,7 +15,7 @@ type Props = {
   value: number
 };
 
-export const Amount: React.FC<Props> = ({
+export const Cost: React.FC<Props> = ({
   type,
   label,
   value,
@@ -34,11 +33,7 @@ export const Amount: React.FC<Props> = ({
     <Wrapper className={view}>
       {label && <Label>{label}</Label>}
       <Icon src={`assets/sprites/interface/${type}.png`} />
-      <Value
-        className={cn({
-          attention: haveAmount < value,
-        })}
-      >
+      <Value $attention={haveAmount < value}>
         {value}
       </Value>
     </Wrapper>

@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { InterfaceColor, InterfaceFont } from '~type/interface';
 
@@ -61,25 +61,29 @@ export const Description = styled.div`
   font-weight: bold;
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<{
+  $active?: boolean
+}>`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px;
   pointer-events: all;
   position: relative;
   border-bottom: 4px solid #000;
-  &:not(.active):hover {
-    background-color: rgba(0, 0, 0, 0.75);
-    cursor: pointer;
-
-    ${Info} {
-      display: block;
+  ${(props) => (props.$active ? css`
+    ${Icon} {
+      opacity: 0.5;
     }
-  }
+  ` : css`
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.75);
+      cursor: pointer;
+      ${Info} {
+        display: block;
+      }
+    }
+  `)}
   &:not(:last-child) {
     margin-right: 10px;
-  }
-  &.active ${Icon} {
-    opacity: 0.5;
   }
 `;
 

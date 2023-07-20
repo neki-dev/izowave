@@ -1,10 +1,9 @@
-import cn from 'classnames';
 import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { Amount } from '~scene/basic/interface/amount';
-import { BuildingParameters } from '~scene/basic/interface/building-parameters';
+import { BuildingParams } from '~scene/system/interface/building-params';
+import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -43,7 +42,7 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
       <Wrapper>
         <Head>
           <Name>{BUILDINGS[variant].Name}</Name>
-          <Amount type="resources" value={BUILDINGS[variant].Cost} />
+          <Cost type="resources" value={BUILDINGS[variant].Cost} />
         </Head>
         <Body>
           <Description>{BUILDINGS[variant].Description}</Description>
@@ -53,15 +52,11 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
             </Alert>
           )}
           {limit && (
-            <Alert
-              className={cn({
-                attention: existCount >= limit,
-              })}
-            >
+            <Alert $attention={existCount >= limit}>
               Limit: {existCount}/{limit}
             </Alert>
           )}
-          <BuildingParameters params={BUILDINGS[variant].Params} />
+          <BuildingParams list={BUILDINGS[variant].Params} />
         </Body>
       </Wrapper>
     )

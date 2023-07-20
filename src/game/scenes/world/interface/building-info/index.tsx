@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import {
   getModifiedArray,
   RelativePosition,
@@ -8,7 +7,7 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { BuildingParameters } from '~scene/basic/interface/building-parameters';
+import { BuildingParams } from '~scene/system/interface/building-params';
 import { GameScene } from '~type/game';
 import { IWorld, WorldEvents } from '~type/world';
 import {
@@ -19,7 +18,7 @@ import {
 
 import { BuildingControls } from './controls';
 import {
-  Name, UpgradeLevel, Wrapper, Head, Body,
+  Name, UpgradeLevel, Wrapper, Head, Body, Progress,
 } from './styles';
 
 export const BuildingInfo: React.FC = () => {
@@ -75,17 +74,14 @@ export const BuildingInfo: React.FC = () => {
             <UpgradeLevel>
               {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map(
                 (_, level) => (
-                  <UpgradeLevel.Item
-                    key={level}
-                    className={cn({ active: level < upgradeLevel })}
-                  />
+                  <Progress key={level} $active={level < upgradeLevel} />
                 ),
               )}
             </UpgradeLevel>
-            <BuildingParameters params={params} />
+            <BuildingParams list={params} />
           </Body>
 
-          <BuildingControls actions={controls} />
+          <BuildingControls list={controls} />
         </Wrapper>
       </RelativePosition>
     )

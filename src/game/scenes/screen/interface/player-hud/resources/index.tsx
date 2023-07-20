@@ -1,7 +1,7 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
-import { Hint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/system/interface/hint';
 import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';

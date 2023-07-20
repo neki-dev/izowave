@@ -5,7 +5,7 @@ import { removeLoading, setLoadingStatus } from '~lib/state';
 import { GameEvents, GameStat, GameScene } from '~type/game';
 import { InterfaceFont } from '~type/interface';
 
-export class Basic extends Scene {
+export class System extends Scene {
   constructor() {
     super({
       key: GameScene.BASIC,
@@ -37,15 +37,12 @@ export class Basic extends Scene {
 
     removeLoading();
 
-    this.game.events.on(
-      GameEvents.FINISH,
-      (stat: GameStat, record: Nullable<GameStat>) => {
-        this.scene.launch(GameScene.GAMEOVER, { stat, record });
+    this.game.events.on(GameEvents.FINISH, (stat: GameStat, record: Nullable<GameStat>) => {
+      this.scene.launch(GameScene.GAMEOVER, { stat, record });
 
-        this.game.events.once(GameEvents.START, () => {
-          this.scene.stop(GameScene.GAMEOVER);
-        });
-      },
-    );
+      this.game.events.once(GameEvents.START, () => {
+        this.scene.stop(GameScene.GAMEOVER);
+      });
+    });
   }
 }

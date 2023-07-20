@@ -1,7 +1,7 @@
 import { RelativePosition, useScene } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Hint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/system/interface/hint';
 import { GameScene } from '~type/game';
 import { IWorld, WorldEvents, WorldHint } from '~type/world';
 

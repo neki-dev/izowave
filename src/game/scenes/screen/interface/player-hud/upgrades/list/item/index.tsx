@@ -2,12 +2,21 @@ import { getModifiedObject, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { PLAYER_UPGRADES } from '~const/world/entities/player';
-import { Amount } from '~scene/basic/interface/amount';
+import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerUpgrade, PlayerUpgradeData } from '~type/world/entities/player';
 
-import { Item, Info, Action } from './styles';
+import {
+  Item,
+  Info,
+  Action,
+  Description,
+  Label,
+  Level,
+  Button,
+  Limit,
+} from './styles';
 
 type Props = {
   type: PlayerUpgrade
@@ -38,24 +47,22 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
     data && (
       <Item>
         <Info>
-          <Info.Label>{data.label}</Info.Label>
-          <Info.Description>{data.description}</Info.Description>
-          <Info.Level>LEVEL {data.currentLevel}</Info.Level>
+          <Label>{data.label}</Label>
+          <Description>{data.description}</Description>
+          <Level>LEVEL {data.currentLevel}</Level>
         </Info>
         {limit ? (
           <Action>
-            <Action.Limit>
+            <Limit>
               MAX
               <br />
               LEVEL
-            </Action.Limit>
+            </Limit>
           </Action>
         ) : (
           <Action onClick={onUpgrade} className="active">
-            <Action.Button>UPGRADE</Action.Button>
-            <Action.Experience>
-              <Amount type="experience" value={data.experience} />
-            </Action.Experience>
+            <Button>UPGRADE</Button>
+            <Cost type="experience" value={data.experience} />
           </Action>
         )}
       </Item>

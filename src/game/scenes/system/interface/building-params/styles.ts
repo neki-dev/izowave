@@ -2,20 +2,20 @@ import styled from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
-export const Parameters = styled.div`
+export const Wrapper = styled.div`
   margin-top: 15px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 5px;
 `;
 
-export const Parameter = styled.div`
+export const Param = styled.div`
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
 `;
 
-export const IconWrapper = styled.div`
+export const IconContainer = styled.div`
   width: 34px;
   height: 34px;
   background: rgba(0, 0, 0, 0.5);
@@ -31,11 +31,13 @@ export const Icon = styled.div`
   background: url(assets/sprites/building/icons/params.png);
 `;
 
-export const Info = styled.div`
-  color: #fff;
-  &.attention {
-    color: ${InterfaceColor.WARN};
-  }
+export const Info = styled.div<{
+  $attention?: boolean
+}>`
+  color: ${(props) => (props.$attention
+    ? InterfaceColor.WARN
+    : '#fff'
+  )};
 `;
 
 export const Label = styled.div`

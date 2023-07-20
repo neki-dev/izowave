@@ -1,28 +1,30 @@
 import React from 'react';
 
-import { Amount } from '~scene/basic/interface/amount';
+import { Cost } from '~scene/system/interface/cost';
 import { BuildingControl } from '~type/world/entities/building';
 
-import { Wrapper, Action } from './styles';
+import {
+  Wrapper, Action, Label, Addon,
+} from './styles';
 
 type Props = {
-  actions: BuildingControl[]
+  list: BuildingControl[]
 };
 
-export const BuildingControls: React.FC<Props> = ({ actions }) => (
+export const BuildingControls: React.FC<Props> = ({ list }) => (
   <Wrapper>
-    {actions.map((action) => (
-      <Action key={action.label} onClick={action.onClick}>
-        <Action.Label>{action.label}</Action.Label>
+    {list.map((control) => (
+      <Action key={control.label} onClick={control.onClick}>
+        <Label>{control.label}</Label>
 
-        {action.cost && (
-          <Action.Addon>
-            <Amount
+        {control.cost && (
+          <Addon>
+            <Cost
               type="resources"
-              value={action.cost}
+              value={control.cost}
               view="small"
             />
-          </Action.Addon>
+          </Addon>
         )}
       </Action>
     ))}

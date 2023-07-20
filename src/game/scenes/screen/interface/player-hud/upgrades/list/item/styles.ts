@@ -11,21 +11,21 @@ export const Item = styled.div`
   }
 `;
 
-export const Info: any = styled.div`
+export const Info = styled.div`
   width: 300px;
   padding: 10px;
   background: rgba(0, 0, 0, 0.25);
   flex: 1;
 `;
 
-Info.Label = styled.div`
+export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   color: ${InterfaceColor.INFO};
   font-size: 14px;
   line-height: 14px;
 `;
 
-Info.Description = styled.div`
+export const Description = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
@@ -34,7 +34,7 @@ Info.Description = styled.div`
   font-weight: bold;
 `;
 
-Info.Level = styled.div`
+export const Level = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
@@ -44,7 +44,7 @@ Info.Level = styled.div`
   display: inline-block;
 `;
 
-export const Action: any = styled.div`
+export const Action = styled.div`
   width: 100px;
   display: flex;
   flex-direction: column;
@@ -60,18 +60,14 @@ export const Action: any = styled.div`
   }
 `;
 
-Action.Button = styled.div`
+export const Button = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 10px;
   line-height: 10px;
   margin-bottom: 10px;
 `;
 
-Action.Experience = styled.div`
-
-`;
-
-Action.Limit = styled.div`
+export const Limit = styled.div`
   color: ${InterfaceColor.WARN};
   font-family: ${InterfaceFont.PIXEL};
   font-size: 10px;

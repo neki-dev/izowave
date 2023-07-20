@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { InterfaceFont } from '~type/interface';
 
-export const Control: any = styled.div`
+export const Control = styled.div`
   display: flex;
   align-items: center;
   &:not(:last-child) {
@@ -10,12 +10,12 @@ export const Control: any = styled.div`
   }
 `;
 
-Control.Keys = styled.div`
+export const Keys = styled.div`
   margin-right: 8px;
   display: flex;
 `;
 
-Control.Key = styled.div`
+export const Key = styled.div`
   color: #000;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 13px;
@@ -28,7 +28,7 @@ Control.Key = styled.div`
   }
 `;
 
-Control.Description = styled.div`
+export const Description = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 11px;

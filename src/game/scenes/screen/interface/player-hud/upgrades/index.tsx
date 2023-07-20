@@ -1,13 +1,13 @@
-import cn from 'classnames';
 import { useGame } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { Hint } from '~scene/basic/interface/hint';
+import { Button } from '~scene/system/interface/button';
+import { Hint } from '~scene/system/interface/hint';
 import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 
 import { UpgradesList } from './list';
-import { Wrapper, Button } from './styles';
+import { Wrapper } from './styles';
 
 export const Upgrades: React.FC = () => {
   const game = useGame<IGame>();
@@ -34,7 +34,7 @@ export const Upgrades: React.FC = () => {
 
   return (
     <Wrapper>
-      <Button onClick={onClickButton} className={cn({ active: isOpened })}>
+      <Button onClick={onClickButton} active={isOpened} size='small'>
         SKILLS
       </Button>
       {isOpened && <UpgradesList onClose={onClose} />}

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { InterfaceFont, InterfaceColor } from '~type/interface';
@@ -40,18 +40,20 @@ export const Name = styled.div`
   line-height: 16px;
 `;
 
-export const UpgradeLevel: any = styled.div`
+export const UpgradeLevel = styled.div`
   display: grid;
   grid-template-columns: repeat(${BUILDING_MAX_UPGRADE_LEVEL}, 1fr);
   grid-gap: 3px;
 `;
 
-UpgradeLevel.Item = styled.div`
+export const Progress = styled.div<{
+  $active?: boolean
+}>`
   height: 10px;
   background: #000;
   box-shadow: 0 5px 0 #222 inset;
-  &.active {
+  ${(props) => (props.$active && css`
     background: ${InterfaceColor.INFO_DARK};
     box-shadow: 0 5px 0 ${InterfaceColor.INFO} inset;
-  }
+  `)}
 `;
