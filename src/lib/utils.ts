@@ -80,11 +80,10 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
  * @param value - Timestamp in miliseconds
  */
 export function formatTime(value: number) {
-  const s = Math.floor(value / 1000);
-  const h = Math.floor(s / 60);
-  const m = s % 60;
+  const m = Math.floor(value / 1000 / 60);
+  const s = Math.ceil(value / 1000) % 60;
 
-  return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
+  return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
 /**

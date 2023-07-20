@@ -12,6 +12,7 @@ import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
+import { LiveEvents } from '~type/world/entities/live';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
 export class Builder extends EventEmitter implements IBuilder {
@@ -54,6 +55,10 @@ export class Builder extends EventEmitter implements IBuilder {
       if (Number(e.key)) {
         this.switchBuildingVariant(Number(e.key) - 1);
       }
+    });
+
+    this.scene.player.live.on(LiveEvents.DEAD, () => {
+      this.closeBuilder();
     });
 
     this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
