@@ -16,6 +16,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   public reset() {
     this.removeAllListeners();
+    this.progress = {};
   }
 
   public start(step: TutorialStep) {

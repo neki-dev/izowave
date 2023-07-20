@@ -7,7 +7,7 @@ export interface ITutorial extends EventEmitter {
   readonly isEnabled: boolean
 
   /**
-   * Remove all listeners.
+   * Remove all listeners and reset states.
    */
   reset(): void
 
