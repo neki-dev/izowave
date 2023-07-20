@@ -157,8 +157,8 @@ export class Wave extends EventEmitter implements IWave {
     this.number++;
 
     this.runTimeleft();
-    this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${prevNumber} COMPLETED`);
 
+    this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${prevNumber} COMPLETED`);
     this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
@@ -168,7 +168,6 @@ export class Wave extends EventEmitter implements IWave {
     if (prevNumber === 2) {
       this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
     } else if (prevNumber >= 3) {
-      // TODO: Call only when there is definitely an upgrade opportunity
       this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
     }
 

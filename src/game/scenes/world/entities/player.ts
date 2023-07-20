@@ -257,6 +257,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.scene.game.screen.notice(NoticeType.INFO, `${type.toUpperCase().replace('_', ' ')} UPGRADED`);
     this.scene.sound.play(PlayerAudio.UPGRADE);
+
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_PLAYER);
   }
 

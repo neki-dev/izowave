@@ -8,16 +8,12 @@ export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
   readonly scene: IWorld;
 
   constructor(scene: IWorld, {
-    texture, position, audio, staticFrame, depth, rate = 16,
+    texture, position, staticFrame, depth, rate = 16,
   }: EffectData) {
     super(scene, position.x, position.y, texture, staticFrame ?? 0);
     scene.add.existing(this);
 
     this.setDepth(depth);
-
-    if (audio) {
-      this.scene.sound.play(audio);
-    }
 
     if (staticFrame === undefined) {
       this.anims.create({

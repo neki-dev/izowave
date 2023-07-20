@@ -84,21 +84,23 @@ export class BuildingGenerator extends Building {
       return;
     }
 
+    const offsetByLevel = (3 - Math.min(this.upgradeLevel, 3)) * 8;
+
     new Particles(this, {
       key: 'generate',
-      texture: ParticlesTexture.BIT,
+      texture: ParticlesTexture.GLOW,
       positionAtWorld: {
         x: this.x,
-        // TODO: Fix position
-        y: this.y + 10 - (this.upgradeLevel * 2.5),
+        y: this.y + offsetByLevel - 6,
       },
       params: {
-        duration: 200,
+        duration: 300,
         lifespan: { min: 100, max: 200 },
-        scale: { start: 1.0, end: 0.5 },
-        speed: 50,
+        scale: { start: 0.2, end: 0.05 },
+        speed: 60,
         maxAliveParticles: 6,
         tint: 0x2dffb2,
+        blendMode: 'ADD',
       },
     });
   }

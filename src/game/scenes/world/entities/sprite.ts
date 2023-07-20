@@ -298,7 +298,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     new Particles(this, {
       key: 'blood',
-      texture: ParticlesTexture.BIT,
+      texture: ParticlesTexture.BIT_SOFT,
       params: {
         duration: 200,
         follow: this,

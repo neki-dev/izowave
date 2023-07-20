@@ -291,6 +291,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.game.screen.notice(NoticeType.INFO, `${this.getMeta().Name.toUpperCase()} UPGRADED`);
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
+
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
   }
 
@@ -320,19 +321,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private onDead() {
-    this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} HAS BEEN DESTROYED`);
-
-    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.SMOKE,
-        audio: BuildingAudio.DEAD,
-        position: this.getPositionOnGround(),
-        depth: this.depth + 1,
-        rate: 18,
-      });
-    }
-
-    this.destroy();
+    this.break();
   }
 
   private focus() {
@@ -526,14 +515,17 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public break() {
-    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.SMOKE,
-        audio: BuildingAudio.DEAD,
-        position: this.getPositionOnGround(),
-        depth: this.depth + 1,
-        rate: 18,
-      });
+    if (this.visible) {
+      this.scene.sound.play(BuildingAudio.DEAD);
+
+      if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+        new Effect(this.scene, {
+          texture: EffectTexture.SMOKE,
+          position: this.getPositionOnGround(),
+          depth: this.depth + 1,
+          rate: 18,
+        });
+      }
     }
 
     this.destroy();

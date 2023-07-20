@@ -97,16 +97,16 @@ export class Assistant extends NPC implements IAssistant {
   }
 
   public onDead() {
-    if (
-      this.visible
-      && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
-      new Effect(this.scene, {
-        texture: EffectTexture.EXPLOSION,
-        audio: AssistantAudio.DEAD,
-        position: this.body.center,
-        depth: this.depth + 1,
-      });
+    if (this.visible) {
+      this.scene.sound.play(AssistantAudio.DEAD);
+
+      if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+        new Effect(this.scene, {
+          texture: EffectTexture.EXPLOSION,
+          position: this.body.center,
+          depth: this.depth + 1,
+        });
+      }
     }
 
     super.onDead();

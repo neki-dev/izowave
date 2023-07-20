@@ -48,18 +48,19 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Particles(this.scene.player, {
         key: 'pickup',
-        texture: ParticlesTexture.BIT,
+        texture: ParticlesTexture.GLOW,
         positionAtWorld: {
           x: this.x,
-          y: this.y + 16,
+          y: this.y + 18,
         },
         params: {
-          duration: 200,
+          duration: 300,
           lifespan: { min: 100, max: 200 },
-          scale: { start: 1.0, end: 0.5 },
-          speed: 50,
+          scale: { start: 0.2, end: 0.05 },
+          speed: 60,
           maxAliveParticles: 6,
           tint: 0x2dffb2,
+          blendMode: 'ADD',
         },
       });
     }

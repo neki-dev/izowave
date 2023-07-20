@@ -105,15 +105,18 @@ export class BuildingMedic extends Building {
 
     new Particles(this, {
       key: 'heal',
-      texture: ParticlesTexture.BIT,
-      positionAtWorld: this,
+      texture: ParticlesTexture.GLOW,
+      positionAtWorld: {
+        x: this.x,
+        y: this.y - 8,
+      },
       params: {
-        duration: 500,
+        duration: 400,
         lifespan: { min: 100, max: 300 },
-        scale: { start: 1.0, end: 0.5 },
-        speed: 100,
+        scale: { start: 0.2, end: 0.05 },
+        speed: 60,
         maxAliveParticles: 6,
-        alpha: 0.75,
+        blendMode: 'ADD',
       },
     });
   }
