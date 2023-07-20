@@ -6,7 +6,7 @@ import { IWorld } from '~type/world';
 
 import { Container, Progress, Value } from './styles';
 
-export const ComponentHealth: React.FC = () => {
+export const Health: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [health, setHealth] = useState(0);
@@ -24,5 +24,3 @@ export const ComponentHealth: React.FC = () => {
     </Container>
   );
 };
-
-ComponentHealth.displayName = 'ComponentHealth';

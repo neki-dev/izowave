@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { ComponentBuildingInfo } from './building-info';
-import { ComponentRelativeHint } from './relative-hint';
+import { BuildingInfo } from './building-info';
+import { RelativeHint } from './relative-hint';
 
 export const WorldUI: React.FC = () => (
   <>
-    <ComponentBuildingInfo />
-    <ComponentRelativeHint />
+    <BuildingInfo />
+    <RelativeHint />
   </>
 );
 

@@ -4,10 +4,10 @@ import React, { useMemo, useState } from 'react';
 import { GameScene } from '~type/game';
 import { IWorld, WorldFeature } from '~type/world';
 
-import { ComponentFeatureItem } from './item';
+import { FeatureItem } from './item';
 import { Wrapper } from './styles';
 
-export const ComponentFeatures: React.FC = () => {
+export const Features: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [isAvailable, setAvailable] = useState(false);
@@ -24,10 +24,8 @@ export const ComponentFeatures: React.FC = () => {
   return isAvailable && (
     <Wrapper>
       {features.map((feature) => (
-        <ComponentFeatureItem key={feature} type={feature} />
+        <FeatureItem key={feature} type={feature} />
       ))}
     </Wrapper>
   );
 };
-
-ComponentFeatures.displayName = 'ComponentFeatures';

@@ -5,7 +5,7 @@ import { IScreen, Notice, ScreenEvents } from '~type/screen';
 
 import { Item, Wrapper } from './styles';
 
-export const ComponentNotices: React.FC = () => {
+export const Notices: React.FC = () => {
   const screen = useCurrentScene<IScreen>();
 
   const [notices, setNotices] = useState<Notice[]>([]);
@@ -69,5 +69,3 @@ export const ComponentNotices: React.FC = () => {
     </Wrapper>
   );
 };
-
-ComponentNotices.displayName = 'ComponentNotices';

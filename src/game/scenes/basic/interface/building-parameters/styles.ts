@@ -9,15 +9,15 @@ export const Parameters = styled.div`
   grid-gap: 5px;
 `;
 
-export const Parameter: any = styled.div`
+export const Parameter = styled.div`
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
 `;
 
-Parameter.IconWrapper = styled.div`
-  width: 30px;
-  height: 30px;
+export const IconWrapper = styled.div`
+  width: 34px;
+  height: 34px;
   background: rgba(0, 0, 0, 0.5);
   margin-right: 5px;
   display: flex;
@@ -25,29 +25,28 @@ Parameter.IconWrapper = styled.div`
   justify-content: center;
 `;
 
-Parameter.Icon = styled.div`
-  width: 10px;
-  height: 10px;
-  background: url(assets/sprites/interface/building.png);
-  zoom: 1.25;
+export const Icon = styled.div`
+  width: 15px;
+  height: 15px;
+  background: url(assets/sprites/interface/building/icons.png);
 `;
 
-Parameter.Info = styled.div`
+export const Info = styled.div`
   color: #fff;
   &.attention {
     color: ${InterfaceColor.WARN};
   }
 `;
 
-Parameter.Label = styled.div`
+export const Label = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 10px;
   line-height: 10px;
   opacity: 0.75;
-  margin-top: -1px;
+  margin: -1px 0 2px 0;
 `;
 
-Parameter.Value = styled.div`
+export const Value = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 12px;
   line-height: 12px;

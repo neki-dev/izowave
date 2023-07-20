@@ -16,7 +16,7 @@ type Props = {
   value: number
 };
 
-export const ComponentAmount: React.FC<Props> = ({
+export const Amount: React.FC<Props> = ({
   type,
   label,
   value,
@@ -44,5 +44,3 @@ export const ComponentAmount: React.FC<Props> = ({
     </Wrapper>
   );
 };
-
-ComponentAmount.displayName = 'ComponentAmount';

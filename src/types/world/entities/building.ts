@@ -178,8 +178,7 @@ export enum BuildingIcon {
   HEAL = 3,
   DAMAGE = 4,
   RESOURCES = 5,
-  PAUSE = 6,
-  SPEED = 7,
+  SPEED = 6,
 }
 
 export enum BuildingOutlineState {

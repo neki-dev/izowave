@@ -11,7 +11,7 @@ type Props = {
   disabled?: boolean
 };
 
-export const ComponentSettings: React.FC<Props> = ({ disabled }) => {
+export const Settings: React.FC<Props> = ({ disabled }) => {
   const game = useGame<IGame>();
 
   const settingList = useMemo(() => Object.entries(SETTINGS) as [GameSettings, GameSettingsData][], []);
@@ -52,5 +52,3 @@ export const ComponentSettings: React.FC<Props> = ({ disabled }) => {
     </Wrapper>
   );
 };
-
-ComponentSettings.displayName = 'ComponentSettings';

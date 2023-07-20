@@ -4,7 +4,7 @@ import React from 'react';
 import { INTERFACE_SCALE } from '~const/interface';
 import { GameStat, IGame } from '~type/game';
 
-import { ComponentStats } from './stats';
+import { Result } from './result';
 import {
   Overlay, Wrapper, Label, Restart,
 } from './styles';
@@ -27,7 +27,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
     <Overlay ref={refScale}>
       <Wrapper>
         <Label>GAME OVER</Label>
-        <ComponentStats stat={stat} record={record} />
+        <Result stat={stat} record={record} />
         <Restart onClick={handleRestartClick}>PLAY AGAIN</Restart>
       </Wrapper>
     </Overlay>

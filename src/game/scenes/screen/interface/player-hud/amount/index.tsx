@@ -7,7 +7,7 @@ type Props = {
   icon: string
 };
 
-export const ComponentWidget: React.FC<Props> = ({ children, icon }) => (
+export const Amount: React.FC<Props> = ({ children, icon }) => (
   <Wrapper>
     <Icon>
       <Icon.Image src={`assets/sprites/interface/hud/${icon}.png`} />
@@ -17,5 +17,3 @@ export const ComponentWidget: React.FC<Props> = ({ children, icon }) => (
     </Value>
   </Wrapper>
 );
-
-ComponentWidget.displayName = 'ComponentWidget';

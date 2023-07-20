@@ -4,7 +4,7 @@ import { CONTROLS } from '~const/controls';
 
 import { Control } from './styles';
 
-export const ComponentControls: React.FC = () => (
+export const Controls: React.FC = () => (
   <>
     {CONTROLS.map((control, index) => (
       <Control key={index}>
@@ -18,5 +18,3 @@ export const ComponentControls: React.FC = () => (
     ))}
   </>
 );
-
-ComponentControls.displayName = 'ComponentControls';

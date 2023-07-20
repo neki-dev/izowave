@@ -7,24 +7,25 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { Building } from './styles';
+import { Building, Number, Preview } from './styles';
 
 type Props = {
   number: number
   variant: BuildingVariant
 };
 
-export const ComponentBuilderPreview: React.FC<Props> = ({
+export const BuilderPreview: React.FC<Props> = ({
   number,
   variant,
 }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [isDisallow, setDisallow] = useState(false);
+  const [isDisabled, setDisabled] = useState(false);
   const [isActive, setActive] = useState(false);
   const [isUsed, setUsed] = useState(false);
 
-  const isNewest = !isUsed && !isDisallow;
+  const isNewest = !isUsed && !isDisallow && !isDisabled;
 
   const selectBuilding = () => {
     if (isDisallow) {
@@ -38,6 +39,12 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
     }
   };
 
+  const onHover = () => {
+    if (!isDisallow && !isDisabled) {
+      setUsed(true);
+    }
+  };
+
   useSceneUpdate(world, () => {
     const currentIsActive = world.builder.variant === variant;
 
@@ -45,28 +52,25 @@ export const ComponentBuilderPreview: React.FC<Props> = ({
     if (currentIsActive) {
       setUsed(true);
     }
-    setDisallow(
-      !world.builder.isBuildingAllowByTutorial(variant)
-      || !world.builder.isBuildingAllowByWave(variant),
-    );
+    setDisallow(!world.builder.isBuildingAllowByWave(variant));
+    setDisabled(!world.builder.isBuildingAllowByTutorial(variant));
   });
 
   return (
     <Building
       onClick={selectBuilding}
-      onMouseEnter={() => setUsed(true)}
+      onMouseEnter={onHover}
       className={cn({
         disallow: isDisallow,
+        disabled: isDisabled,
         active: isActive,
         newest: isNewest,
       })}
     >
-      <Building.Number>{number}</Building.Number>
-      <Building.Preview>
+      <Number>{number}</Number>
+      <Preview>
         <img src={`assets/sprites/${BUILDINGS[variant].Texture}.png`} />
-      </Building.Preview>
+      </Preview>
     </Building>
   );
 };
-
-ComponentBuilderPreview.displayName = 'ComponentBuilderPreview';

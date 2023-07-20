@@ -48,8 +48,6 @@ export const Name = styled.div`
   color: ${InterfaceColor.INFO};
   font-size: 14px;
   line-height: 14px;
-  text-shadow: 2px 2px 0 #000;
-  padding-bottom: 2px;
   text-transform: uppercase;
 `;
 

@@ -4,16 +4,16 @@ import React, { useEffect, useState } from 'react';
 
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { formatTime } from '~lib/utils';
-import { ComponentHint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/basic/interface/hint';
 import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 import {
-  CurrentNumber, Peace, Container, State, Wrapper, Gap,
+  CurrentNumber, Empty, Container, State, Wrapper,
 } from './styles';
 
-export const ComponentWave: React.FC = () => {
+export const Wave: React.FC = () => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
@@ -51,7 +51,7 @@ export const ComponentWave: React.FC = () => {
   });
 
   return isPeaceMode ? (
-    <Peace>PEACE MODE</Peace>
+    <Empty />
   ) : (
     <Wrapper>
       <Container>
@@ -65,14 +65,10 @@ export const ComponentWave: React.FC = () => {
       </Container>
 
       {hint && (
-        <ComponentHint side="top">
-          Here display timeleft to start enemies attack
-          <Gap />
+        <Hint side="top">
           Press [N] to skip timeleft
-        </ComponentHint>
+        </Hint>
       )}
     </Wrapper>
   );
 };
-
-ComponentWave.displayName = 'ComponentWave';

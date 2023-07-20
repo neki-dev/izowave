@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 
-import { ComponentWidget } from '../widget';
+import { Amount } from '../amount';
 
-export const ComponentExperience: React.FC = () => {
+export const Experience: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [amount, setAmount] = useState(0);
@@ -15,7 +15,5 @@ export const ComponentExperience: React.FC = () => {
     setAmount(world.player.experience);
   });
 
-  return <ComponentWidget icon="experience">{amount}</ComponentWidget>;
+  return <Amount icon="experience">{amount}</Amount>;
 };
-
-ComponentExperience.displayName = 'ComponentExperience';

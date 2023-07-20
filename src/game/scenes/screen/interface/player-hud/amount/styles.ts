@@ -22,10 +22,9 @@ Icon.Image = styled.img`
 `;
 
 export const Value = styled.div`
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.5);
   font-size: 16px;
   line-height: 16px;
-  text-shadow: 1px 1px 0 #000;
   height: 32px;
   padding: 0 9px;
   display: flex;

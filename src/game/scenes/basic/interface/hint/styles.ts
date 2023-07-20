@@ -30,15 +30,22 @@ export const Wrapper = styled.div`
   position: relative;
 `;
 
+export const Key = styled.span`
+  display: inline-block;
+  padding: 0 3px 1px 3px;
+  font-size: 11px;
+  line-height: 11px;
+  border: 1px solid #fff;
+`;
+
 export const Container = styled.div`
   background: #000;
   padding: 10px 12px;
   color: #fff;
   font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
-  text-transform: uppercase;
-  white-space: pre-line;
+  font-size: 13px;
+  line-height: 13px;
+  white-space: pre;
   &::after {
     position: absolute;
     content: '';
@@ -47,7 +54,6 @@ export const Container = styled.div`
 
 export const Positioner = styled.div`
   position: absolute;
-  width: 220px;
   &.side-left {
     padding-left: 10px;
     transform: translate(0, -50%);

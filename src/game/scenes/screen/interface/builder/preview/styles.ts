@@ -3,12 +3,12 @@ import styled, { keyframes } from 'styled-components';
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 const animationBlink = keyframes`
-  0% { background: ${InterfaceColor.INFO} }
-  50% { background: ${InterfaceColor.INFO_DARK} }
-  100% { background: ${InterfaceColor.INFO} }
+  0% { background: ${InterfaceColor.INFO_DARK}; }
+  50% { background: #586d1a; }
+  100% { background: ${InterfaceColor.INFO_DARK}; }
 `;
 
-export const Building: any = styled.div`
+export const Building = styled.div`
   width: 60px;
   height: 60px;
   padding: 10px;
@@ -20,6 +20,7 @@ export const Building: any = styled.div`
     background: #000;
     cursor: pointer;
   }
+  &.disabled,
   &.disallow {
     opacity: 0.5;
     filter: grayscale(100%);
@@ -30,18 +31,21 @@ export const Building: any = styled.div`
   }
   &.newest::after {
     position: absolute;
-    content: '';
-    left: -2px;
-    top: -2px;
-    border-radius: 50%;
-    background: ${InterfaceColor.INFO};
-    width: 10px;
-    height: 10px;
+    content: 'new';
+    color: #fff;
+    font-family: ${InterfaceFont.MONOSPACE};
+    font-size: 10px;
+    line-height: 10px;
+    left: -3px;
+    top: -3px;
+    border-radius: 5px;
+    background: ${InterfaceColor.INFO_DARK};
+    padding: 2px 4px;
     animation: ${animationBlink} 1s infinite;
   }
 `;
 
-Building.Preview = styled.div`
+export const Preview = styled.div`
   overflow: hidden;
   width: 34px;
   height: 40px;
@@ -50,7 +54,7 @@ Building.Preview = styled.div`
   }
 `;
 
-Building.Number = styled.div`
+export const Number = styled.div`
   position: absolute;
   color: #fff;
   font-family: ${InterfaceFont.MONOSPACE};

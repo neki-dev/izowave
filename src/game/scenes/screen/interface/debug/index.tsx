@@ -6,7 +6,7 @@ import { IWorld } from '~type/world';
 
 import { Value } from './styles';
 
-export const ComponentDebug: React.FC = () => {
+export const Debug: React.FC = () => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
@@ -36,5 +36,3 @@ export const ComponentDebug: React.FC = () => {
     </Value>
   );
 };
-
-ComponentDebug.displayName = 'ComponentDebug';

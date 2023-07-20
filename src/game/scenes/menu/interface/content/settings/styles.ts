@@ -16,7 +16,6 @@ Setting.Description = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 12px;
   line-height: 12px;
-  text-shadow: 2px 2px 0 #000;
 `;
 
 export const Values: any = styled.ul`

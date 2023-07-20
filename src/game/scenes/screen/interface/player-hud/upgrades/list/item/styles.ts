@@ -23,23 +23,25 @@ Info.Label = styled.div`
   color: ${InterfaceColor.INFO};
   font-size: 14px;
   line-height: 14px;
-  text-shadow: 2px 2px 0 #000;
-  padding-bottom: 2px;
 `;
 
 Info.Description = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
-  color: rgba(255, 255, 255, 0.75);
+  color: #fff;
   margin-top: 4px;
+  font-weight: bold;
 `;
 
 Info.Level = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 13px;
-  line-height: 13px;
+  font-size: 12px;
+  line-height: 12px;
   margin-top: 6px;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 3px 5px;
+  display: inline-block;
 `;
 
 export const Action: any = styled.div`

@@ -6,8 +6,6 @@ import { InterfaceFont, InterfaceColor } from '~type/interface';
 export const Wrapper = styled.div`
   position: absolute;
   width: 280px;
-  background: ${InterfaceColor.BLUE_DARK}cc;
-  padding: 20px;
   transform: translate(-50%, -100%);
   margin-top: -32px;
   &::after {
@@ -22,17 +20,27 @@ export const Wrapper = styled.div`
   }
 `;
 
+export const Head = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: ${InterfaceColor.BLUE_BLACK}ee;
+`;
+
+export const Body = styled.div`
+  background: ${InterfaceColor.BLUE_DARK}cc;
+  padding: 20px;
+`;
+
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   color: ${InterfaceColor.INFO};
-  font-size: 19px;
-  line-height: 19px;
-  text-shadow: 2px 2px 0 #000;
-  padding-bottom: 2px;
+  font-size: 16px;
+  line-height: 16px;
 `;
 
 export const UpgradeLevel: any = styled.div`
-  margin-top: 15px;
   display: grid;
   grid-template-columns: repeat(${BUILDING_MAX_UPGRADE_LEVEL}, 1fr);
   grid-gap: 3px;

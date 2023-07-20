@@ -1,13 +1,13 @@
 import { RelativePosition, useScene } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { ComponentHint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/basic/interface/hint';
 import { GameScene } from '~type/game';
 import { IWorld, WorldEvents, WorldHint } from '~type/world';
 
 import { Wrapper } from './styles';
 
-export const ComponentRelativeHint: React.FC = () => {
+export const RelativeHint: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [hint, setHint] = useState<Nullable<WorldHint>>(null);
@@ -35,10 +35,8 @@ export const ComponentRelativeHint: React.FC = () => {
   return hint && (
     <RelativePosition x={hint.position.x} y={hint.position.y}>
       <Wrapper ref={refWrapper}>
-        <ComponentHint side={hint.side}>{hint.text}</ComponentHint>
+        <Hint side={hint.side}>{hint.text}</Hint>
       </Wrapper>
     </RelativePosition>
   );
 };
-
-ComponentRelativeHint.displayName = 'ComponentRelativeHint';

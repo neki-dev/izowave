@@ -21,14 +21,12 @@ Item.Value = styled.div`
   margin-top: -3px;
   font-size: 26px;
   line-height: 26px;
-  text-shadow: 4px 4px 0 #000;
 `;
 
 Item.Label = styled.div`
   margin-left: 10px;
   font-size: 16px;
   line-height: 16px;
-  text-shadow: 3px 3px 0 #000;
 `;
 
 Item.Record = styled.div`
@@ -36,5 +34,4 @@ Item.Record = styled.div`
   font-size: 12px;
   line-height: 12px;
   color: ${InterfaceColor.INFO};
-  text-shadow: 2px 2px 0 #000;
 `;

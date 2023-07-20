@@ -1,15 +1,15 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
-import { ComponentHint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/basic/interface/hint';
 import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 import { Wrapper } from './styles';
-import { ComponentWidget } from '../widget';
+import { Amount } from '../amount';
 
-export const ComponentResources: React.FC = () => {
+export const Resources: React.FC = () => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
@@ -30,14 +30,14 @@ export const ComponentResources: React.FC = () => {
 
   return (
     <Wrapper>
-      <ComponentWidget icon="resources">{amount}</ComponentWidget>
+      <Amount icon="resources">{amount}</Amount>
       {hint && (
-        <ComponentHint side="top" align="left">
-          If resources not enough you can find crystals on map
-        </ComponentHint>
+        <Hint side="top" align="left">
+          If resources not enough
+          <br />
+          you can find crystals on map
+        </Hint>
       )}
     </Wrapper>
   );
 };
-
-ComponentResources.displayName = 'ComponentResources';

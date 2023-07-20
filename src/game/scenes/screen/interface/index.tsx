@@ -3,14 +3,14 @@ import React from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
 
-import { ComponentBuilder } from './builder';
-import { ComponentDebug } from './debug';
-import { ComponentFeatures } from './features';
-import { ComponentGeneralHints } from './general-hints';
-import { ComponentHUD } from './hud';
-import { ComponentNotices } from './notices';
+import { Builder } from './builder';
+import { Debug } from './debug';
+import { Features } from './features';
+import { GeneralHints } from './general-hints';
+import { Notices } from './notices';
+import { PlayerHUD } from './player-hud';
 import { Column, Grid, Overlay } from './styles';
-import { ComponentWave } from './wave';
+import { Wave } from './wave';
 
 export const ScreenUI: React.FC = () => {
   const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);
@@ -19,22 +19,22 @@ export const ScreenUI: React.FC = () => {
     <Overlay ref={refScale}>
       <Grid>
         <Column className="left">
-          <ComponentHUD />
-          <ComponentDebug />
+          <PlayerHUD />
+          <Debug />
         </Column>
 
         <Column className="center">
-          <ComponentWave />
-          <ComponentFeatures />
+          <Wave />
+          <Features />
         </Column>
 
         <Column className="right">
-          <ComponentBuilder />
+          <Builder />
         </Column>
       </Grid>
 
-      <ComponentNotices />
-      <ComponentGeneralHints />
+      <Notices />
+      <GeneralHints />
     </Overlay>
   );
 };

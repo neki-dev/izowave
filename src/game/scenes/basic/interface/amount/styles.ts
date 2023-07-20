@@ -26,8 +26,8 @@ export const Icon = styled.img`
 export const Value = styled.div`
   margin-top: -2px;
   font-family: ${InterfaceFont.PIXEL};
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 15px;
+  line-height: 15px;
   &.attention {
     color: ${InterfaceColor.ERROR};
   }

@@ -2,7 +2,7 @@ import { getModifiedObject, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { PLAYER_UPGRADES } from '~const/world/entities/player';
-import { ComponentAmount } from '~scene/basic/interface/amount';
+import { Amount } from '~scene/basic/interface/amount';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerUpgrade, PlayerUpgradeData } from '~type/world/entities/player';
@@ -13,7 +13,7 @@ type Props = {
   type: PlayerUpgrade
 };
 
-export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
+export const UpgradesListItem: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [data, setData] = useState<Nullable<PlayerUpgradeData>>(null);
@@ -54,7 +54,7 @@ export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
           <Action onClick={onUpgrade} className="active">
             <Action.Button>UPGRADE</Action.Button>
             <Action.Experience>
-              <ComponentAmount type="experience" value={data.experience} />
+              <Amount type="experience" value={data.experience} />
             </Action.Experience>
           </Action>
         )}
@@ -62,5 +62,3 @@ export const ComponentUpgradesListItem: React.FC<Props> = ({ type }) => {
     )
   );
 };
-
-ComponentUpgradesListItem.displayName = 'ComponentUpgradesListItem';

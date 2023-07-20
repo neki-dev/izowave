@@ -3,7 +3,7 @@ import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { WORLD_FEATURES } from '~const/world';
-import { ComponentAmount } from '~scene/basic/interface/amount';
+import { Amount } from '~scene/basic/interface/amount';
 import { GameScene, IGame } from '~type/game';
 import { IWorld, WorldFeature } from '~type/world';
 
@@ -21,7 +21,7 @@ type Props = {
   type: WorldFeature
 };
 
-export const ComponentFeatureItem: React.FC<Props> = ({ type }) => {
+export const FeatureItem: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.BASIC);
@@ -45,7 +45,7 @@ export const ComponentFeatureItem: React.FC<Props> = ({ type }) => {
       <Info>
         <Head>
           <Name>{type}</Name>
-          <ComponentAmount type="resources" view="small" value={cost} />
+          <Amount type="resources" view="small" value={cost} />
         </Head>
         <Description>{description}</Description>
       </Info>
@@ -63,5 +63,3 @@ export const ComponentFeatureItem: React.FC<Props> = ({ type }) => {
     </Container>
   );
 };
-
-ComponentFeatureItem.displayName = 'ComponentFeatureItem';

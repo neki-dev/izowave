@@ -33,7 +33,6 @@ export const Logotype = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 46px;
   line-height: 46px;
-  text-shadow: 3px 3px 0 #000;
 `;
 
 export const Menu: any = styled.ul`
@@ -48,7 +47,6 @@ Menu.Item = styled.li`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 22px;
   line-height: 22px;
-  text-shadow: 2px 2px 0 #000;
   &:not(:last-child) {
     margin-bottom: 20px;
   }
@@ -92,7 +90,6 @@ Content.Title = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 46px;
   line-height: 46px;
-  text-shadow: 3px 3px 0 #000;
   text-transform: uppercase;
 `;
 

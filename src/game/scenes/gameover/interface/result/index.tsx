@@ -11,7 +11,7 @@ type Props = {
   record: Nullable<GameStat>
 };
 
-export const ComponentStats: React.FC<Props> = ({ stat, record }) => {
+export const Result: React.FC<Props> = ({ stat, record }) => {
   const statItems: {
     key: keyof GameStat
     label: string
@@ -39,5 +39,3 @@ export const ComponentStats: React.FC<Props> = ({ stat, record }) => {
       </Wrapper>
   );
 };
-
-ComponentStats.displayName = 'ComponentStats';

@@ -2,14 +2,14 @@ import cn from 'classnames';
 import { useGame } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { ComponentHint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/basic/interface/hint';
 import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 
-import { ComponentUpgradesList } from './list';
+import { UpgradesList } from './list';
 import { Wrapper, Button } from './styles';
 
-export const ComponentUpgrades: React.FC = () => {
+export const Upgrades: React.FC = () => {
   const game = useGame<IGame>();
 
   const [isOpened, setOpened] = useState(false);
@@ -37,14 +37,12 @@ export const ComponentUpgrades: React.FC = () => {
       <Button onClick={onClickButton} className={cn({ active: isOpened })}>
         SKILLS
       </Button>
-      {isOpened && <ComponentUpgradesList onClose={onClose} />}
+      {isOpened && <UpgradesList onClose={onClose} />}
       {hint && !isOpened && (
-        <ComponentHint side="top" align="left">
+        <Hint side="top" align="left">
           Click to upgrade player skills
-        </ComponentHint>
+        </Hint>
       )}
     </Wrapper>
   );
 };
-
-ComponentUpgrades.displayName = 'ComponentUpgrades';

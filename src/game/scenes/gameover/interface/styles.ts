@@ -23,7 +23,6 @@ export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 66px;
   line-height: 66px;
-  text-shadow: 8px 8px 0 #000;
 `;
 
 export const Restart = styled.div`
@@ -33,7 +32,6 @@ export const Restart = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 22px;
   line-height: 22px;
-  text-shadow: 2px 2px 0 #000;
   padding: 13px 20px 14px 20px;
   pointer-events: all;
   &:hover {

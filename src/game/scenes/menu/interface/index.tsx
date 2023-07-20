@@ -7,9 +7,9 @@ import { INTERFACE_SCALE } from '~const/interface';
 import { IGame } from '~type/game';
 import { MenuItem } from '~type/menu';
 
-import { ComponentAbout } from './content/about';
-import { ComponentControls } from './content/controls';
-import { ComponentSettings } from './content/settings';
+import { About } from './content/about';
+import { Controls } from './content/controls';
+import { Settings } from './content/settings';
 import {
   Overlay,
   Wrapper,
@@ -75,11 +75,11 @@ export const MenuUI: React.FC = () => {
   const Component = useMemo(() => {
     switch (currentContent) {
       case 'Settings':
-        return <ComponentSettings disabled={game.onPause} />;
+        return <Settings disabled={game.onPause} />;
       case 'About':
-        return <ComponentAbout />;
+        return <About />;
       case 'Controls':
-        return <ComponentControls />;
+        return <Controls />;
     }
   }, [currentContent]);
 

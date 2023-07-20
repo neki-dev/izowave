@@ -33,5 +33,4 @@ Control.Description = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   font-size: 11px;
   line-height: 11px;
-  text-shadow: 2px 2px 0 #000;
 `;

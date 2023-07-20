@@ -7,14 +7,7 @@ const animationPulse = keyframes`
   100% { transform: scale(1.0) }
 `;
 
-export const Peace = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
-  color: #fff;
-  opacity: 0.5;
-`;
-
-export const Gap = styled.div`
-  height: 6px;
+export const Empty = styled.div`
 `;
 
 export const Wrapper = styled.div`
@@ -35,7 +28,6 @@ export const Container = styled.div`
 export const CurrentNumber = styled.div`
   font-size: 24px;
   line-height: 24px;
-  text-shadow: 1px 1px 0 #000;
   padding: 6px 17px 10px 17px;
   background: ${InterfaceColor.INFO_DARK};
   box-shadow: 0 20px 0 rgba(255, 255, 255, 0.15) inset;
@@ -53,14 +45,12 @@ State.Label = styled.div`
   line-height: 11px;
   opacity: 0.5;
   margin-top: -1px;
-  text-shadow: 1px 1px 0 #000;
 `;
 
 State.Value = styled.div`
   margin-top: 3px;
   font-size: 20px;
   line-height: 20px;
-  text-shadow: 2px 2px 0 #000;
   &.alarm {
     color: ${InterfaceColor.ERROR};
     animation: ${animationPulse} 1s infinite;
