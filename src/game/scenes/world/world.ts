@@ -98,14 +98,15 @@ export class World extends Scene implements IWorld {
   public start() {
     new Interface(this, WorldUI);
 
-    this.wave = new Wave(this);
-    this.builder = new Builder(this);
-
     this.addZoomControl();
     this.addEntityGroups();
 
+    this.wave = new Wave(this);
+
     this.addPlayer();
     this.addCrystals();
+
+    this.builder = new Builder(this);
 
     this.level.hideTiles();
   }
