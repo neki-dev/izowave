@@ -104,6 +104,14 @@ export class Game extends Phaser.Game implements IGame {
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
       this.sound.mute = (value === 'off');
     });
+
+    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (value: string) => {
+      if (value === 'on') {
+        this.tutorial.enable();
+      } else {
+        this.tutorial.disable();
+      }
+    });
   }
 
   public pauseGame() {
@@ -155,12 +163,12 @@ export class Game extends Phaser.Game implements IGame {
   public stopGame() {
     this.isStarted = false;
 
+    this.tutorial.reset();
+
     const menu = this.scene.getScene(GameScene.MENU);
 
     this.scene.systemScene.scene.stop(menu);
     this.scene.systemScene.scene.stop(this.screen);
-
-    this.tutorial.disable();
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;

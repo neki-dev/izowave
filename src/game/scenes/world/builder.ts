@@ -56,10 +56,22 @@ export class Builder extends EventEmitter implements IBuilder {
       }
     });
 
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
       end: () => {
         this.scene.setTimePause(false);
-        this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
+        this.clearBuildingVariant();
+      },
+    });
+
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
+      end: () => {
+        this.scene.setTimePause(false);
       },
     });
   }
@@ -85,14 +97,19 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[variant];
 
     if (!this.isBuildingAllowByWave(variant)) {
-      // eslint-disable-next-line max-len
-      this.scene.game.screen.notice(NoticeType.ERROR, `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
+      this.scene.game.screen.notice(
+        NoticeType.ERROR,
+        `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`,
+      );
 
       return;
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(
+        NoticeType.ERROR,
+        `YOU HAVE MAXIMUM ${BuildingInstance.Name}`,
+      );
 
       return;
     }
@@ -162,6 +179,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
+    if (!this.scene.game.tutorial.isEnabled) {
+      return true;
+    }
+
     const links: {
       step: TutorialStep
       variant: BuildingVariant
@@ -345,10 +366,10 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
       this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
-      this.clearBuildingVariant();
     } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
       this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
+      this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
     }
   }
 

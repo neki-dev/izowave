@@ -2,9 +2,19 @@ import EventEmitter from 'events';
 
 export interface ITutorial extends EventEmitter {
   /**
-   * State of disable.
+   * State of enable.
    */
-  readonly isDisabled: boolean
+  readonly isEnabled: boolean
+
+  /**
+   * Remove all listeners.
+   */
+  reset(): void
+
+  /**
+   * Enable tutorial.
+   */
+  enable(): void
 
   /**
    * Disable tutorial.

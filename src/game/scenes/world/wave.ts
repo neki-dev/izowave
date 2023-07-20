@@ -10,7 +10,7 @@ import { registerAudioAssets } from '~lib/assets';
 import { eachEntries } from '~lib/system';
 import { progressionLinear, progressionQuadratic, progressionQuadraticForce } from '~lib/utils';
 import { NoticeType } from '~type/screen';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
@@ -112,27 +112,16 @@ export class Wave extends EventEmitter implements IWave {
       return;
     }
 
-    const now = this.scene.getTime();
-    const timeleft = now + WAVE_TIMELEFT_ALARM;
-
-    if (this.nextWaveTimestamp > timeleft) {
-      this.nextWaveTimestamp = timeleft;
-    }
+    this.nextWaveTimestamp = this.scene.getTime();
   }
 
   private runTimeleft() {
-    let pause: number;
-
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.COMPLETED) {
-      pause = progressionLinear(
-        DIFFICULTY.WAVE_TIMELEFT,
-        DIFFICULTY.WAVE_TIMELEFT_GROWTH,
-        this.number,
-        1000,
-      );
-    } else {
-      pause = WAVE_TIMELEFT_ALARM;
-    }
+    const pause = progressionLinear(
+      DIFFICULTY.WAVE_TIMELEFT,
+      DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+      this.number,
+      1000,
+    );
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
   }

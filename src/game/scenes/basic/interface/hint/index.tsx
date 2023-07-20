@@ -6,7 +6,7 @@ import { Positioner, Wrapper, Container } from './styles';
 type Props = {
   side: 'left' | 'right' | 'top' | 'bottom'
   align?: 'left' | 'center' | 'right'
-  children: string
+  children: React.ReactNode
 };
 
 export const ComponentHint: React.FC<Props> = ({

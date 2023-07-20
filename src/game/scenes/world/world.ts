@@ -93,8 +93,6 @@ export class World extends Scene implements IWorld {
     this.wave = new Wave(this);
     this.builder = new Builder(this);
 
-    this.setTimePause(!this.game.tutorial.isDisabled);
-
     this.addZoomControl();
     this.addEntityGroups();
 

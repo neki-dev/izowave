@@ -13,6 +13,10 @@ export const Peace = styled.div`
   opacity: 0.5;
 `;
 
+export const Gap = styled.div`
+  height: 6px;
+`;
+
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;

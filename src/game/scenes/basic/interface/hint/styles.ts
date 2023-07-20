@@ -47,7 +47,7 @@ export const Container = styled.div`
 
 export const Positioner = styled.div`
   position: absolute;
-  width: 200px;
+  width: 220px;
   &.side-left {
     padding-left: 10px;
     transform: translate(0, -50%);

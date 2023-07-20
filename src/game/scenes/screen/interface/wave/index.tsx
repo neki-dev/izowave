@@ -10,7 +10,7 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 import {
-  CurrentNumber, Peace, Container, State, Wrapper,
+  CurrentNumber, Peace, Container, State, Wrapper, Gap,
 } from './styles';
 
 export const ComponentWave: React.FC = () => {
@@ -67,6 +67,8 @@ export const ComponentWave: React.FC = () => {
       {hint && (
         <ComponentHint side="top">
           Here display timeleft to start enemies attack
+          <Gap />
+          Press [N] to skip timeleft
         </ComponentHint>
       )}
     </Wrapper>

@@ -8,16 +8,19 @@ import {
 export class Tutorial extends EventEmitter implements ITutorial {
   private progress: Partial<Record<TutorialStep, TutorialStepState>> = {};
 
-  private _isDisabled: boolean = false;
+  private _isEnabled: boolean = true;
 
-  public get isDisabled() { return this._isDisabled; }
+  public get isEnabled() { return this._isEnabled; }
 
-  private set isDisabled(v) { this._isDisabled = v; }
+  private set isEnabled(v) { this._isEnabled = v; }
+
+  public reset() {
+    this.removeAllListeners();
+  }
 
   public start(step: TutorialStep) {
     if (
-      this.isDisabled
-      || this.progress[step] === TutorialStepState.IN_PROGRESS
+      this.progress[step] === TutorialStepState.IN_PROGRESS
       || this.progress[step] === TutorialStepState.COMPLETED
     ) {
       return;
@@ -25,48 +28,50 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
     this.progress[step] = TutorialStepState.IN_PROGRESS;
 
+    if (!this.isEnabled) {
+      return;
+    }
+
     this.emit(TutorialEvents.BEG, step);
     this.emit(`${TutorialEvents.BEG}_${step}`);
   }
 
   public pause(step: TutorialStep) {
-    if (
-      this.isDisabled
-      || this.progress[step] !== TutorialStepState.IN_PROGRESS
-    ) {
+    if (this.progress[step] !== TutorialStepState.IN_PROGRESS) {
       return;
     }
 
     this.progress[step] = TutorialStepState.PAUSED;
+
+    if (!this.isEnabled) {
+      return;
+    }
 
     this.emit(TutorialEvents.END, step);
     this.emit(`${TutorialEvents.END}_${step}`);
   }
 
   public complete(step: TutorialStep) {
-    if (
-      this.isDisabled
-      || this.progress[step] === TutorialStepState.COMPLETED
-    ) {
+    if (this.progress[step] === TutorialStepState.COMPLETED) {
       return;
     }
 
     this.progress[step] = TutorialStepState.COMPLETED;
+
+    if (!this.isEnabled) {
+      return;
+    }
 
     this.emit(TutorialEvents.END, step);
     this.emit(`${TutorialEvents.END}_${step}`);
   }
 
   public state(step: TutorialStep) {
-    if (this.isDisabled) {
-      return TutorialStepState.COMPLETED;
-    }
-
     return this.progress[step] ?? TutorialStepState.IDLE;
   }
 
   public bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
-    if (this.isDisabled) {
+    if (!this.isEnabled) {
       return () => {};
     }
 
@@ -88,7 +93,7 @@ export class Tutorial extends EventEmitter implements ITutorial {
   }
 
   public bindAll(callbacks: TutorialBindAllCallbacks) {
-    if (this.isDisabled) {
+    if (!this.isEnabled) {
       return () => {};
     }
 
@@ -109,7 +114,33 @@ export class Tutorial extends EventEmitter implements ITutorial {
     };
   }
 
+  public enable() {
+    this.isEnabled = true;
+
+    const states = Object.keys(this.progress) as TutorialStep[];
+
+    states.forEach((step) => {
+      const state = this.state(step);
+
+      if (state === TutorialStepState.IN_PROGRESS) {
+        this.emit(TutorialEvents.BEG, step);
+        this.emit(`${TutorialEvents.BEG}_${step}`);
+      }
+    });
+  }
+
   public disable() {
-    this.isDisabled = true;
+    const states = Object.keys(this.progress) as TutorialStep[];
+
+    states.forEach((step) => {
+      const state = this.state(step);
+
+      if (state === TutorialStepState.IN_PROGRESS) {
+        this.emit(TutorialEvents.END, step);
+        this.emit(`${TutorialEvents.END}_${step}`);
+      }
+    });
+
+    this.isEnabled = false;
   }
 }
