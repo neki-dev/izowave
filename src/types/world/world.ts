@@ -128,10 +128,6 @@ export enum WorldEvents {
   USE_FEATURE = 'use_feature',
 }
 
-export enum WorldIcon {
-  ALERT = 'alert',
-}
-
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string

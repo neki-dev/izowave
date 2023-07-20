@@ -28,7 +28,7 @@ export const IconWrapper = styled.div`
 export const Icon = styled.div`
   width: 15px;
   height: 15px;
-  background: url(assets/sprites/interface/building/icons.png);
+  background: url(assets/sprites/building/icons/params.png);
 `;
 
 export const Info = styled.div`

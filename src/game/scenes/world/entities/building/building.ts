@@ -4,7 +4,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -12,14 +12,14 @@ import { Live } from '~scene/world/live';
 import { GameEvents, GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldEvents, WorldIcon } from '~type/world';
+import { IWorld, WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
-  BuildingOutlineState, IBuildingFactory, BuildingIcon, IBuilding,
+  BuildingOutlineState, IBuildingFactory, BuildingParamIcon, IBuilding, BuildingIcon,
 } from '~type/world/entities/building';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
@@ -50,9 +50,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
 
-  private alert: Nullable<Phaser.GameObjects.Image> = null;
+  private alertIcon: Nullable<Phaser.GameObjects.Image> = null;
 
   private alertTween: Nullable<Phaser.Tweens.Tween> = null;
+
+  private upgradeIcon: Nullable<Phaser.GameObjects.Image> = null;
+
+  private upgradeTween: Nullable<Phaser.Tweens.Tween> = null;
 
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
@@ -141,7 +145,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unselect();
     });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.removeAlert();
+      this.removeAlertIcon();
+      this.removeUpgradeIcon();
       this.unfocus();
       this.unselect();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
@@ -150,7 +155,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
-    this.updateAlert();
+    this.updateAlertIcon();
 
     // Catch focus by camera moving
     if (this.toFocus) {
@@ -188,7 +193,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public getInfo() {
     const params: BuildingParam[] = [{
       label: 'HEALTH',
-      icon: BuildingIcon.HEALTH,
+      icon: BuildingParamIcon.HEALTH,
       value: this.live.health,
     }];
 
@@ -276,6 +281,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.emit(BuildingEvents.UPGRADE);
     this.scene.builder.emit(BuilderEvents.UPGRADE, this);
 
+    this.addUpgradeIcon();
     this.updateActionArea();
     this.setFrame(this.upgradeLevel - 1);
     this.live.heal();
@@ -356,17 +362,17 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     };
   }
 
-  public addAlert() {
-    if (this.alert) {
+  public addAlertIcon() {
+    if (this.alertIcon) {
       return;
     }
 
-    this.alert = this.scene.add.image(this.x, this.y, WorldIcon.ALERT);
-    this.alert.setDepth(this.depth + 1);
-    this.alert.setVisible(this.visible);
+    this.alertIcon = this.scene.add.image(this.x, this.y, BuildingIcon.ALERT);
+    this.alertIcon.setDepth(this.depth + 1);
+    this.alertIcon.setVisible(this.visible);
 
     this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-      targets: this.alert,
+      targets: this.alertIcon,
       alpha: { from: 1.0, to: 0.0 },
       duration: 500,
       ease: 'Linear',
@@ -375,22 +381,54 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public removeAlert() {
-    if (!this.alert) {
+  public removeAlertIcon() {
+    if (!this.alertIcon) {
       return;
     }
 
-    this.alert.destroy();
-    this.alert = null;
+    this.alertIcon.destroy();
+    this.alertIcon = null;
 
     this.alertTween?.destroy();
     this.alertTween = null;
   }
 
-  private updateAlert() {
-    if (this.alert) {
-      this.alert.setVisible(this.visible);
+  private updateAlertIcon() {
+    if (this.alertIcon) {
+      this.alertIcon.setVisible(this.visible);
     }
+  }
+
+  private addUpgradeIcon() {
+    if (this.upgradeIcon) {
+      this.removeUpgradeIcon();
+    }
+
+    this.upgradeIcon = this.scene.add.image(this.x, this.y, BuildingIcon.UPGRADE);
+    this.upgradeIcon.setDepth(this.depth + 1);
+
+    this.upgradeTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+      targets: this.upgradeIcon,
+      y: { from: this.y, to: this.y - 32 },
+      alpha: { from: 1.0, to: 0.0 },
+      duration: 500,
+      ease: 'Linear',
+      onComplete: () => {
+        this.removeUpgradeIcon();
+      },
+    });
+  }
+
+  private removeUpgradeIcon() {
+    if (!this.upgradeIcon) {
+      return;
+    }
+
+    this.upgradeIcon.destroy();
+    this.upgradeIcon = null;
+
+    this.upgradeTween?.destroy();
+    this.upgradeTween = null;
   }
 
   public select() {
@@ -534,6 +572,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 }
 
 registerAudioAssets(BuildingAudio);
+registerImageAssets(BuildingIcon);
 registerSpriteAssets(BuildingTexture, {
   width: LEVEL_TILE_SIZE.width,
   height: LEVEL_TILE_SIZE.height,

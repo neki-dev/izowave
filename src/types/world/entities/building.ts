@@ -95,12 +95,12 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Add alert icon.
    */
-  addAlert(): void
+  addAlertIcon(): void
 
   /**
    * Remove alert icon.
    */
-  removeAlert(): void
+  removeAlertIcon(): void
 }
 
 export interface IBuildingAmmunition extends IBuilding {
@@ -150,13 +150,19 @@ export enum BuildingVariant {
 }
 
 export enum BuildingTexture {
-  WALL = 'building/wall',
-  TOWER_FIRE = 'building/tower_fire',
-  TOWER_FROZEN = 'building/tower_frozen',
-  TOWER_LAZER = 'building/tower_lazer',
-  GENERATOR = 'building/generator',
-  AMMUNITION = 'building/ammunition',
-  MEDIC = 'building/medic',
+  WALL = 'building/textures/wall',
+  TOWER_FIRE = 'building/textures/tower_fire',
+  TOWER_FROZEN = 'building/textures/tower_frozen',
+  TOWER_LAZER = 'building/textures/tower_lazer',
+  GENERATOR = 'building/textures/generator',
+  AMMUNITION = 'building/textures/ammunition',
+  MEDIC = 'building/textures/medic',
+}
+
+export enum BuildingIcon {
+  PARAMS = 'building/icons/params',
+  ALERT = 'building/icons/alert',
+  UPGRADE = 'building/icons/upgrade',
 }
 
 export enum BuildingAudio {
@@ -171,7 +177,7 @@ export enum BuildingAudio {
   DAMAGE_2 = 'building/damage_2',
 }
 
-export enum BuildingIcon {
+export enum BuildingParamIcon {
   HEALTH = 0,
   RADIUS = 1,
   AMMO = 2,
@@ -195,7 +201,7 @@ export type BuildingActionsParams = {
 export type BuildingParam = {
   label: string
   value: string | number
-  icon: BuildingIcon
+  icon: BuildingParamIcon
   attention?: boolean
 };
 

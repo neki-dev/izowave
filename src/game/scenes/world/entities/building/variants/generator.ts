@@ -6,7 +6,7 @@ import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingParamIcon,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -15,8 +15,8 @@ export class BuildingGenerator extends Building {
   static Description = 'Generates resources for builds and upgrades';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingParamIcon.HEALTH },
+    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingParamIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
@@ -48,7 +48,7 @@ export class BuildingGenerator extends Building {
   public getInfo() {
     const info: BuildingParam[] = [{
       label: 'RESOURCES',
-      icon: BuildingIcon.RESOURCES,
+      icon: BuildingParamIcon.RESOURCES,
       value: this.resources,
     }];
 

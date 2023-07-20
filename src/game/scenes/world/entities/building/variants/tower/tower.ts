@@ -7,7 +7,7 @@ import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingData,
-  BuildingIcon,
+  BuildingParamIcon,
   BuildingParam,
   BuildingVariant,
   IBuilding,
@@ -48,7 +48,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (params.damage) {
       info.push({
         label: 'DAMAGE',
-        icon: BuildingIcon.DAMAGE,
+        icon: BuildingParamIcon.DAMAGE,
         value: params.damage,
       });
     }
@@ -56,7 +56,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (params.freeze) {
       info.push({
         label: 'FREEZE',
-        icon: BuildingIcon.DAMAGE,
+        icon: BuildingParamIcon.DAMAGE,
         value: (params.freeze / 1000).toFixed(1),
       });
     }
@@ -64,14 +64,14 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (params.speed) {
       info.push({
         label: 'SPEED',
-        icon: BuildingIcon.SPEED,
+        icon: BuildingParamIcon.SPEED,
         value: params.speed,
       });
     }
 
     info.push({
       label: 'AMMO',
-      icon: BuildingIcon.AMMO,
+      icon: BuildingParamIcon.AMMO,
       attention: (this.ammo === 0),
       value: `${this.ammo}/${this.getMaxAmmo()}`,
     });
@@ -178,7 +178,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       this.ammo += ammunition.use(this.getMaxAmmo());
 
       if (this.needReload) {
-        this.removeAlert();
+        this.removeAlertIcon();
         this.needReload = false;
 
         // this.scene.game.sound.play(BuildingAudio.RELOAD);
@@ -186,7 +186,7 @@ export class BuildingTower extends Building implements IBuildingTower {
         this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
       }
     } else if (!this.needReload) {
-      this.addAlert();
+      this.addAlertIcon();
       this.needReload = true;
 
       this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);

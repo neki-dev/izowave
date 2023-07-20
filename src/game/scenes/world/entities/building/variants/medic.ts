@@ -5,7 +5,7 @@ import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
-  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
+  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingParamIcon,
 } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IPlayer } from '~type/world/entities/player';
@@ -18,8 +18,8 @@ export class BuildingMedic extends Building {
   static Description = 'Heals player and assistant within building radius';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: BuildingIcon.HEAL },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingParamIcon.HEALTH },
+    { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: BuildingParamIcon.HEAL },
   ];
 
   static Texture = BuildingTexture.MEDIC;
@@ -65,7 +65,7 @@ export class BuildingMedic extends Building {
   public getInfo() {
     const info: BuildingParam[] = [{
       label: 'HEAL',
-      icon: BuildingIcon.HEAL,
+      icon: BuildingParamIcon.HEAL,
       value: this.getHealAmount(),
     }];
 

@@ -14,7 +14,6 @@ import {
 import { Crystal } from '~entity/crystal';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { registerImageAssets } from '~lib/assets';
 import { sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { WorldUI } from '~scene/world/interface';
@@ -23,7 +22,7 @@ import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
 import { NoticeType } from '~type/screen';
 import {
-  IWorld, WorldEvents, WorldFeature, WorldHint, WorldIcon,
+  IWorld, WorldEvents, WorldFeature, WorldHint,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
@@ -339,5 +338,3 @@ export class World extends Scene implements IWorld {
     });
   }
 }
-
-registerImageAssets(WorldIcon.ALERT);
