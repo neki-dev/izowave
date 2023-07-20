@@ -5,6 +5,7 @@ import { INTERFACE_SCALE } from '~const/interface';
 
 import { ComponentBuilder } from './builder';
 import { ComponentDebug } from './debug';
+import { ComponentFeatures } from './features';
 import { ComponentGeneralHints } from './general-hints';
 import { ComponentHUD } from './hud';
 import { ComponentNotices } from './notices';
@@ -24,6 +25,7 @@ export const ScreenUI: React.FC = () => {
 
         <Column className="center">
           <ComponentWave />
+          <ComponentFeatures />
         </Column>
 
         <Column className="right">

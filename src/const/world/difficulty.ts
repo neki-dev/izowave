@@ -27,6 +27,19 @@ export const DIFFICULTY = {
   ASSISTANT_ATTACK_PAUSE_GROWTH: -0.15, // Attack pause growth by upgrade level (Quadratic)
 
   /**
+   * Features
+   */
+
+  FEATURE_FROST_COST: 200, // Cost of use
+  FEATURE_FROST_DURATION: 6000, // Feature duration
+  FEATURE_RAGE_COST: 300, // Cost of use
+  FEATURE_RAGE_DURATION: 7000, // Feature duration
+  FEATURE_SHIELD_COST: 200, // Cost of use
+  FEATURE_SHIELD_DURATION: 10000, // Feature duration
+  FEATURE_FIRE_COST: 400, // Cost of use
+  FEATURE_FIRE_DURATION: 1000, // Feature duration
+
+  /**
    * Wave
    */
 

@@ -2,7 +2,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { IWorld, WorldFeature } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
@@ -132,11 +132,13 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
 
     if (this.shotDefaultParams.damage) {
+      const rage = this.scene.activeFeatures[WorldFeature.RAGE];
+
       params.damage = progressionQuadratic(
         this.shotDefaultParams.damage,
         DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         this.upgradeLevel,
-      );
+      ) * (rage ? 2 : 1);
     }
 
     if (this.shotDefaultParams.freeze) {

@@ -37,6 +37,11 @@ export interface IWorld extends IScene {
   readonly deltaTime: number
 
   /**
+   * Active features.
+   */
+  readonly activeFeatures: Partial<Record<WorldFeature, boolean>>
+
+  /**
    * Current active building.
    */
   selectedBuilding: Nullable<IBuilding>
@@ -106,6 +111,13 @@ export interface IWorld extends IScene {
    * @param seconds - Time in seconds
    */
   getFuturePosition(sprite: ISprite, seconds: number): Vector2D
+
+  /**
+   * Use feature.
+   * @param type - Feature
+   * @param callback - Callback for feature stop
+   */
+  useFeature(type: WorldFeature): void
 }
 
 export enum WorldEvents {
@@ -113,6 +125,7 @@ export enum WorldEvents {
   UNSELECT_BUILDING = 'unselect_building',
   SHOW_HINT = 'show_hint',
   HIDE_HINT = 'hide_hint',
+  USE_FEATURE = 'use_feature',
 }
 
 export enum WorldIcon {
@@ -123,4 +136,17 @@ export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string
   position: Vector2D
+};
+
+export enum WorldFeature {
+  FROST = 'FROST',
+  RAGE = 'RAGE',
+  SHIELD = 'SHIELD',
+  FIRE = 'FIRE',
+}
+
+export type WorldFeatureData = {
+  description: string
+  cost: number
+  duration: number
 };

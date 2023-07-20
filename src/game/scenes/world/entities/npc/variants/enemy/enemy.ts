@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { WORLD_FEATURES } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   ENEMY_PATH_BREAKPOINT,
@@ -13,7 +14,7 @@ import { progressionQuadratic } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
-import { IWorld } from '~type/world';
+import { IWorld, WorldEvents, WorldFeature } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
@@ -28,6 +29,8 @@ export class Enemy extends NPC implements IEnemy {
   private damage: number;
 
   private might: number;
+
+  private damageTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
     positionAtMatrix, texture, multipliers = {},
@@ -74,7 +77,11 @@ export class Enemy extends NPC implements IEnemy {
 
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
-        this.attack(tile);
+        const shield = this.scene.activeFeatures[WorldFeature.SHIELD];
+
+        if (!shield) {
+          this.attack(tile);
+        }
       }
     });
 
@@ -82,6 +89,14 @@ export class Enemy extends NPC implements IEnemy {
       this,
       this.scene.getEntitiesGroup(EntityType.NPC),
     );
+
+    this.scene.events.on(WorldEvents.USE_FEATURE, this.handleWorldFeature, this);
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.events.off(WorldEvents.USE_FEATURE, this.handleWorldFeature, this);
+      if (this.damageTimer) {
+        this.damageTimer.destroy();
+      }
+    });
   }
 
   public update() {
@@ -115,6 +130,71 @@ export class Enemy extends NPC implements IEnemy {
     this.addBloodEffect();
 
     super.onDead();
+  }
+
+  private handleWorldFeature(type: WorldFeature) {
+    const { duration } = WORLD_FEATURES[type];
+
+    switch (type) {
+      case WorldFeature.FROST: {
+        this.freeze(duration, true);
+        break;
+      }
+      case WorldFeature.FIRE: {
+        this.addFireEffect(duration);
+        this.addOngoingDamage(this.live.maxHealth * 0.5, duration);
+        break;
+      }
+    }
+  }
+
+  private addOngoingDamage(damage: number, duration: number) {
+    const delay = 100;
+    const momentDamage = damage / (duration / delay);
+
+    this.damageTimer = this.scene.time.addEvent({
+      delay,
+      repeat: duration / delay,
+      callback: () => {
+        this.live.damage(momentDamage);
+
+        if (this.damageTimer?.repeatCount === 0) {
+          this.damageTimer.destroy();
+          this.damageTimer = null;
+        }
+      },
+    });
+  }
+
+  private addFireEffect(duration: number) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      return;
+    }
+
+    new Particles(this, {
+      key: 'fire',
+      texture: ParticlesTexture.GLOW,
+      params: {
+        follow: this,
+        followOffset: this.getBodyOffset(),
+        duration,
+        color: [0xfacc22, 0xf89800, 0xf83600, 0x9f0404],
+        colorEase: 'quad.out',
+        lifespan: this.displayWidth * 25,
+        angle: {
+          min: -100,
+          max: -80,
+        },
+        scale: {
+          start: (this.displayWidth * 1.25) / 100,
+          end: 0,
+          ease: 'sine.out',
+        },
+        speed: 80,
+        advance: 200,
+        blendMode: 'ADD',
+      },
+    });
   }
 
   private addBloodEffect() {

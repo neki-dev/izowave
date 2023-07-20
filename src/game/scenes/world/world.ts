@@ -3,7 +3,9 @@ import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
 import { CONTROL_KEY } from '~const/controls';
-import { WORLD_FIND_PATH_RATE, WORLD_MAX_ZOOM, WORLD_MIN_ZOOM } from '~const/world';
+import {
+  WORLD_FEATURES, WORLD_FIND_PATH_RATE, WORLD_MAX_ZOOM, WORLD_MIN_ZOOM,
+} from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
@@ -19,8 +21,9 @@ import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
+import { NoticeType } from '~type/screen';
 import {
-  IWorld, WorldEvents, WorldHint, WorldIcon,
+  IWorld, WorldEvents, WorldFeature, WorldHint, WorldIcon,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
@@ -75,6 +78,12 @@ export class World extends Scene implements IWorld {
   public get deltaTime() { return this._deltaTime; }
 
   private set deltaTime(v) { this._deltaTime = v; }
+
+  private _activeFeatures: Partial<Record<WorldFeature, boolean>> = {};
+
+  public get activeFeatures() { return this._activeFeatures; }
+
+  private set activeFeatures(v) { this._activeFeatures = v; }
 
   constructor() {
     super(GameScene.WORLD);
@@ -199,6 +208,33 @@ export class World extends Scene implements IWorld {
       x: sprite.body.center.x + offset.x,
       y: sprite.body.center.y + offset.y,
     };
+  }
+
+  public useFeature(type: WorldFeature) {
+    if (this.activeFeatures[type]) {
+      return;
+    }
+
+    const { cost, duration } = WORLD_FEATURES[type];
+
+    if (this.player.resources < cost) {
+      this.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+
+      return;
+    }
+
+    this.activeFeatures[type] = true;
+
+    this.player.takeResources(cost);
+
+    this.events.emit(WorldEvents.USE_FEATURE, type);
+
+    this.time.addEvent({
+      delay: duration,
+      callback: () => {
+        delete this.activeFeatures[type];
+      },
+    });
   }
 
   private updateNPCPath() {
