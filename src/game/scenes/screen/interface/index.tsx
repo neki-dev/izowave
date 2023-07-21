@@ -18,18 +18,18 @@ export const ScreenUI: React.FC = () => {
   return (
     <Wrapper ref={refScale}>
       <Grid>
-        <Column className="left">
+        <Column $side="left">
           <PlayerHUD />
           <Debug />
         </Column>
 
-        <Column className="center">
+        <Column $side="center">
           <Wave />
           <GeneralHints />
           <Features />
         </Column>
 
-        <Column className="right">
+        <Column $side="right">
           <Builder />
         </Column>
       </Grid>

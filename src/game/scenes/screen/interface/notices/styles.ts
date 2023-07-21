@@ -19,7 +19,9 @@ export const Wrapper = styled.div`
   z-index: 2;
 `;
 
-export const Item = styled.div`
+export const Item = styled.div<{
+  $type: NoticeType
+}>`
   padding: 8px 15px 9px 15px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};
@@ -29,13 +31,11 @@ export const Item = styled.div`
   &:not(:last-child) {
     margin-bottom: 8px;
   }
-  &.${NoticeType.INFO} {
-    background: ${InterfaceColor.INFO_DARK};
-  }
-  &.${NoticeType.WARN} {
-    background: ${InterfaceColor.WARN_DARK};
-  }
-  &.${NoticeType.ERROR} {
-    background: ${InterfaceColor.ERROR_DARK};
-  }
+  background: ${(props) => {
+    switch (props.$type) {
+      case NoticeType.WARN: return InterfaceColor.WARN_DARK;
+      case NoticeType.ERROR: return InterfaceColor.ERROR_DARK;
+      default: return InterfaceColor.INFO_DARK;
+    }
+  }}
 `;
