@@ -62,6 +62,7 @@ export class Assistant extends NPC implements IAssistant {
     this.body.setCircle(this.width / 2, 0, 1);
 
     this.addHealthIndicator(0xd0ff4f);
+    this.addWaveCompleteHandler();
 
     this.scene.physics.add.collider(
       this,
@@ -72,16 +73,6 @@ export class Assistant extends NPC implements IAssistant {
         }
       },
     );
-
-    const handleWaveCompelte = () => {
-      this.live.heal();
-    };
-
-    this.scene.wave.on(WaveEvents.COMPLETE, handleWaveCompelte);
-
-    this.on(Phaser.Scenes.Events.DESTROY, () => {
-      this.scene.wave.off(WaveEvents.COMPLETE, handleWaveCompelte);
-    });
   }
 
   public update() {
@@ -200,6 +191,18 @@ export class Assistant extends NPC implements IAssistant {
     };
 
     return params;
+  }
+
+  private addWaveCompleteHandler() {
+    const handler = () => {
+      this.live.heal();
+    };
+
+    this.scene.wave.on(WaveEvents.COMPLETE, handler);
+
+    this.on(Phaser.Scenes.Events.DESTROY, () => {
+      this.scene.wave.off(WaveEvents.COMPLETE, handler);
+    });
   }
 }
 

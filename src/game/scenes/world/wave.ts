@@ -55,11 +55,8 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene = scene;
 
+    this.addKeyboardHandler();
     this.runTimeleft();
-
-    this.scene.input.keyboard?.on(CONTROL_KEY.SKIP_WAVE_TIMELEFT, () => {
-      this.skipTimeleft();
-    });
   }
 
   public getTimeleft() {
@@ -219,6 +216,12 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     return this.lastSpawnedEnemyVariant;
+  }
+
+  private addKeyboardHandler() {
+    this.scene.input.keyboard?.on(CONTROL_KEY.SKIP_WAVE_TIMELEFT, () => {
+      this.skipTimeleft();
+    });
   }
 }
 

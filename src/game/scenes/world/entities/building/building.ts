@@ -83,6 +83,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live = new Live(health);
 
     this.addActionArea();
+    this.addKeyboardHandler();
+    this.addPointerHandler();
     this.setInteractive({
       pixelPerfect: true,
       useHandCursor: true,
@@ -96,52 +98,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
 
-    const handleBreak = () => {
-      if (this.isFocused) {
-        this.break();
-      }
-    };
+    this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
+    this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
 
-    const handleUpgrade = () => {
-      if (this.isFocused) {
-        this.upgrade();
-      }
-    };
-
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak, this);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade, this);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade, this);
-
-    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
-      if (pointer.button === 0) {
-        if (this.isFocused) {
-          this.select();
-        } else {
-          this.unselect();
-        }
-      }
-    });
-    this.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.focus();
-    });
-    this.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.unfocus();
-    });
-
-    this.live.on(LiveEvents.DAMAGE, () => {
-      this.onDamage();
-    });
-    this.live.on(LiveEvents.DEAD, () => {
-      this.onDead();
-    });
-    this.scene.game.events.on(GameEvents.FINISH, () => {
-      this.unfocus();
-      this.unselect();
-    });
-    this.scene.builder.on(BuilderEvents.BUILD_START, () => {
-      this.unfocus();
-      this.unselect();
-    });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeAlertIcon();
       this.removeUpgradeIcon();
@@ -547,6 +506,60 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.destroy();
+  }
+
+  private addKeyboardHandler() {
+    const handleBreak = () => {
+      if (this.isFocused) {
+        this.break();
+      }
+    };
+
+    const handleUpgrade = () => {
+      if (this.isFocused) {
+        this.upgrade();
+      }
+    };
+
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
+    });
+  }
+
+  private addPointerHandler() {
+    const handleInput = (pointer: Phaser.Input.Pointer) => {
+      if (pointer.button === 0) {
+        if (this.isFocused) {
+          this.select();
+        } else {
+          this.unselect();
+        }
+      }
+    };
+
+    const handleClear = () => {
+      this.unfocus();
+      this.unselect();
+    };
+
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleInput);
+    this.scene.game.events.on(GameEvents.FINISH, handleClear);
+    this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
+
+    this.on(Phaser.Input.Events.POINTER_OVER, this.focus, this);
+    this.on(Phaser.Input.Events.POINTER_OUT, this.unfocus, this);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleInput);
+      this.scene.game.events.off(GameEvents.FINISH, handleClear);
+      this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
+    });
   }
 }
 

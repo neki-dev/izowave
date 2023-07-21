@@ -40,9 +40,7 @@ export class BuildingGenerator extends Building {
       },
     });
 
-    this.on(BuildingEvents.UPGRADE, () => {
-      this.upgradeAmount();
-    });
+    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public getInfo() {
@@ -115,7 +113,7 @@ export class BuildingGenerator extends Building {
     });
   }
 
-  private upgradeAmount() {
+  private onUpgrade() {
     this.resources = progressionLinearFrom(
       this.resources,
       DIFFICULTY.BUILDING_GENERATOR_RESOURCES,

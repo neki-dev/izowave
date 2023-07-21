@@ -74,6 +74,7 @@ export class Enemy extends NPC implements IEnemy {
 
     this.addHealthIndicator(0xdb2323, true);
     this.addSpawnEffect();
+    this.addWorldFeatureHandler();
 
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
@@ -90,9 +91,7 @@ export class Enemy extends NPC implements IEnemy {
       this.scene.getEntitiesGroup(EntityType.NPC),
     );
 
-    this.scene.events.on(WorldEvents.USE_FEATURE, this.handleWorldFeature, this);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.USE_FEATURE, this.handleWorldFeature, this);
       if (this.damageTimer) {
         this.damageTimer.destroy();
       }
@@ -130,22 +129,6 @@ export class Enemy extends NPC implements IEnemy {
     this.addBloodEffect();
 
     super.onDead();
-  }
-
-  private handleWorldFeature(type: WorldFeature) {
-    const { duration } = WORLD_FEATURES[type];
-
-    switch (type) {
-      case WorldFeature.FROST: {
-        this.freeze(duration, true);
-        break;
-      }
-      case WorldFeature.FIRE: {
-        this.addFireEffect(duration);
-        this.addOngoingDamage(this.live.maxHealth * 0.5, duration);
-        break;
-      }
-    }
   }
 
   private addOngoingDamage(damage: number, duration: number) {
@@ -250,6 +233,29 @@ export class Enemy extends NPC implements IEnemy {
       onComplete: () => {
         this.container.setAlpha(1.0);
       },
+    });
+  }
+
+  private addWorldFeatureHandler() {
+    const handler = (type: WorldFeature) => {
+      const { duration } = WORLD_FEATURES[type];
+
+      switch (type) {
+        case WorldFeature.FROST: {
+          this.freeze(duration, true);
+          break;
+        }
+        case WorldFeature.FIRE: {
+          this.addFireEffect(duration);
+          this.addOngoingDamage(this.live.maxHealth * 0.5, duration);
+          break;
+        }
+      }
+    };
+
+    this.scene.events.on(WorldEvents.USE_FEATURE, handler);
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.events.off(WorldEvents.USE_FEATURE, handler);
     });
   }
 }

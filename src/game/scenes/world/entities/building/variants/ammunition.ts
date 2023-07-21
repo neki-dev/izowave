@@ -48,9 +48,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
 
-    this.on(BuildingEvents.UPGRADE, () => {
-      this.upgradeAmmoCount();
-    });
+    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public getInfo() {
@@ -79,7 +77,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     return amount;
   }
 
-  private upgradeAmmoCount() {
+  private onUpgrade() {
     this.ammo = progressionLinearFrom(
       this.ammo,
       DIFFICULTY.BUILDING_AMMUNITION_AMMO,

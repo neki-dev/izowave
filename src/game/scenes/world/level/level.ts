@@ -52,21 +52,19 @@ export class Level extends TileMatrix implements ILevel {
     this.scene = scene;
     this.visibleTiles = scene.add.group();
 
-    const grid = this.map.getMatrix().map((y) => y.map((x) => x.collide));
+    const grid = this.map.getMatrix()
+      .map((y) => y.map((x) => x.collide));
 
     this.navigator = new Navigator(grid);
 
     this.makeMapTiles();
     this.makeTrees();
 
-    this.scene.game.events.on(
-      `${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`,
-      (value: string) => {
-        if (value === 'off') {
-          this.removeEffects();
-        }
-      },
-    );
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
+      if (value === 'off') {
+        this.removeEffects();
+      }
+    });
   }
 
   public looseEffects() {

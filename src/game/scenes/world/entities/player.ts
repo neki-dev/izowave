@@ -101,9 +101,7 @@ export class Player extends Sprite implements IPlayer {
       },
     );
 
-    this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => {
-      this.onWaveComplete(number);
-    });
+    this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
   }
 
   public update() {

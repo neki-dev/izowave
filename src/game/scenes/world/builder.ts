@@ -46,38 +46,11 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene = scene;
 
     this.setMaxListeners(0);
-
-    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
-      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
-    });
-
-    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
-      if (Number(e.key)) {
-        this.switchBuildingVariant(Number(e.key) - 1);
-      }
-    });
+    this.addKeyboardHandler();
+    this.addTutorialHandler();
 
     this.scene.player.live.on(LiveEvents.DEAD, () => {
       this.closeBuilder();
-    });
-
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
-      beg: () => {
-        this.scene.setTimePause(true);
-      },
-      end: () => {
-        this.scene.setTimePause(false);
-        this.clearBuildingVariant();
-      },
-    });
-
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
-      beg: () => {
-        this.scene.setTimePause(true);
-      },
-      end: () => {
-        this.scene.setTimePause(false);
-      },
     });
   }
 
@@ -469,5 +442,38 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildingPreview.destroy();
     this.buildingPreview = null;
+  }
+
+  private addKeyboardHandler() {
+    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
+      if (Number(e.key)) {
+        this.switchBuildingVariant(Number(e.key) - 1);
+      }
+    });
+  }
+
+  private addTutorialHandler() {
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
+      end: () => {
+        this.scene.setTimePause(false);
+        this.clearBuildingVariant();
+      },
+    });
+
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
+      end: () => {
+        this.scene.setTimePause(false);
+      },
+    });
+
+    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
+      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
+    });
   }
 }

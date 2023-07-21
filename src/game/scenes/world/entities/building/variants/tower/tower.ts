@@ -38,19 +38,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    const handleAmmunitionRelease = (building: IBuilding) => {
-      if (this.needReload && building.variant === BuildingVariant.AMMUNITION) {
-        this.reload();
-      }
-    };
-
-    this.scene.builder.on(BuilderEvents.UPGRADE, handleAmmunitionRelease);
-    this.scene.builder.on(BuilderEvents.BUILD, handleAmmunitionRelease);
-
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.builder.off(BuilderEvents.UPGRADE, handleAmmunitionRelease);
-      this.scene.builder.off(BuilderEvents.BUILD, handleAmmunitionRelease);
-    });
+    this.addAmmunitionReleaseHandler();
   }
 
   public getInfo() {
@@ -219,5 +207,21 @@ export class BuildingTower extends Building implements IBuildingTower {
   private shoot(target: IEnemy) {
     this.shot.params = this.getShotCurrentParams();
     this.shot.shoot(target);
+  }
+
+  private addAmmunitionReleaseHandler() {
+    const handler = (building: IBuilding) => {
+      if (this.needReload && building.variant === BuildingVariant.AMMUNITION) {
+        this.reload();
+      }
+    };
+
+    this.scene.builder.on(BuilderEvents.UPGRADE, handler);
+    this.scene.builder.on(BuilderEvents.BUILD, handler);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.builder.off(BuilderEvents.UPGRADE, handler);
+      this.scene.builder.off(BuilderEvents.BUILD, handler);
+    });
   }
 }

@@ -16,7 +16,7 @@ type Props = {
 export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
   const game = useGame<IGame>();
 
-  const handleRestartClick = () => {
+  const onRestartClick = () => {
     game.restartGame();
   };
 
@@ -24,7 +24,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
     <Overlay>
       <Wrapper>
         <Label>GAME OVER</Label>
-        <Button onClick={handleRestartClick} size='large'>PLAY AGAIN</Button>
+        <Button onClick={onRestartClick} size='large'>PLAY AGAIN</Button>
         <Result stat={stat} record={record} />
       </Wrapper>
     </Overlay>
