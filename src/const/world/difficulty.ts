@@ -30,13 +30,13 @@ export const DIFFICULTY = {
    * Features
    */
 
-  FEATURE_FROST_COST: 250, // Cost of use
+  FEATURE_FROST_COST: 200, // Cost of use
   FEATURE_FROST_DURATION: 6000, // Feature duration
   FEATURE_RAGE_COST: 300, // Cost of use
-  FEATURE_RAGE_DURATION: 7000, // Feature duration
-  FEATURE_SHIELD_COST: 200, // Cost of use
+  FEATURE_RAGE_DURATION: 8000, // Feature duration
+  FEATURE_SHIELD_COST: 150, // Cost of use
   FEATURE_SHIELD_DURATION: 10000, // Feature duration
-  FEATURE_FIRE_COST: 300, // Cost of use
+  FEATURE_FIRE_COST: 250, // Cost of use
   FEATURE_FIRE_DURATION: 1000, // Feature duration
 
   /**
@@ -65,11 +65,11 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 100, // Health
-  ENEMY_HEALTH_GROWTH: 0.33, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH: 90, // Health
+  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_SPEED: 100, // Movement speed
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Quadratic)
-  ENEMY_DAMAGE: 100, // Attack damage
+  ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
