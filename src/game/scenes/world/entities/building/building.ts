@@ -250,7 +250,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
-  public upgrade() {
+  private upgrade() {
     if (!this.isUpgradeAllowed()) {
       return;
     }
@@ -273,11 +273,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.upgradeLevel++;
 
+    this.updateActionArea();
+    this.setFrame(this.upgradeLevel - 1);
+
     this.emit(BuildingEvents.UPGRADE);
     this.scene.builder.emit(BuilderEvents.UPGRADE, this);
 
-    this.updateActionArea();
-    this.setFrame(this.upgradeLevel - 1);
     this.live.heal();
 
     this.scene.player.takeResources(cost);
