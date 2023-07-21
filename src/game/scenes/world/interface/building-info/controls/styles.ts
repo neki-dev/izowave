@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~type/interface';
+import { InterfaceColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 100px;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
 
 export const Action = styled.div`
   padding: 3px 7px 4px 7px;
-  background: rgba(0, 0, 0, 0.75);
+  background: ${InterfaceColor.BLACK_TRANSPARENT};
   transform: translateX(-50%);
   pointer-events: all;
   display: flex;

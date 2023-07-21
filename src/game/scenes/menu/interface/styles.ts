@@ -2,17 +2,6 @@ import styled from 'styled-components';
 
 import { InterfaceFont } from '~type/interface';
 
-export const Overlay = styled.div`
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 3;
-`;
-
 export const Wrapper = styled.div`
   width: 90%;
   max-width: 1000px;

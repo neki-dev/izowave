@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
@@ -21,10 +21,10 @@ export const Values = styled.ul<{
 }>`
   list-style: none;
   display: flex;
-  pointer-events: all;
-  ${(props) => (props.$disabled && `
-    pointer-events: none;
+  ${(props) => (props.$disabled ? css`
     opacity: 0.5;
+  ` : css`
+    pointer-events: all;
   `)}
 `;
 

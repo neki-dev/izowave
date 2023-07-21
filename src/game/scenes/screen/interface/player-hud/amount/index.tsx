@@ -12,7 +12,7 @@ type Props = {
 export const Amount: React.FC<Props> = ({ children, icon }) => (
   <Wrapper>
     <IconContainer>
-      <Icon src={`assets/sprites/interface/hud/${icon}.png`} />
+      <Icon src={`assets/sprites/hud/${icon}.png`} />
     </IconContainer>
     <Value>
       {children}

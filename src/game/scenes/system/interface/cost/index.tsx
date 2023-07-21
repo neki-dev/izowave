@@ -10,7 +10,7 @@ import {
 
 type Props = {
   type: 'resources' | 'experience'
-  view?: 'large' | 'small'
+  size: 'large' | 'small'
   label?: string
   value: number
 };
@@ -19,7 +19,7 @@ export const Cost: React.FC<Props> = ({
   type,
   label,
   value,
-  view = 'large',
+  size,
 }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
@@ -30,12 +30,10 @@ export const Cost: React.FC<Props> = ({
   });
 
   return (
-    <Wrapper className={view}>
+    <Wrapper $size={size}>
       {label && <Label>{label}</Label>}
-      <Icon src={`assets/sprites/interface/${type}.png`} />
-      <Value $attention={haveAmount < value}>
-        {value}
-      </Value>
+      <Icon src={`assets/sprites/hud/${type}.png`} />
+      <Value $attention={haveAmount < value}>{value}</Value>
     </Wrapper>
   );
 };

@@ -9,10 +9,8 @@ const animationTimeout = keyframes`
 
 export const Icon = styled.img`
   display: block;
-  position: relative;
-  z-index: 2;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
 `;
 
 export const Info = styled.div`
@@ -64,7 +62,7 @@ export const Description = styled.div`
 export const Container = styled.div<{
   $active?: boolean
 }>`
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px;
   pointer-events: all;
   position: relative;
@@ -75,7 +73,7 @@ export const Container = styled.div<{
     }
   ` : css`
     &:hover {
-      background-color: rgba(0, 0, 0, 0.75);
+      background: ${InterfaceColor.BLACK_TRANSPARENT};
       cursor: pointer;
       ${Info} {
         display: block;

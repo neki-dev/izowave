@@ -22,7 +22,7 @@ export const BuildingControls: React.FC<Props> = ({ list }) => (
             <Cost
               type="resources"
               value={control.cost}
-              view="small"
+              size="small"
             />
           </Addon>
         )}

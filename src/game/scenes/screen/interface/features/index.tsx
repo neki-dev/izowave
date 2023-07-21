@@ -18,7 +18,7 @@ export const Features: React.FC = () => {
   );
 
   useSceneUpdate(world, () => {
-    setAvailable(world.wave.number > 1);
+    setAvailable(world.wave.number >= 1); // ?
   });
 
   return isAvailable && (

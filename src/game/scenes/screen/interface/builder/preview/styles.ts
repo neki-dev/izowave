@@ -17,7 +17,7 @@ export const Container = styled.div<{
   width: 60px;
   height: 60px;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.75);
+  background: ${InterfaceColor.BLACK_TRANSPARENT};
   display: flex;
   justify-content: center;
   position: relative;

@@ -42,7 +42,7 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
       <Wrapper>
         <Head>
           <Name>{BUILDINGS[variant].Name}</Name>
-          <Cost type="resources" value={BUILDINGS[variant].Cost} />
+          <Cost type="resources" value={BUILDINGS[variant].Cost} size="large" />
         </Head>
         <Body>
           <Description>{BUILDINGS[variant].Description}</Description>

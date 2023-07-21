@@ -44,7 +44,7 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
       <Info>
         <Head>
           <Name>{type}</Name>
-          <Cost type="resources" view="small" value={cost} />
+          <Cost type="resources" size="small" value={cost} />
         </Head>
         <Description>{description}</Description>
       </Info>
@@ -56,9 +56,7 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
           }}
         />
       )}
-      <Icon
-        src={`assets/sprites/interface/feature/${type.toLowerCase()}.png`}
-      />
+      <Icon src={`assets/sprites/feature/${type.toLowerCase()}.png`} />
     </Container>
   );
 };

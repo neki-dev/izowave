@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
@@ -39,25 +39,27 @@ export const Level = styled.div`
   font-size: 12px;
   line-height: 12px;
   margin-top: 6px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   padding: 3px 5px;
   display: inline-block;
 `;
 
-export const Action = styled.div`
+export const Action = styled.div<{
+  $active?: boolean
+}>`
   width: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.35);
-  &.active {
+  ${(props) => (props.$active && css`
     background: rgba(0, 0, 0, 0.5);
     &:hover {
       cursor: pointer;
-      background-color: rgba(0, 0, 0, 0.75);
+      background: ${InterfaceColor.BLACK_TRANSPARENT};
     }
-  }
+  `)}
 `;
 
 export const Button = styled.div`

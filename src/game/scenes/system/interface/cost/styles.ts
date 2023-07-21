@@ -1,14 +1,16 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{
+  $size: 'small' | 'large'
+}>`
   color: #fff;
   display: flex;
   align-items: center;
-  &.small {
+  ${(props) => (props.$size === 'small') && css`
     zoom: 0.75;
-  }
+  `}
 `;
 
 export const Label = styled.div`

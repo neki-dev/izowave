@@ -4,6 +4,6 @@ import { Container, Image } from './styles';
 
 export const Avatar: React.FC = () => (
   <Container>
-    <Image src="assets/sprites/interface/hud/avatar.png" />
+    <Image src="assets/sprites/hud/avatar.png" />
   </Container>
 );

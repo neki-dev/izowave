@@ -60,9 +60,9 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
             </Limit>
           </Action>
         ) : (
-          <Action onClick={onUpgrade} className="active">
+          <Action onClick={onUpgrade} $active>
             <Button>UPGRADE</Button>
-            <Cost type="experience" value={data.experience} />
+            <Cost type="experience" value={data.experience} size='large' />
           </Action>
         )}
       </Item>

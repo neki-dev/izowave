@@ -9,14 +9,14 @@ import { Features } from './features';
 import { GeneralHints } from './general-hints';
 import { Notices } from './notices';
 import { PlayerHUD } from './player-hud';
-import { Column, Grid, Overlay } from './styles';
+import { Column, Grid, Wrapper } from './styles';
 import { Wave } from './wave';
 
 export const ScreenUI: React.FC = () => {
   const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);
 
   return (
-    <Overlay ref={refScale}>
+    <Wrapper ref={refScale}>
       <Grid>
         <Column className="left">
           <PlayerHUD />
@@ -35,7 +35,7 @@ export const ScreenUI: React.FC = () => {
 
       <Notices />
       <GeneralHints />
-    </Overlay>
+    </Wrapper>
   );
 };
 

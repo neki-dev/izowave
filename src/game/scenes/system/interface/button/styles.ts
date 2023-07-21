@@ -8,7 +8,7 @@ export const Container = styled.div<{
 }>`
   background: ${(props) => ((props.$active)
     ? InterfaceColor.BLUE
-    : 'rgba(0, 0, 0, 0.75)'
+    : InterfaceColor.BLACK_TRANSPARENT
   )};
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};

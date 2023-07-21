@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~type/interface';
+import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   font-family: ${InterfaceFont.PIXEL};
@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const IconContainer = styled.div`
-  background: rgba(0, 0, 0, 0.75);
+  background: ${InterfaceColor.BLACK_TRANSPARENT};
   display: flex;
   align-items: center;
   justify-content: center;

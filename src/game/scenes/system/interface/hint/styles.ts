@@ -44,20 +44,24 @@ export const Key = styled.span`
   padding: 0 3px 1px 3px;
   font-size: 11px;
   line-height: 11px;
-  border: 1px solid #fff;
+  color: #000;
+  background: #fff;
 `;
 
 export const Container = styled.div<{
   $width?: number
 }>`
   background: #000;
-  padding: 10px 12px;
+  padding: 8px 12px 10px 12px;
   color: #fff;
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 13px;
   line-height: 13px;
   white-space: pre;
-  width: ${(props) => (props.$width ? `${props.$width}px` : 'auto')};
+  width: ${(props) => (props.$width
+    ? `${props.$width}px`
+    : 'auto'
+  )};
   &::after {
     position: absolute;
     content: '';
