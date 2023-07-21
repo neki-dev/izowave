@@ -1,6 +1,5 @@
 /* eslint-disable no-continue */
-import { eachEntries } from '~lib/system';
-import { equalPositions } from '~lib/utils';
+import { eachEntries, equalPositions } from '~lib/utils';
 import { Vector2D } from '~type/world/level';
 import { INavigator, NavigatorTaskState } from '~type/world/level/navigator';
 

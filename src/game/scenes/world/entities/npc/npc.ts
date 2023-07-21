@@ -6,7 +6,7 @@ import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { NavigatorTask } from '~scene/world/level/navigator/task';
+import { NavigatorTask } from '~scene/world/navigator/task';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';

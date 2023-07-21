@@ -1,6 +1,11 @@
 import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 import { Vector2D, Vector3D } from '~type/world/level';
 
+/**
+ * Round number to specified scale.
+ * @param value - Number
+ * @param scale - Scale
+ */
 export function roundToScale(value: number, scale?: number) {
   return scale ? Math.ceil(value / scale) * scale : Math.ceil(value);
 }
@@ -24,6 +29,14 @@ export function progressionQuadratic(
   return roundToScale(value, roundTo);
 }
 
+/**
+ * Function to force quadratic progressively increase value,
+ * relative to specified level.
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of default value for growth
+ * @param level - Difficulty level
+ * @param roundTo - Round value
+ */
 export function progressionQuadraticForce(
   defaultValue: number,
   scale: number,
@@ -35,6 +48,14 @@ export function progressionQuadraticForce(
   return roundToScale(value, roundTo);
 }
 
+/**
+ * Function to linear progressively increase value,
+ * relative to specified level.
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of default value for growth
+ * @param level - Difficulty level
+ * @param roundTo - Round value
+ */
 export function progressionLinear(
   defaultValue: number,
   scale: number,
@@ -46,6 +67,15 @@ export function progressionLinear(
   return roundToScale(value, roundTo);
 }
 
+/**
+ * Function to linear progressively increase value,
+ * relative to current value and specified level.
+ * @param currentValue - Current value
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of default value for growth
+ * @param level - Difficulty level
+ * @param roundTo - Round value
+ */
 export function progressionLinearFrom(
   currentValue: number,
   defaultValue: number,
@@ -200,6 +230,32 @@ export function debounce(fn: (...params: any[]) => void, delay: number) {
       }
     },
   };
+}
+
+/**
+ * Each object entries.
+ * @param obj - Object
+ * @param callback - Callback
+ */
+export function eachEntries<T extends Record<string, any>>(
+  obj: T,
+  callback: (key: keyof T, value: T[keyof T], index: number) => void,
+) {
+  Object.entries(obj).forEach(([key, value], index) => {
+    callback(key, value, index);
+  });
+}
+
+/**
+ * Map object entries.
+ * @param obj - Object
+ * @param callback - Callback
+ */
+export function mapEntries<T extends Record<string, any>>(
+  obj: T,
+  callback: (key: keyof T, value: T[keyof T], index: number) => any,
+) {
+  return Object.entries(obj).map(([key, value], index) => callback(key, value, index));
 }
 
 /**

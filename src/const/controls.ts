@@ -10,7 +10,7 @@ export const CONTROL_KEY = {
   BUILDING_UPGRADE: 'keyup-E',
   BUILDING_UPGRADE_ANALOG: 'keyup-U',
 
-  WAVE_TIMELEFT_AFTER_SKIP: 'keyup-N',
+  SKIP_WAVE_TIMELEFT: 'keyup-N',
 
   ZOOM_IN: 'keyup-PLUS',
   ZOOM_OUT: 'keyup-MINUS',

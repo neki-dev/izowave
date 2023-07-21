@@ -22,6 +22,7 @@ import {
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
+import { WaveEvents } from '~type/world/wave';
 
 export class Assistant extends NPC implements IAssistant {
   private shot: IShot;
@@ -71,6 +72,16 @@ export class Assistant extends NPC implements IAssistant {
         }
       },
     );
+
+    const handleWaveCompelte = () => {
+      this.live.heal();
+    };
+
+    this.scene.wave.on(WaveEvents.COMPLETE, handleWaveCompelte);
+
+    this.on(Phaser.Scenes.Events.DESTROY, () => {
+      this.scene.wave.off(WaveEvents.COMPLETE, handleWaveCompelte);
+    });
   }
 
   public update() {

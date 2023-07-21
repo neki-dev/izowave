@@ -56,11 +56,12 @@ export class TileMatrix implements ITileMatrix {
 
   public putTile(tile: ITile, position: Vector3D, destroyable = true) {
     const existsTile = this.getTile(position);
-    const { x, y, z } = position;
 
     if (existsTile) {
       existsTile.destroy();
     }
+
+    const { x, y, z } = position;
 
     this.tiles[z][y][x] = tile;
 
@@ -73,11 +74,12 @@ export class TileMatrix implements ITileMatrix {
 
   public removeTile(position: Vector3D) {
     const tile = this.getTile(position);
-    const { x, y, z } = position;
 
     if (!tile) {
       return;
     }
+
+    const { x, y, z } = position;
 
     delete this.tiles[z][y][x];
   }

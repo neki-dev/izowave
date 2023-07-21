@@ -67,4 +67,5 @@ export interface ITile extends Phaser.GameObjects.Image {
   shape?: Hexagon
   mapEffects?: Effect[]
   tileType: TileType
+  clearable?: boolean
 }

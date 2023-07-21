@@ -1,4 +1,4 @@
-import { NavigatorTask } from '~scene/world/level/navigator/task';
+import { NavigatorTask } from '~scene/world/navigator/task';
 
 import { Vector2D } from './level';
 

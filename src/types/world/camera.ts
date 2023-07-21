@@ -1,0 +1,23 @@
+import Phaser from 'phaser';
+
+export interface ICamera {
+  /**
+   * Start following object.
+   */
+  focusOn(object: Phaser.GameObjects.Sprite): void
+
+  /**
+   * Start following level.
+   */
+  focusOnLevel(): void
+
+  /**
+   * Zoom out effect.
+   */
+  zoomOut(): void
+
+  /**
+   * Add zoom control by keyboard.
+   */
+  addZoomControl(): void
+}

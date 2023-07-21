@@ -7,8 +7,9 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
-import { eachEntries } from '~lib/system';
-import { progressionLinear, progressionQuadratic, progressionQuadraticForce } from '~lib/utils';
+import {
+  eachEntries, progressionLinear, progressionQuadratic, progressionQuadraticForce,
+} from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -56,7 +57,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.runTimeleft();
 
-    this.scene.input.keyboard?.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, () => {
+    this.scene.input.keyboard?.on(CONTROL_KEY.SKIP_WAVE_TIMELEFT, () => {
       this.skipTimeleft();
     });
   }

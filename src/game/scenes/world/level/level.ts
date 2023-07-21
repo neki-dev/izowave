@@ -7,6 +7,7 @@ import {
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Hexagon } from '~scene/world/hexagon';
+import { Navigator } from '~scene/world/navigator';
 import { GameEvents, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import {
@@ -15,7 +16,6 @@ import {
 import { INavigator } from '~type/world/level/navigator';
 import { ITile } from '~type/world/level/tile-matrix';
 
-import { Navigator } from './navigator';
 import { TileMatrix } from './tile-matrix';
 
 export class Level extends TileMatrix implements ILevel {
@@ -95,7 +95,9 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   public isFreePoint(position: Vector3D) {
-    return !this.getTile(position) || this.tileIs(position, TileType.TREE);
+    const tile = this.getTile(position);
+
+    return !tile || Boolean(tile.clearable);
   }
 
   public readSpawnPositions(target: SpawnTarget) {
@@ -247,6 +249,7 @@ export class Level extends TileMatrix implements ILevel {
         ) as ITile;
 
         tile.tileType = TileType.TREE;
+        tile.clearable = true;
 
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
         tile.setOrigin(0.5, LEVEL_TREE_TILE_SIZE.origin);

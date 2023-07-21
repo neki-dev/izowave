@@ -2,8 +2,10 @@ import Phaser from 'phaser';
 
 import { IScene } from '~type/scene';
 import { IBuilder } from '~type/world/builder';
+import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
+import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
@@ -22,9 +24,19 @@ export interface IWorld extends IScene {
   readonly player: IPlayer
 
   /**
+   * Player assistant.
+   */
+  readonly assistant: Nullable<IAssistant>
+
+  /**
    * Level.
    */
   readonly level: ILevel
+
+  /**
+   * Camera.
+   */
+  readonly camera: ICamera
 
   /**
    * Builder.

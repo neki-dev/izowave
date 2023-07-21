@@ -73,7 +73,7 @@ export class BuildingMedic extends Building {
   }
 
   private getTarget() {
-    const candidates = [this.scene.player, this.scene.player.assistant];
+    const candidates = [this.scene.player, this.scene.assistant];
 
     return candidates.find((candidate) => (
       candidate

@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { SETTINGS } from '~const/game';
-import { GameSettings, GameSettingsData } from '~type/game';
+import { mapEntries } from '~lib/utils';
 
 import { Param } from './param';
 import { Wrapper } from './styles';
@@ -10,14 +10,10 @@ type Props = {
   disabled?: boolean
 };
 
-export const Settings: React.FC<Props> = ({ disabled }) => {
-  const settingList = useMemo(() => Object.entries(SETTINGS) as [GameSettings, GameSettingsData][], []);
-
-  return (
-    <Wrapper>
-      {settingList.map(([type, data]) => (
-        <Param key={type} type={type} data={data} disabled={disabled} />
-      ))}
-    </Wrapper>
-  );
-};
+export const Settings: React.FC<Props> = ({ disabled }) => (
+  <Wrapper>
+    {mapEntries(SETTINGS, (type, data) => (
+      <Param key={type} type={type} data={data} disabled={disabled} />
+    ))}
+  </Wrapper>
+);
