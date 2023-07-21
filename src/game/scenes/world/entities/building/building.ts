@@ -48,8 +48,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private outlineState: BuildingOutlineState = BuildingOutlineState.NONE;
 
-  private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
-
   private alertIcon: Nullable<Phaser.GameObjects.Image> = null;
 
   private alertTween: Nullable<Phaser.Tweens.Tween> = null;
@@ -473,36 +471,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (state === BuildingOutlineState.NONE) {
       this.removeShader('OutlineShader');
-
-      if (this.outlineTween) {
-        this.outlineTween.destroy();
-        this.outlineTween = null;
-      }
     } else {
-      const color: number = {
-        [BuildingOutlineState.FOCUSED]: 0xffffff,
-        [BuildingOutlineState.SELECTED]: 0xd0ff4f,
+      const params = {
+        [BuildingOutlineState.FOCUSED]: { size: 2.0, color: 0xffffff },
+        [BuildingOutlineState.SELECTED]: { size: 4.0, color: 0xd0ff4f },
       }[state];
 
       if (this.outlineState === BuildingOutlineState.NONE) {
-        this.addShader('OutlineShader', {
-          size: 3.0,
-          color,
-        });
-
-        this.outlineTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-          targets: this,
-          shaderSize: { from: 0.0, to: 3.0 },
-          duration: 350,
-          ease: 'Linear',
-          yoyo: true,
-          repeat: -1,
-          onUpdate: (_, __, ___, size: number) => {
-            this.updateShader('OutlineShader', { size });
-          },
-        });
+        this.addShader('OutlineShader', params);
       } else {
-        this.updateShader('OutlineShader', { color });
+        this.updateShader('OutlineShader', params);
       }
     }
 
