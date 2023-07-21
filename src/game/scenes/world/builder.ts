@@ -373,7 +373,6 @@ export class Builder extends EventEmitter implements IBuilder {
       this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
     } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
-      this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
       this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
     }
   }

@@ -1,11 +1,9 @@
-import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
-import React, { useEffect, useState } from 'react';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { formatTime } from '~lib/utils';
-import { Hint } from '~scene/system/interface/hint';
-import { IGame, GameScene } from '~type/game';
-import { TutorialStep } from '~type/tutorial';
+import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 
 import {
@@ -13,7 +11,6 @@ import {
 } from './styles';
 
 export const Wave: React.FC = () => {
-  const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [currentNumber, setCurrentNumber] = useState(1);
@@ -21,15 +18,6 @@ export const Wave: React.FC = () => {
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isPeaceMode, setPeaceMode] = useState(false);
-  const [hint, setHint] = useState(false);
-
-  useEffect(
-    () => game.tutorial.bind(TutorialStep.WAVE_TIMELEFT, {
-      beg: () => setHint(true),
-      end: () => setHint(false),
-    }),
-    [],
-  );
 
   useSceneUpdate(world, () => {
     setPeaceMode(world.wave.isPeaceMode);
@@ -62,12 +50,6 @@ export const Wave: React.FC = () => {
           <Value $attention={isAlarm}>{value}</Value>
         </State>
       </Container>
-
-      {hint && (
-        <Hint side="top">
-          Press [N] to skip timeleft
-        </Hint>
-      )}
     </Wrapper>
   );
 };

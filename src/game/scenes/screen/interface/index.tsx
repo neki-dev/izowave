@@ -25,6 +25,7 @@ export const ScreenUI: React.FC = () => {
 
         <Column className="center">
           <Wave />
+          <GeneralHints />
           <Features />
         </Column>
 
@@ -34,7 +35,6 @@ export const ScreenUI: React.FC = () => {
       </Grid>
 
       <Notices />
-      <GeneralHints />
     </Wrapper>
   );
 };

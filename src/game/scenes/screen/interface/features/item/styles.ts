@@ -7,6 +7,11 @@ const animationTimeout = keyframes`
   100% { right: 100% }
 `;
 
+const animationOpacity = keyframes`
+  0% { opacity: 0; margin-bottom: 0 }
+  100% { opacity: 1; margin-bottom: 12px }
+`;
+
 export const Icon = styled.img`
   display: block;
   width: 26px;
@@ -19,17 +24,18 @@ export const Info = styled.div`
   transform: translateX(-50%);
   bottom: 100%;
   left: 50%;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
   width: 180px;
+  animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
     content: '';
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 100%);
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 10px solid ${InterfaceColor.BLUE_DARK}cc;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid ${InterfaceColor.BLUE_DARK}cc;
   }
 `;
 
@@ -63,7 +69,7 @@ export const Container = styled.div<{
   $active?: boolean
 }>`
   background: rgba(0, 0, 0, 0.5);
-  padding: 10px;
+  padding: 14px;
   pointer-events: all;
   position: relative;
   border-bottom: 4px solid #000;

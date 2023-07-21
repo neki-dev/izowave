@@ -1,13 +1,13 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
+import { Amount } from '~scene/system/interface/amount';
 import { Hint } from '~scene/system/interface/hint';
 import { IGame, GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 import { Wrapper } from './styles';
-import { Amount } from '../amount';
 
 export const Resources: React.FC = () => {
   const game = useGame<IGame>();

@@ -39,7 +39,7 @@ export const GeneralHints: React.FC = () => {
   return (
     hint && (
       <Wrapper>
-        <Hint side="bottom" align="center">
+        <Hint side="top" align="center">
           {hint}
         </Hint>
       </Wrapper>
