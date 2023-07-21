@@ -56,10 +56,11 @@ export const Alert = styled.div<{
 }>`
   color: ${(props) => (props.$attention
     ? InterfaceColor.WARN
-    : '#fff'
+    : '#ccc'
   )};
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 14px;
   line-height: 14px;
+  font-weight: bold;
   margin-top: 8px;
 `;
