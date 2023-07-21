@@ -35,7 +35,7 @@ export const Item = styled.div<{
     switch (props.$type) {
       case NoticeType.WARN: return InterfaceColor.WARN_DARK;
       case NoticeType.ERROR: return InterfaceColor.ERROR_DARK;
-      default: return InterfaceColor.INFO_DARK;
+      default: return InterfaceColor.BLUE;
     }
   }}
 `;

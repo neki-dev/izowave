@@ -73,6 +73,11 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   getActionsRadius(): number
 
   /**
+   * Get actions pause.
+   */
+  getActionsPause(): number
+
+  /**
    * Get resources need to upgrade level.
    */
   getUpgradeCost(): number

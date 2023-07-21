@@ -52,6 +52,16 @@ export class BuildingGenerator extends Building {
       value: this.resources,
     }];
 
+    const pause = this.getActionsPause();
+
+    if (pause) {
+      info.push({
+        label: 'PAUSE',
+        icon: BuildingParamIcon.PAUSE,
+        value: `${(pause / 1000).toFixed(1)} s`,
+      });
+    }
+
     return super.getInfo().concat(info);
   }
 

@@ -189,13 +189,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getInfo() {
-    const params: BuildingParam[] = [{
+    const info: BuildingParam[] = [{
       label: 'HEALTH',
       icon: BuildingParamIcon.HEALTH,
       value: this.live.health,
     }];
 
-    return params;
+    return info;
   }
 
   public getControls() {
@@ -228,7 +228,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       : 0;
   }
 
-  private getActionsPause() {
+  public getActionsPause() {
     return this.actions?.pause
       ? progressionQuadratic(
         this.actions.pause,

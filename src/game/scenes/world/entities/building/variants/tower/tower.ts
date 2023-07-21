@@ -58,7 +58,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       info.push({
         label: 'FREEZE',
         icon: BuildingParamIcon.DAMAGE,
-        value: (params.freeze / 1000).toFixed(1),
+        value: `${(params.freeze / 1000).toFixed(1)} s`,
       });
     }
 
