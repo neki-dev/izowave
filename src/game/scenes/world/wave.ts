@@ -68,10 +68,6 @@ export class Wave extends EventEmitter implements IWave {
     return Math.max(0, this.nextWaveTimestamp - now);
   }
 
-  public getSeason() {
-    return Math.ceil(this.number / DIFFICULTY.WAVE_SEASON_LENGTH);
-  }
-
   public update() {
     const now = this.scene.getTime();
 
@@ -199,7 +195,7 @@ export class Wave extends EventEmitter implements IWave {
   private getEnemyVariant() {
     if (
       this.number % DIFFICULTY.WAVE_SEASON_LENGTH === 0
-      && this.spawnedEnemiesCount < this.getSeason()
+      && this.spawnedEnemiesCount < Math.ceil(this.number / 5)
     ) {
       return EnemyVariant.BOSS;
     }

@@ -185,6 +185,7 @@ export enum BuildingParamIcon {
   DAMAGE = 4,
   RESOURCES = 5,
   SPEED = 6,
+  PAUSE = 7,
 }
 
 export enum BuildingOutlineState {

@@ -30,13 +30,13 @@ export const DIFFICULTY = {
    * Features
    */
 
-  FEATURE_FROST_COST: 200, // Cost of use
+  FEATURE_FROST_COST: 250, // Cost of use
   FEATURE_FROST_DURATION: 6000, // Feature duration
   FEATURE_RAGE_COST: 300, // Cost of use
   FEATURE_RAGE_DURATION: 7000, // Feature duration
   FEATURE_SHIELD_COST: 200, // Cost of use
   FEATURE_SHIELD_DURATION: 10000, // Feature duration
-  FEATURE_FIRE_COST: 400, // Cost of use
+  FEATURE_FIRE_COST: 300, // Cost of use
   FEATURE_FIRE_DURATION: 1000, // Feature duration
 
   /**
@@ -109,7 +109,6 @@ export const DIFFICULTY = {
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.5, // Frozen duration growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.25, // Shot speed growth by level (Quadratic)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
-  BUIDLING_TOWER_AMMO_AMOUNT_GROWTH: 1.0, // Ammo in clip growth by level (Linear)
 
   /**
    * Building: Tower: Fire
@@ -119,7 +118,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FIRE_HEALTH: 600, // Health
   BUILDING_TOWER_FIRE_ATTACK_RADIUS: 170, // Attack radius
   BUILDING_TOWER_FIRE_ATTACK_PAUSE: 1400, // Pause between attacks
-  BUILDING_TOWER_FIRE_ATTACK_DAMAGE: 35, // Attack damage
+  BUILDING_TOWER_FIRE_ATTACK_DAMAGE: 40, // Attack damage
   BUILDING_TOWER_FIRE_ATTACK_SPEED: 550, // Attack speed
 
   /**
@@ -151,10 +150,10 @@ export const DIFFICULTY = {
 
   BUILDING_GENERATOR_COST: 30, // Building cost
   BUILDING_GENERATOR_HEALTH: 400, // Health
-  BUILDING_GENERATOR_LIMIT: 3, // Maximum count generators on world (N * wave_season)
+  BUILDING_GENERATOR_LIMIT: 1.0, // Factor of generator limit
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Resources amount
-  BUILDING_GENERATOR_RESOURCES_GROWTH: 1.0, // Resources amount growth by level (Linear)
+  BUILDING_GENERATOR_RESOURCES_GROWTH: 0.5, // Resources amount growth by level (Linear From)
 
   /**
    * Building: Ammunition
@@ -162,11 +161,11 @@ export const DIFFICULTY = {
 
   BUILDING_AMMUNITION_COST: 30, // Building cost
   BUILDING_AMMUNITION_HEALTH: 300, // Health
-  BUILDING_AMMUNITION_LIMIT: 4, // Maximum count ammunition on world (N * wave_season)
+  BUILDING_AMMUNITION_LIMIT: 1.0, // Factor of ammunition limit
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_AMMUNITION_RELOAD_RADIUS: 150, // Reload ammo radius
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
-  BUILDING_AMMUNITION_AMMO_GROWTH: 1.0, // Ammo amount growth by level (Linear)
+  BUILDING_AMMUNITION_AMMO_GROWTH: 0.5, // Ammo amount growth by level (Linear From)
 
   /**
    * Building: Medic
@@ -174,7 +173,7 @@ export const DIFFICULTY = {
 
   BUILDING_MEDIC_COST: 70, // Building cost
   BUILDING_MEDIC_HEALTH: 200, // Health
-  BUILDING_MEDIC_LIMIT: 1, // Maximum count medic on world (N * wave_season)
+  BUILDING_MEDIC_LIMIT: 0.5, // Factor of medic limit
   BUILDING_MEDIC_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause

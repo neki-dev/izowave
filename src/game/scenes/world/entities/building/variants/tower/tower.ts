@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionQuadratic, getClosest, progressionLinear } from '~lib/utils';
+import { progressionQuadratic, getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldFeature } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -13,6 +13,7 @@ import {
   IBuilding,
   IBuildingAmmunition,
   IBuildingTower,
+  BuildingAudio,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IShot, ShotParams } from '~type/world/entities/shot';
@@ -73,7 +74,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       label: 'AMMO',
       icon: BuildingParamIcon.AMMO,
       attention: (this.ammo === 0),
-      value: `${this.ammo}/${this.getMaxAmmo()}`,
+      value: `${this.ammo}/${DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT}`,
     });
 
     return super.getInfo().concat(info);
@@ -175,13 +176,13 @@ export class BuildingTower extends Building implements IBuildingTower {
     const ammunition = this.getAmmunition();
 
     if (ammunition) {
-      this.ammo += ammunition.use(this.getMaxAmmo());
+      this.ammo += ammunition.use(DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT);
 
       if (this.needReload) {
         this.removeAlertIcon();
         this.needReload = false;
 
-        // this.scene.game.sound.play(BuildingAudio.RELOAD);
+        this.scene.game.sound.play(BuildingAudio.RELOAD);
 
         this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
       }
@@ -191,14 +192,6 @@ export class BuildingTower extends Building implements IBuildingTower {
 
       this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
     }
-  }
-
-  private getMaxAmmo() {
-    return progressionLinear(
-      DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT,
-      DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT_GROWTH,
-      this.upgradeLevel,
-    );
   }
 
   private getTarget() {

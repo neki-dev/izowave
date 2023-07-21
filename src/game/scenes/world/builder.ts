@@ -110,15 +110,6 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(
-        NoticeType.ERROR,
-        `YOU HAVE MAXIMUM ${BuildingInstance.Name}`,
-      );
-
-      return;
-    }
-
     this.scene.sound.play(BuildingAudio.SELECT);
 
     this.variant = variant;
@@ -216,7 +207,13 @@ export class Builder extends EventEmitter implements IBuilder {
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
     const limit = BUILDINGS[variant].Limit;
 
-    return limit ? limit * this.scene.wave.getSeason() : null;
+    if (!limit) {
+      return null;
+    }
+
+    const stage = Math.floor(this.scene.wave.number / 2);
+
+    return Math.floor((stage + 1) * limit);
   }
 
   private getAssumedPosition() {
@@ -347,6 +344,12 @@ export class Builder extends EventEmitter implements IBuilder {
 
     const BuildingInstance = BUILDINGS[this.variant];
 
+    if (this.isBuildingLimitReached(this.variant)) {
+      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+
+      return;
+    }
+
     if (this.scene.player.resources < BuildingInstance.Cost) {
       this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
 
@@ -359,10 +362,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.player.takeResources(BuildingInstance.Cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
-
-    if (this.isBuildingLimitReached(this.variant)) {
-      this.clearBuildingVariant();
-    }
 
     this.scene.sound.play(BuildingAudio.BUILD);
 

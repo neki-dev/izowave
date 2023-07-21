@@ -46,14 +46,15 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
         </Head>
         <Body>
           <Description>{BUILDINGS[variant].Description}</Description>
-          {!isAllowByWave && (
-            <Alert className="attention">
+          {isAllowByWave ? (
+            !!limit && (
+              <Alert $attention={existCount >= limit}>
+                Current limit: {existCount}/{limit}
+              </Alert>
+            )
+          ) : (
+            <Alert $attention>
               Available from <b>{BUILDINGS[variant].AllowByWave}</b> wave
-            </Alert>
-          )}
-          {limit && (
-            <Alert $attention={existCount >= limit}>
-              Limit: {existCount}/{limit}
             </Alert>
           )}
           <BuildingParams list={BUILDINGS[variant].Params} />

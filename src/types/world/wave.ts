@@ -40,11 +40,6 @@ export interface IWave extends EventEmitter {
    * Skip timeleft to next wave.
    */
   skipTimeleft(): void
-
-  /**
-   * Get current season.
-   */
-  getSeason(): number
 }
 
 export enum WaveEvents {
