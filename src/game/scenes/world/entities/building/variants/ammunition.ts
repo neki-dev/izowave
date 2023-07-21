@@ -4,7 +4,7 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
-  BuildingVariant, BuildingVariantData, BuildingParamIcon, IBuildingAmmunition,
+  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -15,8 +15,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   static Description = 'Reloads towers ammo within building radius';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingParamIcon.HEALTH },
-    { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingParamIcon.AMMO },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -54,7 +54,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   public getInfo() {
     const info: BuildingParam[] = [{
       label: 'AMMO',
-      icon: BuildingParamIcon.AMMO,
+      icon: BuildingIcon.AMMO,
       value: this.ammo,
     }];
 

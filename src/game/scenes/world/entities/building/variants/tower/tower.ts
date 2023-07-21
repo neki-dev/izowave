@@ -7,7 +7,7 @@ import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingData,
-  BuildingParamIcon,
+  BuildingIcon,
   BuildingParam,
   BuildingVariant,
   IBuilding,
@@ -48,7 +48,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (params.damage) {
       info.push({
         label: 'DAMAGE',
-        icon: BuildingParamIcon.DAMAGE,
+        icon: BuildingIcon.DAMAGE,
         value: params.damage,
       });
     }
@@ -56,7 +56,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (params.freeze) {
       info.push({
         label: 'FREEZE',
-        icon: BuildingParamIcon.DAMAGE,
+        icon: BuildingIcon.DAMAGE,
         value: `${(params.freeze / 1000).toFixed(1)} s`,
       });
     }
@@ -64,14 +64,14 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (params.speed) {
       info.push({
         label: 'SPEED',
-        icon: BuildingParamIcon.SPEED,
+        icon: BuildingIcon.SPEED,
         value: params.speed,
       });
     }
 
     info.push({
       label: 'AMMO',
-      icon: BuildingParamIcon.AMMO,
+      icon: BuildingIcon.AMMO,
       attention: (this.ammo === 0),
       value: `${this.ammo}/${DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT}`,
     });

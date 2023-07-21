@@ -6,7 +6,7 @@ import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingParamIcon,
+  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -15,8 +15,8 @@ export class BuildingGenerator extends Building {
   static Description = 'Generates resources for builds and upgrades';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingParamIcon.HEALTH },
-    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingParamIcon.RESOURCES },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
@@ -46,7 +46,7 @@ export class BuildingGenerator extends Building {
   public getInfo() {
     const info: BuildingParam[] = [{
       label: 'RESOURCES',
-      icon: BuildingParamIcon.RESOURCES,
+      icon: BuildingIcon.RESOURCES,
       value: this.resources,
     }];
 
@@ -55,7 +55,7 @@ export class BuildingGenerator extends Building {
     if (pause) {
       info.push({
         label: 'PAUSE',
-        icon: BuildingParamIcon.PAUSE,
+        icon: BuildingIcon.PAUSE,
         value: `${(pause / 1000).toFixed(1)} s`,
       });
     }

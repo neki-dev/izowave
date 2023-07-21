@@ -25,10 +25,9 @@ export const IconContainer = styled.div`
   justify-content: center;
 `;
 
-export const Icon = styled.div`
+export const Icon = styled.img`
   width: 15px;
   height: 15px;
-  background: url(assets/sprites/building/icons/params.png);
 `;
 
 export const Info = styled.div<{

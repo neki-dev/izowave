@@ -21,7 +21,7 @@ export const BuildingParams: React.FC<Props> = ({ list }) => (
     {list.map((param) => (
       <Param key={param.label}>
         <IconContainer>
-          <Icon style={{ backgroundPositionX: `${-15 * param.icon}px` }} />
+          <Icon src={`assets/sprites/${param.icon}.png`} />
         </IconContainer>
         <Info $attention={param.attention}>
           <Label>{param.label}</Label>

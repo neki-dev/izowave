@@ -3,7 +3,7 @@ import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
-  BuildingParamIcon,
+  BuildingIcon,
   BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
 } from '~type/world/entities/building';
 
@@ -15,10 +15,10 @@ export class BuildingTowerFire extends BuildingTower {
   static Description = 'Basic fire attack of enemies';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingParamIcon.HEALTH },
-    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS, icon: BuildingParamIcon.RADIUS },
-    { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE, icon: BuildingParamIcon.DAMAGE },
-    { label: 'SPEED', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED, icon: BuildingParamIcon.SPEED },
+    { label: 'HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS, icon: BuildingIcon.RADIUS },
+    { label: 'DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE, icon: BuildingIcon.DAMAGE },
+    { label: 'SPEED', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED, icon: BuildingIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FIRE;

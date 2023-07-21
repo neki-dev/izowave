@@ -19,7 +19,7 @@ import { EntityType } from '~type/world/entities';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
-  BuildingOutlineState, IBuildingFactory, BuildingParamIcon, IBuilding, BuildingIcon,
+  BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon,
 } from '~type/world/entities/building';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
@@ -150,7 +150,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public getInfo() {
     const info: BuildingParam[] = [{
       label: 'HEALTH',
-      icon: BuildingParamIcon.HEALTH,
+      icon: BuildingIcon.HEALTH,
       value: this.live.health,
     }];
 
