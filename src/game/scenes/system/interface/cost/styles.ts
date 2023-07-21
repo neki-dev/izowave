@@ -13,13 +13,6 @@ export const Wrapper = styled.div<{
   `}
 `;
 
-export const Label = styled.div`
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 13px;
-  line-height: 13px;
-  margin: -1px 10px 0 0;
-`;
-
 export const Icon = styled.img`
   width: 16px;
   margin-right: 5px;

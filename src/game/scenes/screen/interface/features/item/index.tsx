@@ -44,7 +44,7 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
       <Info>
         <Head>
           <Name>{type}</Name>
-          <Cost type="resources" size="small" value={cost} />
+          <Cost type="resources" value={cost} size="small" />
         </Head>
         <Description>{description}</Description>
       </Info>

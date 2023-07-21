@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { InterfaceColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
-  margin-top: 100px;
+  margin-top: 80px;
   position: absolute;
   left: 50%;
 `;
 
 export const Action = styled.div`
-  padding: 3px 7px 4px 7px;
+  padding: 5px 9px 6px 9px;
   background: ${InterfaceColor.BLACK_TRANSPARENT};
   transform: translateX(-50%);
   pointer-events: all;

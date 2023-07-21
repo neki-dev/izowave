@@ -49,7 +49,7 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
         <Info>
           <Label>{data.label}</Label>
           <Description>{data.description}</Description>
-          <Level>LEVEL {data.currentLevel}</Level>
+          <Level>LEVEL <b>{data.currentLevel}</b></Level>
         </Info>
         {limit ? (
           <Action>

@@ -5,7 +5,7 @@ import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   position: absolute;
-  width: 280px;
+  width: 260px;
   transform: translate(-50%, -100%);
   margin-top: -32px;
   &::after {
@@ -43,17 +43,17 @@ export const Name = styled.div`
 export const UpgradeLevel = styled.div`
   display: grid;
   grid-template-columns: repeat(${BUILDING_MAX_UPGRADE_LEVEL}, 1fr);
-  grid-gap: 3px;
+  grid-gap: 5px;
 `;
 
 export const Progress = styled.div<{
   $active?: boolean
 }>`
-  height: 10px;
+  height: 12px;
   background: #000;
   box-shadow: 0 5px 0 #222 inset;
   ${(props) => (props.$active && css`
     background: ${InterfaceColor.INFO_DARK};
-    box-shadow: 0 5px 0 ${InterfaceColor.INFO} inset;
+    box-shadow: 0 6px 0 ${InterfaceColor.INFO} inset;
   `)}
 `;

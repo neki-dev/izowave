@@ -4,23 +4,15 @@ import React, { useState } from 'react';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 
-import {
-  Wrapper, Label, Icon, Value,
-} from './styles';
+import { Wrapper, Icon, Value } from './styles';
 
 type Props = {
   type: 'resources' | 'experience'
   size: 'large' | 'small'
-  label?: string
   value: number
 };
 
-export const Cost: React.FC<Props> = ({
-  type,
-  label,
-  value,
-  size,
-}) => {
+export const Cost: React.FC<Props> = ({ type, value, size }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [haveAmount, setHaveAmount] = useState(0);
@@ -31,7 +23,6 @@ export const Cost: React.FC<Props> = ({
 
   return (
     <Wrapper $size={size}>
-      {label && <Label>{label}</Label>}
       <Icon src={`assets/sprites/hud/${type}.png`} />
       <Value $attention={haveAmount < value}>{value}</Value>
     </Wrapper>

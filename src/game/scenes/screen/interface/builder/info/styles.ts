@@ -8,7 +8,7 @@ const animationOpacity = keyframes`
 `;
 
 export const Wrapper = styled.div`
-  width: 280px;
+  width: 260px;
   animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
@@ -61,5 +61,5 @@ export const Alert = styled.div<{
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 14px;
   line-height: 14px;
-  margin-top: 5px;
+  margin-top: 8px;
 `;
