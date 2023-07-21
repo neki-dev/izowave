@@ -56,7 +56,9 @@ export class Builder extends EventEmitter implements IBuilder {
 
   public update() {
     if (this.isCanBuild()) {
-      if (!this.isBuild) {
+      if (this.isBuild) {
+        this.updateBuildAreaPosition();
+      } else {
         this.openBuilder();
       }
     } else if (this.isBuild) {
@@ -261,7 +263,6 @@ export class Builder extends EventEmitter implements IBuilder {
     return (
       this.variant !== null
       && !this.scene.player.live.isDead()
-      && this.scene.player.isStopped()
     );
   }
 
@@ -360,23 +361,22 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildArea() {
-    const position = this.scene.player.getPositionOnGround();
-
-    this.buildArea = this.scene.add.ellipse(position.x, position.y);
+    this.buildArea = this.scene.add.ellipse();
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
 
-    this.updateBuildArea();
+    this.updateBuildAreaPosition();
+    this.updateBuildAreaSize();
   }
 
   public setBuildAreaRadius(radius: number) {
     this.radius = radius;
 
     if (this.buildArea) {
-      this.updateBuildArea();
+      this.updateBuildAreaSize();
     }
   }
 
-  private updateBuildArea() {
+  private updateBuildAreaSize() {
     if (!this.buildArea) {
       return;
     }
@@ -390,6 +390,16 @@ export class Builder extends EventEmitter implements IBuilder {
     const depth = Level.GetDepth(this.buildArea.y, 0, this.buildArea.displayHeight);
 
     this.buildArea.setDepth(depth);
+  }
+
+  private updateBuildAreaPosition() {
+    if (!this.buildArea) {
+      return;
+    }
+
+    const position = this.scene.player.getPositionOnGround();
+
+    this.buildArea.setPosition(position.x, position.y);
   }
 
   private destroyBuildArea() {
