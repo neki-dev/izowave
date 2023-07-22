@@ -23,6 +23,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private initiator: Nullable<IShotInitiator> = null;
 
+  private positionCallback: Nullable<() => Vector2D> = null;
+
   private audio: ShotBallAudio;
 
   private effect: Nullable<Particles> = null;
@@ -55,8 +57,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     );
   }
 
-  public setInitiator(initiator: IShotInitiator) {
+  public setInitiator(initiator: IShotInitiator, positionCallback: Nullable<() => Vector2D> = null) {
     this.initiator = initiator;
+    this.positionCallback = positionCallback;
 
     initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
@@ -86,7 +89,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       return;
     }
 
-    this.setPosition(this.initiator.x, this.initiator.y);
+    const position = this.positionCallback?.() ?? this.initiator;
+
+    this.setPosition(position.x, position.y);
     this.setActive(true);
     this.setVisible(true);
 

@@ -12,6 +12,7 @@ import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
 } from '~type/world/entities/shot';
+import { Vector2D } from '~type/world/level';
 
 export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   readonly scene: IWorld;
@@ -19,6 +20,8 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   public params: ShotParams;
 
   private initiator: Nullable<IShotInitiator> = null;
+
+  private positionCallback: Nullable<() => Vector2D> = null;
 
   private timer: Nullable<Phaser.Time.TimerEvent> = null;
 
@@ -44,8 +47,9 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     });
   }
 
-  public setInitiator(initiator: IShotInitiator) {
+  public setInitiator(initiator: IShotInitiator, positionCallback: Nullable<() => Vector2D> = null) {
     this.initiator = initiator;
+    this.positionCallback = positionCallback;
 
     initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
@@ -95,7 +99,9 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       return;
     }
 
-    this.setTo(this.initiator.x, this.initiator.y, this.target.body.center.x, this.target.body.center.y);
+    const position = this.positionCallback?.() ?? this.initiator;
+
+    this.setTo(position.x, position.y, this.target.body.center.x, this.target.body.center.y);
   }
 
   private hit() {

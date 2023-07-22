@@ -52,7 +52,7 @@ export class Assistant extends NPC implements IAssistant {
       speed: DIFFICULTY.ASSISTANT_ATTACK_SPEED,
       damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
     });
-    this.shot.setInitiator(this);
+    this.shot.setInitiator(this, () => this.body.center);
     this.shotDefaultParams = this.shot.params;
 
     this.gamut = ASSISTANT_TILE_SIZE.gamut;

@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { IEnemy } from '~type/world/entities/npc/enemy';
+import { Vector2D } from '~type/world/level';
 
 export interface IShot extends IParticlesParent {
   /**
@@ -13,8 +14,9 @@ export interface IShot extends IParticlesParent {
   /**
    * Set shoots initiator.
    * @param initiator - Initiator
+   * @param positionCallback - Function for getting start position
    */
-  setInitiator(parent: IShotInitiator): void
+  setInitiator(parent: IShotInitiator, positionCallback?: Nullable<() => Vector2D>): void
 
   /**
    * Make shoot to target.
