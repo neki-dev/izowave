@@ -11,8 +11,10 @@ import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
+import { EntityType } from '~type/world/entities';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
+import { INPC } from '~type/world/entities/npc';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
 export class Builder extends EventEmitter implements IBuilder {
@@ -58,6 +60,7 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.isCanBuild()) {
       if (this.isBuild) {
         this.updateBuildAreaPosition();
+        this.updateBuildingPreview();
       } else {
         this.openBuilder();
       }
@@ -202,10 +205,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  private onMouseMove() {
-    this.updateBuildingPreview();
-  }
-
   private openBuilder() {
     if (this.isBuild) {
       return;
@@ -215,7 +214,6 @@ export class Builder extends EventEmitter implements IBuilder {
     this.createBuildingPreview();
 
     this.scene.input.on(Phaser.Input.Events.POINTER_UP, this.onMouseClick, this);
-    this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
 
     this.isBuild = true;
 
@@ -228,7 +226,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.input.off(Phaser.Input.Events.POINTER_UP, this.onMouseClick);
-    this.scene.input.off(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove);
 
     this.destroyBuildingPreview();
     this.destroyBuildArea();
@@ -292,10 +289,15 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    const playerPositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
-    const isFreeFromPlayer = playerPositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+    let spritePositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
 
-    if (!isFreeFromPlayer) {
+    this.scene.getEntities<INPC>(EntityType.NPC).forEach((npc) => {
+      spritePositionsAtMatrix = spritePositionsAtMatrix.concat(npc.getAllPositionsAtMatrix());
+    });
+
+    const isFreeFromSprite = spritePositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+
+    if (!isFreeFromSprite) {
       return false;
     }
 
