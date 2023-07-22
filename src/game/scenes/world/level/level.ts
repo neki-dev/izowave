@@ -131,7 +131,12 @@ export class Level extends TileMatrix implements ILevel {
     });
 
     const tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
-    const tileset = tilemap.addTilesetImage(LevelTexture.TILESET, undefined, LEVEL_TILE_SIZE.width, LEVEL_TILE_SIZE.height);
+    const tileset = tilemap.addTilesetImage(
+      LevelTexture.TILESET,
+      undefined,
+      LEVEL_TILE_SIZE.width,
+      LEVEL_TILE_SIZE.height,
+    );
 
     if (!tileset) {
       throw Error('Unable to create map tileset');
@@ -151,7 +156,12 @@ export class Level extends TileMatrix implements ILevel {
     });
 
     const tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
-    const tileset = tilemap.addTilesetImage(LevelTexture.TILESET, undefined, LEVEL_TILE_SIZE.width, LEVEL_TILE_SIZE.height);
+    const tileset = tilemap.addTilesetImage(
+      LevelTexture.TILESET,
+      undefined,
+      LEVEL_TILE_SIZE.width,
+      LEVEL_TILE_SIZE.height,
+    );
 
     if (!tileset) {
       throw Error('Unable to create map tileset');
@@ -177,12 +187,9 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
-    const screenHalfSize = Math.max(
-      this.scene.sys.canvas.clientWidth,
-      this.scene.sys.canvas.clientHeight,
-    ) * 0.5;
-    const offset = Math.ceil(screenHalfSize / (LEVEL_TILE_SIZE.width * LEVEL_TILE_SIZE.persperctive));
-    const size = offset * 2 + LEVEL_MAP_SIZE;
+    const sizeInPixel = Math.max(this.scene.sys.canvas.clientWidth, this.scene.sys.canvas.clientHeight) * 0.5;
+    const offset = Math.ceil(sizeInPixel / (LEVEL_TILE_SIZE.width * LEVEL_TILE_SIZE.persperctive));
+    const sizeInTiles = offset * 2 + LEVEL_MAP_SIZE;
     const position = Level.ToWorldPosition({ x: -offset, y: -offset, z: 0 });
 
     const layer = tilemap.createBlankLayer(
@@ -190,18 +197,28 @@ export class Level extends TileMatrix implements ILevel {
       tileset,
       position.x - LEVEL_TILE_SIZE.width * 0.5,
       position.y - LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
-      size,
-      size,
+      sizeInTiles,
+      sizeInTiles,
     );
 
     if (!layer) {
       return;
     }
 
-    for (let y = 0; y < size; y++) {
-      for (let x = 0; x < size; x++) {
-        if (x < offset || x >= size - offset || y < offset || y >= size - offset) {
-          layer.putTileAt(0, x, y, false);
+    const biome = Level.GetBiome(BiomeType.WATER);
+
+    if (!biome) {
+      return;
+    }
+
+    const index = Array.isArray(biome.tileIndex)
+      ? biome.tileIndex[0]
+      : biome.tileIndex;
+
+    for (let y = 0; y < sizeInTiles; y++) {
+      for (let x = 0; x < sizeInTiles; x++) {
+        if (x < offset || x >= sizeInTiles - offset || y < offset || y >= sizeInTiles - offset) {
+          layer.putTileAt(index, x, y, false);
         }
       }
     }
@@ -245,7 +262,12 @@ export class Level extends TileMatrix implements ILevel {
 
   private addMountTile(index: number, tilePosition: Vector3D) {
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
-    const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, index) as ITile;
+    const tile = this.scene.add.image(
+      positionAtWorld.x,
+      positionAtWorld.y,
+      LevelTexture.TILESET,
+      index,
+    ) as ITile;
 
     tile.tileType = TileType.MAP;
 
