@@ -6,7 +6,7 @@ import {
   LEVEL_BIOME_PARAMETERS, LEVEL_Z_WEIGHT, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
-import { Hexagon } from '~scene/world/hexagon';
+import { interpolate } from '~lib/utils';
 import { Navigator } from '~scene/world/navigator';
 import { GameEvents, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -37,8 +37,6 @@ export class Level extends TileMatrix implements ILevel {
   public get groundLayer() { return this._groundLayer; }
 
   private set groundLayer(v) { this._groundLayer = v; }
-
-  private collisions: Hexagon[] = [];
 
   private treesTiles: Phaser.GameObjects.Group;
 
@@ -114,10 +112,11 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
-    const line = new Phaser.Geom.Line(positionA.x, positionA.y, positionB.x, positionB.y);
-    const point = Phaser.Geom.Intersects.GetLineToPolygon(line, this.collisions);
+    const positionAtMatrixA = Level.ToMatrixPosition(positionA);
+    const positionAtMatrixB = Level.ToMatrixPosition(positionB);
+    const line = interpolate(positionAtMatrixA, positionAtMatrixB);
 
-    return Boolean(point);
+    return line.some((point) => this.getTile({ ...point, z: 1 })?.tileType === TileType.MAP);
   }
 
   private addTilemap() {
@@ -249,16 +248,6 @@ export class Level extends TileMatrix implements ILevel {
     tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.putTile(tile, tilePosition, false);
-
-    if (tilePosition.z === 1) {
-      const shape = new Hexagon(
-        positionAtWorld.x - LEVEL_TILE_SIZE.width * 0.5 - 3,
-        positionAtWorld.y - LEVEL_TILE_SIZE.height * 0.25,
-        LEVEL_TILE_SIZE.height * 0.5,
-      );
-
-      this.collisions.push(shape);
-    }
   }
 
   private addTreesTiles() {

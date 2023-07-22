@@ -205,6 +205,45 @@ export function rawAmount(value: string) {
 }
 
 /**
+ * Get all points on matrix between two given points.
+ * @param beg - Start position
+ * @param end - End posotion
+ */
+export function interpolate(beg: Vector2D, end: Vector2D) {
+  const line: Vector2D[] = [];
+
+  const current = { ...beg };
+  const dx = Math.abs(end.x - beg.x);
+  const dy = Math.abs(end.y - beg.y);
+  const sx = (beg.x < end.x) ? 1 : -1;
+  const sy = (beg.y < end.y) ? 1 : -1;
+
+  let err = dx - dy;
+  let shift;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    line.push({ ...current });
+
+    if (equalPositions(current, end)) {
+      break;
+    }
+
+    shift = 2 * err;
+    if (shift > -dy) {
+      err -= dy;
+      current.x += sx;
+    }
+    if (shift < dx) {
+      err += dx;
+      current.y += sy;
+    }
+  }
+
+  return line;
+}
+
+/**
  * Call function with frequency limit.
  * @param fn - Function
  * @param delay - Call delay
