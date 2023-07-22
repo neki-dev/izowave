@@ -61,8 +61,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.speed = speed;
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.setPushable(false);
     this.setOrigin(0.5, 1.0);
+
     this.addDebugPosition();
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));

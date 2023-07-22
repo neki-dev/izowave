@@ -281,11 +281,19 @@ export class World extends Scene implements IWorld {
 
   private addEntityGroups() {
     this.entityGroups = {
-      [EntityType.BUILDING]: this.add.group({ runChildUpdate: true }),
-      [EntityType.NPC]: this.add.group({ runChildUpdate: true }),
-      [EntityType.ENEMY]: this.add.group(),
-      [EntityType.SHOT]: this.add.group({ runChildUpdate: true }),
       [EntityType.CRYSTAL]: this.add.group(),
+      [EntityType.ENEMY]: this.physics.add.group({
+        immovable: true,
+      }),
+      [EntityType.NPC]: this.physics.add.group({
+        runChildUpdate: true,
+      }),
+      [EntityType.BUILDING]: this.add.group({
+        runChildUpdate: true,
+      }),
+      [EntityType.SHOT]: this.add.group({
+        runChildUpdate: true,
+      }),
     };
   }
 

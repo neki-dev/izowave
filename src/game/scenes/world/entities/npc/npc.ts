@@ -180,12 +180,10 @@ export class NPC extends Sprite implements INPC {
 
     if (collide) {
       this.setVelocity(0, 0);
-      this.body.setImmovable(true);
 
       return;
     }
 
-    this.body.setImmovable(false);
     this.setVelocity(velocity.x, velocity.y);
   }
 

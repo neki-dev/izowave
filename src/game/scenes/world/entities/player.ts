@@ -71,14 +71,15 @@ export class Player extends Sprite implements IPlayer {
     });
     scene.add.existing(this);
 
+    this.gamut = PLAYER_TILE_SIZE.gamut;
+
     this.registerKeyboard();
     this.registerAnimations();
 
-    this.body.setSize(14, 26);
-    this.gamut = PLAYER_TILE_SIZE.gamut;
-
     this.addHealthIndicator(0xd0ff4f);
     this.addDustEffect();
+
+    this.body.setSize(14, 26);
 
     this.setTilesGroundCollision(true);
     this.setTilesCollision([
@@ -266,9 +267,8 @@ export class Player extends Sprite implements IPlayer {
     this.scene.sound.play(PlayerAudio.DEAD);
 
     this.setVelocity(0, 0);
-    this.body.setImmovable(true);
-
     this.stopMovement();
+
     this.scene.tweens.add({
       targets: [this, this.container],
       alpha: 0.0,
@@ -297,7 +297,6 @@ export class Player extends Sprite implements IPlayer {
   private updateVelocity() {
     if (!this.isMoving) {
       this.setVelocity(0, 0);
-      this.body.setImmovable(true);
 
       return;
     }
@@ -306,7 +305,6 @@ export class Player extends Sprite implements IPlayer {
 
     if (collide) {
       this.setVelocity(0, 0);
-      this.body.setImmovable(true);
 
       return;
     }
@@ -315,7 +313,6 @@ export class Player extends Sprite implements IPlayer {
     const speed = this.speed / friction;
     const velocity = this.scene.physics.velocityFromAngle(this.direction, speed);
 
-    this.body.setImmovable(false);
     this.setVelocity(velocity.x, velocity.y);
   }
 
