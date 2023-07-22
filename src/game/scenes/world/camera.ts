@@ -26,8 +26,8 @@ export class Camera implements ICamera {
     camera.resetFX();
     camera.startFollow(object);
 
-    camera.setZoom(CAMERA_ZOOM);
-    camera.zoomTo(CAMERA_ZOOM, 100);
+    camera.setZoom(CAMERA_ZOOM * 2);
+    camera.zoomTo(CAMERA_ZOOM, 200);
   }
 
   public focusOnLevel() {

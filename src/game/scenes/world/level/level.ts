@@ -120,31 +120,6 @@ export class Level extends TileMatrix implements ILevel {
     return Boolean(point);
   }
 
-  private addTileset() {
-    const data = new Phaser.Tilemaps.MapData({
-      width: LEVEL_MAP_SIZE,
-      height: LEVEL_MAP_SIZE,
-      tileWidth: LEVEL_TILE_SIZE.width,
-      tileHeight: LEVEL_TILE_SIZE.height * 0.5,
-      orientation: Phaser.Tilemaps.Orientation.ISOMETRIC,
-      format: Phaser.Tilemaps.Formats.ARRAY_2D,
-    });
-
-    const tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
-    const tileset = tilemap.addTilesetImage(
-      LevelTexture.TILESET,
-      undefined,
-      LEVEL_TILE_SIZE.width,
-      LEVEL_TILE_SIZE.height,
-    );
-
-    if (!tileset) {
-      throw Error('Unable to create map tileset');
-    }
-
-    return tileset;
-  }
-
   private addTilemap() {
     const data = new Phaser.Tilemaps.MapData({
       width: LEVEL_MAP_SIZE,
