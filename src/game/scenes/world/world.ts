@@ -119,7 +119,6 @@ export class World extends Scene implements IWorld {
     new Interface(this, WorldUI);
 
     this.addEntityGroups();
-    this.camera.addZoomControl();
 
     this.wave = new Wave(this);
 

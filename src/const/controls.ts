@@ -11,9 +11,6 @@ export const CONTROL_KEY = {
   BUILDING_UPGRADE_ANALOG: 'keyup-U',
 
   SKIP_WAVE_TIMELEFT: 'keyup-N',
-
-  ZOOM_IN: 'keyup-PLUS',
-  ZOOM_OUT: 'keyup-MINUS',
 };
 
 export const CONTROLS: ControlItem[] = [
@@ -23,5 +20,4 @@ export const CONTROLS: ControlItem[] = [
   { name: 'E', description: 'Upgrade active building' },
   { name: 'BACKSPACE', description: 'Destroy active building' },
   { name: 'N', description: 'Skip wave timeleft' },
-  { name: '-,+', description: 'Change zoom' },
 ];

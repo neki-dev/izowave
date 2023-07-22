@@ -20,9 +20,4 @@ export interface ICamera {
    * Zoom out effect.
    */
   zoomOut(): void
-
-  /**
-   * Add zoom control by keyboard.
-   */
-  addZoomControl(): void
 }
