@@ -30,8 +30,6 @@ export const LEVEL_TREE_TILE_SIZE = {
 
 export const LEVEL_BUILDING_PATH_COST = 16.0;
 
-export const LEVEL_SPAWN_POSITIONS_STEP = 2;
-
 export const LEVEL_BIOMES: Array<{
   params?: WorldBiomeParams
   data: LevelBiome

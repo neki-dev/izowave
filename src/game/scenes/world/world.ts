@@ -6,7 +6,7 @@ import { WORLD_FEATURES, WORLD_FIND_PATH_RATE } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
-  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
+  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
 } from '~const/world/entities/enemy';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
@@ -112,7 +112,10 @@ export class World extends Scene implements IWorld {
     this.level = new Level(this);
     this.camera = new Camera(this);
 
-    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
+    this.enemySpawnPositions = this.level.readSpawnPositions(
+      SpawnTarget.ENEMY,
+      ENEMY_SPAWN_POSITIONS_GRID,
+    );
   }
 
   public start() {

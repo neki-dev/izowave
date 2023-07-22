@@ -2,7 +2,7 @@ import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
+  LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
   LEVEL_BIOME_PARAMETERS, LEVEL_Z_WEIGHT, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
@@ -91,13 +91,12 @@ export class Level extends TileMatrix implements ILevel {
     this.effectsOnGround = [];
   }
 
-  public readSpawnPositions(target: SpawnTarget) {
+  public readSpawnPositions(target: SpawnTarget, grid: number = 2) {
     const positions: Vector2D[] = [];
-    const step = LEVEL_SPAWN_POSITIONS_STEP;
-    const rand = Math.floor(step / 2);
+    const rand = Math.floor(grid / 2);
 
-    for (let sX = step; sX < this.size - step; sX += step) {
-      for (let sY = step; sY < this.size - step; sY += step) {
+    for (let sX = grid; sX < this.size - grid; sX += grid) {
+      for (let sY = grid; sY < this.size - grid; sY += grid) {
         const x = sX + Phaser.Math.Between(-rand, rand);
         const y = sY + Phaser.Math.Between(-rand, rand);
         const targets = this.map.getAt({ x, y })?.spawn;

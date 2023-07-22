@@ -36,8 +36,9 @@ export interface ILevel extends ITileMatrix {
   /**
    * Get spawn positions at matrix.
    * @param target - Spawn target
+   * @param grid - Grid size
    */
-  readSpawnPositions(target: SpawnTarget): Vector2D[]
+  readSpawnPositions(target: SpawnTarget, grid?: number): Vector2D[]
 
   /**
    * Check is presence of tile between world positions.
