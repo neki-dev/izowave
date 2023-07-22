@@ -17,6 +17,10 @@ export class Camera implements ICamera {
     this.scene.cameras.main.zoomTo(CAMERA_MIN_ZOOM, 10 * 1000);
   }
 
+  public shake() {
+    this.scene.cameras.main.shake(100, 0.0005);
+  }
+
   public focusOn(object: Phaser.GameObjects.Sprite) {
     const camera = this.scene.cameras.main;
 

@@ -12,6 +12,11 @@ export interface ICamera {
   focusOnLevel(): void
 
   /**
+   * Shake effect.
+   */
+  shake(): void
+
+  /**
    * Zoom out effect.
    */
   zoomOut(): void
