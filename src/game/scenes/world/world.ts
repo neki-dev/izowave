@@ -128,8 +128,6 @@ export class World extends Scene implements IWorld {
     this.addCrystals();
 
     this.builder = new Builder(this);
-
-    this.level.hideTiles();
   }
 
   public update(time: number, delta: number) {
@@ -142,7 +140,6 @@ export class World extends Scene implements IWorld {
     this.player.update();
     this.builder.update();
     this.wave.update();
-    this.level.updateVisibleTiles();
     this.updateNPCPath();
   }
 
@@ -308,9 +305,9 @@ export class World extends Scene implements IWorld {
   private addAssistant() {
     const create = () => {
       const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
-        const tileGround = this.level.getTile({ ...spawn, z: 0 });
+        const biome = this.level.map.getAt(spawn);
 
-        return Boolean(tileGround);
+        return biome?.solid;
       });
 
       this.assistant = new Assistant(this, {

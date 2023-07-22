@@ -76,21 +76,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       return;
     }
 
-    const isVisibleTile = this.scene.level.isVisibleTile({
-      ...Level.ToMatrixPosition(this),
-      z: 0,
-    });
+    const depth = Level.GetDepth(this.y, 1);
 
-    this.setVisible(isVisibleTile);
-    if (this.effect) {
-      this.effect.emitter.setVisible(isVisibleTile);
-    }
-
-    if (isVisibleTile) {
-      const depth = Level.GetDepth(this.y, 1);
-
-      this.setDepth(depth);
-    }
+    this.setDepth(depth);
   }
 
   public shoot(target: IEnemy) {
@@ -98,9 +86,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       return;
     }
 
-    this.setVisible(this.initiator.visible);
     this.setPosition(this.initiator.x, this.initiator.y);
     this.setActive(true);
+    this.setVisible(true);
 
     if (
       this.glowColor
@@ -116,7 +104,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
           quantity: 2,
           blendMode: 'ADD',
           tint: this.glowColor,
-          visible: this.visible,
         },
       });
     }

@@ -72,7 +72,7 @@ export class Game extends Phaser.Game implements IGame {
       width: window.innerWidth,
       height: window.innerHeight,
       parent: CONTAINER_ID,
-      backgroundColor: '#222',
+      transparent: true,
       scale: {
         mode: Phaser.Scale.RESIZE,
       },

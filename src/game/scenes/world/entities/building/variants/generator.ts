@@ -85,10 +85,7 @@ export class BuildingGenerator extends Building {
     this.scene.player.giveResources(1);
     this.resources--;
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 

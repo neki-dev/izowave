@@ -11,8 +11,7 @@ import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { ISprite, SpriteData } from '~type/world/entities/sprite';
-import { TileType, Vector2D } from '~type/world/level';
-import { ITile } from '~type/world/level/tile-matrix';
+import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly scene: IWorld;
@@ -27,7 +26,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   public speed: number = 0;
 
-  public currentGroundTile: Nullable<ITile> = null;
+  public currentBiome: Nullable<LevelBiome> = null;
 
   private _positionAtMatrix: Vector2D;
 
@@ -78,21 +77,17 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     super.update();
 
     const positionOnGround = this.getPositionOnGround();
+    const depth = Level.GetDepth(positionOnGround.y, 1);
+    const positionOfTop = this.getTopCenter();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
-    this.currentGroundTile = this.scene.level.getTile({ ...this.positionAtMatrix, z: 0 });
+    this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
 
-    this.container.setVisible(this.visible);
-    if (this.visible) {
-      const depth = Level.GetDepth(positionOnGround.y, 1);
-      const positionOfTop = this.getTopCenter();
+    this.setDepth(depth);
+    this.container.setDepth(depth + 19);
+    this.container.setPosition(positionOfTop.x, positionOfTop.y);
 
-      this.setDepth(depth);
-      this.container.setDepth(depth + 19);
-      this.container.setPosition(positionOfTop.x, positionOfTop.y);
-
-      this.updateHealthIndicator();
-    }
+    this.updateHealthIndicator();
 
     this.drawDebugGroundPosition();
   }
@@ -132,7 +127,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
       return false;
     }
 
-    const friction = this.collisionGround ? this.currentGroundTile?.biome?.friction ?? 1 : 1;
+    const friction = this.collisionGround ? this.currentBiome?.friction ?? 1 : 1;
     const speedPerFrame = (this.speed / friction) * (WORLD_COLLIDE_SPEED_FACTOR * this.scene.deltaTime);
     const offset = this.scene.physics.velocityFromAngle(direction, speedPerFrame);
 
@@ -143,9 +138,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
         x: currentPositionAtWorld.x + offset.x,
         y: currentPositionAtWorld.y + offset.y,
       });
-      const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
+      const biome = this.scene.level.map.getAt(positionAtMatrix);
 
-      if (!tileGround || !tileGround.biome?.solid) {
+      if (!biome?.solid) {
         return true;
       }
     }
@@ -286,8 +281,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   public onDamage() {
     if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+      !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
       || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
     ) {
       return;
@@ -310,18 +304,14 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public onDead() {
-    if (this.visible) {
-      this.anims.stop();
-      this.scene.tweens.add({
-        targets: [this, this.container],
-        alpha: 0.0,
-        duration: 250,
-        onComplete: () => {
-          this.destroy();
-        },
-      });
-    } else {
-      this.destroy();
-    }
+    this.anims.stop();
+    this.scene.tweens.add({
+      targets: [this, this.container],
+      alpha: 0.0,
+      duration: 250,
+      onComplete: () => {
+        this.destroy();
+      },
+    });
   }
 }

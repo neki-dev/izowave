@@ -311,7 +311,7 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    const friction = this.currentGroundTile?.biome?.friction ?? 1;
+    const friction = this.currentBiome?.friction ?? 1;
     const speed = this.speed / friction;
     const velocity = this.scene.physics.velocityFromAngle(this.direction, speed);
 

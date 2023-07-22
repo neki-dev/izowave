@@ -1,5 +1,6 @@
 import { World } from 'gen-biome';
 
+import { Effect } from '~scene/world/effects';
 import { IWorld } from '~type/world';
 import { INavigator } from '~type/world/level/navigator';
 import { ITileMatrix } from '~type/world/level/tile-matrix';
@@ -18,25 +19,19 @@ export interface ILevel extends ITileMatrix {
   readonly map: World<LevelBiome>
 
   /**
+   * Effects on ground.
+   */
+  readonly effectsOnGround: Effect[]
+
+  /**
+   * Tilemap ground layer.
+   */
+  readonly groundLayer: Phaser.Tilemaps.TilemapLayer
+
+  /**
    * Let loose map tiles effects.
    */
   looseEffects(): void
-
-  /**
-   * Update area of visible tiles.
-   */
-  updateVisibleTiles(): void
-
-  /**
-   * Hide all tiles.
-   */
-  hideTiles(): void
-
-  /**
-   * Check is position doesn`t have tile.
-   * @param position - Tile position
-   */
-  isFreePoint(position: Vector3D): boolean
 
   /**
    * Get spawn positions at matrix.

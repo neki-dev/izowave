@@ -182,7 +182,7 @@ export class Enemy extends NPC implements IEnemy {
 
   private addBloodEffect() {
     if (
-      !this.currentGroundTile?.biome?.solid
+      !this.currentBiome?.solid
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
       || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
     ) {
@@ -197,14 +197,10 @@ export class Enemy extends NPC implements IEnemy {
       depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height),
     });
 
-    this.currentGroundTile.mapEffects?.push(effect);
+    this.scene.level.effectsOnGround.push(effect);
   }
 
   private addSpawnEffect() {
-    if (!this.visible) {
-      return;
-    }
-
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Particles(this, {
         key: 'spawn',

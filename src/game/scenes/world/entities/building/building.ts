@@ -112,7 +112,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
-    this.updateAlertIcon();
 
     // Catch focus by camera moving
     if (this.toFocus) {
@@ -270,10 +269,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.game.sound.play(audio);
     }
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 
@@ -327,7 +323,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.alertIcon = this.scene.add.image(this.x, this.y, BuildingIcon.ALERT);
     this.alertIcon.setDepth(this.depth + 1);
-    this.alertIcon.setVisible(this.visible);
 
     this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
       targets: this.alertIcon,
@@ -349,12 +344,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.alertTween?.destroy();
     this.alertTween = null;
-  }
-
-  private updateAlertIcon() {
-    if (this.alertIcon) {
-      this.alertIcon.setVisible(this.visible);
-    }
   }
 
   private addUpgradeIcon() {
@@ -492,17 +481,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public break() {
-    if (this.visible) {
-      this.scene.sound.play(BuildingAudio.DEAD);
+    this.scene.sound.play(BuildingAudio.DEAD);
 
-      if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-        new Effect(this.scene, {
-          texture: EffectTexture.SMOKE,
-          position: this.getPositionOnGround(),
-          depth: this.depth + 1,
-          rate: 18,
-        });
-      }
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      new Effect(this.scene, {
+        texture: EffectTexture.SMOKE,
+        position: this.getPositionOnGround(),
+        depth: this.depth + 1,
+        rate: 18,
+      });
     }
 
     this.destroy();

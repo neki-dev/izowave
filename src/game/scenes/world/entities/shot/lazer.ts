@@ -69,8 +69,9 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       callback: () => this.processing(),
     });
 
-    this.setActive(true);
     this.updateLine();
+    this.setActive(true);
+    this.setVisible(true);
 
     if (this.scene.game.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
       this.scene.game.sound.play(ShotLazerAudio.LAZER);
@@ -94,13 +95,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       return;
     }
 
-    const isVisible = this.initiator.visible && this.target.visible;
-
-    if (isVisible) {
-      this.setTo(this.initiator.x, this.initiator.y, this.target.body.center.x, this.target.body.center.y);
-    }
-
-    this.setVisible(isVisible);
+    this.setTo(this.initiator.x, this.initiator.y, this.target.body.center.x, this.target.body.center.y);
   }
 
   private hit() {
@@ -112,10 +107,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.target.live.damage(momentDamage);
 
-    if (
-      !this.target.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 

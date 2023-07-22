@@ -42,7 +42,6 @@ export class NPC extends Sprite implements INPC {
 
     this.pathFindTriggerDistance = pathFindTriggerDistance;
 
-    this.setVisible(this.atVisibleTile());
     this.addDebugPath();
 
     this.anims.create({
@@ -63,8 +62,6 @@ export class NPC extends Sprite implements INPC {
 
   public update() {
     super.update();
-
-    this.setVisible(this.atVisibleTile());
 
     if (!this.isCanPursuit()) {
       this.setVelocity(0, 0);
@@ -87,7 +84,7 @@ export class NPC extends Sprite implements INPC {
   public freeze(duration: number, effects = false) {
     this.freezeTimestamp = this.scene.getTime() + duration;
 
-    if (!effects || !this.visible) {
+    if (!effects) {
       return;
     }
 
@@ -232,13 +229,6 @@ export class NPC extends Sprite implements INPC {
       && !this.live.isDead()
       && !this.scene.player.live.isDead()
     );
-  }
-
-  private atVisibleTile() {
-    return this.scene.level.isVisibleTile({
-      ...this.positionAtMatrix,
-      z: 0,
-    });
   }
 
   private addDebugPath() {

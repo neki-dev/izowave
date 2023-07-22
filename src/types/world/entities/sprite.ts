@@ -3,8 +3,7 @@ import Phaser from 'phaser';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { ILive } from '~type/world/entities/live';
-import { TileType, Vector2D } from '~type/world/level';
-import { ITile } from '~type/world/level/tile-matrix';
+import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
   readonly scene: IWorld
@@ -36,9 +35,9 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   gamut: number
 
   /**
-   * Tile below sprite.
+   * Current biome.
    */
-  currentGroundTile: Nullable<ITile>
+  currentBiome: Nullable<LevelBiome>
 
   /**
    * Check is body is stopped.

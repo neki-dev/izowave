@@ -36,7 +36,6 @@ export interface IShotInitiator extends Phaser.GameObjects.GameObject {
   readonly scene: IWorld
   x: number
   y: number
-  visible: boolean
 }
 
 export enum ShotLazerAudio {

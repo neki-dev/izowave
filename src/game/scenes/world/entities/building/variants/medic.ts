@@ -96,10 +96,7 @@ export class BuildingMedic extends Building {
 
     target.live.addHealth(health);
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 

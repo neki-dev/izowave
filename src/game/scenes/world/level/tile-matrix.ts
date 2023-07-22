@@ -22,6 +22,12 @@ export class TileMatrix implements ITileMatrix {
     }
   }
 
+  public isFreePoint(position: Vector3D) {
+    const tile = this.getTile(position);
+
+    return !tile || Boolean(tile.clearable);
+  }
+
   public getTile(position: Vector3D): Nullable<ITile> {
     const { x, y, z } = position;
 
@@ -34,10 +40,6 @@ export class TileMatrix implements ITileMatrix {
     }
 
     return this.getTile(position);
-  }
-
-  public isVisibleTile(position: Vector3D) {
-    return this.getTile(position)?.visible ?? false;
   }
 
   public tileIs(position: Vector3D, type: TileType | TileType[]) {

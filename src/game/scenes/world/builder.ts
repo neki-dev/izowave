@@ -114,21 +114,16 @@ export class Builder extends EventEmitter implements IBuilder {
 
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
-        const tileGround = this.scene.level.getTile({ x, y, z: 0 });
+        const biome = this.scene.level.map.getAt({ x, y });
 
-        if (
-          tileGround?.biome
-          && tileGround.biome.solid
-          && tileGround.biome.type !== BiomeType.RUBBLE
-        ) {
+        if (biome && biome.solid && biome.type !== BiomeType.RUBBLE) {
           // Replace biome
-          const frame = Array.isArray(newBiome.tileIndex)
+          const index = Array.isArray(newBiome.tileIndex)
             ? Phaser.Math.Between(...newBiome.tileIndex)
             : newBiome.tileIndex;
 
-          tileGround.setFrame(frame);
-          tileGround.clearTint();
-          tileGround.biome = newBiome;
+          this.scene.level.groundLayer.putTileAt(index, x, y);
+          this.scene.level.map.replaceAt({ x, y }, newBiome);
 
           // Remove trees
           const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.TREE);
@@ -138,12 +133,13 @@ export class Builder extends EventEmitter implements IBuilder {
           }
 
           // Remove effects
-          if (tileGround.mapEffects) {
-            tileGround.mapEffects.forEach((effect) => {
+          this.scene.level.effectsOnGround.forEach((effect) => {
+            const positionAtMatrix = Level.ToMatrixPosition(effect);
+
+            if (equalPositions(positionAtMatrix, { x, y })) {
               effect.destroy();
-            });
-            tileGround.mapEffects = [];
-          }
+            }
+          });
         }
       }
     }
@@ -284,10 +280,9 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
-    const isSolid = tileGround?.biome?.solid;
+    const biome = this.scene.level.map.getAt(positionAtMatrix);
 
-    if (!isSolid) {
+    if (!biome?.solid) {
       return false;
     }
 
@@ -308,11 +303,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private build() {
-    if (
-      !this.variant
-      || !this.buildingPreview?.visible
-      || !this.isAllowBuild()
-    ) {
+    if (!this.variant || !this.isAllowBuild()) {
       return;
     }
 
@@ -430,19 +421,13 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     const positionAtMatrix = this.getAssumedPosition();
-    const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
+    const tilePosition = { ...positionAtMatrix, z: 1 };
+    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z);
 
-    this.buildingPreview.setVisible(isVisibleTile);
-
-    if (isVisibleTile) {
-      const tilePosition = { ...positionAtMatrix, z: 1 };
-      const positionAtWorld = Level.ToWorldPosition(tilePosition);
-      const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z);
-
-      this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
-      this.buildingPreview.setDepth(depth);
-      this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
-    }
+    this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
+    this.buildingPreview.setDepth(depth);
+    this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
   }
 
   private destroyBuildingPreview() {
