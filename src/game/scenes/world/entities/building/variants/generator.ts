@@ -3,6 +3,7 @@ import { Building } from '~entity/building';
 import { progressionLinearFrom } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
+import { NoticeType } from '~type/screen';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
@@ -74,6 +75,7 @@ export class BuildingGenerator extends Building {
 
     if (this.resources === 0) {
       this.scene.game.sound.play(BuildingAudio.OVER);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
 
       this.destroy();
     } else {

@@ -1,5 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinearFrom } from '~lib/utils';
+import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
@@ -66,6 +67,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       const left = this.ammo;
 
       this.scene.game.sound.play(BuildingAudio.OVER);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
 
       this.destroy();
 

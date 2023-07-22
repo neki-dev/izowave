@@ -423,7 +423,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const positionAtMatrix = this.getAssumedPosition();
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
-    const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z);
+    const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z) + 1;
 
     this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
     this.buildingPreview.setDepth(depth);
