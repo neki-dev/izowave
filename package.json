@@ -1,11 +1,11 @@
 {
   "name": "izowave",
-  "description": "Isometric game. Build and defence in open world",
-  "version": "1.4.0-beta",
+  "description": "Isometric game. Build and defense in open world",
+  "version": "1.4.1",
   "keywords": [
     "game",
     "isometric",
-    "defence",
+    "defense",
     "build",
     "open-world",
     "phaser"

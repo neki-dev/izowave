@@ -175,7 +175,9 @@ export class BuildingTower extends Building implements IBuildingTower {
         this.removeAlertIcon();
         this.needReload = false;
 
-        this.scene.game.sound.play(BuildingAudio.RELOAD);
+        if (this.scene.game.sound.getAll(BuildingAudio.RELOAD).length === 0) {
+          this.scene.game.sound.play(BuildingAudio.RELOAD);
+        }
 
         this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
       }

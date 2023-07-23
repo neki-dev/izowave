@@ -13,7 +13,7 @@ export class EnemySpike extends Enemy {
       multipliers: {
         health: 0.7,
         damage: 0.3,
-        speed: 0.4,
+        speed: 0.8,
       },
     });
   }

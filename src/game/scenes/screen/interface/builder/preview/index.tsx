@@ -25,6 +25,7 @@ export const BuilderPreview: React.FC<Props> = ({
   const [isDisabled, setDisabled] = useState(false);
   const [isActive, setActive] = useState(false);
   const [isUsed, setUsed] = useState(false);
+  const [isUsable, setUsable] = useState(false);
 
   const isNewest = !isUsed && !isDisallow && !isDisabled;
 
@@ -48,13 +49,32 @@ export const BuilderPreview: React.FC<Props> = ({
 
   useSceneUpdate(world, () => {
     const currentIsActive = world.builder.variant === variant;
+    const currentIsDisallow = !world.builder.isBuildingAllowByWave(variant);
+    const currentIsDisabled = !world.builder.isBuildingAllowByTutorial(variant);
 
     setActive(currentIsActive);
     if (currentIsActive) {
       setUsed(true);
     }
-    setDisallow(!world.builder.isBuildingAllowByWave(variant));
-    setDisabled(!world.builder.isBuildingAllowByTutorial(variant));
+    setDisallow(currentIsDisallow);
+    setDisabled(currentIsDisabled);
+
+    if (!currentIsDisallow && !currentIsDisabled) {
+      let limitReached = false;
+      const enoughResources = world.player.resources >= BUILDINGS[variant].Cost;
+
+      if (enoughResources) {
+        const currentLimit = world.builder.getBuildingLimit(variant);
+
+        if (currentLimit) {
+          const existCount = world.getBuildingsByVariant(variant).length;
+
+          limitReached = existCount >= currentLimit;
+        }
+      }
+
+      setUsable(enoughResources && !limitReached);
+    }
   });
 
   return (
@@ -65,6 +85,7 @@ export const BuilderPreview: React.FC<Props> = ({
       $disabled={isDisabled}
       $active={isActive}
       $newest={isNewest}
+      $usable={isUsable}
     >
       <Number>{number}</Number>
       <Preview>

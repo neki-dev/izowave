@@ -13,7 +13,7 @@ export class EnemyTermer extends Enemy {
       multipliers: {
         health: 1.4,
         damage: 1.0,
-        speed: 0.45,
+        speed: 0.9,
       },
     });
   }

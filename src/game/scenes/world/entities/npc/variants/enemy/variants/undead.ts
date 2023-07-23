@@ -13,7 +13,7 @@ export class EnemyUndead extends Enemy {
       multipliers: {
         health: 1.6,
         damage: 0.2,
-        speed: 0.35,
+        speed: 0.7,
       },
     });
   }

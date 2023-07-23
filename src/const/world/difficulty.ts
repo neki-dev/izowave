@@ -10,7 +10,7 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -22,7 +22,7 @@ export const DIFFICULTY = {
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
-  ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.1, // Attack distance growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.12, // Attack distance growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_PAUSE: 1000, // Attack pause
   ASSISTANT_ATTACK_PAUSE_GROWTH: -0.15, // Attack pause growth by upgrade level (Quadratic)
 
@@ -33,9 +33,9 @@ export const DIFFICULTY = {
   FEATURE_FROST_COST: 50, // Cost of use
   FEATURE_FROST_DURATION: 6000, // Feature duration
   FEATURE_RAGE_COST: 70, // Cost of use
-  FEATURE_RAGE_DURATION: 8000, // Feature duration
+  FEATURE_RAGE_DURATION: 10000, // Feature duration
   FEATURE_SHIELD_COST: 40, // Cost of use
-  FEATURE_SHIELD_DURATION: 8000, // Feature duration
+  FEATURE_SHIELD_DURATION: 10000, // Feature duration
   FEATURE_FIRE_COST: 80, // Cost of use
   FEATURE_FIRE_DURATION: 1000, // Feature duration
   FEATURE_COST_GROWTH: 0.1, // Growth cost by wave number (Linear)
@@ -68,8 +68,9 @@ export const DIFFICULTY = {
 
   ENEMY_HEALTH: 85, // Health
   ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic)
-  ENEMY_SPEED: 100, // Movement speed
+  ENEMY_SPEED: 50, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
+  ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Limit for level of speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
@@ -100,7 +101,7 @@ export const DIFFICULTY = {
   BUILDING_WALL_COST: 10, // Building cost
   BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_WALL_HEALTH: 1500, // Health
-  BUILDING_WALL_HEALTH_GROWTH: 1.2, // Health growth by level (Linear)
+  BUILDING_WALL_HEALTH_GROWTH: 1.3, // Health growth by level (Linear)
 
   /**
    * Building: Towers
@@ -154,7 +155,7 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_LIMIT: 1.0, // Factor of generator limit
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Resources amount
-  BUILDING_GENERATOR_RESOURCES_GROWTH: 0.5, // Resources amount growth by level (Linear From)
+  BUILDING_GENERATOR_RESOURCES_GROWTH: 0.6, // Resources amount growth by level (Linear From)
 
   /**
    * Building: Ammunition

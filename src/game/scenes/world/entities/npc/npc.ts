@@ -174,7 +174,6 @@ export class NPC extends Sprite implements INPC {
 
   public moveTo(position: Vector2D) {
     const rotation = Phaser.Math.Angle.BetweenPoints(this.getPositionOnGround(), position);
-    const velocity = this.scene.physics.velocityFromRotation(rotation, this.speed);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
 
@@ -183,6 +182,9 @@ export class NPC extends Sprite implements INPC {
 
       return;
     }
+
+    const speed = this.isFreezed() ? (this.speed * 0.1) : this.speed;
+    const velocity = this.scene.physics.velocityFromRotation(rotation, speed);
 
     this.setVelocity(velocity.x, velocity.y);
   }
@@ -223,8 +225,7 @@ export class NPC extends Sprite implements INPC {
 
   private isCanPursuit() {
     return (
-      !this.isFreezed()
-      && !this.live.isDead()
+      !this.live.isDead()
       && !this.scene.player.live.isDead()
     );
   }

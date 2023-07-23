@@ -13,7 +13,7 @@ export class EnemyBat extends Enemy {
       multipliers: {
         health: 0.35,
         damage: 0.1,
-        speed: 0.5,
+        speed: 1.0,
       },
     });
   }

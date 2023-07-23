@@ -74,8 +74,10 @@ export class BuildingGenerator extends Building {
     this.generateResource();
 
     if (this.resources === 0) {
-      this.scene.game.sound.play(BuildingAudio.OVER);
       this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
+      if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
+        this.scene.game.sound.play(BuildingAudio.OVER);
+      }
 
       this.destroy();
     } else {
