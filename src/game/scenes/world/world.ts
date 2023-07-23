@@ -12,7 +12,9 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, sortByDistance } from '~lib/utils';
+import {
+  aroundPosition, progressionLinear, sortByDistance,
+} from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
@@ -230,12 +232,20 @@ export class World extends Scene implements IWorld {
     };
   }
 
+  public getFeatureCost(type: WorldFeature) {
+    return progressionLinear(
+      WORLD_FEATURES[type].cost,
+      DIFFICULTY.FEATURE_COST_GROWTH,
+      this.wave.number,
+    );
+  }
+
   public useFeature(type: WorldFeature) {
-    if (this.activeFeatures[type]) {
+    if (this.activeFeatures[type] || !this.wave.isGoing) {
       return;
     }
 
-    const { cost, duration } = WORLD_FEATURES[type];
+    const cost = this.getFeatureCost(type);
 
     if (this.player.resources < cost) {
       this.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
@@ -250,7 +260,7 @@ export class World extends Scene implements IWorld {
     this.events.emit(WorldEvents.USE_FEATURE, type);
 
     this.time.addEvent({
-      delay: duration,
+      delay: WORLD_FEATURES[type].duration,
       callback: () => {
         delete this.activeFeatures[type];
       },

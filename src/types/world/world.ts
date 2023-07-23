@@ -127,9 +127,14 @@ export interface IWorld extends IScene {
   /**
    * Use feature.
    * @param type - Feature
-   * @param callback - Callback for feature stop
    */
   useFeature(type: WorldFeature): void
+
+  /**
+   * Get feature current cost.
+   * @param type - Feature
+   */
+  getFeatureCost(type: WorldFeature): number
 }
 
 export enum WorldEvents {

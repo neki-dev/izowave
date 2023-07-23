@@ -7,7 +7,7 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 
 import {
-  CurrentNumber, Empty, Container, State, Wrapper, Label, Value,
+  CurrentNumber, Container, State, Wrapper, Label, Value,
 } from './styles';
 
 export const Wave: React.FC = () => {
@@ -38,7 +38,7 @@ export const Wave: React.FC = () => {
   });
 
   return isPeaceMode ? (
-    <Empty />
+    <div />
   ) : (
     <Wrapper>
       <Container>

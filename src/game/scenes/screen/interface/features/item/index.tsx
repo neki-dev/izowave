@@ -27,8 +27,7 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
 
   const [isPaused, setPaused] = useState(false);
   const [isActive, setActive] = useState(false);
-
-  const { description, cost } = WORLD_FEATURES[type];
+  const [cost, setCost] = useState(0);
 
   const onClick = () => {
     world.useFeature(type);
@@ -37,6 +36,7 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
   useSceneUpdate(scene, () => {
     setPaused(game.onPause);
     setActive(Boolean(world.activeFeatures[type]));
+    setCost(world.getFeatureCost(type));
   });
 
   return (
@@ -46,7 +46,7 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
           <Name>{type}</Name>
           <Cost type="resources" value={cost} size="small" />
         </Head>
-        <Description>{description}</Description>
+        <Description>{WORLD_FEATURES[type].description}</Description>
       </Info>
       {isActive && (
         <Timeout
