@@ -13,7 +13,7 @@ export class EnemyOverlord extends Enemy {
       multipliers: {
         health: 0.9,
         damage: 0.4,
-        speed: 0.43,
+        speed: 0.8,
       },
     });
   }

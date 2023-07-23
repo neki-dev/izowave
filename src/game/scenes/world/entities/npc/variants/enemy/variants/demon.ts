@@ -13,7 +13,7 @@ export class EnemyDemon extends Enemy {
       multipliers: {
         health: 0.4,
         damage: 0.2,
-        speed: 0.4,
+        speed: 0.8,
       },
     });
   }

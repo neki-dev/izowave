@@ -33,7 +33,7 @@ export class Enemy extends NPC implements IEnemy {
   private damageTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, multipliers = {},
+    positionAtMatrix, texture, multipliers,
   }: EnemyData) {
     super(scene, {
       texture,
@@ -42,31 +42,31 @@ export class Enemy extends NPC implements IEnemy {
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: progressionQuadratic(
         DIFFICULTY.ENEMY_HEALTH
-          * (multipliers.health ?? 1.0)
+          * multipliers.health
           * scene.game.getDifficultyMultiplier(),
         DIFFICULTY.ENEMY_HEALTH_GROWTH,
         scene.wave.number,
       ),
       speed: progressionQuadratic(
-        DIFFICULTY.ENEMY_SPEED * (multipliers.speed ?? 1.0),
+        DIFFICULTY.ENEMY_SPEED * multipliers.speed,
         DIFFICULTY.ENEMY_SPEED_GROWTH,
-        scene.wave.number,
+        Math.min(scene.wave.number, DIFFICULTY.ENEMY_SPEED_GROWTH_MAX_LEVEL),
       ),
     });
     scene.addEntity(EntityType.ENEMY, this);
 
     this.damage = progressionQuadratic(
       DIFFICULTY.ENEMY_DAMAGE
-        * (multipliers.damage ?? 1.0)
+        * multipliers.damage
         * scene.game.getDifficultyMultiplier(),
       DIFFICULTY.ENEMY_DAMAGE_GROWTH,
       scene.wave.number,
     );
     this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
-      (multipliers.health ?? 1.0)
-      + (multipliers.damage ?? 1.0)
-      + (multipliers.speed ?? 1.0)
+      multipliers.health
+      + multipliers.damage
+      + multipliers.speed
     ) / 3;
 
     this.body.setCircle((this.width * 0.5) - 2);

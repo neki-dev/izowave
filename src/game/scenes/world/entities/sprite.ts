@@ -129,7 +129,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
       return false;
     }
 
-    const friction = this.collisionGround ? this.currentBiome?.friction ?? 1 : 1;
+    const friction = (this.collisionGround && this.currentBiome?.friction) || 1;
     const speedPerFrame = (this.speed / friction) * (WORLD_COLLIDE_SPEED_FACTOR * this.scene.deltaTime);
     const offset = this.scene.physics.velocityFromAngle(direction, speedPerFrame);
 
