@@ -1,16 +1,16 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { ComponentHint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/system/interface/hint';
 import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { ComponentBuilderInfo } from './info';
-import { ComponentBuilderPreview } from './preview';
+import { BuilderInfo } from './info';
+import { BuilderPreview } from './preview';
 import { Variant, Info, Wrapper } from './styles';
 
-export const ComponentBuilder: React.FC = () => {
+export const Builder: React.FC = () => {
   const game = useGame<IGame>();
 
   const [hint, setHint] = useState<Nullable<{
@@ -29,13 +29,13 @@ export const ComponentBuilder: React.FC = () => {
       case TutorialStep.BUILD_TOWER_FIRE: {
         return setHint({
           variant: BuildingVariant.TOWER_FIRE,
-          text: 'Build tower to defend yourself from enemies',
+          text: 'Build tower to attack enemies',
         });
       }
       case TutorialStep.BUILD_AMMUNITION: {
         return setHint({
           variant: BuildingVariant.AMMUNITION,
-          text: 'Build ammunition to reload tower ammo',
+          text: 'Build ammunition to reload towers',
         });
       }
     }
@@ -64,18 +64,16 @@ export const ComponentBuilder: React.FC = () => {
       {Object.values(BuildingVariant).map((variant, index) => (
         <Variant key={variant}>
           {hint?.variant === variant && (
-            <ComponentHint side="right">{hint.text}</ComponentHint>
+            <Hint side="right">{hint.text}</Hint>
           )}
 
           <Info>
-            <ComponentBuilderInfo variant={variant} />
+            <BuilderInfo variant={variant} />
           </Info>
 
-          <ComponentBuilderPreview variant={variant} number={index + 1} />
+          <BuilderPreview variant={variant} number={index + 1} />
         </Variant>
       ))}
     </Wrapper>
   );
 };
-
-ComponentBuilder.displayName = 'ComponentBuilder';

@@ -10,15 +10,16 @@ export interface INPC extends ISprite {
   isPathPassed: boolean
 
   /**
-   * Pause NPC pursuit and attacks.
+   * Pause NPC actions.
    * @param duration - Pause duration
+   * @param effects - Use effects
    */
-  calmDown(duration: number): void
+  freeze(duration: number, effects?: boolean): void
 
   /**
-   * Check is NPC pursuit and attacks is paused.
+   * Check is NPC actions is paused.
    */
-  isCalmed(): boolean
+  isFreezed(): boolean
 
   /**
    * Find new path to target.

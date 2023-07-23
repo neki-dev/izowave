@@ -2,21 +2,21 @@ import React from 'react';
 
 import { CONTROLS } from '~const/controls';
 
-import { Control } from './styles';
+import {
+  Control, Keys, Key, Description,
+} from './styles';
 
-export const ComponentControls: React.FC = () => (
+export const Controls: React.FC = () => (
   <>
     {CONTROLS.map((control, index) => (
       <Control key={index}>
-        <Control.Keys>
+        <Keys>
           {control.name.split(',').map((key) => (
-            <Control.Key key={key}>{key}</Control.Key>
+            <Key key={key}>{key}</Key>
           ))}
-        </Control.Keys>
-        <Control.Description>- {control.description}</Control.Description>
+        </Keys>
+        <Description>- {control.description}</Description>
       </Control>
     ))}
   </>
 );
-
-ComponentControls.displayName = 'ComponentControls';

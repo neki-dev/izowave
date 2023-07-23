@@ -5,7 +5,7 @@ import { IScreen, Notice, ScreenEvents } from '~type/screen';
 
 import { Item, Wrapper } from './styles';
 
-export const ComponentNotices: React.FC = () => {
+export const Notices: React.FC = () => {
   const screen = useCurrentScene<IScreen>();
 
   const [notices, setNotices] = useState<Notice[]>([]);
@@ -62,12 +62,10 @@ export const ComponentNotices: React.FC = () => {
   return (
     <Wrapper>
       {notices.map((notice) => (
-        <Item role="notice" key={notice.text} className={notice.type}>
+        <Item role="notice" key={notice.text} $type={notice.type}>
           {notice.text}
         </Item>
       ))}
     </Wrapper>
   );
 };
-
-ComponentNotices.displayName = 'ComponentNotices';

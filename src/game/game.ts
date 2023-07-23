@@ -6,11 +6,11 @@ import {
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
-import { eachEntries } from '~lib/system';
-import { Basic } from '~scene/basic';
+import { eachEntries } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
+import { System } from '~scene/system';
 import { World } from '~scene/world';
 import { IAnalytics } from '~type/analytics';
 import {
@@ -65,14 +65,14 @@ export class Game extends Phaser.Game implements IGame {
 
   constructor() {
     super({
-      scene: [Basic, World, Screen, Menu, Gameover],
+      scene: [System, World, Screen, Menu, Gameover],
       pixelArt: true,
       autoRound: true,
       disableContextMenu: true,
       width: window.innerWidth,
       height: window.innerHeight,
       parent: CONTAINER_ID,
-      backgroundColor: '#222',
+      transparent: true,
       scale: {
         mode: Phaser.Scale.RESIZE,
       },
@@ -103,6 +103,14 @@ export class Game extends Phaser.Game implements IGame {
 
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
       this.sound.mute = (value === 'off');
+    });
+
+    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (value: string) => {
+      if (value === 'on') {
+        this.tutorial.enable();
+      } else {
+        this.tutorial.disable();
+      }
     });
   }
 
@@ -155,12 +163,12 @@ export class Game extends Phaser.Game implements IGame {
   public stopGame() {
     this.isStarted = false;
 
+    this.tutorial.reset();
+
     const menu = this.scene.getScene(GameScene.MENU);
 
     this.scene.systemScene.scene.stop(menu);
     this.scene.systemScene.scene.stop(this.screen);
-
-    this.tutorial.disable();
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
@@ -202,7 +210,7 @@ export class Game extends Phaser.Game implements IGame {
   public getDifficultyMultiplier() {
     switch (this.settings[GameSettings.DIFFICULTY]) {
       case 'easy': return 0.7;
-      case 'hard': return 1.3;
+      case 'hard': return 1.2;
       default: return 1.0;
     }
   }

@@ -23,7 +23,7 @@ export const SETTINGS: Record<GameSettings, GameSettingsData> = {
     description: 'Tutorial',
     values: ['on', 'off'],
     default: 'on',
-    runtime: false,
+    runtime: true,
   },
   [GameSettings.AUDIO]: {
     description: 'Audio',

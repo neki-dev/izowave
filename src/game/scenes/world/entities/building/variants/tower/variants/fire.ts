@@ -61,7 +61,7 @@ export class BuildingTowerFire extends BuildingTower {
         ) {
           hintId = this.scene.showHint({
             side: 'top',
-            text: 'Hover on building and press [E] to upgrade',
+            text: 'Hover and press [E] to upgrade',
             position: this.getPositionOnGround(),
           });
         }
@@ -74,7 +74,7 @@ export class BuildingTowerFire extends BuildingTower {
         if (this.ammo === 0) {
           hintId = this.scene.showHint({
             side: 'top',
-            text: 'Out of ammo\nBuild ammunition nearby',
+            text: 'Build ammunition nearby',
             position: this.getPositionOnGround(),
           });
         }

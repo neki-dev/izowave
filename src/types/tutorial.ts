@@ -2,9 +2,19 @@ import EventEmitter from 'events';
 
 export interface ITutorial extends EventEmitter {
   /**
-   * State of disable.
+   * State of enable.
    */
-  readonly isDisabled: boolean
+  readonly isEnabled: boolean
+
+  /**
+   * Remove all listeners and reset states.
+   */
+  reset(): void
+
+  /**
+   * Enable tutorial.
+   */
+  enable(): void
 
   /**
    * Disable tutorial.
@@ -61,7 +71,6 @@ export type TutorialBindAllCallbacks = {
 
 export enum TutorialStep {
   UNSET_BUILDING = 'UNSET_BUILDING',
-  WAVE_TIMELEFT = 'WAVE_TIMELEFT',
   BUILD_TOWER_FIRE = 'BUILD_TOWER_FIRE',
   BUILD_AMMUNITION = 'BUILD_AMMUNITION',
   BUILD_GENERATOR = 'BUILD_GENERATOR',

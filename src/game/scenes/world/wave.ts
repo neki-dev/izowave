@@ -7,10 +7,11 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
-import { eachEntries } from '~lib/system';
-import { progressionLinear, progressionQuadratic, progressionQuadraticForce } from '~lib/utils';
+import {
+  eachEntries, progressionLinear, progressionQuadratic, progressionQuadraticForce,
+} from '~lib/utils';
 import { NoticeType } from '~type/screen';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
@@ -54,21 +55,14 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene = scene;
 
+    this.addKeyboardHandler();
     this.runTimeleft();
-
-    this.scene.input.keyboard?.on(CONTROL_KEY.WAVE_TIMELEFT_AFTER_SKIP, () => {
-      this.skipTimeleft();
-    });
   }
 
   public getTimeleft() {
     const now = this.scene.getTime();
 
     return Math.max(0, this.nextWaveTimestamp - now);
-  }
-
-  public getSeason() {
-    return Math.ceil(this.number / DIFFICULTY.WAVE_SEASON_LENGTH);
   }
 
   public update() {
@@ -112,27 +106,16 @@ export class Wave extends EventEmitter implements IWave {
       return;
     }
 
-    const now = this.scene.getTime();
-    const timeleft = now + WAVE_TIMELEFT_ALARM;
-
-    if (this.nextWaveTimestamp > timeleft) {
-      this.nextWaveTimestamp = timeleft;
-    }
+    this.nextWaveTimestamp = this.scene.getTime();
   }
 
   private runTimeleft() {
-    let pause: number;
-
-    if (this.scene.game.tutorial.state(TutorialStep.WAVE_TIMELEFT) === TutorialStepState.COMPLETED) {
-      pause = progressionLinear(
-        DIFFICULTY.WAVE_TIMELEFT,
-        DIFFICULTY.WAVE_TIMELEFT_GROWTH,
-        this.number,
-        1000,
-      );
-    } else {
-      pause = WAVE_TIMELEFT_ALARM;
-    }
+    const pause = progressionLinear(
+      DIFFICULTY.WAVE_TIMELEFT,
+      DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+      this.number,
+      1000,
+    );
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
   }
@@ -157,7 +140,6 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.START, this.number);
 
-    this.scene.game.tutorial.complete(TutorialStep.WAVE_TIMELEFT);
     this.scene.game.tutorial.pause(TutorialStep.UPGRADE_PLAYER);
   }
 
@@ -168,8 +150,8 @@ export class Wave extends EventEmitter implements IWave {
     this.number++;
 
     this.runTimeleft();
-    this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${prevNumber} COMPLETED`);
 
+    this.scene.game.screen.notice(NoticeType.INFO, `WAVE ${prevNumber} COMPLETED`);
     this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
@@ -179,7 +161,6 @@ export class Wave extends EventEmitter implements IWave {
     if (prevNumber === 2) {
       this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
     } else if (prevNumber >= 3) {
-      // TODO: Call only when there is definitely an upgrade opportunity
       this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
     }
 
@@ -211,7 +192,7 @@ export class Wave extends EventEmitter implements IWave {
   private getEnemyVariant() {
     if (
       this.number % DIFFICULTY.WAVE_SEASON_LENGTH === 0
-      && this.spawnedEnemiesCount < this.getSeason()
+      && this.spawnedEnemiesCount < Math.ceil(this.number / 5)
     ) {
       return EnemyVariant.BOSS;
     }
@@ -235,6 +216,12 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     return this.lastSpawnedEnemyVariant;
+  }
+
+  private addKeyboardHandler() {
+    this.scene.input.keyboard?.on(CONTROL_KEY.SKIP_WAVE_TIMELEFT, () => {
+      this.skipTimeleft();
+    });
   }
 }
 

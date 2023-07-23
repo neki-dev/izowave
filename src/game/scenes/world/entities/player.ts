@@ -6,11 +6,10 @@ import {
   PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_UPGRADES,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
-import { Assistant } from '~entity/npc/variants/assistant';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { aroundPosition, progressionQuadratic } from '~lib/utils';
+import { progressionQuadratic } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
@@ -19,7 +18,6 @@ import { IWorld } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
-import { IAssistant } from '~type/world/entities/npc/assistant';
 import {
   PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerUpgrade,
 } from '~type/world/entities/player';
@@ -62,12 +60,6 @@ export class Player extends Sprite implements IPlayer {
 
   private isMoving: boolean = false;
 
-  private _assistant: Nullable<IAssistant> = null;
-
-  public get assistant() { return this._assistant; }
-
-  private set assistant(v) { this._assistant = v; }
-
   private dustEffect: Nullable<IParticles> = null;
 
   constructor(scene: IWorld, data: PlayerData) {
@@ -79,15 +71,15 @@ export class Player extends Sprite implements IPlayer {
     });
     scene.add.existing(this);
 
+    this.gamut = PLAYER_TILE_SIZE.gamut;
+
     this.registerKeyboard();
     this.registerAnimations();
 
-    this.body.setSize(14, 26);
-    this.gamut = PLAYER_TILE_SIZE.gamut;
-
-    this.addAssistant();
     this.addHealthIndicator(0xd0ff4f);
     this.addDustEffect();
+
+    this.body.setSize(14, 26);
 
     this.setTilesGroundCollision(true);
     this.setTilesCollision([
@@ -110,9 +102,7 @@ export class Player extends Sprite implements IPlayer {
       },
     );
 
-    this.scene.wave.on(WaveEvents.COMPLETE, (number: number) => {
-      this.onWaveComplete(number);
-    });
+    this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
   }
 
   public update() {
@@ -227,16 +217,16 @@ export class Player extends Sprite implements IPlayer {
       case PlayerUpgrade.MAX_HEALTH: {
         this.live.setMaxHealth(nextValue);
         this.live.heal();
-        if (this.assistant) {
-          this.assistant.live.setMaxHealth(nextValue);
-          this.assistant.live.heal();
+        if (this.scene.assistant) {
+          this.scene.assistant.live.setMaxHealth(nextValue);
+          this.scene.assistant.live.heal();
         }
         break;
       }
       case PlayerUpgrade.SPEED: {
         this.speed = nextValue;
-        if (this.assistant) {
-          this.assistant.speed = nextValue;
+        if (this.scene.assistant) {
+          this.scene.assistant.speed = nextValue;
         }
         break;
       }
@@ -245,8 +235,8 @@ export class Player extends Sprite implements IPlayer {
         break;
       }
       case PlayerUpgrade.ASSISTANT: {
-        if (this.assistant) {
-          this.assistant.level = nextValue;
+        if (this.scene.assistant) {
+          this.scene.assistant.level = nextValue;
         }
         break;
       }
@@ -255,12 +245,13 @@ export class Player extends Sprite implements IPlayer {
     this.experience -= experience;
     this.upgradeLevel[type]++;
 
-    this.scene.game.screen.notice(NoticeType.INFO, `${type.toUpperCase().replace('_', ' ')} UPGRADED`);
     this.scene.sound.play(PlayerAudio.UPGRADE);
+
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_PLAYER);
   }
 
   public onDamage() {
+    this.scene.camera.shake();
     this.scene.game.sound.play(
       Phaser.Utils.Array.GetRandom([
         PlayerAudio.DAMAGE_1,
@@ -273,13 +264,11 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public onDead() {
-    this.scene.cameras.main.zoomTo(2.0, 10 * 1000);
     this.scene.sound.play(PlayerAudio.DEAD);
 
     this.setVelocity(0, 0);
-    this.body.setImmovable(true);
-
     this.stopMovement();
+
     this.scene.tweens.add({
       targets: [this, this.container],
       alpha: 0.0,
@@ -287,33 +276,7 @@ export class Player extends Sprite implements IPlayer {
     });
   }
 
-  private addAssistant() {
-    const positionAtMatrix = aroundPosition(this.positionAtMatrix).find((spawn) => {
-      const tileGround = this.scene.level.getTile({ ...spawn, z: 0 });
-
-      return Boolean(tileGround);
-    });
-
-    this.assistant = new Assistant(this.scene, {
-      owner: this,
-      positionAtMatrix: positionAtMatrix || this.positionAtMatrix,
-      speed: this.speed,
-      health: this.live.maxHealth,
-      level: this.upgradeLevel[PlayerUpgrade.ASSISTANT],
-    });
-
-    this.assistant.on(Phaser.Scenes.Events.DESTROY, () => {
-      this.assistant = null;
-    });
-  }
-
   private onWaveComplete(number: number) {
-    if (this.assistant) {
-      this.assistant.live.heal();
-    } else {
-      this.addAssistant();
-    }
-
     const experience = progressionQuadratic(
       DIFFICULTY.WAVE_EXPERIENCE,
       DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
@@ -334,7 +297,6 @@ export class Player extends Sprite implements IPlayer {
   private updateVelocity() {
     if (!this.isMoving) {
       this.setVelocity(0, 0);
-      this.body.setImmovable(true);
 
       return;
     }
@@ -343,16 +305,14 @@ export class Player extends Sprite implements IPlayer {
 
     if (collide) {
       this.setVelocity(0, 0);
-      this.body.setImmovable(true);
 
       return;
     }
 
-    const friction = this.currentGroundTile?.biome?.friction ?? 1;
+    const friction = this.currentBiome?.friction ?? 1;
     const speed = this.speed / friction;
     const velocity = this.scene.physics.velocityFromAngle(this.direction, speed);
 
-    this.body.setImmovable(false);
     this.setVelocity(velocity.x, velocity.y);
   }
 

@@ -1,13 +1,13 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
-import { ComponentHint } from '~scene/basic/interface/hint';
+import { Hint } from '~scene/system/interface/hint';
 import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 
 import { Wrapper } from './styles';
 
-export const ComponentGeneralHints: React.FC = () => {
+export const GeneralHints: React.FC = () => {
   const game = useGame<IGame>();
 
   const [hint, setHint] = useState<Nullable<string>>(null);
@@ -15,7 +15,7 @@ export const ComponentGeneralHints: React.FC = () => {
   const showHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.UNSET_BUILDING: {
-        return setHint('Click right mouse button to unset building');
+        return setHint('Use [Right click] to stop build');
       }
     }
   };
@@ -39,12 +39,10 @@ export const ComponentGeneralHints: React.FC = () => {
   return (
     hint && (
       <Wrapper>
-        <ComponentHint side="bottom" align="center">
+        <Hint side="top" align="center">
           {hint}
-        </ComponentHint>
+        </Hint>
       </Wrapper>
     )
   );
 };
-
-ComponentGeneralHints.displayName = 'ComponentGeneralHints';

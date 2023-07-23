@@ -2,8 +2,10 @@ import Phaser from 'phaser';
 
 import { IScene } from '~type/scene';
 import { IBuilder } from '~type/world/builder';
+import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
+import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
@@ -22,9 +24,19 @@ export interface IWorld extends IScene {
   readonly player: IPlayer
 
   /**
+   * Player assistant.
+   */
+  readonly assistant: Nullable<IAssistant>
+
+  /**
    * Level.
    */
   readonly level: ILevel
+
+  /**
+   * Camera.
+   */
+  readonly camera: ICamera
 
   /**
    * Builder.
@@ -35,6 +47,11 @@ export interface IWorld extends IScene {
    * Delta time of frame update.
    */
   readonly deltaTime: number
+
+  /**
+   * Active features.
+   */
+  readonly activeFeatures: Partial<Record<WorldFeature, boolean>>
 
   /**
    * Current active building.
@@ -106,6 +123,18 @@ export interface IWorld extends IScene {
    * @param seconds - Time in seconds
    */
   getFuturePosition(sprite: ISprite, seconds: number): Vector2D
+
+  /**
+   * Use feature.
+   * @param type - Feature
+   */
+  useFeature(type: WorldFeature): void
+
+  /**
+   * Get feature current cost.
+   * @param type - Feature
+   */
+  getFeatureCost(type: WorldFeature): number
 }
 
 export enum WorldEvents {
@@ -113,14 +142,24 @@ export enum WorldEvents {
   UNSELECT_BUILDING = 'unselect_building',
   SHOW_HINT = 'show_hint',
   HIDE_HINT = 'hide_hint',
-}
-
-export enum WorldIcon {
-  ALERT = 'alert',
+  USE_FEATURE = 'use_feature',
 }
 
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string
   position: Vector2D
+};
+
+export enum WorldFeature {
+  FROST = 'FROST',
+  RAGE = 'RAGE',
+  SHIELD = 'SHIELD',
+  FIRE = 'FIRE',
+}
+
+export type WorldFeatureData = {
+  description: string
+  cost: number
+  duration: number
 };

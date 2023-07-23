@@ -1,8 +1,6 @@
 import Phaser from 'phaser';
 
-import { Effect } from '~scene/world/effects';
-import { Hexagon } from '~scene/world/hexagon';
-import { LevelBiome, TileType, Vector3D } from '~type/world/level';
+import { TileType, Vector3D } from '~type/world/level';
 
 export interface ITileMatrix {
   /**
@@ -22,6 +20,12 @@ export interface ITileMatrix {
   readonly height: number
 
   /**
+   * Check is position doesn`t have tile.
+   * @param position - Tile position
+   */
+  isFreePoint(position: Vector3D): boolean
+
+  /**
    * Get tile from map data.
    * @param position - Tile position
    */
@@ -33,12 +37,6 @@ export interface ITileMatrix {
    * @param type - Tile type or types
    */
   getTileWithType(position: Vector3D, type: TileType | TileType[]): Nullable<ITile>
-
-  /**
-   * Check is tile is visible.
-   * @param position - Tile position
-   */
-  isVisibleTile(position: Vector3D): boolean
 
   /**
    * Check tile type.
@@ -63,8 +61,6 @@ export interface ITileMatrix {
 }
 
 export interface ITile extends Phaser.GameObjects.Image {
-  biome?: LevelBiome
-  shape?: Hexagon
-  mapEffects?: Effect[]
   tileType: TileType
+  clearable?: boolean
 }

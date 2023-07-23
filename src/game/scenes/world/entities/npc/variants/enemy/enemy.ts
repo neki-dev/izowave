@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { WORLD_FEATURES } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   ENEMY_PATH_BREAKPOINT,
@@ -13,7 +14,7 @@ import { progressionQuadratic } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
-import { IWorld } from '~type/world';
+import { IWorld, WorldEvents, WorldFeature } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
@@ -29,7 +30,7 @@ export class Enemy extends NPC implements IEnemy {
 
   private might: number;
 
-  private freezeTimer: Nullable<Phaser.Time.TimerEvent> = null;
+  private damageTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
     positionAtMatrix, texture, multipliers = {},
@@ -73,10 +74,15 @@ export class Enemy extends NPC implements IEnemy {
 
     this.addHealthIndicator(0xdb2323, true);
     this.addSpawnEffect();
+    this.addWorldFeatureHandler();
 
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
-        this.attack(tile);
+        const shield = this.scene.activeFeatures[WorldFeature.SHIELD];
+
+        if (!shield) {
+          this.attack(tile);
+        }
       }
     });
 
@@ -86,8 +92,8 @@ export class Enemy extends NPC implements IEnemy {
     );
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      if (this.freezeTimer) {
-        this.freezeTimer.destroy();
+      if (this.damageTimer) {
+        this.damageTimer.destroy();
       }
     });
   }
@@ -100,52 +106,14 @@ export class Enemy extends NPC implements IEnemy {
     }
   }
 
-  public freeze(duration: number) {
-    const finalDuration = duration / this.scale;
-
-    this.calmDown(finalDuration);
-
-    if (!this.visible) {
-      return;
-    }
-
-    if (this.freezeTimer) {
-      this.freezeTimer.elapsed = 0;
-    } else {
-      this.setTint(0x00a8ff);
-      this.freezeTimer = this.scene.time.delayedCall(finalDuration, () => {
-        this.clearTint();
-        this.freezeTimer = null;
-      });
-    }
-
-    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      return;
-    }
-
-    new Particles(this, {
-      key: 'freeze',
-      texture: ParticlesTexture.GLOW,
-      params: {
-        duration: 200,
-        follow: this,
-        followOffset: this.getBodyOffset(),
-        lifespan: { min: 100, max: 150 },
-        scale: 0.2,
-        speed: 80,
-        tint: 0x00ddff,
-      },
-    });
-  }
-
   public attack(target: IEnemyTarget) {
-    if (this.isCalmed() || target.live.isDead()) {
+    if (this.isFreezed() || target.live.isDead()) {
       return;
     }
 
     target.live.damage(this.damage);
 
-    this.calmDown(1000);
+    this.freeze(1000);
   }
 
   public onDead() {
@@ -163,9 +131,58 @@ export class Enemy extends NPC implements IEnemy {
     super.onDead();
   }
 
+  private addOngoingDamage(damage: number, duration: number) {
+    const delay = 100;
+    const momentDamage = damage / (duration / delay);
+
+    this.damageTimer = this.scene.time.addEvent({
+      delay,
+      repeat: duration / delay,
+      callback: () => {
+        this.live.damage(momentDamage);
+
+        if (this.damageTimer?.repeatCount === 0) {
+          this.damageTimer.destroy();
+          this.damageTimer = null;
+        }
+      },
+    });
+  }
+
+  private addFireEffect(duration: number) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      return;
+    }
+
+    new Particles(this, {
+      key: 'fire',
+      texture: ParticlesTexture.GLOW,
+      params: {
+        follow: this,
+        followOffset: this.getBodyOffset(),
+        duration,
+        color: [0xfacc22, 0xf89800, 0xf83600, 0x9f0404],
+        colorEase: 'quad.out',
+        lifespan: this.displayWidth * 25,
+        angle: {
+          min: -100,
+          max: -80,
+        },
+        scale: {
+          start: (this.displayWidth * 1.25) / 100,
+          end: 0,
+          ease: 'sine.out',
+        },
+        speed: 80,
+        advance: 200,
+        blendMode: 'ADD',
+      },
+    });
+  }
+
   private addBloodEffect() {
     if (
-      !this.currentGroundTile?.biome?.solid
+      !this.currentBiome?.solid
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
       || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
     ) {
@@ -180,14 +197,10 @@ export class Enemy extends NPC implements IEnemy {
       depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height),
     });
 
-    this.currentGroundTile.mapEffects?.push(effect);
+    this.scene.level.effectsOnGround.push(effect);
   }
 
   private addSpawnEffect() {
-    if (!this.visible) {
-      return;
-    }
-
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Particles(this, {
         key: 'spawn',
@@ -206,7 +219,7 @@ export class Enemy extends NPC implements IEnemy {
 
     const originalScale = this.scale;
 
-    this.calmDown(750);
+    this.freeze(750);
     this.container.setAlpha(0.0);
     this.setScale(0.1);
     this.scene.tweens.add({
@@ -216,6 +229,29 @@ export class Enemy extends NPC implements IEnemy {
       onComplete: () => {
         this.container.setAlpha(1.0);
       },
+    });
+  }
+
+  private addWorldFeatureHandler() {
+    const handler = (type: WorldFeature) => {
+      const { duration } = WORLD_FEATURES[type];
+
+      switch (type) {
+        case WorldFeature.FROST: {
+          this.freeze(duration, true);
+          break;
+        }
+        case WorldFeature.FIRE: {
+          this.addFireEffect(duration);
+          this.addOngoingDamage(this.live.maxHealth * 0.5, duration);
+          break;
+        }
+      }
+    };
+
+    this.scene.events.on(WorldEvents.USE_FEATURE, handler);
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.events.off(WorldEvents.USE_FEATURE, handler);
     });
   }
 }

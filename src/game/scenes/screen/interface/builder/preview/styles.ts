@@ -1,47 +1,59 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 const animationBlink = keyframes`
-  0% { background: ${InterfaceColor.INFO} }
-  50% { background: ${InterfaceColor.INFO_DARK} }
-  100% { background: ${InterfaceColor.INFO} }
+  0% { background: ${InterfaceColor.INFO_DARK}; }
+  50% { background: #586d1a; }
+  100% { background: ${InterfaceColor.INFO_DARK}; }
 `;
 
-export const Building: any = styled.div`
+export const Container = styled.div<{
+  $disabled?: boolean
+  $disallow?: boolean
+  $active?: boolean
+  $newest?: boolean
+}>`
   width: 60px;
   height: 60px;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.75);
+  background: ${InterfaceColor.BLACK_TRANSPARENT};
   display: flex;
   justify-content: center;
   position: relative;
-  &:not(.disabled):hover {
-    background: #000;
-    cursor: pointer;
-  }
-  &.disallow {
+  ${(props) => (!props.$disabled && css`
+    &:hover {
+      background: #000;
+      cursor: pointer;
+    }
+  `)}
+  ${(props) => ((props.$disabled || props.$disallow) && css`
     opacity: 0.5;
     filter: grayscale(100%);
-  }
-  &.active {
+  `)}
+  ${(props) => (props.$active && css`
     opacity: 1.0;
     background: ${InterfaceColor.BLUE_DARK};
-  }
-  &.newest::after {
-    position: absolute;
-    content: '';
-    left: -2px;
-    top: -2px;
-    border-radius: 50%;
-    background: ${InterfaceColor.INFO};
-    width: 10px;
-    height: 10px;
-    animation: ${animationBlink} 1s infinite;
-  }
+  `)}
+  ${(props) => (props.$newest && css`
+    &::after {
+      position: absolute;
+      content: 'new';
+      color: #fff;
+      font-family: ${InterfaceFont.MONOSPACE};
+      font-size: 10px;
+      line-height: 10px;
+      left: -3px;
+      top: -3px;
+      border-radius: 5px;
+      background: ${InterfaceColor.INFO_DARK};
+      padding: 2px 4px;
+      animation: ${animationBlink} 1s infinite;
+    }
+  `)}
 `;
 
-Building.Preview = styled.div`
+export const Preview = styled.div`
   overflow: hidden;
   width: 34px;
   height: 40px;
@@ -50,7 +62,7 @@ Building.Preview = styled.div`
   }
 `;
 
-Building.Number = styled.div`
+export const Number = styled.div`
   position: absolute;
   color: #fff;
   font-family: ${InterfaceFont.MONOSPACE};
@@ -60,3 +72,5 @@ Building.Number = styled.div`
   top: 4px;
   opacity: 0.75;
 `;
+
+export const Image = styled.img``;

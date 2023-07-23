@@ -13,13 +13,13 @@ describe('level.ts', () => {
   });
 
   it('should return depth', () => {
-    expect(Level.GetDepth(100, 1, 16)).toEqual(1115);
-    expect(Level.GetDepth(100, 2, 16)).toEqual(2114);
+    expect(Level.GetDepth(100, 1, 16)).toEqual(164);
+    expect(Level.GetDepth(100, 2, 16)).toEqual(212);
   });
 
   it('should return tile depth', () => {
-    expect(Level.GetTileDepth(100, 1)).toEqual(1123);
-    expect(Level.GetTileDepth(100, 2)).toEqual(2122);
+    expect(Level.GetTileDepth(100, 1)).toEqual(172);
+    expect(Level.GetTileDepth(100, 2)).toEqual(220);
   });
 
   it('should convert matrix position to world position', () => {

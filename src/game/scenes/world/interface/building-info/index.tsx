@@ -1,4 +1,3 @@
-import cn from 'classnames';
 import {
   getModifiedArray,
   RelativePosition,
@@ -8,7 +7,7 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
+import { BuildingParams } from '~scene/system/interface/building-params';
 import { GameScene } from '~type/game';
 import { IWorld, WorldEvents } from '~type/world';
 import {
@@ -17,10 +16,12 @@ import {
   IBuilding,
 } from '~type/world/entities/building';
 
-import { ComponentBuildingControls } from './controls';
-import { Name, UpgradeLevel, Wrapper } from './styles';
+import { BuildingControls } from './controls';
+import {
+  Name, UpgradeLevel, Wrapper, Head, Body, Progress,
+} from './styles';
 
-export const ComponentBuildingInfo: React.FC = () => {
+export const BuildingInfo: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [building, setBuilding] = useState<Nullable<IBuilding>>(null);
@@ -66,25 +67,23 @@ export const ComponentBuildingInfo: React.FC = () => {
     building && (
       <RelativePosition x={building.x} y={building.y}>
         <Wrapper>
-          <Name>{building.getMeta().Name}</Name>
+          <Head>
+            <Name>{building.getMeta().Name}</Name>
+          </Head>
+          <Body>
+            <UpgradeLevel>
+              {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map(
+                (_, level) => (
+                  <Progress key={level} $active={level < upgradeLevel} />
+                ),
+              )}
+            </UpgradeLevel>
+            <BuildingParams list={params} />
+          </Body>
 
-          <UpgradeLevel>
-            {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map(
-              (_, level) => (
-                <UpgradeLevel.Item
-                  key={level}
-                  className={cn({ active: level < upgradeLevel })}
-                />
-              ),
-            )}
-          </UpgradeLevel>
-
-          <ComponentBuildingParameters params={params} />
-          <ComponentBuildingControls actions={controls} />
+          <BuildingControls list={controls} />
         </Wrapper>
       </RelativePosition>
     )
   );
 };
-
-ComponentBuildingInfo.displayName = 'ComponentBuildingInfo';

@@ -1,10 +1,14 @@
 import { EnemyTexture, EnemyTexturesMeta } from '~type/world/entities/npc/enemy';
 
 export const ENEMY_SPAWN_POSITIONS = 10;
+
 export const ENEMY_SPAWN_DISTANCE_FROM_PLAYER = 16;
+
 export const ENEMY_SPAWN_DISTANCE_FROM_BUILDING = 8;
 
 export const ENEMY_PATH_BREAKPOINT = 32;
+
+export const ENEMY_SPAWN_POSITIONS_GRID = 4;
 
 export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
   [EnemyTexture.BAT]: {

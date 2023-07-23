@@ -4,7 +4,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -12,14 +12,14 @@ import { Live } from '~scene/world/live';
 import { GameEvents, GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldEvents, WorldIcon } from '~type/world';
+import { IWorld, WorldEvents } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
-  BuildingOutlineState, IBuildingFactory, BuildingIcon, IBuilding,
+  BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon,
 } from '~type/world/entities/building';
 import { ILive, LiveEvents } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
@@ -48,11 +48,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private outlineState: BuildingOutlineState = BuildingOutlineState.NONE;
 
-  private outlineTween: Nullable<Phaser.Tweens.Tween> = null;
-
-  private alert: Nullable<Phaser.GameObjects.Image> = null;
+  private alertIcon: Nullable<Phaser.GameObjects.Image> = null;
 
   private alertTween: Nullable<Phaser.Tweens.Tween> = null;
+
+  private upgradeIcon: Nullable<Phaser.GameObjects.Image> = null;
+
+  private upgradeTween: Nullable<Phaser.Tweens.Tween> = null;
 
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
@@ -81,6 +83,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live = new Live(health);
 
     this.addActionArea();
+    this.addKeyboardHandler();
+    this.addPointerHandler();
     this.setInteractive({
       pixelPerfect: true,
       useHandCursor: true,
@@ -94,54 +98,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
 
-    const handleBreak = () => {
-      if (this.isFocused) {
-        this.break();
-      }
-    };
+    this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
+    this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
 
-    const handleUpgrade = () => {
-      if (this.isFocused) {
-        this.upgrade();
-      }
-    };
-
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak, this);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade, this);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade, this);
-
-    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
-      if (pointer.button === 0) {
-        if (this.isFocused) {
-          this.select();
-        } else {
-          this.unselect();
-        }
-      }
-    });
-    this.on(Phaser.Input.Events.POINTER_OVER, () => {
-      this.focus();
-    });
-    this.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.unfocus();
-    });
-
-    this.live.on(LiveEvents.DAMAGE, () => {
-      this.onDamage();
-    });
-    this.live.on(LiveEvents.DEAD, () => {
-      this.onDead();
-    });
-    this.scene.game.events.on(GameEvents.FINISH, () => {
-      this.unfocus();
-      this.unselect();
-    });
-    this.scene.builder.on(BuilderEvents.BUILD_START, () => {
-      this.unfocus();
-      this.unselect();
-    });
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.removeAlert();
+      this.removeAlertIcon();
+      this.removeUpgradeIcon();
       this.unfocus();
       this.unselect();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
@@ -150,7 +112,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
-    this.updateAlert();
 
     // Catch focus by camera moving
     if (this.toFocus) {
@@ -186,13 +147,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getInfo() {
-    const params: BuildingParam[] = [{
+    const info: BuildingParam[] = [{
       label: 'HEALTH',
       icon: BuildingIcon.HEALTH,
       value: this.live.health,
     }];
 
-    return params;
+    return info;
   }
 
   public getControls() {
@@ -225,7 +186,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       : 0;
   }
 
-  private getActionsPause() {
+  public getActionsPause() {
     return this.actions?.pause
       ? progressionQuadratic(
         this.actions.pause,
@@ -273,6 +234,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.upgradeLevel++;
 
+    this.addUpgradeIcon();
     this.updateActionArea();
     this.setFrame(this.upgradeLevel - 1);
 
@@ -291,8 +253,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    this.scene.game.screen.notice(NoticeType.INFO, `${this.getMeta().Name.toUpperCase()} UPGRADED`);
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
+
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
   }
 
@@ -306,10 +268,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.game.sound.play(audio);
     }
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 
@@ -322,19 +281,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private onDead() {
-    this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} HAS BEEN DESTROYED`);
-
-    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.SMOKE,
-        audio: BuildingAudio.DEAD,
-        position: this.getPositionOnGround(),
-        depth: this.depth + 1,
-        rate: 18,
-      });
-    }
-
-    this.destroy();
+    this.break();
   }
 
   private focus() {
@@ -368,17 +315,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     };
   }
 
-  public addAlert() {
-    if (this.alert) {
+  public addAlertIcon() {
+    if (this.alertIcon) {
       return;
     }
 
-    this.alert = this.scene.add.image(this.x, this.y, WorldIcon.ALERT);
-    this.alert.setDepth(this.depth + 1);
-    this.alert.setVisible(this.visible);
+    this.alertIcon = this.scene.add.image(this.x, this.y, BuildingIcon.ALERT);
+    this.alertIcon.setDepth(this.depth + 1);
 
     this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-      targets: this.alert,
+      targets: this.alertIcon,
       alpha: { from: 1.0, to: 0.0 },
       duration: 500,
       ease: 'Linear',
@@ -387,22 +333,48 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public removeAlert() {
-    if (!this.alert) {
+  public removeAlertIcon() {
+    if (!this.alertIcon) {
       return;
     }
 
-    this.alert.destroy();
-    this.alert = null;
+    this.alertIcon.destroy();
+    this.alertIcon = null;
 
     this.alertTween?.destroy();
     this.alertTween = null;
   }
 
-  private updateAlert() {
-    if (this.alert) {
-      this.alert.setVisible(this.visible);
+  private addUpgradeIcon() {
+    if (this.upgradeIcon) {
+      this.removeUpgradeIcon();
     }
+
+    this.upgradeIcon = this.scene.add.image(this.x, this.y, BuildingIcon.UPGRADE);
+    this.upgradeIcon.setDepth(this.depth + 1);
+
+    this.upgradeTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+      targets: this.upgradeIcon,
+      y: { from: this.y, to: this.y - 32 },
+      alpha: { from: 1.0, to: 0.0 },
+      duration: 500,
+      ease: 'Linear',
+      onComplete: () => {
+        this.removeUpgradeIcon();
+      },
+    });
+  }
+
+  private removeUpgradeIcon() {
+    if (!this.upgradeIcon) {
+      return;
+    }
+
+    this.upgradeIcon.destroy();
+    this.upgradeIcon = null;
+
+    this.upgradeTween?.destroy();
+    this.upgradeTween = null;
   }
 
   public select() {
@@ -447,36 +419,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (state === BuildingOutlineState.NONE) {
       this.removeShader('OutlineShader');
-
-      if (this.outlineTween) {
-        this.outlineTween.destroy();
-        this.outlineTween = null;
-      }
     } else {
-      const color: number = {
-        [BuildingOutlineState.FOCUSED]: 0xffffff,
-        [BuildingOutlineState.SELECTED]: 0xd0ff4f,
+      const params = {
+        [BuildingOutlineState.FOCUSED]: { size: 2.0, color: 0xffffff },
+        [BuildingOutlineState.SELECTED]: { size: 4.0, color: 0xd0ff4f },
       }[state];
 
       if (this.outlineState === BuildingOutlineState.NONE) {
-        this.addShader('OutlineShader', {
-          size: 3.0,
-          color,
-        });
-
-        this.outlineTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
-          targets: this,
-          shaderSize: { from: 0.0, to: 3.0 },
-          duration: 350,
-          ease: 'Linear',
-          yoyo: true,
-          repeat: -1,
-          onUpdate: (_, __, ___, size: number) => {
-            this.updateShader('OutlineShader', { size });
-          },
-        });
+        this.addShader('OutlineShader', params);
       } else {
-        this.updateShader('OutlineShader', { color });
+        this.updateShader('OutlineShader', params);
       }
     }
 
@@ -528,10 +480,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public break() {
-    if (this.visible && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+    this.scene.sound.play(BuildingAudio.DEAD);
+
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
-        audio: BuildingAudio.DEAD,
         position: this.getPositionOnGround(),
         depth: this.depth + 1,
         rate: 18,
@@ -540,9 +493,64 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.destroy();
   }
+
+  private addKeyboardHandler() {
+    const handleBreak = () => {
+      if (this.isFocused) {
+        this.break();
+      }
+    };
+
+    const handleUpgrade = () => {
+      if (this.isFocused) {
+        this.upgrade();
+      }
+    };
+
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
+    });
+  }
+
+  private addPointerHandler() {
+    const handleInput = (pointer: Phaser.Input.Pointer) => {
+      if (pointer.button === 0) {
+        if (this.isFocused) {
+          this.select();
+        } else {
+          this.unselect();
+        }
+      }
+    };
+
+    const handleClear = () => {
+      this.unfocus();
+      this.unselect();
+    };
+
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleInput);
+    this.scene.game.events.on(GameEvents.FINISH, handleClear);
+    this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
+
+    this.on(Phaser.Input.Events.POINTER_OVER, this.focus, this);
+    this.on(Phaser.Input.Events.POINTER_OUT, this.unfocus, this);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleInput);
+      this.scene.game.events.off(GameEvents.FINISH, handleClear);
+      this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
+    });
+  }
 }
 
 registerAudioAssets(BuildingAudio);
+registerImageAssets(BuildingIcon);
 registerSpriteAssets(BuildingTexture, {
   width: LEVEL_TILE_SIZE.width,
   height: LEVEL_TILE_SIZE.height,

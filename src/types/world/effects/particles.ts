@@ -29,6 +29,7 @@ export interface IParticlesParent extends Phaser.GameObjects.GameObject {
 
 export enum ParticlesTexture {
   BIT = 'effect/bit',
+  BIT_SOFT = 'effect/bit_soft',
   GLOW = 'effect/glow',
 }
 

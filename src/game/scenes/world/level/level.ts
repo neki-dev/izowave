@@ -2,11 +2,12 @@ import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_SPAWN_POSITIONS_STEP, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_MAP_VISIBLE_PART, LEVEL_BIOME_PARAMETERS, LEVEL_Z_WEIGHT, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
+  LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
+  LEVEL_BIOME_PARAMETERS, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
-import { Hexagon } from '~scene/world/hexagon';
+import { interpolate } from '~lib/utils';
+import { Navigator } from '~scene/world/navigator';
 import { GameEvents, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import {
@@ -15,8 +16,8 @@ import {
 import { INavigator } from '~type/world/level/navigator';
 import { ITile } from '~type/world/level/tile-matrix';
 
-import { Navigator } from './navigator';
 import { TileMatrix } from './tile-matrix';
+import { Effect } from '../effects';
 
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;
@@ -25,9 +26,17 @@ export class Level extends TileMatrix implements ILevel {
 
   readonly map: World<LevelBiome>;
 
-  private visibleTiles: Phaser.GameObjects.Group;
+  public _effectsOnGround: Effect[] = [];
 
-  private mapTiles: Phaser.GameObjects.Group;
+  public get effectsOnGround() { return this._effectsOnGround; }
+
+  private set effectsOnGround(v) { this._effectsOnGround = v; }
+
+  public _groundLayer: Phaser.Tilemaps.TilemapLayer;
+
+  public get groundLayer() { return this._groundLayer; }
+
+  private set groundLayer(v) { this._groundLayer = v; }
 
   private treesTiles: Phaser.GameObjects.Group;
 
@@ -48,66 +57,49 @@ export class Level extends TileMatrix implements ILevel {
     });
 
     this.map = generator.generate();
-
     this.scene = scene;
-    this.visibleTiles = scene.add.group();
 
-    const grid = this.map.getMatrix().map((y) => y.map((x) => x.collide));
+    const grid = this.map.getMatrix()
+      .map((y) => y.map((x) => x.collide));
 
     this.navigator = new Navigator(grid);
 
-    this.makeMapTiles();
-    this.makeTrees();
+    this.addTilemap();
+    this.addMapTiles();
+    this.addTreesTiles();
 
-    this.scene.game.events.on(
-      `${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`,
-      (value: string) => {
-        if (value === 'off') {
-          this.removeEffects();
-        }
-      },
-    );
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
+      if (value === 'off') {
+        this.removeEffects();
+      }
+    });
   }
 
   public looseEffects() {
-    this.getTiles().forEach((tile) => {
-      tile.mapEffects?.forEach((effect) => {
-        effect.setAlpha(effect.alpha - 0.2);
-        if (effect.alpha <= 0) {
-          effect.destroy();
-        }
-      });
+    this.effectsOnGround.forEach((effect) => {
+      effect.setAlpha(effect.alpha - 0.2);
+      if (effect.alpha <= 0) {
+        effect.destroy();
+      }
     });
   }
 
   private removeEffects() {
-    this.getTiles().forEach((tile) => {
-      tile.mapEffects?.forEach((effect) => {
-        effect.destroy();
-      });
-      // eslint-disable-next-line no-param-reassign
-      tile.mapEffects = [];
+    this.effectsOnGround.forEach((effect) => {
+      effect.destroy();
     });
+    this.effectsOnGround = [];
   }
 
-  private getTiles() {
-    return this.mapTiles.getChildren() as ITile[];
-  }
-
-  public isFreePoint(position: Vector3D) {
-    return !this.getTile(position) || this.tileIs(position, TileType.TREE);
-  }
-
-  public readSpawnPositions(target: SpawnTarget) {
+  public readSpawnPositions(target: SpawnTarget, grid: number = 2) {
     const positions: Vector2D[] = [];
-    const step = LEVEL_SPAWN_POSITIONS_STEP;
-    const rand = Math.floor(step / 2);
+    const rand = Math.floor(grid / 2);
 
-    for (let sX = step; sX < this.size - step; sX += step) {
-      for (let sY = step; sY < this.size - step; sY += step) {
+    for (let sX = grid; sX < this.size - grid; sX += grid) {
+      for (let sY = grid; sY < this.size - grid; sY += grid) {
         const x = sX + Phaser.Math.Between(-rand, rand);
         const y = sY + Phaser.Math.Between(-rand, rand);
-        const targets = this.map.getAt({ x, y }).spawn;
+        const targets = this.map.getAt({ x, y })?.spawn;
 
         if (targets && targets.includes(target)) {
           positions.push({ x, y });
@@ -118,117 +110,146 @@ export class Level extends TileMatrix implements ILevel {
     return positions;
   }
 
-  public hideTiles() {
-    for (let x = 0; x < this.size; x++) {
-      for (let y = 0; y < this.size; y++) {
-        for (let z = 0; z < this.height; z++) {
-          const tile = this.getTile({ x, y, z });
-
-          if (tile) {
-            tile.setVisible(false);
-            tile.mapEffects?.forEach((effect) => {
-              effect.setVisible(false);
-            });
-          }
-        }
-      }
-    }
-  }
-
   public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
-    const tiles = this.getTiles()
-      .filter((tile) => (tile?.biome?.z === 1))
-      .map((tile) => tile.shape) as Hexagon[];
-    const line = new Phaser.Geom.Line(positionA.x, positionA.y, positionB.x, positionB.y);
-    const point = Phaser.Geom.Intersects.GetLineToPolygon(line, tiles);
+    const positionAtMatrixA = Level.ToMatrixPosition(positionA);
+    const positionAtMatrixB = Level.ToMatrixPosition(positionB);
+    const line = interpolate(positionAtMatrixA, positionAtMatrixB);
 
-    return Boolean(point);
+    return line.some((point) => this.getTile({ ...point, z: 1 })?.tileType === TileType.MAP);
   }
 
-  public updateVisibleTiles() {
-    const d = Math.max(window.innerWidth, window.innerHeight) * LEVEL_MAP_VISIBLE_PART;
-    const c = Math.ceil(d / 52);
-    const center = this.scene.player.getPositionOnGround();
-    const area = new Phaser.Geom.Ellipse(center.x, center.y, d, d * LEVEL_TILE_SIZE.persperctive);
-    const visibleTiles = this.visibleTiles.getChildren() as ITile[];
-
-    visibleTiles.forEach((tile) => {
-      tile.setVisible(false);
-      tile.mapEffects?.forEach((effect) => {
-        effect.setVisible(false);
-      });
+  private addTilemap() {
+    const data = new Phaser.Tilemaps.MapData({
+      width: LEVEL_MAP_SIZE,
+      height: LEVEL_MAP_SIZE,
+      tileWidth: LEVEL_TILE_SIZE.width,
+      tileHeight: LEVEL_TILE_SIZE.height * 0.5,
+      orientation: Phaser.Tilemaps.Orientation.ISOMETRIC,
+      format: Phaser.Tilemaps.Formats.ARRAY_2D,
     });
-    this.visibleTiles.clear();
 
-    for (let z = 0; z < this.height; z++) {
-      for (let y = this.scene.player.positionAtMatrix.y - c + 1; y <= this.scene.player.positionAtMatrix.y + c + 1; y++) {
-        for (let x = this.scene.player.positionAtMatrix.x - c + 1; x <= this.scene.player.positionAtMatrix.x + c + 1; x++) {
-          const tile = this.scene.level.getTile({ x, y, z });
+    const tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
+    const tileset = tilemap.addTilesetImage(
+      LevelTexture.TILESET,
+      undefined,
+      LEVEL_TILE_SIZE.width,
+      LEVEL_TILE_SIZE.height,
+    );
 
-          if (tile && area.contains(tile.x, tile.y)) {
-            this.visibleTiles.add(tile);
-            tile.setVisible(true);
-            tile.mapEffects?.forEach((effect) => {
-              effect.setVisible(true);
-            });
-          }
+    if (!tileset) {
+      throw Error('Unable to create map tileset');
+    }
+
+    this.addFalloffLayer(tilemap, tileset);
+    this.addGroundLayer(tilemap, tileset);
+  }
+
+  private addGroundLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
+    const layer = tilemap.createBlankLayer(
+      'ground',
+      tileset,
+      -LEVEL_TILE_SIZE.width * 0.5,
+      -LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
+    );
+
+    if (!layer) {
+      throw Error('Unable to create map layer');
+    }
+
+    this.groundLayer = layer;
+  }
+
+  private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
+    const sizeInPixel = Math.max(this.scene.sys.canvas.clientWidth, this.scene.sys.canvas.clientHeight) * 0.5;
+    const offset = Math.ceil(sizeInPixel / (LEVEL_TILE_SIZE.height * 0.5));
+    const sizeInTiles = offset * 2 + LEVEL_MAP_SIZE;
+    const position = Level.ToWorldPosition({ x: -offset, y: -offset, z: 0 });
+
+    const layer = tilemap.createBlankLayer(
+      'falloff',
+      tileset,
+      position.x - LEVEL_TILE_SIZE.width * 0.5,
+      position.y - LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
+      sizeInTiles,
+      sizeInTiles,
+    );
+
+    if (!layer) {
+      return;
+    }
+
+    const biome = Level.GetBiome(BiomeType.WATER);
+
+    if (!biome) {
+      return;
+    }
+
+    const index = Array.isArray(biome.tileIndex)
+      ? biome.tileIndex[0]
+      : biome.tileIndex;
+
+    for (let y = 0; y < sizeInTiles; y++) {
+      for (let x = 0; x < sizeInTiles; x++) {
+        if (x < offset || x >= sizeInTiles - offset || y < offset || y >= sizeInTiles - offset) {
+          layer.putTileAt(index, x, y, false);
         }
       }
     }
   }
 
-  private makeMapTiles() {
-    const make = (position: Vector2D, biome: LevelBiome) => {
-      const variant = Array.isArray(biome.tileIndex)
+  private addMapTiles() {
+    const addTile = (position: Vector2D, biome: LevelBiome) => {
+      const index = Array.isArray(biome.tileIndex)
         ? Phaser.Math.Between(...biome.tileIndex)
         : biome.tileIndex;
-      const tilePosition: Vector3D = { ...position, z: biome.z };
-      const positionAtWorld = Level.ToWorldPosition(tilePosition);
-      const tile = this.scene.add.image(positionAtWorld.x, positionAtWorld.y, LevelTexture.TILESET, variant) as ITile;
 
-      tile.tileType = TileType.MAP;
-      tile.mapEffects = [];
-      tile.biome = biome;
-
-      tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-      tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-      this.putTile(tile, tilePosition, false);
-      this.mapTiles.add(tile);
-
-      if (biome.z === 1) {
-        // Add shape to check collisions
-        tile.shape = new Hexagon(
-          positionAtWorld.x - LEVEL_TILE_SIZE.width * 0.5 - 3,
-          positionAtWorld.y - LEVEL_TILE_SIZE.height * 0.25,
-          LEVEL_TILE_SIZE.height * 0.5,
-        );
+      if (biome.z === 0) {
+        // Add tile to static tilemap layer
+        this.groundLayer.putTileAt(index, position.x, position.y, false);
+      } else {
+        // Add tile as image
+        // Need for correct calculate depth
+        this.addMountTile(index, { ...position, z: biome.z });
       }
     };
 
-    this.mapTiles = this.scene.add.group();
     this.map.each((position, biome) => {
-      make(position, biome);
+      addTile(position, biome);
 
       // Add tile to hole
       if (biome.z > 1) {
         const z = biome.z - 1;
-        const insideMap = (position.x + 1 < this.map.width && position.y + 1 < this.map.height);
+        const shiftX = this.map.getAt({ x: position.x + 1, y: position.y });
+        const shiftY = this.map.getAt({ x: position.x, y: position.y + 1 });
 
-        if (insideMap && (
-          this.map.getAt({ x: position.x, y: position.y + 1 }).z !== z
-          || this.map.getAt({ x: position.x + 1, y: position.y }).z !== z
-        )) {
-          const neededBiome = LEVEL_BIOMES.find((b) => (b.data.z === z));
+        if ((shiftX && shiftX.z !== z) || (shiftY && shiftY.z !== z)) {
+          const patch = LEVEL_BIOMES.find((b) => (b.data.z === z));
 
-          if (neededBiome) {
-            make(position, neededBiome.data);
+          if (patch) {
+            addTile(position, patch.data);
           }
         }
       }
     });
   }
 
-  private makeTrees() {
+  private addMountTile(index: number, tilePosition: Vector3D) {
+    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const tile = this.scene.add.image(
+      positionAtWorld.x,
+      positionAtWorld.y,
+      LevelTexture.TILESET,
+      index,
+    ) as ITile;
+
+    tile.tileType = TileType.MAP;
+
+    tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
+    this.putTile(tile, tilePosition, false);
+  }
+
+  private addTreesTiles() {
     this.treesTiles = this.scene.add.group();
 
     const positions = this.readSpawnPositions(SpawnTarget.TREE);
@@ -237,7 +258,7 @@ export class Level extends TileMatrix implements ILevel {
       const positionAtMatrix: Vector2D = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition: Vector3D = { ...positionAtMatrix, z: 1 };
 
-      if (!this.getTile(tilePosition)) {
+      if (this.isFreePoint(tilePosition)) {
         const positionAtWorld = Level.ToWorldPosition(tilePosition);
         const tile = this.scene.add.image(
           positionAtWorld.x,
@@ -247,6 +268,7 @@ export class Level extends TileMatrix implements ILevel {
         ) as ITile;
 
         tile.tileType = TileType.TREE;
+        tile.clearable = true;
 
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
         tile.setOrigin(0.5, LEVEL_TREE_TILE_SIZE.origin);
@@ -281,11 +303,11 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static GetDepth(YAtWorld: number, tileZ: number, offset: number = 0) {
-    return YAtWorld + (tileZ * LEVEL_Z_WEIGHT) + offset;
+    return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + offset;
   }
 
   static GetTileDepth(YAtWorld: number, tileZ: number) {
-    return YAtWorld + (tileZ * LEVEL_Z_WEIGHT) + LEVEL_TILE_SIZE.height * 0.5;
+    return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + LEVEL_TILE_SIZE.height * 0.5;
   }
 
   static GetBiome(type: BiomeType): Nullable<LevelBiome> {

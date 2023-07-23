@@ -73,6 +73,11 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   getActionsRadius(): number
 
   /**
+   * Get actions pause.
+   */
+  getActionsPause(): number
+
+  /**
    * Get resources need to upgrade level.
    */
   getUpgradeCost(): number
@@ -95,12 +100,12 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Add alert icon.
    */
-  addAlert(): void
+  addAlertIcon(): void
 
   /**
    * Remove alert icon.
    */
-  removeAlert(): void
+  removeAlertIcon(): void
 }
 
 export interface IBuildingAmmunition extends IBuilding {
@@ -150,13 +155,26 @@ export enum BuildingVariant {
 }
 
 export enum BuildingTexture {
-  WALL = 'building/wall',
-  TOWER_FIRE = 'building/tower_fire',
-  TOWER_FROZEN = 'building/tower_frozen',
-  TOWER_LAZER = 'building/tower_lazer',
-  GENERATOR = 'building/generator',
-  AMMUNITION = 'building/ammunition',
-  MEDIC = 'building/medic',
+  WALL = 'building/textures/wall',
+  TOWER_FIRE = 'building/textures/tower_fire',
+  TOWER_FROZEN = 'building/textures/tower_frozen',
+  TOWER_LAZER = 'building/textures/tower_lazer',
+  GENERATOR = 'building/textures/generator',
+  AMMUNITION = 'building/textures/ammunition',
+  MEDIC = 'building/textures/medic',
+}
+
+export enum BuildingIcon {
+  ALERT = 'building/icons/alert',
+  UPGRADE = 'building/icons/upgrade',
+  HEALTH = 'building/icons/params/health',
+  RADIUS = 'building/icons/params/radius',
+  AMMO = 'building/icons/params/ammo',
+  HEAL = 'building/icons/params/heal',
+  DAMAGE = 'building/icons/params/damage',
+  RESOURCES = 'building/icons/params/resources',
+  SPEED = 'building/icons/params/speed',
+  PAUSE = 'building/icons/params/pause',
 }
 
 export enum BuildingAudio {
@@ -169,17 +187,6 @@ export enum BuildingAudio {
   RELOAD = 'building/reload',
   DAMAGE_1 = 'building/damage_1',
   DAMAGE_2 = 'building/damage_2',
-}
-
-export enum BuildingIcon {
-  HEALTH = 0,
-  RADIUS = 1,
-  AMMO = 2,
-  HEAL = 3,
-  DAMAGE = 4,
-  RESOURCES = 5,
-  PAUSE = 6,
-  SPEED = 7,
 }
 
 export enum BuildingOutlineState {

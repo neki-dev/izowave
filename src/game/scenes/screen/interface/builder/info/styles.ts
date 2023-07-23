@@ -8,9 +8,7 @@ const animationOpacity = keyframes`
 `;
 
 export const Wrapper = styled.div`
-  width: 280px;
-  background: ${InterfaceColor.BLUE_DARK}cc;
-  padding: 20px;
+  width: 260px;
   animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
@@ -20,51 +18,49 @@ export const Wrapper = styled.div`
     transform: translate(100%, -50%);
     border-top: 12px solid transparent;
     border-bottom: 12px solid transparent;
-    border-left: 15px solid ${InterfaceColor.BLUE_DARK}cc;
+    border-left: 15px solid ${InterfaceColor.BLUE_BLACK}ee;
   }
 `;
 
-export const Header = styled.div`
+export const Head = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 20px;
+  background: ${InterfaceColor.BLUE_BLACK}ee;
+  height: 59px;
+`;
+
+export const Body = styled.div`
+  padding: 18px 20px 20px 20px;
+  background: ${InterfaceColor.BLUE_DARK}cc;
 `;
 
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL};
   color: ${InterfaceColor.INFO};
-  font-size: 18px;
-  line-height: 18px;
-  text-shadow: 2px 2px 0 #000;
-  padding-bottom: 2px;
-`;
-
-export const Limit = styled.div`
-  color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 13px;
-  line-height: 13px;
-  background: rgba(0, 0, 0, 0.25);
-  padding: 3px 5px;
-  &.attention {
-    background: ${InterfaceColor.ERROR_DARK};
-  }
-`;
-
-export const Description = styled.div`
-  margin-top: 10px;
-  color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 14px;
+  font-size: 16px;
   line-height: 16px;
 `;
 
-export const Allowance = styled(Description)`
-  color: ${InterfaceColor.WARN};
+export const Description = styled.div`
+  color: #fff;
+  font-family: ${InterfaceFont.MONOSPACE};
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: bold;
 `;
 
-export const Cost: any = styled.div`
-  margin-top: 10px;
-  padding: 8px 10px;
-  background: rgba(0, 0, 0, 0.25);
+export const Alert = styled.div<{
+  $attention?: boolean
+}>`
+  color: ${(props) => (props.$attention
+    ? InterfaceColor.WARN
+    : '#ccc'
+  )};
+  font-family: ${InterfaceFont.MONOSPACE};
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: bold;
+  margin-top: 8px;
 `;

@@ -73,7 +73,7 @@ export class BuildingMedic extends Building {
   }
 
   private getTarget() {
-    const candidates = [this.scene.player, this.scene.player.assistant];
+    const candidates = [this.scene.player, this.scene.assistant];
 
     return candidates.find((candidate) => (
       candidate
@@ -96,24 +96,24 @@ export class BuildingMedic extends Building {
 
     target.live.addHealth(health);
 
-    if (
-      !this.visible
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
     }
 
     new Particles(this, {
       key: 'heal',
-      texture: ParticlesTexture.BIT,
-      positionAtWorld: this,
+      texture: ParticlesTexture.GLOW,
+      positionAtWorld: {
+        x: this.x,
+        y: this.y - 8,
+      },
       params: {
-        duration: 500,
+        duration: 400,
         lifespan: { min: 100, max: 300 },
-        scale: { start: 1.0, end: 0.5 },
-        speed: 100,
+        scale: { start: 0.2, end: 0.05 },
+        speed: 60,
         maxAliveParticles: 6,
-        alpha: 0.75,
+        blendMode: 'ADD',
       },
     });
   }

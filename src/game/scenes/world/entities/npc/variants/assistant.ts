@@ -22,6 +22,7 @@ import {
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
+import { WaveEvents } from '~type/world/wave';
 
 export class Assistant extends NPC implements IAssistant {
   private shot: IShot;
@@ -51,7 +52,7 @@ export class Assistant extends NPC implements IAssistant {
       speed: DIFFICULTY.ASSISTANT_ATTACK_SPEED,
       damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
     });
-    this.shot.setInitiator(this);
+    this.shot.setInitiator(this, () => this.body.center);
     this.shotDefaultParams = this.shot.params;
 
     this.gamut = ASSISTANT_TILE_SIZE.gamut;
@@ -61,6 +62,7 @@ export class Assistant extends NPC implements IAssistant {
     this.body.setCircle(this.width / 2, 0, 1);
 
     this.addHealthIndicator(0xd0ff4f);
+    this.addWaveCompleteHandler();
 
     this.scene.physics.add.collider(
       this,
@@ -97,13 +99,11 @@ export class Assistant extends NPC implements IAssistant {
   }
 
   public onDead() {
-    if (
-      this.visible
-      && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    this.scene.sound.play(AssistantAudio.DEAD);
+
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
-        audio: AssistantAudio.DEAD,
         position: this.body.center,
         depth: this.depth + 1,
       });
@@ -189,6 +189,18 @@ export class Assistant extends NPC implements IAssistant {
     };
 
     return params;
+  }
+
+  private addWaveCompleteHandler() {
+    const handler = () => {
+      this.live.heal();
+    };
+
+    this.scene.wave.on(WaveEvents.COMPLETE, handler);
+
+    this.on(Phaser.Scenes.Events.DESTROY, () => {
+      this.scene.wave.off(WaveEvents.COMPLETE, handler);
+    });
   }
 }
 

@@ -1,18 +1,10 @@
 import { WorldBiomeParams, WorldLayerParams } from 'gen-biome';
 
-import { getPerformance } from '~lib/optimize';
-import { PerformanceLevel } from '~type/optimize';
 import {
   BiomeType, LevelBiome, SpawnTarget, TileMeta,
 } from '~type/world/level';
 
-export const LEVEL_MAP_SIZE = (() => {
-  switch (getPerformance()) {
-    case PerformanceLevel.HIGH: return 110;
-    case PerformanceLevel.MEDIUM: return 100;
-    default: return 90;
-  }
-})();
+export const LEVEL_MAP_SIZE = 100;
 
 export const LEVEL_TILE_SIZE: TileMeta = {
   width: 42,
@@ -26,8 +18,6 @@ export const LEVEL_MAP_MAX_HEIGHT = 4;
 
 export const LEVEL_MAP_VISIBLE_PART = 0.8;
 
-export const LEVEL_Z_WEIGHT = 999;
-
 export const LEVEL_TREES_COUNT = LEVEL_MAP_SIZE * 2;
 
 export const LEVEL_TREE_TILE_SIZE = {
@@ -37,8 +27,6 @@ export const LEVEL_TREE_TILE_SIZE = {
 };
 
 export const LEVEL_BUILDING_PATH_COST = 16.0;
-
-export const LEVEL_SPAWN_POSITIONS_STEP = 2;
 
 export const LEVEL_BIOMES: Array<{
   params?: WorldBiomeParams
@@ -129,7 +117,7 @@ export const LEVEL_BIOMES: Array<{
     collide: false,
     solid: true,
     friction: 1.0,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.TREE],
+    spawn: [SpawnTarget.ENEMY],
   },
 }, {
   params: { lowerBound: 0.54, upperBound: 0.59 },
@@ -191,4 +179,5 @@ export const LEVEL_BIOME_PARAMETERS: WorldLayerParams = {
   frequencyChange: 0.2,
   heightRedistribution: 0.7,
   borderSmoothness: 0.8,
+  falloff: 0.3,
 };

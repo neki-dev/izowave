@@ -32,12 +32,10 @@ export class BuildingWall extends Building {
       texture: BuildingWall.Texture,
     });
 
-    this.on(BuildingEvents.UPGRADE, () => {
-      this.upgradeMaxHealth();
-    });
+    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
-  private upgradeMaxHealth() {
+  private onUpgrade() {
     const health = progressionLinear(
       DIFFICULTY.BUILDING_WALL_HEALTH,
       DIFFICULTY.BUILDING_WALL_HEALTH_GROWTH,
@@ -45,6 +43,5 @@ export class BuildingWall extends Building {
     );
 
     this.live.setMaxHealth(health);
-    this.live.heal();
   }
 }

@@ -19,25 +19,23 @@ export const Wrapper = styled.div`
   z-index: 2;
 `;
 
-export const Item = styled.div`
-  padding: 8px 15px 10px 15px;
+export const Item = styled.div<{
+  $type: NoticeType
+}>`
+  padding: 8px 15px 9px 15px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL};
   font-size: 16px;
   line-height: 16px;
-  text-shadow: 1px 1px 0 #000;
-  border-bottom: 2px solid #000;
   animation: ${animationOpacity} 0.2s ease-in;
   &:not(:last-child) {
     margin-bottom: 8px;
   }
-  &.${NoticeType.INFO} {
-    background: ${InterfaceColor.INFO_DARK};
-  }
-  &.${NoticeType.WARN} {
-    background: ${InterfaceColor.WARN_DARK};
-  }
-  &.${NoticeType.ERROR} {
-    background: ${InterfaceColor.ERROR_DARK};
-  }
+  background: ${(props) => {
+    switch (props.$type) {
+      case NoticeType.WARN: return InterfaceColor.WARN_DARK;
+      case NoticeType.ERROR: return InterfaceColor.ERROR_DARK;
+      default: return InterfaceColor.BLUE;
+    }
+  }}
 `;

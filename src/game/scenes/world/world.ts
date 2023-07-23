@@ -2,33 +2,38 @@ import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CONTROL_KEY } from '~const/controls';
-import { WORLD_FIND_PATH_RATE, WORLD_MAX_ZOOM, WORLD_MIN_ZOOM } from '~const/world';
+import { WORLD_FEATURES, WORLD_FIND_PATH_RATE } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
-  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS,
+  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
 } from '~const/world/entities/enemy';
 import { Crystal } from '~entity/crystal';
+import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { registerImageAssets } from '~lib/assets';
-import { sortByDistance } from '~lib/utils';
+import {
+  aroundPosition, progressionLinear, sortByDistance,
+} from '~lib/utils';
 import { Builder } from '~scene/world/builder';
+import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
+import { NoticeType } from '~type/screen';
 import {
-  IWorld, WorldEvents, WorldHint, WorldIcon,
+  IWorld, WorldEvents, WorldFeature, WorldHint,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
+import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
+import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
-import { IPlayer } from '~type/world/entities/player';
+import { IPlayer, PlayerUpgrade } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -41,6 +46,12 @@ export class World extends Scene implements IWorld {
   public get player() { return this._player; }
 
   private set player(v) { this._player = v; }
+
+  private _assistant: Nullable<IAssistant> = null;
+
+  public get assistant() { return this._assistant; }
+
+  private set assistant(v) { this._assistant = v; }
 
   private _level: ILevel;
 
@@ -60,11 +71,17 @@ export class World extends Scene implements IWorld {
 
   private set builder(v) { this._builder = v; }
 
+  private _camera: ICamera;
+
+  public get camera() { return this._camera; }
+
+  private set camera(v) { this._camera = v; }
+
   public selectedBuilding: Nullable<IBuilding> = null;
 
   private enemySpawnPositions: Vector2D[] = [];
 
-  private lifecyleTimer: Phaser.Time.TimerEvent;
+  private lifecyle: Phaser.Time.TimerEvent;
 
   private nextFindPathTimestamp: number = 0;
 
@@ -76,33 +93,45 @@ export class World extends Scene implements IWorld {
 
   private set deltaTime(v) { this._deltaTime = v; }
 
+  private _activeFeatures: Partial<Record<WorldFeature, boolean>> = {};
+
+  public get activeFeatures() { return this._activeFeatures; }
+
+  private set activeFeatures(v) { this._activeFeatures = v; }
+
   constructor() {
     super(GameScene.WORLD);
   }
 
   public create() {
-    this.makeLevel();
-    this.addLifecycleTime();
-
     this.input.setPollAlways();
+
+    this.lifecyle = this.time.addEvent({
+      delay: Number.MAX_SAFE_INTEGER,
+      loop: true,
+    });
+
+    this.level = new Level(this);
+    this.camera = new Camera(this);
+
+    this.enemySpawnPositions = this.level.readSpawnPositions(
+      SpawnTarget.ENEMY,
+      ENEMY_SPAWN_POSITIONS_GRID,
+    );
   }
 
   public start() {
     new Interface(this, WorldUI);
 
-    this.setTimePause(!this.game.tutorial.isDisabled);
-
-    this.addZoomControl();
     this.addEntityGroups();
 
     this.wave = new Wave(this);
 
     this.addPlayer();
+    this.addAssistant();
     this.addCrystals();
 
     this.builder = new Builder(this);
-
-    this.level.hideTiles();
   }
 
   public update(time: number, delta: number) {
@@ -115,7 +144,6 @@ export class World extends Scene implements IWorld {
     this.player.update();
     this.builder.update();
     this.wave.update();
-    this.level.updateVisibleTiles();
     this.updateNPCPath();
   }
 
@@ -134,15 +162,15 @@ export class World extends Scene implements IWorld {
   }
 
   public getTime() {
-    return Math.floor(this.lifecyleTimer.getElapsed());
+    return Math.floor(this.lifecyle.getElapsed());
   }
 
   public isTimePaused() {
-    return this.lifecyleTimer.paused;
+    return this.lifecyle.paused;
   }
 
   public setTimePause(state: boolean) {
-    this.lifecyleTimer.paused = state;
+    this.lifecyle.paused = state;
   }
 
   public addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject) {
@@ -166,24 +194,24 @@ export class World extends Scene implements IWorld {
 
   public spawnEnemy(variant: EnemyVariant) {
     const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
-    const allowedPositions = this.enemySpawnPositions.filter((position) => (
+    const freePositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building) => (
         Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
       ))
     ));
 
-    if (allowedPositions.length === 0) {
-      console.warn('Invalid enemy spawn positions');
+    if (freePositions.length === 0) {
+      console.warn('Not found free position for enemy spawn');
 
       return null;
     }
 
     const EnemyInstance = ENEMIES[variant];
-    const positions = sortByDistance(allowedPositions, this.player.positionAtMatrix)
+    const closestPositions = sortByDistance(freePositions, this.player.positionAtMatrix)
       .slice(0, ENEMY_SPAWN_POSITIONS);
     const enemy: IEnemy = new EnemyInstance(this, {
-      positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
+      positionAtMatrix: Phaser.Utils.Array.GetRandom(closestPositions),
     });
 
     return enemy;
@@ -202,6 +230,41 @@ export class World extends Scene implements IWorld {
       x: sprite.body.center.x + offset.x,
       y: sprite.body.center.y + offset.y,
     };
+  }
+
+  public getFeatureCost(type: WorldFeature) {
+    return progressionLinear(
+      WORLD_FEATURES[type].cost,
+      DIFFICULTY.FEATURE_COST_GROWTH,
+      this.wave.number,
+    );
+  }
+
+  public useFeature(type: WorldFeature) {
+    if (this.activeFeatures[type] || !this.wave.isGoing) {
+      return;
+    }
+
+    const cost = this.getFeatureCost(type);
+
+    if (this.player.resources < cost) {
+      this.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+
+      return;
+    }
+
+    this.activeFeatures[type] = true;
+
+    this.player.takeResources(cost);
+
+    this.events.emit(WorldEvents.USE_FEATURE, type);
+
+    this.time.addEvent({
+      delay: WORLD_FEATURES[type].duration,
+      callback: () => {
+        delete this.activeFeatures[type];
+      },
+    });
   }
 
   private updateNPCPath() {
@@ -226,26 +289,20 @@ export class World extends Scene implements IWorld {
     this.nextFindPathTimestamp = now + WORLD_FIND_PATH_RATE;
   }
 
-  private addLifecycleTime() {
-    this.lifecyleTimer = this.time.addEvent({
-      delay: Number.MAX_SAFE_INTEGER,
-      loop: true,
-    });
-  }
-
   private addEntityGroups() {
     this.entityGroups = {
-      [EntityType.BUILDING]: this.add.group({ runChildUpdate: true }),
-      [EntityType.NPC]: this.add.group({ runChildUpdate: true }),
-      [EntityType.ENEMY]: this.add.group(),
-      [EntityType.SHOT]: this.add.group({ runChildUpdate: true }),
       [EntityType.CRYSTAL]: this.add.group(),
+      [EntityType.ENEMY]: this.add.group(),
+      [EntityType.NPC]: this.add.group({
+        runChildUpdate: true,
+      }),
+      [EntityType.BUILDING]: this.add.group({
+        runChildUpdate: true,
+      }),
+      [EntityType.SHOT]: this.add.group({
+        runChildUpdate: true,
+      }),
     };
-  }
-
-  private makeLevel() {
-    this.level = new Level(this);
-    this.enemySpawnPositions = this.level.readSpawnPositions(SpawnTarget.ENEMY);
   }
 
   private addPlayer() {
@@ -255,13 +312,38 @@ export class World extends Scene implements IWorld {
       positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
     });
 
-    this.cameras.main.resetFX();
-    this.cameras.main.startFollow(this.player);
-    this.cameras.main.setZoom(WORLD_MIN_ZOOM);
-    this.cameras.main.zoomTo(WORLD_MAX_ZOOM, 100);
+    this.camera.focusOn(this.player);
 
     this.player.live.on(LiveEvents.DEAD, () => {
+      this.camera.zoomOut();
       this.game.finishGame();
+    });
+  }
+
+  private addAssistant() {
+    const create = () => {
+      const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
+        const biome = this.level.map.getAt(spawn);
+
+        return biome?.solid;
+      });
+
+      this.assistant = new Assistant(this, {
+        owner: this.player,
+        positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
+        speed: this.player.speed,
+        health: this.player.live.maxHealth,
+        level: this.player.upgradeLevel[PlayerUpgrade.ASSISTANT],
+      });
+    };
+
+    create();
+
+    this.assistant?.on(Phaser.Scenes.Events.DESTROY, () => {
+      this.assistant = null;
+      this.wave.once(WaveEvents.COMPLETE, () => {
+        create();
+      });
     });
   }
 
@@ -291,20 +373,4 @@ export class World extends Scene implements IWorld {
       }
     });
   }
-
-  private addZoomControl() {
-    this.input.keyboard?.on(CONTROL_KEY.ZOOM_OUT, () => {
-      if (this.cameras.main.zoom === WORLD_MAX_ZOOM) {
-        this.cameras.main.zoomTo(WORLD_MIN_ZOOM, 300);
-      }
-    });
-
-    this.input.keyboard?.on(CONTROL_KEY.ZOOM_IN, () => {
-      if (this.cameras.main.zoom === WORLD_MIN_ZOOM) {
-        this.cameras.main.zoomTo(WORLD_MAX_ZOOM, 300);
-      }
-    });
-  }
 }
-
-registerImageAssets(WorldIcon.ALERT);

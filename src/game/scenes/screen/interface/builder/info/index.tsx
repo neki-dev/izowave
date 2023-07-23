@@ -1,29 +1,22 @@
-import cn from 'classnames';
 import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { ComponentAmount } from '~scene/basic/interface/amount';
-import { ComponentBuildingParameters } from '~scene/basic/interface/building-parameters';
+import { BuildingParams } from '~scene/system/interface/building-params';
+import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Allowance,
-  Cost,
-  Description,
-  Header,
-  Limit,
-  Name,
-  Wrapper,
+  Alert, Description, Head, Name, Wrapper, Body,
 } from './styles';
 
 type Props = {
   variant: BuildingVariant
 };
 
-export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
+export const BuilderInfo: React.FC<Props> = ({ variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [limit, setLimit] = useState<Nullable<number>>(null);
@@ -34,56 +27,39 @@ export const ComponentBuilderInfo: React.FC<Props> = ({ variant }) => {
   useSceneUpdate(world, () => {
     const currentIsAllowByWave = world.builder.isBuildingAllowByWave(variant);
     const currentIsAllowByTutorial = world.builder.isBuildingAllowByTutorial(variant);
+    const currentLimit = world.builder.getBuildingLimit(variant);
 
     setAllowByWave(currentIsAllowByWave);
     setAllowByTutorial(currentIsAllowByTutorial);
-
-    if (currentIsAllowByWave && currentIsAllowByTutorial) {
-      const currentLimit = world.builder.getBuildingLimit(variant);
-
-      setLimit(currentLimit);
-      if (currentLimit) {
-        setExistCount(world.getBuildingsByVariant(variant).length);
-      }
+    setLimit(currentLimit);
+    if (currentLimit) {
+      setExistCount(world.getBuildingsByVariant(variant).length);
     }
   });
 
   return (
-    <Wrapper>
-      <Header>
-        <Name>{BUILDINGS[variant].Name}</Name>
-        {isAllowByWave && isAllowByTutorial && limit && (
-          <Limit
-            className={cn({
-              attention: existCount >= limit,
-            })}
-          >
-            {existCount}/{limit}
-          </Limit>
-        )}
-      </Header>
-      <Description>{BUILDINGS[variant].Description}</Description>
-
-      {!isAllowByWave && (
-        <Allowance>
-          Available from {BUILDINGS[variant].AllowByWave} wave
-        </Allowance>
-      )}
-
-      {isAllowByWave && isAllowByTutorial && (
-        <>
-          <ComponentBuildingParameters params={BUILDINGS[variant].Params} />
-          <Cost>
-            <ComponentAmount
-              type="resources"
-              label="BUILDING COST"
-              value={BUILDINGS[variant].Cost}
-            />
-          </Cost>
-        </>
-      )}
-    </Wrapper>
+    isAllowByTutorial && (
+      <Wrapper>
+        <Head>
+          <Name>{BUILDINGS[variant].Name}</Name>
+          <Cost type="resources" value={BUILDINGS[variant].Cost} size="large" />
+        </Head>
+        <Body>
+          <Description>{BUILDINGS[variant].Description}</Description>
+          {isAllowByWave ? (
+            !!limit && (
+              <Alert $attention={existCount >= limit}>
+                Current limit: {existCount}/{limit}
+              </Alert>
+            )
+          ) : (
+            <Alert $attention>
+              Available from <b>{BUILDINGS[variant].AllowByWave}</b> wave
+            </Alert>
+          )}
+          <BuildingParams list={BUILDINGS[variant].Params} />
+        </Body>
+      </Wrapper>
+    )
   );
 };
-
-ComponentBuilderInfo.displayName = 'ComponentBuilderInfo';

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Overlay = styled.div`
+export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   padding: 32px;
@@ -14,18 +14,26 @@ export const Grid = styled.div`
   width: 100%;
 `;
 
-export const Column = styled.div`
+export const Column = styled.div<{
+  $side: string
+}>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
-  &.left {
-    justify-self: start;
-  }
-  &.center {
-    justify-self: center;
-  }
-  &.right {
-    justify-self: end;
-  }
+  ${(props) => {
+    switch (props.$side) {
+      case 'left': return css`
+        justify-self: start;
+        align-items: flex-start;
+      `;
+      case 'center': return css`
+        justify-self: center;
+        align-items: center;
+      `;
+      case 'right': return css`
+        justify-self: end;
+        align-items: flex-end;
+      `;
+    }
+  }}
 `;

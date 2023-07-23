@@ -11,8 +11,10 @@ import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
+import { EntityType } from '~type/world/entities';
 import { BuildingAudio, BuildingVariant } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
+import { INPC } from '~type/world/entities/npc';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
 export class Builder extends EventEmitter implements IBuilder {
@@ -46,32 +48,20 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene = scene;
 
     this.setMaxListeners(0);
-
-    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
-      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
-    });
-
-    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
-      if (Number(e.key)) {
-        this.switchBuildingVariant(Number(e.key) - 1);
-      }
-    });
+    this.addKeyboardHandler();
+    this.addTutorialHandler();
 
     this.scene.player.live.on(LiveEvents.DEAD, () => {
       this.closeBuilder();
-    });
-
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
-      end: () => {
-        this.scene.setTimePause(false);
-        this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
-      },
     });
   }
 
   public update() {
     if (this.isCanBuild()) {
-      if (!this.isBuild) {
+      if (this.isBuild) {
+        this.updateBuildAreaPosition();
+        this.updateBuildingPreview();
+      } else {
         this.openBuilder();
       }
     } else if (this.isBuild) {
@@ -90,14 +80,10 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[variant];
 
     if (!this.isBuildingAllowByWave(variant)) {
-      // eslint-disable-next-line max-len
-      this.scene.game.screen.notice(NoticeType.ERROR, `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`);
-
-      return;
-    }
-
-    if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(
+        NoticeType.ERROR,
+        `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`,
+      );
 
       return;
     }
@@ -131,21 +117,16 @@ export class Builder extends EventEmitter implements IBuilder {
 
     for (let y = position.y - 1; y <= position.y + 1; y++) {
       for (let x = position.x - 1; x <= position.x + 1; x++) {
-        const tileGround = this.scene.level.getTile({ x, y, z: 0 });
+        const biome = this.scene.level.map.getAt({ x, y });
 
-        if (
-          tileGround?.biome
-          && tileGround.biome.solid
-          && tileGround.biome.type !== BiomeType.RUBBLE
-        ) {
+        if (biome && biome.solid && biome.type !== BiomeType.RUBBLE) {
           // Replace biome
-          const frame = Array.isArray(newBiome.tileIndex)
+          const index = Array.isArray(newBiome.tileIndex)
             ? Phaser.Math.Between(...newBiome.tileIndex)
             : newBiome.tileIndex;
 
-          tileGround.setFrame(frame);
-          tileGround.clearTint();
-          tileGround.biome = newBiome;
+          this.scene.level.groundLayer.putTileAt(index, x, y);
+          this.scene.level.map.replaceAt({ x, y }, newBiome);
 
           // Remove trees
           const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.TREE);
@@ -155,18 +136,23 @@ export class Builder extends EventEmitter implements IBuilder {
           }
 
           // Remove effects
-          if (tileGround.mapEffects) {
-            tileGround.mapEffects.forEach((effect) => {
+          this.scene.level.effectsOnGround.forEach((effect) => {
+            const positionAtMatrix = Level.ToMatrixPosition(effect);
+
+            if (equalPositions(positionAtMatrix, { x, y })) {
               effect.destroy();
-            });
-            tileGround.mapEffects = [];
-          }
+            }
+          });
         }
       }
     }
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
+    if (!this.scene.game.tutorial.isEnabled) {
+      return true;
+    }
+
     const links: {
       step: TutorialStep
       variant: BuildingVariant
@@ -195,7 +181,13 @@ export class Builder extends EventEmitter implements IBuilder {
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
     const limit = BUILDINGS[variant].Limit;
 
-    return limit ? limit * this.scene.wave.getSeason() : null;
+    if (!limit) {
+      return null;
+    }
+
+    const stage = Math.floor(this.scene.wave.number / 2);
+
+    return Math.floor((stage + 1) * limit);
   }
 
   private getAssumedPosition() {
@@ -213,10 +205,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  private onMouseMove() {
-    this.updateBuildingPreview();
-  }
-
   private openBuilder() {
     if (this.isBuild) {
       return;
@@ -226,7 +214,6 @@ export class Builder extends EventEmitter implements IBuilder {
     this.createBuildingPreview();
 
     this.scene.input.on(Phaser.Input.Events.POINTER_UP, this.onMouseClick, this);
-    this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
 
     this.isBuild = true;
 
@@ -239,7 +226,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.input.off(Phaser.Input.Events.POINTER_UP, this.onMouseClick);
-    this.scene.input.off(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove);
 
     this.destroyBuildingPreview();
     this.destroyBuildArea();
@@ -270,7 +256,6 @@ export class Builder extends EventEmitter implements IBuilder {
     return (
       this.variant !== null
       && !this.scene.player.live.isDead()
-      && this.scene.player.isStopped()
     );
   }
 
@@ -292,10 +277,9 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    const tileGround = this.scene.level.getTile({ ...positionAtMatrix, z: 0 });
-    const isSolid = tileGround?.biome?.solid;
+    const biome = this.scene.level.map.getAt(positionAtMatrix);
 
-    if (!isSolid) {
+    if (!biome?.solid) {
       return false;
     }
 
@@ -305,10 +289,15 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    const playerPositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
-    const isFreeFromPlayer = playerPositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+    let spritePositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
 
-    if (!isFreeFromPlayer) {
+    this.scene.getEntities<INPC>(EntityType.NPC).forEach((npc) => {
+      spritePositionsAtMatrix = spritePositionsAtMatrix.concat(npc.getAllPositionsAtMatrix());
+    });
+
+    const isFreeFromSprite = spritePositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+
+    if (!isFreeFromSprite) {
       return false;
     }
 
@@ -316,15 +305,17 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private build() {
-    if (
-      !this.variant
-      || !this.buildingPreview?.visible
-      || !this.isAllowBuild()
-    ) {
+    if (!this.variant || !this.isAllowBuild()) {
       return;
     }
 
     const BuildingInstance = BUILDINGS[this.variant];
+
+    if (this.isBuildingLimitReached(this.variant)) {
+      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+
+      return;
+    }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
       this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
@@ -339,10 +330,6 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.player.takeResources(BuildingInstance.Cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
-    if (this.isBuildingLimitReached(this.variant)) {
-      this.clearBuildingVariant();
-    }
-
     this.scene.sound.play(BuildingAudio.BUILD);
 
     this.emit(BuilderEvents.BUILD, building);
@@ -350,10 +337,9 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
       this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
-      this.clearBuildingVariant();
     } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
-      this.scene.game.tutorial.start(TutorialStep.WAVE_TIMELEFT);
+      this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
     }
   }
 
@@ -368,23 +354,22 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildArea() {
-    const position = this.scene.player.getPositionOnGround();
-
-    this.buildArea = this.scene.add.ellipse(position.x, position.y);
+    this.buildArea = this.scene.add.ellipse();
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
 
-    this.updateBuildArea();
+    this.updateBuildAreaPosition();
+    this.updateBuildAreaSize();
   }
 
   public setBuildAreaRadius(radius: number) {
     this.radius = radius;
 
     if (this.buildArea) {
-      this.updateBuildArea();
+      this.updateBuildAreaSize();
     }
   }
 
-  private updateBuildArea() {
+  private updateBuildAreaSize() {
     if (!this.buildArea) {
       return;
     }
@@ -398,6 +383,16 @@ export class Builder extends EventEmitter implements IBuilder {
     const depth = Level.GetDepth(this.buildArea.y, 0, this.buildArea.displayHeight);
 
     this.buildArea.setDepth(depth);
+  }
+
+  private updateBuildAreaPosition() {
+    if (!this.buildArea) {
+      return;
+    }
+
+    const position = this.scene.player.getPositionOnGround();
+
+    this.buildArea.setPosition(position.x, position.y);
   }
 
   private destroyBuildArea() {
@@ -428,19 +423,13 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     const positionAtMatrix = this.getAssumedPosition();
-    const isVisibleTile = this.scene.level.isVisibleTile({ ...positionAtMatrix, z: 0 });
+    const tilePosition = { ...positionAtMatrix, z: 1 };
+    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z) + 1;
 
-    this.buildingPreview.setVisible(isVisibleTile);
-
-    if (isVisibleTile) {
-      const tilePosition = { ...positionAtMatrix, z: 1 };
-      const positionAtWorld = Level.ToWorldPosition(tilePosition);
-      const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z);
-
-      this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
-      this.buildingPreview.setDepth(depth);
-      this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
-    }
+    this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
+    this.buildingPreview.setDepth(depth);
+    this.buildingPreview.setAlpha(this.isAllowBuild() ? 1.0 : 0.25);
   }
 
   private destroyBuildingPreview() {
@@ -450,5 +439,38 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildingPreview.destroy();
     this.buildingPreview = null;
+  }
+
+  private addKeyboardHandler() {
+    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
+      if (Number(e.key)) {
+        this.switchBuildingVariant(Number(e.key) - 1);
+      }
+    });
+  }
+
+  private addTutorialHandler() {
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
+      end: () => {
+        this.scene.setTimePause(false);
+        this.clearBuildingVariant();
+      },
+    });
+
+    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+      beg: () => {
+        this.scene.setTimePause(true);
+      },
+      end: () => {
+        this.scene.setTimePause(false);
+      },
+    });
+
+    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
+      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
+    });
   }
 }

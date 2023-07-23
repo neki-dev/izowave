@@ -1,6 +1,11 @@
 import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 import { Vector2D, Vector3D } from '~type/world/level';
 
+/**
+ * Round number to specified scale.
+ * @param value - Number
+ * @param scale - Scale
+ */
 export function roundToScale(value: number, scale?: number) {
   return scale ? Math.ceil(value / scale) * scale : Math.ceil(value);
 }
@@ -24,6 +29,14 @@ export function progressionQuadratic(
   return roundToScale(value, roundTo);
 }
 
+/**
+ * Function to force quadratic progressively increase value,
+ * relative to specified level.
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of default value for growth
+ * @param level - Difficulty level
+ * @param roundTo - Round value
+ */
 export function progressionQuadraticForce(
   defaultValue: number,
   scale: number,
@@ -35,17 +48,34 @@ export function progressionQuadraticForce(
   return roundToScale(value, roundTo);
 }
 
+/**
+ * Function to linear progressively increase value,
+ * relative to specified level.
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of default value for growth
+ * @param level - Difficulty level
+ * @param roundTo - Round value
+ */
 export function progressionLinear(
   defaultValue: number,
   scale: number,
   level: number,
   roundTo?: number,
 ) {
-  const value = defaultValue + defaultValue * scale * (level - 1);
+  const value = defaultValue + (defaultValue * scale * (level - 1));
 
   return roundToScale(value, roundTo);
 }
 
+/**
+ * Function to linear progressively increase value,
+ * relative to current value and specified level.
+ * @param currentValue - Current value
+ * @param defaultValue - Default value for first level
+ * @param scale - Part of default value for growth
+ * @param level - Difficulty level
+ * @param roundTo - Round value
+ */
 export function progressionLinearFrom(
   currentValue: number,
   defaultValue: number,
@@ -53,7 +83,7 @@ export function progressionLinearFrom(
   level: number,
   roundTo?: number,
 ) {
-  const value = currentValue + defaultValue * scale * (level - 1);
+  const value = currentValue + (defaultValue * scale * (level - 1));
 
   return roundToScale(value, roundTo);
 }
@@ -175,6 +205,45 @@ export function rawAmount(value: string) {
 }
 
 /**
+ * Get all points on matrix between two given points.
+ * @param beg - Start position
+ * @param end - End posotion
+ */
+export function interpolate(beg: Vector2D, end: Vector2D) {
+  const line: Vector2D[] = [];
+
+  const current = { ...beg };
+  const dx = Math.abs(end.x - beg.x);
+  const dy = Math.abs(end.y - beg.y);
+  const sx = (beg.x < end.x) ? 1 : -1;
+  const sy = (beg.y < end.y) ? 1 : -1;
+
+  let err = dx - dy;
+  let shift;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    line.push({ ...current });
+
+    if (equalPositions(current, end)) {
+      break;
+    }
+
+    shift = 2 * err;
+    if (shift > -dy) {
+      err -= dy;
+      current.x += sx;
+    }
+    if (shift < dx) {
+      err += dx;
+      current.y += sy;
+    }
+  }
+
+  return line;
+}
+
+/**
  * Call function with frequency limit.
  * @param fn - Function
  * @param delay - Call delay
@@ -200,6 +269,32 @@ export function debounce(fn: (...params: any[]) => void, delay: number) {
       }
     },
   };
+}
+
+/**
+ * Each object entries.
+ * @param obj - Object
+ * @param callback - Callback
+ */
+export function eachEntries<T extends Record<string, any>>(
+  obj: T,
+  callback: (key: keyof T, value: T[keyof T], index: number) => void,
+) {
+  Object.entries(obj).forEach(([key, value], index) => {
+    callback(key, value, index);
+  });
+}
+
+/**
+ * Map object entries.
+ * @param obj - Object
+ * @param callback - Callback
+ */
+export function mapEntries<T extends Record<string, any>>(
+  obj: T,
+  callback: (key: keyof T, value: T[keyof T], index: number) => any,
+) {
+  return Object.entries(obj).map(([key, value], index) => callback(key, value, index));
 }
 
 /**
