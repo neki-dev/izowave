@@ -66,8 +66,8 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 90, // Health
-  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH: 85, // Health
+  ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic)
   ENEMY_SPEED: 100, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
   ENEMY_DAMAGE: 90, // Attack damage
