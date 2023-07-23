@@ -11,13 +11,13 @@ export const Wrapper = styled.div`
 `;
 
 export const About = styled.div`
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.75);
   text-align: right;
   white-space: pre-line;
 `;
 
 export const Link = styled.a`
-  color: rgba(255, 255, 255, 0.75);
+  color: #fff;
   pointer-events: all;
   &:hover {
     color: ${InterfaceColor.INFO};
@@ -26,7 +26,7 @@ export const Link = styled.a`
 
 export const Discord = styled.a`
   margin-top: 10px;
-  color: rgba(255, 255, 255, 0.75);
+  color: #fff;
   pointer-events: all;
   display: flex;
   align-items: center;
