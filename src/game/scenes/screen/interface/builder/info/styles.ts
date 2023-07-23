@@ -55,7 +55,7 @@ export const Alert = styled.div<{
   $attention?: boolean
 }>`
   color: ${(props) => (props.$attention
-    ? InterfaceColor.WARN
+    ? InterfaceColor.ERROR
     : '#ccc'
   )};
   font-family: ${InterfaceFont.MONOSPACE};

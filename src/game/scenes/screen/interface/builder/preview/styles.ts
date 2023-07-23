@@ -13,14 +13,24 @@ export const Container = styled.div<{
   $disallow?: boolean
   $active?: boolean
   $newest?: boolean
+  $usable?: boolean
 }>`
-  width: 60px;
+  width: 70px;
   height: 60px;
-  padding: 10px;
+  padding: 10px 16px 10px 10px;
   background: ${InterfaceColor.BLACK_TRANSPARENT};
   display: flex;
   justify-content: center;
   position: relative;
+  &::before {
+    position: absolute;
+    content: '';
+    right: 3px;
+    top: 3px;
+    bottom: 3px;
+    background: ${InterfaceColor.ERROR};
+    width: 3px;
+  }
   ${(props) => (!props.$disabled && css`
     &:hover {
       background: #000;
@@ -30,6 +40,14 @@ export const Container = styled.div<{
   ${(props) => ((props.$disabled || props.$disallow) && css`
     opacity: 0.5;
     filter: grayscale(100%);
+    &::before {
+      background: #aaa;
+    }
+  `)}
+  ${(props) => (props.$usable && css`
+    &::before {
+      background: ${InterfaceColor.INFO};
+    }
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
@@ -68,7 +86,7 @@ export const Number = styled.div`
   font-family: ${InterfaceFont.MONOSPACE};
   font-size: 12px;
   line-height: 12px;
-  right: 4px;
+  right: 10px;
   top: 4px;
   opacity: 0.75;
 `;
