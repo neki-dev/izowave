@@ -10,7 +10,7 @@ export interface INPC extends ISprite {
   isPathPassed: boolean
 
   /**
-   * Pause NPC actions.
+   * Slow down and stop actions.
    * @param duration - Pause duration
    * @param effects - Use effects
    */
