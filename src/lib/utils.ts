@@ -62,7 +62,7 @@ export function progressionLinear(
   level: number,
   roundTo?: number,
 ) {
-  const value = defaultValue + defaultValue * scale * (level - 1);
+  const value = defaultValue + (defaultValue * scale * (level - 1));
 
   return roundToScale(value, roundTo);
 }
@@ -83,7 +83,7 @@ export function progressionLinearFrom(
   level: number,
   roundTo?: number,
 ) {
-  const value = currentValue + defaultValue * scale * (level - 1);
+  const value = currentValue + (defaultValue * scale * (level - 1));
 
   return roundToScale(value, roundTo);
 }
