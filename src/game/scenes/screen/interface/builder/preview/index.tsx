@@ -65,9 +65,12 @@ export const BuilderPreview: React.FC<Props> = ({
 
       if (enoughResources) {
         const currentLimit = world.builder.getBuildingLimit(variant);
-        const existCount = world.getBuildingsByVariant(variant).length;
 
-        limitReached = currentLimit ? existCount >= currentLimit : false;
+        if (currentLimit) {
+          const existCount = world.getBuildingsByVariant(variant).length;
+
+          limitReached = existCount >= currentLimit;
+        }
       }
 
       setUsable(enoughResources && !limitReached);
