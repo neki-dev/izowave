@@ -18,8 +18,6 @@ export const LEVEL_MAP_MAX_HEIGHT = 4;
 
 export const LEVEL_MAP_VISIBLE_PART = 0.8;
 
-export const LEVEL_Z_WEIGHT = 999;
-
 export const LEVEL_TREES_COUNT = LEVEL_MAP_SIZE * 2;
 
 export const LEVEL_TREE_TILE_SIZE = {

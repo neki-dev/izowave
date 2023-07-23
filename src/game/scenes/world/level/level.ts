@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 
 import {
   LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_BIOME_PARAMETERS, LEVEL_Z_WEIGHT, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
+  LEVEL_BIOME_PARAMETERS, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { interpolate } from '~lib/utils';
@@ -303,11 +303,11 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static GetDepth(YAtWorld: number, tileZ: number, offset: number = 0) {
-    return YAtWorld + (tileZ * LEVEL_Z_WEIGHT) + offset;
+    return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + offset;
   }
 
   static GetTileDepth(YAtWorld: number, tileZ: number) {
-    return YAtWorld + (tileZ * LEVEL_Z_WEIGHT) + LEVEL_TILE_SIZE.height * 0.5;
+    return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + LEVEL_TILE_SIZE.height * 0.5;
   }
 
   static GetBiome(type: BiomeType): Nullable<LevelBiome> {
