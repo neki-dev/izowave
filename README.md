@@ -3,10 +3,10 @@
 [![Building](https://github.com/neki-dev/izowave/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/build.yml)
 
 Your task is to survive in open world as many waves as possible. With each wave count of enemies and their characteristics will grow.
-
 Build walls to defend, towers to attack, generators to get resources, ammunitions to reload towers, and medics to replenish your health.
-
 And also upgrade skills of your character and his assistant.
+
+**Join to Discord - https://discord.gg/cnFAdMsRxn**
 
 ## 🎮 [PLAY NOW](https://izowave.neki.guru/)
   * *GameJolt* / https://gamejolt.com/games/izowave/822933
