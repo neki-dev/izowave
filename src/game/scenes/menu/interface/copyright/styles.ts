@@ -35,12 +35,11 @@ export const Discord = styled.a`
   font-size: 16px;
   line-height: 16px;
   font-weight: bold;
-  border: 1px solid rgba(255, 255, 255, 0.75);
   padding: 5px 9px;
   border-radius: 3px;
+  background: #111;
   &:hover {
-    border-color: transparent;
-    background: #111;
+    background: #6170C1;
   }
 `;
 
