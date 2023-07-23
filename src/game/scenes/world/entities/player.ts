@@ -252,13 +252,16 @@ export class Player extends Sprite implements IPlayer {
 
   public onDamage() {
     this.scene.camera.shake();
-    this.scene.game.sound.play(
-      Phaser.Utils.Array.GetRandom([
-        PlayerAudio.DAMAGE_1,
-        PlayerAudio.DAMAGE_2,
-        PlayerAudio.DAMAGE_3,
-      ]),
-    );
+
+    const audio = Phaser.Utils.Array.GetRandom([
+      PlayerAudio.DAMAGE_1,
+      PlayerAudio.DAMAGE_2,
+      PlayerAudio.DAMAGE_3,
+    ]);
+
+    if (this.scene.game.sound.getAll(audio).length === 0) {
+      this.scene.game.sound.play(audio);
+    }
 
     super.onDamage();
   }
