@@ -140,7 +140,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.START, this.number);
 
-    this.scene.game.tutorial.pause(TutorialStep.UPGRADE_PLAYER);
+    this.scene.game.tutorial.pause(TutorialStep.UPGRADE_SKILL);
   }
 
   private complete() {

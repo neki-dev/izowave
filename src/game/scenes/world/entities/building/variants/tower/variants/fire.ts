@@ -69,7 +69,7 @@ export class BuildingTowerFire extends BuildingTower {
       end: hideCurrentHint,
     });
 
-    const unbindReloadStep = this.scene.game.tutorial.bind(TutorialStep.RELOAD_BUILDING, {
+    const unbindReloadStep = this.scene.game.tutorial.bind(TutorialStep.RELOAD_TOWER, {
       beg: () => {
         if (this.ammo === 0) {
           hintId = this.scene.showHint({

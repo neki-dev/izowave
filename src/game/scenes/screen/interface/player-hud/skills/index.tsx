@@ -9,7 +9,7 @@ import { TutorialStep } from '~type/tutorial';
 import { UpgradesList } from './list';
 import { Wrapper } from './styles';
 
-export const Upgrades: React.FC = () => {
+export const Skills: React.FC = () => {
   const game = useGame<IGame>();
 
   const [isOpened, setOpened] = useState(false);
@@ -25,7 +25,7 @@ export const Upgrades: React.FC = () => {
   };
 
   useEffect(
-    () => game.tutorial.bind(TutorialStep.UPGRADE_PLAYER, {
+    () => game.tutorial.bind(TutorialStep.UPGRADE_SKILL, {
       beg: () => setHint(true),
       end: () => setHint(false),
     }),

@@ -1,12 +1,12 @@
 import { getModifiedObject, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import { PLAYER_UPGRADES } from '~const/world/entities/player';
+import { PLAYER_SKILLS } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
 import { Text } from '~scene/system/interface/text';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
-import { PlayerUpgrade, PlayerUpgradeData } from '~type/world/entities/player';
+import { PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
 
 import {
   Item,
@@ -19,13 +19,13 @@ import {
 } from './styles';
 
 type Props = {
-  type: PlayerUpgrade
+  type: PlayerSkill
 };
 
 export const UpgradesListItem: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [data, setData] = useState<Nullable<PlayerUpgradeData>>(null);
+  const [data, setData] = useState<Nullable<PlayerSkillData>>(null);
 
   const limit = data?.currentLevel && data.maxLevel <= data.currentLevel;
 
@@ -34,8 +34,8 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
   };
 
   useSceneUpdate(world, () => {
-    const newData: PlayerUpgradeData = {
-      ...PLAYER_UPGRADES[type],
+    const newData: PlayerSkillData = {
+      ...PLAYER_SKILLS[type],
       experience: world.player.getExperienceToUpgrade(type),
       currentLevel: world.player.upgradeLevel[type],
     };

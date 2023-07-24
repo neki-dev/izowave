@@ -33,7 +33,7 @@ import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
-import { IPlayer, PlayerUpgrade } from '~type/world/entities/player';
+import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -333,7 +333,7 @@ export class World extends Scene implements IWorld {
         positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
         speed: this.player.speed,
         health: this.player.live.maxHealth,
-        level: this.player.upgradeLevel[PlayerUpgrade.ASSISTANT],
+        level: this.player.upgradeLevel[PlayerSkill.ASSISTANT],
       });
     };
 

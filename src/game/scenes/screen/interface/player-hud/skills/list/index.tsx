@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { PLAYER_UPGRADES } from '~const/world/entities/player';
-import { PlayerUpgrade } from '~type/world/entities/player';
+import { PLAYER_SKILLS } from '~const/world/entities/player';
+import { PlayerSkill } from '~type/world/entities/player';
 
 import { UpgradesListItem } from './item';
 import { Container } from './styles';
@@ -14,7 +14,7 @@ export const UpgradesList: React.FC<Props> = ({ onClose }) => {
   const refContainer = useRef<HTMLDivElement>(null);
 
   const upgradeTypes = useMemo(
-    () => Object.keys(PLAYER_UPGRADES) as PlayerUpgrade[],
+    () => Object.keys(PLAYER_SKILLS) as PlayerSkill[],
     [],
   );
 

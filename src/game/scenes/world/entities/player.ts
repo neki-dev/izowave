@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
-  PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_UPGRADES,
+  PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_SKILLS,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
 import { Enemy } from '~entity/npc/variants/enemy';
@@ -19,7 +19,7 @@ import { IParticles, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import {
-  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerUpgrade,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill,
 } from '~type/world/entities/player';
 import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -43,11 +43,11 @@ export class Player extends Sprite implements IPlayer {
 
   private set kills(v) { this._kills = v; }
 
-  private _upgradeLevel: Record<PlayerUpgrade, number> = {
-    [PlayerUpgrade.MAX_HEALTH]: 1,
-    [PlayerUpgrade.SPEED]: 1,
-    [PlayerUpgrade.BUILD_AREA]: 1,
-    [PlayerUpgrade.ASSISTANT]: 1,
+  private _upgradeLevel: Record<PlayerSkill, number> = {
+    [PlayerSkill.MAX_HEALTH]: 1,
+    [PlayerSkill.SPEED]: 1,
+    [PlayerSkill.BUILD_AREA]: 1,
+    [PlayerSkill.ASSISTANT]: 1,
   };
 
   public get upgradeLevel() { return this._upgradeLevel; }
@@ -155,20 +155,20 @@ export class Player extends Sprite implements IPlayer {
     this.kills++;
   }
 
-  public getExperienceToUpgrade(type: PlayerUpgrade) {
+  public getExperienceToUpgrade(type: PlayerSkill) {
     return progressionQuadratic(
-      PLAYER_UPGRADES[type].experience,
+      PLAYER_SKILLS[type].experience,
       DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
       this.upgradeLevel[type],
       10,
     );
   }
 
-  private getUpgradeNextValue(type: PlayerUpgrade): number {
+  private getUpgradeNextValue(type: PlayerSkill): number {
     const nextLevel = this.upgradeLevel[type] + 1;
 
     switch (type) {
-      case PlayerUpgrade.MAX_HEALTH: {
+      case PlayerSkill.MAX_HEALTH: {
         return progressionQuadratic(
           DIFFICULTY.PLAYER_HEALTH,
           DIFFICULTY.PLAYER_HEALTH_GROWTH,
@@ -176,27 +176,27 @@ export class Player extends Sprite implements IPlayer {
           5,
         );
       }
-      case PlayerUpgrade.SPEED: {
+      case PlayerSkill.SPEED: {
         return progressionQuadratic(
           DIFFICULTY.PLAYER_SPEED,
           DIFFICULTY.PLAYER_SPEED_GROWTH,
           nextLevel,
         );
       }
-      case PlayerUpgrade.BUILD_AREA: {
+      case PlayerSkill.BUILD_AREA: {
         return progressionQuadratic(
           DIFFICULTY.BUILDER_BUILD_AREA,
           DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
           nextLevel,
         );
       }
-      case PlayerUpgrade.ASSISTANT: {
+      case PlayerSkill.ASSISTANT: {
         return nextLevel;
       }
     }
   }
 
-  public upgrade(type: PlayerUpgrade) {
+  public upgrade(type: PlayerSkill) {
     if (this.scene.wave.isGoing) {
       this.scene.game.screen.notice(NoticeType.ERROR, 'Cannot be upgraded while wave is coming');
 
@@ -214,7 +214,7 @@ export class Player extends Sprite implements IPlayer {
     const nextValue = this.getUpgradeNextValue(type);
 
     switch (type) {
-      case PlayerUpgrade.MAX_HEALTH: {
+      case PlayerSkill.MAX_HEALTH: {
         this.live.setMaxHealth(nextValue);
         this.live.heal();
         if (this.scene.assistant) {
@@ -223,18 +223,18 @@ export class Player extends Sprite implements IPlayer {
         }
         break;
       }
-      case PlayerUpgrade.SPEED: {
+      case PlayerSkill.SPEED: {
         this.speed = nextValue;
         if (this.scene.assistant) {
           this.scene.assistant.speed = nextValue;
         }
         break;
       }
-      case PlayerUpgrade.BUILD_AREA: {
+      case PlayerSkill.BUILD_AREA: {
         this.scene.builder.setBuildAreaRadius(nextValue);
         break;
       }
-      case PlayerUpgrade.ASSISTANT: {
+      case PlayerSkill.ASSISTANT: {
         if (this.scene.assistant) {
           this.scene.assistant.level = nextValue;
         }
@@ -247,7 +247,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.scene.sound.play(PlayerAudio.UPGRADE);
 
-    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_PLAYER);
+    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
   }
 
   public onDamage() {
@@ -288,7 +288,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.giveExperience(experience);
 
-    this.scene.game.tutorial.start(TutorialStep.UPGRADE_PLAYER);
+    this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
   }
 
   private registerKeyboard() {
