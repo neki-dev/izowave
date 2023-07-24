@@ -23,7 +23,7 @@ type Props = {
 export const FeatureItem: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
-  const scene = useScene(GameScene.BASIC);
+  const scene = useScene(GameScene.SYSTEM);
 
   const [isPaused, setPaused] = useState(false);
   const [isActive, setActive] = useState(false);

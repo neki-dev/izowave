@@ -102,7 +102,7 @@ export interface IGame extends Phaser.Game {
 }
 
 export enum GameScene {
-  BASIC = 'BASIC',
+  SYSTEM = 'SYSTEM',
   GAMEOVER = 'GAMEOVER',
   WORLD = 'WORLD',
   SCREEN = 'SCREEN',
