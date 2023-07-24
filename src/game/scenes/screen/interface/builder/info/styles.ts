@@ -31,36 +31,28 @@ export const Head = styled.div`
   height: 59px;
 `;
 
-export const Body = styled.div`
-  padding: 18px 20px 20px 20px;
-  background: ${InterfaceColor.BLUE_DARK}cc;
-`;
-
 export const Name = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   color: ${InterfaceColor.INFO};
   font-size: 16px;
   line-height: 16px;
 `;
 
-export const Description = styled.div`
-  color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: bold;
+export const Body = styled.div`
+  padding: 18px 20px 20px 20px;
+  background: ${InterfaceColor.BLUE_DARK}cc;
 `;
 
 export const Alert = styled.div<{
   $attention?: boolean
 }>`
+  margin-top: 8px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1px;
   color: ${(props) => (props.$attention
     ? InterfaceColor.ERROR
     : '#ccc'
   )};
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: bold;
-  margin-top: 8px;
 `;

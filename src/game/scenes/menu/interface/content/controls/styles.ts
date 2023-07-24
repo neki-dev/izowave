@@ -6,7 +6,7 @@ export const Control = styled.div`
   display: flex;
   align-items: center;
   &:not(:last-child) {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 `;
 
@@ -17,7 +17,7 @@ export const Keys = styled.div`
 
 export const Key = styled.div`
   color: #000;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 13px;
   line-height: 13px;
   padding: 3px 7px 4px 7px;
@@ -26,11 +26,4 @@ export const Key = styled.div`
   &:not(:last-child) {
     margin-right: 3px;
   }
-`;
-
-export const Description = styled.div`
-  color: #fff;
-  font-family: ${InterfaceFont.PIXEL};
-  font-size: 11px;
-  line-height: 11px;
 `;

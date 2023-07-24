@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Wrapper = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   display: flex;
   color: #fff;
 `;

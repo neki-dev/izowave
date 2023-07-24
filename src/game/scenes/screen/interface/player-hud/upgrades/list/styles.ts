@@ -4,7 +4,7 @@ import { InterfaceColor } from '~type/interface';
 
 const animationOpacity = keyframes`
   0% { opacity: 0; margin-top: 0 }
-  100% { opacity: 1; margin-top: 20px }
+  100% { opacity: 1; margin-top: 14px }
 `;
 
 export const Container = styled.div`
@@ -13,13 +13,13 @@ export const Container = styled.div`
   left: 0;
   background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 14px;
   pointer-events: all;
   animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
     content: '';
-    top: -13px;
+    top: -14px;
     left: 39px;
     transform: translateX(-50%);
     border-left: 10px solid transparent;

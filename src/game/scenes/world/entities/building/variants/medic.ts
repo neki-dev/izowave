@@ -18,8 +18,8 @@ export class BuildingMedic extends Building {
   static Description = 'Heals player and assistant within building radius';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'HEAL', value: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT, icon: BuildingIcon.HEAL },
+    { label: 'Health', value: DIFFICULTY.BUILDING_MEDIC_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'Power', value: `${DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT} HP`, icon: BuildingIcon.HEAL },
   ];
 
   static Texture = BuildingTexture.MEDIC;
@@ -64,9 +64,9 @@ export class BuildingMedic extends Building {
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'HEAL',
+      label: 'Power',
       icon: BuildingIcon.HEAL,
-      value: this.getHealAmount(),
+      value: `${this.getHealAmount()} HP`,
     }];
 
     return super.getInfo().concat(info);

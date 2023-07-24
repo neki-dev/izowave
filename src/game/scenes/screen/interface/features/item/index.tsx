@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { WORLD_FEATURES } from '~const/world';
 import { Cost } from '~scene/system/interface/cost';
+import { Text } from '~scene/system/interface/text';
 import { GameScene, IGame } from '~type/game';
 import { IWorld, WorldFeature } from '~type/world';
 
@@ -11,7 +12,7 @@ import {
   Timeout,
   Info,
   Icon,
-  Description,
+  Body,
   Head,
   Name,
 } from './styles';
@@ -46,7 +47,9 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
           <Name>{type}</Name>
           <Cost type="resources" value={cost} size="small" />
         </Head>
-        <Description>{WORLD_FEATURES[type].description}</Description>
+        <Body>
+          <Text>{WORLD_FEATURES[type].description}</Text>
+        </Body>
       </Info>
       {isActive && (
         <Timeout

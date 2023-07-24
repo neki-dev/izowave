@@ -16,7 +16,7 @@ export const Progress = styled.div`
 
 export const Value = styled.div`
   position: absolute;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   color: #fff;
   font-size: 11px;
   line-height: 11px;

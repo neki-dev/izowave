@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { GameSettings, GameSettingsData, IGame } from '~type/game';
 
 import {
-  Wrapper, Description, Values, Value,
+  Wrapper, Label, Values, Value,
 } from './styles';
 
 type Props = {
@@ -29,7 +29,7 @@ export const Param: React.FC<Props> = ({ type, data, disabled }) => {
 
   return (
     <Wrapper>
-      <Description>{data.description}</Description>
+      <Label>{data.description}</Label>
       <Values $disabled={disabled && !data.runtime}>
         {data.values.map((value) => (
           <Value

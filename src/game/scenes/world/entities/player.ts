@@ -198,7 +198,7 @@ export class Player extends Sprite implements IPlayer {
 
   public upgrade(type: PlayerUpgrade) {
     if (this.scene.wave.isGoing) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'CANNOT BE UPGRADED WHILE WAVE IS GOING');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Cannot be upgraded while wave is coming');
 
       return;
     }
@@ -206,7 +206,7 @@ export class Player extends Sprite implements IPlayer {
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH EXPERIENCE');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough experience');
 
       return;
     }

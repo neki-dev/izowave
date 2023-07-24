@@ -148,7 +148,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'HEALTH',
+      label: 'Health',
       icon: BuildingIcon.HEALTH,
       value: this.live.health,
     }];
@@ -161,7 +161,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.isUpgradeAllowed()) {
       actions.push({
-        label: 'UPGRADE',
+        label: 'Upgrade',
         cost: this.getUpgradeCost(),
         onClick: () => {
           this.upgrade();
@@ -219,7 +219,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.isUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveNumber} WAVE`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `Upgrade will be available on ${waveNumber} wave`);
 
       return;
     }
@@ -227,7 +227,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
 
       return;
     }

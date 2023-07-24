@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { BuildingParams } from '~scene/system/interface/building-params';
 import { Cost } from '~scene/system/interface/cost';
+import { Text } from '~scene/system/interface/text';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Alert, Description, Head, Name, Wrapper, Body,
+  Alert, Head, Name, Wrapper, Body,
 } from './styles';
 
 type Props = {
@@ -45,7 +46,7 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
           <Cost type="resources" value={BUILDINGS[variant].Cost} size="large" />
         </Head>
         <Body>
-          <Description>{BUILDINGS[variant].Description}</Description>
+          <Text>{BUILDINGS[variant].Description}</Text>
           {isAllowByWave ? (
             !!limit && (
               <Alert $attention={existCount >= limit}>

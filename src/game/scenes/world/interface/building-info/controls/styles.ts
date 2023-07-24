@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Action = styled.div`
-  padding: 5px 9px 6px 9px;
+  padding: 6px 9px;
   background: ${InterfaceColor.BLACK_TRANSPARENT};
   transform: translateX(-50%);
   pointer-events: all;
@@ -26,9 +26,11 @@ export const Action = styled.div`
 
 export const Label = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 11px;
+  line-height: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 `;
 
 export const Addon = styled.div`

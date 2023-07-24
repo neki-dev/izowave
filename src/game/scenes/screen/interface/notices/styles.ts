@@ -24,7 +24,7 @@ export const Item = styled.div<{
 }>`
   padding: 8px 15px 9px 15px;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 16px;
   line-height: 16px;
   animation: ${animationOpacity} 0.2s ease-in;

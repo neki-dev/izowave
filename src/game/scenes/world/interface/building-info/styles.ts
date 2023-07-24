@@ -34,7 +34,7 @@ export const Body = styled.div`
 `;
 
 export const Name = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   color: ${InterfaceColor.INFO};
   font-size: 16px;
   line-height: 16px;

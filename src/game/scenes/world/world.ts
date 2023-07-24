@@ -248,7 +248,7 @@ export class World extends Scene implements IWorld {
     const cost = this.getFeatureCost(type);
 
     if (this.player.resources < cost) {
-      this.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
 
       return;
     }

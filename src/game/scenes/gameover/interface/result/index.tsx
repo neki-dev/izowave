@@ -18,9 +18,9 @@ export const Result: React.FC<Props> = ({ stat, record }) => {
     value: number | string
   }[] = useMemo(
     () => [
-      { key: 'waves', label: 'WAVES COMPLETED', value: stat.waves },
-      { key: 'kills', label: 'ENEMIES KILLED', value: stat.kills },
-      { key: 'lived', label: 'MINUTES LIVED', value: stat.lived.toFixed(1) },
+      { key: 'waves', label: 'Waves completed', value: stat.waves },
+      { key: 'kills', label: 'Enemies killed', value: stat.kills },
+      { key: 'lived', label: 'Minutes lived', value: stat.lived.toFixed(1) },
     ],
     [],
   );

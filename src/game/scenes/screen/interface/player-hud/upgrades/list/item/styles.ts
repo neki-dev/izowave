@@ -19,29 +19,27 @@ export const Info = styled.div`
 `;
 
 export const Label = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   color: ${InterfaceColor.INFO};
   font-size: 14px;
   line-height: 14px;
-`;
-
-export const Description = styled.div`
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
-  color: #fff;
-  margin-top: 4px;
-  font-weight: bold;
+  margin-bottom: 4px;
 `;
 
 export const Level = styled.div`
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 9px;
+  line-height: 9px;
   margin-top: 6px;
   background: rgba(0, 0, 0, 0.5);
   padding: 3px 5px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  b {
+    font-size: 12px;
+    line-height: 12px;
+    margin-left: 5px;
+  }
 `;
 
 export const Action = styled.div<{
@@ -63,7 +61,7 @@ export const Action = styled.div<{
 `;
 
 export const Button = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 10px;
   line-height: 10px;
   margin-bottom: 10px;
@@ -71,8 +69,9 @@ export const Button = styled.div`
 
 export const Limit = styled.div`
   color: ${InterfaceColor.WARN};
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 10px;
   line-height: 12px;
   text-align: center;
+  white-space: pre;
 `;

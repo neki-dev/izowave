@@ -40,7 +40,7 @@ export const Info = styled.div<{
 `;
 
 export const Label = styled.div`
-  font-family: ${InterfaceFont.MONOSPACE};
+  font-family: ${InterfaceFont.PIXEL_TEXT};
   font-size: 10px;
   line-height: 10px;
   opacity: 0.75;
@@ -48,7 +48,7 @@ export const Label = styled.div`
 `;
 
 export const Value = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 12px;
   line-height: 12px;
 `;

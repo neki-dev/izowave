@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { PLAYER_UPGRADES } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
+import { Text } from '~scene/system/interface/text';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerUpgrade, PlayerUpgradeData } from '~type/world/entities/player';
@@ -11,7 +12,6 @@ import {
   Item,
   Info,
   Action,
-  Description,
   Label,
   Level,
   Button,
@@ -48,7 +48,7 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
       <Item>
         <Info>
           <Label>{data.label}</Label>
-          <Description>{data.description}</Description>
+          <Text>{data.description}</Text>
           <Level>LEVEL <b>{data.currentLevel}</b></Level>
         </Info>
         {limit ? (

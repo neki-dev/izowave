@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   display: flex;
   color: #fff;
   align-items: center;

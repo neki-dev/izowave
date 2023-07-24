@@ -82,7 +82,7 @@ export class Builder extends EventEmitter implements IBuilder {
     if (!this.isBuildingAllowByWave(variant)) {
       this.scene.game.screen.notice(
         NoticeType.ERROR,
-        `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`,
+        `Will be available on ${BuildingInstance.AllowByWave} wave`,
       );
 
       return;
@@ -312,13 +312,13 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}`);
 
       return;
     }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
 
       return;
     }

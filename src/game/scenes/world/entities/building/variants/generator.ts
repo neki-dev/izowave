@@ -16,8 +16,8 @@ export class BuildingGenerator extends Building {
   static Description = 'Generates resources for builds and upgrades';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'RESOURCES', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
+    { label: 'Health', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'Resources', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
@@ -46,7 +46,7 @@ export class BuildingGenerator extends Building {
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'RESOURCES',
+      label: 'Resources',
       icon: BuildingIcon.RESOURCES,
       value: this.resources,
     }];
@@ -55,7 +55,7 @@ export class BuildingGenerator extends Building {
 
     if (pause) {
       info.push({
-        label: 'PAUSE',
+        label: 'Delay',
         icon: BuildingIcon.PAUSE,
         value: `${(pause / 1000).toFixed(1)} s`,
       });
@@ -74,7 +74,7 @@ export class BuildingGenerator extends Building {
     this.generateResource();
 
     if (this.resources === 0) {
-      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} are over`);
       if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
         this.scene.game.sound.play(BuildingAudio.OVER);
       }
