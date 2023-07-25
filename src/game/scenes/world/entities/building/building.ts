@@ -295,7 +295,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.takeResources(cost);
 
-    // TODO: Add sound
+    this.scene.sound.play(BuildingAudio.REPAIR);
   }
 
   private onDamage() {

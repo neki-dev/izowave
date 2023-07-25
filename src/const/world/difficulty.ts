@@ -67,13 +67,13 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 85, // Health
-  ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic) // TODO: Quadratic Force
+  ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
   ENEMY_SPEED: 50, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic) // TODO: Quadratic Force
+  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic) // TODO: Quadratic Force
+  ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic)
   ENEMY_DAMAGE_GROWTH_RETARDATION_LEVEL: 14, // Level for damage growth retardation
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
