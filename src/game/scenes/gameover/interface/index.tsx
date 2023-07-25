@@ -24,7 +24,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
     <Overlay>
       <Wrapper>
         <Label>GAME OVER</Label>
-        <Button onClick={onRestartClick} size='large'>PLAY AGAIN</Button>
+        <Button onClick={onRestartClick} size='large'>Play again</Button>
         <Result stat={stat} record={record} />
       </Wrapper>
     </Overlay>

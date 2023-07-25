@@ -101,6 +101,14 @@ export class Game extends Phaser.Game implements IGame {
       this.registerShaders();
     });
 
+    this.events.on(GameEvents.FINISH, (stat: GameStat, record: Nullable<GameStat>) => {
+      this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
+
+      this.events.once(GameEvents.START, () => {
+        this.scene.stop(GameScene.GAMEOVER);
+      });
+    });
+
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
       this.sound.mute = (value === 'off');
     });
@@ -161,6 +169,10 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public stopGame() {
+    if (!this.isStarted) {
+      return;
+    }
+
     this.isStarted = false;
 
     this.tutorial.reset();
@@ -176,9 +188,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public restartGame() {
-    if (this.isStarted) {
       this.stopGame();
-    }
 
     this.world.scene.restart();
 
