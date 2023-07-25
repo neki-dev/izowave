@@ -19,7 +19,7 @@ export const Content: React.FC<Props> = ({ page }) => {
   const Component = useMemo(() => {
     switch (page) {
       case MenuPage.SETTINGS:
-        return <Settings disabled={game.onPause} />;
+        return <Settings disabled={game.isStarted} />;
       case MenuPage.ABOUT:
         return <About />;
       case MenuPage.CONTROLS:

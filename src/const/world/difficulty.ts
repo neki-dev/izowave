@@ -55,6 +55,15 @@ export const DIFFICULTY = {
   WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
 
   /**
+   * Ads reward
+   */
+
+  ADS_REWARD_EXPERIENCE: 400, // Gained experience per show ads
+  ADS_REWARD_RESOURCES: 30, // Gained resources per show ads
+  ADS_REWARD_GROWTH: 1.0, // Reward amount amount growth by wave number (Linear)
+  ADS_REWARD_FREQUENCY: 3, // Show per wave number
+
+  /**
    * Crystals
    */
 

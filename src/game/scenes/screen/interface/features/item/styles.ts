@@ -69,7 +69,7 @@ export const Container = styled.div<{
   padding: 14px;
   pointer-events: all;
   position: relative;
-  border-bottom: 4px solid #000;
+  border-bottom: 6px solid #000;
   border-radius: 5px;
   ${(props) => (props.$active ? css`
     ${Icon} {
@@ -94,7 +94,7 @@ export const Timeout = styled.div`
   background: ${InterfaceColor.INFO};
   right: 0;
   left: 0;
-  bottom: -4px;
-  height: 4px;
+  bottom: -6px;
+  height: 6px;
   animation: ${animationTimeout} 1s linear;
 `;

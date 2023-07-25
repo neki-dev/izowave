@@ -3,16 +3,30 @@ import styled, { css } from 'styled-components';
 import { InterfaceFont, InterfaceColor } from '~type/interface';
 
 export const Container = styled.div<{
-  $active?: boolean
   $size?: 'small' | 'large'
+  $view?: 'active' | 'confirm' | 'decline'
 }>`
-  background: ${(props) => ((props.$active)
-    ? InterfaceColor.BLUE
-    : InterfaceColor.BLACK_TRANSPARENT
-  )};
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
   pointer-events: all;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  ${(props) => {
+    switch (props.$view) {
+      case 'active': return css`
+        background: ${InterfaceColor.BLUE};
+      `;
+      case 'confirm': return css`
+        background: ${InterfaceColor.INFO_DARK};
+      `;
+      case 'decline': return css`
+        background: ${InterfaceColor.ERROR_DARK};
+      `;
+      default: return css`
+        background: #000;
+      `;
+    }
+  }}
   ${(props) => {
     switch (props.$size) {
       case 'small': return css`
@@ -23,8 +37,6 @@ export const Container = styled.div<{
         justify-content: center;
         width: 80px;
         height: 24px;
-        letter-spacing: 1px;
-        border-radius: 5px;
       `;
       case 'large': return css`
         font-size: 22px;
@@ -32,9 +44,9 @@ export const Container = styled.div<{
         padding: 13px 20px 14px 20px;
       `;
       default: return css`
-        font-size: 12px;
-        line-height: 12px;
-        padding: 4px 7px;
+        font-size: 11px;
+        line-height: 11px;
+        padding: 7px 10px 8px 10px;
       `;
     }
   }}

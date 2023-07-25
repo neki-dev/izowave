@@ -45,7 +45,7 @@ export const Label = styled.div`
   font-size: 11px;
   line-height: 11px;
   opacity: 0.5;
-  margin-top: -1px;
+  margin-top: -2px;
 `;
 
 export const Value = styled.div<{

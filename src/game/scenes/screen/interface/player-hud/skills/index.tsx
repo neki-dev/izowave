@@ -34,7 +34,7 @@ export const Skills: React.FC = () => {
 
   return (
     <Wrapper>
-      <Button onClick={onClickButton} active={isOpened} size='small'>
+      <Button onClick={onClickButton} view={isOpened ? 'active' : undefined} size='small'>
         SKILLS
       </Button>
       {isOpened && <UpgradesList onClose={onClose} />}

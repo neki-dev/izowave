@@ -99,6 +99,18 @@ export interface IGame extends Phaser.Game {
    * @param key - Flag key
    */
   isFlagEnabled(key: GameFlag): boolean
+
+  /**
+   * Show game ad.
+   * @param type - Ad type
+   * @param callback - Complete callback
+   */
+  showAd(type: GameAdType, callback?: () => void): void
+}
+
+export enum GameAdType {
+  MIDGAME = 'midgame',
+  REWARDED = 'rewarded',
 }
 
 export enum GameScene {
@@ -124,6 +136,7 @@ export enum GameSettings {
 
 export enum GameFlag {
   NO_BLOOD = 'NO_BLOOD',
+  ADS = 'ADS',
 }
 
 export type GameSettingsData = {

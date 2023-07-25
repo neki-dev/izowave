@@ -7,7 +7,12 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 
 import {
-  CurrentNumber, Container, State, Wrapper, Label, Value,
+  CurrentNumber,
+  Container,
+  State,
+  Wrapper,
+  Label,
+  Value,
 } from './styles';
 
 export const Wave: React.FC = () => {
@@ -42,11 +47,9 @@ export const Wave: React.FC = () => {
   ) : (
     <Wrapper>
       <Container>
-        <CurrentNumber $going={isGoing}>
-          {currentNumber}
-        </CurrentNumber>
+        <CurrentNumber $going={isGoing}>{currentNumber}</CurrentNumber>
         <State>
-          <Label>{isGoing ? 'Enemies left' : 'Timeleft'}</Label>
+          <Label>{isGoing ? 'Enemies' : 'Timeleft'}</Label>
           <Value $attention={isAlarm}>{value}</Value>
         </State>
       </Container>
