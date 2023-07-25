@@ -42,6 +42,9 @@ export class BuildingWall extends Building {
       level: this.upgradeLevel,
     });
 
+    const addedHealth = health - this.live.maxHealth;
+
     this.live.setMaxHealth(health);
+    this.live.addHealth(addedHealth);
   }
 }

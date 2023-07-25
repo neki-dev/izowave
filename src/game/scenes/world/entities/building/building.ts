@@ -169,6 +169,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       });
     }
 
+    if (!this.live.isMaxHealth()) {
+      actions.push({
+        label: 'Repair',
+        cost: this.getRepairCost(),
+        onClick: () => {
+          this.repair();
+        },
+      });
+    }
+
     return actions;
   }
 
@@ -201,6 +211,18 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const nextLevel = this.upgradeLevel + 1;
 
     return Math.round(costPerLevel * nextLevel);
+  }
+
+  private getRepairCost() {
+    const damaged = 1 - (this.live.health / this.live.maxHealth);
+    let cost = this.getMeta().Cost;
+    const costPerLevel = cost / BUILDING_MAX_UPGRADE_LEVEL;
+
+    for (let i = 2; i <= this.upgradeLevel; i++) {
+      cost += Math.round(costPerLevel * i);
+    }
+
+    return Math.ceil(cost * damaged);
   }
 
   private isUpgradeAllowed() {
@@ -241,8 +263,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.emit(BuildingEvents.UPGRADE);
     this.scene.builder.emit(BuilderEvents.UPGRADE, this);
 
-    this.live.heal();
-
     this.scene.player.takeResources(cost);
 
     const experience = progressionLinear({
@@ -256,6 +276,26 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
 
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
+  }
+
+  private repair() {
+    if (this.live.isMaxHealth()) {
+      return;
+    }
+
+    const cost = this.getRepairCost();
+
+    if (this.scene.player.resources < cost) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+
+      return;
+    }
+
+    this.live.heal();
+
+    this.scene.player.takeResources(cost);
+
+    // TODO: Add sound
   }
 
   private onDamage() {
@@ -495,6 +535,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addKeyboardHandler() {
+    const handleRepair = () => {
+      if (this.isFocused) {
+        this.repair();
+      }
+    };
+
     const handleBreak = () => {
       if (this.isFocused) {
         this.break();
@@ -507,11 +553,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
