@@ -2,6 +2,7 @@ import EventEmitter from 'events';
 
 import Phaser from 'phaser';
 
+import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
@@ -379,10 +380,7 @@ export class Builder extends EventEmitter implements IBuilder {
       this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
     );
     this.buildArea.updateDisplayOrigin();
-
-    const depth = Level.GetDepth(this.buildArea.y, 0, this.buildArea.displayHeight);
-
-    this.buildArea.setDepth(depth);
+    this.buildArea.setDepth(WORLD_DEPTH_EFFECT);
   }
 
   private updateBuildAreaPosition() {

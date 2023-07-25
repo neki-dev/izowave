@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
+import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
@@ -512,10 +513,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     const d = this.getActionsRadius() * 2;
-    const position = this.getPositionOnGround();
 
     this.actionsArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
-    this.actionsArea.setDepth(Level.GetDepth(position.y, 0, this.actionsArea.displayHeight));
+    this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
     this.actionsArea.updateDisplayOrigin();
   }
 
