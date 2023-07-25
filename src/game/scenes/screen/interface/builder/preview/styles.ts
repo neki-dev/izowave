@@ -19,6 +19,7 @@ export const Container = styled.div<{
   height: 60px;
   padding: 10px 16px 10px 10px;
   background: ${InterfaceColor.BLACK_TRANSPARENT};
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -29,6 +30,7 @@ export const Container = styled.div<{
     top: 3px;
     bottom: 3px;
     background: ${InterfaceColor.ERROR};
+    border-radius: 2px;
     width: 3px;
   }
   ${(props) => (!props.$disabled && css`
@@ -58,14 +60,14 @@ export const Container = styled.div<{
       position: absolute;
       content: 'new';
       color: #fff;
-      font-family: ${InterfaceFont.MONOSPACE};
-      font-size: 10px;
-      line-height: 10px;
+      font-family: ${InterfaceFont.PIXEL_TEXT};
+      font-size: 9px;
+      line-height: 9px;
       left: -3px;
       top: -3px;
       border-radius: 5px;
       background: ${InterfaceColor.INFO_DARK};
-      padding: 2px 4px;
+      padding: 2px 4px 3px 4px;
       animation: ${animationBlink} 1s infinite;
     }
   `)}
@@ -83,9 +85,9 @@ export const Preview = styled.div`
 export const Number = styled.div`
   position: absolute;
   color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 10px;
+  line-height: 10px;
   right: 10px;
   top: 4px;
   opacity: 0.75;

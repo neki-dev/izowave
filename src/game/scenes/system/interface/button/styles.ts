@@ -11,7 +11,7 @@ export const Container = styled.div<{
     : InterfaceColor.BLACK_TRANSPARENT
   )};
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   pointer-events: all;
   ${(props) => {
     switch (props.$size) {
@@ -23,6 +23,8 @@ export const Container = styled.div<{
         justify-content: center;
         width: 80px;
         height: 24px;
+        letter-spacing: 1px;
+        border-radius: 5px;
       `;
       case 'large': return css`
         font-size: 22px;

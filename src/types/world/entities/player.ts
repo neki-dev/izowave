@@ -27,17 +27,17 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   /**
    * Levels of upgrades.
    */
-  readonly upgradeLevel: Record<PlayerUpgrade, number>
+  readonly upgradeLevel: Record<PlayerSkill, number>
 
   /**
    * Upgrade player skill.
    */
-  upgrade(type: PlayerUpgrade): void
+  upgrade(type: PlayerSkill): void
 
   /**
    * Get experience amount need to upgrade.
    */
-  getExperienceToUpgrade(type: PlayerUpgrade): number
+  getExperienceToUpgrade(type: PlayerSkill): number
 
   /**
    * Inremeting number of killed enemies.
@@ -76,7 +76,7 @@ export enum PlayerAudio {
   DAMAGE_3 = 'player/damage_3',
 }
 
-export enum PlayerUpgrade {
+export enum PlayerSkill {
   MAX_HEALTH = 'MAX_HEALTH',
   SPEED = 'SPEED',
   BUILD_AREA = 'BUILD_AREA',
@@ -95,7 +95,7 @@ export type PlayerData = {
   positionAtMatrix: Vector2D
 };
 
-export type PlayerUpgradeData = {
+export type PlayerSkillData = {
   label: string
   description: string
   experience: number

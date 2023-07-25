@@ -5,7 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic } from '~lib/utils';
+import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
@@ -148,7 +148,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'HEALTH',
+      label: 'Health',
       icon: BuildingIcon.HEALTH,
       value: this.live.health,
     }];
@@ -161,10 +161,20 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.isUpgradeAllowed()) {
       actions.push({
-        label: 'UPGRADE',
+        label: 'Upgrade',
         cost: this.getUpgradeCost(),
         onClick: () => {
           this.upgrade();
+        },
+      });
+    }
+
+    if (!this.live.isMaxHealth()) {
+      actions.push({
+        label: 'Repair',
+        cost: this.getRepairCost(),
+        onClick: () => {
+          this.repair();
         },
       });
     }
@@ -178,21 +188,21 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getActionsRadius() {
     return this.actions?.radius
-      ? progressionQuadratic(
-        this.actions.radius,
-        DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
-        this.upgradeLevel,
-      )
+      ? progressionQuadratic({
+        defaultValue: this.actions.radius,
+        scale: DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
+        level: this.upgradeLevel,
+      })
       : 0;
   }
 
   public getActionsPause() {
     return this.actions?.pause
-      ? progressionQuadratic(
-        this.actions.pause,
-        DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
-        this.upgradeLevel,
-      )
+      ? progressionQuadratic({
+        defaultValue: this.actions.pause,
+        scale: DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
+        level: this.upgradeLevel,
+      })
       : 0;
   }
 
@@ -201,6 +211,18 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const nextLevel = this.upgradeLevel + 1;
 
     return Math.round(costPerLevel * nextLevel);
+  }
+
+  private getRepairCost() {
+    const damaged = 1 - (this.live.health / this.live.maxHealth);
+    let cost = this.getMeta().Cost;
+    const costPerLevel = cost / BUILDING_MAX_UPGRADE_LEVEL;
+
+    for (let i = 2; i <= this.upgradeLevel; i++) {
+      cost += Math.round(costPerLevel * i);
+    }
+
+    return Math.ceil(cost * damaged);
   }
 
   private isUpgradeAllowed() {
@@ -219,7 +241,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.isUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `UPGRADE WILL BE AVAILABLE ON ${waveNumber} WAVE`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `Upgrade will be available on ${waveNumber} wave`);
 
       return;
     }
@@ -227,7 +249,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
 
       return;
     }
@@ -241,21 +263,39 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.emit(BuildingEvents.UPGRADE);
     this.scene.builder.emit(BuilderEvents.UPGRADE, this);
 
-    this.live.heal();
-
     this.scene.player.takeResources(cost);
 
-    const experience = progressionLinear(
-      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
-      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
-      this.upgradeLevel,
-    );
+    const experience = progressionLinear({
+      defaultValue: DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
+      scale: DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
+      level: this.upgradeLevel,
+    });
 
     this.scene.player.giveExperience(experience);
 
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
 
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
+  }
+
+  private repair() {
+    if (this.live.isMaxHealth()) {
+      return;
+    }
+
+    const cost = this.getRepairCost();
+
+    if (this.scene.player.resources < cost) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+
+      return;
+    }
+
+    this.live.heal();
+
+    this.scene.player.takeResources(cost);
+
+    this.scene.sound.play(BuildingAudio.REPAIR);
   }
 
   private onDamage() {
@@ -495,6 +535,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addKeyboardHandler() {
+    const handleRepair = () => {
+      if (this.isFocused) {
+        this.repair();
+      }
+    };
+
     const handleBreak = () => {
       if (this.isFocused) {
         this.break();
@@ -507,11 +553,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
+    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);

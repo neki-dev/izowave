@@ -9,10 +9,9 @@ export const Wrapper = styled.div`
 export const Title = styled.div`
   color: #fff;
   opacity: 0.5;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 46px;
   line-height: 46px;
-  text-transform: uppercase;
 `;
 
 export const Body = styled.div`

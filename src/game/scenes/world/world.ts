@@ -12,9 +12,8 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import {
-  aroundPosition, progressionLinear, sortByDistance,
-} from '~lib/utils';
+import { progressionLinear } from '~lib/difficulty';
+import { aroundPosition, sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
@@ -33,7 +32,7 @@ import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
-import { IPlayer, PlayerUpgrade } from '~type/world/entities/player';
+import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -233,11 +232,11 @@ export class World extends Scene implements IWorld {
   }
 
   public getFeatureCost(type: WorldFeature) {
-    return progressionLinear(
-      WORLD_FEATURES[type].cost,
-      DIFFICULTY.FEATURE_COST_GROWTH,
-      this.wave.number,
-    );
+    return progressionLinear({
+      defaultValue: WORLD_FEATURES[type].cost,
+      scale: DIFFICULTY.FEATURE_COST_GROWTH,
+      level: this.wave.number,
+    });
   }
 
   public useFeature(type: WorldFeature) {
@@ -248,7 +247,7 @@ export class World extends Scene implements IWorld {
     const cost = this.getFeatureCost(type);
 
     if (this.player.resources < cost) {
-      this.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
 
       return;
     }
@@ -333,7 +332,7 @@ export class World extends Scene implements IWorld {
         positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
         speed: this.player.speed,
         health: this.player.live.maxHealth,
-        level: this.player.upgradeLevel[PlayerUpgrade.ASSISTANT],
+        level: this.player.upgradeLevel[PlayerSkill.ASSISTANT],
       });
     };
 

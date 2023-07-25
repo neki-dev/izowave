@@ -4,7 +4,7 @@ import { InterfaceColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 60px;
-  font-family: ${InterfaceFont.MONOSPACE};
+  font-family: ${InterfaceFont.PIXEL_TEXT};
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -14,6 +14,8 @@ export const About = styled.div`
   color: rgba(255, 255, 255, 0.75);
   text-align: right;
   white-space: pre-line;
+  font-size: 12px;
+  line-height: 12px;
 `;
 
 export const Link = styled.a`
@@ -24,6 +26,10 @@ export const Link = styled.a`
   }
 `;
 
+export const Version = styled.div`
+  margin-top: 6px;
+`;
+
 export const Discord = styled.a`
   margin-top: 10px;
   color: #fff;
@@ -32,14 +38,12 @@ export const Discord = styled.a`
   align-items: center;
   justify-content: flex-end;
   text-decoration: none;
-  font-size: 16px;
-  line-height: 16px;
-  font-weight: bold;
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  line-height: 13px;
   padding: 5px 9px;
   border-radius: 3px;
+  background: #6170C1;
   &:hover {
-    border-color: transparent;
     background: #111;
   }
 `;

@@ -13,7 +13,7 @@ export const Label = styled.div`
   background: ${InterfaceColor.ERROR_DARK};
   color: #fff;
   padding: 15px 30px 24px 30px;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 66px;
   line-height: 66px;
 `;

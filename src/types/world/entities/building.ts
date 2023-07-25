@@ -185,6 +185,7 @@ export enum BuildingAudio {
   DEAD = 'building/dead',
   OVER = 'building/over',
   RELOAD = 'building/reload',
+  REPAIR = 'building/repair',
   DAMAGE_1 = 'building/damage_1',
   DAMAGE_2 = 'building/damage_2',
 }

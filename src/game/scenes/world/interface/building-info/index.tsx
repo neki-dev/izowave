@@ -18,7 +18,7 @@ import {
 
 import { BuildingControls } from './controls';
 import {
-  Name, UpgradeLevel, Wrapper, Head, Body, Progress,
+  Name, Level, Health, Wrapper, Head, Body,
 } from './styles';
 
 export const BuildingInfo: React.FC = () => {
@@ -26,6 +26,8 @@ export const BuildingInfo: React.FC = () => {
 
   const [building, setBuilding] = useState<Nullable<IBuilding>>(null);
   const [upgradeLevel, setUpgradeLevel] = useState(1);
+  const [health, setHealth] = useState(1);
+  const [maxHealth, setMaxHealth] = useState(1);
   const [params, setParams] = useState<BuildingParam[]>([]);
   const [controls, setControls] = useState<BuildingControl[]>([]);
 
@@ -49,19 +51,17 @@ export const BuildingInfo: React.FC = () => {
     };
   }, []);
 
-  useSceneUpdate(
-    world,
-    () => {
-      if (!building) {
-        return;
-      }
+  useSceneUpdate(world, () => {
+    if (!building?.active) {
+      return;
+    }
 
-      setUpgradeLevel(building.upgradeLevel);
-      setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
-      setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
-    },
-    [building],
-  );
+    setUpgradeLevel(building.upgradeLevel);
+    setHealth(building.live.health);
+    setMaxHealth(building.live.maxHealth);
+    setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
+    setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
+  }, [building]);
 
   return (
     building && (
@@ -71,13 +71,19 @@ export const BuildingInfo: React.FC = () => {
             <Name>{building.getMeta().Name}</Name>
           </Head>
           <Body>
-            <UpgradeLevel>
+            <Health>
+              <Health.Progress
+                style={{ width: `${(health / maxHealth) * 100}%` }}
+              />
+              <Health.Value>{`${health} HP`}</Health.Value>
+            </Health>
+            <Level>
               {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map(
                 (_, level) => (
-                  <Progress key={level} $active={level < upgradeLevel} />
+                  <Level.Progress key={level} $active={level < upgradeLevel} />
                 ),
               )}
-            </UpgradeLevel>
+            </Level>
             <BuildingParams list={params} />
           </Body>
 

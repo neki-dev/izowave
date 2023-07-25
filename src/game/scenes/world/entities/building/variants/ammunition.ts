@@ -1,5 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinearFrom } from '~lib/utils';
+import { progressionLinearFrom } from '~lib/difficulty';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -16,8 +16,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   static Description = 'Reloads towers ammo within building radius';
 
   static Params: BuildingParam[] = [
-    { label: 'HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
+    { label: 'Health', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'Ammo', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -54,7 +54,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'AMMO',
+      label: 'Ammo',
       icon: BuildingIcon.AMMO,
       value: this.ammo,
     }];
@@ -66,7 +66,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     if (this.ammo <= amount) {
       const left = this.ammo;
 
-      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} ARE OVER`);
+      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} are over`);
       if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
         this.scene.game.sound.play(BuildingAudio.OVER);
       }
@@ -82,11 +82,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   private onUpgrade() {
-    this.ammo = progressionLinearFrom(
-      this.ammo,
-      DIFFICULTY.BUILDING_AMMUNITION_AMMO,
-      DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
-      this.upgradeLevel,
-    );
+    this.ammo = progressionLinearFrom({
+      currentValue: this.ammo,
+      defaultValue: DIFFICULTY.BUILDING_AMMUNITION_AMMO,
+      scale: DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
+      level: this.upgradeLevel,
+    });
   }
 }

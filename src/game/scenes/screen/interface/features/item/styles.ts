@@ -25,7 +25,7 @@ export const Info = styled.div`
   bottom: 100%;
   left: 50%;
   margin-bottom: 12px;
-  width: 180px;
+  width: 200px;
   animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
@@ -45,24 +45,21 @@ export const Head = styled.div`
   justify-content: space-between;
   padding: 10px 14px;
   background: ${InterfaceColor.BLUE_BLACK}ee;
+  border-radius: 10px 10px 0 0;
 `;
 
 export const Name = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
   color: ${InterfaceColor.INFO};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 14px;
   line-height: 14px;
-  text-transform: uppercase;
+  padding-bottom: 2px;
 `;
 
-export const Description = styled.div`
+export const Body = styled.div`
   background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 10px 14px 12px 14px;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 12px;
-  line-height: 12px;
-  color: #fff;
-  font-weight: bold;
+  border-radius: 0 0 10px 10px;
 `;
 
 export const Container = styled.div<{
@@ -73,6 +70,7 @@ export const Container = styled.div<{
   pointer-events: all;
   position: relative;
   border-bottom: 4px solid #000;
+  border-radius: 5px;
   ${(props) => (props.$active ? css`
     ${Icon} {
       opacity: 0.5;

@@ -11,7 +11,7 @@ export const Item = styled.div`
   display: flex;
   align-items: center;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   &:not(:last-child) {
     margin-bottom: 15px;
   }

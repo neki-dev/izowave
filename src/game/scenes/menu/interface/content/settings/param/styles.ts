@@ -8,12 +8,12 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Description = styled.div`
-  margin-bottom: 5px;
+export const Label = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL};
-  font-size: 12px;
-  line-height: 12px;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-size: 11px;
+  line-height: 11px;
+  margin-bottom: 5px;
 `;
 
 export const Values = styled.ul<{
@@ -35,7 +35,7 @@ export const Value = styled.li<{
     ? InterfaceColor.INFO
     : 'rgba(255, 255, 255, 0.75)'
   )};
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 13px;
   line-height: 13px;
   border: 1px solid ${(props) => (props.$active

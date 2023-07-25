@@ -10,6 +10,8 @@ const animationOpacity = keyframes`
 export const Wrapper = styled.div`
   width: 260px;
   animation: ${animationOpacity} 0.1s ease-in;
+  border-radius: 10px;
+  overflow: hidden;
   &::after {
     position: absolute;
     content: '';
@@ -31,36 +33,31 @@ export const Head = styled.div`
   height: 59px;
 `;
 
-export const Body = styled.div`
-  padding: 18px 20px 20px 20px;
-  background: ${InterfaceColor.BLUE_DARK}cc;
-`;
-
 export const Name = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   color: ${InterfaceColor.INFO};
   font-size: 16px;
   line-height: 16px;
 `;
 
-export const Description = styled.div`
-  color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: bold;
+export const Body = styled.div`
+  padding: 18px 20px 20px 20px;
+  background: ${InterfaceColor.BLUE_DARK}cc;
 `;
 
 export const Alert = styled.div<{
   $attention?: boolean
 }>`
-  color: ${(props) => (props.$attention
-    ? InterfaceColor.ERROR
-    : '#ccc'
+  margin: 15px 0 -5px 0;
+  border-radius: 5px;
+  padding: 6px 9px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 10px;
+  line-height: 10px;
+  letter-spacing: 1px;
+  color: #fff;
+  background: ${(props) => (props.$attention
+    ? `${InterfaceColor.ERROR_DARK}aa`
+    : 'rgba(0, 0, 0, 0.25)'
   )};
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 14px;
-  line-height: 14px;
-  font-weight: bold;
-  margin-top: 8px;
 `;

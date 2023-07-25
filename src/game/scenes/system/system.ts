@@ -8,7 +8,7 @@ import { InterfaceFont } from '~type/interface';
 export class System extends Scene {
   constructor() {
     super({
-      key: GameScene.BASIC,
+      key: GameScene.SYSTEM,
       pack: getAssetsPack(),
     });
 
@@ -16,7 +16,10 @@ export class System extends Scene {
   }
 
   public async create() {
-    await loadFontFace(InterfaceFont.PIXEL, 'retro');
+    await Promise.all([
+      loadFontFace(InterfaceFont.PIXEL_LABEL, 'pixel_label.ttf'),
+      loadFontFace(InterfaceFont.PIXEL_TEXT, 'pixel_text.ttf'),
+    ]);
 
     this.scene.launch(GameScene.WORLD);
     this.scene.launch(GameScene.MENU);

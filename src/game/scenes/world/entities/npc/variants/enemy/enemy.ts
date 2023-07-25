@@ -10,7 +10,7 @@ import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
-import { progressionQuadratic } from '~lib/utils';
+import { progressionQuadratic } from '~lib/difficulty';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
@@ -40,28 +40,30 @@ export class Enemy extends NPC implements IEnemy {
       positionAtMatrix,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
-      health: progressionQuadratic(
-        DIFFICULTY.ENEMY_HEALTH
+      health: progressionQuadratic({
+        defaultValue: DIFFICULTY.ENEMY_HEALTH
           * multipliers.health
           * scene.game.getDifficultyMultiplier(),
-        DIFFICULTY.ENEMY_HEALTH_GROWTH,
-        scene.wave.number,
-      ),
-      speed: progressionQuadratic(
-        DIFFICULTY.ENEMY_SPEED * multipliers.speed,
-        DIFFICULTY.ENEMY_SPEED_GROWTH,
-        Math.min(scene.wave.number, DIFFICULTY.ENEMY_SPEED_GROWTH_MAX_LEVEL),
-      ),
+        scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
+        level: scene.wave.number,
+        retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+      }),
+      speed: progressionQuadratic({
+        defaultValue: DIFFICULTY.ENEMY_SPEED * multipliers.speed,
+        scale: DIFFICULTY.ENEMY_SPEED_GROWTH,
+        level: scene.wave.number,
+        maxLevel: DIFFICULTY.ENEMY_SPEED_GROWTH_MAX_LEVEL,
+      }),
     });
     scene.addEntity(EntityType.ENEMY, this);
 
-    this.damage = progressionQuadratic(
-      DIFFICULTY.ENEMY_DAMAGE
+    this.damage = progressionQuadratic({
+      defaultValue: DIFFICULTY.ENEMY_DAMAGE
         * multipliers.damage
         * scene.game.getDifficultyMultiplier(),
-      DIFFICULTY.ENEMY_DAMAGE_GROWTH,
-      scene.wave.number,
-    );
+      scale: DIFFICULTY.ENEMY_DAMAGE_GROWTH,
+      level: scene.wave.number,
+    });
     this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
       multipliers.health
@@ -117,11 +119,11 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   public onDead() {
-    const experience = progressionQuadratic(
-      DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
-      DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
-      this.scene.wave.number,
-    );
+    const experience = progressionQuadratic({
+      defaultValue: DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
+      scale: DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
+      level: this.scene.wave.number,
+    });
 
     this.scene.player.giveExperience(experience);
     this.scene.player.incrementKills();

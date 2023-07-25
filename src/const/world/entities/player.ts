@@ -1,8 +1,8 @@
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import {
   MovementDirection,
-  PlayerUpgrade,
-  PlayerUpgradeData,
+  PlayerSkill,
+  PlayerSkillData,
 } from '~type/world/entities/player';
 
 import { DIFFICULTY } from '../difficulty';
@@ -17,26 +17,26 @@ const {
   RIGHT, LEFT, UP, DOWN, NONE,
 } = MovementDirection;
 
-export const PLAYER_UPGRADES: Record<PlayerUpgrade, PlayerUpgradeData> = {
-  [PlayerUpgrade.MAX_HEALTH]: {
+export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
+  [PlayerSkill.MAX_HEALTH]: {
     label: 'Maximum health',
     description: 'Grow health of player and assistant',
     experience: DIFFICULTY.PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
   },
-  [PlayerUpgrade.SPEED]: {
+  [PlayerSkill.SPEED]: {
     label: 'Movement speed',
     description: 'Grow speed of player and assistant',
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
   },
-  [PlayerUpgrade.BUILD_AREA]: {
+  [PlayerSkill.BUILD_AREA]: {
     label: 'Build area',
     description: 'Grow radius of build area',
     experience: DIFFICULTY.BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
   },
-  [PlayerUpgrade.ASSISTANT]: {
+  [PlayerSkill.ASSISTANT]: {
     label: 'Assistant strength',
     description: 'Grow damage, radius and speed attack',
     experience: DIFFICULTY.ASSISTANT_EXPERIENCE_TO_UPGRADE,

@@ -14,7 +14,7 @@ export const GeneralHints: React.FC = () => {
 
   const showHint = (step: TutorialStep) => {
     switch (step) {
-      case TutorialStep.UNSET_BUILDING: {
+      case TutorialStep.STOP_BUILD: {
         return setHint('Use [Right click] to stop build');
       }
     }
@@ -22,7 +22,7 @@ export const GeneralHints: React.FC = () => {
 
   const hideHint = (step: TutorialStep) => {
     switch (step) {
-      case TutorialStep.UNSET_BUILDING: {
+      case TutorialStep.STOP_BUILD: {
         return setHint(null);
       }
     }

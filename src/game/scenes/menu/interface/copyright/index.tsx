@@ -3,7 +3,7 @@ import React from 'react';
 import pkg from '../../../../../../package.json';
 
 import {
-  Wrapper, Icon, About, Discord, Link,
+  Wrapper, Icon, About, Discord, Link, Version,
 } from './styles';
 
 export const Copyright: React.FC = () => (
@@ -13,8 +13,7 @@ export const Copyright: React.FC = () => (
       <Link href={pkg.author.url} target="_blank">
         {pkg.author.name}
       </Link>
-      <br />
-      Version {pkg.version}
+      <Version>Version {pkg.version}</Version>
     </About>
     <Discord href='https://discord.gg/cnFAdMsRxn' target="_blank">
       <Icon src='assets/discord.png' />

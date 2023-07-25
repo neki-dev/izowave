@@ -13,6 +13,6 @@ export enum InterfaceColor {
 }
 
 export enum InterfaceFont {
-  PIXEL = 'Retro',
-  MONOSPACE = 'Monospace',
+  PIXEL_LABEL = 'PixelLabel',
+  PIXEL_TEXT = 'PixelText',
 }

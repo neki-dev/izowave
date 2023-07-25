@@ -58,8 +58,8 @@ export function getAssetsPack() {
   return ASSETS_PACK;
 }
 
-export async function loadFontFace(name: string, file?: string) {
-  const font = new FontFace(name, `url('assets/fonts/${file || name}.ttf')`);
+export async function loadFontFace(name: string, file: string) {
+  const font = new FontFace(name, `url('assets/fonts/${file}')`);
 
   return font.load().then(() => {
     document.fonts.add(font);

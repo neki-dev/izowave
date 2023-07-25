@@ -27,7 +27,7 @@ export const Hint: React.FC<Props> = ({
         return (
           <React.Fragment key={i}>
             {before}
-            <Key>{value.replace(/.*\[([\w\s]+)\].*/, '$1').toUpperCase()}</Key>
+            <Key>{value.replace(/[\s\S]*\[([\w\s]+)\][\s\S]*/, '$1').toUpperCase()}</Key>
             {after}
           </React.Fragment>
         );

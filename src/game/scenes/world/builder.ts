@@ -82,7 +82,7 @@ export class Builder extends EventEmitter implements IBuilder {
     if (!this.isBuildingAllowByWave(variant)) {
       this.scene.game.screen.notice(
         NoticeType.ERROR,
-        `${BuildingInstance.Name} WILL BE AVAILABLE ON ${BuildingInstance.AllowByWave} WAVE`,
+        `Will be available on ${BuildingInstance.AllowByWave} wave`,
       );
 
       return;
@@ -103,7 +103,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
-    this.scene.game.tutorial.complete(TutorialStep.UNSET_BUILDING);
+    this.scene.game.tutorial.complete(TutorialStep.STOP_BUILD);
 
     this.clearBuildingVariant();
   }
@@ -312,13 +312,13 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `YOU HAVE MAXIMUM ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}`);
 
       return;
     }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT ENOUGH RESOURCES');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
 
       return;
     }
@@ -339,7 +339,7 @@ export class Builder extends EventEmitter implements IBuilder {
       this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
     } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
-      this.scene.game.tutorial.start(TutorialStep.UNSET_BUILDING);
+      this.scene.game.tutorial.start(TutorialStep.STOP_BUILD);
     }
   }
 

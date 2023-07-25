@@ -33,7 +33,7 @@ export const Wave: React.FC = () => {
       const timeleft = world.wave.getTimeleft();
 
       setValue(formatTime(timeleft));
-      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM && !world.isTimePaused());
+      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM);
     }
   });
 
@@ -46,7 +46,7 @@ export const Wave: React.FC = () => {
           {currentNumber}
         </CurrentNumber>
         <State>
-          <Label>{isGoing ? 'ENEMIES LEFT' : 'TIME LEFT'}</Label>
+          <Label>{isGoing ? 'Enemies left' : 'Timeleft'}</Label>
           <Value $attention={isAlarm}>{value}</Value>
         </State>
       </Container>

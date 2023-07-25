@@ -14,12 +14,13 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   display: flex;
   color: #fff;
   align-items: center;
-  padding: 10px;
+  padding: 10px 15px 10px 10px;
   background: ${InterfaceColor.BLACK_TRANSPARENT};
+  border-radius: 5px;
 `;
 
 export const CurrentNumber = styled.div<{
@@ -28,6 +29,7 @@ export const CurrentNumber = styled.div<{
   font-size: 24px;
   line-height: 24px;
   padding: 6px 17px 10px 17px;
+  border-radius: 3px;
   background: ${(props) => (props.$going
     ? InterfaceColor.ERROR_DARK
     : InterfaceColor.INFO_DARK

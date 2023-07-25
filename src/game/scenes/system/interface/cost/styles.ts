@@ -22,7 +22,7 @@ export const Value = styled.div<{
   $attention?: boolean
 }>`
   margin-top: -2px;
-  font-family: ${InterfaceFont.PIXEL};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 15px;
   line-height: 15px;
   color: ${(props) => (props.$attention

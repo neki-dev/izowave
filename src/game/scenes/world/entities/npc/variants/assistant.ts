@@ -7,7 +7,8 @@ import { NPC } from '~entity/npc';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progressionQuadratic, getClosest } from '~lib/utils';
+import { progressionQuadratic } from '~lib/difficulty';
+import { getClosest } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -130,21 +131,21 @@ export class Assistant extends NPC implements IAssistant {
     this.shot.shoot(target);
 
     const now = this.scene.getTime();
-    const pause = progressionQuadratic(
-      DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
-      DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
-      this.level,
-    );
+    const pause = progressionQuadratic({
+      defaultValue: DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
+      scale: DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
+      level: this.level,
+    });
 
     this.nextAttackTimestamp = now + Math.max(pause, 200);
   }
 
   private getTarget(): Nullable<IEnemy> {
-    const maxDistance = progressionQuadratic(
-      DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
-      DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-      this.level,
-    );
+    const maxDistance = progressionQuadratic({
+      defaultValue: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
+      scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
+      level: this.level,
+    });
 
     const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
       if (enemy.live.isDead()) {
@@ -167,25 +168,25 @@ export class Assistant extends NPC implements IAssistant {
     const params: ShotParams = {
       maxDistance:
         this.shotDefaultParams.maxDistance
-        && progressionQuadratic(
-          this.shotDefaultParams.maxDistance,
-          DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-          this.level,
-        ),
+        && progressionQuadratic({
+          defaultValue: this.shotDefaultParams.maxDistance,
+          scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
+          level: this.level,
+        }),
       speed:
         this.shotDefaultParams.speed
-        && progressionQuadratic(
-          this.shotDefaultParams.speed,
-          DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
-          this.level,
-        ),
+        && progressionQuadratic({
+          defaultValue: this.shotDefaultParams.speed,
+          scale: DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
+          level: this.level,
+        }),
       damage:
         this.shotDefaultParams.damage
-        && progressionQuadratic(
-          this.shotDefaultParams.damage,
-          DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
-          this.level,
-        ),
+        && progressionQuadratic({
+          defaultValue: this.shotDefaultParams.damage,
+          scale: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
+          level: this.level,
+        }),
     };
 
     return params;

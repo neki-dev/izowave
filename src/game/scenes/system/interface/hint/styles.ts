@@ -37,26 +37,31 @@ const animationKickBottom = keyframes`
 
 export const Wrapper = styled.div`
   position: relative;
+  pointer-events: none;
 `;
 
 export const Key = styled.span`
   display: inline-block;
-  padding: 0 3px 1px 3px;
+  padding: 1px 2px 1px 3px;
+  margin-right: 1px;
   font-size: 11px;
   line-height: 11px;
   color: #000;
   background: #fff;
+  border-radius: 3px;
 `;
 
 export const Container = styled.div<{
   $width?: number
 }>`
   background: #000;
-  padding: 8px 12px 10px 12px;
+  padding: 9px 12px 10px 12px;
+  border-radius: 5px;
   color: #fff;
-  font-family: ${InterfaceFont.MONOSPACE};
-  font-size: 13px;
-  line-height: 13px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1px;
   white-space: pre;
   width: ${(props) => (props.$width
     ? `${props.$width}px`

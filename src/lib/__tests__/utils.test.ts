@@ -1,36 +1,10 @@
 import positions from '../__mocks__/positions';
 import {
   aroundPosition,
-  progressionQuadratic,
   equalPositions,
   formatTime,
   getClosest,
-  progressionLinear,
-  progressionLinearFrom,
 } from '../utils';
-
-describe('utils.ts / progression', () => {
-  it('should return correct value growth', () => {
-    expect(progressionQuadratic(100, 0.1, 1)).toEqual(100);
-    expect(progressionQuadratic(100, 0.1, 3)).toEqual(122);
-  });
-
-  it('should return correct negative value growth', () => {
-    expect(progressionQuadratic(100, -0.1, 1)).toEqual(100);
-    expect(progressionQuadratic(100, -0.1, 3)).toEqual(81);
-  });
-
-  it('should return correct linear value growth', () => {
-    expect(progressionLinear(100, 1.0, 2)).toEqual(200);
-    expect(progressionLinear(100, 1.0, 3)).toEqual(300);
-    expect(progressionLinearFrom(50, 100, 1.0, 2)).toEqual(150);
-    expect(progressionLinearFrom(50, 100, 1.0, 3)).toEqual(250);
-  });
-
-  it('should return rounded value', () => {
-    expect(progressionQuadratic(100, 0.1, 3, 10)).toEqual(130);
-  });
-});
 
 describe('utils.ts / equalPositions', () => {
   it('should equal 2D positions', () => {

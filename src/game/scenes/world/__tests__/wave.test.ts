@@ -1,7 +1,7 @@
 import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinear } from '~lib/utils';
+import { progressionLinear } from '~lib/difficulty';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -42,12 +42,12 @@ describe('wave.ts', () => {
   it('should return timeleft to next wave start', () => {
     helper.skipWaves(1);
 
-    expect(wave.getTimeleft()).toEqual(progressionLinear(
-      DIFFICULTY.WAVE_TIMELEFT,
-      DIFFICULTY.WAVE_TIMELEFT_GROWTH,
-      2,
-      1000,
-    ));
+    expect(wave.getTimeleft()).toEqual(progressionLinear({
+      defaultValue: DIFFICULTY.WAVE_TIMELEFT,
+      scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+      level: 2,
+      roundTo: 1000,
+    }));
   });
 
   it('should start wave when time is left', () => {

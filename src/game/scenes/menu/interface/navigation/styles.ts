@@ -16,9 +16,9 @@ export const Item = styled.li<{
     ? InterfaceColor.INFO
     : '#fff'
   )};
-  font-family: ${InterfaceFont.PIXEL};
-  font-size: 22px;
-  line-height: 22px;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-size: 24px;
+  line-height: 24px;
   &:not(:last-child) {
     margin-bottom: 20px;
   }

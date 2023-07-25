@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionQuadratic, getClosest } from '~lib/utils';
+import { progressionQuadratic } from '~lib/difficulty';
+import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldFeature } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -47,7 +48,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     if (params.damage) {
       info.push({
-        label: 'DAMAGE',
+        label: 'Damage',
         icon: BuildingIcon.DAMAGE,
         value: params.damage,
       });
@@ -55,7 +56,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     if (params.freeze) {
       info.push({
-        label: 'FREEZE',
+        label: 'Freeze',
         icon: BuildingIcon.DAMAGE,
         value: `${(params.freeze / 1000).toFixed(1)} s`,
       });
@@ -63,14 +64,14 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     if (params.speed) {
       info.push({
-        label: 'SPEED',
+        label: 'Speed',
         icon: BuildingIcon.SPEED,
         value: params.speed,
       });
     }
 
     info.push({
-      label: 'AMMO',
+      label: 'Ammo',
       icon: BuildingIcon.AMMO,
       attention: (this.ammo === 0),
       value: `${this.ammo}/${DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT}`,
@@ -118,29 +119,29 @@ export class BuildingTower extends Building implements IBuildingTower {
     };
 
     if (this.shotDefaultParams.speed) {
-      params.speed = progressionQuadratic(
-        this.shotDefaultParams.speed,
-        DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
-        this.upgradeLevel,
-      );
+      params.speed = progressionQuadratic({
+        defaultValue: this.shotDefaultParams.speed,
+        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
+        level: this.upgradeLevel,
+      });
     }
 
     if (this.shotDefaultParams.damage) {
       const rage = this.scene.activeFeatures[WorldFeature.RAGE];
 
-      params.damage = progressionQuadratic(
-        this.shotDefaultParams.damage,
-        DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
-        this.upgradeLevel,
-      ) * (rage ? 2 : 1);
+      params.damage = progressionQuadratic({
+        defaultValue: this.shotDefaultParams.damage,
+        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
+        level: this.upgradeLevel,
+      }) * (rage ? 2 : 1);
     }
 
     if (this.shotDefaultParams.freeze) {
-      params.freeze = progressionQuadratic(
-        this.shotDefaultParams.freeze,
-        DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
-        this.upgradeLevel,
-      );
+      params.freeze = progressionQuadratic({
+        defaultValue: this.shotDefaultParams.freeze,
+        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
+        level: this.upgradeLevel,
+      });
     }
 
     return params;
@@ -148,19 +149,15 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getAmmunition() {
     const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
-      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
+      .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getPositionOnGround())));
 
     if (ammunitions.length === 0) {
       return null;
     }
 
-    const priorityAmmunition = ammunitions.reduce((max, current) => (
-      max.ammo > current.ammo ? max : current
+    const priorityAmmunition = ammunitions.reduce((min, current) => (
+      min.ammo < current.ammo ? min : current
     ));
-
-    if (priorityAmmunition.ammo === 0) {
-      return null;
-    }
 
     return priorityAmmunition;
   }
@@ -179,13 +176,13 @@ export class BuildingTower extends Building implements IBuildingTower {
           this.scene.game.sound.play(BuildingAudio.RELOAD);
         }
 
-        this.scene.game.tutorial.complete(TutorialStep.RELOAD_BUILDING);
+        this.scene.game.tutorial.complete(TutorialStep.RELOAD_TOWER);
       }
     } else if (!this.needReload) {
       this.addAlertIcon();
       this.needReload = true;
 
-      this.scene.game.tutorial.start(TutorialStep.RELOAD_BUILDING);
+      this.scene.game.tutorial.start(TutorialStep.RELOAD_TOWER);
     }
   }
 
