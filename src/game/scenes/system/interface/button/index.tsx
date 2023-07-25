@@ -4,15 +4,15 @@ import { Container } from './styles';
 
 type Props = {
   size?: 'small' | 'large'
-  active?: boolean
+  view?: 'active' | 'confirm' | 'decline'
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void
   children: React.ReactNode
 };
 
 export const Button: React.FC<Props> = ({
-  size, active, onClick, children,
+  size, view, onClick, children,
 }) => (
-  <Container onClick={onClick} $size={size} $active={active}>
+  <Container onClick={onClick} $size={size} $view={view}>
     {children}
   </Container>
 );

@@ -6,7 +6,7 @@ import {
 import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
 import { shaders } from '~lib/shaders';
-import { eachEntries } from '~lib/utils';
+import { eachEntries, registerScript } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
@@ -14,7 +14,13 @@ import { System } from '~scene/system';
 import { World } from '~scene/world';
 import { IAnalytics } from '~type/analytics';
 import {
-  GameEvents, GameFlag, GameScene, GameSettings, GameStat, IGame,
+  GameAdType,
+  GameEvents,
+  GameFlag,
+  GameScene,
+  GameSettings,
+  GameStat,
+  IGame,
 } from '~type/game';
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
@@ -92,6 +98,10 @@ export class Game extends Phaser.Game implements IGame {
     this.readFlags();
     this.readSettings();
 
+    if (this.isFlagEnabled(GameFlag.ADS)) {
+      registerScript('https://sdk.crazygames.com/crazygames-sdk-v2.js');
+    }
+
     this.events.on(Phaser.Core.Events.READY, () => {
       this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
       this.world = <IWorld> this.scene.getScene(GameScene.WORLD);
@@ -127,6 +137,9 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.scene.pause();
     this.screen.scene.pause();
+
+    // @ts-ignore
+    window.CrazyGames?.SDK?.game?.gameplayStop();
 
     const menu = this.scene.getScene(GameScene.MENU);
 
@@ -188,7 +201,9 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public restartGame() {
-      this.stopGame();
+    this.stopGame();
+
+    this.showAd(GameAdType.MIDGAME);
 
     this.world.scene.restart();
 
@@ -251,6 +266,26 @@ export class Game extends Phaser.Game implements IGame {
     const rawFlags = query.get('flags');
 
     this.flags = rawFlags?.toUpperCase().split(',') ?? [];
+  }
+
+  public showAd(type: GameAdType, callback?: () => void) {
+    if (!this.isFlagEnabled(GameFlag.ADS)) {
+      return;
+    }
+
+    // @ts-ignore
+    window.CrazyGames?.SDK?.ad?.requestAd(type, {
+      adStarted: () => {
+        this.pause();
+      },
+      adFinished: () => {
+        this.resume();
+        callback?.();
+      },
+      adError: (error: any) => {
+        console.warn(`Error ${type} ad:`, error);
+      },
+    });
   }
 
   private getRecordStat(): Nullable<GameStat> {

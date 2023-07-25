@@ -30,7 +30,7 @@ export const Resources: React.FC = () => {
 
   return (
     <Wrapper>
-      <Amount icon="resources">{amount}</Amount>
+      <Amount type="resources">{amount}</Amount>
       {hint && (
         <Hint side="top" align="left">
           If resources not enough

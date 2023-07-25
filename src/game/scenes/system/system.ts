@@ -29,6 +29,11 @@ export class System extends Scene {
     this.scene.bringToTop();
 
     this.input.keyboard?.on(CONTROL_KEY.PAUSE, () => {
+      if (this.game.isPaused) {
+        // System pause
+        return;
+      }
+
       if (this.game.isFinished) {
         this.game.restartGame();
       } else if (this.game.isStarted) {

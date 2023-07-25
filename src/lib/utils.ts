@@ -228,3 +228,19 @@ export function isMobileDevice() {
     navigator.userAgent,
   );
 }
+
+/**
+ * Add script to document.
+ * @param url - Script src
+ */
+export function registerScript(url: string) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+
+    script.setAttribute('src', url);
+    script.addEventListener('load', resolve);
+    script.addEventListener('error', reject);
+
+    document.body.appendChild(script);
+  });
+}

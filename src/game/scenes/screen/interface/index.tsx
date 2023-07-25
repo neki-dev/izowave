@@ -3,6 +3,7 @@ import React from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
 
+import { AdsReward } from './ads-reward';
 import { Builder } from './builder';
 import { Debug } from './debug';
 import { Features } from './features';
@@ -25,6 +26,7 @@ export const ScreenUI: React.FC = () => {
 
         <Column $side="center">
           <Wave />
+          <AdsReward />
           <GeneralHints />
           <Features />
         </Column>

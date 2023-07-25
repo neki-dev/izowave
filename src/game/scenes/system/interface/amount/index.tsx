@@ -5,14 +5,14 @@ import {
 } from './styles';
 
 type Props = {
-  children: string | number
-  icon: string
+  children: React.ReactNode
+  type: 'resources' | 'experience'
 };
 
-export const Amount: React.FC<Props> = ({ children, icon }) => (
+export const Amount: React.FC<Props> = ({ children, type }) => (
   <Wrapper>
     <IconContainer>
-      <Icon src={`assets/sprites/hud/${icon}.png`} />
+      <Icon src={`assets/sprites/hud/${type}.png`} />
     </IconContainer>
     <Value>
       {children}
