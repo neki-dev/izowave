@@ -16,6 +16,7 @@ export const Container = styled.div`
   margin-top: 14px;
   pointer-events: all;
   animation: ${animationOpacity} 0.1s ease-in;
+  border-radius: 10px;
   &::after {
     position: absolute;
     content: '';

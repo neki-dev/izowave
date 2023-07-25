@@ -24,6 +24,7 @@ export const Container = styled.div<{
         width: 80px;
         height: 24px;
         letter-spacing: 1px;
+        border-radius: 5px;
       `;
       case 'large': return css`
         font-size: 22px;

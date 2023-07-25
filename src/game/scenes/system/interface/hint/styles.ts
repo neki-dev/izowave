@@ -48,13 +48,15 @@ export const Key = styled.span`
   line-height: 11px;
   color: #000;
   background: #fff;
+  border-radius: 3px;
 `;
 
 export const Container = styled.div<{
   $width?: number
 }>`
   background: #000;
-  padding: 8px 12px 10px 12px;
+  padding: 9px 12px 10px 12px;
+  border-radius: 5px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_TEXT};
   font-size: 12px;

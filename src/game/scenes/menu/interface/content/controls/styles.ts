@@ -23,6 +23,7 @@ export const Key = styled.div`
   padding: 3px 7px 4px 7px;
   background: #fff;
   text-align: center;
+  border-radius: 3px;
   &:not(:last-child) {
     margin-right: 3px;
   }

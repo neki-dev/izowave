@@ -15,6 +15,8 @@ export const Action = styled.div`
   pointer-events: all;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
   &:not(:last-child) {
     margin-bottom: 3px;
   }

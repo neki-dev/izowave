@@ -10,6 +10,8 @@ const animationOpacity = keyframes`
 export const Wrapper = styled.div`
   width: 260px;
   animation: ${animationOpacity} 0.1s ease-in;
+  border-radius: 10px;
+  overflow: hidden;
   &::after {
     position: absolute;
     content: '';
@@ -46,13 +48,16 @@ export const Body = styled.div`
 export const Alert = styled.div<{
   $attention?: boolean
 }>`
-  margin-top: 8px;
+  margin: 15px 0 -5px 0;
+  border-radius: 5px;
+  padding: 6px 9px;
   font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 10px;
+  line-height: 10px;
   letter-spacing: 1px;
-  color: ${(props) => (props.$attention
-    ? InterfaceColor.ERROR
-    : '#ccc'
+  color: #fff;
+  background: ${(props) => (props.$attention
+    ? `${InterfaceColor.ERROR_DARK}aa`
+    : 'rgba(0, 0, 0, 0.25)'
   )};
 `;

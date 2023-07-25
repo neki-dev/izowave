@@ -26,4 +26,5 @@ export const Value = styled.div`
   transform: translate(-50%, -50%);
   width: 100%;
   text-align: center;
+  padding-bottom: 1px;
 `;

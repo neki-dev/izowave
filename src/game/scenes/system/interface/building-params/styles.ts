@@ -13,16 +13,18 @@ export const Param = styled.div`
   display: flex;
   align-items: center;
   background: rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  overflow: hidden;
 `;
 
 export const IconContainer = styled.div`
   width: 34px;
   height: 34px;
   background: rgba(0, 0, 0, 0.5);
-  margin-right: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 0 5px 5px 0;
 `;
 
 export const Icon = styled.img`
@@ -33,6 +35,7 @@ export const Icon = styled.img`
 export const Info = styled.div<{
   $attention?: boolean
 }>`
+  padding: 2px 5px;
   color: ${(props) => (props.$attention
     ? InterfaceColor.WARN
     : '#fff'

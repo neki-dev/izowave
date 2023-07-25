@@ -19,6 +19,7 @@ export const Container = styled.div<{
   height: 60px;
   padding: 10px 16px 10px 10px;
   background: ${InterfaceColor.BLACK_TRANSPARENT};
+  border-radius: 5px;
   display: flex;
   justify-content: center;
   position: relative;
@@ -29,6 +30,7 @@ export const Container = styled.div<{
     top: 3px;
     bottom: 3px;
     background: ${InterfaceColor.ERROR};
+    border-radius: 2px;
     width: 3px;
   }
   ${(props) => (!props.$disabled && css`

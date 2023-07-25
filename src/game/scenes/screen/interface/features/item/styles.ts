@@ -45,6 +45,7 @@ export const Head = styled.div`
   justify-content: space-between;
   padding: 10px 14px;
   background: ${InterfaceColor.BLUE_BLACK}ee;
+  border-radius: 10px 10px 0 0;
 `;
 
 export const Name = styled.div`
@@ -58,6 +59,7 @@ export const Name = styled.div`
 export const Body = styled.div`
   background: ${InterfaceColor.BLUE_DARK}cc;
   padding: 10px 14px 12px 14px;
+  border-radius: 0 0 10px 10px;
 `;
 
 export const Container = styled.div<{
@@ -68,6 +70,7 @@ export const Container = styled.div<{
   pointer-events: all;
   position: relative;
   border-bottom: 4px solid #000;
+  border-radius: 5px;
   ${(props) => (props.$active ? css`
     ${Icon} {
       opacity: 0.5;

@@ -6,6 +6,8 @@ export const Item = styled.div`
   color: #fff;
   display: flex;
   justify-content: space-between;
+  border-radius: 5px;
+  overflow: hidden;
   &:not(:last-child) {
     margin-bottom: 4px;
   }
