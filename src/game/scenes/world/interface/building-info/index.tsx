@@ -51,21 +51,17 @@ export const BuildingInfo: React.FC = () => {
     };
   }, []);
 
-  useSceneUpdate(
-    world,
-    () => {
-      if (!building) {
-        return;
-      }
+  useSceneUpdate(world, () => {
+    if (!building?.active) {
+      return;
+    }
 
-      setUpgradeLevel(building.upgradeLevel);
-      setHealth(building.live.health);
-      setMaxHealth(building.live.maxHealth);
-      setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
-      setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
-    },
-    [building],
-  );
+    setUpgradeLevel(building.upgradeLevel);
+    setHealth(building.live.health);
+    setMaxHealth(building.live.maxHealth);
+    setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
+    setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
+  }, [building]);
 
   return (
     building && (
