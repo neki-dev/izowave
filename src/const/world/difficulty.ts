@@ -5,18 +5,18 @@ export const DIFFICULTY = {
 
   PLAYER_START_RESOURCES: 80, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
-  PLAYER_SPEED_GROWTH: 0.08, // Growth speed by upgrade (Quadratic)
+  PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
-  PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade
+  PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
    */
 
-  ASSISTANT_EXPERIENCE_TO_UPGRADE: 120, // Experience need to upgrade
+  ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.5, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
@@ -48,7 +48,7 @@ export const DIFFICULTY = {
   WAVE_TIMELEFT_GROWTH: 0.5, // Pause growth by wave number (Linear)
   WAVE_SEASON_LENGTH: 5, // Count of wave numbers in season
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
-  WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Force)
+  WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
   WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Pause between enemies spawn
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.035, // Enemies spawn pause growth by wave number (Quadratic)
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
@@ -60,19 +60,21 @@ export const DIFFICULTY = {
 
   CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
   CRYSTAL_RESOURCES: 4, // Resources in crystal
-  CRYSTAL_RESOURCES_GROWTH: 0.2, // Resources amount growth by wave number (Quadratic)
+  CRYSTAL_RESOURCES_GROWTH: 0.3, // Resources amount growth by wave number (Quadratic)
 
   /**
    * Enemies
    */
 
   ENEMY_HEALTH: 85, // Health
-  ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic) // TODO: Quadratic Force
+  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
   ENEMY_SPEED: 50, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
-  ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Limit for level of speed growth
+  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic) // TODO: Quadratic Force
+  ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic) // TODO: Quadratic Force
+  ENEMY_DAMAGE_GROWTH_RETARDATION_LEVEL: 14, // Level for damage growth retardation
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 

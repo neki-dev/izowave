@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionQuadratic, getClosest } from '~lib/utils';
+import { progressionQuadratic } from '~lib/difficulty';
+import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldFeature } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -118,29 +119,29 @@ export class BuildingTower extends Building implements IBuildingTower {
     };
 
     if (this.shotDefaultParams.speed) {
-      params.speed = progressionQuadratic(
-        this.shotDefaultParams.speed,
-        DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
-        this.upgradeLevel,
-      );
+      params.speed = progressionQuadratic({
+        defaultValue: this.shotDefaultParams.speed,
+        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
+        level: this.upgradeLevel,
+      });
     }
 
     if (this.shotDefaultParams.damage) {
       const rage = this.scene.activeFeatures[WorldFeature.RAGE];
 
-      params.damage = progressionQuadratic(
-        this.shotDefaultParams.damage,
-        DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
-        this.upgradeLevel,
-      ) * (rage ? 2 : 1);
+      params.damage = progressionQuadratic({
+        defaultValue: this.shotDefaultParams.damage,
+        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
+        level: this.upgradeLevel,
+      }) * (rage ? 2 : 1);
     }
 
     if (this.shotDefaultParams.freeze) {
-      params.freeze = progressionQuadratic(
-        this.shotDefaultParams.freeze,
-        DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
-        this.upgradeLevel,
-      );
+      params.freeze = progressionQuadratic({
+        defaultValue: this.shotDefaultParams.freeze,
+        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
+        level: this.upgradeLevel,
+      });
     }
 
     return params;

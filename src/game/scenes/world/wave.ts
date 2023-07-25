@@ -7,9 +7,8 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
-import {
-  eachEntries, progressionLinear, progressionQuadratic, progressionQuadraticForce,
-} from '~lib/utils';
+import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/difficulty';
+import { eachEntries } from '~lib/utils';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -110,12 +109,12 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private runTimeleft() {
-    const pause = progressionLinear(
-      DIFFICULTY.WAVE_TIMELEFT,
-      DIFFICULTY.WAVE_TIMELEFT_GROWTH,
-      this.number,
-      1000,
-    );
+    const pause = progressionLinear({
+      defaultValue: DIFFICULTY.WAVE_TIMELEFT,
+      scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+      level: this.number,
+      roundTo: 1000,
+    });
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
   }
@@ -125,11 +124,11 @@ export class Wave extends EventEmitter implements IWave {
 
     this.nextSpawnTimestamp = 0;
     this.spawnedEnemiesCount = 0;
-    this.enemiesMaxCount = progressionQuadraticForce(
-      DIFFICULTY.WAVE_ENEMIES_COUNT,
-      DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
-      this.number,
-    );
+    this.enemiesMaxCount = progressionQuadraticMixed({
+      defaultValue: DIFFICULTY.WAVE_ENEMIES_COUNT,
+      scale: DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
+      level: this.number,
+    });
 
     if (this.alarmInterval) {
       clearInterval(this.alarmInterval);
@@ -179,11 +178,11 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.spawnEnemy(variant);
 
-    const pause = progressionQuadratic(
-      DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
-      DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
-      this.number,
-    );
+    const pause = progressionQuadratic({
+      defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
+      scale: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
+      level: this.number,
+    });
 
     this.nextSpawnTimestamp = this.scene.getTime() + Math.max(pause, 500);
     this.spawnedEnemiesCount++;

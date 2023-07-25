@@ -1,5 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinear } from '~lib/utils';
+import { progressionLinear } from '~lib/difficulty';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -84,11 +84,11 @@ export class BuildingMedic extends Building {
   }
 
   private getHealAmount() {
-    return progressionLinear(
-      DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT,
-      DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT_GROWTH,
-      this.upgradeLevel,
-    );
+    return progressionLinear({
+      defaultValue: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT,
+      scale: DIFFICULTY.BUILDING_MEDIC_HEAL_AMOUNT_GROWTH,
+      level: this.upgradeLevel,
+    });
   }
 
   private heal(target: IPlayer | IAssistant) {

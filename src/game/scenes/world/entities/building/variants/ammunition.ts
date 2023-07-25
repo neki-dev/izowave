@@ -1,5 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinearFrom } from '~lib/utils';
+import { progressionLinearFrom } from '~lib/difficulty';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -82,11 +82,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   private onUpgrade() {
-    this.ammo = progressionLinearFrom(
-      this.ammo,
-      DIFFICULTY.BUILDING_AMMUNITION_AMMO,
-      DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
-      this.upgradeLevel,
-    );
+    this.ammo = progressionLinearFrom({
+      currentValue: this.ammo,
+      defaultValue: DIFFICULTY.BUILDING_AMMUNITION_AMMO,
+      scale: DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
+      level: this.upgradeLevel,
+    });
   }
 }

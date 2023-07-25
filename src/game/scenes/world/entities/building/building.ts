@@ -5,7 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic } from '~lib/utils';
+import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { Live } from '~scene/world/live';
@@ -178,21 +178,21 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public getActionsRadius() {
     return this.actions?.radius
-      ? progressionQuadratic(
-        this.actions.radius,
-        DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
-        this.upgradeLevel,
-      )
+      ? progressionQuadratic({
+        defaultValue: this.actions.radius,
+        scale: DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
+        level: this.upgradeLevel,
+      })
       : 0;
   }
 
   public getActionsPause() {
     return this.actions?.pause
-      ? progressionQuadratic(
-        this.actions.pause,
-        DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
-        this.upgradeLevel,
-      )
+      ? progressionQuadratic({
+        defaultValue: this.actions.pause,
+        scale: DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
+        level: this.upgradeLevel,
+      })
       : 0;
   }
 
@@ -245,11 +245,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.takeResources(cost);
 
-    const experience = progressionLinear(
-      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
-      DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
-      this.upgradeLevel,
-    );
+    const experience = progressionLinear({
+      defaultValue: DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
+      scale: DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
+      level: this.upgradeLevel,
+    });
 
     this.scene.player.giveExperience(experience);
 

@@ -9,7 +9,7 @@ import { Crystal } from '~entity/crystal';
 import { Enemy } from '~entity/npc/variants/enemy';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progressionQuadratic } from '~lib/utils';
+import { progressionQuadratic } from '~lib/difficulty';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
@@ -156,12 +156,12 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {
-    return progressionQuadratic(
-      PLAYER_SKILLS[type].experience,
-      DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
-      this.upgradeLevel[type],
-      10,
-    );
+    return progressionQuadratic({
+      defaultValue: PLAYER_SKILLS[type].experience,
+      scale: DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
+      level: this.upgradeLevel[type],
+      roundTo: 10,
+    });
   }
 
   private getUpgradeNextValue(type: PlayerSkill): number {
@@ -169,26 +169,26 @@ export class Player extends Sprite implements IPlayer {
 
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
-        return progressionQuadratic(
-          DIFFICULTY.PLAYER_HEALTH,
-          DIFFICULTY.PLAYER_HEALTH_GROWTH,
-          nextLevel,
-          5,
-        );
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.PLAYER_HEALTH,
+          scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
+          level: nextLevel,
+          roundTo: 5,
+        });
       }
       case PlayerSkill.SPEED: {
-        return progressionQuadratic(
-          DIFFICULTY.PLAYER_SPEED,
-          DIFFICULTY.PLAYER_SPEED_GROWTH,
-          nextLevel,
-        );
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.PLAYER_SPEED,
+          scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
+          level: nextLevel,
+        });
       }
       case PlayerSkill.BUILD_AREA: {
-        return progressionQuadratic(
-          DIFFICULTY.BUILDER_BUILD_AREA,
-          DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
-          nextLevel,
-        );
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.BUILDER_BUILD_AREA,
+          scale: DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
+          level: nextLevel,
+        });
       }
       case PlayerSkill.ASSISTANT: {
         return nextLevel;
@@ -280,11 +280,11 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private onWaveComplete(number: number) {
-    const experience = progressionQuadratic(
-      DIFFICULTY.WAVE_EXPERIENCE,
-      DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
-      number,
-    );
+    const experience = progressionQuadratic({
+      defaultValue: DIFFICULTY.WAVE_EXPERIENCE,
+      scale: DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
+      level: number,
+    });
 
     this.giveExperience(experience);
 

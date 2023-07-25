@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionLinearFrom } from '~lib/utils';
+import { progressionLinearFrom } from '~lib/difficulty';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
@@ -115,11 +115,11 @@ export class BuildingGenerator extends Building {
   }
 
   private onUpgrade() {
-    this.resources = progressionLinearFrom(
-      this.resources,
-      DIFFICULTY.BUILDING_GENERATOR_RESOURCES,
-      DIFFICULTY.BUILDING_GENERATOR_RESOURCES_GROWTH,
-      this.upgradeLevel,
-    );
+    this.resources = progressionLinearFrom({
+      currentValue: this.resources,
+      defaultValue: DIFFICULTY.BUILDING_GENERATOR_RESOURCES,
+      scale: DIFFICULTY.BUILDING_GENERATOR_RESOURCES_GROWTH,
+      level: this.upgradeLevel,
+    });
   }
 }
