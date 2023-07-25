@@ -32,6 +32,8 @@ export function progressionQuadraticMixed(params: {
  * @param defaultValue - Default value for first level
  * @param scale - Part of default value for growth
  * @param level - Difficulty level
+ * @param maxLevel - Max growth level
+ * @param retardation - Retardation growth level
  * @param roundTo - Round value
  */
 export function progressionQuadratic(params: {
@@ -39,10 +41,10 @@ export function progressionQuadratic(params: {
   scale: number
   level: number
   maxLevel?: number
-  retardation?: number
+  retardationLevel?: number
   roundTo?: number
 }) {
-  if (params.retardation && params.level >= params.retardation) {
+  if (params.retardationLevel && params.level >= params.retardationLevel) {
     return progressionQuadraticMixed(params);
   }
 

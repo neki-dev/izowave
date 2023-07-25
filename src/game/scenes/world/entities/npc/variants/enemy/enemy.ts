@@ -46,7 +46,7 @@ export class Enemy extends NPC implements IEnemy {
           * scene.game.getDifficultyMultiplier(),
         scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
         level: scene.wave.number,
-        retardation: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+        retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
       }),
       speed: progressionQuadratic({
         defaultValue: DIFFICULTY.ENEMY_SPEED * multipliers.speed,
@@ -63,7 +63,6 @@ export class Enemy extends NPC implements IEnemy {
         * scene.game.getDifficultyMultiplier(),
       scale: DIFFICULTY.ENEMY_DAMAGE_GROWTH,
       level: scene.wave.number,
-      retardation: DIFFICULTY.ENEMY_DAMAGE_GROWTH_RETARDATION_LEVEL,
     });
     this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
