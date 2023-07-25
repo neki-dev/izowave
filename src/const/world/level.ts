@@ -84,7 +84,7 @@ export const LEVEL_BIOMES: Array<{
     collide: false,
     solid: true,
     friction: 1.2,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.CRYSTAL],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.CRYSTAL],
   },
 }, {
   params: { lowerBound: 0.24, upperBound: 0.34 },
