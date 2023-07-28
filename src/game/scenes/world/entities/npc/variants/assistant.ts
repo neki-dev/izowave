@@ -64,6 +64,7 @@ export class Assistant extends NPC implements IAssistant {
 
     this.addHealthIndicator(0xd0ff4f);
     this.addWaveCompleteHandler();
+    this.activate();
 
     this.scene.physics.add.collider(
       this,

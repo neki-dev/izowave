@@ -36,6 +36,11 @@ export interface INPC extends ISprite {
    * @param position - Position at world
    */
   moveTo(position: Vector2D): void
+
+  /**
+   * Select new spawn position.
+   */
+  respawn(): void
 }
 
 export type NPCData = {
