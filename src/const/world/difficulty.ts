@@ -75,8 +75,8 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 85, // Health
-  ENEMY_HEALTH_GROWTH: 0.36, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH: 90, // Health
+  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_SPEED: 50, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
@@ -165,7 +165,7 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_LIMIT: 1.0, // Factor of generator limit
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Pause between resource generations
   BUILDING_GENERATOR_RESOURCES: 150, // Resources amount
-  BUILDING_GENERATOR_RESOURCES_GROWTH: 0.6, // Resources amount growth by level (Linear From)
+  BUILDING_GENERATOR_RESOURCES_GROWTH: 0.5, // Resources amount growth by level (Linear From)
 
   /**
    * Building: Ammunition
