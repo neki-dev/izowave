@@ -52,6 +52,7 @@ Level.Progress = styled.div<{
   $active?: boolean
 }>`
   height: 12px;
+  transition: all 0.2s ease-out;
   background: #000;
   box-shadow: 0 6px 0 #222 inset;
   ${(props) => (props.$active && css`
@@ -70,6 +71,7 @@ Health.Progress = styled.div`
   height: 14px;
   background: ${InterfaceColor.ERROR_DARK};
   box-shadow: 0 7px 0 rgba(255, 255, 255, 0.15) inset;
+  transition: width 0.3s ease-out;
 `;
 
 Health.Value = styled.div`
