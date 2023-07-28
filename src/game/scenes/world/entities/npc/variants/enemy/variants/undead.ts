@@ -11,8 +11,8 @@ export class EnemyUndead extends Enemy {
       ...data,
       texture: EnemyTexture.UNDEAD,
       multipliers: {
-        health: 1.6,
-        damage: 0.2,
+        health: 2.0,
+        damage: 0.4,
         speed: 0.7,
       },
     });
