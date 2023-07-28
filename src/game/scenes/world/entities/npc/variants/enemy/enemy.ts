@@ -201,7 +201,7 @@ export class Enemy extends NPC implements IEnemy {
       texture: EffectTexture.BLOOD,
       position,
       staticFrame: Phaser.Math.Between(0, 3),
-      depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height),
+      depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height * 0.5),
     });
 
     this.scene.level.effectsOnGround.push(effect);
