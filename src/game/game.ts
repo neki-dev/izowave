@@ -138,9 +138,6 @@ export class Game extends Phaser.Game implements IGame {
     this.world.scene.pause();
     this.screen.scene.pause();
 
-    // @ts-ignore
-    window.CrazyGames?.SDK?.game?.gameplayStop();
-
     const menu = this.scene.getScene(GameScene.MENU);
 
     this.scene.systemScene.scene.launch(menu);

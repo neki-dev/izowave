@@ -59,6 +59,11 @@ export interface IWorld extends IScene {
   selectedBuilding: Nullable<IBuilding>
 
   /**
+   * List of generated enemy spawn positions
+   */
+  enemySpawnPositions: Vector2D[]
+
+  /**
    * Start world.
    */
   start(): void
@@ -135,6 +140,11 @@ export interface IWorld extends IScene {
    * @param type - Feature
    */
   getFeatureCost(type: WorldFeature): number
+
+  /**
+   * Get random enemy spawn position.
+   */
+  getEnemySpawnPosition(): Nullable<Vector2D>
 }
 
 export enum WorldEvents {

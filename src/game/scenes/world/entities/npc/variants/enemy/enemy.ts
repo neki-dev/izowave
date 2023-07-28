@@ -75,7 +75,6 @@ export class Enemy extends NPC implements IEnemy {
     this.body.setOffset(2, 2);
 
     this.addHealthIndicator(0xdb2323, true);
-    this.addSpawnEffect();
     this.addWorldFeatureHandler();
 
     this.setTilesCollision([TileType.BUILDING], (tile) => {
@@ -106,6 +105,12 @@ export class Enemy extends NPC implements IEnemy {
     if (this.isPathPassed) {
       this.moveTo(this.scene.player.getPositionOnGround());
     }
+  }
+
+  public activate() {
+    super.activate();
+
+    this.addSpawnEffect();
   }
 
   public attack(target: IEnemyTarget) {
@@ -196,7 +201,7 @@ export class Enemy extends NPC implements IEnemy {
       texture: EffectTexture.BLOOD,
       position,
       staticFrame: Phaser.Math.Between(0, 3),
-      depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height),
+      depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height * 0.5),
     });
 
     this.scene.level.effectsOnGround.push(effect);

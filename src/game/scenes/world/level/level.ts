@@ -7,7 +7,7 @@ import {
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { interpolate } from '~lib/utils';
-import { Navigator } from '~scene/world/navigator';
+import { Navigator } from '~scene/world/level/navigator';
 import { GameEvents, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import {

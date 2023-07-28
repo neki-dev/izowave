@@ -12,6 +12,7 @@ export const Progress = styled.div`
   height: 20px;
   background: ${InterfaceColor.INFO_DARK};
   box-shadow: 0 10px 0 rgba(255, 255, 255, 0.15) inset;
+  transition: width 0.3s ease-out;
 `;
 
 export const Value = styled.div`

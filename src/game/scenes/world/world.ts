@@ -78,7 +78,7 @@ export class World extends Scene implements IWorld {
 
   public selectedBuilding: Nullable<IBuilding> = null;
 
-  private enemySpawnPositions: Vector2D[] = [];
+  public enemySpawnPositions: Vector2D[] = [];
 
   private lifecyle: Phaser.Time.TimerEvent;
 
@@ -191,7 +191,20 @@ export class World extends Scene implements IWorld {
     return buildings.filter((building) => (building.variant === variant));
   }
 
-  public spawnEnemy(variant: EnemyVariant) {
+  public spawnEnemy(variant: EnemyVariant): Nullable<IEnemy> {
+    const positionAtMatrix = this.getEnemySpawnPosition();
+
+    if (!positionAtMatrix) {
+      return null;
+    }
+
+    const EnemyInstance = ENEMIES[variant];
+    const enemy: IEnemy = new EnemyInstance(this, { positionAtMatrix });
+
+    return enemy;
+  }
+
+  public getEnemySpawnPosition() {
     const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
     const freePositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
@@ -206,14 +219,11 @@ export class World extends Scene implements IWorld {
       return null;
     }
 
-    const EnemyInstance = ENEMIES[variant];
     const closestPositions = sortByDistance(freePositions, this.player.positionAtMatrix)
       .slice(0, ENEMY_SPAWN_POSITIONS);
-    const enemy: IEnemy = new EnemyInstance(this, {
-      positionAtMatrix: Phaser.Utils.Array.GetRandom(closestPositions),
-    });
+    const positionAtMatrix = Phaser.Utils.Array.GetRandom(closestPositions);
 
-    return enemy;
+    return positionAtMatrix;
   }
 
   public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {

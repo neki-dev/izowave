@@ -6,7 +6,7 @@ import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { NavigatorTask } from '~scene/world/navigator/task';
+import { NavigatorTask } from '~scene/world/level/navigator/task';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
@@ -40,6 +40,7 @@ export class NPC extends Sprite implements INPC {
     });
     scene.addEntity(EntityType.NPC, this);
 
+    this.setVisible(false);
     this.pathFindTriggerDistance = pathFindTriggerDistance;
 
     this.addDebugPath();
@@ -79,6 +80,18 @@ export class NPC extends Sprite implements INPC {
 
     this.resetPath();
     this.isPathPassed = true;
+  }
+
+  public respawn() {
+    const positionAtMatrix = this.scene.getEnemySpawnPosition();
+
+    if (!positionAtMatrix) {
+      return null;
+    }
+
+    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
+
+    this.setPosition(position.x, position.y);
   }
 
   public freeze(duration: number, effects = false) {
@@ -139,17 +152,27 @@ export class NPC extends Sprite implements INPC {
     }
 
     const onComplete = (path: Nullable<Vector2D[]>) => {
-      this.pathFindingTask = null;
-
       if (!path) {
-        this.destroy();
-        console.warn('NPC couldn\'t find path and was destroyed');
+        const index = this.scene.enemySpawnPositions.findIndex((positionAtMatrix) => (
+          this.pathFindingTask
+          && equalPositions(positionAtMatrix, this.pathFindingTask.from)
+        ));
+
+        this.scene.enemySpawnPositions.splice(index, 1);
+        this.pathFindingTask = null;
+
+        this.respawn();
 
         return;
       }
 
+      if (!this.visible) {
+        this.activate();
+      }
+
       path.shift();
       this.pathToTarget = path;
+      this.pathFindingTask = null;
 
       if (this.isCanPursuit()) {
         this.moveToTile();
@@ -163,6 +186,10 @@ export class NPC extends Sprite implements INPC {
       this.scene.player.positionAtMatrix,
       onComplete,
     );
+  }
+
+  public activate() {
+    this.setVisible(true);
   }
 
   public getDistanceToTarget() {
