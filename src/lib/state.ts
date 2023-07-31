@@ -22,7 +22,7 @@ export function throwFailure(type: FailureType) {
       break;
   }
 
-  document.body.prepend(overlay);
+  document.body.append(overlay);
 }
 
 export function removeFailure(type: FailureType) {
