@@ -23,9 +23,7 @@ export class BuildingGenerator extends Building {
 
   static Health = DIFFICULTY.BUILDING_GENERATOR_HEALTH;
 
-  static LimitFactor = DIFFICULTY.BUILDING_GENERATOR_LIMIT_FACTOR;
-
-  static LimitTotal = DIFFICULTY.BUILDING_GENERATOR_LIMIT_TOTAL;
+  static Limit = true;
 
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {

@@ -1,6 +1,7 @@
 import positions from '../__mocks__/positions';
 import {
   aroundPosition,
+  getStage,
   equalPositions,
   formatTime,
   getClosest,
@@ -25,6 +26,20 @@ describe('utils.ts / formatTime', () => {
     expect(formatTime(0)).toEqual('00:00');
     expect(formatTime(125000)).toEqual('02:05');
     expect(formatTime(124100)).toEqual('02:05');
+  });
+});
+
+describe('utils.ts / getStage', () => {
+  it('should calculate period', () => {
+    expect(getStage(1, 1)).toEqual(1);
+    expect(getStage(1, 2)).toEqual(2);
+    expect(getStage(1, 3)).toEqual(2);
+    expect(getStage(1, 4)).toEqual(3);
+
+    expect(getStage(8, 8)).toEqual(1);
+    expect(getStage(8, 9)).toEqual(2);
+    expect(getStage(8, 10)).toEqual(2);
+    expect(getStage(8, 11)).toEqual(3);
   });
 });
 

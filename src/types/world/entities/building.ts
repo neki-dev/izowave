@@ -136,8 +136,7 @@ export interface IBuildingFactory {
   Texture: BuildingTexture
   Cost: number
   Health: number
-  LimitFactor?: number
-  LimitTotal?: number
+  Limit?: boolean
   AllowByWave?: number
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }

@@ -231,7 +231,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private getUpgradeAllowedByWave() {
-    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
+    return (this.getMeta().AllowByWave ?? 1) + this.upgradeLevel;
   }
 
   private upgrade() {

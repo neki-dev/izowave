@@ -78,7 +78,7 @@ export const DIFFICULTY = {
   ENEMY_HEALTH: 90, // Health
   ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
-  ENEMY_ARMOUR: 40, // Armour
+  ENEMY_ARMOUR: 50, // Armour
   ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 12, // Level for armour growth retardation
   ENEMY_SPEED: 50, // Movement speed
@@ -106,7 +106,7 @@ export const DIFFICULTY = {
   BUILDING_BUILD_EXPERIENCE: 30, // Gained experience for build
   BUILDING_UPGRADE_EXPERIENCE: 15, // Gained experience per upgrade level
   BUILDING_UPGRADE_EXPERIENCE_GROWTH: 0.75, // Experience growth by level (Linear)
-  BUILDING_REPAIR_COST_MULTIPLIER: 1.1, // Repair cost multiplier
+  BUILDING_REPAIR_COST_MULTIPLIER: 1.2, // Repair cost multiplier
   BUILDING_UPGRADE_COST_MULTIPLIER: 2.0, // Upgrade cost multiplier
 
   /**
@@ -123,7 +123,7 @@ export const DIFFICULTY = {
    */
 
   BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.5, // Shot damage growth by level (Quadratic)
-  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.5, // Frozen duration growth by level (Quadratic)
+  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.4, // Frozen duration growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.25, // Shot speed growth by level (Quadratic)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
 
@@ -167,8 +167,6 @@ export const DIFFICULTY = {
 
   BUILDING_GENERATOR_COST: 30, // Building cost
   BUILDING_GENERATOR_HEALTH: 400, // Health
-  BUILDING_GENERATOR_LIMIT_FACTOR: 1.0, // Factor of generator limit
-  BUILDING_GENERATOR_LIMIT_TOTAL: 6, // Total generator limit
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Pause between resource generations
 
   /**
@@ -177,7 +175,6 @@ export const DIFFICULTY = {
 
   BUILDING_AMMUNITION_COST: 30, // Building cost
   BUILDING_AMMUNITION_HEALTH: 300, // Health
-  BUILDING_AMMUNITION_LIMIT_FACTOR: 1.0, // Factor of ammunition limit
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_AMMUNITION_RELOAD_RADIUS: 120, // Reload ammo radius
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
@@ -189,7 +186,6 @@ export const DIFFICULTY = {
 
   BUILDING_MEDIC_COST: 70, // Building cost
   BUILDING_MEDIC_HEALTH: 200, // Health
-  BUILDING_MEDIC_LIMIT_FACTOR: 0.5, // Factor of medic limit
   BUILDING_MEDIC_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause

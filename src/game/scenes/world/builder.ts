@@ -6,7 +6,7 @@ import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { equalPositions } from '~lib/utils';
+import { getStage, equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
@@ -184,17 +184,14 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
-    const factor = BUILDINGS[variant].LimitFactor;
-    const total = BUILDINGS[variant].LimitTotal;
-
-    if (!factor) {
-      return total ?? null;
+    if (!BUILDINGS[variant].Limit) {
+      return null;
     }
 
-    const stage = Math.floor(this.scene.wave.number / 2);
-    const currentLimit = Math.floor((stage + 1) * factor);
+    const start = BUILDINGS[variant].AllowByWave ?? 1;
+    const limit = getStage(start, this.scene.wave.number);
 
-    return total ? Math.min(currentLimit, total) : currentLimit;
+    return limit;
   }
 
   public getBuildingsByVariant(variant: BuildingVariant) {
