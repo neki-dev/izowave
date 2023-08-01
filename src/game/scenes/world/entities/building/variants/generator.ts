@@ -1,13 +1,11 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionQuadratic } from '~lib/difficulty';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
-import { NoticeType } from '~type/screen';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
-  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
+  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -17,7 +15,6 @@ export class BuildingGenerator extends Building {
 
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Resources', value: DIFFICULTY.BUILDING_GENERATOR_RESOURCES, icon: BuildingIcon.RESOURCES },
   ];
 
   static Texture = BuildingTexture.GENERATOR;
@@ -30,10 +27,6 @@ export class BuildingGenerator extends Building {
 
   static LimitTotal = DIFFICULTY.BUILDING_GENERATOR_LIMIT_TOTAL;
 
-  private maxResources: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
-
-  private resources: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
-
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
@@ -44,26 +37,15 @@ export class BuildingGenerator extends Building {
         pause: DIFFICULTY.BUILDING_GENERATOR_GENERATE_PAUSE,
       },
     });
-
-    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public getInfo() {
-    const info: BuildingParam[] = [{
-      label: 'Resources',
-      icon: BuildingIcon.RESOURCES,
-      value: this.resources,
-    }];
-
     const pause = this.getActionsPause();
-
-    if (pause) {
-      info.push({
-        label: 'Delay',
-        icon: BuildingIcon.PAUSE,
-        value: `${(pause / 1000).toFixed(1)} s`,
-      });
-    }
+    const info: BuildingParam[] = [{
+      label: 'Delay',
+      icon: BuildingIcon.PAUSE,
+      value: `${(pause / 1000).toFixed(1)} s`,
+    }];
 
     return super.getInfo().concat(info);
   }
@@ -76,22 +58,11 @@ export class BuildingGenerator extends Building {
     }
 
     this.generateResource();
-
-    if (this.resources === 0) {
-      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} are over`);
-      if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
-        this.scene.game.sound.play(BuildingAudio.OVER);
-      }
-
-      this.destroy();
-    } else {
-      this.pauseActions();
-    }
+    this.pauseActions();
   }
 
   private generateResource() {
     this.scene.player.giveResources(1);
-    this.resources--;
 
     if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       return;
@@ -116,19 +87,5 @@ export class BuildingGenerator extends Building {
         blendMode: 'ADD',
       },
     });
-  }
-
-  private onUpgrade() {
-    const maxResources = progressionQuadratic({
-      defaultValue: DIFFICULTY.BUILDING_GENERATOR_RESOURCES,
-      scale: DIFFICULTY.BUILDING_GENERATOR_RESOURCES_GROWTH,
-      level: this.upgradeLevel,
-      roundTo: 10,
-    });
-
-    const addedResources = maxResources - this.maxResources;
-
-    this.maxResources = maxResources;
-    this.resources += addedResources;
   }
 }

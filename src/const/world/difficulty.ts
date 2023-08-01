@@ -170,8 +170,6 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_LIMIT_FACTOR: 1.0, // Factor of generator limit
   BUILDING_GENERATOR_LIMIT_TOTAL: 6, // Total generator limit
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Pause between resource generations
-  BUILDING_GENERATOR_RESOURCES: 150, // Resources amount
-  BUILDING_GENERATOR_RESOURCES_GROWTH: 0.5, // Resources amount growth by level (Quadratic)
 
   /**
    * Building: Ammunition
