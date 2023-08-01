@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { TutorialStep } from '~type/tutorial';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingIcon,
@@ -55,16 +55,11 @@ export class BuildingTowerFire extends BuildingTower {
 
     const unbindUpgradeStep = this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
       beg: () => {
-        if (
-          this.upgradeLevel === 1
-          && this.scene.player.resources >= this.getUpgradeCost()
-        ) {
-          hintId = this.scene.showHint({
-            side: 'top',
-            text: 'Hover and press [E] to upgrade',
-            position: this.getPositionOnGround(),
-          });
-        }
+        hintId = this.scene.showHint({
+          side: 'top',
+          text: 'Hover and press [E] to upgrade',
+          position: this.getPositionOnGround(),
+        });
       },
       end: hideCurrentHint,
     });
@@ -87,5 +82,10 @@ export class BuildingTowerFire extends BuildingTower {
       unbindUpgradeStep();
       unbindReloadStep();
     });
+
+    if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
+      this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
+      this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
+    }
   }
 }

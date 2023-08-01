@@ -81,7 +81,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.actions = actions;
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
-    this.live = new Live(health);
+    this.live = new Live({ health });
 
     this.addActionArea();
     this.addKeyboardHandler();
@@ -164,6 +164,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       actions.push({
         label: 'Upgrade',
         cost: this.getUpgradeCost(),
+        disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
         onClick: () => {
           this.upgrade();
         },
@@ -207,31 +208,30 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       : 0;
   }
 
-  public getUpgradeCost() {
+  public getUpgradeCost(level?: number) {
     const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
-    const nextLevel = this.upgradeLevel + 1;
+    const nextLevel = level ?? this.upgradeLevel;
 
-    return Math.round(costPerLevel * nextLevel);
+    return Math.round(costPerLevel * nextLevel * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER);
   }
 
   private getRepairCost() {
     const damaged = 1 - (this.live.health / this.live.maxHealth);
     let cost = this.getMeta().Cost;
-    const costPerLevel = cost / BUILDING_MAX_UPGRADE_LEVEL;
 
-    for (let i = 2; i <= this.upgradeLevel; i++) {
-      cost += Math.round(costPerLevel * i);
+    for (let i = 1; i < this.upgradeLevel; i++) {
+      cost += this.getUpgradeCost(i);
     }
 
-    return Math.ceil(cost * damaged);
+    return Math.ceil(cost * damaged * DIFFICULTY.BUILDING_REPAIR_COST_MULTIPLIER);
   }
 
   private isUpgradeAllowed() {
     return this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL;
   }
 
-  private isUpgradeAllowedByWave() {
-    return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
+  private getUpgradeAllowedByWave() {
+    return (this.getMeta().AllowByWave ?? 1) + this.upgradeLevel;
   }
 
   private upgrade() {
@@ -239,7 +239,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const waveNumber = this.isUpgradeAllowedByWave();
+    const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
       this.scene.game.screen.notice(NoticeType.ERROR, `Upgrade will be available on ${waveNumber} wave`);
@@ -424,11 +424,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     // Need to fix events order
-    if (this.scene.selectedBuilding) {
-      this.scene.selectedBuilding.unselect();
+    if (this.scene.builder.selectedBuilding) {
+      this.scene.builder.selectedBuilding.unselect();
     }
 
-    this.scene.selectedBuilding = this;
+    this.scene.builder.selectedBuilding = this;
     this.isSelected = true;
 
     if (this.actionsArea) {
@@ -443,7 +443,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.scene.selectedBuilding = null;
+    this.scene.builder.selectedBuilding = null;
     this.isSelected = false;
 
     if (this.actionsArea) {
@@ -535,23 +535,19 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addKeyboardHandler() {
-    const handleRepair = () => {
-      if (this.isFocused) {
-        this.repair();
+    const handle = (callback: () => void) => (event: KeyboardEvent) => {
+      if (
+        this.isSelected
+        || (this.isFocused && this.scene.builder.selectedBuilding === null)
+      ) {
+        callback();
+        event.preventDefault();
       }
     };
 
-    const handleBreak = () => {
-      if (this.isFocused) {
-        this.break();
-      }
-    };
-
-    const handleUpgrade = () => {
-      if (this.isFocused) {
-        this.upgrade();
-      }
-    };
+    const handleRepair = handle(() => this.repair());
+    const handleBreak = handle(() => this.break());
+    const handleUpgrade = handle(() => this.upgrade());
 
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);

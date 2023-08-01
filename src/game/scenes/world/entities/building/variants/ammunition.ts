@@ -1,5 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinearFrom } from '~lib/difficulty';
+import { progressionQuadratic } from '~lib/difficulty';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -26,9 +26,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   static Health = DIFFICULTY.BUILDING_AMMUNITION_HEALTH;
 
-  static Limit = DIFFICULTY.BUILDING_AMMUNITION_LIMIT;
+  static Limit = true;
 
   static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
+
+  private maxAmmo: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
 
   private _ammo: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
 
@@ -82,11 +84,16 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   private onUpgrade() {
-    this.ammo = progressionLinearFrom({
-      currentValue: this.ammo,
+    const maxAmmo = progressionQuadratic({
       defaultValue: DIFFICULTY.BUILDING_AMMUNITION_AMMO,
       scale: DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
       level: this.upgradeLevel,
+      roundTo: 10,
     });
+
+    const addedAmmo = maxAmmo - this.maxAmmo;
+
+    this.maxAmmo = maxAmmo;
+    this.ammo += addedAmmo;
   }
 }

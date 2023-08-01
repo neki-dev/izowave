@@ -72,24 +72,3 @@ export function progressionLinear(params: {
 
   return roundToScale(value, params.roundTo);
 }
-
-/**
- * Function to linear progressively increase value,
- * relative to current value and specified level.
- * @param currentValue - Current value
- * @param defaultValue - Default value for first level
- * @param scale - Part of default value for growth
- * @param level - Difficulty level
- * @param roundTo - Round value
- */
-export function progressionLinearFrom(params: {
-  currentValue: number
-  defaultValue: number
-  scale: number
-  level: number
-  roundTo?: number
-}) {
-  const value = params.currentValue + (params.defaultValue * params.scale * (params.level - 1));
-
-  return roundToScale(value, params.roundTo);
-}

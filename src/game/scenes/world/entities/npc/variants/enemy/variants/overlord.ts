@@ -10,6 +10,7 @@ export class EnemyOverlord extends Enemy {
     super(scene, {
       ...data,
       texture: EnemyTexture.OVERLORD,
+      armour: true,
       multipliers: {
         health: 1.0,
         damage: 0.5,

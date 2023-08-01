@@ -28,7 +28,7 @@ export class BuildingMedic extends Building {
 
   static Health = DIFFICULTY.BUILDING_MEDIC_HEALTH;
 
-  static Limit = DIFFICULTY.BUILDING_MEDIC_LIMIT;
+  static Limit = true;
 
   static AllowByWave = DIFFICULTY.BUILDING_MEDIC_ALLOW_BY_WAVE;
 

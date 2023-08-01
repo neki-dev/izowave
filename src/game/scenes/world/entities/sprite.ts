@@ -10,7 +10,7 @@ import { GameFlag, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { ILive, LiveEvents } from '~type/world/entities/live';
-import { ISprite, SpriteData } from '~type/world/entities/sprite';
+import { ISprite, SpriteData, SpriteIndicator } from '~type/world/entities/sprite';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
@@ -40,12 +40,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   private collisionGround: boolean = false;
 
-  private healthIndicator: Phaser.GameObjects.Container;
+  private indicators: SpriteIndicator[] = [];
 
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   constructor(scene: IWorld, {
-    texture, positionAtMatrix, health, speed, frame = 0,
+    texture, positionAtMatrix, health, armour, speed, frame = 0,
   }: SpriteData) {
     const positionAtWorld = Level.ToWorldPosition({
       ...positionAtMatrix,
@@ -56,7 +56,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     scene.add.existing(this);
 
     this.positionAtMatrix = positionAtMatrix;
-    this.live = new Live(health);
+    this.live = new Live({ health, armour });
     this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
 
@@ -84,13 +84,15 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
-    this.healthIndicator.setVisible(this.visible);
 
     this.setDepth(depth);
-    this.container.setDepth(depth + 19);
-    this.container.setPosition(positionOfTop.x, positionOfTop.y);
 
-    this.updateHealthIndicator();
+    this.container.setDepth(depth + 19);
+    this.container.setPosition(positionOfTop.x, (positionOfTop?.y ?? 0) - 10);
+    this.container.setAlpha(this.alpha);
+    this.container.setVisible(this.visible);
+
+    this.updateIndicators();
 
     this.drawDebugGroundPosition();
   }
@@ -204,7 +206,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return points;
   }
 
-  public addHealthIndicator(color: number, bySpriteSize = false) {
+  public addIndicator(color: number, value: () => number, bySpriteSize = false) {
     const width = bySpriteSize ? this.displayWidth : 20;
     const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
 
@@ -214,18 +216,28 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     bar.setOrigin(0.0, 0.0);
 
-    this.healthIndicator = this.scene.add.container(-width / 2, -10);
-    this.healthIndicator.setSize(body.width, body.height);
-    this.healthIndicator.add([body, bar]);
+    const container = this.scene.add.container(-width / 2, this.indicators.length * -6);
 
-    this.container.add(this.healthIndicator);
+    container.setSize(body.width, body.height);
+    container.add([body, bar]);
+
+    this.container.add(container);
+    this.indicators.push({ container, value });
   }
 
-  private updateHealthIndicator() {
-    const value = this.live.health / this.live.maxHealth;
-    const bar = <Phaser.GameObjects.Rectangle> this.healthIndicator.getAt(1);
+  private updateIndicators() {
+    this.indicators.forEach((indicator, index) => {
+      const value = indicator.value();
 
-    bar.setSize((this.healthIndicator.width - 2) * value, this.healthIndicator.height - 2);
+      if (value <= 0.0) {
+        indicator.container.destroy();
+        this.indicators.splice(index, 1);
+      } else {
+        const bar = <Phaser.GameObjects.Rectangle> indicator.container.getAt(1);
+
+        bar.setSize((indicator.container.width - 2) * value, indicator.container.height - 2);
+      }
+    });
   }
 
   private addDebugPosition() {
@@ -282,7 +294,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.strokePath();
   }
 
-  public onDamage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public onDamage(amount: number) {
     if (
       !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
       || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)

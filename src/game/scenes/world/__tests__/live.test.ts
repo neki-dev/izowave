@@ -4,7 +4,7 @@ describe('live.ts', () => {
   let live: Live;
 
   beforeEach(() => {
-    live = new Live(100);
+    live = new Live({ health: 100 });
   });
 
   it('should set default max health by health', () => {
@@ -16,6 +16,22 @@ describe('live.ts', () => {
 
     expect(live.isMaxHealth()).toEqual(false);
     expect(live.health).toEqual(90);
+  });
+
+  it('should take gamage with armour', () => {
+    live = new Live({ health: 100, armour: 20 });
+
+    live.damage(10);
+
+    expect(live.isMaxHealth()).toEqual(true);
+    expect(live.health).toEqual(100);
+    expect(live.armour).toEqual(10);
+
+    live.damage(20);
+
+    expect(live.isMaxHealth()).toEqual(false);
+    expect(live.health).toEqual(90);
+    expect(live.armour).toEqual(0);
   });
 
   it('should reestablish health', () => {

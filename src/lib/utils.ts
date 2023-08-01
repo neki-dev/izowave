@@ -118,6 +118,25 @@ export function rawAmount(value: string) {
 }
 
 /**
+ * Get stage of period.
+ * @param start - Start value
+ * @param current - Current value
+ */
+export function getStage(start: number, current: number) {
+  let stage = 0;
+  let next = start;
+
+  for (let i = 1; i <= current; i++) {
+    if (i === next) {
+      stage++;
+      next = i + stage;
+    }
+  }
+
+  return stage;
+}
+
+/**
  * Get all points on matrix between two given points.
  * @param beg - Start position
  * @param end - End posotion

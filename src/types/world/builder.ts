@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 import { IWorld } from '~type/world';
-import { BuildingVariant } from '~type/world/entities/building';
+import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { Vector2D } from '~type/world/level';
 
 export interface IBuilder extends EventEmitter {
@@ -21,6 +21,11 @@ export interface IBuilder extends EventEmitter {
    * Radius of build area.
    */
   readonly radius: number
+
+  /**
+   * Current active building.
+   */
+  selectedBuilding: Nullable<IBuilding>
 
   /**
    * Toggle build state and update build area.
@@ -66,6 +71,12 @@ export interface IBuilder extends EventEmitter {
    * @param variant - Building variant
    */
   isBuildingAllowByWave(variant: BuildingVariant): boolean
+
+  /**
+   * Get list of buildings with a specific variant.
+   * @param variant - Varaint
+   */
+  getBuildingsByVariant(variant: BuildingVariant): IBuilding[]
 }
 
 export enum BuilderEvents {

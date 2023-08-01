@@ -40,7 +40,7 @@ export const Skills: React.FC = () => {
       {isOpened && <UpgradesList onClose={onClose} />}
       {hint && !isOpened && (
         <Hint side="top" align="left">
-          Click to upgrade player skills
+          Click to upgrade skills
         </Hint>
       )}
     </Wrapper>

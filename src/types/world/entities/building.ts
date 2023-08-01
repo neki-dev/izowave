@@ -79,8 +79,9 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
 
   /**
    * Get resources need to upgrade level.
+   * @param level - Specified upgrade level
    */
-  getUpgradeCost(): number
+  getUpgradeCost(level?: number): number
 
   /**
    * Get position with height offset.
@@ -135,7 +136,7 @@ export interface IBuildingFactory {
   Texture: BuildingTexture
   Cost: number
   Health: number
-  Limit?: number
+  Limit?: boolean
   AllowByWave?: number
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
@@ -152,6 +153,7 @@ export enum BuildingVariant {
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   MEDIC = 'MEDIC',
+  RADAR = 'RADAR',
 }
 
 export enum BuildingTexture {
@@ -162,6 +164,7 @@ export enum BuildingTexture {
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
   MEDIC = 'building/textures/medic',
+  RADAR = 'building/textures/radar',
 }
 
 export enum BuildingIcon {
@@ -211,6 +214,7 @@ export type BuildingParam = {
 export type BuildingControl = {
   label: string
   cost?: number
+  disabled?: boolean
   onClick: () => void
 };
 

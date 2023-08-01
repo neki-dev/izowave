@@ -67,7 +67,7 @@ export const BuilderPreview: React.FC<Props> = ({
         const currentLimit = world.builder.getBuildingLimit(variant);
 
         if (currentLimit) {
-          const existCount = world.getBuildingsByVariant(variant).length;
+          const existCount = world.builder.getBuildingsByVariant(variant).length;
 
           limitReached = existCount >= currentLimit;
         }

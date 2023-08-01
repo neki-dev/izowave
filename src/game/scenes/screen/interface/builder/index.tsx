@@ -26,6 +26,12 @@ export const Builder: React.FC = () => {
           text: 'Build generator to get resources',
         });
       }
+      case TutorialStep.BUILD_RADAR: {
+        return setHint({
+          variant: BuildingVariant.RADAR,
+          text: 'Build radar to uncover enemies',
+        });
+      }
       case TutorialStep.BUILD_TOWER_FIRE: {
         return setHint({
           variant: BuildingVariant.TOWER_FIRE,
@@ -44,6 +50,7 @@ export const Builder: React.FC = () => {
   const hideHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR:
+      case TutorialStep.BUILD_RADAR:
       case TutorialStep.BUILD_TOWER_FIRE:
       case TutorialStep.BUILD_AMMUNITION: {
         return setHint(null);
