@@ -76,8 +76,6 @@ export class World extends Scene implements IWorld {
 
   private set camera(v) { this._camera = v; }
 
-  public selectedBuilding: Nullable<IBuilding> = null;
-
   public enemySpawnPositions: Vector2D[] = [];
 
   private lifecyle: Phaser.Time.TimerEvent;

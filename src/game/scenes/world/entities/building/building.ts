@@ -423,11 +423,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     // Need to fix events order
-    if (this.scene.selectedBuilding) {
-      this.scene.selectedBuilding.unselect();
+    if (this.scene.builder.selectedBuilding) {
+      this.scene.builder.selectedBuilding.unselect();
     }
 
-    this.scene.selectedBuilding = this;
+    this.scene.builder.selectedBuilding = this;
     this.isSelected = true;
 
     if (this.actionsArea) {
@@ -442,7 +442,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.scene.selectedBuilding = null;
+    this.scene.builder.selectedBuilding = null;
     this.isSelected = false;
 
     if (this.actionsArea) {
@@ -534,23 +534,18 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addKeyboardHandler() {
-    const handleRepair = () => {
-      if (this.isFocused) {
-        this.repair();
+    const handle = (callback: () => void) => () => {
+      if (
+        this.isSelected
+        || (this.isFocused && this.scene.builder.selectedBuilding === null)
+      ) {
+        callback();
       }
     };
 
-    const handleBreak = () => {
-      if (this.isFocused) {
-        this.break();
-      }
-    };
-
-    const handleUpgrade = () => {
-      if (this.isFocused) {
-        this.upgrade();
-      }
-    };
+    const handleRepair = handle(() => this.repair());
+    const handleBreak = handle(() => this.break());
+    const handleUpgrade = handle(() => this.upgrade());
 
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);

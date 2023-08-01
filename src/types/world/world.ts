@@ -54,11 +54,6 @@ export interface IWorld extends IScene {
   readonly activeFeatures: Partial<Record<WorldFeature, boolean>>
 
   /**
-   * Current active building.
-   */
-  selectedBuilding: Nullable<IBuilding>
-
-  /**
    * List of generated enemy spawn positions
    */
   enemySpawnPositions: Vector2D[]
