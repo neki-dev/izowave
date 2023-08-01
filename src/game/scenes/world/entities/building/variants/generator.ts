@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionLinearFrom } from '~lib/difficulty';
+import { progressionQuadratic } from '~lib/difficulty';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
@@ -26,7 +26,11 @@ export class BuildingGenerator extends Building {
 
   static Health = DIFFICULTY.BUILDING_GENERATOR_HEALTH;
 
-  static Limit = DIFFICULTY.BUILDING_GENERATOR_LIMIT;
+  static LimitFactor = DIFFICULTY.BUILDING_GENERATOR_LIMIT_FACTOR;
+
+  static LimitTotal = DIFFICULTY.BUILDING_GENERATOR_LIMIT_TOTAL;
+
+  private maxResources: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
 
   private resources: number = DIFFICULTY.BUILDING_GENERATOR_RESOURCES;
 
@@ -115,11 +119,16 @@ export class BuildingGenerator extends Building {
   }
 
   private onUpgrade() {
-    this.resources = progressionLinearFrom({
-      currentValue: this.resources,
+    const maxResources = progressionQuadratic({
       defaultValue: DIFFICULTY.BUILDING_GENERATOR_RESOURCES,
       scale: DIFFICULTY.BUILDING_GENERATOR_RESOURCES_GROWTH,
       level: this.upgradeLevel,
+      roundTo: 10,
     });
+
+    const addedResources = maxResources - this.maxResources;
+
+    this.maxResources = maxResources;
+    this.resources += addedResources;
   }
 }

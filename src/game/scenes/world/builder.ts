@@ -180,15 +180,17 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
-    const limit = BUILDINGS[variant].Limit;
+    const factor = BUILDINGS[variant].LimitFactor;
+    const total = BUILDINGS[variant].LimitTotal;
 
-    if (!limit) {
-      return null;
+    if (!factor) {
+      return total ?? null;
     }
 
     const stage = Math.floor(this.scene.wave.number / 2);
+    const currentLimit = Math.floor((stage + 1) * factor);
 
-    return Math.floor((stage + 1) * limit);
+    return total ? Math.min(currentLimit, total) : currentLimit;
   }
 
   private getAssumedPosition() {

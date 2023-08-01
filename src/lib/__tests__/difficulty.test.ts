@@ -1,8 +1,4 @@
-import {
-  progressionQuadratic,
-  progressionLinear,
-  progressionLinearFrom,
-} from '../difficulty';
+import { progressionQuadratic, progressionLinear } from '../difficulty';
 
 describe('difficulty.ts', () => {
   it('should return correct value growth', () => {
@@ -18,12 +14,6 @@ describe('difficulty.ts', () => {
   it('should return correct linear value growth', () => {
     expect(progressionLinear({ defaultValue: 100, scale: 1.0, level: 2 })).toEqual(200);
     expect(progressionLinear({ defaultValue: 100, scale: 1.0, level: 3 })).toEqual(300);
-    expect(progressionLinearFrom({
-      currentValue: 50, defaultValue: 100, scale: 1.0, level: 2,
-    })).toEqual(150);
-    expect(progressionLinearFrom({
-      currentValue: 50, defaultValue: 100, scale: 1.0, level: 3,
-    })).toEqual(250);
   });
 
   it('should return rounded value', () => {

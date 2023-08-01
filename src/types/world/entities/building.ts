@@ -79,8 +79,9 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
 
   /**
    * Get resources need to upgrade level.
+   * @param level - Specified upgrade level
    */
-  getUpgradeCost(): number
+  getUpgradeCost(level?: number): number
 
   /**
    * Get position with height offset.
@@ -135,7 +136,8 @@ export interface IBuildingFactory {
   Texture: BuildingTexture
   Cost: number
   Health: number
-  Limit?: number
+  LimitFactor?: number
+  LimitTotal?: number
   AllowByWave?: number
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
