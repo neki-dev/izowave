@@ -34,7 +34,7 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
     setAllowByTutorial(currentIsAllowByTutorial);
     setLimit(currentLimit);
     if (currentLimit) {
-      setExistCount(world.getBuildingsByVariant(variant).length);
+      setExistCount(world.builder.getBuildingsByVariant(variant).length);
     }
   });
 

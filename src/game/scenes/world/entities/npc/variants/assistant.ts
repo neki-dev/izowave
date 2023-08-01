@@ -149,7 +149,7 @@ export class Assistant extends NPC implements IAssistant {
     });
 
     const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
-      if (enemy.live.isDead()) {
+      if (enemy.alpha < 1.0 || enemy.live.isDead()) {
         return false;
       }
 

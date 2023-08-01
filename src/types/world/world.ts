@@ -4,7 +4,6 @@ import { IScene } from '~type/scene';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
-import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
@@ -93,12 +92,6 @@ export interface IWorld extends IScene {
    * Get entities list from group.
    */
   getEntities<T>(type: EntityType): T[]
-
-  /**
-   * Get list of buildings with a specific variant.
-   * @param variant - Varaint
-   */
-  getBuildingsByVariant(variant: BuildingVariant): IBuilding[]
 
   /**
    * Spawn enemy in random position.

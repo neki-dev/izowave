@@ -33,6 +33,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
 
+  private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
+
   private _variant: Nullable<BuildingVariant> = null;
 
   public get variant() { return this._variant; }
@@ -195,6 +197,10 @@ export class Builder extends EventEmitter implements IBuilder {
     return total ? Math.min(currentLimit, total) : currentLimit;
   }
 
+  public getBuildingsByVariant(variant: BuildingVariant) {
+    return this.buildings[variant] ?? [];
+  }
+
   private getAssumedPosition() {
     return Level.ToMatrixPosition({
       x: this.scene.input.activePointer.worldX,
@@ -332,6 +338,13 @@ export class Builder extends EventEmitter implements IBuilder {
       positionAtMatrix: this.getAssumedPosition(),
     });
 
+    if (this.buildings[this.variant]) {
+      // @ts-ignore
+      this.buildings[this.variant].push(building);
+    } else {
+      this.buildings[this.variant] = [building];
+    }
+
     this.scene.player.takeResources(BuildingInstance.Cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
@@ -352,7 +365,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const limit = this.getBuildingLimit(variant);
 
     if (limit) {
-      return (this.scene.getBuildingsByVariant(variant).length >= limit);
+      return (this.getBuildingsByVariant(variant).length >= limit);
     }
 
     return false;

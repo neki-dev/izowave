@@ -27,7 +27,7 @@ import {
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
-import { BuildingVariant, IBuilding } from '~type/world/entities/building';
+import { IBuilding } from '~type/world/entities/building';
 import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { IAssistant } from '~type/world/entities/npc/assistant';
@@ -181,12 +181,6 @@ export class World extends Scene implements IWorld {
 
   public getEntities<T = Phaser.GameObjects.GameObject>(type: EntityType) {
     return this.entityGroups[type].getChildren() as T[];
-  }
-
-  public getBuildingsByVariant(variant: BuildingVariant) {
-    const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
-
-    return buildings.filter((building) => (building.variant === variant));
   }
 
   public spawnEnemy(variant: EnemyVariant): Nullable<IEnemy> {

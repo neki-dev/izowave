@@ -148,7 +148,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getAmmunition() {
-    const ammunitions = (<IBuildingAmmunition[]> this.scene.getBuildingsByVariant(BuildingVariant.AMMUNITION))
+    const ammunitions = (<IBuildingAmmunition[]> this.scene.builder.getBuildingsByVariant(BuildingVariant.AMMUNITION))
       .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getPositionOnGround())));
 
     if (ammunitions.length === 0) {
@@ -188,7 +188,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getTarget() {
     const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
-      if (enemy.live.isDead()) {
+      if (enemy.alpha < 1.0 || enemy.live.isDead()) {
         return false;
       }
 

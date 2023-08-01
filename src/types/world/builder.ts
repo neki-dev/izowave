@@ -71,6 +71,12 @@ export interface IBuilder extends EventEmitter {
    * @param variant - Building variant
    */
   isBuildingAllowByWave(variant: BuildingVariant): boolean
+
+  /**
+   * Get list of buildings with a specific variant.
+   * @param variant - Varaint
+   */
+  getBuildingsByVariant(variant: BuildingVariant): IBuilding[]
 }
 
 export enum BuilderEvents {

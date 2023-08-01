@@ -84,11 +84,13 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
-    this.healthIndicator.setVisible(this.visible);
 
     this.setDepth(depth);
+
     this.container.setDepth(depth + 19);
     this.container.setPosition(positionOfTop.x, positionOfTop.y);
+    this.container.setAlpha(this.alpha);
+    this.container.setVisible(this.visible);
 
     this.updateHealthIndicator();
 

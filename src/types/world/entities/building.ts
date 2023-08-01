@@ -154,6 +154,7 @@ export enum BuildingVariant {
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   MEDIC = 'MEDIC',
+  RADAR = 'RADAR',
 }
 
 export enum BuildingTexture {
@@ -164,6 +165,7 @@ export enum BuildingTexture {
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
   MEDIC = 'building/textures/medic',
+  RADAR = 'building/textures/radar',
 }
 
 export enum BuildingIcon {

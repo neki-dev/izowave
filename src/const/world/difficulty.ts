@@ -194,4 +194,13 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause
   BUILDING_MEDIC_HEAL_AMOUNT: 20, // Heal amount
   BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.5, // Heal amount growth by level (Linear)
+
+  /**
+   * Building: Radar
+   */
+
+  BUILDING_RADAR_COST: 100, // Building cost
+  BUILDING_RADAR_HEALTH: 300, // Health
+  BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
+  BUILDING_RADAR_RADIUS: 100, // Unhidden radius
 };
