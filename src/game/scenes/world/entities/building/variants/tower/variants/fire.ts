@@ -55,16 +55,11 @@ export class BuildingTowerFire extends BuildingTower {
 
     const unbindUpgradeStep = this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
       beg: () => {
-        if (
-          this.upgradeLevel === 1
-          && this.scene.player.resources >= this.getUpgradeCost()
-        ) {
-          hintId = this.scene.showHint({
-            side: 'top',
-            text: 'Hover and press [E] to upgrade',
-            position: this.getPositionOnGround(),
-          });
-        }
+        hintId = this.scene.showHint({
+          side: 'top',
+          text: 'Hover and press [E] to upgrade',
+          position: this.getPositionOnGround(),
+        });
       },
       end: hideCurrentHint,
     });

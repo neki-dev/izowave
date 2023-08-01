@@ -159,8 +159,10 @@ export class Wave extends EventEmitter implements IWave {
 
     if (prevNumber === 2) {
       this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
-    } else if (prevNumber >= 3) {
+    } else if (prevNumber === 3) {
       this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
+    } else if (prevNumber === 7) {
+      this.scene.game.tutorial.start(TutorialStep.BUILD_RADAR);
     }
 
     this.scene.game.analytics.track({
