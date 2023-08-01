@@ -14,7 +14,7 @@ type Props = {
 export const BuildingControls: React.FC<Props> = ({ list }) => (
   <Wrapper>
     {list.map((control) => (
-      <Action key={control.label} onClick={control.onClick}>
+      <Action key={control.label} onClick={control.onClick} $disabled={control.disabled}>
         <Label>{control.label}</Label>
 
         {control.cost && (

@@ -215,6 +215,7 @@ export type BuildingParam = {
 export type BuildingControl = {
   label: string
   cost?: number
+  disabled?: boolean
   onClick: () => void
 };
 

@@ -164,6 +164,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       actions.push({
         label: 'Upgrade',
         cost: this.getUpgradeCost(),
+        disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
         onClick: () => {
           this.upgrade();
         },
@@ -229,7 +230,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     return this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL;
   }
 
-  private isUpgradeAllowedByWave() {
+  private getUpgradeAllowedByWave() {
     return (this.getMeta().AllowByWave || 1) + this.upgradeLevel;
   }
 
@@ -238,7 +239,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const waveNumber = this.isUpgradeAllowedByWave();
+    const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
       this.scene.game.screen.notice(NoticeType.ERROR, `Upgrade will be available on ${waveNumber} wave`);
