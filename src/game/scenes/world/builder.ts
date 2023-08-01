@@ -334,16 +334,25 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
+    let list = this.buildings[this.variant];
     const building = new BuildingInstance(this.scene, {
       positionAtMatrix: this.getAssumedPosition(),
     });
 
-    if (this.buildings[this.variant]) {
-      // @ts-ignore
-      this.buildings[this.variant].push(building);
+    if (list) {
+      list.push(building);
     } else {
-      this.buildings[this.variant] = [building];
+      list = [building];
+      this.buildings[this.variant] = list;
     }
+
+    building.on(Phaser.GameObjects.Events.DESTROY, () => {
+      const index = list?.indexOf(building);
+
+      if (index && index !== -1) {
+        list?.splice(index, 1);
+      }
+    });
 
     this.scene.player.takeResources(BuildingInstance.Cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
@@ -459,9 +468,9 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private addKeyboardHandler() {
-    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (e: KeyboardEvent) => {
-      if (Number(e.key)) {
-        this.switchBuildingVariant(Number(e.key) - 1);
+    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
+      if (Number(event.key)) {
+        this.switchBuildingVariant(Number(event.key) - 1);
       }
     });
   }

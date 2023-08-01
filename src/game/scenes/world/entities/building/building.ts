@@ -535,12 +535,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addKeyboardHandler() {
-    const handle = (callback: () => void) => () => {
+    const handle = (callback: () => void) => (event: KeyboardEvent) => {
       if (
         this.isSelected
         || (this.isFocused && this.scene.builder.selectedBuilding === null)
       ) {
         callback();
+        event.preventDefault();
       }
     };
 

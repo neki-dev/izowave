@@ -2,6 +2,11 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   pointer-events: all;
+  display: grid;
+  grid-gap: 10px;
+  @media (max-height: 600px) and (min-width: 1080px) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 export const Info = styled.div`
@@ -16,9 +21,6 @@ export const Variant = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
   &:hover {
     [role=hint] {
       display: none;
