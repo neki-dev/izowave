@@ -81,7 +81,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.actions = actions;
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
-    this.live = new Live(health);
+    this.live = new Live({ health });
 
     this.addActionArea();
     this.addKeyboardHandler();

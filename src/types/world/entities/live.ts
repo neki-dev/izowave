@@ -12,6 +12,16 @@ export interface ILive extends EventEmmiter {
   readonly maxHealth: number
 
   /**
+   * Armour amount.
+   */
+  readonly armour: number
+
+  /**
+   * Maximum armour amount.
+   */
+  readonly maxArmour: number
+
+  /**
    * Give entity damage.
    * @param amount - Damage amount
    */
@@ -51,6 +61,18 @@ export interface ILive extends EventEmmiter {
   isMaxHealth(): boolean
 
   /**
+   * Set current armour amount.
+   * @param amount - Armour amount
+   */
+  setArmour(amount: number): void
+
+  /**
+   * Set maximum armour amount.
+   * @param amount - Armour amount
+   */
+  setMaxArmour(amount: number): void
+
+  /**
    * Check is entity dead.
    */
   isDead(): boolean
@@ -60,3 +82,10 @@ export enum LiveEvents {
   DEAD = 'dead',
   DAMAGE = 'damage',
 }
+
+export type LiveData = {
+  health: number
+  maxHealth?: number
+  armour?: number
+  maxArmour?: number
+};

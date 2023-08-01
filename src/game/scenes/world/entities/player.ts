@@ -76,7 +76,7 @@ export class Player extends Sprite implements IPlayer {
     this.registerKeyboard();
     this.registerAnimations();
 
-    this.addHealthIndicator(0xd0ff4f);
+    this.addIndicator(0xd0ff4f, () => this.live.health / this.live.maxHealth);
     this.addDustEffect();
 
     this.body.setSize(14, 26);
@@ -250,7 +250,7 @@ export class Player extends Sprite implements IPlayer {
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
   }
 
-  public onDamage() {
+  public onDamage(amount: number) {
     this.scene.camera.shake();
 
     const audio = Phaser.Utils.Array.GetRandom([
@@ -263,7 +263,7 @@ export class Player extends Sprite implements IPlayer {
       this.scene.game.sound.play(audio);
     }
 
-    super.onDamage();
+    super.onDamage(amount);
   }
 
   public onDead() {

@@ -79,11 +79,12 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   handleCollide(direction: number): boolean
 
   /**
-   * Add health indicator above sprite.
+   * Add indicator above sprite.
    * @param color - Indicator color
+   * @param value - Value in percents
    * @param bySpriteSize - Indicator size by sprite size
    */
-  addHealthIndicator(color: number, bySpriteSize?: boolean): void
+  addIndicator(color: number, value: () => number, bySpriteSize?: boolean): void
 }
 
 export type SpriteData = {
@@ -91,5 +92,11 @@ export type SpriteData = {
   positionAtMatrix: Vector2D
   frame?: number
   health: number
+  armour?: number
   speed: number
+};
+
+export type SpriteIndicator = {
+  container: Phaser.GameObjects.Container
+  value: () => number
 };

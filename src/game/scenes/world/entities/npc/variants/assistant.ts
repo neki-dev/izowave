@@ -62,7 +62,7 @@ export class Assistant extends NPC implements IAssistant {
 
     this.body.setCircle(this.width / 2, 0, 1);
 
-    this.addHealthIndicator(0xd0ff4f);
+    this.addIndicator(0xd0ff4f, () => this.live.health / this.live.maxHealth);
     this.addWaveCompleteHandler();
     this.activate();
 
@@ -89,7 +89,7 @@ export class Assistant extends NPC implements IAssistant {
     }
   }
 
-  public onDamage() {
+  public onDamage(amount: number) {
     this.scene.game.sound.play(
       Phaser.Utils.Array.GetRandom([
         AssistantAudio.DAMAGE_1,
@@ -97,7 +97,7 @@ export class Assistant extends NPC implements IAssistant {
       ]),
     );
 
-    super.onDamage();
+    super.onDamage(amount);
   }
 
   public onDead() {

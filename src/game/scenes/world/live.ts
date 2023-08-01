@@ -1,6 +1,6 @@
 import EventEmmiter from 'events';
 
-import { ILive, LiveEvents } from '~type/world/entities/live';
+import { ILive, LiveData, LiveEvents } from '~type/world/entities/live';
 
 export class Live extends EventEmmiter implements ILive {
   private _health: number;
@@ -15,15 +15,43 @@ export class Live extends EventEmmiter implements ILive {
 
   private set maxHealth(v) { this._maxHealth = v; }
 
-  constructor(health: number, maxHealth: number = health) {
+  private _armour: number;
+
+  public get armour() { return this._armour; }
+
+  private set armour(v) { this._armour = v; }
+
+  private _maxArmour: number;
+
+  public get maxArmour() { return this._maxArmour; }
+
+  private set maxArmour(v) { this._maxArmour = v; }
+
+  constructor({
+    health, maxHealth, armour, maxArmour,
+  }: LiveData) {
     super();
 
     this.health = health;
-    this.maxHealth = maxHealth;
+    this.maxHealth = maxHealth ?? health;
+
+    this.armour = armour ?? 0;
+    this.maxArmour = maxArmour ?? armour ?? 0;
   }
 
   public damage(amount: number) {
-    this.setHealth(this.health - amount);
+    let totalAmount = amount;
+
+    if (this.armour > 0) {
+      totalAmount = amount - this.armour;
+      this.setArmour(this.armour - amount);
+
+      if (totalAmount <= 0) {
+        return;
+      }
+    }
+
+    this.setHealth(this.health - totalAmount);
   }
 
   public kill() {
@@ -48,12 +76,20 @@ export class Live extends EventEmmiter implements ILive {
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
 
     if (this.health < prevHealth) {
-      this.emit(LiveEvents.DAMAGE);
+      this.emit(LiveEvents.DAMAGE, amount);
 
       if (this.health === 0) {
         this.emit(LiveEvents.DEAD);
       }
     }
+  }
+
+  public setArmour(amount: number) {
+    if (this.isDead()) {
+      return;
+    }
+
+    this.armour = Math.min(this.maxArmour, Math.max(0, amount));
   }
 
   public setMaxHealth(amount: number) {
@@ -62,6 +98,10 @@ export class Live extends EventEmmiter implements ILive {
 
   public isMaxHealth() {
     return (this.health === this.maxHealth);
+  }
+
+  public setMaxArmour(amount: number) {
+    this.maxArmour = Math.max(1, amount);
   }
 
   public isDead() {
