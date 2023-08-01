@@ -108,6 +108,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
+
     this.scene.game.tutorial.complete(TutorialStep.STOP_BUILD);
 
     this.clearBuildingVariant();
@@ -359,16 +360,6 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     this.emit(BuilderEvents.BUILD, building);
-
-    if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
-      this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
-      this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
-    } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
-      this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
-      this.scene.game.tutorial.start(TutorialStep.STOP_BUILD);
-    } else if (this.scene.game.tutorial.state(TutorialStep.BUILD_RADAR) === TutorialStepState.IN_PROGRESS) {
-      this.scene.game.tutorial.complete(TutorialStep.BUILD_RADAR);
-    }
   }
 
   private isBuildingLimitReached(variant: BuildingVariant) {

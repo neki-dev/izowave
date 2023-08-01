@@ -196,8 +196,8 @@ export const DIFFICULTY = {
    * Building: Radar
    */
 
-  BUILDING_RADAR_COST: 100, // Building cost
+  BUILDING_RADAR_COST: 90, // Building cost
   BUILDING_RADAR_HEALTH: 300, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
-  BUILDING_RADAR_RADIUS: 100, // Unhidden radius
+  BUILDING_RADAR_RADIUS: 120, // Unhidden radius
 };

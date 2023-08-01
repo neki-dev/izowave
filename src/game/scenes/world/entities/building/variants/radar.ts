@@ -1,4 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
@@ -33,5 +34,7 @@ export class BuildingRadar extends Building {
         radius: DIFFICULTY.BUILDING_RADAR_RADIUS,
       },
     });
+
+    this.scene.game.tutorial.complete(TutorialStep.BUILD_RADAR);
   }
 }

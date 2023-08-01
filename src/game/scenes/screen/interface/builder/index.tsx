@@ -50,6 +50,7 @@ export const Builder: React.FC = () => {
   const hideHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR:
+      case TutorialStep.BUILD_RADAR:
       case TutorialStep.BUILD_TOWER_FIRE:
       case TutorialStep.BUILD_AMMUNITION: {
         return setHint(null);
