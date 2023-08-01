@@ -344,10 +344,12 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     building.on(Phaser.GameObjects.Events.DESTROY, () => {
-      const index = list?.indexOf(building);
+      if (list) {
+        const index = list.indexOf(building);
 
-      if (index && index !== -1) {
-        list?.splice(index, 1);
+        if (index !== -1) {
+          list.splice(index, 1);
+        }
       }
     });
 
