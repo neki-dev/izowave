@@ -1,4 +1,5 @@
 import { IWorld } from '~type/world';
+import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
@@ -16,5 +17,15 @@ export class EnemyImpure extends Enemy {
         speed: 0.9,
       },
     });
+  }
+
+  public update() {
+    super.update();
+
+    const isVisible = this.scene.builder
+      .getBuildingsByVariant(BuildingVariant.RADAR)
+      .some((building) => building.actionsAreaContains(this));
+
+    this.setAlpha(isVisible ? 1.0 : 0.5);
   }
 }
