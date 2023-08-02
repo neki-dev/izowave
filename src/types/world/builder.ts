@@ -76,7 +76,7 @@ export interface IBuilder extends EventEmitter {
    * Get list of buildings with a specific variant.
    * @param variant - Varaint
    */
-  getBuildingsByVariant(variant: BuildingVariant): IBuilding[]
+  getBuildingsByVariant<T extends IBuilding>(variant: BuildingVariant): T[]
 }
 
 export enum BuilderEvents {
