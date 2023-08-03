@@ -68,17 +68,12 @@ export function sortByDistance<T extends Vector2D>(
   positions: T[],
   target: Vector2D,
 ) {
-  let meta = positions.map((position) => {
-    const dx = position.x - target.x;
-    const dy = position.y - target.y;
+  let meta = positions.map((position) => ({
+    position,
+    distance: Phaser.Math.Distance.BetweenPoints(target, position),
+  }));
 
-    return {
-      position,
-      distance: Math.sqrt(dx * dx + dy * dy),
-    };
-  });
-
-  meta = meta.sort((a, b) => a.distance - b.distance);
+  meta = meta.sort((a, b) => (a.distance - b.distance));
 
   return meta.map(({ position }) => position);
 }

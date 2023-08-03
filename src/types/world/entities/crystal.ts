@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 
+import { IWorld } from '~type/world';
 import { Vector2D } from '~type/world/level';
-
-import { IWorld } from '../world';
 
 export interface ICrystal extends Phaser.GameObjects.Image {
   readonly scene: IWorld

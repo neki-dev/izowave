@@ -5,6 +5,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
+import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/difficulty';
@@ -192,8 +193,8 @@ export class Wave extends EventEmitter implements IWave {
 
   private getEnemyVariant() {
     if (
-      this.number % DIFFICULTY.WAVE_SEASON_LENGTH === 0
-      && this.spawnedEnemiesCount < Math.ceil(this.number / 5)
+      this.number % ENEMY_BOSS_SPAWN_WAVE_RATE === 0
+      && this.spawnedEnemiesCount < Math.ceil(this.number / ENEMY_BOSS_SPAWN_WAVE_RATE)
     ) {
       return EnemyVariant.BOSS;
     }

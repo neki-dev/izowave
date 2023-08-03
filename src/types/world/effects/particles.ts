@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
-
-import { Vector2D } from '../level';
+import { Vector2D } from '~type/world/level';
 
 export interface IParticles {
   readonly scene: IWorld
