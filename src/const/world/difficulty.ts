@@ -75,11 +75,11 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 90, // Health
-  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
-  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
+  ENEMY_HEALTH_GROWTH: 0.33, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
   ENEMY_ARMOUR: 50, // Armour
   ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
-  ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 12, // Level for armour growth retardation
+  ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
   ENEMY_SPEED: 50, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
@@ -153,7 +153,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_LAZER_COST: 80, // Building cost
-  BUILDING_TOWER_LAZER_HEALTH: 300, // Health
+  BUILDING_TOWER_LAZER_HEALTH: 400, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_ATTACK_RADIUS: 140, // Attack radius
   BUILDING_TOWER_LAZER_ATTACK_PAUSE: 1600, // Pause between attacks
@@ -164,7 +164,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_GENERATOR_COST: 30, // Building cost
-  BUILDING_GENERATOR_HEALTH: 400, // Health
+  BUILDING_GENERATOR_HEALTH: 300, // Health
   BUILDING_GENERATOR_GENERATE_PAUSE: 1300, // Pause between resource generations
 
   /**
@@ -172,7 +172,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_AMMUNITION_COST: 30, // Building cost
-  BUILDING_AMMUNITION_HEALTH: 300, // Health
+  BUILDING_AMMUNITION_HEALTH: 400, // Health
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_AMMUNITION_RELOAD_RADIUS: 120, // Reload ammo radius
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
@@ -183,7 +183,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_MEDIC_COST: 70, // Building cost
-  BUILDING_MEDIC_HEALTH: 200, // Health
+  BUILDING_MEDIC_HEALTH: 600, // Health
   BUILDING_MEDIC_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_MEDIC_HEAL_RADIUS: 160, // Heal radius
   BUILDING_MEDIC_HEAL_PAUSE: 3000, // Heal pause
@@ -195,7 +195,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_RADAR_COST: 70, // Building cost
-  BUILDING_RADAR_HEALTH: 300, // Health
+  BUILDING_RADAR_HEALTH: 800, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
-  BUILDING_RADAR_RADIUS: 120, // Unhidden radius
+  BUILDING_RADAR_RADIUS: 130, // Unhidden radius
 };
