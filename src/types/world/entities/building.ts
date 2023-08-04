@@ -1,12 +1,11 @@
 import Phaser from 'phaser';
 
+import { ILive } from '~type/live';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IShotInitiator } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
-
-import { ILive } from './live';
 
 export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IParticlesParent, IShotInitiator {
   readonly scene: IWorld

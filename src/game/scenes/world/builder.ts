@@ -8,13 +8,13 @@ import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { getStage, equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
+import { LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import { BuildingAudio, BuildingVariant, IBuilding } from '~type/world/entities/building';
-import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 

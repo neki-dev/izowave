@@ -2,14 +2,14 @@ import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_DEBUG } from '~const/world';
+import { Live } from '~lib/live';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { Live } from '~scene/world/live';
 import { GameFlag, GameSettings } from '~type/game';
+import { ILive, LiveEvents } from '~type/live';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
-import { ILive, LiveEvents } from '~type/world/entities/live';
 import { ISprite, SpriteData, SpriteIndicator } from '~type/world/entities/sprite';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 

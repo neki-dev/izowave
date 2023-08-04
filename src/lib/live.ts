@@ -1,6 +1,6 @@
 import EventEmmiter from 'events';
 
-import { ILive, LiveData, LiveEvents } from '~type/world/entities/live';
+import { ILive, LiveData, LiveEvents } from '~type/live';
 
 export class Live extends EventEmmiter implements ILive {
   private _health: number;

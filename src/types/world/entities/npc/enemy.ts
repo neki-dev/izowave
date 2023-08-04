@@ -1,5 +1,5 @@
+import { ILive } from '~type/live';
 import { IWorld } from '~type/world';
-import { ILive } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
 

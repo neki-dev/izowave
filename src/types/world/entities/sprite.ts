@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
+import { ILive } from '~type/live';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
-import { ILive } from '~type/world/entities/live';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {

@@ -7,10 +7,11 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
+import { Live } from '~lib/live';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { Live } from '~scene/world/live';
 import { GameEvents, GameSettings } from '~type/game';
+import { ILive, LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents } from '~type/world';
@@ -22,7 +23,6 @@ import {
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
   BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon,
 } from '~type/world/entities/building';
-import { ILive, LiveEvents } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 

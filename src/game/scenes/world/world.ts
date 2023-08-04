@@ -20,6 +20,7 @@ import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
+import { LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import {
   IWorld, WorldEvents, WorldFeature, WorldHint,
@@ -28,7 +29,6 @@ import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { IBuilding } from '~type/world/entities/building';
-import { LiveEvents } from '~type/world/entities/live';
 import { INPC } from '~type/world/entities/npc';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
