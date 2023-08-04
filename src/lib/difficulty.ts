@@ -4,7 +4,7 @@
  * @param scale - Scale
  */
 function roundToScale(value: number, scale?: number) {
-  return scale ? Math.ceil(value / scale) * scale : Math.ceil(value);
+  return scale ? Math.floor(value / scale) * scale : Math.floor(value);
 }
 
 /**

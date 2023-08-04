@@ -204,6 +204,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         defaultValue: this.actions.pause,
         scale: DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         level: this.upgradeLevel,
+        roundTo: 100,
       })
       : 0;
   }
