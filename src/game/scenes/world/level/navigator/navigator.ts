@@ -72,51 +72,11 @@ export class Navigator implements INavigator {
       }
 
       currentNode.closeList();
-      this.getAllowedDirections(task.grid, currentNode).forEach((offset) => {
+
+      Navigator.GetAllowedDirections(task.grid, currentNode).forEach((offset) => {
         this.checkAdjacentNode(task, currentNode, offset);
       });
     }
-  }
-
-  private getAllowedDirections(grid: boolean[][], currentNode: PathNode) {
-    const straightFlags: Record<string, boolean> = {};
-    const straightDirs: Record<string, Vector2D> = {
-      R: { x: 1, y: 0 }, // →
-      L: { x: -1, y: 0 }, // ←
-      D: { x: 0, y: 1 }, // ↓
-      U: { x: 0, y: -1 }, // ↑
-    };
-    const diagonalDirs: Record<string, Vector2D> = {
-      RD: { x: 1, y: 1 }, // ↘
-      RU: { x: 1, y: -1 }, // ↗
-      LU: { x: -1, y: -1 }, // ↖
-      LD: { x: -1, y: 1 }, // ↙
-    };
-
-    const allowedDirs: Vector2D[] = [];
-
-    eachEntries(straightDirs, (key, dir) => {
-      if (this.isWalkable(grid, {
-        x: currentNode.x + dir.x,
-        y: currentNode.y + dir.y,
-      })) {
-        straightFlags[key] = true;
-        allowedDirs.push(dir);
-      }
-    });
-
-    eachEntries(diagonalDirs, (key, dir) => {
-      const dontCross = key.split('').every((flag) => straightFlags[flag]);
-
-      if (dontCross && this.isWalkable(grid, {
-        x: currentNode.x + dir.x,
-        y: currentNode.y + dir.y,
-      })) {
-        allowedDirs.push(dir);
-      }
-    });
-
-    return allowedDirs;
   }
 
   private checkAdjacentNode(task: NavigatorTask, currentNode: PathNode, shift: Vector2D) {
@@ -148,8 +108,43 @@ export class Navigator implements INavigator {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  private isWalkable(grid: boolean[][], position: Vector2D) {
-    return !grid[position.y]?.[position.x];
+  static GetAllowedDirections(grid: boolean[][], currentNode: PathNode) {
+    const straightFlags: Record<string, boolean> = {};
+    const straightDirs: Record<string, Vector2D> = {
+      R: { x: 1, y: 0 }, // →
+      L: { x: -1, y: 0 }, // ←
+      D: { x: 0, y: 1 }, // ↓
+      U: { x: 0, y: -1 }, // ↑
+    };
+    const diagonalDirs: Record<string, Vector2D> = {
+      RD: { x: 1, y: 1 }, // ↘
+      RU: { x: 1, y: -1 }, // ↗
+      LU: { x: -1, y: -1 }, // ↖
+      LD: { x: -1, y: 1 }, // ↙
+    };
+
+    const allowedDirs: Vector2D[] = [];
+
+    eachEntries(straightDirs, (key, dir) => {
+      const x = currentNode.x + dir.x;
+      const y = currentNode.y + dir.y;
+
+      if (grid[y]?.[x] === false) {
+        straightFlags[key] = true;
+        allowedDirs.push(dir);
+      }
+    });
+
+    eachEntries(diagonalDirs, (key, dir) => {
+      const dontCross = key.split('').every((flag) => straightFlags[flag]);
+      const x = currentNode.x + dir.x;
+      const y = currentNode.y + dir.y;
+
+      if (dontCross && grid[y]?.[x] === false) {
+        allowedDirs.push(dir);
+      }
+    });
+
+    return allowedDirs;
   }
 }

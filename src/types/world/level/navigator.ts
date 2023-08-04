@@ -27,6 +27,7 @@ export type TaskData = {
   to: Vector2D
   callback: (path: Nullable<Vector2D[]>) => void
   grid: boolean[][]
+  compress?: boolean
 };
 
 export type PathNodeData = {
