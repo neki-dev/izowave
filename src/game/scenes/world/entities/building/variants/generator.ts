@@ -48,7 +48,7 @@ export class BuildingGenerator extends Building {
     const info: BuildingParam[] = [{
       label: 'Delay',
       icon: BuildingIcon.PAUSE,
-      value: `${(pause / 1000).toFixed(1)} s`,
+      value: `${pause / 1000} s`,
     }];
 
     return super.getInfo().concat(info);

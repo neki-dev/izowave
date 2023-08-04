@@ -1,6 +1,7 @@
 import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
+import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { progressionLinear } from '~lib/difficulty';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
@@ -83,7 +84,7 @@ describe('wave.ts', () => {
   });
 
   it('should spawn boss on last wave of season', () => {
-    helper.skipWaves(DIFFICULTY.WAVE_SEASON_LENGTH - 1);
+    helper.skipWaves(ENEMY_BOSS_SPAWN_WAVE_RATE - 1);
 
     world.spawnEnemy.mockClear();
 

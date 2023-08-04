@@ -204,6 +204,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         defaultValue: this.actions.pause,
         scale: DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
         level: this.upgradeLevel,
+        roundTo: 100,
       })
       : 0;
   }
@@ -223,7 +224,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       cost += this.getUpgradeCost(i);
     }
 
-    return Math.ceil(cost * damaged * DIFFICULTY.BUILDING_REPAIR_COST_MULTIPLIER);
+    return Math.ceil(cost * damaged);
   }
 
   private isUpgradeAllowed() {

@@ -9,7 +9,7 @@ export interface INavigator {
 
   resetPointCost(position: Vector2D): void
 
-  createTask(from: Vector2D, to: Vector2D, callback: (path: Nullable<Vector2D[]>) => void): NavigatorTask
+  createTask(data: TaskData): NavigatorTask
 
   processing(): void
 }
@@ -22,8 +22,16 @@ export enum NavigatorTaskState {
   CANCELED = 'CANCELED',
 }
 
+export type TaskData = {
+  from: Vector2D
+  to: Vector2D
+  callback: (path: Nullable<Vector2D[]>) => void
+  grid: boolean[][]
+  compress?: boolean
+};
+
 export type PathNodeData = {
   position: Vector2D
-  cost: number
+  cost?: number
   distance: number
 };

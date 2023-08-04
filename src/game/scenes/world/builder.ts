@@ -195,8 +195,8 @@ export class Builder extends EventEmitter implements IBuilder {
     return limit;
   }
 
-  public getBuildingsByVariant(variant: BuildingVariant) {
-    return this.buildings[variant] ?? [];
+  public getBuildingsByVariant<T extends IBuilding>(variant: BuildingVariant) {
+    return (this.buildings[variant] ?? []) as T[];
   }
 
   private getAssumedPosition() {

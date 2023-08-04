@@ -19,6 +19,19 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
 }
 
 /**
+ * Remove target position from positions list.
+ * @param positions - Positions list
+ * @param target - Target position
+ */
+export function excludePosition(positions: Vector2D[], target: Vector2D) {
+  const index = positions.findIndex((position) => equalPositions(position, target));
+
+  if (index !== -1) {
+    positions.splice(index, 1);
+  }
+}
+
+/**
  * Format timestamp to string time.
  * @param value - Timestamp in miliseconds
  */
@@ -68,17 +81,12 @@ export function sortByDistance<T extends Vector2D>(
   positions: T[],
   target: Vector2D,
 ) {
-  let meta = positions.map((position) => {
-    const dx = position.x - target.x;
-    const dy = position.y - target.y;
+  let meta = positions.map((position) => ({
+    position,
+    distance: Phaser.Math.Distance.BetweenPoints(target, position),
+  }));
 
-    return {
-      position,
-      distance: Math.sqrt(dx * dx + dy * dy),
-    };
-  });
-
-  meta = meta.sort((a, b) => a.distance - b.distance);
+  meta = meta.sort((a, b) => (a.distance - b.distance));
 
   return meta.map(({ position }) => position);
 }

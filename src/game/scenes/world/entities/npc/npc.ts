@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_DEBUG } from '~const/world';
 import { Sprite } from '~entity/sprite';
-import { equalPositions } from '~lib/utils';
+import { equalPositions, excludePosition } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { NavigatorTask } from '~scene/world/level/navigator/task';
@@ -152,41 +152,39 @@ export class NPC extends Sprite implements INPC {
       }
     }
 
-    const onComplete = (path: Nullable<Vector2D[]>) => {
-      if (!path) {
-        const index = this.scene.enemySpawnPositions.findIndex((positionAtMatrix) => (
-          this.pathFindingTask
-          && equalPositions(positionAtMatrix, this.pathFindingTask.from)
-        ));
+    const from = this.positionAtMatrix;
+    const to = this.scene.player.positionAtMatrix;
 
-        this.scene.enemySpawnPositions.splice(index, 1);
+    this.pathFindingTask = this.scene.level.navigator.createTask({
+      from,
+      to,
+      grid: this.scene.level.gridCollide,
+      compress: true,
+      callback: (path: Nullable<Vector2D[]>) => {
+        if (!path) {
+          this.pathFindingTask = null;
+
+          excludePosition(this.scene.enemySpawnPositions, from);
+          this.respawn();
+
+          return;
+        }
+
+        if (!this.visible) {
+          this.activate();
+        }
+
+        path.shift();
+        this.pathToTarget = path;
         this.pathFindingTask = null;
 
-        this.respawn();
+        if (this.isCanPursuit()) {
+          this.moveToTile();
+        }
 
-        return;
-      }
-
-      if (!this.visible) {
-        this.activate();
-      }
-
-      path.shift();
-      this.pathToTarget = path;
-      this.pathFindingTask = null;
-
-      if (this.isCanPursuit()) {
-        this.moveToTile();
-      }
-
-      this.drawDebugPath();
-    };
-
-    this.pathFindingTask = this.scene.level.navigator.createTask(
-      this.positionAtMatrix,
-      this.scene.player.positionAtMatrix,
-      onComplete,
-    );
+        this.drawDebugPath();
+      },
+    });
   }
 
   public activate() {
