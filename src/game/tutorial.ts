@@ -14,6 +14,12 @@ export class Tutorial extends EventEmitter implements ITutorial {
 
   private set isEnabled(v) { this._isEnabled = v; }
 
+  constructor() {
+    super();
+
+    this.setMaxListeners(0);
+  }
+
   public reset() {
     this.removeAllListeners();
     this.progress = {};

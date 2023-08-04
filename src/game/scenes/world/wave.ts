@@ -55,6 +55,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene = scene;
 
+    this.setMaxListeners(0);
     this.addKeyboardHandler();
     this.runTimeleft();
   }

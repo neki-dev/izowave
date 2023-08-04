@@ -2,12 +2,13 @@ import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
-import { WORLD_FEATURES, WORLD_FIND_PATH_RATE } from '~const/world';
+import { WORLD_FEATURES } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
 } from '~const/world/entities/enemy';
+import { NPC_FIND_PATH_RATE } from '~const/world/entities/npc';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
@@ -278,14 +279,10 @@ export class World extends Scene implements IWorld {
     const npcs = this.getEntities<INPC>(EntityType.NPC);
 
     for (const npc of npcs) {
-      try {
-        npc.findPathToTarget();
-      } catch (e) {
-        console.error('Error on update NPC path:', e);
-      }
+      npc.findPathToTarget();
     }
 
-    this.nextFindPathTimestamp = now + WORLD_FIND_PATH_RATE;
+    this.nextFindPathTimestamp = now + NPC_FIND_PATH_RATE;
   }
 
   private addEntityGroups() {
