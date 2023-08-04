@@ -223,7 +223,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       cost += this.getUpgradeCost(i);
     }
 
-    return Math.ceil(cost * damaged * DIFFICULTY.BUILDING_REPAIR_COST_MULTIPLIER);
+    return Math.ceil(cost * damaged);
   }
 
   private isUpgradeAllowed() {

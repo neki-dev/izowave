@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.5, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
 
@@ -68,7 +68,7 @@ export const DIFFICULTY = {
 
   CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
   CRYSTAL_RESOURCES: 4, // Resources in crystal
-  CRYSTAL_RESOURCES_GROWTH: 0.3, // Resources amount growth by wave number (Quadratic)
+  CRYSTAL_RESOURCES_GROWTH: 0.4, // Resources amount growth by wave number (Quadratic)
 
   /**
    * Enemies
@@ -84,7 +84,7 @@ export const DIFFICULTY = {
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.17, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
@@ -105,7 +105,6 @@ export const DIFFICULTY = {
   BUILDING_BUILD_EXPERIENCE: 30, // Gained experience for build
   BUILDING_UPGRADE_EXPERIENCE: 15, // Gained experience per upgrade level
   BUILDING_UPGRADE_EXPERIENCE_GROWTH: 0.75, // Experience growth by level (Linear)
-  BUILDING_REPAIR_COST_MULTIPLIER: 1.2, // Repair cost multiplier
   BUILDING_UPGRADE_COST_MULTIPLIER: 2.0, // Upgrade cost multiplier
 
   /**
@@ -195,7 +194,7 @@ export const DIFFICULTY = {
    * Building: Radar
    */
 
-  BUILDING_RADAR_COST: 90, // Building cost
+  BUILDING_RADAR_COST: 70, // Building cost
   BUILDING_RADAR_HEALTH: 300, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_RADAR_RADIUS: 120, // Unhidden radius
