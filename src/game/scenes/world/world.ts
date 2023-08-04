@@ -141,7 +141,7 @@ export class World extends Scene implements IWorld {
     this.player.update();
     this.builder.update();
     this.wave.update();
-    this.pathProcessing();
+    this.findNPCPaths();
   }
 
   public showHint(hint: WorldHint) {
@@ -266,11 +266,6 @@ export class World extends Scene implements IWorld {
         delete this.activeFeatures[type];
       },
     });
-  }
-
-  private pathProcessing() {
-    this.findNPCPaths();
-    this.level.navigator.processing();
   }
 
   private findNPCPaths() {

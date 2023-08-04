@@ -6,7 +6,6 @@ import { Sprite } from '~entity/sprite';
 import { equalPositions, excludePosition } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { NavigatorTask } from '~scene/world/level/navigator/task';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
@@ -19,7 +18,7 @@ export class NPC extends Sprite implements INPC {
 
   private pathToTarget: Vector2D[] = [];
 
-  private pathFindingTask: Nullable<NavigatorTask> = null;
+  private pathFindingTask: Nullable<string> = null;
 
   private pathFindTriggerDistance: number;
 
@@ -160,30 +159,29 @@ export class NPC extends Sprite implements INPC {
       to,
       grid: this.scene.level.gridCollide,
       compress: true,
-      callback: (path: Nullable<Vector2D[]>) => {
-        if (!path) {
-          this.pathFindingTask = null;
-
-          excludePosition(this.scene.enemySpawnPositions, from);
-          this.respawn();
-
-          return;
-        }
-
-        if (!this.visible) {
-          this.activate();
-        }
-
-        path.shift();
-        this.pathToTarget = path;
+    }, (path: Nullable<Vector2D[]>) => {
+      if (!path) {
         this.pathFindingTask = null;
 
-        if (this.isCanPursuit()) {
-          this.moveToTile();
-        }
+        excludePosition(this.scene.enemySpawnPositions, from);
+        this.respawn();
 
-        this.drawDebugPath();
-      },
+        return;
+      }
+
+      if (!this.visible) {
+        this.activate();
+      }
+
+      path.shift();
+      this.pathToTarget = path;
+      this.pathFindingTask = null;
+
+      if (this.isCanPursuit()) {
+        this.moveToTile();
+      }
+
+      this.drawDebugPath();
     });
   }
 
@@ -227,7 +225,7 @@ export class NPC extends Sprite implements INPC {
     this.pathToTarget = [];
 
     if (this.pathFindingTask) {
-      this.pathFindingTask.cancel();
+      this.scene.level.navigator.cancelTask(this.pathFindingTask);
       this.pathFindingTask = null;
     }
   }

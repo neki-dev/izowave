@@ -1,8 +1,8 @@
 import { World } from 'gen-biome';
 
 import { Effect } from '~scene/world/effects';
+import { INavigator } from '~type/navigator';
 import { IWorld } from '~type/world';
-import { INavigator } from '~type/world/level/navigator';
 import { ITileMatrix } from '~type/world/level/tile-matrix';
 
 export interface ILevel extends ITileMatrix {
