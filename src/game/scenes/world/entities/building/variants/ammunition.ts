@@ -26,8 +26,6 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   static Health = DIFFICULTY.BUILDING_AMMUNITION_HEALTH;
 
-  static Limit = true;
-
   static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
 
   private maxAmmo: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
