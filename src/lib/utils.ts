@@ -19,6 +19,19 @@ export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
 }
 
 /**
+ * Remove target position from positions list.
+ * @param positions - Positions list
+ * @param target - Target position
+ */
+export function excludePosition(positions: Vector2D[], target: Vector2D) {
+  const index = positions.findIndex((position) => equalPositions(position, target));
+
+  if (index !== -1) {
+    positions.splice(index, 1);
+  }
+}
+
+/**
  * Format timestamp to string time.
  * @param value - Timestamp in miliseconds
  */

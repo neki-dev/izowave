@@ -29,6 +29,16 @@ export interface ILevel extends ITileMatrix {
   readonly groundLayer: Phaser.Tilemaps.TilemapLayer
 
   /**
+   * Collide grid for navigation.
+   */
+  readonly gridCollide: boolean[][]
+
+  /**
+   * Solid grid for navigation.
+   */
+  readonly gridSolid: boolean[][]
+
+  /**
    * Let loose map tiles effects.
    */
   looseEffects(): void

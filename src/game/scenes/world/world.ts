@@ -141,7 +141,7 @@ export class World extends Scene implements IWorld {
     this.player.update();
     this.builder.update();
     this.wave.update();
-    this.updateNPCPath();
+    this.pathProcessing();
   }
 
   public showHint(hint: WorldHint) {
@@ -268,7 +268,12 @@ export class World extends Scene implements IWorld {
     });
   }
 
-  private updateNPCPath() {
+  private pathProcessing() {
+    this.findNPCPaths();
+    this.level.navigator.processing();
+  }
+
+  private findNPCPaths() {
     const now = Date.now();
 
     if (this.nextFindPathTimestamp > now) {
@@ -284,8 +289,6 @@ export class World extends Scene implements IWorld {
         console.error('Error on update NPC path:', e);
       }
     }
-
-    this.level.navigator.processing();
 
     this.nextFindPathTimestamp = now + WORLD_FIND_PATH_RATE;
   }

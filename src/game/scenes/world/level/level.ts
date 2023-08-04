@@ -26,13 +26,17 @@ export class Level extends TileMatrix implements ILevel {
 
   readonly map: World<LevelBiome>;
 
-  public _effectsOnGround: Effect[] = [];
+  readonly gridCollide: boolean[][] = [];
+
+  readonly gridSolid: boolean[][] = [];
+
+  private _effectsOnGround: Effect[] = [];
 
   public get effectsOnGround() { return this._effectsOnGround; }
 
   private set effectsOnGround(v) { this._effectsOnGround = v; }
 
-  public _groundLayer: Phaser.Tilemaps.TilemapLayer;
+  private _groundLayer: Phaser.Tilemaps.TilemapLayer;
 
   public get groundLayer() { return this._groundLayer; }
 
@@ -59,10 +63,10 @@ export class Level extends TileMatrix implements ILevel {
     this.map = generator.generate();
     this.scene = scene;
 
-    const grid = this.map.getMatrix()
-      .map((y) => y.map((x) => x.collide));
+    this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
+    this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));
 
-    this.navigator = new Navigator(grid);
+    this.navigator = new Navigator();
 
     this.addTilemap();
     this.addMapTiles();

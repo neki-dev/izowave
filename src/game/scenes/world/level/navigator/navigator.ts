@@ -1,21 +1,15 @@
 /* eslint-disable no-continue */
 import { eachEntries, equalPositions } from '~lib/utils';
 import { Vector2D } from '~type/world/level';
-import { INavigator, NavigatorTaskState } from '~type/world/level/navigator';
+import { INavigator, NavigatorTaskState, TaskData } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 import { NavigatorTask } from './task';
 
 export class Navigator implements INavigator {
-  readonly matrix: boolean[][] = [];
-
   private pointsToCost: number[][] = [];
 
   private taskQueue: NavigatorTask[] = [];
-
-  constructor(matrix: boolean[][]) {
-    this.matrix = matrix;
-  }
 
   public setPointCost(position: Vector2D, cost: number) {
     if (!this.pointsToCost[position.y]) {
@@ -36,15 +30,10 @@ export class Navigator implements INavigator {
     return this.pointsToCost[position.y]?.[position.x] ?? 1.0;
   }
 
-  public createTask(
-    from: Vector2D,
-    to: Vector2D,
-    callback: (path: Nullable<Vector2D[]>) => void,
-  ) {
-    const task = new NavigatorTask(from, to, callback);
+  public createTask(data: TaskData) {
+    const task = new NavigatorTask(data);
     const node = new PathNode(null, {
       position: task.from,
-      cost: 1.0,
       distance: Phaser.Math.Distance.BetweenPoints(task.from, task.to),
     });
 
@@ -83,13 +72,13 @@ export class Navigator implements INavigator {
       }
 
       currentNode.closeList();
-      this.getAllowedDirections(currentNode).forEach((offset) => {
+      this.getAllowedDirections(task.grid, currentNode).forEach((offset) => {
         this.checkAdjacentNode(task, currentNode, offset);
       });
     }
   }
 
-  private getAllowedDirections(currentNode: PathNode) {
+  private getAllowedDirections(grid: boolean[][], currentNode: PathNode) {
     const straightFlags: Record<string, boolean> = {};
     const straightDirs: Record<string, Vector2D> = {
       R: { x: 1, y: 0 }, // →
@@ -107,7 +96,7 @@ export class Navigator implements INavigator {
     const allowedDirs: Vector2D[] = [];
 
     eachEntries(straightDirs, (key, dir) => {
-      if (this.isWalkable({
+      if (this.isWalkable(grid, {
         x: currentNode.x + dir.x,
         y: currentNode.y + dir.y,
       })) {
@@ -119,7 +108,7 @@ export class Navigator implements INavigator {
     eachEntries(diagonalDirs, (key, dir) => {
       const dontCross = key.split('').every((flag) => straightFlags[flag]);
 
-      if (dontCross && this.isWalkable({
+      if (dontCross && this.isWalkable(grid, {
         x: currentNode.x + dir.x,
         y: currentNode.y + dir.y,
       })) {
@@ -159,7 +148,8 @@ export class Navigator implements INavigator {
     }
   }
 
-  private isWalkable(position: Vector2D) {
-    return !this.matrix[position.y]?.[position.x];
+  // eslint-disable-next-line class-methods-use-this
+  private isWalkable(grid: boolean[][], position: Vector2D) {
+    return !grid[position.y]?.[position.x];
   }
 }

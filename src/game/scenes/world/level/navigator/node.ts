@@ -15,7 +15,7 @@ export class PathNode {
   private listOpened: Nullable<boolean> = null;
 
   constructor(parent: Nullable<PathNode>, {
-    position, cost, distance,
+    position, cost = 1.0, distance,
   }: PathNodeData) {
     this.x = position.x;
     this.y = position.y;

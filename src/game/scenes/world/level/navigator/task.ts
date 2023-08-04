@@ -1,7 +1,7 @@
 import Heap from 'heap';
 
 import { Vector2D } from '~type/world/level';
-import { NavigatorTaskState } from '~type/world/level/navigator';
+import { NavigatorTaskState, TaskData } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
 
@@ -9,6 +9,8 @@ export class NavigatorTask {
   readonly from: Vector2D;
 
   readonly to: Vector2D;
+
+  readonly grid: boolean[][];
 
   private callback: (path: Nullable<Vector2D[]>) => void;
 
@@ -18,14 +20,13 @@ export class NavigatorTask {
 
   public state: NavigatorTaskState = NavigatorTaskState.IDLE;
 
-  constructor(
-    from: Vector2D,
-    to: Vector2D,
-    callback: (path: Nullable<Vector2D[]>) => void,
-  ) {
+  constructor({
+    from, to, callback, grid,
+  }: TaskData) {
     this.from = from;
     this.to = to;
     this.callback = callback;
+    this.grid = grid;
     this.nodes = new Heap<PathNode>((nodeA, nodeB) => (
       nodeA.bestGuessDistance() - nodeB.bestGuessDistance()
     ));

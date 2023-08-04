@@ -26,7 +26,7 @@ export const LEVEL_TREE_TILE_SIZE = {
   origin: 0.5,
 };
 
-export const LEVEL_BUILDING_PATH_COST = 16.0;
+export const LEVEL_BUILDING_PATH_COST = 32.0;
 
 export const LEVEL_BIOMES: Array<{
   params?: WorldBiomeParams
