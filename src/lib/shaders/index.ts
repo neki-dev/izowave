@@ -32,7 +32,7 @@ Phaser.GameObjects.Image.prototype.removeShader = function (shader: string) {
 declare global {
   namespace Phaser {
     namespace GameObjects {
-      interface Image {
+      interface GameObject {
         addShader: (shader: string, config?: object) => void
         updateShader: (shader: string, config: object) => void
         removeShader: (shader: string) => void

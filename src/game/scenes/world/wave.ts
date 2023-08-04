@@ -26,7 +26,7 @@ export class Wave extends EventEmitter implements IWave {
 
   private set isGoing(v) { this._isGoing = v; }
 
-  public _isPeaceMode: boolean = false;
+  private _isPeaceMode: boolean = false;
 
   public get isPeaceMode() { return this._isPeaceMode; }
 
