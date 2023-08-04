@@ -352,8 +352,10 @@ export class World extends Scene implements IWorld {
     const positions = this.level.readSpawnPositions(SpawnTarget.CRYSTAL);
 
     const create = () => {
+      const freePositions = positions.filter((position) => this.level.isFreePoint({ ...position, z: 1 }));
+
       new Crystal(this, {
-        positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
+        positionAtMatrix: Phaser.Utils.Array.GetRandom(freePositions),
         variant: Phaser.Math.Between(0, 3),
       });
     };
