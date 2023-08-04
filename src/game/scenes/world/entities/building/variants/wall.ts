@@ -1,8 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionQuadratic } from '~lib/difficulty';
 import { IWorld } from '~type/world';
 import {
-  BuildingEvents, BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
+  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -31,21 +30,5 @@ export class BuildingWall extends Building {
       health: BuildingWall.Health,
       texture: BuildingWall.Texture,
     });
-
-    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
-  }
-
-  private onUpgrade() {
-    const maxHealth = progressionQuadratic({
-      defaultValue: DIFFICULTY.BUILDING_WALL_HEALTH,
-      scale: DIFFICULTY.BUILDING_WALL_HEALTH_GROWTH,
-      level: this.upgradeLevel,
-      roundTo: 100,
-    });
-
-    const addedHealth = maxHealth - this.live.maxHealth;
-
-    this.live.setMaxHealth(maxHealth);
-    this.live.addHealth(addedHealth);
   }
 }

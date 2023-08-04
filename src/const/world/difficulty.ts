@@ -106,6 +106,7 @@ export const DIFFICULTY = {
   BUILDING_UPGRADE_EXPERIENCE: 15, // Gained experience per upgrade level
   BUILDING_UPGRADE_EXPERIENCE_GROWTH: 0.75, // Experience growth by level (Linear)
   BUILDING_UPGRADE_COST_MULTIPLIER: 2.0, // Upgrade cost multiplier
+  BUILDING_HEALTH_GROWTH: 0.7, // Health growth by level (Quadratic)
 
   /**
    * Building: Wall
@@ -114,7 +115,6 @@ export const DIFFICULTY = {
   BUILDING_WALL_COST: 10, // Building cost
   BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
   BUILDING_WALL_HEALTH: 1500, // Health
-  BUILDING_WALL_HEALTH_GROWTH: 0.7, // Health growth by level (Quadratic)
 
   /**
    * Building: Towers
