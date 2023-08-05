@@ -2,7 +2,7 @@
 import Heap from 'heap';
 
 import { equalPositions } from '~lib/utils';
-import { NavigatorTaskState, NavigatorTaskData, NavigatorEvent } from '~type/navigator';
+import { NavigatorTaskData, NavigatorEvent } from '~type/navigator';
 import { Vector2D } from '~type/world/level';
 
 import { PathNode } from './node';
@@ -22,8 +22,6 @@ export class NavigatorTask {
   private nodes: Heap<PathNode>;
 
   private compress: boolean = false;
-
-  public state: NavigatorTaskState = NavigatorTaskState.IDLE;
 
   constructor({
     id, from, to, grid, compress = false,
@@ -67,13 +65,7 @@ export class NavigatorTask {
     this.nodes.updateItem(node);
   }
 
-  public cancel() {
-    this.state = NavigatorTaskState.CANCELED;
-  }
-
   public failure() {
-    this.state = NavigatorTaskState.FAILED;
-
     self.postMessage({
       event: NavigatorEvent.COMPLETE_TASK,
       payload: {
@@ -84,8 +76,6 @@ export class NavigatorTask {
   }
 
   public complete(node: PathNode) {
-    this.state = NavigatorTaskState.COMPLETED;
-
     let path = node.getPath();
 
     if (this.compress) {

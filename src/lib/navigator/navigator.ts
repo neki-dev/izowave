@@ -6,7 +6,6 @@ import NavigatorWorker from 'worker-loader!./worker';
 import {
   INavigator,
   NavigatorTaskInfo,
-  NavigatorTaskState,
   NavigatorWorkerResult,
   NavigatorTaskData,
   NavigatorEvent,
@@ -79,7 +78,6 @@ export class Navigator implements INavigator {
 
     this.tasks.push({
       id: payload.id,
-      state: NavigatorTaskState.IDLE,
       callback,
     });
 

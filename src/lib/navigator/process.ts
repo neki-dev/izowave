@@ -1,6 +1,5 @@
 /* eslint-disable no-continue */
 import { equalPositions } from '~lib/utils';
-import { NavigatorTaskState } from '~type/navigator';
 
 import { NavigatorTask } from './task';
 import { getDirections } from './tools';
@@ -29,16 +28,6 @@ export class NavigatorProcess {
   public processing() {
     while (this.taskQueue.length > 0) {
       const task = this.taskQueue[0];
-
-      if (task.state === NavigatorTaskState.CANCELED) {
-        this.taskQueue.shift();
-        continue;
-      }
-
-      if (task.state === NavigatorTaskState.IDLE) {
-        task.state = NavigatorTaskState.PROCESSING;
-      }
-
       const currentNode = task.takeLastNode();
 
       if (!currentNode) {

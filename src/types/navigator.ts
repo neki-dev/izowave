@@ -38,14 +38,6 @@ export enum NavigatorEvent {
   UPDATE_POINTS_COST = 'update_points_cost',
 }
 
-export enum NavigatorTaskState {
-  IDLE = 'IDLE',
-  PROCESSING = 'PROCESSING',
-  COMPLETED = 'COMPLETED',
-  FAILED = 'FAILED',
-  CANCELED = 'CANCELED',
-}
-
 export type NavigatorTaskData = {
   id?: string
   from: Vector2D
@@ -69,6 +61,5 @@ export type NavigatorWorkerResult = {
 
 export type NavigatorTaskInfo = {
   id: string
-  state: NavigatorTaskState
   callback: (path: Nullable<Vector2D[]>) => void
 };
