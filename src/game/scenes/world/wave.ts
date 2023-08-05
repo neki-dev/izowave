@@ -167,7 +167,7 @@ export class Wave extends EventEmitter implements IWave {
       this.scene.game.tutorial.start(TutorialStep.BUILD_RADAR);
     }
 
-    this.scene.game.analytics.track({
+    this.scene.game.analytics.trackEvent({
       world: this.scene,
       success: true,
     });

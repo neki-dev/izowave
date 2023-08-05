@@ -3,8 +3,8 @@ import Phaser from 'phaser';
 import {
   AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, SETTINGS,
 } from '~const/game';
-import { Analytics } from '~game/analytics';
 import { Tutorial } from '~game/tutorial';
+import { Analytics } from '~lib/analytics';
 import { shaders } from '~lib/shaders';
 import { eachEntries, registerScript } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
@@ -130,6 +130,16 @@ export class Game extends Phaser.Game implements IGame {
         this.tutorial.disable();
       }
     });
+
+    window.onerror = (message, path, line, column, error) => {
+      if (error) {
+        this.analytics.trackError(error);
+      } else if (typeof message === 'string') {
+        this.analytics.trackError(new Error(message));
+      }
+
+      return false;
+    };
   }
 
   public pauseGame() {
@@ -223,7 +233,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.events.emit(GameEvents.FINISH, stat, record);
 
-    this.analytics.track({
+    this.analytics.trackEvent({
       world: this.world,
       success: false,
     });

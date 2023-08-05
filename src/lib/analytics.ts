@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from '../../package.json';
 import { ANALYTICS_SERVER } from '~const/analytics';
-import { AnalyticData, IAnalytics } from '~type/analytics';
+import { AnalyticEventData, IAnalytics } from '~type/analytics';
 import { GameSettings } from '~type/game';
 
 export class Analytics implements IAnalytics {
@@ -27,8 +27,8 @@ export class Analytics implements IAnalytics {
     }
   }
 
-  public track(data: AnalyticData) {
-    const payload = this.getPayload(data);
+  public trackEvent(data: AnalyticEventData) {
+    const payload = this.getEventPayload(data);
 
     if (IS_DEV_MODE) {
       console.log('Track analytic event:', payload);
@@ -38,12 +38,27 @@ export class Analytics implements IAnalytics {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       }).catch((e) => {
-        console.warn('Failed analytics tracking:', payload, e);
+        console.warn('Failed analytics event tracking:', payload, e);
       });
     }
   }
 
-  private getPayload(data: AnalyticData) {
+  public trackError(data: Error) {
+    if (IS_DEV_MODE) {
+      return;
+    }
+    const payload = this.getErrorPayload(data);
+
+    fetch(`${ANALYTICS_SERVER}/api/create-error.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch((e) => {
+      console.warn('Failed analytics error tracking:', payload, e);
+    });
+  }
+
+  private getEventPayload(data: AnalyticEventData) {
     return {
       // Game progress
       success: data.success,
@@ -54,6 +69,18 @@ export class Analytics implements IAnalytics {
       userId: this.userId,
       host: this.host,
       version: pkg.version,
+    };
+  }
+
+  private getErrorPayload(data: Error) {
+    return {
+      // Error info
+      message: data.message,
+      stack: data.stack,
+      // System info
+      userId: this.userId,
+      version: pkg.version,
+      userAgent: window.navigator.userAgent,
     };
   }
 }
