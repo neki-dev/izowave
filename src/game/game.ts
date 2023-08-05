@@ -3,9 +3,8 @@ import Phaser from 'phaser';
 import {
   AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, SETTINGS,
 } from '~const/game';
-import { Tutorial } from '~game/tutorial';
 import { Analytics } from '~lib/analytics';
-import { shaders } from '~lib/shaders';
+import { Tutorial } from '~lib/tutorial';
 import { eachEntries, registerScript } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
@@ -25,6 +24,8 @@ import {
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
+
+import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
   readonly tutorial: ITutorial;
