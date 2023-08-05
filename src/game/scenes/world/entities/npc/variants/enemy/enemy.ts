@@ -11,19 +11,21 @@ import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
+import { excludePosition } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
 import { IWorld, WorldEvents, WorldFeature } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
+import { NPCEvent } from '~type/world/entities/npc';
 import {
   IEnemyTarget,
   EnemyData,
   EnemyTexture,
   IEnemy,
 } from '~type/world/entities/npc/enemy';
-import { TileType } from '~type/world/level';
+import { TileType, Vector2D } from '~type/world/level';
 
 export class Enemy extends NPC implements IEnemy {
   private damage: number;
@@ -102,6 +104,8 @@ export class Enemy extends NPC implements IEnemy {
       this.scene.getEntitiesGroup(EntityType.NPC),
     );
 
+    this.on(NPCEvent.PATH_NOT_FOUND, this.onPathNotFound.bind(this));
+
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.damageTimer) {
         this.damageTimer.destroy();
@@ -131,6 +135,20 @@ export class Enemy extends NPC implements IEnemy {
     target.live.damage(this.damage);
 
     this.freeze(1000);
+  }
+
+  private onPathNotFound(originPosition: Vector2D) {
+    excludePosition(this.scene.enemySpawnPositions, originPosition);
+
+    const positionAtMatrix = this.scene.getEnemySpawnPosition();
+
+    if (!positionAtMatrix) {
+      return null;
+    }
+
+    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
+
+    this.setPosition(position.x, position.y);
   }
 
   public onDead() {

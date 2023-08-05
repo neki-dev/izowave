@@ -2,15 +2,16 @@ import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_DEBUG } from '~const/world';
+import { NPC_FIND_PATH_RATE } from '~const/world/entities/npc';
 import { Sprite } from '~entity/sprite';
-import { equalPositions, excludePosition } from '~lib/utils';
+import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
-import { INPC, NPCData } from '~type/world/entities/npc';
+import { INPC, NPCData, NPCEvent } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
 
 export class NPC extends Sprite implements INPC {
@@ -20,7 +21,9 @@ export class NPC extends Sprite implements INPC {
 
   private pathFindingTask: Nullable<string> = null;
 
-  private pathFindTriggerDistance: number;
+  private pathFindTriggerDistance: number = 0;
+
+  private pathFindTimestamp: number = 0;
 
   private pathDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
@@ -72,6 +75,7 @@ export class NPC extends Sprite implements INPC {
     }
 
     if (this.getDistanceToTarget() > this.pathFindTriggerDistance) {
+      this.findPathToTarget();
       this.moveByPath();
       this.isPathPassed = false;
 
@@ -80,18 +84,6 @@ export class NPC extends Sprite implements INPC {
 
     this.resetPath();
     this.isPathPassed = true;
-  }
-
-  public respawn() {
-    const positionAtMatrix = this.scene.getEnemySpawnPosition();
-
-    if (!positionAtMatrix) {
-      return null;
-    }
-
-    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
-
-    this.setPosition(position.x, position.y);
   }
 
   public freeze(duration: number, effects = false) {
@@ -134,12 +126,14 @@ export class NPC extends Sprite implements INPC {
     return (this.freezeTimestamp > this.scene.getTime());
   }
 
-  public findPathToTarget() {
+  private findPathToTarget() {
     if (this.pathFindingTask) {
       return;
     }
 
-    if (this.getDistanceToTarget() <= this.pathFindTriggerDistance) {
+    const now = Date.now();
+
+    if (this.pathFindTimestamp > now) {
       return;
     }
 
@@ -152,19 +146,17 @@ export class NPC extends Sprite implements INPC {
     }
 
     const from = this.positionAtMatrix;
-    const to = this.scene.player.positionAtMatrix;
 
+    this.pathFindTimestamp = now + NPC_FIND_PATH_RATE;
     this.pathFindingTask = this.scene.level.navigator.createTask({
       from,
-      to,
+      to: this.scene.player.positionAtMatrix,
       grid: this.scene.level.gridCollide,
       compress: true,
     }, (path: Nullable<Vector2D[]>) => {
       if (!path) {
         this.pathFindingTask = null;
-
-        excludePosition(this.scene.enemySpawnPositions, from);
-        this.respawn();
+        this.emit(NPCEvent.PATH_NOT_FOUND, from);
 
         return;
       }

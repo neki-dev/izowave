@@ -8,7 +8,6 @@ import { ENEMIES } from '~const/world/entities/enemies';
 import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
 } from '~const/world/entities/enemy';
-import { NPC_FIND_PATH_RATE } from '~const/world/entities/npc';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
@@ -30,7 +29,6 @@ import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { IBuilding } from '~type/world/entities/building';
-import { INPC } from '~type/world/entities/npc';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
@@ -80,8 +78,6 @@ export class World extends Scene implements IWorld {
   public enemySpawnPositions: Vector2D[] = [];
 
   private lifecyle: Phaser.Time.TimerEvent;
-
-  private nextFindPathTimestamp: number = 0;
 
   private currentHintId: Nullable<string> = null;
 
@@ -142,7 +138,6 @@ export class World extends Scene implements IWorld {
     this.player.update();
     this.builder.update();
     this.wave.update();
-    this.findNPCPaths();
   }
 
   public showHint(hint: WorldHint) {
@@ -267,22 +262,6 @@ export class World extends Scene implements IWorld {
         delete this.activeFeatures[type];
       },
     });
-  }
-
-  private findNPCPaths() {
-    const now = Date.now();
-
-    if (this.nextFindPathTimestamp > now) {
-      return;
-    }
-
-    const npcs = this.getEntities<INPC>(EntityType.NPC);
-
-    for (const npc of npcs) {
-      npc.findPathToTarget();
-    }
-
-    this.nextFindPathTimestamp = now + NPC_FIND_PATH_RATE;
   }
 
   private addEntityGroups() {
