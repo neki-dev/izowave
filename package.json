@@ -45,7 +45,6 @@
     "jest-canvas-mock": "2.5.2",
     "jest-environment-jsdom": "29.5.0",
     "phaser3spectorjs": "0.0.8",
-    "terser-webpack-plugin": "5.3.9",
     "ts-jest": "29.1.0",
     "ts-loader": "9.4.4",
     "typescript": "5.1.6",
