@@ -7,10 +7,11 @@ import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
+import { Live } from '~lib/live';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { Live } from '~scene/world/live';
 import { GameEvents, GameSettings } from '~type/game';
+import { ILive, LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents } from '~type/world';
@@ -22,7 +23,6 @@ import {
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
   BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon,
 } from '~type/world/entities/building';
-import { ILive, LiveEvents } from '~type/world/entities/live';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
@@ -69,6 +69,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private isSelected: boolean = false;
 
+  private defaultHealth: number = 0;
+
   constructor(scene: IWorld, {
     positionAtMatrix, health, texture, variant, actions = null,
   }: BuildingData) {
@@ -79,6 +81,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     scene.addEntity(EntityType.BUILDING, this);
 
     this.actions = actions;
+    this.defaultHealth = health;
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
     this.live = new Live({ health });
@@ -260,6 +263,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.addUpgradeIcon();
     this.updateActionArea();
+    this.upgradeHealth();
     this.setFrame(this.upgradeLevel - 1);
 
     this.emit(BuildingEvents.UPGRADE);
@@ -298,6 +302,20 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.player.takeResources(cost);
 
     this.scene.sound.play(BuildingAudio.REPAIR);
+  }
+
+  private upgradeHealth() {
+    const maxHealth = progressionQuadratic({
+      defaultValue: this.defaultHealth,
+      scale: DIFFICULTY.BUILDING_HEALTH_GROWTH,
+      level: this.upgradeLevel,
+      roundTo: 100,
+    });
+
+    const addedHealth = maxHealth - this.live.maxHealth;
+
+    this.live.setMaxHealth(maxHealth);
+    this.live.addHealth(addedHealth);
   }
 
   private onDamage() {

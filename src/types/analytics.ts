@@ -5,10 +5,16 @@ export interface IAnalytics {
    * Track progression event.
    * @param data - Event data
    */
-  track(data: AnalyticData): void
+  trackEvent(data: AnalyticEventData): void
+
+  /**
+   * Track game error.
+   * @param data - Error data
+   */
+  trackError(data: Error): void
 }
 
-export type AnalyticData = {
+export type AnalyticEventData = {
   world: IWorld
   success: boolean
 };

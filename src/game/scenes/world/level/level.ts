@@ -6,18 +6,18 @@ import {
   LEVEL_BIOME_PARAMETERS, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
+import { Navigator } from '~lib/navigator';
 import { interpolate } from '~lib/utils';
-import { Navigator } from '~scene/world/level/navigator';
+import { Effect } from '~scene/world/effects';
 import { GameEvents, GameSettings } from '~type/game';
+import { INavigator } from '~type/navigator';
 import { IWorld } from '~type/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D, ILevel,
 } from '~type/world/level';
-import { INavigator } from '~type/world/level/navigator';
 import { ITile } from '~type/world/level/tile-matrix';
 
 import { TileMatrix } from './tile-matrix';
-import { Effect } from '../effects';
 
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;

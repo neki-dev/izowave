@@ -26,11 +26,13 @@ module.exports = (_, options) => {
       clean: true,
     },
     module: {
-      rules: [{
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: ['babel-loader', 'ts-loader'],
-      }],
+      rules: [
+        {
+          test: /\.tsx?$/,
+          exclude: /node_modules/,
+          use: ['babel-loader', 'ts-loader'],
+        },
+      ],
     },
     plugins: [
       new webpack.DefinePlugin({
@@ -43,7 +45,10 @@ module.exports = (_, options) => {
       }),
       new CopyPlugin({
         patterns: [
-          { from: path.join(entryDir, 'assets'), to: 'assets' },
+          {
+            from: path.join(entryDir, 'assets'),
+            to: 'assets',
+          },
         ],
       }),
     ],
@@ -52,18 +57,20 @@ module.exports = (_, options) => {
         directory: outputDir,
       },
       compress: true,
-      port: 9000,
+      port: 9999,
     },
     devtool: isDev ? 'inline-source-map' : undefined,
-    optimization: isDev ? undefined : {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          terserOptions: {
-            output: { comments: false },
-          },
-        }),
-      ],
-    },
+    optimization: isDev
+      ? undefined
+      : {
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            terserOptions: {
+              output: { comments: false },
+            },
+          }),
+        ],
+      },
   };
 };

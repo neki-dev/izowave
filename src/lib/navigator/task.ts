@@ -1,10 +1,12 @@
+/* eslint-disable no-restricted-globals */
 import Heap from 'heap';
 
 import { equalPositions } from '~lib/utils';
+import { NavigatorTaskState, NavigatorTaskData, NavigatorEvent } from '~type/navigator';
 import { Vector2D } from '~type/world/level';
-import { NavigatorTaskState, TaskData } from '~type/world/level/navigator';
 
 import { PathNode } from './node';
+import { getDistance } from './tools';
 
 export class NavigatorTask {
   readonly from: Vector2D;
@@ -13,7 +15,7 @@ export class NavigatorTask {
 
   readonly grid: boolean[][];
 
-  private callback: (path: Nullable<Vector2D[]>) => void;
+  readonly id: string;
 
   private tree: PathNode[][] = [];
 
@@ -24,17 +26,24 @@ export class NavigatorTask {
   public state: NavigatorTaskState = NavigatorTaskState.IDLE;
 
   constructor({
-    from, to, callback, grid, compress = false,
-  }: TaskData) {
+    id, from, to, grid, compress = false,
+  }: NavigatorTaskData) {
+    this.id = id as string;
     this.from = from;
     this.to = to;
-    this.callback = callback;
     this.grid = grid;
     this.compress = compress;
 
     this.nodes = new Heap<PathNode>(
       (nodeA, nodeB) => nodeA.bestGuessDistance() - nodeB.bestGuessDistance(),
     );
+
+    const node = new PathNode(null, {
+      position: from,
+      distance: getDistance(from, to),
+    });
+
+    this.addNode(node);
   }
 
   public takeLastNode(): Nullable<PathNode> {
@@ -64,7 +73,14 @@ export class NavigatorTask {
 
   public failure() {
     this.state = NavigatorTaskState.FAILED;
-    this.callback(null);
+
+    self.postMessage({
+      event: NavigatorEvent.COMPLETE_TASK,
+      payload: {
+        id: this.id,
+        path: null,
+      },
+    });
   }
 
   public complete(node: PathNode) {
@@ -76,7 +92,46 @@ export class NavigatorTask {
       path = NavigatorTask.CompressPath(path);
     }
 
-    this.callback(path);
+    self.postMessage({
+      event: NavigatorEvent.COMPLETE_TASK,
+      payload: {
+        id: this.id,
+        path,
+      },
+    });
+  }
+
+  public checkAdjacentNode(
+    currentNode: PathNode,
+    shift: Vector2D,
+    points: number[][],
+  ) {
+    const position: Vector2D = {
+      x: currentNode.x + shift.x,
+      y: currentNode.y + shift.y,
+    };
+
+    const c = Math.abs(shift.x) + Math.abs(shift.y) === 1 ? 1.0 : Math.SQRT2;
+    const cost = currentNode.getCost() + ((points[position.y]?.[position.x] ?? 1.0) * c);
+
+    const existNode = this.pickNode(position);
+
+    if (existNode) {
+      if (cost < existNode.getCost()) {
+        existNode.setCost(cost);
+        existNode.setParent(currentNode);
+        this.upNode(existNode);
+      }
+    } else {
+      const node = new PathNode(currentNode, {
+        position,
+        cost,
+        distance: getDistance(position, this.to),
+      });
+
+      node.openList();
+      this.addNode(node);
+    }
   }
 
   static CompressPath(path: Vector2D[]) {
