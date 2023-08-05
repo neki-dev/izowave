@@ -19,9 +19,9 @@ import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
-  BuildingActionsParams, BuildingData, BuildingEvents, BuildingAudio,
+  BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
-  BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon,
+  BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon, BuildingGrowthValue,
 } from '~type/world/entities/building';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
@@ -43,7 +43,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private actions: Nullable<BuildingActionsParams>;
+  private radius: Nullable<BuildingGrowthValue> = null;
+
+  private delay: Nullable<BuildingGrowthValue> = null;
 
   private nextActionTimestamp: number = 0;
 
@@ -72,7 +74,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private defaultHealth: number = 0;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, health, texture, variant, actions = null,
+    positionAtMatrix, health, texture, variant, radius, delay,
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
@@ -80,7 +82,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.addEntity(EntityType.BUILDING, this);
 
-    this.actions = actions;
+    this.radius = radius ?? null;
+    this.delay = delay ?? null;
     this.defaultHealth = health;
     this.variant = variant;
     this.positionAtMatrix = positionAtMatrix;
@@ -135,15 +138,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public pauseActions() {
-    if (!this.actions?.pause) {
+    if (!this.delay) {
       return;
     }
 
-    this.nextActionTimestamp = this.scene.getTime() + this.getActionsPause();
+    this.nextActionTimestamp = this.scene.getTime() + this.getActionsDelay();
   }
 
   public isActionAllowed() {
-    if (!this.actions?.pause) {
+    if (!this.delay) {
       return true;
     }
 
@@ -156,6 +159,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       icon: BuildingIcon.HEALTH,
       value: this.live.health,
     }];
+
+    const delay = this.getActionsDelay();
+
+    if (delay) {
+      info.push({
+        label: 'Delay',
+        icon: BuildingIcon.DELAY,
+        value: `${delay / 1000} s`,
+      });
+    }
 
     return info;
   }
@@ -192,20 +205,20 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getActionsRadius() {
-    return this.actions?.radius
-      ? progressionQuadratic({
-        defaultValue: this.actions.radius,
-        scale: DIFFICULTY.BUILDING_ACTION_RADIUS_GROWTH,
+    return this.radius
+      ? progressionLinear({
+        defaultValue: this.radius.default,
+        scale: this.radius.growth,
         level: this.upgradeLevel,
       })
       : 0;
   }
 
-  public getActionsPause() {
-    return this.actions?.pause
-      ? progressionQuadratic({
-        defaultValue: this.actions.pause,
-        scale: DIFFICULTY.BUILDING_ACTION_PAUSE_GROWTH,
+  public getActionsDelay() {
+    return this.delay
+      ? progressionLinear({
+        defaultValue: this.delay.default,
+        scale: this.delay.growth,
         level: this.upgradeLevel,
         roundTo: 100,
       })
@@ -442,7 +455,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    // Need to fix events order
+    // Need for fix events order
     if (this.scene.builder.selectedBuilding) {
       this.scene.builder.selectedBuilding.unselect();
     }
@@ -508,7 +521,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addActionArea() {
-    if (!this.actions?.radius || this.actionsArea) {
+    if (!this.radius || this.actionsArea) {
       return;
     }
 

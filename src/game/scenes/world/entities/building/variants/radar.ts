@@ -30,8 +30,9 @@ export class BuildingRadar extends Building {
       variant: BuildingVariant.RADAR,
       health: BuildingRadar.Health,
       texture: BuildingRadar.Texture,
-      actions: {
-        radius: DIFFICULTY.BUILDING_RADAR_RADIUS,
+      radius: {
+        default: DIFFICULTY.BUILDING_RADAR_RADIUS,
+        growth: DIFFICULTY.BUILDING_RADAR_RADIUS_GROWTH,
       },
     });
 

@@ -47,6 +47,7 @@ export class Analytics implements IAnalytics {
     if (IS_DEV_MODE) {
       return;
     }
+
     const payload = this.getErrorPayload(data);
 
     fetch(`${ANALYTICS_SERVER}/api/create-error.php`, {

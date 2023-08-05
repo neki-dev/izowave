@@ -32,8 +32,9 @@ export class BuildingGenerator extends Building {
       variant: BuildingVariant.GENERATOR,
       health: BuildingGenerator.Health,
       texture: BuildingGenerator.Texture,
-      actions: {
-        pause: DIFFICULTY.BUILDING_GENERATOR_GENERATE_PAUSE,
+      delay: {
+        default: DIFFICULTY.BUILDING_GENERATOR_DELAY,
+        growth: DIFFICULTY.BUILDING_GENERATOR_DELAY_GROWTH,
       },
     });
 
@@ -41,17 +42,6 @@ export class BuildingGenerator extends Building {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
       this.scene.game.tutorial.start(TutorialStep.STOP_BUILD);
     }
-  }
-
-  public getInfo() {
-    const pause = this.getActionsPause();
-    const info: BuildingParam[] = [{
-      label: 'Delay',
-      icon: BuildingIcon.PAUSE,
-      value: `${pause / 1000} s`,
-    }];
-
-    return super.getInfo().concat(info);
   }
 
   public update() {

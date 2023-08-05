@@ -15,10 +15,10 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS, icon: BuildingIcon.RADIUS },
+    { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS, icon: BuildingIcon.RADIUS },
     // eslint-disable-next-line max-len
     { label: 'Freeze', value: `${(DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION / 1000).toFixed(1)} s`, icon: BuildingIcon.DAMAGE },
-    { label: 'Speed', value: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED, icon: BuildingIcon.SPEED },
+    { label: 'Speed', value: DIFFICULTY.BUILDING_TOWER_FROZEN_SHOT_SPEED, icon: BuildingIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FROZEN;
@@ -32,7 +32,7 @@ export class BuildingTowerFrozen extends BuildingTower {
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFrozen(scene, {
       freeze: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION,
-      speed: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_SPEED,
+      speed: DIFFICULTY.BUILDING_TOWER_FROZEN_SHOT_SPEED,
     });
 
     super(scene, {
@@ -40,9 +40,13 @@ export class BuildingTowerFrozen extends BuildingTower {
       variant: BuildingVariant.TOWER_FROZEN,
       health: BuildingTowerFrozen.Health,
       texture: BuildingTowerFrozen.Texture,
-      actions: {
-        radius: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_RADIUS,
-        pause: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_PAUSE,
+      radius: {
+        default: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS,
+        growth: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS_GROWTH,
+      },
+      delay: {
+        default: DIFFICULTY.BUILDING_TOWER_FROZEN_DELAY,
+        growth: DIFFICULTY.BUILDING_TOWER_FROZEN_DELAY_GROWTH,
       },
     }, shot);
   }

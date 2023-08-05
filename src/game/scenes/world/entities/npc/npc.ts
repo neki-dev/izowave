@@ -61,6 +61,9 @@ export class NPC extends Sprite implements INPC {
       if (this.freezeEffectTimer) {
         this.freezeEffectTimer.destroy();
       }
+      if (this.pathFindingTask) {
+        this.scene.level.navigator.cancelTask(this.pathFindingTask);
+      }
     });
   }
 
