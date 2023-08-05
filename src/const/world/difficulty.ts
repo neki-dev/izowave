@@ -18,11 +18,11 @@ export const DIFFICULTY = {
 
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.5, // Damage growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.6, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
-  ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.12, // Attack distance growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.15, // Attack distance growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_PAUSE: 1000, // Attack pause
   ASSISTANT_ATTACK_PAUSE_GROWTH: -0.15, // Attack pause growth by upgrade level (Quadratic)
 
@@ -94,7 +94,7 @@ export const DIFFICULTY = {
 
   BUILDER_BUILD_AREA: 140, // Radius of build area
   BUILDER_BUILD_AREA_GROWTH: 0.13, // Growth radius by upgrade (Quadratic)
-  BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 150, // Experience need to upgrade radius
+  BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade radius
 
   /**
    * Buildings
@@ -118,8 +118,8 @@ export const DIFFICULTY = {
    * Building: Towers
    */
 
-  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.5, // Shot damage growth by level (Quadratic)
-  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.4, // Frozen duration growth by level (Quadratic)
+  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.55, // Shot damage growth by level (Quadratic)
+  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.45, // Frozen duration growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.25, // Shot speed growth by level (Quadratic)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
 
