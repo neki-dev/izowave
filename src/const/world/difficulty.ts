@@ -30,13 +30,13 @@ export const DIFFICULTY = {
    * Features
    */
 
-  FEATURE_FROST_COST: 50, // Cost of use
+  FEATURE_FROST_COST: 40, // Cost of use
   FEATURE_FROST_DURATION: 6000, // Feature duration
-  FEATURE_RAGE_COST: 70, // Cost of use
+  FEATURE_RAGE_COST: 60, // Cost of use
   FEATURE_RAGE_DURATION: 10000, // Feature duration
-  FEATURE_SHIELD_COST: 40, // Cost of use
+  FEATURE_SHIELD_COST: 50, // Cost of use
   FEATURE_SHIELD_DURATION: 10000, // Feature duration
-  FEATURE_FIRE_COST: 80, // Cost of use
+  FEATURE_FIRE_COST: 70, // Cost of use
   FEATURE_FIRE_DURATION: 1000, // Feature duration
   FEATURE_COST_GROWTH: 0.1, // Growth cost by wave number (Linear)
 

@@ -173,7 +173,7 @@ export class Player extends Sprite implements IPlayer {
           defaultValue: DIFFICULTY.PLAYER_HEALTH,
           scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
           level: nextLevel,
-          roundTo: 5,
+          roundTo: 10,
         });
       }
       case PlayerSkill.SPEED: {
