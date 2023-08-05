@@ -36,9 +36,13 @@ export class BuildingMedic extends Building {
       variant: BuildingVariant.MEDIC,
       health: BuildingMedic.Health,
       texture: BuildingMedic.Texture,
-      actions: {
-        radius: DIFFICULTY.BUILDING_MEDIC_HEAL_RADIUS,
-        pause: DIFFICULTY.BUILDING_MEDIC_HEAL_PAUSE,
+      radius: {
+        default: DIFFICULTY.BUILDING_MEDIC_RADIUS,
+        growth: DIFFICULTY.BUILDING_MEDIC_RADIUS_GROWTH,
+      },
+      delay: {
+        default: DIFFICULTY.BUILDING_MEDIC_DELAY,
+        growth: DIFFICULTY.BUILDING_MEDIC_DELAY_GROWTH,
       },
     });
   }

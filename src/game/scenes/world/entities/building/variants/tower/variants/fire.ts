@@ -16,9 +16,9 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'Damage', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE, icon: BuildingIcon.DAMAGE },
-    { label: 'Speed', value: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED, icon: BuildingIcon.SPEED },
+    { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS, icon: BuildingIcon.RADIUS },
+    { label: 'Damage', value: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE, icon: BuildingIcon.DAMAGE },
+    { label: 'Speed', value: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED, icon: BuildingIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FIRE;
@@ -29,8 +29,8 @@ export class BuildingTowerFire extends BuildingTower {
 
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
-      damage: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_DAMAGE,
-      speed: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_SPEED,
+      damage: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE,
+      speed: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED,
     });
 
     super(scene, {
@@ -38,9 +38,13 @@ export class BuildingTowerFire extends BuildingTower {
       variant: BuildingVariant.TOWER_FIRE,
       health: BuildingTowerFire.Health,
       texture: BuildingTowerFire.Texture,
-      actions: {
-        radius: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_RADIUS,
-        pause: DIFFICULTY.BUILDING_TOWER_FIRE_ATTACK_PAUSE,
+      radius: {
+        default: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS,
+        growth: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS_GROWTH,
+      },
+      delay: {
+        default: DIFFICULTY.BUILDING_TOWER_FIRE_DELAY,
+        growth: DIFFICULTY.BUILDING_TOWER_FIRE_DELAY_GROWTH,
       },
     }, shot);
 

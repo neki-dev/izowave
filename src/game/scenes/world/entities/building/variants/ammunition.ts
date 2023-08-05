@@ -42,8 +42,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       variant: BuildingVariant.AMMUNITION,
       health: BuildingAmmunition.Health,
       texture: BuildingAmmunition.Texture,
-      actions: {
-        radius: DIFFICULTY.BUILDING_AMMUNITION_RELOAD_RADIUS,
+      radius: {
+        default: DIFFICULTY.BUILDING_AMMUNITION_RADIUS,
+        growth: DIFFICULTY.BUILDING_AMMUNITION_RADIUS_GROWTH,
       },
     });
 

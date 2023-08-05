@@ -15,8 +15,8 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Readius', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'Damage', value: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE, icon: BuildingIcon.DAMAGE },
+    { label: 'Readius', value: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS, icon: BuildingIcon.RADIUS },
+    { label: 'Damage', value: DIFFICULTY.BUILDING_TOWER_LAZER_DAMAGE, icon: BuildingIcon.DAMAGE },
   ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
@@ -29,7 +29,7 @@ export class BuildingTowerLazer extends BuildingTower {
 
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotLazer(scene, {
-      damage: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_DAMAGE,
+      damage: DIFFICULTY.BUILDING_TOWER_LAZER_DAMAGE,
     });
 
     super(scene, {
@@ -37,9 +37,13 @@ export class BuildingTowerLazer extends BuildingTower {
       variant: BuildingVariant.TOWER_LAZER,
       health: BuildingTowerLazer.Health,
       texture: BuildingTowerLazer.Texture,
-      actions: {
-        radius: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_RADIUS,
-        pause: DIFFICULTY.BUILDING_TOWER_LAZER_ATTACK_PAUSE,
+      radius: {
+        default: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS,
+        growth: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS_GROWTH,
+      },
+      delay: {
+        default: DIFFICULTY.BUILDING_TOWER_LAZER_DELAY,
+        growth: DIFFICULTY.BUILDING_TOWER_LAZER_DELAY_GROWTH,
       },
     }, shot);
   }

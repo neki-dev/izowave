@@ -74,7 +74,7 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Get actions pause.
    */
-  getActionsPause(): number
+  getActionsDelay(): number
 
   /**
    * Get resources need to upgrade level.
@@ -176,7 +176,7 @@ export enum BuildingIcon {
   DAMAGE = 'building/icons/params/damage',
   RESOURCES = 'building/icons/params/resources',
   SPEED = 'building/icons/params/speed',
-  PAUSE = 'building/icons/params/pause',
+  DELAY = 'building/icons/params/pause',
 }
 
 export enum BuildingAudio {
@@ -198,9 +198,9 @@ export enum BuildingOutlineState {
   SELECTED = 'SELECTED',
 }
 
-export type BuildingActionsParams = {
-  radius?: number
-  pause?: number
+export type BuildingGrowthValue = {
+  default: number
+  growth: number
 };
 
 export type BuildingParam = {
@@ -225,5 +225,6 @@ export type BuildingData = BuildingVariantData & {
   variant: BuildingVariant
   health: number
   texture: BuildingTexture
-  actions?: Nullable<BuildingActionsParams>
+  radius?: BuildingGrowthValue
+  delay?: BuildingGrowthValue
 };
