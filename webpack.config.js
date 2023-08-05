@@ -59,7 +59,7 @@ module.exports = (_, options) => {
       compress: true,
       port: 9999,
     },
-    devtool: isDev ? 'inline-source-map' : undefined,
+    devtool: 'source-map',
     optimization: isDev
       ? undefined
       : {
