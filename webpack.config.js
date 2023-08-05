@@ -3,7 +3,6 @@ const path = require('path');
 const alias = require('alias-reuse');
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 
 const tsconfig = require('./tsconfig.json');
@@ -59,18 +58,6 @@ module.exports = (_, options) => {
       compress: true,
       port: 9999,
     },
-    devtool: isDev ? 'inline-source-map' : undefined,
-    optimization: isDev
-      ? undefined
-      : {
-        minimize: true,
-        minimizer: [
-          new TerserPlugin({
-            terserOptions: {
-              output: { comments: false },
-            },
-          }),
-        ],
-      },
+    devtool: 'source-map',
   };
 };

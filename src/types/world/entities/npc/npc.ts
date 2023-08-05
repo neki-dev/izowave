@@ -22,11 +22,6 @@ export interface INPC extends ISprite {
   isFreezed(): boolean
 
   /**
-   * Find new path to target.
-   */
-  findPathToTarget(): void
-
-  /**
    * Get distance to target.
    */
   getDistanceToTarget(): number
@@ -36,11 +31,10 @@ export interface INPC extends ISprite {
    * @param position - Position at world
    */
   moveTo(position: Vector2D): void
+}
 
-  /**
-   * Select new spawn position.
-   */
-  respawn(): void
+export enum NPCEvent {
+  PATH_NOT_FOUND = 'path_not_found',
 }
 
 export type NPCData = {
