@@ -3,8 +3,8 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { LEVEL_BUILDING_PATH_COST, LEVEL_TILE_SIZE } from '~const/world/level';
+import { BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
 import { Live } from '~lib/live';
@@ -103,7 +103,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
-    this.scene.level.navigator.setPointCost(positionAtMatrix, LEVEL_BUILDING_PATH_COST);
+    this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));

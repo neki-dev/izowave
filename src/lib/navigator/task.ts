@@ -6,7 +6,7 @@ import { NavigatorTaskData, NavigatorEvent } from '~type/navigator';
 import { Vector2D } from '~type/world/level';
 
 import { PathNode } from './node';
-import { getDistance } from './tools';
+import { getCost, getDistance } from './tools';
 
 export class NavigatorTask {
   readonly from: Vector2D;
@@ -100,10 +100,7 @@ export class NavigatorTask {
       x: currentNode.x + shift.x,
       y: currentNode.y + shift.y,
     };
-
-    const c = Math.abs(shift.x) + Math.abs(shift.y) === 1 ? 1.0 : Math.SQRT2;
-    const cost = currentNode.getCost() + ((points[position.y]?.[position.x] ?? 1.0) * c);
-
+    const cost = currentNode.getCost() + getCost(currentNode, shift, points);
     const existNode = this.pickNode(position);
 
     if (existNode) {

@@ -11,6 +11,29 @@ export function getDistance(point1: Vector2D, point2: Vector2D) {
   return distance;
 }
 
+export function getCost(
+  currentNode: PathNode,
+  shift: Vector2D,
+  points: number[][],
+) {
+  const position: Vector2D = {
+    x: currentNode.x + shift.x,
+    y: currentNode.y + shift.y,
+  };
+  const cost = points[position.y]?.[position.x] ?? 1.0;
+  const isDiagonal = Math.abs(shift.x) + Math.abs(shift.y) !== 1;
+
+  if (isDiagonal) {
+    return (
+      cost * Math.SQRT2
+      + (points[currentNode.y]?.[position.x] ?? 0.0)
+      + (points[position.y]?.[currentNode.x] ?? 0.0)
+    );
+  }
+
+  return cost;
+}
+
 export function getDirections(grid: boolean[][], currentNode: PathNode) {
   const straightFlags: Record<string, boolean> = {};
   const straightDirs: Record<string, Vector2D> = {
