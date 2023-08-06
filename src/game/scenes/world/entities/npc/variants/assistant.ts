@@ -51,6 +51,8 @@ export class Assistant extends NPC implements IAssistant {
       maxDistance: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       speed: DIFFICULTY.ASSISTANT_ATTACK_SPEED,
       damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
+    }, {
+      scale: 0.75,
     });
     this.shot.setInitiator(this, () => this.body.center);
     this.shotDefaultParams = this.shot.params;

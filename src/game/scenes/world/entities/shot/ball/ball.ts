@@ -33,7 +33,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   private glowColor: Nullable<number> = null;
 
   constructor(scene: IWorld, params: ShotParams, {
-    texture, audio, glowColor = null,
+    texture, audio, glowColor = null, scale = 1.0,
   }: ShotBallData) {
     super(scene, 0, 0, texture);
     scene.addEntity(EntityType.SHOT, this);
@@ -44,6 +44,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     this.setActive(false);
     this.setVisible(false);
+    this.setScale(scale);
 
     this.scene.physics.add.collider(
       this,
@@ -101,9 +102,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         texture: ParticlesTexture.GLOW,
         params: {
           follow: this,
-          lifespan: { min: 100, max: 200 },
-          scale: { start: 0.25, end: 0.0 },
-          quantity: 2,
+          scale: {
+            start: 0.25 * this.scale,
+            end: 0.0,
+          },
           blendMode: 'ADD',
           tint: this.glowColor,
         },
