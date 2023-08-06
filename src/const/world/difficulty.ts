@@ -3,7 +3,7 @@ export const DIFFICULTY = {
    * Player
    */
 
-  PLAYER_START_RESOURCES: 80, // Resources on game start
+  PLAYER_START_RESOURCES: 70, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
   PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
@@ -80,9 +80,9 @@ export const DIFFICULTY = {
   ENEMY_ARMOUR: 50, // Armour
   ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
-  ENEMY_SPEED: 50, // Movement speed
+  ENEMY_SPEED: 60, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
-  ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
+  ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
@@ -167,7 +167,7 @@ export const DIFFICULTY = {
    * Building: Generator
    */
 
-  BUILDING_GENERATOR_COST: 30, // Building cost
+  BUILDING_GENERATOR_COST: 20, // Building cost
   BUILDING_GENERATOR_HEALTH: 300, // Health
   BUILDING_GENERATOR_DELAY: 1300, // Pause between resource generations
   BUILDING_GENERATOR_DELAY_GROWTH: -0.154, // Pause growth by level (Linear)
@@ -178,7 +178,7 @@ export const DIFFICULTY = {
 
   BUILDING_AMMUNITION_COST: 30, // Building cost
   BUILDING_AMMUNITION_HEALTH: 400, // Health
-  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
+  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
