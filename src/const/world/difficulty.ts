@@ -3,12 +3,12 @@ export const DIFFICULTY = {
    * Player
    */
 
-  PLAYER_START_RESOURCES: 80, // Resources on game start
+  PLAYER_START_RESOURCES: 70, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
   PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.5, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
 
@@ -80,9 +80,9 @@ export const DIFFICULTY = {
   ENEMY_ARMOUR: 50, // Armour
   ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
-  ENEMY_SPEED: 50, // Movement speed
+  ENEMY_SPEED: 60, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
-  ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
+  ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
@@ -120,7 +120,7 @@ export const DIFFICULTY = {
 
   BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.55, // Shot damage growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.45, // Frozen duration growth by level (Quadratic)
-  BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.25, // Shot speed growth by level (Quadratic)
+  BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.2, // Shot speed growth by level (Quadratic)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
 
   /**
@@ -134,7 +134,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FIRE_DELAY: 1400, // Pause between attacks
   BUILDING_TOWER_FIRE_DELAY_GROWTH: -0.15, // Pause growth by level (Linear)
   BUILDING_TOWER_FIRE_DAMAGE: 40, // Attack damage
-  BUILDING_TOWER_FIRE_SHOT_SPEED: 550, // Attack speed
+  BUILDING_TOWER_FIRE_SHOT_SPEED: 300, // Shot speed
 
   /**
    * Building: Tower: Frozen
@@ -148,7 +148,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FROZEN_DELAY: 1400, // Pause between freezes
   BUILDING_TOWER_FROZEN_DELAY_GROWTH: -0.15, // Pause growth by level (Linear)
   BUILDING_TOWER_FROZEN_FREEZE_DURATION: 900, // Freeze duration
-  BUILDING_TOWER_FROZEN_SHOT_SPEED: 550, // Freeze speed
+  BUILDING_TOWER_FROZEN_SHOT_SPEED: 300, // Shot speed
 
   /**
    * Building: Tower: Lazer
@@ -159,15 +159,15 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_RADIUS: 140, // Attack radius
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
-  BUILDING_TOWER_LAZER_DELAY: 1500, // Pause between attacks
-  BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.15, // Pause growth by level (Linear)
+  BUILDING_TOWER_LAZER_DELAY: 1300, // Pause between attacks
+  BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
   BUILDING_TOWER_LAZER_DAMAGE: 60, // Attack damage
 
   /**
    * Building: Generator
    */
 
-  BUILDING_GENERATOR_COST: 30, // Building cost
+  BUILDING_GENERATOR_COST: 20, // Building cost
   BUILDING_GENERATOR_HEALTH: 300, // Health
   BUILDING_GENERATOR_DELAY: 1300, // Pause between resource generations
   BUILDING_GENERATOR_DELAY_GROWTH: -0.154, // Pause growth by level (Linear)
@@ -178,7 +178,7 @@ export const DIFFICULTY = {
 
   BUILDING_AMMUNITION_COST: 30, // Building cost
   BUILDING_AMMUNITION_HEALTH: 400, // Health
-  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
+  BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
@@ -196,7 +196,7 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_DELAY: 3000, // Heal pause
   BUILDING_MEDIC_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
   BUILDING_MEDIC_HEAL_AMOUNT: 20, // Heal amount
-  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.5, // Heal amount growth by level (Linear)
+  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 3.0, // Heal amount growth by level (Linear)
 
   /**
    * Building: Radar

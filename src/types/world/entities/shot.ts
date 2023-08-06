@@ -61,7 +61,11 @@ export type ShotParams = {
   freeze?: number
 };
 
-export type ShotBallData = {
+export type ShotData = {
+  scale?: number
+};
+
+export type ShotBallData = ShotData & {
   texture: ShotBallTexture
   audio: ShotBallAudio
   glowColor?: Nullable<number>

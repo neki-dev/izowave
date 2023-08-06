@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { ILive } from '~type/live';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
@@ -43,6 +44,14 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
    * Check is body is stopped.
    */
   isStopped(): boolean
+
+  /**
+   * Add collider handler.
+   * @param target - Entity type
+   * @param callback - Handler
+   * @param overlap - Overlap mode
+   */
+  addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void): void
 
   /**
    * Get all occupied positions by body.

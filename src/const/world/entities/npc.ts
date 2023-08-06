@@ -1,1 +1,1 @@
-export const NPC_FIND_PATH_RATE = 300;
+export const NPC_PATH_FIND_RATE = 300;

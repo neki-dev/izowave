@@ -10,6 +10,7 @@ import { GameFlag, GameSettings } from '~type/game';
 import { ILive, LiveEvents } from '~type/live';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
+import { EntityType } from '~type/world/entities';
 import { ISprite, SpriteData, SpriteIndicator } from '~type/world/entities/sprite';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
@@ -103,6 +104,16 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   public getAllPositionsAtMatrix() {
     return this.getProjectionOnGround().map((point) => Level.ToMatrixPosition(point));
+  }
+
+  public addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void) {
+    this.scene.physics.add[mode](
+      this,
+      this.scene.getEntitiesGroup(target),
+      (_, sprite) => {
+        callback(sprite);
+      },
+    );
   }
 
   public setTilesCollision(

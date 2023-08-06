@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_DEBUG } from '~const/world';
-import { NPC_FIND_PATH_RATE } from '~const/world/entities/npc';
+import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
@@ -150,7 +150,7 @@ export class NPC extends Sprite implements INPC {
 
     const from = this.positionAtMatrix;
 
-    this.pathFindTimestamp = now + NPC_FIND_PATH_RATE;
+    this.pathFindTimestamp = now + NPC_PATH_FIND_RATE;
     this.pathFindingTask = this.scene.level.navigator.createTask({
       from,
       to: this.scene.player.positionAtMatrix,
@@ -214,8 +214,15 @@ export class NPC extends Sprite implements INPC {
 
   private nextPathTile() {
     const [firstNode] = this.pathToTarget;
+    const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 0 });
+    const currentPosition = this.getPositionOnGround();
+    const signX = Math.sign(this.body.velocity.x);
+    const signY = Math.sign(this.body.velocity.y);
 
-    if (equalPositions(firstNode, this.positionAtMatrix)) {
+    if (
+      currentPosition.x * signX >= tilePosition.x * signX
+      && currentPosition.y * signY >= tilePosition.y * signY
+    ) {
       this.pathToTarget.shift();
     }
   }

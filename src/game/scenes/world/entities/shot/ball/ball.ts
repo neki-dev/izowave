@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { Enemy } from '~entity/npc/variants/enemy';
+import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -34,7 +34,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   private glowColor: Nullable<number> = null;
 
   constructor(scene: IWorld, params: ShotParams, {
-    texture, audio, glowColor = null,
+    texture, audio, glowColor = null, scale = 1.0,
   }: ShotBallData) {
     super(scene, 0, 0, texture);
     scene.addEntity(EntityType.SHOT, this);
@@ -45,14 +45,13 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     this.setActive(false);
     this.setVisible(false);
+    this.setScale(scale);
 
     this.scene.physics.add.collider(
       this,
       this.scene.getEntitiesGroup(EntityType.ENEMY),
-      (_, subject) => {
-        if (subject instanceof Enemy) {
-          this.hit(subject);
-        }
+      (_, enemy) => {
+        this.hit(enemy as IEnemy);
       },
     );
   }
@@ -104,9 +103,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         texture: ParticlesTexture.GLOW,
         params: {
           follow: this,
-          lifespan: { min: 100, max: 200 },
-          scale: { start: 0.25, end: 0.0 },
-          quantity: 2,
+          scale: {
+            start: 0.25 * this.scale,
+            end: 0.0,
+          },
           blendMode: 'ADD',
           tint: this.glowColor,
         },
@@ -129,13 +129,30 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   private hit(target: IEnemy) {
-    if (this.params.freeze && target.live.armour <= 0) {
-      const duration = this.params.freeze / this.scale;
+    const { damage, freeze } = this.params;
+
+    if (freeze && target.live.armour <= 0) {
+      const duration = freeze / this.scale;
 
       target.freeze(duration, true);
     }
-    if (this.params.damage) {
-      target.live.damage(this.params.damage);
+
+    if (damage) {
+      target.live.damage(damage);
+
+      this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+        if (enemy !== target) {
+          const distance = Phaser.Math.Distance.BetweenPoints(target, enemy);
+
+          if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
+            const damageByDistance = damage
+              * SHOT_BALL_DAMAGE_SPREAD_FACTOR
+              * (1 - (distance / SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE));
+
+            enemy.live.damage(damageByDistance);
+          }
+        }
+      });
     }
 
     this.stop();

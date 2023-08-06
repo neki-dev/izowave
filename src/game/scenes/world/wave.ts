@@ -159,11 +159,11 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene.level.looseEffects();
 
-    if (prevNumber === 2) {
-      this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
-    } else if (prevNumber === 3) {
+    if (this.number === 2) {
       this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
-    } else if (prevNumber === 7) {
+    } else if (this.number === 3) {
+      this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
+    } else if (this.number === 8) {
       this.scene.game.tutorial.start(TutorialStep.BUILD_RADAR);
     }
 
