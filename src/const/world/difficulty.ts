@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.5, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
 
@@ -196,7 +196,7 @@ export const DIFFICULTY = {
   BUILDING_MEDIC_DELAY: 3000, // Heal pause
   BUILDING_MEDIC_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
   BUILDING_MEDIC_HEAL_AMOUNT: 20, // Heal amount
-  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 2.5, // Heal amount growth by level (Linear)
+  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 3.0, // Heal amount growth by level (Linear)
 
   /**
    * Building: Radar
