@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { Enemy } from '~entity/npc/variants/enemy';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -49,10 +48,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.scene.physics.add.collider(
       this,
       this.scene.getEntitiesGroup(EntityType.ENEMY),
-      (_, subject) => {
-        if (subject instanceof Enemy) {
-          this.hit(subject);
-        }
+      (_, enemy) => {
+        this.hit(enemy as IEnemy);
       },
     );
   }

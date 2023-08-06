@@ -5,6 +5,11 @@ import { Vector2D } from '~type/world/level';
 
 export interface IEnemy extends INPC {
   /**
+   * Set overlaped state.
+   */
+  overlapTarget(): void
+
+  /**
    * Give target damage.
    * @param target - Target
    */

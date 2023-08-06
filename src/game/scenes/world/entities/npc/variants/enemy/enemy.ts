@@ -34,6 +34,8 @@ export class Enemy extends NPC implements IEnemy {
 
   private damageTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
+  private isOverlapTarget: boolean = false;
+
   constructor(scene: IWorld, {
     positionAtMatrix, texture, multipliers, armour,
   }: EnemyData) {
@@ -99,11 +101,6 @@ export class Enemy extends NPC implements IEnemy {
       }
     });
 
-    this.scene.physics.add.collider(
-      this,
-      this.scene.getEntitiesGroup(EntityType.NPC),
-    );
-
     this.on(NPCEvent.PATH_NOT_FOUND, this.onPathNotFound.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
@@ -116,15 +113,23 @@ export class Enemy extends NPC implements IEnemy {
   public update() {
     super.update();
 
-    if (this.isPathPassed) {
+    if (this.isOverlapTarget) {
+      this.setVelocity(0, 0);
+    } else if (this.isPathPassed) {
       this.moveTo(this.scene.player.getPositionOnGround());
     }
+
+    this.isOverlapTarget = false;
   }
 
   public activate() {
     super.activate();
 
     this.addSpawnEffect();
+  }
+
+  public overlapTarget() {
+    this.isOverlapTarget = true;
   }
 
   public attack(target: IEnemyTarget) {

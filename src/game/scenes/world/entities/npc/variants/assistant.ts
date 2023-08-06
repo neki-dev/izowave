@@ -4,7 +4,6 @@ import {
   ASSISTANT_TILE_SIZE,
 } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
-import { Enemy } from '~entity/npc/variants/enemy';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
@@ -66,15 +65,13 @@ export class Assistant extends NPC implements IAssistant {
     this.addWaveCompleteHandler();
     this.activate();
 
-    this.scene.physics.add.collider(
-      this,
-      this.scene.getEntitiesGroup(EntityType.ENEMY),
-      (_, subject) => {
-        if (subject instanceof Enemy) {
-          subject.attack(this);
-        }
-      },
-    );
+    this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
+      enemy.attack(this);
+    });
+
+    this.addCollider(EntityType.ENEMY, 'overlap', (enemy: IEnemy) => {
+      enemy.overlapTarget();
+    });
   }
 
   public update() {

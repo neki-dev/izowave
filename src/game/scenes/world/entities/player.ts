@@ -6,7 +6,6 @@ import {
   PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_SKILLS,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
-import { Enemy } from '~entity/npc/variants/enemy';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
@@ -18,6 +17,7 @@ import { IWorld } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill,
 } from '~type/world/entities/player';
@@ -92,15 +92,13 @@ export class Player extends Sprite implements IPlayer {
       }
     });
 
-    this.scene.physics.add.collider(
-      this,
-      this.scene.getEntitiesGroup(EntityType.ENEMY),
-      (_, subject) => {
-        if (subject instanceof Enemy) {
-          subject.attack(this);
-        }
-      },
-    );
+    this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
+      enemy.attack(this);
+    });
+
+    this.addCollider(EntityType.ENEMY, 'overlap', (enemy: IEnemy) => {
+      enemy.overlapTarget();
+    });
 
     this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
   }
