@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -128,13 +129,30 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   private hit(target: IEnemy) {
-    if (this.params.freeze && target.live.armour <= 0) {
-      const duration = this.params.freeze / this.scale;
+    const { damage, freeze } = this.params;
+
+    if (freeze && target.live.armour <= 0) {
+      const duration = freeze / this.scale;
 
       target.freeze(duration, true);
     }
-    if (this.params.damage) {
-      target.live.damage(this.params.damage);
+
+    if (damage) {
+      target.live.damage(damage);
+
+      this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+        if (enemy !== target) {
+          const distance = Phaser.Math.Distance.BetweenPoints(target, enemy);
+
+          if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
+            const damageByDistance = damage
+              * SHOT_BALL_DAMAGE_SPREAD_FACTOR
+              * (1 - (distance / SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE));
+
+            enemy.live.damage(damageByDistance);
+          }
+        }
+      });
     }
 
     this.stop();
