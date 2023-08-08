@@ -55,6 +55,13 @@ export class BuildingGenerator extends Building {
     this.pauseActions();
   }
 
+  public getTopCenterByLevel() {
+    return {
+      x: this.x,
+      y: this.y - 6 + (3 - Math.min(this.upgradeLevel, 3)) * 8,
+    };
+  }
+
   private generateResource() {
     this.scene.player.giveResources(1);
 
@@ -62,23 +69,18 @@ export class BuildingGenerator extends Building {
       return;
     }
 
-    const offsetByLevel = (3 - Math.min(this.upgradeLevel, 3)) * 8;
-
     new Particles(this, {
       key: 'generate',
-      texture: ParticlesTexture.GLOW,
-      positionAtWorld: {
-        x: this.x,
-        y: this.y + offsetByLevel - 6,
-      },
+      texture: ParticlesTexture.BIT,
+      positionAtWorld: this.getTopCenterByLevel(),
       params: {
         duration: 300,
         lifespan: { min: 100, max: 200 },
-        scale: { start: 0.2, end: 0.05 },
+        scale: { start: 1.0, end: 0.5 },
+        alpha: { start: 1.0, end: 0.0 },
         speed: 60,
-        maxAliveParticles: 6,
+        maxAliveParticles: 8,
         tint: 0x2dffb2,
-        blendMode: 'ADD',
       },
     });
   }

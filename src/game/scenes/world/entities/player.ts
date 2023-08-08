@@ -393,10 +393,10 @@ export class Player extends Sprite implements IPlayer {
           y: -this.gamut * this.scaleY * 0.5,
         },
         lifespan: { min: 150, max: 300 },
-        scale: 0.5,
+        scale: 0.6,
         speed: 10,
         frequency: 150,
-        alpha: 0.75,
+        alpha: { start: 0.75, end: 0.0 },
         emitting: false,
       },
     });
