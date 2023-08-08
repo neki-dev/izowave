@@ -4,7 +4,7 @@
 
 Your task is to survive in open world as many waves as possible. With each wave count of enemies and their characteristics will grow.
 
-Build walls to defend, towers to attack, generators to get resources, ammunitions to reload towers, and medics to replenish your health.
+Build walls to defend, towers to attack, ammunitions to reload towers and generators to get resources.
 
 And also upgrade skills of your character and his assistant.
 

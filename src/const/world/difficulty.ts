@@ -10,7 +10,7 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -183,20 +183,6 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
   BUILDING_AMMUNITION_AMMO_GROWTH: 0.65, // Ammo amount growth by level (Quadratic)
-
-  /**
-   * Building: Medic
-   */
-
-  BUILDING_MEDIC_COST: 70, // Building cost
-  BUILDING_MEDIC_HEALTH: 600, // Health
-  BUILDING_MEDIC_ALLOW_BY_WAVE: 7, // Minimal wave for allow build
-  BUILDING_MEDIC_RADIUS: 160, // Heal radius
-  BUILDING_MEDIC_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
-  BUILDING_MEDIC_DELAY: 3000, // Heal pause
-  BUILDING_MEDIC_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
-  BUILDING_MEDIC_HEAL_AMOUNT: 20, // Heal amount
-  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 3.0, // Heal amount growth by level (Linear)
 
   /**
    * Building: Radar

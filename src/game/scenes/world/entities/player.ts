@@ -285,6 +285,7 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.giveExperience(experience);
+    this.live.heal();
 
     this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
   }
