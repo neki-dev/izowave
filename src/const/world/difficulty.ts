@@ -161,7 +161,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_TOWER_LAZER_DELAY: 1300, // Pause between attacks
   BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
-  BUILDING_TOWER_LAZER_DAMAGE: 60, // Attack damage
+  BUILDING_TOWER_LAZER_DAMAGE: 65, // Attack damage
 
   /**
    * Building: Generator
