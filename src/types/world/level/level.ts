@@ -86,7 +86,7 @@ export type LevelBiome = {
   z: number
   collide: boolean
   solid: boolean
-  friction: number
+  friction?: number
   spawn: SpawnTarget[]
 };
 
