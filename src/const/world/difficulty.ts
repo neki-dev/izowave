@@ -5,7 +5,7 @@ export const DIFFICULTY = {
 
   PLAYER_START_RESOURCES: 70, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
-  PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
+  PLAYER_SPEED_GROWTH: 0.05, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
@@ -81,7 +81,7 @@ export const DIFFICULTY = {
   ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
+  ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)

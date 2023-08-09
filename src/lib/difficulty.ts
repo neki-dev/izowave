@@ -60,15 +60,18 @@ export function progressionQuadratic(params: {
  * @param defaultValue - Default value for first level
  * @param scale - Part of default value for growth
  * @param level - Difficulty level
+ * @param maxLevel - Max growth level
  * @param roundTo - Round value
  */
 export function progressionLinear(params: {
   defaultValue: number
   scale: number
   level: number
+  maxLevel?: number
   roundTo?: number
 }) {
-  const value = params.defaultValue + (params.defaultValue * params.scale * (params.level - 1));
+  const level = params.maxLevel ? Math.min(params.maxLevel, params.level) : params.level;
+  const value = params.defaultValue + (params.defaultValue * params.scale * (level - 1));
 
   return roundToScale(value, params.roundTo);
 }
