@@ -34,7 +34,7 @@ export const DIFFICULTY = {
   FEATURE_FROST_DURATION: 6000, // Feature duration
   FEATURE_RAGE_COST: 60, // Cost of use
   FEATURE_RAGE_DURATION: 10000, // Feature duration
-  FEATURE_SHIELD_COST: 50, // Cost of use
+  FEATURE_SHIELD_COST: 40, // Cost of use
   FEATURE_SHIELD_DURATION: 10000, // Feature duration
   FEATURE_FIRE_COST: 70, // Cost of use
   FEATURE_FIRE_DURATION: 1000, // Feature duration
@@ -68,7 +68,7 @@ export const DIFFICULTY = {
 
   CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
   CRYSTAL_RESOURCES: 4, // Resources in crystal
-  CRYSTAL_RESOURCES_GROWTH: 0.4, // Resources amount growth by wave number (Quadratic)
+  CRYSTAL_RESOURCES_GROWTH: 2.5, // Resources amount growth by wave number (Linear)
 
   /**
    * Enemies
@@ -176,13 +176,13 @@ export const DIFFICULTY = {
    * Building: Ammunition
    */
 
-  BUILDING_AMMUNITION_COST: 30, // Building cost
+  BUILDING_AMMUNITION_COST: 40, // Building cost
   BUILDING_AMMUNITION_HEALTH: 400, // Health
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
-  BUILDING_AMMUNITION_AMMO_GROWTH: 0.65, // Ammo amount growth by level (Quadratic)
+  BUILDING_AMMUNITION_AMMO_GROWTH: 0.7, // Ammo amount growth by level (Quadratic)
 
   /**
    * Building: Radar
