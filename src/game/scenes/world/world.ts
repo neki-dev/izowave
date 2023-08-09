@@ -108,6 +108,8 @@ export class World extends Scene implements IWorld {
     this.level = new Level(this);
     this.camera = new Camera(this);
 
+    this.camera.addZoomControl();
+
     this.enemySpawnPositions = this.level.readSpawnPositions(
       SpawnTarget.ENEMY,
       ENEMY_SPAWN_POSITIONS_GRID,
