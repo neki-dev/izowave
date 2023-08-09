@@ -151,7 +151,6 @@ export enum BuildingVariant {
   TOWER_FROZEN = 'TOWER_FROZEN',
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
-  MEDIC = 'MEDIC',
   RADAR = 'RADAR',
 }
 
@@ -162,7 +161,6 @@ export enum BuildingTexture {
   TOWER_LAZER = 'building/textures/tower_lazer',
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
-  MEDIC = 'building/textures/medic',
   RADAR = 'building/textures/radar',
 }
 

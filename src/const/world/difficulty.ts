@@ -5,12 +5,12 @@ export const DIFFICULTY = {
 
   PLAYER_START_RESOURCES: 70, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
-  PLAYER_SPEED_GROWTH: 0.07, // Growth speed by upgrade (Quadratic)
+  PLAYER_SPEED_GROWTH: 0.05, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -34,7 +34,7 @@ export const DIFFICULTY = {
   FEATURE_FROST_DURATION: 6000, // Feature duration
   FEATURE_RAGE_COST: 60, // Cost of use
   FEATURE_RAGE_DURATION: 10000, // Feature duration
-  FEATURE_SHIELD_COST: 50, // Cost of use
+  FEATURE_SHIELD_COST: 40, // Cost of use
   FEATURE_SHIELD_DURATION: 10000, // Feature duration
   FEATURE_FIRE_COST: 70, // Cost of use
   FEATURE_FIRE_DURATION: 1000, // Feature duration
@@ -68,7 +68,7 @@ export const DIFFICULTY = {
 
   CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
   CRYSTAL_RESOURCES: 4, // Resources in crystal
-  CRYSTAL_RESOURCES_GROWTH: 0.4, // Resources amount growth by wave number (Quadratic)
+  CRYSTAL_RESOURCES_GROWTH: 2.5, // Resources amount growth by wave number (Linear)
 
   /**
    * Enemies
@@ -81,7 +81,7 @@ export const DIFFICULTY = {
   ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Quadratic)
+  ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
@@ -161,7 +161,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_TOWER_LAZER_DELAY: 1300, // Pause between attacks
   BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
-  BUILDING_TOWER_LAZER_DAMAGE: 60, // Attack damage
+  BUILDING_TOWER_LAZER_DAMAGE: 65, // Attack damage
 
   /**
    * Building: Generator
@@ -176,27 +176,13 @@ export const DIFFICULTY = {
    * Building: Ammunition
    */
 
-  BUILDING_AMMUNITION_COST: 30, // Building cost
+  BUILDING_AMMUNITION_COST: 40, // Building cost
   BUILDING_AMMUNITION_HEALTH: 400, // Health
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
-  BUILDING_AMMUNITION_AMMO_GROWTH: 0.65, // Ammo amount growth by level (Quadratic)
-
-  /**
-   * Building: Medic
-   */
-
-  BUILDING_MEDIC_COST: 70, // Building cost
-  BUILDING_MEDIC_HEALTH: 600, // Health
-  BUILDING_MEDIC_ALLOW_BY_WAVE: 7, // Minimal wave for allow build
-  BUILDING_MEDIC_RADIUS: 160, // Heal radius
-  BUILDING_MEDIC_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
-  BUILDING_MEDIC_DELAY: 3000, // Heal pause
-  BUILDING_MEDIC_DELAY_GROWTH: -0.16, // Pause growth by level (Linear)
-  BUILDING_MEDIC_HEAL_AMOUNT: 20, // Heal amount
-  BUILDING_MEDIC_HEAL_AMOUNT_GROWTH: 3.0, // Heal amount growth by level (Linear)
+  BUILDING_AMMUNITION_AMMO_GROWTH: 0.7, // Ammo amount growth by level (Quadratic)
 
   /**
    * Building: Radar

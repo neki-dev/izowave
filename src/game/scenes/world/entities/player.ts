@@ -248,7 +248,7 @@ export class Player extends Sprite implements IPlayer {
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
   }
 
-  public onDamage(amount: number) {
+  public onDamage() {
     this.scene.camera.shake();
 
     const audio = Phaser.Utils.Array.GetRandom([
@@ -261,7 +261,7 @@ export class Player extends Sprite implements IPlayer {
       this.scene.game.sound.play(audio);
     }
 
-    super.onDamage(amount);
+    super.onDamage();
   }
 
   public onDead() {
@@ -285,6 +285,7 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.giveExperience(experience);
+    this.live.heal();
 
     this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
   }
@@ -392,10 +393,10 @@ export class Player extends Sprite implements IPlayer {
           y: -this.gamut * this.scaleY * 0.5,
         },
         lifespan: { min: 150, max: 300 },
-        scale: 0.5,
+        scale: 0.6,
         speed: 10,
         frequency: 150,
-        alpha: 0.75,
+        alpha: { start: 0.75, end: 0.0 },
         emitting: false,
       },
     });

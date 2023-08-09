@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionLinear } from '~lib/difficulty';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -43,7 +43,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
   }
 
   private getResourcesAmount() {
-    const amount = progressionQuadratic({
+    const amount = progressionLinear({
       defaultValue: DIFFICULTY.CRYSTAL_RESOURCES,
       scale: DIFFICULTY.CRYSTAL_RESOURCES_GROWTH,
       level: this.scene.wave.number,

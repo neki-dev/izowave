@@ -8,8 +8,8 @@ export const About: React.FC = () => (
     wave count of enemies and their characteristics will grow.
     <br />
     <br />
-    Build walls to defend, towers to attack, generators to get resources,
-    ammunitions to reload towers, and medics to replenish your health.
+    Build walls to defend, towers to attack, ammunitions to reload towers
+    and generators to get resources.
     <br />
     <br />
     And also upgrade skills of your character and his assistant.

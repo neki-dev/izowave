@@ -88,7 +88,7 @@ export class Assistant extends NPC implements IAssistant {
     }
   }
 
-  public onDamage(amount: number) {
+  public onDamage() {
     this.scene.game.sound.play(
       Phaser.Utils.Array.GetRandom([
         AssistantAudio.DAMAGE_1,
@@ -96,7 +96,7 @@ export class Assistant extends NPC implements IAssistant {
       ]),
     );
 
-    super.onDamage(amount);
+    super.onDamage();
   }
 
   public onDead() {

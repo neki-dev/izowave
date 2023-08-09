@@ -42,4 +42,15 @@ export class Camera implements ICamera {
       camera.pan(end.x - (this.scene.sys.canvas.width / 2), end.y, 2 * 60 * 1000);
     }, 0);
   }
+
+  public addZoomControl() {
+    const camera = this.scene.cameras.main;
+
+    this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
+      const zoom = camera.zoom - (pointer.deltaY / 100);
+      const clampZoom = Math.min(CAMERA_ZOOM, Math.max(CAMERA_ZOOM / 2, zoom));
+
+      camera.zoomTo(clampZoom, 10);
+    });
+  }
 }

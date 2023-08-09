@@ -10,7 +10,7 @@ import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { registerSpriteAssets } from '~lib/assets';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
 import { excludePosition } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -59,7 +59,7 @@ export class Enemy extends NPC implements IEnemy {
         level: scene.wave.number,
         retardationLevel: DIFFICULTY.ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL,
       }) : undefined,
-      speed: progressionQuadratic({
+      speed: progressionLinear({
         defaultValue: DIFFICULTY.ENEMY_SPEED * multipliers.speed,
         scale: DIFFICULTY.ENEMY_SPEED_GROWTH,
         level: scene.wave.number,

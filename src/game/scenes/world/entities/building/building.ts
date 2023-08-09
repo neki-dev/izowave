@@ -113,6 +113,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeUpgradeIcon();
       this.unfocus();
       this.unselect();
+
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
     });
   }
@@ -347,7 +348,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     new Effect(this.scene, {
       texture: EffectTexture.DAMAGE,
-      position: this,
+      position: this.getTopCenterByLevel(),
       depth: this.depth + 1,
       rate: 14,
     });
@@ -483,6 +484,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.events.emit(WorldEvents.UNSELECT_BUILDING, this);
+  }
+
+  public getTopCenterByLevel() {
+    return {
+      x: this.x,
+      y: this.y - 6,
+    };
   }
 
   private setOutline(state: BuildingOutlineState) {

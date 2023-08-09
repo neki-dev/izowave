@@ -37,7 +37,6 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -48,7 +47,6 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -59,7 +57,6 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -92,7 +89,6 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: true,
-    friction: 1.0,
     spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.TREE],
   },
 }, {
@@ -103,7 +99,6 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: true,
-    friction: 1.0,
     spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.TREE],
   },
 }, {
@@ -114,7 +109,6 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: true,
-    friction: 1.0,
     spawn: [SpawnTarget.ENEMY],
   },
 }, {
@@ -125,7 +119,6 @@ export const LEVEL_BIOMES: Array<{
     z: 1,
     collide: true,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -136,7 +129,6 @@ export const LEVEL_BIOMES: Array<{
     z: 1,
     collide: true,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -147,7 +139,6 @@ export const LEVEL_BIOMES: Array<{
     z: 2,
     collide: true,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
@@ -158,7 +149,6 @@ export const LEVEL_BIOMES: Array<{
     z: 3,
     collide: true,
     solid: false,
-    friction: 1.0,
     spawn: [],
   },
 }, {
