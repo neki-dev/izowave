@@ -47,7 +47,7 @@ export class Camera implements ICamera {
     const camera = this.scene.cameras.main;
 
     this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
-      const zoom = camera.zoom - (pointer.deltaY / 100);
+      const zoom = camera.zoom - (pointer.deltaY / 500);
       const clampZoom = Math.min(CAMERA_ZOOM, Math.max(CAMERA_ZOOM / 2, zoom));
 
       camera.zoomTo(clampZoom, 10);
