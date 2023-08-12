@@ -155,8 +155,8 @@ export class BuildingTower extends Building implements IBuildingTower {
       return null;
     }
 
-    const priorityAmmunition = ammunitions.reduce((min, current) => (
-      min.ammo < current.ammo ? min : current
+    const priorityAmmunition = ammunitions.reduce((max, current) => (
+      max.ammo > current.ammo ? max : current
     ));
 
     return priorityAmmunition;
