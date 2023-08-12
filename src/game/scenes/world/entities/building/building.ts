@@ -90,12 +90,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live = new Live({ health });
 
     this.addActionArea();
-    this.addKeyboardHandler();
-    this.addPointerHandler();
     this.setInteractive({
       pixelPerfect: true,
       useHandCursor: true,
     });
+
+    this.handleKeyboard();
+    this.handlePointer();
 
     this.scene.builder.addFoundation(positionAtMatrix);
 
@@ -574,8 +575,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.destroy();
   }
 
-  private addKeyboardHandler() {
-    const handle = (callback: () => void) => (event: KeyboardEvent) => {
+  private handleKeyboard() {
+    const handler = (callback: () => void) => (event: KeyboardEvent) => {
       if (
         this.isSelected
         || (this.isFocused && this.scene.builder.selectedBuilding === null)
@@ -585,9 +586,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
-    const handleRepair = handle(() => this.repair());
-    const handleBreak = handle(() => this.break());
-    const handleUpgrade = handle(() => this.upgrade());
+    const handleRepair = handler(() => this.repair());
+    const handleBreak = handler(() => this.break());
+    const handleUpgrade = handler(() => this.upgrade());
 
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
@@ -602,7 +603,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  private addPointerHandler() {
+  private handlePointer() {
     const handleInput = (pointer: Phaser.Input.Pointer) => {
       if (pointer.button === 0) {
         if (this.isFocused) {

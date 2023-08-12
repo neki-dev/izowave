@@ -76,8 +76,11 @@ export class Player extends Sprite implements IPlayer {
     this.registerKeyboard();
     this.registerAnimations();
 
-    this.addIndicator(0xd0ff4f, () => this.live.health / this.live.maxHealth);
     this.addDustEffect();
+    this.addIndicator({
+      color: 0xd0ff4f,
+      value: () => this.live.health / this.live.maxHealth,
+    });
 
     this.body.setSize(14, 26);
 

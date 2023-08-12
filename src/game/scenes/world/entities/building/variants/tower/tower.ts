@@ -39,7 +39,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    this.addAmmunitionReleaseHandler();
+    this.handleAmmunitionRelease();
   }
 
   public getInfo() {
@@ -208,7 +208,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot.shoot(target);
   }
 
-  private addAmmunitionReleaseHandler() {
+  private handleAmmunitionRelease() {
     const handler = (building: IBuilding) => {
       if (this.needReload && building.variant === BuildingVariant.AMMUNITION) {
         this.reload();

@@ -53,8 +53,8 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene = scene;
 
     this.setMaxListeners(0);
-    this.addKeyboardHandler();
-    this.addTutorialHandler();
+    this.handleKeyboard();
+    this.handleTutorial();
 
     this.scene.player.live.on(LiveEvents.DEAD, () => {
       this.closeBuilder();
@@ -457,7 +457,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.buildingPreview = null;
   }
 
-  private addKeyboardHandler() {
+  private handleKeyboard() {
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
       if (Number(event.key)) {
         this.switchBuildingVariant(Number(event.key) - 1);
@@ -465,7 +465,7 @@ export class Builder extends EventEmitter implements IBuilder {
     });
   }
 
-  private addTutorialHandler() {
+  private handleTutorial() {
     this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
       beg: () => {
         this.scene.setTimePause(true);

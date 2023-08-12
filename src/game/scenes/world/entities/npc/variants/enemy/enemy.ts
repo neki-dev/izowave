@@ -37,7 +37,7 @@ export class Enemy extends NPC implements IEnemy {
   private isOverlapTarget: boolean = false;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, multipliers, armour,
+    positionAtMatrix, texture, multipliers,
   }: EnemyData) {
     super(scene, {
       texture,
@@ -52,13 +52,6 @@ export class Enemy extends NPC implements IEnemy {
         level: scene.wave.number,
         retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
       }),
-      armour: armour ? progressionQuadratic({
-        defaultValue: DIFFICULTY.ENEMY_ARMOUR
-        * scene.game.getDifficultyMultiplier(),
-        scale: DIFFICULTY.ENEMY_ARMOUR_GROWTH,
-        level: scene.wave.number,
-        retardationLevel: DIFFICULTY.ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL,
-      }) : undefined,
       speed: progressionLinear({
         defaultValue: DIFFICULTY.ENEMY_SPEED * multipliers.speed,
         scale: DIFFICULTY.ENEMY_SPEED_GROWTH,
@@ -85,11 +78,13 @@ export class Enemy extends NPC implements IEnemy {
     this.body.setCircle((this.width * 0.5) - 2);
     this.body.setOffset(2, 2);
 
-    this.addIndicator(0xdb2323, () => this.live.health / this.live.maxHealth, true);
-    if (armour) {
-      this.addIndicator(0x00d4ff, () => this.live.armour / this.live.maxArmour, true);
-    }
-    this.addWorldFeatureHandler();
+    this.addIndicator({
+      color: 0xdb2323,
+      value: () => this.live.health / this.live.maxHealth,
+      bySpriteSize: true,
+    });
+
+    this.handleWorldFeature();
 
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
@@ -272,7 +267,7 @@ export class Enemy extends NPC implements IEnemy {
     });
   }
 
-  private addWorldFeatureHandler() {
+  private handleWorldFeature() {
     const handler = (type: WorldFeature) => {
       const { duration } = WORLD_FEATURES[type];
 
