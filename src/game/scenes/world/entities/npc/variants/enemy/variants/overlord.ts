@@ -26,6 +26,7 @@ export class EnemyOverlord extends Enemy {
       retardationLevel: DIFFICULTY.ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL,
     });
 
+    this.live.setMaxArmour(armour);
     this.live.setArmour(armour);
 
     this.addIndicator({
