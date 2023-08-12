@@ -10,7 +10,7 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.75, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -18,7 +18,7 @@ export const DIFFICULTY = {
 
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.6, // Damage growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.55, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
@@ -68,23 +68,23 @@ export const DIFFICULTY = {
 
   CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
   CRYSTAL_RESOURCES: 4, // Resources in crystal
-  CRYSTAL_RESOURCES_GROWTH: 2.5, // Resources amount growth by wave number (Linear)
+  CRYSTAL_RESOURCES_GROWTH: 1.5, // Resources amount growth by wave number (Linear)
 
   /**
    * Enemies
    */
 
   ENEMY_HEALTH: 90, // Health
-  ENEMY_HEALTH_GROWTH: 0.3, // Health growth by wave number (Quadratic)
-  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 14, // Level for health growth retardation
+  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
   ENEMY_ARMOUR: 50, // Armour
-  ENEMY_ARMOUR_GROWTH: 0.3, // Armour growth by wave number (Quadratic)
+  ENEMY_ARMOUR_GROWTH: 0.35, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.15, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.18, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
@@ -182,7 +182,7 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
-  BUILDING_AMMUNITION_AMMO_GROWTH: 0.7, // Ammo amount growth by level (Quadratic)
+  BUILDING_AMMUNITION_AMMO_GROWTH: 1.0, // Ammo amount growth by level (Quadratic)
 
   /**
    * Building: Radar
