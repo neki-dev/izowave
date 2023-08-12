@@ -358,8 +358,6 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
     this.scene.sound.play(BuildingAudio.BUILD);
-
-    this.emit(BuilderEvents.BUILD, building);
   }
 
   private isBuildingLimitReached(variant: BuildingVariant) {

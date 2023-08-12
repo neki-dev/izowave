@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
+import { BUILDING_BUILD_DURATION, BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
@@ -73,6 +73,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private defaultHealth: number = 0;
 
+  private buildTimer: Nullable< Phaser.Time.TimerEvent> = null;
+
+  private buildBar: Nullable<Phaser.GameObjects.Container> = null;
+
   constructor(scene: IWorld, {
     positionAtMatrix, health, texture, variant, radius, delay,
   }: BuildingData) {
@@ -104,12 +108,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
+    this.startBuildProcess();
+
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.stopBuildProcess();
       this.removeAlertIcon();
       this.removeUpgradeIcon();
       this.unfocus();
@@ -573,6 +580,92 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.destroy();
+  }
+
+  private startBuildProcess() {
+    this.addBuildBar();
+    this.addBuildTimer();
+
+    this.setActive(false);
+    this.setAlpha(0.5);
+  }
+
+  private completeBuildProcess() {
+    this.stopBuildProcess();
+
+    this.setActive(true);
+    this.setAlpha(1.0);
+
+    this.scene.builder.emit(BuilderEvents.BUILD, this);
+  }
+
+  private stopBuildProcess() {
+    this.removeBuildBar();
+    this.removeBuildTimer();
+  }
+
+  private addBuildTimer() {
+    const target = BUILDING_BUILD_DURATION / 50;
+    let progress = 0;
+
+    this.buildTimer = this.scene.time.addEvent({
+      delay: 50,
+      repeat: target,
+      callback: () => {
+        progress++;
+
+        this.setAlpha(this.alpha + (0.5 / target));
+
+        if (progress === target) {
+          this.completeBuildProcess();
+        } else if (this.buildBar) {
+          const bar = <Phaser.GameObjects.Rectangle> this.buildBar.getAt(1);
+          const value = progress / target;
+
+          bar.setSize((this.buildBar.width - 2) * value, this.buildBar.height - 2);
+        }
+      },
+    });
+  }
+
+  private removeBuildTimer() {
+    if (!this.buildTimer) {
+      return;
+    }
+
+    this.buildTimer.destroy();
+    this.buildTimer = null;
+  }
+
+  private addBuildBar() {
+    if (this.buildBar) {
+      return;
+    }
+
+    const width = 20;
+    const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
+
+    body.setOrigin(0.0, 0.0);
+
+    const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xffffff);
+
+    bar.setOrigin(0.0, 0.0);
+
+    this.buildBar = this.scene.add.container(-width / 2, 0);
+
+    this.buildBar.setSize(body.width, body.height);
+    this.buildBar.add([body, bar]);
+    this.buildBar.setPosition(this.x - body.width / 2, this.y + 20);
+    this.buildBar.setDepth(this.depth + LEVEL_TILE_SIZE.height * 0.5);
+  }
+
+  private removeBuildBar() {
+    if (!this.buildBar) {
+      return;
+    }
+
+    this.buildBar.destroy();
+    this.buildBar = null;
   }
 
   private handleKeyboard() {
