@@ -8,7 +8,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_GROWTH: 0.05, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
-  PLAYER_HEALTH_GROWTH: 0.6, // Growth health by upgrade (Quadratic)
+  PLAYER_HEALTH_GROWTH: 0.55, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.75, // Growth experience need to upgrade (Quadratic)
 
@@ -84,7 +84,7 @@ export const DIFFICULTY = {
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.18, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.2, // Damage growth by wave number (Quadratic)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
