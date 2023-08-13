@@ -25,7 +25,14 @@ export const Wave: React.FC = () => {
   const [isDisabled, setDisabled] = useState(true);
 
   useSceneUpdate(world, () => {
-    setDisabled(world.wave.isPeaceMode || world.isTimePaused());
+    const currentIsDisabled = world.wave.isPeaceMode || world.isTimePaused();
+
+    setDisabled(currentIsDisabled);
+
+    if (currentIsDisabled) {
+      return;
+    }
+
     setCurrentNumber(world.wave.number);
     setGoing(world.wave.isGoing);
 
