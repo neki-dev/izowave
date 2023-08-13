@@ -105,7 +105,7 @@ export type SpriteData = {
 export type SpriteIndicatorData = {
   color: number
   value: () => number
-  bySpriteSize?: boolean
+  size?: number
 };
 
 export type SpriteIndicator = {

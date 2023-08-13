@@ -27,18 +27,18 @@ export const DIFFICULTY = {
   ASSISTANT_ATTACK_PAUSE_GROWTH: -0.15, // Attack pause growth by upgrade level (Quadratic)
 
   /**
-   * Features
+   * Superskills
    */
 
-  FEATURE_FROST_COST: 40, // Cost of use
-  FEATURE_FROST_DURATION: 6000, // Feature duration
-  FEATURE_RAGE_COST: 60, // Cost of use
-  FEATURE_RAGE_DURATION: 10000, // Feature duration
-  FEATURE_SHIELD_COST: 40, // Cost of use
-  FEATURE_SHIELD_DURATION: 10000, // Feature duration
-  FEATURE_FIRE_COST: 70, // Cost of use
-  FEATURE_FIRE_DURATION: 1000, // Feature duration
-  FEATURE_COST_GROWTH: 0.1, // Growth cost by wave number (Linear)
+  SUPERSKILL_FROST_COST: 40, // Cost of use
+  SUPERSKILL_FROST_DURATION: 6000, // Superskill duration
+  SUPERSKILL_RAGE_COST: 60, // Cost of use
+  SUPERSKILL_RAGE_DURATION: 10000, // Superskill duration
+  SUPERSKILL_SHIELD_COST: 40, // Cost of use
+  SUPERSKILL_SHIELD_DURATION: 10000, // Superskill duration
+  SUPERSKILL_FIRE_COST: 70, // Cost of use
+  SUPERSKILL_FIRE_DURATION: 1000, // Superskill duration
+  SUPERSKILL_COST_GROWTH: 0.1, // Growth cost by wave number (Linear)
 
   /**
    * Wave

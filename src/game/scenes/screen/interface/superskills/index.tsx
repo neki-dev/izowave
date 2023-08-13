@@ -2,16 +2,17 @@ import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { GameScene } from '~type/game';
-import { IWorld, WorldFeature } from '~type/world';
+import { IWorld } from '~type/world';
+import { PlayerSuperskill } from '~type/world/entities/player';
 
-import { FeatureItem } from './item';
+import { SuperskillItem } from './item';
 import { Wrapper } from './styles';
 
-export const Features: React.FC = () => {
+export const Superskills: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const features = useMemo(
-    () => Object.keys(WorldFeature) as WorldFeature[],
+  const superskills = useMemo(
+    () => Object.keys(PlayerSuperskill) as PlayerSuperskill[],
     [],
   );
 
@@ -23,8 +24,8 @@ export const Features: React.FC = () => {
 
   return isWaveGoing ? (
     <Wrapper>
-      {features.map((feature) => (
-        <FeatureItem key={feature} type={feature} />
+      {superskills.map((superskill) => (
+        <SuperskillItem key={superskill} type={superskill} />
       ))}
     </Wrapper>
   ) : (

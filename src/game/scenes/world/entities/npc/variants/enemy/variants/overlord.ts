@@ -32,7 +32,6 @@ export class EnemyOverlord extends Enemy {
     this.addIndicator({
       color: 0x00d4ff,
       value: () => this.live.armour / this.live.maxArmour,
-      bySpriteSize: true,
     });
   }
 }

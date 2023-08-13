@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 
-import { WORLD_FEATURES } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   ENEMY_PATH_BREAKPOINT,
   ENEMY_TEXTURE_META,
 } from '~const/world/entities/enemy';
+import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
@@ -15,7 +15,7 @@ import { excludePosition } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
-import { IWorld, WorldEvents, WorldFeature } from '~type/world';
+import { IWorld, WorldEvents } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { NPCEvent } from '~type/world/entities/npc';
@@ -25,6 +25,7 @@ import {
   EnemyTexture,
   IEnemy,
 } from '~type/world/entities/npc/enemy';
+import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 
 export class Enemy extends NPC implements IEnemy {
@@ -81,14 +82,13 @@ export class Enemy extends NPC implements IEnemy {
     this.addIndicator({
       color: 0xdb2323,
       value: () => this.live.health / this.live.maxHealth,
-      bySpriteSize: true,
     });
 
-    this.handleWorldFeature();
+    this.handlePlayerSuperskill();
 
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
-        const shield = this.scene.activeFeatures[WorldFeature.SHIELD];
+        const shield = this.scene.player.activeSuperskills[PlayerSuperskill.SHIELD];
 
         if (!shield) {
           this.attack(tile);
@@ -267,16 +267,16 @@ export class Enemy extends NPC implements IEnemy {
     });
   }
 
-  private handleWorldFeature() {
-    const handler = (type: WorldFeature) => {
-      const { duration } = WORLD_FEATURES[type];
+  private handlePlayerSuperskill() {
+    const handler = (type: PlayerSuperskill) => {
+      const { duration } = PLAYER_SUPERSKILLS[type];
 
       switch (type) {
-        case WorldFeature.FROST: {
+        case PlayerSuperskill.FROST: {
           this.freeze(duration, true);
           break;
         }
-        case WorldFeature.FIRE: {
+        case PlayerSuperskill.FIRE: {
           this.addFireEffect(duration);
           this.addOngoingDamage(this.live.maxHealth * 0.5, duration);
           break;
@@ -284,9 +284,9 @@ export class Enemy extends NPC implements IEnemy {
       }
     };
 
-    this.scene.events.on(WorldEvents.USE_FEATURE, handler);
+    this.scene.events.on(WorldEvents.USE_SUPERSKILL, handler);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.USE_FEATURE, handler);
+      this.scene.events.off(WorldEvents.USE_SUPERSKILL, handler);
     });
   }
 }

@@ -30,6 +30,11 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly upgradeLevel: Record<PlayerSkill, number>
 
   /**
+   * Active superskills.
+   */
+  readonly activeSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+
+  /**
    * Upgrade player skill.
    */
   upgrade(type: PlayerSkill): void
@@ -61,6 +66,18 @@ export interface IPlayer extends ISprite, IEnemyTarget {
    * @param amount - Resources amount
    */
   takeResources(amount: number): void
+
+  /**
+   * Use superskill.
+   * @param type - Superskill
+   */
+  useSuperskill(type: PlayerSuperskill): void
+
+  /**
+   * Get current cost of superskill.
+   * @param type - Superskill
+   */
+  getSuperskillCost(type: PlayerSuperskill): number
 }
 
 export enum PlayerTexture {
@@ -101,4 +118,17 @@ export type PlayerSkillData = {
   experience: number
   maxLevel: number
   currentLevel?: number
+};
+
+export enum PlayerSuperskill {
+  FROST = 'FROST',
+  RAGE = 'RAGE',
+  SHIELD = 'SHIELD',
+  FIRE = 'FIRE',
+}
+
+export type PlayerSuperskillData = {
+  description: string
+  cost: number
+  duration: number
 };

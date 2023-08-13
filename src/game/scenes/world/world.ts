@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
-import { WORLD_FEATURES } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
@@ -12,7 +11,6 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { progressionLinear } from '~lib/difficulty';
 import { aroundPosition, sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
@@ -21,10 +19,7 @@ import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
 import { LiveEvents } from '~type/live';
-import { NoticeType } from '~type/screen';
-import {
-  IWorld, WorldEvents, WorldFeature, WorldHint,
-} from '~type/world';
+import { IWorld, WorldEvents, WorldHint } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
@@ -86,12 +81,6 @@ export class World extends Scene implements IWorld {
   public get deltaTime() { return this._deltaTime; }
 
   private set deltaTime(v) { this._deltaTime = v; }
-
-  private _activeFeatures: Partial<Record<WorldFeature, boolean>> = {};
-
-  public get activeFeatures() { return this._activeFeatures; }
-
-  private set activeFeatures(v) { this._activeFeatures = v; }
 
   constructor() {
     super(GameScene.WORLD);
@@ -229,41 +218,6 @@ export class World extends Scene implements IWorld {
       x: sprite.body.center.x + offset.x,
       y: sprite.body.center.y + offset.y,
     };
-  }
-
-  public getFeatureCost(type: WorldFeature) {
-    return progressionLinear({
-      defaultValue: WORLD_FEATURES[type].cost,
-      scale: DIFFICULTY.FEATURE_COST_GROWTH,
-      level: this.wave.number,
-    });
-  }
-
-  public useFeature(type: WorldFeature) {
-    if (this.activeFeatures[type] || !this.wave.isGoing) {
-      return;
-    }
-
-    const cost = this.getFeatureCost(type);
-
-    if (this.player.resources < cost) {
-      this.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
-
-      return;
-    }
-
-    this.activeFeatures[type] = true;
-
-    this.player.takeResources(cost);
-
-    this.events.emit(WorldEvents.USE_FEATURE, type);
-
-    this.time.addEvent({
-      delay: WORLD_FEATURES[type].duration,
-      callback: () => {
-        delete this.activeFeatures[type];
-      },
-    });
   }
 
   private addEntityGroups() {

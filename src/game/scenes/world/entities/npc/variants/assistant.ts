@@ -66,6 +66,7 @@ export class Assistant extends NPC implements IAssistant {
     this.addIndicator({
       color: 0xd0ff4f,
       value: () => this.live.health / this.live.maxHealth,
+      size: 20,
     });
 
     this.handleWaveComplete();

@@ -220,7 +220,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public addIndicator(data: SpriteIndicatorData) {
-    const width = data.bySpriteSize ? this.displayWidth : 20;
+    const width = data.size ?? this.displayWidth;
     const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
 
     body.setOrigin(0.0, 0.0);
