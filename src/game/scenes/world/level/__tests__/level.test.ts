@@ -1,17 +1,8 @@
 import 'jest-canvas-mock';
 
-import { BiomeType } from '~type/world/level';
-
 import { Level } from '../level';
 
 describe('level.ts', () => {
-  it('should return biome data', () => {
-    const biome = Level.GetBiome(BiomeType.SNOW);
-
-    expect(biome?.collide).toEqual(true);
-    expect(biome?.solid).toEqual(false);
-  });
-
   it('should return depth', () => {
     expect(Level.GetDepth(100, 1, 16)).toEqual(164);
     expect(Level.GetDepth(100, 2, 16)).toEqual(212);

@@ -7,6 +7,7 @@ import { ENEMIES } from '~const/world/entities/enemies';
 import {
   ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
 } from '~const/world/entities/enemy';
+import { LEVEL_PLANETS } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
@@ -28,7 +29,9 @@ import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
-import { ILevel, SpawnTarget, Vector2D } from '~type/world/level';
+import {
+  ILevel, LevelPlanet, SpawnTarget, Vector2D,
+} from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
 export class World extends Scene implements IWorld {
@@ -86,7 +89,7 @@ export class World extends Scene implements IWorld {
     super(GameScene.WORLD);
   }
 
-  public create() {
+  public create(data: { planet?: LevelPlanet }) {
     this.input.setPollAlways();
 
     this.lifecyle = this.time.addEvent({
@@ -94,10 +97,8 @@ export class World extends Scene implements IWorld {
       loop: true,
     });
 
-    this.level = new Level(this);
+    this.level = new Level(this, data.planet ?? LevelPlanet.EARTH);
     this.camera = new Camera(this);
-
-    this.camera.addZoomControl();
 
     this.enemySpawnPositions = this.level.readSpawnPositions(
       SpawnTarget.ENEMY,
@@ -109,6 +110,8 @@ export class World extends Scene implements IWorld {
     new Interface(this, WorldUI);
 
     this.addEntityGroups();
+
+    this.camera.addZoomControl();
 
     this.wave = new Wave(this);
 
@@ -283,10 +286,11 @@ export class World extends Scene implements IWorld {
 
     const create = () => {
       const freePositions = positions.filter((position) => this.level.isFreePoint({ ...position, z: 1 }));
+      const variants = LEVEL_PLANETS[this.level.planet].CRYSTAL_VARIANTS;
 
       new Crystal(this, {
         positionAtMatrix: Phaser.Utils.Array.GetRandom(freePositions),
-        variant: Phaser.Math.Between(0, 3),
+        variant: Phaser.Utils.Array.GetRandom(variants),
       });
     };
 

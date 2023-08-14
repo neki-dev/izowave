@@ -1,4 +1,4 @@
-import { World } from 'gen-biome';
+import { World, WorldBiomeParams } from 'gen-biome';
 
 import { Effect } from '~scene/world/effects';
 import { INavigator } from '~type/navigator';
@@ -17,6 +17,11 @@ export interface ILevel extends ITileMatrix {
    * Map manager.
    */
   readonly map: World<LevelBiome>
+
+  /**
+   * Planet type.
+   */
+  readonly planet: LevelPlanet
 
   /**
    * Effects on ground.
@@ -56,13 +61,19 @@ export interface ILevel extends ITileMatrix {
    * @param positionB - Position at world
    */
   hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D): boolean
+
+  /**
+   * Get biome by type.
+   * @param type - Type
+   */
+  getBiome(type: BiomeType): Nullable<LevelBiome>
 }
 
 export enum TileType {
   MAP = 'MAP',
   BUILDING = 'BUILDING',
   CRYSTAL = 'CRYSTAL',
-  TREE = 'TREE',
+  SCENERY = 'SCENERY',
 }
 
 export type TileMeta = {
@@ -76,9 +87,14 @@ export type TileMeta = {
 export enum SpawnTarget {
   ENEMY = 'ENEMY',
   PLAYER = 'PLAYER',
-  TREE = 'TREE',
+  SCENERY = 'SCENERY',
   CRYSTAL = 'CRYSTAL',
 }
+
+export type LevelBiomes = Array<{
+  params?: WorldBiomeParams
+  data: LevelBiome
+}>;
 
 export type LevelBiome = {
   type: BiomeType
@@ -90,9 +106,22 @@ export type LevelBiome = {
   spawn: SpawnTarget[]
 };
 
-export enum LevelTexture {
-  TILESET = 'level/tileset',
-  TREE = 'level/tree',
+export enum LevelPlanet {
+  EARTH = 'EARTH',
+  MOON = 'MOON',
+  MARS = 'MARS',
+}
+
+export enum LevelSceneryTexture {
+  EARTH = 'level/earth/scenery',
+  MOON = 'level/moon/scenery',
+  MARS = 'level/mars/scenery',
+}
+
+export enum LevelTilesetTexture {
+  EARTH = 'level/earth/tileset',
+  MOON = 'level/moon/tileset',
+  MARS = 'level/mars/tileset',
 }
 
 export enum BiomeType {

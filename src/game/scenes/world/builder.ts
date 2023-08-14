@@ -115,7 +115,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public addFoundation(position: Vector2D) {
-    const newBiome = Level.GetBiome(BiomeType.RUBBLE);
+    const newBiome = this.scene.level.getBiome(BiomeType.RUBBLE);
 
     if (!newBiome) {
       return;
@@ -134,8 +134,8 @@ export class Builder extends EventEmitter implements IBuilder {
           this.scene.level.groundLayer.putTileAt(index, x, y);
           this.scene.level.map.replaceAt({ x, y }, newBiome);
 
-          // Remove trees
-          const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.TREE);
+          // Remove scenery
+          const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.SCENERY);
 
           if (tile) {
             tile.destroy();

@@ -1,35 +1,6 @@
-import { WorldBiomeParams, WorldLayerParams } from 'gen-biome';
+import { BiomeType, LevelBiomes, SpawnTarget } from '~type/world/level';
 
-import {
-  BiomeType, LevelBiome, SpawnTarget, TileMeta,
-} from '~type/world/level';
-
-export const LEVEL_MAP_SIZE = 100;
-
-export const LEVEL_TILE_SIZE: TileMeta = {
-  width: 42,
-  height: 48,
-  origin: 0.25,
-  persperctive: 0.571,
-  deg: 29.726,
-};
-
-export const LEVEL_MAP_MAX_HEIGHT = 4;
-
-export const LEVEL_MAP_VISIBLE_PART = 0.8;
-
-export const LEVEL_TREES_COUNT = LEVEL_MAP_SIZE * 2;
-
-export const LEVEL_TREE_TILE_SIZE = {
-  width: 42,
-  height: 72,
-  origin: 0.5,
-};
-
-export const LEVEL_BIOMES: Array<{
-  params?: WorldBiomeParams
-  data: LevelBiome
-}> = [{
+export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
   params: { upperBound: 0.12 },
   data: {
     type: BiomeType.WATER,
@@ -89,7 +60,7 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: true,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.TREE],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.SCENERY],
   },
 }, {
   params: { lowerBound: 0.34, upperBound: 0.44 },
@@ -99,7 +70,7 @@ export const LEVEL_BIOMES: Array<{
     z: 0,
     collide: false,
     solid: true,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.TREE],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.SCENERY],
   },
 }, {
   params: { lowerBound: 0.44, upperBound: 0.54 },
@@ -115,7 +86,7 @@ export const LEVEL_BIOMES: Array<{
   params: { lowerBound: 0.54, upperBound: 0.59 },
   data: {
     type: BiomeType.MOUNT,
-    tileIndex: 24,
+    tileIndex: [24, 25],
     z: 1,
     collide: true,
     solid: false,
@@ -125,7 +96,7 @@ export const LEVEL_BIOMES: Array<{
   params: { lowerBound: 0.59, upperBound: 0.63 },
   data: {
     type: BiomeType.MOUNT,
-    tileIndex: 25,
+    tileIndex: 26,
     z: 1,
     collide: true,
     solid: false,
@@ -135,7 +106,7 @@ export const LEVEL_BIOMES: Array<{
   params: { lowerBound: 0.63, upperBound: 0.70 },
   data: {
     type: BiomeType.MOUNT,
-    tileIndex: 26,
+    tileIndex: 27,
     z: 2,
     collide: true,
     solid: false,
@@ -145,7 +116,7 @@ export const LEVEL_BIOMES: Array<{
   params: { lowerBound: 0.70 },
   data: {
     type: BiomeType.SNOW,
-    tileIndex: 30,
+    tileIndex: 31,
     z: 3,
     collide: true,
     solid: false,
@@ -162,10 +133,3 @@ export const LEVEL_BIOMES: Array<{
     spawn: [SpawnTarget.PLAYER],
   },
 }];
-
-export const LEVEL_BIOME_PARAMETERS: WorldLayerParams = {
-  frequencyChange: 0.2,
-  heightRedistribution: 0.7,
-  borderSmoothness: 0.8,
-  falloff: 0.3,
-};
