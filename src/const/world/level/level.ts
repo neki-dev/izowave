@@ -40,7 +40,7 @@ export const LEVEL_PLANETS: Record<LevelPlanet, {
     BIOMES: LEVEL_BIOMES_EARTH,
     SCENERY_DENSITY: 2.0,
     SCENERY_VARIANTS: 4,
-    CRYSTAL_VARIANTS: [0, 1, 2, 3],
+    CRYSTAL_VARIANTS: [1],
   },
   [LevelPlanet.MOON]: {
     BIOMES: LEVEL_BIOMES_MOON,
