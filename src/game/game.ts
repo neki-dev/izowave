@@ -112,14 +112,6 @@ export class Game extends Phaser.Game implements IGame {
       this.registerShaders();
     });
 
-    this.events.on(GameEvents.FINISH, (stat: GameStat, record: Nullable<GameStat>) => {
-      this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
-
-      this.events.once(GameEvents.START, () => {
-        this.scene.stop(GameScene.GAMEOVER);
-      });
-    });
-
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
       this.sound.mute = (value === 'off');
     });
@@ -149,23 +141,23 @@ export class Game extends Phaser.Game implements IGame {
     this.world.scene.pause();
     this.screen.scene.pause();
 
-    const menu = this.scene.getScene(GameScene.MENU);
-
-    this.scene.systemScene.scene.launch(menu);
+    this.scene.systemScene.scene.launch(GameScene.MENU);
   }
 
   public resumeGame() {
     this.onPause = false;
 
-    const menu = this.scene.getScene(GameScene.MENU);
-
-    this.scene.systemScene.scene.stop(menu);
+    this.scene.systemScene.scene.stop(GameScene.MENU);
 
     this.world.scene.resume();
     this.screen.scene.resume();
   }
 
   public startGame() {
+    if (this.isStarted) {
+      return;
+    }
+
     this.isFinished = false;
     this.isStarted = true;
 
@@ -175,12 +167,9 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.start();
 
-    const menu = this.scene.getScene(GameScene.MENU);
-
-    this.scene.systemScene.scene.stop(menu);
-    this.scene.systemScene.scene.launch(this.screen);
-
-    this.events.emit(GameEvents.START);
+    this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
+    this.scene.systemScene.scene.stop(GameScene.MENU);
+    this.scene.systemScene.scene.launch(GameScene.SCREEN);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = function confirmLeave() {
@@ -198,10 +187,8 @@ export class Game extends Phaser.Game implements IGame {
 
     this.tutorial.reset();
 
-    const menu = this.scene.getScene(GameScene.MENU);
-
-    this.scene.systemScene.scene.stop(menu);
-    this.scene.systemScene.scene.stop(this.screen);
+    this.scene.systemScene.scene.stop(GameScene.MENU);
+    this.scene.systemScene.scene.stop(GameScene.SCREEN);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
@@ -209,6 +196,10 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public restartGame() {
+    if (!this.isStarted) {
+      return;
+    }
+
     this.stopGame();
 
     this.showAd(GameAdType.MIDGAME);
@@ -221,9 +212,15 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public finishGame() {
+    if (!this.isStarted) {
+      return;
+    }
+
     this.stopGame();
 
     this.isFinished = true;
+
+    this.events.emit(GameEvents.FINISH);
 
     const record = this.getRecordStat();
     const stat = this.getCurrentStat();
@@ -232,7 +229,7 @@ export class Game extends Phaser.Game implements IGame {
       this.writeBestStat(stat, record);
     }
 
-    this.events.emit(GameEvents.FINISH, stat, record);
+    this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
 
     this.analytics.trackEvent({
       world: this.world,
