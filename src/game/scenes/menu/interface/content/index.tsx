@@ -1,25 +1,24 @@
-import { useGame } from 'phaser-react-ui';
 import React, { useMemo } from 'react';
 
-import { IGame } from '~type/game';
 import { MenuPage } from '~type/menu';
 
 import { About } from './about';
 import { Controls } from './controls';
+import { NewGame } from './new-game';
 import { Settings } from './settings';
-import { Wrapper, Title, Body } from './styles';
+import { Wrapper } from './styles';
 
 type Props = {
   page: MenuPage
 };
 
 export const Content: React.FC<Props> = ({ page }) => {
-  const game = useGame<IGame>();
-
   const Component = useMemo(() => {
     switch (page) {
+      case MenuPage.NEW_GAME:
+        return <NewGame />;
       case MenuPage.SETTINGS:
-        return <Settings disabled={game.isStarted} />;
+        return <Settings />;
       case MenuPage.ABOUT:
         return <About />;
       case MenuPage.CONTROLS:
@@ -29,8 +28,7 @@ export const Content: React.FC<Props> = ({ page }) => {
 
   return (
     <Wrapper>
-      <Title>{page}</Title>
-      <Body>{Component}</Body>
+      {Component}
     </Wrapper>
   );
 };

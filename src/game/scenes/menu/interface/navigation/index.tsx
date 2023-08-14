@@ -16,7 +16,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
 
   const menuItems = useMemo<MenuItem[]>(
     () => [
-      ...(game.onPause
+      ...(game.isStarted
         ? [
           {
             label: 'Continue',
@@ -25,11 +25,12 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
             },
           },
           {
-            label: 'Restart',
+            label: 'New game',
+            page: MenuPage.NEW_GAME,
             onClick: () => {
               // eslint-disable-next-line no-alert
               if (window.confirm('Do you confirm start new game?')) {
-                game.restartGame();
+                game.stopGame();
               }
             },
           },
@@ -37,22 +38,20 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
         : [
           {
             label: 'New game',
-            onClick: () => {
-              game.startGame();
-            },
+            page: MenuPage.NEW_GAME,
           },
         ]),
       {
         label: 'Settings',
-        onClick: () => onSelect(MenuPage.SETTINGS),
+        page: MenuPage.SETTINGS,
       },
       {
         label: 'About',
-        onClick: () => onSelect(MenuPage.ABOUT),
+        page: MenuPage.ABOUT,
       },
       {
         label: 'Controls',
-        onClick: () => onSelect(MenuPage.CONTROLS),
+        page: MenuPage.CONTROLS,
       },
     ],
     [],
@@ -63,8 +62,8 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       {menuItems.map((item) => (
         <Item
           key={item.label}
-          onClick={item.onClick}
-          $active={item.label.toUpperCase() === page}
+          onClick={item.onClick ?? (() => item.page && onSelect(item.page))}
+          $active={item.page === page}
         >
           {item.label}
         </Item>

@@ -14,6 +14,7 @@ import { World } from '~scene/world';
 import { IAnalytics } from '~type/analytics';
 import {
   GameAdType,
+  GameDifficulty,
   GameEvents,
   GameFlag,
   GameScene,
@@ -21,6 +22,7 @@ import {
   GameStat,
   IGame,
 } from '~type/game';
+import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -69,6 +71,8 @@ export class Game extends Phaser.Game implements IGame {
   public get settings() { return this._settings; }
 
   private set settings(v) { this._settings = v; }
+
+  public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
   constructor() {
     super({
@@ -141,7 +145,9 @@ export class Game extends Phaser.Game implements IGame {
     this.world.scene.pause();
     this.screen.scene.pause();
 
-    this.scene.systemScene.scene.launch(GameScene.MENU);
+    this.scene.systemScene.scene.launch(GameScene.MENU, {
+      page: MenuPage.ABOUT,
+    });
   }
 
   public resumeGame() {
@@ -158,18 +164,16 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.isFinished = false;
-    this.isStarted = true;
-
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
       this.tutorial.disable();
     }
 
-    this.world.start();
-
-    this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
     this.scene.systemScene.scene.stop(GameScene.MENU);
     this.scene.systemScene.scene.launch(GameScene.SCREEN);
+
+    this.world.start();
+
+    this.isStarted = true;
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = function confirmLeave() {
@@ -185,38 +189,31 @@ export class Game extends Phaser.Game implements IGame {
 
     this.isStarted = false;
 
+    this.world.scene.restart();
+
     this.tutorial.reset();
 
-    this.scene.systemScene.scene.stop(GameScene.MENU);
+    if (this.isFinished) {
+      this.isFinished = false;
+      this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
+    }
+
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
+    this.scene.systemScene.scene.launch(GameScene.MENU, {
+      page: MenuPage.NEW_GAME,
+    });
+
+    this.showAd(GameAdType.MIDGAME);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
     }
   }
 
-  public restartGame() {
-    if (!this.isStarted) {
-      return;
-    }
-
-    this.stopGame();
-
-    this.showAd(GameAdType.MIDGAME);
-
-    this.world.scene.restart();
-
-    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
-      this.startGame();
-    });
-  }
-
   public finishGame() {
     if (!this.isStarted) {
       return;
     }
-
-    this.stopGame();
 
     this.isFinished = true;
 
@@ -229,6 +226,7 @@ export class Game extends Phaser.Game implements IGame {
       this.writeBestStat(stat, record);
     }
 
+    this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
 
     this.analytics.trackEvent({
@@ -238,9 +236,9 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public getDifficultyMultiplier() {
-    switch (this.settings[GameSettings.DIFFICULTY]) {
-      case 'easy': return 0.7;
-      case 'hard': return 1.3;
+    switch (this.difficulty) {
+      case GameDifficulty.EASY: return 0.7;
+      case GameDifficulty.HARD: return 1.3;
       default: return 1.0;
     }
   }
@@ -295,8 +293,7 @@ export class Game extends Phaser.Game implements IGame {
 
   private getRecordStat(): Nullable<GameStat> {
     try {
-      const difficulty = this.settings[GameSettings.DIFFICULTY];
-      const recordValue = localStorage.getItem(`BEST_STAT.${difficulty}`);
+      const recordValue = localStorage.getItem(`BEST_STAT.${this.difficulty}`);
 
       return recordValue && JSON.parse(recordValue);
     } catch (error) {
@@ -305,14 +302,13 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   private writeBestStat(stat: GameStat, record: Nullable<GameStat>) {
-    const difficulty = this.settings[GameSettings.DIFFICULTY];
     const params = Object.keys(stat) as (keyof GameStat)[];
     const betterStat = params.reduce((curr, param) => ({
       ...curr,
       [param]: Math.max(stat[param], record?.[param] ?? 0),
     }), {});
 
-    localStorage.setItem(`BEST_STAT.${difficulty}`, JSON.stringify(betterStat));
+    localStorage.setItem(`BEST_STAT.${this.difficulty}`, JSON.stringify(betterStat));
   }
 
   private getCurrentStat() {

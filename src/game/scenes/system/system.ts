@@ -35,7 +35,7 @@ export class System extends Scene {
       }
 
       if (this.game.isFinished) {
-        this.game.restartGame();
+        this.game.stopGame();
       } else if (this.game.isStarted) {
         if (this.game.onPause) {
           this.game.resumeGame();

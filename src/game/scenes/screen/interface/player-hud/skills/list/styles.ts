@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { InterfaceColor } from '~type/interface';
+import { InterfaceBackgroundColor } from '~type/interface';
 
 const animationOpacity = keyframes`
   0% { opacity: 0; margin-top: 0 }
@@ -11,7 +11,7 @@ export const Container = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
-  background: ${InterfaceColor.BLUE_DARK}cc;
+  background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   padding: 20px;
   margin-top: 14px;
   pointer-events: all;
@@ -25,6 +25,6 @@ export const Container = styled.div`
     transform: translateX(-50%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 14px solid ${InterfaceColor.BLUE_DARK}cc;
+    border-bottom: 14px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   }
 `;

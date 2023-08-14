@@ -7,22 +7,35 @@ import { Content } from './content';
 import { Copyright } from './copyright';
 import { Navigation } from './navigation';
 import {
-  Wrapper, Logotype, Sidebar, Line,
+  Wrapper, Logotype, Header, Block, Main, Menu,
 } from './styles';
 
-export const MenuUI: React.FC = () => {
-  const [page, setPage] = useState(MenuPage.ABOUT);
+type Props = {
+  defaultPage?: MenuPage
+};
+
+export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
+  const [page, setPage] = useState(defaultPage ?? MenuPage.NEW_GAME);
 
   return (
     <Overlay>
       <Wrapper>
-        <Sidebar>
-          <Logotype>IZOWAVE</Logotype>
-          <Navigation page={page} onSelect={setPage} />
-          <Copyright />
-        </Sidebar>
-        <Line />
-        <Content page={page} />
+        <Header>
+          <Block>
+            <Logotype src='assets/logotype.png' />
+            <Copyright />
+          </Block>
+        </Header>
+        <Menu>
+          <Block>
+            <Navigation page={page} onSelect={setPage} />
+          </Block>
+        </Menu>
+        <Main>
+          <Block>
+            <Content page={page} />
+          </Block>
+        </Main>
       </Wrapper>
     </Overlay>
   );

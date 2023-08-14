@@ -17,7 +17,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
   const game = useGame<IGame>();
 
   const onRestartClick = () => {
-    game.restartGame();
+    game.stopGame();
   };
 
   return (

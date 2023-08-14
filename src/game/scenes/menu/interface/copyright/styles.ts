@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-import { InterfaceColor, InterfaceFont } from '~type/interface';
+import { InterfaceTextColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
-  margin-top: 60px;
   font-family: ${InterfaceFont.PIXEL_TEXT};
   display: flex;
   flex-direction: column;
@@ -22,7 +21,7 @@ export const Link = styled.a`
   color: #fff;
   pointer-events: all;
   &:hover {
-    color: ${InterfaceColor.INFO};
+    color: ${InterfaceTextColor.HOVER};
   }
 `;
 

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import {
+  InterfaceFont,
+  InterfaceBackgroundColor,
+  InterfaceTextColor,
+} from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 15px;
@@ -12,7 +16,7 @@ export const Wrapper = styled.div`
 export const Param = styled.div`
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.25);
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   border-radius: 5px;
   overflow: hidden;
 `;
@@ -20,7 +24,7 @@ export const Param = styled.div`
 export const IconContainer = styled.div`
   width: 34px;
   height: 34px;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -37,7 +41,7 @@ export const Info = styled.div<{
 }>`
   padding: 2px 5px;
   color: ${(props) => (props.$attention
-    ? InterfaceColor.WARN
+    ? InterfaceTextColor.WARN
     : '#fff'
   )};
 `;

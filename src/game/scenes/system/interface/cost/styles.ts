@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
 export const Wrapper = styled.div<{
   $size: 'small' | 'large'
@@ -26,7 +26,7 @@ export const Value = styled.div<{
   font-size: 15px;
   line-height: 15px;
   color: ${(props) => (props.$attention
-    ? InterfaceColor.ERROR
+    ? InterfaceTextColor.ERROR
     : '#fff'
   )};
 `;

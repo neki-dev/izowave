@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import { InterfaceColor, InterfaceFont } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
   position: absolute;
-  background: ${InterfaceColor.BLACK_TRANSPARENT};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   padding: 20px;
   border-radius: 10px;
   color: #fff;

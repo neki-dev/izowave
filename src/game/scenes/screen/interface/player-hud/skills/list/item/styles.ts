@@ -1,6 +1,10 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import {
+  InterfaceFont,
+  InterfaceTextColor,
+  InterfaceBackgroundColor,
+} from '~type/interface';
 
 export const Item = styled.div`
   color: #fff;
@@ -16,13 +20,13 @@ export const Item = styled.div`
 export const Info = styled.div`
   width: 300px;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.25);
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   flex: 1;
 `;
 
 export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  color: ${InterfaceColor.INFO};
+  color: ${InterfaceTextColor.SUCCESS};
   font-size: 14px;
   line-height: 14px;
   margin-bottom: 4px;
@@ -33,7 +37,7 @@ export const Level = styled.div`
   font-size: 9px;
   line-height: 9px;
   margin-top: 6px;
-  background: rgba(0, 0, 0, 0.5);
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 3px 5px;
   display: inline-flex;
   align-items: center;
@@ -53,13 +57,13 @@ export const Action = styled.div<{
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.35);
-  ${(props) => (props.$active && css`
-    background: rgba(0, 0, 0, 0.5);
+  ${(props) => props.$active && css`
+    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
     &:hover {
       cursor: pointer;
-      background: ${InterfaceColor.BLACK_TRANSPARENT};
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
     }
-  `)}
+  `}
 `;
 
 export const Button = styled.div`
@@ -70,7 +74,7 @@ export const Button = styled.div`
 `;
 
 export const Limit = styled.div`
-  color: ${InterfaceColor.WARN};
+  color: ${InterfaceTextColor.WARN};
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 10px;
   line-height: 12px;

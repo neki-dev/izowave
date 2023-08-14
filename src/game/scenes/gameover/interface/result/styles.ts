@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 100px;
@@ -33,5 +33,5 @@ export const Record = styled.div`
   margin-left: 15px;
   font-size: 12px;
   line-height: 12px;
-  color: ${InterfaceColor.INFO};
+  color: ${InterfaceTextColor.SUCCESS};
 `;

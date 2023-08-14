@@ -47,6 +47,11 @@ export interface IGame extends Phaser.Game {
   readonly settings: Partial<Record<GameSettings, string>>
 
   /**
+   * Game difficulty.
+   */
+  difficulty: GameDifficulty
+
+  /**
    * Pause game.
    */
   pauseGame(): void
@@ -65,11 +70,6 @@ export interface IGame extends Phaser.Game {
    * Stop game.
    */
   stopGame(): void
-
-  /**
-   * Restart game.
-   */
-  restartGame(): void
 
   /**
    * Finish game.
@@ -128,10 +128,15 @@ export enum GameEvents {
 }
 
 export enum GameSettings {
-  DIFFICULTY = 'DIFFICULTY',
   AUDIO = 'AUDIO',
   EFFECTS = 'EFFECTS',
   TUTORIAL = 'TUTORIAL',
+}
+
+export enum GameDifficulty {
+  EASY = 'EASY',
+  NORMAL = 'NORMAL',
+  HARD = 'HARD',
 }
 
 export enum GameFlag {
@@ -143,7 +148,6 @@ export type GameSettingsData = {
   description: string
   values: string[]
   default: string
-  runtime: boolean
 };
 
 export type GameStat = {

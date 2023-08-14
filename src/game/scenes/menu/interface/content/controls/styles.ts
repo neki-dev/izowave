@@ -2,12 +2,15 @@ import styled from 'styled-components';
 
 import { InterfaceFont } from '~type/interface';
 
+export const Wrapper = styled.div`
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: repeat(2, 1fr);
+`;
+
 export const Control = styled.div`
   display: flex;
   align-items: center;
-  &:not(:last-child) {
-    margin-bottom: 15px;
-  }
 `;
 
 export const Keys = styled.div`
@@ -20,7 +23,7 @@ export const Key = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 13px;
   line-height: 13px;
-  padding: 3px 7px 4px 7px;
+  padding: 4px 7px 5px 7px;
   background: #fff;
   text-align: center;
   border-radius: 3px;

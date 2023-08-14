@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 import { NoticeType } from '~type/screen';
 
 const animationOpacity = keyframes`
@@ -31,11 +31,5 @@ export const Item = styled.div<{
   &:not(:last-child) {
     margin-bottom: 8px;
   }
-  background: ${(props) => {
-    switch (props.$type) {
-      case NoticeType.WARN: return InterfaceColor.WARN_DARK;
-      case NoticeType.ERROR: return InterfaceColor.ERROR_DARK;
-      default: return InterfaceColor.BLUE;
-    }
-  }}
+  background: ${(props) => InterfaceBackgroundColor[props.$type]}
 `;

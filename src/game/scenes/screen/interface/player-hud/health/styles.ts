@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceColor, InterfaceFont } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
   background: #000;
@@ -10,8 +10,8 @@ export const Container = styled.div`
 
 export const Progress = styled.div`
   height: 20px;
-  background: ${InterfaceColor.INFO_DARK};
-  box-shadow: 0 10px 0 rgba(255, 255, 255, 0.15) inset;
+  background: ${InterfaceBackgroundColor.SUCCESS};
+  box-shadow: 0 10px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15}inset;
   transition: width 0.3s ease-out;
 `;
 

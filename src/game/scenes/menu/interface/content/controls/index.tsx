@@ -3,10 +3,12 @@ import React from 'react';
 import { CONTROLS } from '~const/controls';
 import { Text } from '~scene/system/interface/text';
 
-import { Control, Keys, Key } from './styles';
+import {
+  Wrapper, Control, Keys, Key,
+} from './styles';
 
 export const Controls: React.FC = () => (
-  <>
+  <Wrapper>
     {CONTROLS.map((control, index) => (
       <Control key={index}>
         <Keys>
@@ -17,5 +19,5 @@ export const Controls: React.FC = () => (
         <Text>- {control.description}</Text>
       </Control>
     ))}
-  </>
+  </Wrapper>
 );

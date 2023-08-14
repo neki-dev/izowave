@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 export const Wrapper = styled.div`
-  background: rgba(0, 0, 0, 0.5);
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   font-family: ${InterfaceFont.PIXEL_LABEL};
   display: flex;
   color: #fff;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 `;
 
 export const IconContainer = styled.div`
-  background: ${InterfaceColor.BLACK_TRANSPARENT};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 0 5px 5px 0;
   display: flex;
   align-items: center;
