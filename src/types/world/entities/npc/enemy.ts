@@ -28,6 +28,7 @@ export interface IEnemyTarget {
 export enum EnemyTexture {
   BAT = 'enemy/bat',
   SPIKE = 'enemy/spike',
+  RISPER = 'enemy/risper',
   DEMON = 'enemy/demon',
   OVERLORD = 'enemy/overlord',
   BOSS = 'enemy/boss',
@@ -39,6 +40,7 @@ export enum EnemyTexture {
 export enum EnemyVariant {
   BAT = 'BAT',
   SPIKE = 'SPIKE',
+  RISPER = 'RISPER',
   DEMON = 'DEMON',
   OVERLORD = 'OVERLORD',
   BOSS = 'BOSS',
