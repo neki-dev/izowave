@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 
+import { InterfaceBackgroundColor } from '~type/interface';
+
 export const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   display: flex;
   justify-content: center;
   align-items: center;
