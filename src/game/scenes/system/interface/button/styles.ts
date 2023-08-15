@@ -15,35 +15,28 @@ export const Container = styled.div<{
     switch (props.$view) {
       case 'active': return css`
         background: ${InterfaceBackgroundColor.BLUE};
-        &:hover {
-          cursor: pointer;
-        }
       `;
       case 'primary': return css`
         background: ${InterfaceBackgroundColor.WARN};  
         &:hover {
-          cursor: pointer;
           background: ${InterfaceBackgroundColor.WARN_DARK};
         }
       `;
       case 'confirm': return css`
         background: ${InterfaceBackgroundColor.SUCCESS};  
         &:hover {
-          cursor: pointer;
           background: ${InterfaceBackgroundColor.SUCCESS_DARK};
         }
       `;
       case 'decline': return css`
         background: ${InterfaceBackgroundColor.ERROR};
         &:hover {
-          cursor: pointer;
           background: ${InterfaceBackgroundColor.ERROR_DARK};
         }
       `;
       default: return css`
         background: ${InterfaceBackgroundColor.BLACK};
         &:hover {
-          cursor: pointer;
           background: ${InterfaceBackgroundColor.BLUE};
         }
       `;
@@ -75,4 +68,7 @@ export const Container = styled.div<{
       `;
     }
   }}
+  &:hover {
+    cursor: pointer;
+  }
 `;

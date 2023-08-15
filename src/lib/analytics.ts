@@ -63,6 +63,7 @@ export class Analytics implements IAnalytics {
       // Game progress
       success: data.success,
       difficulty: data.world.game.difficulty,
+      planet: data.world.level.planet,
       waveNumber: data.world.wave.number,
       resources: data.world.player.resources,
       // System info

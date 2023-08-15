@@ -16,4 +16,5 @@ export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 66px;
   line-height: 66px;
+  margin-bottom: 40px;
 `;
