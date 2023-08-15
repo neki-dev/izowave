@@ -141,11 +141,6 @@ export class Enemy extends NPC implements IEnemy {
     excludePosition(this.scene.enemySpawnPositions, originPosition);
 
     const positionAtMatrix = this.scene.getEnemySpawnPosition();
-
-    if (!positionAtMatrix) {
-      return null;
-    }
-
     const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
 
     this.setPosition(position.x, position.y);
