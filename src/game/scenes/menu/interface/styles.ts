@@ -4,7 +4,7 @@ import { InterfaceBackgroundColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   height: 90vh;
-  max-height: 480px;
+  max-height: 500px;
   width: 100%;
   display: flex;
   flex-direction: column;
