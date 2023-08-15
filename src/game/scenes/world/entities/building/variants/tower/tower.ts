@@ -3,7 +3,7 @@ import { Building } from '~entity/building';
 import { progressionQuadratic } from '~lib/difficulty';
 import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldFeature } from '~type/world';
+import { IWorld } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
@@ -17,6 +17,7 @@ import {
   BuildingAudio,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
+import { PlayerSuperskill } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
 
 export class BuildingTower extends Building implements IBuildingTower {
@@ -39,7 +40,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    this.addAmmunitionReleaseHandler();
+    this.handleAmmunitionRelease();
   }
 
   public getInfo() {
@@ -127,7 +128,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
 
     if (this.shotDefaultParams.damage) {
-      const rage = this.scene.activeFeatures[WorldFeature.RAGE];
+      const rage = this.scene.player.activeSuperskills[PlayerSuperskill.RAGE];
 
       params.damage = progressionQuadratic({
         defaultValue: this.shotDefaultParams.damage,
@@ -208,7 +209,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot.shoot(target);
   }
 
-  private addAmmunitionReleaseHandler() {
+  private handleAmmunitionRelease() {
     const handler = (building: IBuilding) => {
       if (this.needReload && building.variant === BuildingVariant.AMMUNITION) {
         this.reload();

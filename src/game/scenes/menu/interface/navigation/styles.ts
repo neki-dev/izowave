@@ -1,29 +1,39 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
 export const Wrapper = styled.ul`
-  margin-top: 70px;
   list-style: none;
   text-align: right;
   pointer-events: all;
+  display: flex;
 `;
 
 export const Item = styled.li<{
   $active?: boolean
 }>`
-  color: ${(props) => (props.$active
-    ? InterfaceColor.INFO
-    : '#fff'
-  )};
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 24px;
   line-height: 24px;
+  padding-bottom: 7px;
+  border-bottom: 4px solid transparent;
+  ${(props) => (props.$active
+    ? css`
+      color: ${InterfaceTextColor.SUCCESS};
+      border-color: ${InterfaceTextColor.SUCCESS};
+      &:hover {
+        cursor: pointer;
+      }
+    `
+    : css`
+      color: #fff;
+      &:hover {
+        cursor: pointer;
+        color: ${InterfaceTextColor.HOVER};
+      }
+    `
+  )}
   &:not(:last-child) {
-    margin-bottom: 20px;
-  }
-  &:hover {
-    cursor: pointer;
-    color: ${InterfaceColor.PRIMARY};
+    margin-right: 30px;
   }
 `;

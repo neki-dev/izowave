@@ -48,11 +48,6 @@ export interface IWorld extends IScene {
   readonly deltaTime: number
 
   /**
-   * Active features.
-   */
-  readonly activeFeatures: Partial<Record<WorldFeature, boolean>>
-
-  /**
    * List of generated enemy spawn positions
    */
   enemySpawnPositions: Vector2D[]
@@ -118,18 +113,6 @@ export interface IWorld extends IScene {
   getFuturePosition(sprite: ISprite, seconds: number): Vector2D
 
   /**
-   * Use feature.
-   * @param type - Feature
-   */
-  useFeature(type: WorldFeature): void
-
-  /**
-   * Get feature current cost.
-   * @param type - Feature
-   */
-  getFeatureCost(type: WorldFeature): number
-
-  /**
    * Get random enemy spawn position.
    */
   getEnemySpawnPosition(): Nullable<Vector2D>
@@ -140,24 +123,11 @@ export enum WorldEvents {
   UNSELECT_BUILDING = 'unselect_building',
   SHOW_HINT = 'show_hint',
   HIDE_HINT = 'hide_hint',
-  USE_FEATURE = 'use_feature',
+  USE_SUPERSKILL = 'use_superskill',
 }
 
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string
   position: Vector2D
-};
-
-export enum WorldFeature {
-  FROST = 'FROST',
-  RAGE = 'RAGE',
-  SHIELD = 'SHIELD',
-  FIRE = 'FIRE',
-}
-
-export type WorldFeatureData = {
-  description: string
-  cost: number
-  duration: number
 };

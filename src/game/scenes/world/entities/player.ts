@@ -3,23 +3,23 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
-  PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_SKILLS,
+  PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_SKILLS, PLAYER_SUPERSKILLS,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { IWorld, WorldEvents } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill, PlayerSuperskill,
 } from '~type/world/entities/player';
 import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -62,6 +62,12 @@ export class Player extends Sprite implements IPlayer {
 
   private dustEffect: Nullable<IParticles> = null;
 
+  private _activeSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
+
+  public get activeSuperskills() { return this._activeSuperskills; }
+
+  private set activeSuperskills(v) { this._activeSuperskills = v; }
+
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
       ...data,
@@ -76,8 +82,12 @@ export class Player extends Sprite implements IPlayer {
     this.registerKeyboard();
     this.registerAnimations();
 
-    this.addIndicator(0xd0ff4f, () => this.live.health / this.live.maxHealth);
     this.addDustEffect();
+    this.addIndicator({
+      color: 0xd0ff4f,
+      value: () => this.live.health / this.live.maxHealth,
+      size: 20,
+    });
 
     this.body.setSize(14, 26);
 
@@ -151,6 +161,41 @@ export class Player extends Sprite implements IPlayer {
 
   public incrementKills() {
     this.kills++;
+  }
+
+  public getSuperskillCost(type: PlayerSuperskill) {
+    return progressionLinear({
+      defaultValue: PLAYER_SUPERSKILLS[type].cost,
+      scale: DIFFICULTY.SUPERSKILL_COST_GROWTH,
+      level: this.scene.wave.number,
+    });
+  }
+
+  public useSuperskill(type: PlayerSuperskill) {
+    if (this.activeSuperskills[type] || !this.scene.wave.isGoing) {
+      return;
+    }
+
+    const cost = this.getSuperskillCost(type);
+
+    if (this.resources < cost) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+
+      return;
+    }
+
+    this.activeSuperskills[type] = true;
+
+    this.takeResources(cost);
+
+    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
+
+    this.scene.time.addEvent({
+      delay: PLAYER_SUPERSKILLS[type].duration,
+      callback: () => {
+        delete this.activeSuperskills[type];
+      },
+    });
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {

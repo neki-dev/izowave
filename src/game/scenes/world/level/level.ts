@@ -2,8 +2,8 @@ import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  LEVEL_TILE_SIZE, LEVEL_BIOMES, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_BIOME_PARAMETERS, LEVEL_TREES_COUNT, LEVEL_TREE_TILE_SIZE,
+  LEVEL_TILE_SIZE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
+  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Navigator } from '~lib/navigator';
@@ -13,7 +13,8 @@ import { GameEvents, GameSettings } from '~type/game';
 import { INavigator } from '~type/navigator';
 import { IWorld } from '~type/world';
 import {
-  BiomeType, LevelBiome, SpawnTarget, LevelTexture, TileType, Vector2D, Vector3D, ILevel,
+  BiomeType, LevelBiome, SpawnTarget, LevelSceneryTexture, TileType,
+  Vector2D, Vector3D, ILevel, LevelTilesetTexture, LevelPlanet,
 } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
@@ -25,6 +26,8 @@ export class Level extends TileMatrix implements ILevel {
   readonly navigator: INavigator;
 
   readonly map: World<LevelBiome>;
+
+  readonly planet: LevelPlanet;
 
   readonly gridCollide: boolean[][] = [];
 
@@ -42,10 +45,13 @@ export class Level extends TileMatrix implements ILevel {
 
   private set groundLayer(v) { this._groundLayer = v; }
 
-  private treesTiles: Phaser.GameObjects.Group;
+  private sceneryTiles: Phaser.GameObjects.Group;
 
-  constructor(scene: IWorld) {
+  constructor(scene: IWorld, planet: LevelPlanet) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT);
+
+    this.scene = scene;
+    this.planet = planet;
 
     const generator = new WorldGenerator<LevelBiome>({
       width: LEVEL_MAP_SIZE,
@@ -54,15 +60,13 @@ export class Level extends TileMatrix implements ILevel {
 
     const layer = generator.addLayer(LEVEL_BIOME_PARAMETERS);
 
-    LEVEL_BIOMES.forEach((biome) => {
+    LEVEL_PLANETS[this.planet].BIOMES.forEach((biome) => {
       if (biome.params) {
         layer.addBiome(biome.params, biome.data);
       }
     });
 
     this.map = generator.generate();
-    this.scene = scene;
-
     this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
     this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));
 
@@ -70,7 +74,7 @@ export class Level extends TileMatrix implements ILevel {
 
     this.addTilemap();
     this.addMapTiles();
-    this.addTreesTiles();
+    this.addScenery();
 
     this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
       if (value === 'off') {
@@ -122,6 +126,10 @@ export class Level extends TileMatrix implements ILevel {
     return line.some((point) => this.getTile({ ...point, z: 1 })?.tileType === TileType.MAP);
   }
 
+  public getBiome(type: BiomeType): Nullable<LevelBiome> {
+    return LEVEL_PLANETS[this.planet].BIOMES.find((biome) => (biome.data.type === type))?.data ?? null;
+  }
+
   private addTilemap() {
     const data = new Phaser.Tilemaps.MapData({
       width: LEVEL_MAP_SIZE,
@@ -134,7 +142,7 @@ export class Level extends TileMatrix implements ILevel {
 
     const tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
     const tileset = tilemap.addTilesetImage(
-      LevelTexture.TILESET,
+      LevelTilesetTexture[this.planet],
       undefined,
       LEVEL_TILE_SIZE.width,
       LEVEL_TILE_SIZE.height,
@@ -182,7 +190,7 @@ export class Level extends TileMatrix implements ILevel {
       return;
     }
 
-    const biome = Level.GetBiome(BiomeType.WATER);
+    const biome = this.getBiome(BiomeType.WATER);
 
     if (!biome) {
       return;
@@ -227,7 +235,7 @@ export class Level extends TileMatrix implements ILevel {
         const shiftY = this.map.getAt({ x: position.x, y: position.y + 1 });
 
         if ((shiftX && shiftX.z !== z) || (shiftY && shiftY.z !== z)) {
-          const patch = LEVEL_BIOMES.find((b) => (b.data.z === z));
+          const patch = LEVEL_PLANETS[this.planet].BIOMES.find((b) => (b.data.z === z));
 
           if (patch) {
             addTile(position, patch.data);
@@ -242,7 +250,7 @@ export class Level extends TileMatrix implements ILevel {
     const tile = this.scene.add.image(
       positionAtWorld.x,
       positionAtWorld.y,
-      LevelTexture.TILESET,
+      LevelTilesetTexture[this.planet],
       index,
     ) as ITile;
 
@@ -253,12 +261,13 @@ export class Level extends TileMatrix implements ILevel {
     this.putTile(tile, tilePosition, false);
   }
 
-  private addTreesTiles() {
-    this.treesTiles = this.scene.add.group();
+  private addScenery() {
+    this.sceneryTiles = this.scene.add.group();
 
-    const positions = this.readSpawnPositions(SpawnTarget.TREE);
+    const positions = this.readSpawnPositions(SpawnTarget.SCENERY);
+    const count = Math.ceil(LEVEL_MAP_SIZE * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
 
-    for (let i = 0; i < LEVEL_TREES_COUNT; i++) {
+    for (let i = 0; i < count; i++) {
       const positionAtMatrix: Vector2D = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition: Vector3D = { ...positionAtMatrix, z: 1 };
 
@@ -267,17 +276,17 @@ export class Level extends TileMatrix implements ILevel {
         const tile = this.scene.add.image(
           positionAtWorld.x,
           positionAtWorld.y,
-          LevelTexture.TREE,
-          Phaser.Math.Between(0, 3),
+          LevelSceneryTexture[this.planet],
+          Phaser.Math.Between(0, LEVEL_PLANETS[this.planet].SCENERY_VARIANTS - 1),
         ) as ITile;
 
-        tile.tileType = TileType.TREE;
+        tile.tileType = TileType.SCENERY;
         tile.clearable = true;
 
         tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-        tile.setOrigin(0.5, LEVEL_TREE_TILE_SIZE.origin);
+        tile.setOrigin(0.5, LEVEL_SCENERY_TILE_SIZE.origin);
         this.putTile(tile, tilePosition);
-        this.treesTiles.add(tile);
+        this.sceneryTiles.add(tile);
       }
     }
   }
@@ -313,11 +322,7 @@ export class Level extends TileMatrix implements ILevel {
   static GetTileDepth(YAtWorld: number, tileZ: number) {
     return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + LEVEL_TILE_SIZE.height * 0.5;
   }
-
-  static GetBiome(type: BiomeType): Nullable<LevelBiome> {
-    return LEVEL_BIOMES.find((biome) => (biome.data.type === type))?.data ?? null;
-  }
 }
 
-registerSpriteAssets(LevelTexture.TILESET, LEVEL_TILE_SIZE);
-registerSpriteAssets(LevelTexture.TREE, LEVEL_TREE_TILE_SIZE);
+registerSpriteAssets(LevelTilesetTexture, LEVEL_TILE_SIZE);
+registerSpriteAssets(LevelSceneryTexture, LEVEL_SCENERY_TILE_SIZE);

@@ -89,11 +89,9 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
 
   /**
    * Add indicator above sprite.
-   * @param color - Indicator color
-   * @param value - Value in percents
-   * @param bySpriteSize - Indicator size by sprite size
+   * @param data - Indicator parameters
    */
-  addIndicator(color: number, value: () => number, bySpriteSize?: boolean): void
+  addIndicator(data: SpriteIndicatorData): void
 }
 
 export type SpriteData = {
@@ -101,8 +99,13 @@ export type SpriteData = {
   positionAtMatrix: Vector2D
   frame?: number
   health: number
-  armour?: number
   speed: number
+};
+
+export type SpriteIndicatorData = {
+  color: number
+  value: () => number
+  size?: number
 };
 
 export type SpriteIndicator = {

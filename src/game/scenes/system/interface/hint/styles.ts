@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { InterfaceFont } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 const align = {
   'top-left': { transform: 'translate(0, 0)', left: '39px', right: 'auto' },
@@ -54,7 +54,7 @@ export const Key = styled.span`
 export const Container = styled.div<{
   $width?: number
 }>`
-  background: #000;
+  background: ${InterfaceBackgroundColor.BLACK};
   padding: 9px 12px 10px 12px;
   border-radius: 5px;
   color: #fff;

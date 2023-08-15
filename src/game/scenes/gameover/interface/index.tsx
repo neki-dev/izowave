@@ -17,14 +17,16 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
   const game = useGame<IGame>();
 
   const onRestartClick = () => {
-    game.restartGame();
+    game.stopGame();
   };
 
   return (
     <Overlay>
       <Wrapper>
         <Label>GAME OVER</Label>
-        <Button onClick={onRestartClick} size='large'>Play again</Button>
+        <Button onClick={onRestartClick} size="large" view="confirm">
+          Play again
+        </Button>
         <Result stat={stat} record={record} />
       </Wrapper>
     </Overlay>

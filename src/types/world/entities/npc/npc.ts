@@ -41,7 +41,6 @@ export type NPCData = {
   positionAtMatrix: Vector2D
   texture: EnemyTexture | AssistantTexture
   speed: number
-  armour?: number
   health: number
   pathFindTriggerDistance: number
   frameRate?: number

@@ -13,28 +13,19 @@ export const DEBUG_MODS = {
 };
 
 export const SETTINGS: Record<GameSettings, GameSettingsData> = {
-  [GameSettings.DIFFICULTY]: {
-    description: 'Difficulty',
-    values: ['easy', 'medium', 'hard'],
-    default: 'medium',
-    runtime: false,
-  },
   [GameSettings.TUTORIAL]: {
     description: 'Tutorial',
     values: ['on', 'off'],
     default: 'on',
-    runtime: true,
   },
   [GameSettings.AUDIO]: {
     description: 'Audio',
     values: ['on', 'off'],
     default: 'on',
-    runtime: true,
   },
   [GameSettings.EFFECTS]: {
     description: 'Effects',
     values: ['on', 'off'],
     default: 'on',
-    runtime: true,
   },
 };

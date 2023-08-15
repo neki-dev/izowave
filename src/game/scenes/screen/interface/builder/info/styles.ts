@@ -1,6 +1,10 @@
 import styled, { keyframes } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import {
+  InterfaceFont,
+  InterfaceTextColor,
+  InterfaceBackgroundColor,
+} from '~type/interface';
 
 const animationOpacity = keyframes`
   0% { opacity: 0; margin-right: -15px }
@@ -14,13 +18,13 @@ export const Wrapper = styled.div`
   overflow: hidden;
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     right: 0;
     top: 30px;
     transform: translate(100%, -50%);
     border-top: 12px solid transparent;
     border-bottom: 12px solid transparent;
-    border-left: 15px solid ${InterfaceColor.BLUE_BLACK}ee;
+    border-left: 15px solid ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   }
 `;
 
@@ -29,20 +33,20 @@ export const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background: ${InterfaceColor.BLUE_BLACK}ee;
+  background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   height: 59px;
 `;
 
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  color: ${InterfaceColor.INFO};
+  color: ${InterfaceTextColor.SUCCESS};
   font-size: 16px;
   line-height: 16px;
 `;
 
 export const Body = styled.div`
   padding: 18px 20px 20px 20px;
-  background: ${InterfaceColor.BLUE_DARK}cc;
+  background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
 `;
 
 export const Alert = styled.div<{
@@ -57,7 +61,7 @@ export const Alert = styled.div<{
   letter-spacing: 1px;
   color: #fff;
   background: ${(props) => (props.$attention
-    ? `${InterfaceColor.ERROR_DARK}aa`
-    : 'rgba(0, 0, 0, 0.25)'
+    ? `${InterfaceBackgroundColor.ERROR}aa`
+    : InterfaceBackgroundColor.BLACK_TRANSPARENT_25
   )};
 `;

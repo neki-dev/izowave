@@ -1,11 +1,12 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import { WORLD_FEATURES } from '~const/world';
+import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
 import { Text } from '~scene/system/interface/text';
 import { GameScene, IGame } from '~type/game';
-import { IWorld, WorldFeature } from '~type/world';
+import { IWorld } from '~type/world';
+import { PlayerSuperskill } from '~type/world/entities/player';
 
 import {
   Container,
@@ -18,10 +19,10 @@ import {
 } from './styles';
 
 type Props = {
-  type: WorldFeature
+  type: PlayerSuperskill
 };
 
-export const FeatureItem: React.FC<Props> = ({ type }) => {
+export const SuperskillItem: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.SYSTEM);
@@ -31,13 +32,13 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
   const [cost, setCost] = useState(0);
 
   const onClick = () => {
-    world.useFeature(type);
+    world.player.useSuperskill(type);
   };
 
   useSceneUpdate(scene, () => {
     setPaused(game.onPause);
-    setActive(Boolean(world.activeFeatures[type]));
-    setCost(world.getFeatureCost(type));
+    setActive(Boolean(world.player.activeSuperskills[type]));
+    setCost(world.player.getSuperskillCost(type));
   });
 
   return (
@@ -48,13 +49,13 @@ export const FeatureItem: React.FC<Props> = ({ type }) => {
           <Cost type="resources" value={cost} size="small" />
         </Head>
         <Body>
-          <Text>{WORLD_FEATURES[type].description}</Text>
+          <Text>{PLAYER_SUPERSKILLS[type].description}</Text>
         </Body>
       </Info>
       {isActive && (
         <Timeout
           style={{
-            animationDuration: `${WORLD_FEATURES[type].duration}ms`,
+            animationDuration: `${PLAYER_SUPERSKILLS[type].duration}ms`,
             animationPlayState: isPaused ? 'paused' : 'running',
           }}
         />

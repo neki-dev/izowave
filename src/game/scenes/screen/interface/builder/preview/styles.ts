@@ -1,11 +1,11 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 const animationBlink = keyframes`
-  0% { background: ${InterfaceColor.INFO_DARK}; }
-  50% { background: #586d1a; }
-  100% { background: ${InterfaceColor.INFO_DARK}; }
+  0% { background: ${InterfaceBackgroundColor.SUCCESS}; }
+  50% { background: ${InterfaceBackgroundColor.SUCCESS_DARK}; }
+  100% { background: ${InterfaceBackgroundColor.SUCCESS}; }
 `;
 
 export const Container = styled.div<{
@@ -18,7 +18,7 @@ export const Container = styled.div<{
   width: 70px;
   height: 60px;
   padding: 10px 16px 10px 10px;
-  background: ${InterfaceColor.BLACK_TRANSPARENT};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -29,13 +29,13 @@ export const Container = styled.div<{
     right: 3px;
     top: 3px;
     bottom: 3px;
-    background: ${InterfaceColor.ERROR};
+    background: ${InterfaceBackgroundColor.ERROR_LIGHT};
     border-radius: 2px;
     width: 3px;
   }
   ${(props) => (!props.$disabled && css`
     &:hover {
-      background: #000;
+      background: ${InterfaceBackgroundColor.BLACK};
       cursor: pointer;
     }
   `)}
@@ -48,12 +48,12 @@ export const Container = styled.div<{
   `)}
   ${(props) => (props.$usable && css`
     &::before {
-      background: ${InterfaceColor.INFO};
+      background: ${InterfaceBackgroundColor.SUCCESS_LIGHT};
     }
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
-    background: ${InterfaceColor.BLUE_DARK};
+    background: ${InterfaceBackgroundColor.BLUE};
   `)}
   ${(props) => (props.$newest && css`
     &::after {
@@ -66,7 +66,7 @@ export const Container = styled.div<{
       left: -3px;
       top: -3px;
       border-radius: 5px;
-      background: ${InterfaceColor.INFO_DARK};
+      background: ${InterfaceBackgroundColor.SUCCESS};
       padding: 2px 4px 3px 4px;
       animation: ${animationBlink} 1s infinite;
     }

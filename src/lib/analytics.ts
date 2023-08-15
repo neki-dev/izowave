@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import pkg from '../../package.json';
 import { ANALYTICS_SERVER } from '~const/analytics';
 import { AnalyticEventData, IAnalytics } from '~type/analytics';
-import { GameSettings } from '~type/game';
 
 export class Analytics implements IAnalytics {
   private userId: string;
@@ -63,7 +62,8 @@ export class Analytics implements IAnalytics {
     return {
       // Game progress
       success: data.success,
-      difficulty: data.world.game.settings[GameSettings.DIFFICULTY],
+      difficulty: data.world.game.difficulty,
+      planet: data.world.level.planet,
       waveNumber: data.world.wave.number,
       resources: data.world.player.resources,
       // System info

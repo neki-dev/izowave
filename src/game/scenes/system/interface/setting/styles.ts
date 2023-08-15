@@ -1,19 +1,22 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import {
+  InterfaceFont,
+  InterfaceTextColor,
+  InterfaceBackgroundColor,
+} from '~type/interface';
 
 export const Wrapper = styled.div`
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
+  display: flex;
+  align-items: center;
 `;
 
 export const Label = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 11px;
-  line-height: 11px;
-  margin-bottom: 5px;
+  font-size: 18px;
+  line-height: 18px;
+  margin-right: 15px;
 `;
 
 export const Values = styled.ul<{
@@ -32,23 +35,26 @@ export const Value = styled.li<{
   $active?: boolean
 }>`
   color: ${(props) => (props.$active
-    ? InterfaceColor.INFO
-    : 'rgba(255, 255, 255, 0.75)'
+    ? InterfaceTextColor.SUCCESS
+    : InterfaceBackgroundColor.WHITE_TRANSPARENT_75
   )};
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 13px;
-  line-height: 13px;
+  font-size: 14px;
+  line-height: 14px;
   border: 1px solid ${(props) => (props.$active
-    ? InterfaceColor.INFO
-    : 'rgba(255, 255, 255, 0.75)'
+    ? InterfaceTextColor.SUCCESS
+    : InterfaceBackgroundColor.WHITE_TRANSPARENT_75
   )};
-  padding: 2px 5px 4px 5px;
+  padding: 4px 7px 6px 7px;
+  border-radius: 3px;
   &:not(:last-child) {
     margin-right: 5px;
   }
   &:hover {
     cursor: pointer;
-    color: ${InterfaceColor.PRIMARY};
-    border-color: ${InterfaceColor.PRIMARY};
+    ${(props) => !props.$active && css`
+      color: ${InterfaceTextColor.HOVER};
+      border-color: ${InterfaceTextColor.HOVER};
+    `};
   }
 `;

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceColor, InterfaceFont } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 80px;
@@ -25,7 +25,7 @@ export const Action = styled.div<{
   $disabled?: boolean
 }>`
   padding: 6px 9px;
-  background: ${InterfaceColor.BLACK_TRANSPARENT};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   transform: translateX(-50%);
   pointer-events: all;
   display: flex;
@@ -42,6 +42,6 @@ export const Action = styled.div<{
   }
   &:hover {
     cursor: pointer;
-    background: #000;
+    background: ${InterfaceBackgroundColor.BLACK};
   }
 `;

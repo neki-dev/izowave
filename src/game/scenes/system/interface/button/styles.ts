@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 export const Container = styled.div<{
-  $size?: 'small' | 'large'
-  $view?: 'active' | 'confirm' | 'decline'
+  $size?: 'fixed' | 'small' | 'medium' | 'large'
+  $view?: 'active' | 'primary' | 'confirm' | 'decline'
 }>`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
@@ -14,35 +14,53 @@ export const Container = styled.div<{
   ${(props) => {
     switch (props.$view) {
       case 'active': return css`
-        background: ${InterfaceColor.BLUE};
+        background: ${InterfaceBackgroundColor.BLUE};
+      `;
+      case 'primary': return css`
+        background: ${InterfaceBackgroundColor.WARN};  
+        &:hover {
+          background: ${InterfaceBackgroundColor.WARN_DARK};
+        }
       `;
       case 'confirm': return css`
-        background: ${InterfaceColor.INFO_DARK};
+        background: ${InterfaceBackgroundColor.SUCCESS};  
+        &:hover {
+          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+        }
       `;
       case 'decline': return css`
-        background: ${InterfaceColor.ERROR_DARK};
+        background: ${InterfaceBackgroundColor.ERROR};
+        &:hover {
+          background: ${InterfaceBackgroundColor.ERROR_DARK};
+        }
       `;
       default: return css`
-        background: #000;
+        background: ${InterfaceBackgroundColor.BLACK};
+        &:hover {
+          background: ${InterfaceBackgroundColor.BLUE};
+        }
       `;
     }
   }}
   ${(props) => {
     switch (props.$size) {
-      case 'small': return css`
+      case 'fixed': return css`
+        text-align: center;
         font-size: 10px;
-        line-height: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        line-height: 24px;
         width: 80px;
-        height: 24px;
       `;
       case 'large': return css`
         font-size: 22px;
         line-height: 22px;
         padding: 13px 20px 14px 20px;
       `;
+      case 'medium': return css`
+        font-size: 18px;
+        line-height: 18px;
+        padding: 10px 18px 11px 18px;
+      `;
+      case 'small':
       default: return css`
         font-size: 11px;
         line-height: 11px;
@@ -52,6 +70,5 @@ export const Container = styled.div<{
   }}
   &:hover {
     cursor: pointer;
-    background: ${InterfaceColor.BLUE_DARK};
   }
 `;

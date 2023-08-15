@@ -3,6 +3,8 @@ import {
   MovementDirection,
   PlayerSkill,
   PlayerSkillData,
+  PlayerSuperskill,
+  PlayerSuperskillData,
 } from '~type/world/entities/player';
 
 import { DIFFICULTY } from '../difficulty';
@@ -41,6 +43,29 @@ export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
     description: 'Grow damage, radius and speed attack',
     experience: DIFFICULTY.ASSISTANT_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
+  },
+};
+
+export const PLAYER_SUPERSKILLS: Record<PlayerSuperskill, PlayerSuperskillData> = {
+  [PlayerSuperskill.FROST]: {
+    description: 'Freezes all spawned enemies',
+    cost: DIFFICULTY.SUPERSKILL_FROST_COST,
+    duration: DIFFICULTY.SUPERSKILL_FROST_DURATION,
+  },
+  [PlayerSuperskill.RAGE]: {
+    description: 'Doubles towers damage',
+    cost: DIFFICULTY.SUPERSKILL_RAGE_COST,
+    duration: DIFFICULTY.SUPERSKILL_RAGE_DURATION,
+  },
+  [PlayerSuperskill.SHIELD]: {
+    description: 'Prevents damage to all buildings',
+    cost: DIFFICULTY.SUPERSKILL_SHIELD_COST,
+    duration: DIFFICULTY.SUPERSKILL_SHIELD_DURATION,
+  },
+  [PlayerSuperskill.FIRE]: {
+    description: 'Deals damage to all enemies',
+    cost: DIFFICULTY.SUPERSKILL_FIRE_COST,
+    duration: DIFFICULTY.SUPERSKILL_FIRE_DURATION,
   },
 };
 

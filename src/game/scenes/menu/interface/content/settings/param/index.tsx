@@ -1,46 +1,30 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
+import { Setting } from '~scene/system/interface/setting';
 import { GameSettings, GameSettingsData, IGame } from '~type/game';
-
-import {
-  Wrapper, Label, Values, Value,
-} from './styles';
 
 type Props = {
   type: GameSettings
   data: GameSettingsData
-  disabled?: boolean
 };
 
-export const Param: React.FC<Props> = ({ type, data, disabled }) => {
+export const Param: React.FC<Props> = ({ type, data }) => {
   const game = useGame<IGame>();
 
   const [currentValue, setCurrentValue] = useState(game.settings[type]);
 
   const updateSetting = (value: string) => {
-    if (disabled && !data.runtime) {
-      return;
-    }
-
     game.updateSetting(type, value);
     setCurrentValue(value);
   };
 
   return (
-    <Wrapper>
-      <Label>{data.description}</Label>
-      <Values $disabled={disabled && !data.runtime}>
-        {data.values.map((value) => (
-          <Value
-            key={value}
-            onClick={() => updateSetting(value)}
-            $active={currentValue === value}
-          >
-            {value}
-          </Value>
-        ))}
-      </Values>
-    </Wrapper>
+    <Setting
+      label={data.description}
+      values={data.values}
+      currentValue={currentValue}
+      onChange={updateSetting}
+    />
   );
 };

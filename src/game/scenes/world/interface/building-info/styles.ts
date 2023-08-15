@@ -1,7 +1,11 @@
 import styled, { css } from 'styled-components';
 
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
-import { InterfaceFont, InterfaceColor } from '~type/interface';
+import {
+  InterfaceFont,
+  InterfaceTextColor,
+  InterfaceBackgroundColor,
+} from '~type/interface';
 
 export const Wrapper = styled.div`
   position: absolute;
@@ -10,13 +14,13 @@ export const Wrapper = styled.div`
   margin-top: -32px;
   &::after {
     position: absolute;
-    content: '';
+    content: "";
     bottom: 0;
     left: 50%;
     transform: translate(-50%, 100%);
     border-left: 12px solid transparent;
     border-right: 12px solid transparent;
-    border-top: 15px solid ${InterfaceColor.BLUE_DARK}cc;
+    border-top: 15px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   }
 `;
 
@@ -25,19 +29,19 @@ export const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 14px 16px;
-  background: ${InterfaceColor.BLUE_BLACK}ee;
+  background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   border-radius: 10px 10px 0 0;
 `;
 
 export const Body = styled.div`
-  background: ${InterfaceColor.BLUE_DARK}cc;
+  background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   padding: 16px;
   border-radius: 0 0 10px 10px;
 `;
 
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  color: ${InterfaceColor.INFO};
+  color: ${InterfaceTextColor.SUCCESS};
   font-size: 16px;
   line-height: 16px;
 `;
@@ -53,24 +57,24 @@ Level.Progress = styled.div<{
 }>`
   height: 12px;
   transition: all 0.2s ease-out;
-  background: #000;
+  background: ${InterfaceBackgroundColor.BLACK};
   box-shadow: 0 6px 0 #222 inset;
-  ${(props) => (props.$active && css`
-    background: ${InterfaceColor.INFO_DARK};
-    box-shadow: 0 6px 0 ${InterfaceColor.INFO} inset;
-  `)}
+  ${(props) => props.$active && css`
+    background: ${InterfaceBackgroundColor.SUCCESS};
+    box-shadow: 0 6px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+  `}
 `;
 
 export const Health: any = styled.div`
-  background: #000;
+  background: ${InterfaceBackgroundColor.BLACK};
   position: relative;
   margin-bottom: 6px;
 `;
 
 Health.Progress = styled.div`
   height: 14px;
-  background: ${InterfaceColor.ERROR_DARK};
-  box-shadow: 0 7px 0 rgba(255, 255, 255, 0.15) inset;
+  background: ${InterfaceBackgroundColor.ERROR};
+  box-shadow: 0 7px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
   transition: width 0.3s ease-out;
 `;
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceColor, InterfaceFont } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -10,10 +10,11 @@ export const Wrapper = styled.div`
 `;
 
 export const Label = styled.div`
-  background: ${InterfaceColor.ERROR_DARK};
+  background: ${InterfaceBackgroundColor.ERROR};
   color: #fff;
   padding: 15px 30px 24px 30px;
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 66px;
   line-height: 66px;
+  margin-bottom: 40px;
 `;

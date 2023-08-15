@@ -22,10 +22,17 @@ export const Wave: React.FC = () => {
   const [value, setValue] = useState<Nullable<number | string>>(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
-  const [isPeaceMode, setPeaceMode] = useState(false);
+  const [isDisabled, setDisabled] = useState(true);
 
   useSceneUpdate(world, () => {
-    setPeaceMode(world.wave.isPeaceMode);
+    const currentIsDisabled = world.wave.isPeaceMode || world.isTimePaused();
+
+    setDisabled(currentIsDisabled);
+
+    if (currentIsDisabled) {
+      return;
+    }
+
     setCurrentNumber(world.wave.number);
     setGoing(world.wave.isGoing);
 
@@ -42,7 +49,7 @@ export const Wave: React.FC = () => {
     }
   });
 
-  return isPeaceMode ? (
+  return isDisabled ? (
     <div />
   ) : (
     <Wrapper>

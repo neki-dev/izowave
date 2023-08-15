@@ -4,7 +4,6 @@ export const CONTROL_KEY = {
   MOVEMENT: 'W,A,S,D,UP,LEFT,DOWN,RIGHT',
 
   PAUSE: 'keyup-ESC',
-  START: 'keyup-ENTER',
 
   BUILDING_DESTROY: 'keyup-BACKSPACE',
   BUILDING_REPEAR: 'keyup-R',
@@ -15,11 +14,11 @@ export const CONTROL_KEY = {
 };
 
 export const CONTROLS: ControlItem[] = [
-  { name: 'W,A,S,D', description: 'Move player' },
-  { name: 'LEFT CLICK', description: 'Build' },
-  { name: 'RIGHT CLICK', description: 'Stop build' },
+  { name: 'W,A,S,D', description: 'Movement' },
   { name: 'E', description: 'Upgrade active building' },
+  { name: 'LEFT CLICK', description: 'Build' },
   { name: 'R', description: 'Repair active building' },
+  { name: 'RIGHT CLICK', description: 'Stop build' },
   { name: 'BACKSPACE', description: 'Destroy active building' },
   { name: 'N', description: 'Skip wave timeleft' },
 ];

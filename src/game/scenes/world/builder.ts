@@ -53,8 +53,8 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene = scene;
 
     this.setMaxListeners(0);
-    this.addKeyboardHandler();
-    this.addTutorialHandler();
+    this.handleKeyboard();
+    this.handleTutorial();
 
     this.scene.player.live.on(LiveEvents.DEAD, () => {
       this.closeBuilder();
@@ -115,7 +115,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   public addFoundation(position: Vector2D) {
-    const newBiome = Level.GetBiome(BiomeType.RUBBLE);
+    const newBiome = this.scene.level.getBiome(BiomeType.RUBBLE);
 
     if (!newBiome) {
       return;
@@ -134,8 +134,8 @@ export class Builder extends EventEmitter implements IBuilder {
           this.scene.level.groundLayer.putTileAt(index, x, y);
           this.scene.level.map.replaceAt({ x, y }, newBiome);
 
-          // Remove trees
-          const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.TREE);
+          // Remove scenery
+          const tile = this.scene.level.getTileWithType({ x, y, z: 1 }, TileType.SCENERY);
 
           if (tile) {
             tile.destroy();
@@ -358,8 +358,6 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
     this.scene.sound.play(BuildingAudio.BUILD);
-
-    this.emit(BuilderEvents.BUILD, building);
   }
 
   private isBuildingLimitReached(variant: BuildingVariant) {
@@ -457,7 +455,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.buildingPreview = null;
   }
 
-  private addKeyboardHandler() {
+  private handleKeyboard() {
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
       if (Number(event.key)) {
         this.switchBuildingVariant(Number(event.key) - 1);
@@ -465,7 +463,7 @@ export class Builder extends EventEmitter implements IBuilder {
     });
   }
 
-  private addTutorialHandler() {
+  private handleTutorial() {
     this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
       beg: () => {
         this.scene.setTimePause(true);

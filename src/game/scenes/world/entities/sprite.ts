@@ -11,7 +11,9 @@ import { ILive, LiveEvents } from '~type/live';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
-import { ISprite, SpriteData, SpriteIndicator } from '~type/world/entities/sprite';
+import {
+  ISprite, SpriteData, SpriteIndicator, SpriteIndicatorData,
+} from '~type/world/entities/sprite';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
@@ -46,7 +48,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   constructor(scene: IWorld, {
-    texture, positionAtMatrix, health, armour, speed, frame = 0,
+    texture, positionAtMatrix, health, speed, frame = 0,
   }: SpriteData) {
     const positionAtWorld = Level.ToWorldPosition({
       ...positionAtMatrix,
@@ -57,7 +59,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     scene.add.existing(this);
 
     this.positionAtMatrix = positionAtMatrix;
-    this.live = new Live({ health, armour });
+    this.live = new Live({ health });
     this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
 
@@ -217,13 +219,13 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return points;
   }
 
-  public addIndicator(color: number, value: () => number, bySpriteSize = false) {
-    const width = bySpriteSize ? this.displayWidth : 20;
+  public addIndicator(data: SpriteIndicatorData) {
+    const width = data.size ?? this.displayWidth;
     const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
 
     body.setOrigin(0.0, 0.0);
 
-    const bar = this.scene.add.rectangle(1, 1, 0, 0, color);
+    const bar = this.scene.add.rectangle(1, 1, 0, 0, data.color);
 
     bar.setOrigin(0.0, 0.0);
 
@@ -233,7 +235,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     container.add([body, bar]);
 
     this.container.add(container);
-    this.indicators.push({ container, value });
+    this.indicators.push({ container, value: data.value });
   }
 
   private updateIndicators() {

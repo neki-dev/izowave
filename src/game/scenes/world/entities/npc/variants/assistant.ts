@@ -63,8 +63,13 @@ export class Assistant extends NPC implements IAssistant {
 
     this.body.setCircle(this.width / 2, 0, 1);
 
-    this.addIndicator(0xd0ff4f, () => this.live.health / this.live.maxHealth);
-    this.addWaveCompleteHandler();
+    this.addIndicator({
+      color: 0xd0ff4f,
+      value: () => this.live.health / this.live.maxHealth,
+      size: 20,
+    });
+
+    this.handleWaveComplete();
     this.activate();
 
     this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
@@ -192,7 +197,7 @@ export class Assistant extends NPC implements IAssistant {
     return params;
   }
 
-  private addWaveCompleteHandler() {
+  private handleWaveComplete() {
     const handler = () => {
       this.live.heal();
     };

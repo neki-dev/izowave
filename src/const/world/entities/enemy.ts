@@ -21,6 +21,14 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
       gamut: 4,
     },
   },
+  [EnemyTexture.RISPER]: {
+    frameRate: 4,
+    size: {
+      width: 16,
+      height: 24,
+      gamut: 4,
+    },
+  },
   [EnemyTexture.DEMON]: {
     frameRate: 4,
     size: {
