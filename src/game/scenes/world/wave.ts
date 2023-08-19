@@ -140,8 +140,6 @@ export class Wave extends EventEmitter implements IWave {
     this.scene.sound.play(WaveAudio.START);
 
     this.emit(WaveEvents.START, this.number);
-
-    this.scene.game.tutorial.pause(TutorialStep.UPGRADE_SKILL);
   }
 
   private complete() {
@@ -160,6 +158,7 @@ export class Wave extends EventEmitter implements IWave {
     this.scene.level.looseEffects();
 
     if (this.number === 2) {
+      this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
       this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
     } else if (this.number === 3) {
       this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);

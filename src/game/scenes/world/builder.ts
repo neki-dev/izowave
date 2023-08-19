@@ -360,7 +360,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
   }
 
-  private isBuildingLimitReached(variant: BuildingVariant) {
+  public isBuildingLimitReached(variant: BuildingVariant) {
     const limit = this.getBuildingLimit(variant);
 
     if (limit) {

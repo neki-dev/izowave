@@ -115,7 +115,7 @@ export interface IWorld extends IScene {
   /**
    * Get random enemy spawn position.
    */
-  getEnemySpawnPosition(): Nullable<Vector2D>
+  getEnemySpawnPosition(): Vector2D
 }
 
 export enum WorldEvents {

@@ -75,6 +75,8 @@ export class World extends Scene implements IWorld {
 
   public enemySpawnPositions: Vector2D[] = [];
 
+  private enemySpawnPositionsAnalog: Vector2D[] = [];
+
   private lifecyle: Phaser.Time.TimerEvent;
 
   private currentHintId: Nullable<string> = null;
@@ -100,10 +102,7 @@ export class World extends Scene implements IWorld {
     this.level = new Level(this, data.planet ?? LevelPlanet.EARTH);
     this.camera = new Camera(this);
 
-    this.enemySpawnPositions = this.level.readSpawnPositions(
-      SpawnTarget.ENEMY,
-      ENEMY_SPAWN_POSITIONS_GRID,
-    );
+    this.generateEnemySpawnPositions();
   }
 
   public start() {
@@ -174,21 +173,37 @@ export class World extends Scene implements IWorld {
   }
 
   public spawnEnemy(variant: EnemyVariant): Nullable<IEnemy> {
-    const positionAtMatrix = this.getEnemySpawnPosition();
-
-    if (!positionAtMatrix) {
-      return null;
-    }
-
     const EnemyInstance = ENEMIES[variant];
+    const positionAtMatrix = this.getEnemySpawnPosition();
     const enemy: IEnemy = new EnemyInstance(this, { positionAtMatrix });
 
     return enemy;
   }
 
+  private generateEnemySpawnPositions() {
+    this.enemySpawnPositions = this.level.readSpawnPositions(
+      SpawnTarget.ENEMY,
+      ENEMY_SPAWN_POSITIONS_GRID,
+    );
+
+    this.enemySpawnPositionsAnalog = [];
+    for (let x = 0; x < this.level.map.width; x++) {
+      for (let y = 0; y < this.level.map.height; y++) {
+        if (
+          x === 0
+          || x === this.level.map.width - 1
+          || y === 0
+          || y === this.level.map.height - 1
+        ) {
+          this.enemySpawnPositionsAnalog.push({ x, y });
+        }
+      }
+    }
+  }
+
   public getEnemySpawnPosition() {
     const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
-    const freePositions = this.enemySpawnPositions.filter((position) => (
+    let freePositions = this.enemySpawnPositions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building) => (
         Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
@@ -196,9 +211,7 @@ export class World extends Scene implements IWorld {
     ));
 
     if (freePositions.length === 0) {
-      console.warn('Not found free position for enemy spawn');
-
-      return null;
+      freePositions = this.enemySpawnPositionsAnalog;
     }
 
     const closestPositions = sortByDistance(freePositions, this.player.positionAtMatrix)

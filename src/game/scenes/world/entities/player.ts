@@ -240,12 +240,6 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public upgrade(type: PlayerSkill) {
-    if (this.scene.wave.isGoing) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Cannot be upgraded while wave is coming');
-
-      return;
-    }
-
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
@@ -258,11 +252,13 @@ export class Player extends Sprite implements IPlayer {
 
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
+        const addedHealth = nextValue - this.live.maxHealth;
+
         this.live.setMaxHealth(nextValue);
-        this.live.heal();
+        this.live.addHealth(addedHealth);
         if (this.scene.assistant) {
           this.scene.assistant.live.setMaxHealth(nextValue);
-          this.scene.assistant.live.heal();
+          this.scene.assistant.live.addHealth(addedHealth);
         }
         break;
       }
@@ -331,8 +327,6 @@ export class Player extends Sprite implements IPlayer {
 
     this.giveExperience(experience);
     this.live.heal();
-
-    this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
   }
 
   private registerKeyboard() {

@@ -61,6 +61,12 @@ export interface IBuilder extends EventEmitter {
   getBuildingLimit(variant: BuildingVariant): Nullable<number>
 
   /**
+   * Check is building limit reached.
+   * @param variant - Building variant
+   */
+  isBuildingLimitReached(variant: BuildingVariant): boolean
+
+  /**
    * Check is tutorial allow building variant.
    * @param variant - Building variant
    */
