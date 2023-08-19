@@ -15,10 +15,7 @@ type Props = {
   variant: BuildingVariant
 };
 
-export const BuilderPreview: React.FC<Props> = ({
-  number,
-  variant,
-}) => {
+export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [isDisallow, setDisallow] = useState(false);
@@ -51,29 +48,19 @@ export const BuilderPreview: React.FC<Props> = ({
     const currentIsActive = world.builder.variant === variant;
     const currentIsDisallow = !world.builder.isBuildingAllowByWave(variant);
     const currentIsDisabled = !world.builder.isBuildingAllowByTutorial(variant);
+    const currentIsUsable = (
+      !currentIsDisallow
+      && !currentIsDisabled
+      && world.player.resources >= BUILDINGS[variant].Cost
+      && !world.builder.isBuildingLimitReached(variant)
+    );
 
     setActive(currentIsActive);
-    if (currentIsActive) {
-      setUsed(true);
-    }
     setDisallow(currentIsDisallow);
     setDisabled(currentIsDisabled);
-
-    if (!currentIsDisallow && !currentIsDisabled) {
-      let limitReached = false;
-      const enoughResources = world.player.resources >= BUILDINGS[variant].Cost;
-
-      if (enoughResources) {
-        const currentLimit = world.builder.getBuildingLimit(variant);
-
-        if (currentLimit) {
-          const existCount = world.builder.getBuildingsByVariant(variant).length;
-
-          limitReached = existCount >= currentLimit;
-        }
-      }
-
-      setUsable(enoughResources && !limitReached);
+    setUsable(currentIsUsable);
+    if (currentIsActive) {
+      setUsed(true);
     }
   });
 
