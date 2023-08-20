@@ -9,6 +9,7 @@ const world = {
   isTimePaused: jest.fn(() => false),
   setTimePause: jest.fn(),
   spawnEnemy: jest.fn(),
+  getResourceExtractionSpeed: jest.fn(() => 1),
   game: {
     difficulty: 1,
     tutorial: {
@@ -36,7 +37,9 @@ const world = {
   level: {
     looseEffects: jest.fn(),
   },
-  player: {},
+  player: {
+    giveResources: jest.fn(),
+  },
   input: {
     keyboard: {
       on: jest.fn(),
