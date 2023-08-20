@@ -13,7 +13,7 @@ export class EnemyRisper extends Enemy {
       multipliers: {
         health: 0.7,
         damage: 0.4,
-        speed: 0.8,
+        speed: 1.0,
       },
     });
   }

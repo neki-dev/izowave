@@ -151,6 +151,7 @@ export type GameSettingsData = {
 };
 
 export type GameStat = {
+  score: number
   waves: number
   kills: number
   lived: number

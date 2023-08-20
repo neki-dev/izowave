@@ -28,11 +28,20 @@ export const UpgradesList: React.FC<Props> = ({ onClose }) => {
     }
   };
 
+  const onKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+      event.stopPropagation();
+    }
+  };
+
   useEffect(() => {
     document.addEventListener('click', onClickOutside);
+    document.addEventListener('keyup', onKeyPress);
 
     return () => {
       document.removeEventListener('click', onClickOutside);
+      document.removeEventListener('keyup', onKeyPress);
     };
   }, []);
 

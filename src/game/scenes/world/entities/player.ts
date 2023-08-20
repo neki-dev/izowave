@@ -37,6 +37,12 @@ export class Player extends Sprite implements IPlayer {
 
   private set resources(v) { this._resources = v; }
 
+  private _score: number = 0;
+
+  public get score() { return this._score; }
+
+  private set score(v) { this._score = v; }
+
   private _kills: number = 0;
 
   public get kills() { return this._kills; }
@@ -126,6 +132,14 @@ export class Player extends Sprite implements IPlayer {
 
     this.updateDirection();
     this.updateVelocity();
+  }
+
+  public giveScore(amount: number) {
+    if (this.live.isDead()) {
+      return;
+    }
+
+    this.score += amount;
   }
 
   public giveExperience(amount: number) {
@@ -326,6 +340,7 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.giveExperience(experience);
+    this.giveScore(number * 10);
     this.live.heal();
   }
 

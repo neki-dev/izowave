@@ -238,7 +238,7 @@ export class Game extends Phaser.Game implements IGame {
   public getDifficultyMultiplier() {
     switch (this.difficulty) {
       case GameDifficulty.EASY: return 0.8;
-      case GameDifficulty.HARD: return 1.2;
+      case GameDifficulty.HARD: return 1.3;
       default: return 1.0;
     }
   }
@@ -311,12 +311,13 @@ export class Game extends Phaser.Game implements IGame {
     localStorage.setItem(`BEST_STAT.${this.difficulty}`, JSON.stringify(betterStat));
   }
 
-  private getCurrentStat() {
+  private getCurrentStat(): GameStat {
     return {
+      score: this.world.player.score,
       waves: this.world.wave.number - 1,
       kills: this.world.player.kills,
       lived: this.world.getTime() / 1000 / 60,
-    } as GameStat;
+    };
   }
 
   private registerShaders() {

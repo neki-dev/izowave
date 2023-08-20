@@ -74,6 +74,11 @@ export interface IWorld extends IScene {
   setTimePause(state: boolean): void
 
   /**
+   * Get count of resources generate per second.
+   */
+  getResourceExtractionSpeed(): number
+
+  /**
    * Add entity to group.
    */
   addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject): void

@@ -24,7 +24,7 @@ import { IWorld, WorldEvents, WorldHint } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
-import { IBuilding } from '~type/world/entities/building';
+import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
@@ -159,6 +159,15 @@ export class World extends Scene implements IWorld {
     this.lifecyle.paused = state;
   }
 
+  public getResourceExtractionSpeed() {
+    const generators = this.builder.getBuildingsByVariant(BuildingVariant.GENERATOR);
+    const countPerSecond = generators.reduce((current, generator) => (
+      current + ((1 / generator.getActionsDelay()) * 1000)
+    ), 0);
+
+    return countPerSecond;
+  }
+
   public addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject) {
     this.add.existing(gameObject);
     this.entityGroups[type].add(gameObject);
@@ -282,16 +291,16 @@ export class World extends Scene implements IWorld {
         health: this.player.live.maxHealth,
         level: this.player.upgradeLevel[PlayerSkill.ASSISTANT],
       });
+
+      this.assistant.once(Phaser.Scenes.Events.DESTROY, () => {
+        this.assistant = null;
+        this.wave.once(WaveEvents.COMPLETE, () => {
+          create();
+        });
+      });
     };
 
     create();
-
-    this.assistant?.on(Phaser.Scenes.Events.DESTROY, () => {
-      this.assistant = null;
-      this.wave.once(WaveEvents.COMPLETE, () => {
-        create();
-      });
-    });
   }
 
   private addCrystals() {
@@ -308,7 +317,7 @@ export class World extends Scene implements IWorld {
     };
 
     const maxCount = Math.ceil(
-      Math.floor(this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR),
+      Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
 
     for (let i = 0; i < maxCount; i++) {
