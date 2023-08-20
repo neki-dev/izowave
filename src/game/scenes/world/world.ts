@@ -308,7 +308,7 @@ export class World extends Scene implements IWorld {
     };
 
     const maxCount = Math.ceil(
-      Math.floor(this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR),
+      Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
 
     for (let i = 0; i < maxCount; i++) {
