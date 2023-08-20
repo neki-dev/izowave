@@ -107,7 +107,13 @@ export class Wave extends EventEmitter implements IWave {
       return;
     }
 
-    this.nextWaveTimestamp = this.scene.getTime();
+    const now = this.scene.getTime();
+    const skipedTime = this.nextWaveTimestamp - now;
+    const resources = Math.floor(this.scene.getResourceExtractionSpeed() * (skipedTime / 1000));
+
+    this.scene.player.giveResources(resources);
+
+    this.nextWaveTimestamp = now;
   }
 
   private runTimeleft() {

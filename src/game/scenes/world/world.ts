@@ -24,7 +24,7 @@ import { IWorld, WorldEvents, WorldHint } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
-import { IBuilding } from '~type/world/entities/building';
+import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
@@ -157,6 +157,15 @@ export class World extends Scene implements IWorld {
 
   public setTimePause(state: boolean) {
     this.lifecyle.paused = state;
+  }
+
+  public getResourceExtractionSpeed() {
+    const generators = this.builder.getBuildingsByVariant(BuildingVariant.GENERATOR);
+    const countPerSecond = generators.reduce((current, generator) => (
+      current + ((1 / generator.getActionsDelay()) * 1000)
+    ), 0);
+
+    return countPerSecond;
   }
 
   public addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject) {
