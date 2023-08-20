@@ -282,16 +282,16 @@ export class World extends Scene implements IWorld {
         health: this.player.live.maxHealth,
         level: this.player.upgradeLevel[PlayerSkill.ASSISTANT],
       });
+
+      this.assistant.once(Phaser.Scenes.Events.DESTROY, () => {
+        this.assistant = null;
+        this.wave.once(WaveEvents.COMPLETE, () => {
+          create();
+        });
+      });
     };
 
     create();
-
-    this.assistant?.on(Phaser.Scenes.Events.DESTROY, () => {
-      this.assistant = null;
-      this.wave.once(WaveEvents.COMPLETE, () => {
-        create();
-      });
-    });
   }
 
   private addCrystals() {
