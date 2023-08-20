@@ -8,6 +8,7 @@ export class EnemyBoss extends Enemy {
     super(scene, {
       ...data,
       texture: EnemyTexture.BOSS,
+      score: 10,
       multipliers: {
         health: 7.0,
         damage: 1.0,

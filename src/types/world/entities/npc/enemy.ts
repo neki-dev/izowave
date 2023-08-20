@@ -64,6 +64,7 @@ export type EnemyVariantData = {
 
 export type EnemyData = EnemyVariantData & {
   texture: EnemyTexture
+  score?: number
   multipliers: {
     speed: number
     damage: number

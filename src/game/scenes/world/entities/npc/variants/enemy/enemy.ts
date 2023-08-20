@@ -35,10 +35,12 @@ export class Enemy extends NPC implements IEnemy {
 
   private damageTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
+  private score: number;
+
   private isOverlapTarget: boolean = false;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, multipliers,
+    positionAtMatrix, texture, score, multipliers,
   }: EnemyData) {
     super(scene, {
       texture,
@@ -69,6 +71,7 @@ export class Enemy extends NPC implements IEnemy {
       scale: DIFFICULTY.ENEMY_DAMAGE_GROWTH,
       level: scene.wave.number,
     });
+    this.score = score ?? 1;
     this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
       multipliers.health
@@ -154,6 +157,7 @@ export class Enemy extends NPC implements IEnemy {
     });
 
     this.scene.player.giveExperience(experience);
+    this.scene.player.giveScore(this.score);
     this.scene.player.incrementKills();
 
     this.addBloodEffect();

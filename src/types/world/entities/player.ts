@@ -15,6 +15,11 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly experience: number
 
   /**
+   * Score amount.
+   */
+  readonly score: number
+
+  /**
    * Resourses amount.
    */
   readonly resources: number
@@ -48,6 +53,12 @@ export interface IPlayer extends ISprite, IEnemyTarget {
    * Inremeting number of killed enemies.
    */
   incrementKills(): void
+
+  /**
+   * Give player score.
+   * @param amount - Amount
+   */
+  giveScore(amount: number): void
 
   /**
    * Give player experience.

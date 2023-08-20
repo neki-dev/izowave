@@ -311,12 +311,13 @@ export class Game extends Phaser.Game implements IGame {
     localStorage.setItem(`BEST_STAT.${this.difficulty}`, JSON.stringify(betterStat));
   }
 
-  private getCurrentStat() {
+  private getCurrentStat(): GameStat {
     return {
+      score: this.world.player.score,
       waves: this.world.wave.number - 1,
       kills: this.world.player.kills,
       lived: this.world.getTime() / 1000 / 60,
-    } as GameStat;
+    };
   }
 
   private registerShaders() {
