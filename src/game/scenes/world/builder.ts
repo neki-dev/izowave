@@ -61,6 +61,10 @@ export class Builder extends EventEmitter implements IBuilder {
     });
   }
 
+  public destroy() {
+    this.removeAllListeners();
+  }
+
   public update() {
     if (this.isCanBuild()) {
       if (this.isBuild) {

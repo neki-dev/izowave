@@ -22,6 +22,11 @@ export interface IWave extends EventEmitter {
   readonly isPeaceMode: boolean
 
   /**
+   * Destroy wave.
+   */
+  destroy(): void
+
+  /**
    * Update wave process.
    */
   update(): void

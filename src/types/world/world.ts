@@ -58,6 +58,11 @@ export interface IWorld extends IScene {
   start(): void
 
   /**
+   * Stop world.
+   */
+  stop(): void
+
+  /**
    * Get lifecyle time.
    */
   getTime(): number

@@ -159,7 +159,7 @@ export class Game extends Phaser.Game implements IGame {
     this.screen.scene.resume();
   }
 
-  public startGame() {
+  public startNewGame() {
     if (this.isStarted) {
       return;
     }
@@ -189,6 +189,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.isStarted = false;
 
+    this.world.stop();
     this.world.scene.restart();
 
     this.tutorial.reset();

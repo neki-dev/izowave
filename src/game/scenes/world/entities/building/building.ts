@@ -121,8 +121,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeUpgradeIcon();
       this.unfocus();
       this.unselect();
-
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
+      this.live.removeAllListeners();
     });
   }
 

@@ -31,7 +31,7 @@ export const NewGame: React.FC = () => {
   };
 
   const onClickStart = () => {
-    game.startGame();
+    game.startNewGame();
   };
 
   return (

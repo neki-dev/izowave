@@ -121,6 +121,11 @@ export class World extends Scene implements IWorld {
     this.builder = new Builder(this);
   }
 
+  public stop() {
+    this.wave?.destroy();
+    this.builder?.destroy();
+  }
+
   public update(time: number, delta: number) {
     if (!this.game.isStarted) {
       return;

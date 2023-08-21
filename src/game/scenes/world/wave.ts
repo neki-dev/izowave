@@ -60,6 +60,10 @@ export class Wave extends EventEmitter implements IWave {
     this.runTimeleft();
   }
 
+  public destroy() {
+    this.removeAllListeners();
+  }
+
   public getTimeleft() {
     const now = this.scene.getTime();
 

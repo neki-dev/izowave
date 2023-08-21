@@ -28,6 +28,11 @@ export interface IBuilder extends EventEmitter {
   selectedBuilding: Nullable<IBuilding>
 
   /**
+   * Destroy builder.
+   */
+  destroy(): void
+
+  /**
    * Toggle build state and update build area.
    */
   update(): void
