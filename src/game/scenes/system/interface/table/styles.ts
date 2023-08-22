@@ -4,6 +4,7 @@ import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Table: any = styled.table`
   margin-bottom: 30px;
+  color: #fff;
   font-family: ${InterfaceFont.PIXEL_TEXT};
   font-size: 14px;
   line-height: 14px;
@@ -16,7 +17,7 @@ Table.Head = styled.thead`
 `;
 
 Table.HeadRow = styled.tr`
-  color: #ccc;
+  opacity: 0.5;
 `;
 
 Table.Body = styled.tbody``;
@@ -24,9 +25,7 @@ Table.Body = styled.tbody``;
 Table.BodyRow = styled.tr<{
   $active?: boolean
 }>`
-  border-radius: 5px; 
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
-  color: #fff;
   pointer-events: all;
   ${(props) => (props.$active ? css`
     background: ${InterfaceBackgroundColor.SUCCESS_DARK};
@@ -44,9 +43,16 @@ Table.Cell = styled.td<{
   $type?: 'delete'
 }>`
   padding: 12px 16px;
+  overflow: hidden;
   ${(props) => (props.$type === 'delete' && css`
     &:hover {
       background: ${InterfaceBackgroundColor.ERROR_DARK};
     }
   `)}
+  &:first-child {
+    border-radius: 5px 0 0 5px;
+  }
+  &:last-child {
+    border-radius: 0 5px 5px 0;
+  }
 `;

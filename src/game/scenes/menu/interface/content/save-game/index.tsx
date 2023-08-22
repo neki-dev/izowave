@@ -3,12 +3,13 @@ import React, {
   useRef, ChangeEvent, useEffect, useState,
 } from 'react';
 
+import { MAX_GAME_SAVES } from '~const/game';
 import { Button } from '~scene/system/interface/button';
 import { Table } from '~scene/system/interface/table';
 import { IGame } from '~type/game';
 import { StorageSave } from '~type/storage';
 
-import { Input, Wrapper } from './styles';
+import { Input, Limit, Wrapper } from './styles';
 
 export const SaveGame: React.FC = () => {
   const game = useGame<IGame>();
@@ -98,13 +99,17 @@ export const SaveGame: React.FC = () => {
           </Table.Body>
         </Table>
       )}
-      <Input
-        type="text"
-        placeholder="Save name"
-        value={saveName}
-        autoFocus={true}
-        onChange={onChangeSaveName}
-      />
+      {saves.length >= MAX_GAME_SAVES ? (
+        <Limit>You have maximum saves. Delete or rewrite exist</Limit>
+      ) : (
+        <Input
+          type="text"
+          placeholder="Save name"
+          value={saveName}
+          autoFocus={true}
+          onChange={onChangeSaveName}
+        />
+      )}
       <Button
         view="primary"
         size="medium"
