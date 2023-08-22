@@ -89,6 +89,17 @@ export interface IPlayer extends ISprite, IEnemyTarget {
    * @param type - Superskill
    */
   getSuperskillCost(type: PlayerSuperskill): number
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): PlayerSavePayload
+
+  /**
+   * Load saved data.
+   * @param data - Data
+   */
+  loadSavePayload(data: PlayerSavePayload): void
 }
 
 export enum PlayerTexture {
@@ -142,4 +153,14 @@ export type PlayerSuperskillData = {
   description: string
   cost: number
   duration: number
+};
+
+export type PlayerSavePayload = {
+  position: Vector2D
+  score: number
+  experience: number
+  resources: number
+  kills: number
+  health: number
+  upgradeLevel: Record<PlayerSkill, number>
 };

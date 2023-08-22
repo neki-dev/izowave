@@ -7,16 +7,15 @@ import {
 } from '~type/interface';
 
 export const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
+
 `;
 
 export const Label = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 18px;
-  line-height: 18px;
-  margin-right: 15px;
+  font-size: 14px;
+  line-height: 14px;
+  margin-bottom: 10px;
 `;
 
 export const Values = styled.ul<{

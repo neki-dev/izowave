@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 import { IWorld } from '~type/world';
-import { BuildingVariant, IBuilding } from '~type/world/entities/building';
+import { BuildingBuildData, BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { Vector2D } from '~type/world/level';
 
 export interface IBuilder extends EventEmitter {
@@ -36,6 +36,12 @@ export interface IBuilder extends EventEmitter {
    * Toggle build state and update build area.
    */
   update(): void
+
+  /**
+   * Create building.
+   * @param data - Building data
+   */
+  createBuilding(data: BuildingBuildData): IBuilding
 
   /**
    * Set current building variant.

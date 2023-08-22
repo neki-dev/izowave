@@ -11,10 +11,8 @@ export class Menu extends Scene {
     super(GameScene.MENU);
   }
 
-  public create(data: { page?: MenuPage }) {
-    new Interface(this, MenuUI, {
-      defaultPage: data.page,
-    });
+  public create(data: { defaultPage: MenuPage }) {
+    new Interface(this, MenuUI, data);
 
     if (!this.game.isStarted) {
       this.game.world.camera.focusOnLevel();

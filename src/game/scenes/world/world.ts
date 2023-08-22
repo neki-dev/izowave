@@ -20,7 +20,9 @@ import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
 import { GameScene } from '~type/game';
 import { LiveEvents } from '~type/live';
-import { IWorld, WorldEvents, WorldHint } from '~type/world';
+import {
+  IWorld, WorldEvents, WorldHint, WorldSavePayload,
+} from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
@@ -30,7 +32,7 @@ import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
-  ILevel, LevelPlanet, SpawnTarget, Vector2D,
+  ILevel, LevelData, SpawnTarget, Vector2D,
 } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
@@ -91,15 +93,16 @@ export class World extends Scene implements IWorld {
     super(GameScene.WORLD);
   }
 
-  public create(data: { planet?: LevelPlanet }) {
+  public create(data: LevelData) {
     this.input.setPollAlways();
 
     this.lifecyle = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
       loop: true,
+      paused: true,
     });
 
-    this.level = new Level(this, data.planet ?? LevelPlanet.EARTH);
+    this.level = new Level(this, data);
     this.camera = new Camera(this);
 
     this.generateEnemySpawnPositions();
@@ -108,17 +111,21 @@ export class World extends Scene implements IWorld {
   public start() {
     new Interface(this, WorldUI);
 
-    this.addEntityGroups();
-
     this.camera.addZoomControl();
 
-    this.wave = new Wave(this);
+    this.resetTime();
 
+    this.addWaveManager();
+    this.addEntityGroups();
     this.addPlayer();
     this.addAssistant();
     this.addCrystals();
 
     this.builder = new Builder(this);
+
+    if (this.game.usedSave) {
+      this.loadSavePayload(this.game.usedSave.payload.world);
+    }
   }
 
   public stop() {
@@ -162,6 +169,11 @@ export class World extends Scene implements IWorld {
 
   public setTimePause(state: boolean) {
     this.lifecyle.paused = state;
+  }
+
+  private resetTime() {
+    this.setTimePause(false);
+    this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
   }
 
   public getResourceExtractionSpeed() {
@@ -250,6 +262,27 @@ export class World extends Scene implements IWorld {
     };
   }
 
+  public getSavePayload(): WorldSavePayload {
+    return {
+      time: this.getTime(),
+      crystals: this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed(),
+      buildings: this.getEntities<IBuilding>(EntityType.BUILDING)
+        .map((building) => building.getSavePayload()),
+    };
+  }
+
+  private loadSavePayload(data: WorldSavePayload) {
+    data.buildings.forEach((buildingData) => {
+      const building = this.builder.createBuilding({
+        variant: buildingData.variant,
+        positionAtMatrix: buildingData.position,
+        instant: true,
+      });
+
+      building.loadSavePayload(buildingData);
+    });
+  }
+
   private addEntityGroups() {
     this.entityGroups = {
       [EntityType.CRYSTAL]: this.add.group(),
@@ -266,12 +299,30 @@ export class World extends Scene implements IWorld {
     };
   }
 
-  private addPlayer() {
-    const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
+  private addWaveManager() {
+    this.wave = new Wave(this);
 
-    this.player = new Player(this, {
-      positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
-    });
+    if (this.game.usedSave) {
+      this.wave.loadSavePayload(this.game.usedSave.payload.wave);
+    }
+  }
+
+  private addPlayer() {
+    let positionAtMatrix: Vector2D;
+
+    if (this.game.usedSave) {
+      positionAtMatrix = this.game.usedSave.payload.player.position;
+    } else {
+      positionAtMatrix = Phaser.Utils.Array.GetRandom(
+        this.level.readSpawnPositions(SpawnTarget.PLAYER),
+      );
+    }
+
+    this.player = new Player(this, { positionAtMatrix });
+
+    if (this.game.usedSave) {
+      this.player.loadSavePayload(this.game.usedSave.payload.player);
+    }
 
     this.camera.focusOn(this.player);
 
@@ -324,8 +375,9 @@ export class World extends Scene implements IWorld {
     const maxCount = Math.ceil(
       Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
+    const currentCount = this.game.usedSave?.payload.world.crystals ?? maxCount;
 
-    for (let i = 0; i < maxCount; i++) {
+    for (let i = 0; i < currentCount; i++) {
       create();
     }
 

@@ -7,7 +7,7 @@ import { Content } from './content';
 import { Copyright } from './copyright';
 import { Navigation } from './navigation';
 import {
-  Wrapper, Logotype, Header, Block, Main, Menu,
+  Wrapper, Logotype, Sidebar, Main,
 } from './styles';
 
 type Props = {
@@ -15,26 +15,18 @@ type Props = {
 };
 
 export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
-  const [page, setPage] = useState(defaultPage ?? MenuPage.NEW_GAME);
+  const [page, setPage] = useState(defaultPage);
 
   return (
     <Overlay>
       <Wrapper>
-        <Header>
-          <Block>
-            <Logotype src='assets/logotype.png' />
-            <Copyright />
-          </Block>
-        </Header>
-        <Menu>
-          <Block>
-            <Navigation page={page} onSelect={setPage} />
-          </Block>
-        </Menu>
+        <Sidebar>
+          <Logotype src="assets/logotype.png" />
+          <Navigation page={page} onSelect={setPage} />
+          <Copyright />
+        </Sidebar>
         <Main>
-          <Block>
-            <Content page={page} />
-          </Block>
+          <Content page={page} />
         </Main>
       </Wrapper>
     </Overlay>

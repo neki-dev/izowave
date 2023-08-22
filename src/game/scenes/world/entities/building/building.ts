@@ -21,7 +21,7 @@ import { EntityType } from '~type/world/entities';
 import {
   BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
-  BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon, BuildingGrowthValue,
+  BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon, BuildingGrowthValue, BuildingSavePayload,
 } from '~type/world/entities/building';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
@@ -78,7 +78,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private buildBar: Nullable<Phaser.GameObjects.Container> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, health, texture, variant, radius, delay,
+    positionAtMatrix, instant, health, texture, variant, radius, delay,
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
@@ -108,7 +108,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
-    this.startBuildProcess();
+    if (!instant) {
+      this.startBuildProcess();
+    }
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
 
@@ -327,17 +329,39 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private upgradeHealth() {
-    const maxHealth = progressionQuadratic({
-      defaultValue: this.defaultHealth,
-      scale: DIFFICULTY.BUILDING_HEALTH_GROWTH,
-      level: this.upgradeLevel,
-      roundTo: 100,
-    });
+    const maxHealth = this.getMaxHealth();
 
     const addedHealth = maxHealth - this.live.maxHealth;
 
     this.live.setMaxHealth(maxHealth);
     this.live.addHealth(addedHealth);
+  }
+
+  private getMaxHealth() {
+    return progressionQuadratic({
+      defaultValue: this.defaultHealth,
+      scale: DIFFICULTY.BUILDING_HEALTH_GROWTH,
+      level: this.upgradeLevel,
+      roundTo: 100,
+    });
+  }
+
+  public getSavePayload(): BuildingSavePayload {
+    return {
+      variant: this.variant,
+      position: this.positionAtMatrix,
+      health: this.live.health,
+      upgradeLevel: this.upgradeLevel,
+    };
+  }
+
+  public loadSavePayload(data: BuildingSavePayload) {
+    this.upgradeLevel = data.upgradeLevel;
+    this.updateActionArea();
+    this.setFrame(this.upgradeLevel - 1);
+
+    this.live.setMaxHealth(this.getMaxHealth());
+    this.live.setHealth(data.health);
   }
 
   private onDamage() {

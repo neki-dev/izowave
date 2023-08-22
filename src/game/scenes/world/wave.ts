@@ -15,7 +15,9 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
-import { IWave, WaveAudio, WaveEvents } from '~type/world/wave';
+import {
+  IWave, WaveAudio, WaveEvents, WaveSavePayload,
+} from '~type/world/wave';
 
 export class Wave extends EventEmitter implements IWave {
   readonly scene: IWorld;
@@ -183,6 +185,18 @@ export class Wave extends EventEmitter implements IWave {
       world: this.scene,
       success: true,
     });
+  }
+
+  public getSavePayload(): WaveSavePayload {
+    return {
+      number: this.number,
+      timeleft: this.getTimeleft(),
+    };
+  }
+
+  public loadSavePayload(data: WaveSavePayload) {
+    this.number = data.number;
+    this.nextWaveTimestamp = this.scene.getTime() + data.timeleft;
   }
 
   private spawnEnemy() {

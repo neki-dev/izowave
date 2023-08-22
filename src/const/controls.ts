@@ -1,8 +1,6 @@
 import { ControlItem } from '~type/controls';
 
 export const CONTROL_KEY = {
-  MOVEMENT: 'W,A,S,D,UP,LEFT,DOWN,RIGHT',
-
   PAUSE: 'keyup-ESC',
 
   BUILDING_DESTROY: 'keyup-BACKSPACE',

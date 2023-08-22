@@ -4,6 +4,7 @@ import { getAssetsPack, loadFontFace } from '~lib/assets';
 import { removeLoading, setLoadingStatus } from '~lib/state';
 import { GameScene } from '~type/game';
 import { InterfaceFont } from '~type/interface';
+import { MenuPage } from '~type/menu';
 
 export class System extends Scene {
   constructor() {
@@ -15,16 +16,20 @@ export class System extends Scene {
     setLoadingStatus('ASSETS LOADING');
   }
 
-  public create() {
-    Promise.all([
+  public async create() {
+    await this.game.loadPayload();
+
+    await Promise.all([
       loadFontFace(InterfaceFont.PIXEL_LABEL, 'pixel_label.ttf'),
       loadFontFace(InterfaceFont.PIXEL_TEXT, 'pixel_text.ttf'),
-    ]).then(() => {
-      removeLoading();
-    });
+    ]);
+
+    removeLoading();
 
     this.scene.launch(GameScene.WORLD);
-    this.scene.launch(GameScene.MENU);
+    this.scene.launch(GameScene.MENU, {
+      defaultPage: MenuPage.NEW_GAME,
+    });
 
     this.scene.bringToTop();
 

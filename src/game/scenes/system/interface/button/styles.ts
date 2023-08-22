@@ -5,10 +5,10 @@ import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 export const Container = styled.div<{
   $size?: 'fixed' | 'small' | 'medium' | 'large'
   $view?: 'active' | 'primary' | 'confirm' | 'decline'
+  $disabled?: boolean
 }>`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  pointer-events: all;
   border-radius: 5px;
   letter-spacing: 1px;
   ${(props) => {
@@ -68,6 +68,11 @@ export const Container = styled.div<{
       `;
     }
   }}
+  ${(props) => (props.$disabled ? css`
+    opacity: 0.25
+  ` : css`
+    pointer-events: all;
+  `)};
   &:hover {
     cursor: pointer;
   }

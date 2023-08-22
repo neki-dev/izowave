@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_SKILLS, PLAYER_SUPERSKILLS,
@@ -9,6 +8,7 @@ import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
+import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
@@ -19,7 +19,7 @@ import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill, PlayerSuperskill,
+  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill, PlayerSuperskill, PlayerSavePayload,
 } from '~type/world/entities/player';
 import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -60,7 +60,7 @@ export class Player extends Sprite implements IPlayer {
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private movementKeys: Record<string, Phaser.Input.Keyboard.Key>;
+  private movementKeysState: Partial<Record<keyof typeof MovementDirection, boolean>> = {};
 
   private direction: number = 0;
 
@@ -85,7 +85,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.gamut = PLAYER_TILE_SIZE.gamut;
 
-    this.registerKeyboard();
+    this.handleKeyboard();
+
     this.registerAnimations();
 
     this.addDustEffect();
@@ -121,6 +122,8 @@ export class Player extends Sprite implements IPlayer {
 
   public update() {
     super.update();
+
+    console.log(this.movementKeysState);
 
     if (this.live.isDead()) {
       return;
@@ -221,8 +224,8 @@ export class Player extends Sprite implements IPlayer {
     });
   }
 
-  private getUpgradeNextValue(type: PlayerSkill): number {
-    const nextLevel = this.upgradeLevel[type] + 1;
+  private getUpgradeNextValue(type: PlayerSkill, level?: number): number {
+    const nextLevel = level ?? this.upgradeLevel[type] + 1;
 
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
@@ -262,7 +265,17 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    const nextValue = this.getUpgradeNextValue(type);
+    this.setSkillUpgrade(type, this.upgradeLevel[type] + 1);
+
+    this.experience -= experience;
+
+    this.scene.sound.play(PlayerAudio.UPGRADE);
+
+    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
+  }
+
+  private setSkillUpgrade(type: PlayerSkill, level: number) {
+    const nextValue = this.getUpgradeNextValue(type, level);
 
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
@@ -295,12 +308,34 @@ export class Player extends Sprite implements IPlayer {
       }
     }
 
-    this.experience -= experience;
-    this.upgradeLevel[type]++;
+    this.upgradeLevel[type] = level;
+  }
 
-    this.scene.sound.play(PlayerAudio.UPGRADE);
+  public getSavePayload(): PlayerSavePayload {
+    return {
+      position: this.positionAtMatrix,
+      score: this.score,
+      experience: this.experience,
+      resources: this.resources,
+      kills: this.kills,
+      health: this.live.health,
+      upgradeLevel: this.upgradeLevel,
+    };
+  }
 
-    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
+  public loadSavePayload(data: PlayerSavePayload) {
+    this.score = data.score;
+    this.experience = data.experience;
+    this.resources = data.resources;
+    this.kills = data.kills;
+
+    eachEntries(data.upgradeLevel, (type, level) => {
+      if (level > 1) {
+        this.setSkillUpgrade(type, level);
+      }
+    });
+
+    this.live.setHealth(data.health);
   }
 
   public onDamage() {
@@ -344,10 +379,29 @@ export class Player extends Sprite implements IPlayer {
     this.live.heal();
   }
 
-  private registerKeyboard() {
-    this.movementKeys = this.scene.input.keyboard?.addKeys(
-      CONTROL_KEY.MOVEMENT,
-    ) as Record<string, Phaser.Input.Keyboard.Key>;
+  private handleKeyboard() {
+    const keysMap: Record<string, keyof typeof MovementDirection> = {
+      w: 'UP',
+      ArrowUp: 'UP',
+      s: 'DOWN',
+      ArrowDown: 'DOWN',
+      a: 'LEFT',
+      ArrowLeft: 'LEFT',
+      d: 'RIGHT',
+      ArrowRight: 'RIGHT',
+    };
+
+    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, (event: KeyboardEvent) => {
+      if (keysMap[event.key]) {
+        this.movementKeysState[keysMap[event.key]] = true;
+      }
+    });
+
+    this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
+      if (keysMap[event.key]) {
+        this.movementKeysState[keysMap[event.key]] = false;
+      }
+    });
   }
 
   private updateVelocity() {
@@ -373,8 +427,8 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private updateDirection() {
-    const x = this.getKeyboardSingleDirection([['LEFT', 'A'], ['RIGHT', 'D']]);
-    const y = this.getKeyboardSingleDirection([['UP', 'W'], ['DOWN', 'S']]);
+    const x = this.getKeyboardSingleDirection(['LEFT', 'RIGHT']);
+    const y = this.getKeyboardSingleDirection(['UP', 'DOWN']);
     const key = `${x}|${y}`;
 
     const oldMoving = this.isMoving;
@@ -422,14 +476,10 @@ export class Player extends Sprite implements IPlayer {
     this.scene.sound.stopByKey(PlayerAudio.WALK);
   }
 
-  private getKeyboardSingleDirection(
-    controls: [keyof typeof MovementDirection, string][],
-  ) {
-    const direction = controls.find(([core, alias]) => (
-      this.movementKeys[core].isDown || this.movementKeys[alias].isDown
-    ));
+  private getKeyboardSingleDirection(directions: (keyof typeof MovementDirection)[]) {
+    const type = directions.find((direction) => this.movementKeysState[direction]) ?? 'NONE';
 
-    return MovementDirection[direction ? direction[0] : 'NONE'];
+    return MovementDirection[type];
   }
 
   private addDustEffect() {

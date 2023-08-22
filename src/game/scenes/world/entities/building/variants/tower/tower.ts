@@ -15,6 +15,7 @@ import {
   IBuildingAmmunition,
   IBuildingTower,
   BuildingAudio,
+  BuildingSavePayload,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
@@ -41,6 +42,14 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shotDefaultParams = shot.params;
 
     this.handleAmmunitionRelease();
+  }
+
+  public update() {
+    super.update();
+
+    if (this.isCanAttack()) {
+      this.attack();
+    }
   }
 
   public getInfo() {
@@ -81,11 +90,18 @@ export class BuildingTower extends Building implements IBuildingTower {
     return super.getInfo().concat(info);
   }
 
-  public update() {
-    super.update();
+  public getSavePayload() {
+    return {
+      ...super.getSavePayload(),
+      ammo: this.ammo,
+    };
+  }
 
-    if (this.isCanAttack()) {
-      this.attack();
+  public loadSavePayload(data: BuildingSavePayload) {
+    super.loadSavePayload(data);
+
+    if (data.ammo) {
+      this.ammo = data.ammo;
     }
   }
 

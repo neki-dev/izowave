@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { IScene } from '~type/scene';
+import { StorageSavePayload } from '~type/storage';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
@@ -10,6 +11,8 @@ import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, Vector2D } from '~type/world/level';
 import { IWave } from '~type/world/wave';
+
+import { BuildingSavePayload } from './entities/building';
 
 export interface IWorld extends IScene {
   /**
@@ -54,8 +57,9 @@ export interface IWorld extends IScene {
 
   /**
    * Start world.
+   * @param data - Saved data
    */
-  start(): void
+  start(data?: StorageSavePayload): void
 
   /**
    * Stop world.
@@ -126,6 +130,11 @@ export interface IWorld extends IScene {
    * Get random enemy spawn position.
    */
   getEnemySpawnPosition(): Vector2D
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): WorldSavePayload
 }
 
 export enum WorldEvents {
@@ -140,4 +149,10 @@ export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string
   position: Vector2D
+};
+
+export type WorldSavePayload = {
+  time: number
+  buildings: Array<BuildingSavePayload>
+  crystals: number
 };

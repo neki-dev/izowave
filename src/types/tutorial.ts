@@ -7,6 +7,11 @@ export interface ITutorial extends EventEmitter {
   readonly isEnabled: boolean
 
   /**
+   * Steps states.
+   */
+  progress: Partial<Record<TutorialStep, TutorialStepState>>
+
+  /**
    * Remove all listeners and reset states.
    */
   reset(): void

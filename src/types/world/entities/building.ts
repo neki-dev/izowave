@@ -106,6 +106,17 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Remove alert icon.
    */
   removeAlertIcon(): void
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): BuildingSavePayload
+
+  /**
+   * Load saved data.
+   * @param data - Data
+   */
+  loadSavePayload(data: BuildingSavePayload): void
 }
 
 export interface IBuildingAmmunition extends IBuilding {
@@ -215,7 +226,14 @@ export type BuildingControl = {
   onClick: () => void
 };
 
+export type BuildingBuildData = {
+  variant: BuildingVariant
+  instant?: boolean
+  positionAtMatrix: Vector2D
+};
+
 export type BuildingVariantData = {
+  instant?: boolean
   positionAtMatrix: Vector2D
 };
 
@@ -225,4 +243,12 @@ export type BuildingData = BuildingVariantData & {
   texture: BuildingTexture
   radius?: BuildingGrowthValue
   delay?: BuildingGrowthValue
+};
+
+export type BuildingSavePayload = {
+  variant: BuildingVariant
+  position: Vector2D
+  health: number
+  upgradeLevel: number
+  ammo?: number
 };

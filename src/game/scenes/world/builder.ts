@@ -14,7 +14,9 @@ import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
-import { BuildingAudio, BuildingVariant, IBuilding } from '~type/world/entities/building';
+import {
+  BuildingAudio, BuildingBuildData, BuildingVariant, IBuilding,
+} from '~type/world/entities/building';
 import { INPC } from '~type/world/entities/npc';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
@@ -53,6 +55,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene = scene;
 
     this.setMaxListeners(0);
+
     this.handleKeyboard();
     this.handleTutorial();
 
@@ -336,16 +339,31 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    let list = this.buildings[this.variant];
-    const building = new BuildingInstance(this.scene, {
+    this.createBuilding({
+      variant: this.variant,
       positionAtMatrix: this.getAssumedPosition(),
     });
+
+    this.scene.player.takeResources(BuildingInstance.Cost);
+    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
+
+    this.scene.sound.play(BuildingAudio.BUILD);
+  }
+
+  public createBuilding(data: BuildingBuildData) {
+    const BuildingInstance = BUILDINGS[data.variant];
+    const building = new BuildingInstance(this.scene, {
+      instant: data.instant,
+      positionAtMatrix: data.positionAtMatrix,
+    });
+
+    let list = this.buildings[data.variant];
 
     if (list) {
       list.push(building);
     } else {
       list = [building];
-      this.buildings[this.variant] = list;
+      this.buildings[data.variant] = list;
     }
 
     building.on(Phaser.GameObjects.Events.DESTROY, () => {
@@ -358,10 +376,7 @@ export class Builder extends EventEmitter implements IBuilder {
       }
     });
 
-    this.scene.player.takeResources(BuildingInstance.Cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
-
-    this.scene.sound.play(BuildingAudio.BUILD);
+    return building;
   }
 
   public isBuildingLimitReached(variant: BuildingVariant) {

@@ -67,6 +67,11 @@ export interface ILevel extends ITileMatrix {
    * @param type - Type
    */
   getBiome(type: BiomeType): Nullable<LevelBiome>
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): LevelSavePayload
 }
 
 export enum TileType {
@@ -104,6 +109,16 @@ export type LevelBiome = {
   solid: boolean
   friction?: number
   spawn: SpawnTarget[]
+};
+
+export type LevelData = {
+  planet?: LevelPlanet
+  seed?: number[]
+};
+
+export type LevelSavePayload = {
+  planet: LevelPlanet
+  seed: number[]
 };
 
 export enum LevelPlanet {

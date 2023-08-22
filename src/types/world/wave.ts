@@ -45,6 +45,17 @@ export interface IWave extends EventEmitter {
    * Skip timeleft to next wave.
    */
   skipTimeleft(): void
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): WaveSavePayload
+
+  /**
+   * Load saved data.
+   * @param data - Data
+   */
+  loadSavePayload(data: WaveSavePayload): void
 }
 
 export enum WaveEvents {
@@ -57,3 +68,8 @@ export enum WaveAudio {
   COMPLETE = 'wave/complete',
   TICK = 'wave/tick',
 }
+
+export type WaveSavePayload = {
+  number: number
+  timeleft: number
+};

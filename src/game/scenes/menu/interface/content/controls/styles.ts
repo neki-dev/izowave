@@ -4,13 +4,14 @@ import { InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   display: grid;
-  grid-gap: 15px;
-  grid-template-columns: repeat(2, 1fr);
 `;
 
 export const Control = styled.div`
   display: flex;
   align-items: center;
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
 `;
 
 export const Keys = styled.div`
