@@ -62,6 +62,9 @@ export class Wave extends EventEmitter implements IWave {
 
   public destroy() {
     this.removeAllListeners();
+    if (this.alarmInterval) {
+      clearInterval(this.alarmInterval);
+    }
   }
 
   public getTimeleft() {
