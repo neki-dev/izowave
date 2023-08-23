@@ -12,7 +12,7 @@ export class EnemyDemon extends Enemy {
       texture: EnemyTexture.DEMON,
       multipliers: {
         health: 0.4,
-        damage: 0.2,
+        damage: 0.3,
         speed: 0.8,
       },
     });

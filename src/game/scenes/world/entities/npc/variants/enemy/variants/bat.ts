@@ -12,7 +12,7 @@ export class EnemyBat extends Enemy {
       texture: EnemyTexture.BAT,
       multipliers: {
         health: 0.35,
-        damage: 0.1,
+        damage: 0.2,
         speed: 1.0,
       },
     });

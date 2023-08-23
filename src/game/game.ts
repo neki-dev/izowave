@@ -277,7 +277,7 @@ export class Game extends Phaser.Game implements IGame {
   public getDifficultyMultiplier() {
     switch (this.difficulty) {
       case GameDifficulty.EASY: return 0.8;
-      case GameDifficulty.HARD: return 1.3;
+      case GameDifficulty.HARD: return 1.4;
       default: return 1.0;
     }
   }
