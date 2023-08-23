@@ -1,7 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useMemo } from 'react';
 
-import { IGame } from '~type/game';
+import { GameState, IGame } from '~type/game';
 import { MenuItem, MenuPage } from '~type/menu';
 
 import { Wrapper, Item, Space } from './styles';
@@ -14,54 +14,51 @@ type Props = {
 export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
   const game = useGame<IGame>();
 
-  const menuItems = useMemo(
-    () => {
-      const items: (MenuItem | null)[] = [];
+  const menuItems = useMemo(() => {
+    const items: (MenuItem | null)[] = [];
 
-      if (game.isStarted) {
-        items.push({
-          label: 'Continue',
-          onClick: () => game.resumeGame(),
-        }, {
-          label: 'Save game',
-          page: MenuPage.SAVE_GAME,
-          disabled: game.world.wave.isGoing,
-        }, {
-          label: 'Main menu',
-          page: MenuPage.NEW_GAME,
-          onClick: () => {
-            // eslint-disable-next-line no-alert
-            if (window.confirm('Do you confirm stop game?')) {
-              game.stopGame();
-            }
-          },
-        });
-      } else {
-        items.push({
-          label: 'New game',
-          page: MenuPage.NEW_GAME,
-        }, {
-          label: 'Load game',
-          page: MenuPage.LOAD_GAME,
-          disabled: game.storage.saves.length === 0,
-        });
-      }
-
-      items.push(null, {
-        label: 'Settings',
-        page: MenuPage.SETTINGS,
+    if (game.state === GameState.IDLE) {
+      items.push({
+        label: 'New game',
+        page: MenuPage.NEW_GAME,
       }, {
-        label: 'About',
-        page: MenuPage.ABOUT,
-      }, {
-        label: 'Controls',
-        page: MenuPage.CONTROLS,
+        label: 'Load game',
+        page: MenuPage.LOAD_GAME,
+        disabled: game.storage.saves.length === 0,
       });
+    } else {
+      items.push({
+        label: 'Continue',
+        onClick: () => game.resumeGame(),
+      }, {
+        label: 'Save game',
+        page: MenuPage.SAVE_GAME,
+        disabled: game.world.wave.isGoing,
+      }, {
+        label: 'Main menu',
+        page: MenuPage.NEW_GAME,
+        onClick: () => {
+          // eslint-disable-next-line no-alert
+          if (window.confirm('Do you confirm stop game?')) {
+            game.stopGame();
+          }
+        },
+      });
+    }
 
-      return items;
-    },
-    [],
-  );
+    items.push(null, {
+      label: 'Settings',
+      page: MenuPage.SETTINGS,
+    }, {
+      label: 'About',
+      page: MenuPage.ABOUT,
+    }, {
+      label: 'Controls',
+      page: MenuPage.CONTROLS,
+    });
+
+    return items;
+  }, []);
 
   return (
     <Wrapper>

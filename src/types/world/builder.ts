@@ -38,6 +38,11 @@ export interface IBuilder extends EventEmitter {
   update(): void
 
   /**
+   * Close builder.
+   */
+  close(): void
+
+  /**
    * Create building.
    * @param data - Building data
    */

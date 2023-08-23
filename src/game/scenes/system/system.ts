@@ -2,7 +2,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { Scene } from '~game/scenes';
 import { getAssetsPack, loadFontFace } from '~lib/assets';
 import { removeLoading, setLoadingStatus } from '~lib/state';
-import { GameScene } from '~type/game';
+import { GameScene, GameState } from '~type/game';
 import { InterfaceFont } from '~type/interface';
 import { MenuPage } from '~type/menu';
 
@@ -39,13 +39,18 @@ export class System extends Scene {
         return;
       }
 
-      if (this.game.isFinished) {
-        this.game.stopGame();
-      } else if (this.game.isStarted) {
-        if (this.game.onPause) {
+      switch (this.game.state) {
+        case GameState.FINISHED: {
+          this.game.stopGame();
+          break;
+        }
+        case GameState.PAUSED: {
           this.game.resumeGame();
-        } else {
+          break;
+        }
+        case GameState.STARTED: {
           this.game.pauseGame();
+          break;
         }
       }
     });

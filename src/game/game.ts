@@ -22,6 +22,7 @@ import {
   GameScene,
   GameSettings,
   GameStat,
+  GameState,
   IGame,
 } from '~type/game';
 import { MenuPage } from '~type/menu';
@@ -41,23 +42,13 @@ export class Game extends Phaser.Game implements IGame {
 
   private flags: string[];
 
-  private _isStarted: boolean = false;
+  public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
-  public get isStarted() { return this._isStarted; }
+  private _state: GameState = GameState.IDLE;
 
-  private set isStarted(v) { this._isStarted = v; }
+  public get state() { return this._state; }
 
-  private _onPause: boolean = false;
-
-  public get onPause() { return this._onPause; }
-
-  private set onPause(v) { this._onPause = v; }
-
-  private _isFinished: boolean = false;
-
-  public get isFinished() { return this._isFinished; }
-
-  private set isFinished(v) { this._isFinished = v; }
+  private set state(v) { this._state = v; }
 
   private _screen: IScreen;
 
@@ -82,8 +73,6 @@ export class Game extends Phaser.Game implements IGame {
   public get usedSave() { return this._usedSave; }
 
   private set usedSave(v) { this._usedSave = v; }
-
-  public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
   constructor() {
     super({
@@ -157,7 +146,11 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public pauseGame() {
-    this.onPause = true;
+    if (this.state !== GameState.STARTED) {
+      return;
+    }
+
+    this.state = GameState.PAUSED;
 
     this.world.scene.pause();
     this.screen.scene.pause();
@@ -168,7 +161,11 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public resumeGame() {
-    this.onPause = false;
+    if (this.state !== GameState.PAUSED) {
+      return;
+    }
+
+    this.state = GameState.STARTED;
 
     this.scene.systemScene.scene.stop(GameScene.MENU);
 
@@ -177,7 +174,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public continueGame(save: StorageSave) {
-    if (this.isStarted) {
+    if (this.state !== GameState.IDLE) {
       return;
     }
 
@@ -193,7 +190,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public startNewGame() {
-    if (this.isStarted) {
+    if (this.state !== GameState.IDLE) {
       return;
     }
 
@@ -203,9 +200,11 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   private startGame() {
-    if (this.isStarted) {
+    if (this.state !== GameState.IDLE) {
       return;
     }
+
+    this.state = GameState.STARTED;
 
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
       this.tutorial.disable();
@@ -216,8 +215,6 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.start();
 
-    this.isStarted = true;
-
     if (!IS_DEV_MODE) {
       window.onbeforeunload = function confirmLeave() {
         return 'Do you confirm leave game?';
@@ -226,21 +223,19 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public stopGame() {
-    if (!this.isStarted) {
+    if (this.state === GameState.IDLE) {
       return;
     }
 
-    this.isStarted = false;
+    if (this.state === GameState.FINISHED) {
+      this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
+    }
 
-    this.world.stop();
+    this.state = GameState.IDLE;
+
     this.world.scene.restart();
 
     this.tutorial.reset();
-
-    if (this.isFinished) {
-      this.isFinished = false;
-      this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
-    }
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.MENU, {
@@ -255,11 +250,11 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public finishGame() {
-    if (!this.isStarted) {
+    if (this.state !== GameState.STARTED) {
       return;
     }
 
-    this.isFinished = true;
+    this.state = GameState.FINISHED;
 
     this.events.emit(GameEvents.FINISH);
 

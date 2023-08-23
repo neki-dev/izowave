@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 
 export const Sidebar = styled.div`
   min-width: 30%;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   display: flex;
   flex-direction: column;
   align-items: flex-end;

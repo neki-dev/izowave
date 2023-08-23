@@ -18,19 +18,9 @@ export interface IGame extends Phaser.Game {
   readonly screen: IScreen
 
   /**
-   * Game is paused.
+   * Game state.
    */
-  readonly onPause: boolean
-
-  /**
-   * Game is finished.
-   */
-  readonly isFinished: boolean
-
-  /**
-   * Game is started.
-   */
-  readonly isStarted: boolean
+  readonly state: GameState
 
   /**
    * Analytics manager.
@@ -152,6 +142,13 @@ export enum GameEvents {
   START = 'start',
   FINISH = 'finish',
   UPDATE_SETTINGS = 'update_settings',
+}
+
+export enum GameState {
+  IDLE = 'IDLE',
+  STARTED = 'STARTED',
+  FINISHED = 'FINISHED',
+  PAUSED = 'PAUSED',
 }
 
 export enum GameSettings {

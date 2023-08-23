@@ -123,8 +123,6 @@ export class Player extends Sprite implements IPlayer {
   public update() {
     super.update();
 
-    console.log(this.movementKeysState);
-
     if (this.live.isDead()) {
       return;
     }

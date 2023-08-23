@@ -18,7 +18,7 @@ import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
-import { GameScene } from '~type/game';
+import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
 import {
   IWorld, WorldEvents, WorldHint, WorldSavePayload,
@@ -116,25 +116,20 @@ export class World extends Scene implements IWorld {
     this.resetTime();
 
     this.addWaveManager();
+    this.addBuilder();
+
     this.addEntityGroups();
     this.addPlayer();
     this.addAssistant();
     this.addCrystals();
-
-    this.builder = new Builder(this);
 
     if (this.game.usedSave) {
       this.loadSavePayload(this.game.usedSave.payload.world);
     }
   }
 
-  public stop() {
-    this.wave?.destroy();
-    this.builder?.destroy();
-  }
-
   public update(time: number, delta: number) {
-    if (!this.game.isStarted) {
+    if (this.game.state !== GameState.STARTED) {
       return;
     }
 
@@ -305,6 +300,22 @@ export class World extends Scene implements IWorld {
     if (this.game.usedSave) {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
     }
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.wave.destroy();
+    });
+  }
+
+  private addBuilder() {
+    this.builder = new Builder(this);
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.builder.destroy();
+    });
+
+    this.game.events.once(GameEvents.FINISH, () => {
+      this.builder.close();
+    });
   }
 
   private addPlayer() {

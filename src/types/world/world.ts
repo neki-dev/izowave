@@ -62,11 +62,6 @@ export interface IWorld extends IScene {
   start(data?: StorageSavePayload): void
 
   /**
-   * Stop world.
-   */
-  stop(): void
-
-  /**
    * Get lifecyle time.
    */
   getTime(): number
