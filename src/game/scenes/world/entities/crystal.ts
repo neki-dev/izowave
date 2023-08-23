@@ -8,15 +8,17 @@ import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
-  CrystalTexture, CrystalData, CrystalAudio, ICrystal,
+  CrystalTexture, CrystalData, CrystalAudio, ICrystal, CrystalSavePayload,
 } from '~type/world/entities/crystal';
-import { TileType } from '~type/world/level';
+import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile {
   readonly scene: IWorld;
 
   readonly tileType: TileType = TileType.CRYSTAL;
+
+  readonly positionAtMatrix: Vector2D;
 
   constructor(scene: IWorld, {
     positionAtMatrix, variant = 0,
@@ -26,6 +28,8 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
     super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
     scene.addEntity(EntityType.CRYSTAL, this);
+
+    this.positionAtMatrix = positionAtMatrix;
 
     this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
@@ -53,6 +57,12 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       amount - Math.floor(amount * 0.25),
       amount + Math.floor(amount * 0.25),
     );
+  }
+
+  public getSavePayload(): CrystalSavePayload {
+    return {
+      position: this.positionAtMatrix,
+    };
   }
 }
 

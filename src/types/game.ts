@@ -2,7 +2,8 @@ import Phaser from 'phaser';
 
 import { IAnalytics } from '~type/analytics';
 import { IScreen } from '~type/screen';
-import { ITutorial } from '~type/tutorial';
+import { IStorage, StorageSave } from '~type/storage';
+import { ITutorial, TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 export interface IGame extends Phaser.Game {
@@ -17,19 +18,9 @@ export interface IGame extends Phaser.Game {
   readonly screen: IScreen
 
   /**
-   * Game is paused.
+   * Game state.
    */
-  readonly onPause: boolean
-
-  /**
-   * Game is finished.
-   */
-  readonly isFinished: boolean
-
-  /**
-   * Game is started.
-   */
-  readonly isStarted: boolean
+  readonly state: GameState
 
   /**
    * Analytics manager.
@@ -42,9 +33,19 @@ export interface IGame extends Phaser.Game {
   readonly tutorial: ITutorial
 
   /**
+   * Data storage.
+   */
+  readonly storage: IStorage
+
+  /**
    * Game settings.
    */
   readonly settings: Partial<Record<GameSettings, string>>
+
+  /**
+   * Used save data.
+   */
+  readonly usedSave: Nullable<StorageSave>
 
   /**
    * Game difficulty.
@@ -62,9 +63,15 @@ export interface IGame extends Phaser.Game {
   resumeGame(): void
 
   /**
+   * Continue game.
+   * @param save - Save data.
+   */
+  continueGame(save: StorageSave): void
+
+  /**
    * Start new game.
    */
-  startGame(): void
+  startNewGame(): void
 
   /**
    * Stop game.
@@ -106,6 +113,16 @@ export interface IGame extends Phaser.Game {
    * @param callback - Complete callback
    */
   showAd(type: GameAdType, callback?: () => void): void
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): GameSavePayload
+
+  /**
+   * Load saved data.
+   */
+  loadPayload(): Promise<void>
 }
 
 export enum GameAdType {
@@ -125,6 +142,13 @@ export enum GameEvents {
   START = 'start',
   FINISH = 'finish',
   UPDATE_SETTINGS = 'update_settings',
+}
+
+export enum GameState {
+  IDLE = 'IDLE',
+  STARTED = 'STARTED',
+  FINISHED = 'FINISHED',
+  PAUSED = 'PAUSED',
 }
 
 export enum GameSettings {
@@ -148,6 +172,11 @@ export type GameSettingsData = {
   description: string
   values: string[]
   default: string
+};
+
+export type GameSavePayload = {
+  difficulty: GameDifficulty
+  tutorial: Partial<Record<TutorialStep, TutorialStepState>>
 };
 
 export type GameStat = {

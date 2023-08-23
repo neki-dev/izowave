@@ -5,35 +5,43 @@ import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 export const Wrapper = styled.ul`
   list-style: none;
   text-align: right;
-  pointer-events: all;
   display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+export const Space = styled.div`
+  height: 20px;
 `;
 
 export const Item = styled.li<{
   $active?: boolean
+  $disabled?: boolean
 }>`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 24px;
-  line-height: 24px;
-  padding-bottom: 7px;
-  border-bottom: 4px solid transparent;
-  ${(props) => (props.$active
-    ? css`
-      color: ${InterfaceTextColor.SUCCESS};
-      border-color: ${InterfaceTextColor.SUCCESS};
-      &:hover {
-        cursor: pointer;
-      }
-    `
-    : css`
-      color: #fff;
-      &:hover {
-        cursor: pointer;
-        color: ${InterfaceTextColor.HOVER};
-      }
-    `
-  )}
+  font-size: 18px;
+  line-height: 18px;
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  ${(props) => (props.$active ? css`
+    color: ${InterfaceTextColor.SUCCESS};
+    border-color: ${InterfaceTextColor.SUCCESS};
+    &:hover {
+      cursor: pointer;
+    }
+  ` : css`
+    color: #fff;
+    &:hover {
+      cursor: pointer;
+      color: ${InterfaceTextColor.HOVER};
+    }
+  `)}
+  ${(props) => (props.$disabled ? css`
+    opacity: 0.5;
+  ` : css`
+    pointer-events: all;
+  `)}
   &:not(:last-child) {
-    margin-right: 30px;
+    margin-bottom: 10px;
   }
 `;

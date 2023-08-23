@@ -18,19 +18,22 @@ import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Wave } from '~scene/world/wave';
-import { GameScene } from '~type/game';
+import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
-import { IWorld, WorldEvents, WorldHint } from '~type/world';
+import {
+  IWorld, WorldEvents, WorldHint, WorldSavePayload,
+} from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
+import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
-  ILevel, LevelPlanet, SpawnTarget, Vector2D,
+  ILevel, LevelData, SpawnTarget, Vector2D,
 } from '~type/world/level';
 import { IWave, WaveEvents } from '~type/world/wave';
 
@@ -91,15 +94,16 @@ export class World extends Scene implements IWorld {
     super(GameScene.WORLD);
   }
 
-  public create(data: { planet?: LevelPlanet }) {
+  public create(data: LevelData) {
     this.input.setPollAlways();
 
     this.lifecyle = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
       loop: true,
+      paused: true,
     });
 
-    this.level = new Level(this, data.planet ?? LevelPlanet.EARTH);
+    this.level = new Level(this, data);
     this.camera = new Camera(this);
 
     this.generateEnemySpawnPositions();
@@ -108,21 +112,25 @@ export class World extends Scene implements IWorld {
   public start() {
     new Interface(this, WorldUI);
 
-    this.addEntityGroups();
-
     this.camera.addZoomControl();
 
-    this.wave = new Wave(this);
+    this.resetTime();
 
+    this.addWaveManager();
+    this.addBuilder();
+
+    this.addEntityGroups();
     this.addPlayer();
     this.addAssistant();
     this.addCrystals();
 
-    this.builder = new Builder(this);
+    if (this.game.usedSave) {
+      this.loadSavePayload(this.game.usedSave.payload.world);
+    }
   }
 
   public update(time: number, delta: number) {
-    if (!this.game.isStarted) {
+    if (this.game.state !== GameState.STARTED) {
       return;
     }
 
@@ -157,6 +165,11 @@ export class World extends Scene implements IWorld {
 
   public setTimePause(state: boolean) {
     this.lifecyle.paused = state;
+  }
+
+  private resetTime() {
+    this.setTimePause(false);
+    this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
   }
 
   public getResourceExtractionSpeed() {
@@ -245,6 +258,28 @@ export class World extends Scene implements IWorld {
     };
   }
 
+  public getSavePayload(): WorldSavePayload {
+    return {
+      time: this.getTime(),
+      crystals: this.getEntities<ICrystal>(EntityType.CRYSTAL)
+        .map((crystal) => crystal.getSavePayload()),
+      buildings: this.getEntities<IBuilding>(EntityType.BUILDING)
+        .map((building) => building.getSavePayload()),
+    };
+  }
+
+  private loadSavePayload(data: WorldSavePayload) {
+    data.buildings.forEach((buildingData) => {
+      const building = this.builder.createBuilding({
+        variant: buildingData.variant,
+        positionAtMatrix: buildingData.position,
+        instant: true,
+      });
+
+      building.loadSavePayload(buildingData);
+    });
+  }
+
   private addEntityGroups() {
     this.entityGroups = {
       [EntityType.CRYSTAL]: this.add.group(),
@@ -261,12 +296,46 @@ export class World extends Scene implements IWorld {
     };
   }
 
-  private addPlayer() {
-    const positions = this.level.readSpawnPositions(SpawnTarget.PLAYER);
+  private addWaveManager() {
+    this.wave = new Wave(this);
 
-    this.player = new Player(this, {
-      positionAtMatrix: Phaser.Utils.Array.GetRandom(positions),
+    if (this.game.usedSave) {
+      this.wave.loadSavePayload(this.game.usedSave.payload.wave);
+    }
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.wave.destroy();
     });
+  }
+
+  private addBuilder() {
+    this.builder = new Builder(this);
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.builder.destroy();
+    });
+
+    this.game.events.once(GameEvents.FINISH, () => {
+      this.builder.close();
+    });
+  }
+
+  private addPlayer() {
+    let positionAtMatrix: Vector2D;
+
+    if (this.game.usedSave) {
+      positionAtMatrix = this.game.usedSave.payload.player.position;
+    } else {
+      positionAtMatrix = Phaser.Utils.Array.GetRandom(
+        this.level.readSpawnPositions(SpawnTarget.PLAYER),
+      );
+    }
+
+    this.player = new Player(this, { positionAtMatrix });
+
+    if (this.game.usedSave) {
+      this.player.loadSavePayload(this.game.usedSave.payload.player);
+    }
 
     this.camera.focusOn(this.player);
 
@@ -306,12 +375,17 @@ export class World extends Scene implements IWorld {
   private addCrystals() {
     const positions = this.level.readSpawnPositions(SpawnTarget.CRYSTAL);
 
-    const create = () => {
+    const getRandomPosition = () => {
       const freePositions = positions.filter((position) => this.level.isFreePoint({ ...position, z: 1 }));
+
+      return Phaser.Utils.Array.GetRandom(freePositions);
+    };
+
+    const create = (position: Vector2D) => {
       const variants = LEVEL_PLANETS[this.level.planet].CRYSTAL_VARIANTS;
 
       new Crystal(this, {
-        positionAtMatrix: Phaser.Utils.Array.GetRandom(freePositions),
+        positionAtMatrix: position,
         variant: Phaser.Utils.Array.GetRandom(variants),
       });
     };
@@ -320,15 +394,25 @@ export class World extends Scene implements IWorld {
       Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
 
-    for (let i = 0; i < maxCount; i++) {
-      create();
+    if (this.game.usedSave) {
+      this.game.usedSave.payload.world.crystals.forEach((crystal) => {
+        create(crystal.position);
+      });
+    } else {
+      for (let i = 0; i < maxCount; i++) {
+        const position = getRandomPosition();
+
+        create(position);
+      }
     }
 
     this.wave.on(WaveEvents.COMPLETE, () => {
       const newCount = maxCount - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
-        create();
+        const position = getRandomPosition();
+
+        create(position);
       }
     });
   }

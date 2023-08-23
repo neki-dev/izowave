@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 
 import {
   LEVEL_TILE_SIZE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS,
+  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Navigator } from '~lib/navigator';
@@ -14,7 +14,7 @@ import { INavigator } from '~type/navigator';
 import { IWorld } from '~type/world';
 import {
   BiomeType, LevelBiome, SpawnTarget, LevelSceneryTexture, TileType,
-  Vector2D, Vector3D, ILevel, LevelTilesetTexture, LevelPlanet,
+  Vector2D, Vector3D, ILevel, LevelTilesetTexture, LevelPlanet, LevelSavePayload, LevelData,
 } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
@@ -47,11 +47,11 @@ export class Level extends TileMatrix implements ILevel {
 
   private sceneryTiles: Phaser.GameObjects.Group;
 
-  constructor(scene: IWorld, planet: LevelPlanet) {
+  constructor(scene: IWorld, { planet, seed }: LevelData) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT);
 
     this.scene = scene;
-    this.planet = planet;
+    this.planet = planet ?? LevelPlanet.EARTH;
 
     const generator = new WorldGenerator<LevelBiome>({
       width: LEVEL_MAP_SIZE,
@@ -66,7 +66,11 @@ export class Level extends TileMatrix implements ILevel {
       }
     });
 
-    this.map = generator.generate();
+    this.map = generator.generate({
+      seed,
+      seedSize: LEVEL_SEED_SIZE,
+    });
+
     this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
     this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));
 
@@ -289,6 +293,13 @@ export class Level extends TileMatrix implements ILevel {
         this.sceneryTiles.add(tile);
       }
     }
+  }
+
+  public getSavePayload(): LevelSavePayload {
+    return {
+      planet: this.planet,
+      seed: this.map.seed,
+    };
   }
 
   static ToMatrixPosition(positionAtWorld: Vector2D) {

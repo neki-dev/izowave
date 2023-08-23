@@ -75,10 +75,10 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 90, // Health
-  ENEMY_HEALTH_GROWTH: 0.38, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.4, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
-  ENEMY_ARMOUR: 50, // Armour
-  ENEMY_ARMOUR_GROWTH: 0.38, // Armour growth by wave number (Quadratic)
+  ENEMY_ARMOUR: 60, // Armour
+  ENEMY_ARMOUR_GROWTH: 0.4, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
   ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Linear)
@@ -119,7 +119,7 @@ export const DIFFICULTY = {
    */
 
   BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.55, // Shot damage growth by level (Quadratic)
-  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.45, // Frozen duration growth by level (Quadratic)
+  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.4, // Frozen duration growth by level (Quadratic)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.2, // Shot speed growth by level (Quadratic)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
 
@@ -147,7 +147,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FROZEN_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
   BUILDING_TOWER_FROZEN_DELAY: 1400, // Pause between freezes
   BUILDING_TOWER_FROZEN_DELAY_GROWTH: -0.15, // Pause growth by level (Linear)
-  BUILDING_TOWER_FROZEN_FREEZE_DURATION: 900, // Freeze duration
+  BUILDING_TOWER_FROZEN_FREEZE_DURATION: 800, // Freeze duration
   BUILDING_TOWER_FROZEN_SHOT_SPEED: 300, // Shot speed
 
   /**

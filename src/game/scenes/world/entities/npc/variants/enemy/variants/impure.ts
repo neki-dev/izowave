@@ -14,7 +14,7 @@ export class EnemyImpure extends Enemy {
       multipliers: {
         health: 1.3,
         damage: 0.7,
-        speed: 0.9,
+        speed: 0.8,
       },
     });
   }

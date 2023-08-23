@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { InterfaceTextColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
+  margin-top: 50px;
   font-family: ${InterfaceFont.PIXEL_TEXT};
   display: flex;
   flex-direction: column;

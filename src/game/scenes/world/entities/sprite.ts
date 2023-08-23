@@ -75,6 +75,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
+      this.live.removeAllListeners();
     });
   }
 

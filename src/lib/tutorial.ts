@@ -6,7 +6,7 @@ import {
 } from '~type/tutorial';
 
 export class Tutorial extends EventEmitter implements ITutorial {
-  private progress: Partial<Record<TutorialStep, TutorialStepState>> = {};
+  public progress: Partial<Record<TutorialStep, TutorialStepState>> = {};
 
   private _isEnabled: boolean = true;
 

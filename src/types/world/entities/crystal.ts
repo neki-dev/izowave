@@ -7,9 +7,19 @@ export interface ICrystal extends Phaser.GameObjects.Image {
   readonly scene: IWorld
 
   /**
+   * Position at matrix.
+   */
+  readonly positionAtMatrix: Vector2D
+
+  /**
    * Take resources from crystal and destroy him.
    */
   pickup(): void
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): CrystalSavePayload
 }
 
 export enum CrystalTexture {
@@ -23,4 +33,8 @@ export enum CrystalAudio {
 export type CrystalData = {
   positionAtMatrix: Vector2D
   variant?: number
+};
+
+export type CrystalSavePayload = {
+  position: Vector2D
 };

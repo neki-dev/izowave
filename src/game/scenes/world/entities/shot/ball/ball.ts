@@ -103,12 +103,11 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         texture: ParticlesTexture.GLOW,
         params: {
           follow: this,
-          scale: {
-            start: 0.25 * this.scale,
-            end: 0.0,
-          },
-          blendMode: 'ADD',
+          scale: 0.25 * this.scale,
+          alpha: { start: 1.0, end: 0.0 },
+          lifespan: 100,
           tint: this.glowColor,
+          blendMode: 'ADD',
         },
       });
     }

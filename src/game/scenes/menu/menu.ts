@@ -1,7 +1,7 @@
 import { Interface } from 'phaser-react-ui';
 
 import { Scene } from '~game/scenes';
-import { GameScene } from '~type/game';
+import { GameScene, GameState } from '~type/game';
 import { MenuPage } from '~type/menu';
 
 import { MenuUI } from './interface';
@@ -11,12 +11,10 @@ export class Menu extends Scene {
     super(GameScene.MENU);
   }
 
-  public create(data: { page?: MenuPage }) {
-    new Interface(this, MenuUI, {
-      defaultPage: data.page,
-    });
+  public create(data: { defaultPage: MenuPage }) {
+    new Interface(this, MenuUI, data);
 
-    if (!this.game.isStarted) {
+    if (this.game.state === GameState.IDLE) {
       this.game.world.camera.focusOnLevel();
     }
   }

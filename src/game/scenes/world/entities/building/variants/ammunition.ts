@@ -5,7 +5,7 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
-  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition,
+  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition, BuildingSavePayload,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -61,6 +61,21 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     }];
 
     return super.getInfo().concat(info);
+  }
+
+  public getSavePayload() {
+    return {
+      ...super.getSavePayload(),
+      ammo: this.ammo,
+    };
+  }
+
+  public loadSavePayload(data: BuildingSavePayload) {
+    super.loadSavePayload(data);
+
+    if (data.ammo) {
+      this.ammo = data.ammo;
+    }
   }
 
   public use(amount: number) {

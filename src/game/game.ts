@@ -4,6 +4,7 @@ import {
   AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, SETTINGS,
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
+import { Storage } from '~lib/storage';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries, registerScript } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
@@ -17,13 +18,16 @@ import {
   GameDifficulty,
   GameEvents,
   GameFlag,
+  GameSavePayload,
   GameScene,
   GameSettings,
   GameStat,
+  GameState,
   IGame,
 } from '~type/game';
 import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
+import { IStorage, StorageSave } from '~type/storage';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
@@ -34,25 +38,17 @@ export class Game extends Phaser.Game implements IGame {
 
   readonly analytics: IAnalytics;
 
+  readonly storage: IStorage;
+
   private flags: string[];
 
-  private _isStarted: boolean = false;
+  public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
-  public get isStarted() { return this._isStarted; }
+  private _state: GameState = GameState.IDLE;
 
-  private set isStarted(v) { this._isStarted = v; }
+  public get state() { return this._state; }
 
-  private _onPause: boolean = false;
-
-  public get onPause() { return this._onPause; }
-
-  private set onPause(v) { this._onPause = v; }
-
-  private _isFinished: boolean = false;
-
-  public get isFinished() { return this._isFinished; }
-
-  private set isFinished(v) { this._isFinished = v; }
+  private set state(v) { this._state = v; }
 
   private _screen: IScreen;
 
@@ -72,7 +68,11 @@ export class Game extends Phaser.Game implements IGame {
 
   private set settings(v) { this._settings = v; }
 
-  public difficulty: GameDifficulty = GameDifficulty.NORMAL;
+  private _usedSave: Nullable<StorageSave> = null;
+
+  public get usedSave() { return this._usedSave; }
+
+  private set usedSave(v) { this._usedSave = v; }
 
   constructor() {
     super({
@@ -99,6 +99,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.tutorial = new Tutorial();
     this.analytics = new Analytics();
+    this.storage = new Storage();
 
     this.readFlags();
     this.readSettings();
@@ -139,19 +140,32 @@ export class Game extends Phaser.Game implements IGame {
     };
   }
 
+  public async loadPayload() {
+    return this.storage.init()
+      .then(() => this.storage.load());
+  }
+
   public pauseGame() {
-    this.onPause = true;
+    if (this.state !== GameState.STARTED) {
+      return;
+    }
+
+    this.state = GameState.PAUSED;
 
     this.world.scene.pause();
     this.screen.scene.pause();
 
     this.scene.systemScene.scene.launch(GameScene.MENU, {
-      page: MenuPage.ABOUT,
+      defaultPage: null,
     });
   }
 
   public resumeGame() {
-    this.onPause = false;
+    if (this.state !== GameState.PAUSED) {
+      return;
+    }
+
+    this.state = GameState.STARTED;
 
     this.scene.systemScene.scene.stop(GameScene.MENU);
 
@@ -159,10 +173,38 @@ export class Game extends Phaser.Game implements IGame {
     this.screen.scene.resume();
   }
 
-  public startGame() {
-    if (this.isStarted) {
+  public continueGame(save: StorageSave) {
+    if (this.state !== GameState.IDLE) {
       return;
     }
+
+    this.usedSave = save;
+
+    this.loadSavePayload(this.usedSave.payload.game);
+
+    this.world.scene.restart(this.usedSave.payload.level);
+
+    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
+      this.startGame();
+    });
+  }
+
+  public startNewGame() {
+    if (this.state !== GameState.IDLE) {
+      return;
+    }
+
+    this.usedSave = null;
+
+    this.startGame();
+  }
+
+  private startGame() {
+    if (this.state !== GameState.IDLE) {
+      return;
+    }
+
+    this.state = GameState.STARTED;
 
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
       this.tutorial.disable();
@@ -173,34 +215,31 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.start();
 
-    this.isStarted = true;
-
     if (!IS_DEV_MODE) {
       window.onbeforeunload = function confirmLeave() {
-        return 'Leave game? No saves!';
+        return 'Do you confirm leave game?';
       };
     }
   }
 
   public stopGame() {
-    if (!this.isStarted) {
+    if (this.state === GameState.IDLE) {
       return;
     }
 
-    this.isStarted = false;
+    if (this.state === GameState.FINISHED) {
+      this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
+    }
+
+    this.state = GameState.IDLE;
 
     this.world.scene.restart();
 
     this.tutorial.reset();
 
-    if (this.isFinished) {
-      this.isFinished = false;
-      this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
-    }
-
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.MENU, {
-      page: MenuPage.NEW_GAME,
+      defaultPage: MenuPage.NEW_GAME,
     });
 
     this.showAd(GameAdType.MIDGAME);
@@ -211,11 +250,11 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public finishGame() {
-    if (!this.isStarted) {
+    if (this.state !== GameState.STARTED) {
       return;
     }
 
-    this.isFinished = true;
+    this.state = GameState.FINISHED;
 
     this.events.emit(GameEvents.FINISH);
 
@@ -238,7 +277,7 @@ export class Game extends Phaser.Game implements IGame {
   public getDifficultyMultiplier() {
     switch (this.difficulty) {
       case GameDifficulty.EASY: return 0.8;
-      case GameDifficulty.HARD: return 1.3;
+      case GameDifficulty.HARD: return 1.4;
       default: return 1.0;
     }
   }
@@ -318,6 +357,18 @@ export class Game extends Phaser.Game implements IGame {
       kills: this.world.player.kills,
       lived: this.world.getTime() / 1000 / 60,
     };
+  }
+
+  public getSavePayload(): GameSavePayload {
+    return {
+      difficulty: this.difficulty,
+      tutorial: this.tutorial.progress,
+    };
+  }
+
+  private loadSavePayload(data: GameSavePayload) {
+    this.difficulty = data.difficulty;
+    this.tutorial.progress = data.tutorial;
   }
 
   private registerShaders() {

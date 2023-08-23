@@ -14,7 +14,7 @@ export class EnemyOverlord extends Enemy {
       texture: EnemyTexture.OVERLORD,
       multipliers: {
         health: 1.0,
-        damage: 0.5,
+        damage: 0.6,
         speed: 0.8,
       },
     });

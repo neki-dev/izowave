@@ -8,13 +8,14 @@ import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { getStage, equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
-import { LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
-import { BuildingAudio, BuildingVariant, IBuilding } from '~type/world/entities/building';
+import {
+  BuildingAudio, BuildingBuildData, BuildingVariant, IBuilding,
+} from '~type/world/entities/building';
 import { INPC } from '~type/world/entities/npc';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
@@ -55,10 +56,11 @@ export class Builder extends EventEmitter implements IBuilder {
     this.setMaxListeners(0);
     this.handleKeyboard();
     this.handleTutorial();
+  }
 
-    this.scene.player.live.on(LiveEvents.DEAD, () => {
-      this.closeBuilder();
-    });
+  public destroy() {
+    this.close();
+    this.removeAllListeners();
   }
 
   public update() {
@@ -67,10 +69,10 @@ export class Builder extends EventEmitter implements IBuilder {
         this.updateBuildAreaPosition();
         this.updateBuildingPreview();
       } else {
-        this.openBuilder();
+        this.open();
       }
     } else if (this.isBuild) {
-      this.closeBuilder();
+      this.close();
     }
   }
 
@@ -214,7 +216,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  private openBuilder() {
+  private open() {
     if (this.isBuild) {
       return;
     }
@@ -229,7 +231,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.emit(BuilderEvents.BUILD_START);
   }
 
-  private closeBuilder() {
+  public close() {
     if (!this.isBuild) {
       return;
     }
@@ -245,7 +247,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private clearBuildingVariant() {
-    this.closeBuilder();
+    this.close();
     this.variant = null;
   }
 
@@ -332,16 +334,31 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    let list = this.buildings[this.variant];
-    const building = new BuildingInstance(this.scene, {
+    this.createBuilding({
+      variant: this.variant,
       positionAtMatrix: this.getAssumedPosition(),
     });
+
+    this.scene.player.takeResources(BuildingInstance.Cost);
+    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
+
+    this.scene.sound.play(BuildingAudio.BUILD);
+  }
+
+  public createBuilding(data: BuildingBuildData) {
+    const BuildingInstance = BUILDINGS[data.variant];
+    const building = new BuildingInstance(this.scene, {
+      instant: data.instant,
+      positionAtMatrix: data.positionAtMatrix,
+    });
+
+    let list = this.buildings[data.variant];
 
     if (list) {
       list.push(building);
     } else {
       list = [building];
-      this.buildings[this.variant] = list;
+      this.buildings[data.variant] = list;
     }
 
     building.on(Phaser.GameObjects.Events.DESTROY, () => {
@@ -354,10 +371,7 @@ export class Builder extends EventEmitter implements IBuilder {
       }
     });
 
-    this.scene.player.takeResources(BuildingInstance.Cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
-
-    this.scene.sound.play(BuildingAudio.BUILD);
+    return building;
   }
 
   public isBuildingLimitReached(variant: BuildingVariant) {

@@ -6,6 +6,8 @@ export const AUDIO_VOLUME = 0.1;
 
 export const MIN_VALID_SCREEN_SIZE = [800, 480];
 
+export const MAX_GAME_SAVES = 5;
+
 export const DEBUG_MODS = {
   basic: false,
   position: false,

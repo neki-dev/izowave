@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
 import { Text } from '~scene/system/interface/text';
-import { GameScene, IGame } from '~type/game';
+import { GameScene, GameState, IGame } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerSuperskill } from '~type/world/entities/player';
 
@@ -36,7 +36,7 @@ export const SuperskillItem: React.FC<Props> = ({ type }) => {
   };
 
   useSceneUpdate(scene, () => {
-    setPaused(game.onPause);
+    setPaused(game.state === GameState.PAUSED);
     setActive(Boolean(world.player.activeSuperskills[type]));
     setCost(world.player.getSuperskillCost(type));
   });
