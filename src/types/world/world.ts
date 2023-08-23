@@ -5,14 +5,14 @@ import { StorageSavePayload } from '~type/storage';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
+import { BuildingSavePayload } from '~type/world/entities/building';
+import { CrystalSavePayload } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, Vector2D } from '~type/world/level';
 import { IWave } from '~type/world/wave';
-
-import { BuildingSavePayload } from './entities/building';
 
 export interface IWorld extends IScene {
   /**
@@ -149,5 +149,5 @@ export type WorldHint = {
 export type WorldSavePayload = {
   time: number
   buildings: Array<BuildingSavePayload>
-  crystals: number
+  crystals: Array<CrystalSavePayload>
 };

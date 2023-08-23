@@ -27,6 +27,7 @@ import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
+import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
@@ -260,7 +261,8 @@ export class World extends Scene implements IWorld {
   public getSavePayload(): WorldSavePayload {
     return {
       time: this.getTime(),
-      crystals: this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed(),
+      crystals: this.getEntities<ICrystal>(EntityType.CRYSTAL)
+        .map((crystal) => crystal.getSavePayload()),
       buildings: this.getEntities<IBuilding>(EntityType.BUILDING)
         .map((building) => building.getSavePayload()),
     };
@@ -373,12 +375,17 @@ export class World extends Scene implements IWorld {
   private addCrystals() {
     const positions = this.level.readSpawnPositions(SpawnTarget.CRYSTAL);
 
-    const create = () => {
+    const getRandomPosition = () => {
       const freePositions = positions.filter((position) => this.level.isFreePoint({ ...position, z: 1 }));
+
+      return Phaser.Utils.Array.GetRandom(freePositions);
+    };
+
+    const create = (position: Vector2D) => {
       const variants = LEVEL_PLANETS[this.level.planet].CRYSTAL_VARIANTS;
 
       new Crystal(this, {
-        positionAtMatrix: Phaser.Utils.Array.GetRandom(freePositions),
+        positionAtMatrix: position,
         variant: Phaser.Utils.Array.GetRandom(variants),
       });
     };
@@ -386,17 +393,26 @@ export class World extends Scene implements IWorld {
     const maxCount = Math.ceil(
       Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
-    const currentCount = this.game.usedSave?.payload.world.crystals ?? maxCount;
 
-    for (let i = 0; i < currentCount; i++) {
-      create();
+    if (this.game.usedSave) {
+      this.game.usedSave.payload.world.crystals.forEach((crystal) => {
+        create(crystal.position);
+      });
+    } else {
+      for (let i = 0; i < maxCount; i++) {
+        const position = getRandomPosition();
+
+        create(position);
+      }
     }
 
     this.wave.on(WaveEvents.COMPLETE, () => {
       const newCount = maxCount - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
-        create();
+        const position = getRandomPosition();
+
+        create(position);
       }
     });
   }
