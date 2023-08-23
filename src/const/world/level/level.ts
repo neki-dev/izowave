@@ -17,6 +17,8 @@ export const LEVEL_TILE_SIZE: TileMeta = {
 
 export const LEVEL_MAP_MAX_HEIGHT = 4;
 
+export const LEVEL_SEED_SIZE = 128;
+
 export const LEVEL_SCENERY_TILE_SIZE = {
   width: 42,
   height: 72,

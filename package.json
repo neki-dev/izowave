@@ -54,7 +54,7 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "gen-biome": "2.3.2",
+    "gen-biome": "2.4.0",
     "heap": "0.2.7",
     "idb": "^7.1.1",
     "phaser": "3.60.0",

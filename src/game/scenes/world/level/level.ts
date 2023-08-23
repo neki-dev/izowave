@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 
 import {
   LEVEL_TILE_SIZE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS,
+  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
 } from '~const/world/level';
 import { registerSpriteAssets } from '~lib/assets';
 import { Navigator } from '~lib/navigator';
@@ -66,7 +66,11 @@ export class Level extends TileMatrix implements ILevel {
       }
     });
 
-    this.map = generator.generate(seed);
+    this.map = generator.generate({
+      seed,
+      seedSize: LEVEL_SEED_SIZE,
+    });
+
     this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
     this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));
 
