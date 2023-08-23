@@ -6,10 +6,12 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
 `;
 
 export const Input = styled.input`
   width: 100%;
+  min-width: 300px;
   margin-bottom: 30px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   color: #fff;

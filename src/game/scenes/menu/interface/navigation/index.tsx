@@ -24,7 +24,6 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       }, {
         label: 'Load game',
         page: MenuPage.LOAD_GAME,
-        disabled: game.storage.saves.length === 0,
       });
     } else {
       items.push({

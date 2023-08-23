@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Table: any = styled.table`
+  width: 100%;
   margin-bottom: 30px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_TEXT};
@@ -45,6 +46,7 @@ Table.Cell = styled.td<{
   padding: 12px 16px;
   overflow: hidden;
   ${(props) => (props.$type === 'delete' && css`
+    width: 38px;
     &:hover {
       background: ${InterfaceBackgroundColor.ERROR_DARK};
     }

@@ -6,18 +6,18 @@ import { Table } from '~scene/system/interface/table';
 import { IGame } from '~type/game';
 import { StorageSave } from '~type/storage';
 
-import { Wrapper } from './styles';
+import { Wrapper, Empty } from './styles';
 
 export const LoadGame: React.FC = () => {
   const game = useGame<IGame>();
 
-  const [selectedSave, setSelectedSave] = useState<Nullable<StorageSave>>(null);
+  const [selectedSave, setSelectedSave] = useState<StorageSave>(
+    game.storage.saves[0],
+  );
   const [saves, setSaves] = useState(game.storage.saves);
 
   const onClickStart = () => {
-    if (selectedSave) {
-      game.continueGame(selectedSave);
-    }
+    game.continueGame(selectedSave);
   };
 
   const deleteSave = (event: MouseEvent, name: string) => {
@@ -27,8 +27,8 @@ export const LoadGame: React.FC = () => {
     if (window.confirm('Do you confirm delete this save?')) {
       game.storage.delete(name).then(() => {
         setSaves([...game.storage.saves]);
-        if (selectedSave?.name === name) {
-          setSelectedSave(null);
+        if (selectedSave.name === name) {
+          setSelectedSave(game.storage.saves[0]);
         }
       });
     }
@@ -36,46 +36,50 @@ export const LoadGame: React.FC = () => {
 
   return (
     <Wrapper>
-      <Table>
-        <Table.Head>
-          <Table.HeadRow>
-            <Table.Cell>Name</Table.Cell>
-            <Table.Cell>Planet</Table.Cell>
-            <Table.Cell>Difficulty</Table.Cell>
-            <Table.Cell>Wave</Table.Cell>
-            <Table.Cell>Score</Table.Cell>
-            <Table.Cell>Date</Table.Cell>
-            <Table.Cell />
-          </Table.HeadRow>
-        </Table.Head>
-        <Table.Body>
-          {saves.map((save) => (
-            <Table.BodyRow
-              key={save.name}
-              onClick={() => setSelectedSave(save)}
-              $active={save.name === selectedSave?.name}
-            >
-              <Table.Cell>{save.name}</Table.Cell>
-              <Table.Cell>{save.payload.level.planet}</Table.Cell>
-              <Table.Cell>{save.payload.game.difficulty}</Table.Cell>
-              <Table.Cell>{save.payload.wave.number}</Table.Cell>
-              <Table.Cell>{save.payload.player.score}</Table.Cell>
-              <Table.Cell>{new Date(save.date).toLocaleString()}</Table.Cell>
-              <Table.Cell
-                $type="delete"
-                onClick={(event: MouseEvent) => deleteSave(event, save.name)}
+      {saves.length === 0 ? (
+        <Empty>Saves not found</Empty>
+      ) : (
+        <Table>
+          <Table.Head>
+            <Table.HeadRow>
+              <Table.Cell>Name</Table.Cell>
+              <Table.Cell>Planet</Table.Cell>
+              <Table.Cell>Difficulty</Table.Cell>
+              <Table.Cell>Wave</Table.Cell>
+              <Table.Cell>Score</Table.Cell>
+              <Table.Cell>Date</Table.Cell>
+              <Table.Cell />
+            </Table.HeadRow>
+          </Table.Head>
+          <Table.Body>
+            {saves.map((save) => (
+              <Table.BodyRow
+                key={save.name}
+                onClick={() => setSelectedSave(save)}
+                $active={save.name === selectedSave.name}
               >
-                X
-              </Table.Cell>
-            </Table.BodyRow>
-          ))}
-        </Table.Body>
-      </Table>
+                <Table.Cell>{save.name}</Table.Cell>
+                <Table.Cell>{save.payload.level.planet}</Table.Cell>
+                <Table.Cell>{save.payload.game.difficulty}</Table.Cell>
+                <Table.Cell>{save.payload.wave.number}</Table.Cell>
+                <Table.Cell>{save.payload.player.score}</Table.Cell>
+                <Table.Cell>{new Date(save.date).toLocaleString()}</Table.Cell>
+                <Table.Cell
+                  $type="delete"
+                  onClick={(event: MouseEvent) => deleteSave(event, save.name)}
+                >
+                  X
+                </Table.Cell>
+              </Table.BodyRow>
+            ))}
+          </Table.Body>
+        </Table>
+      )}
       <Button
         view="primary"
         size="medium"
-        disabled={!selectedSave}
         onClick={onClickStart}
+        disabled={saves.length === 0}
       >
         Start
       </Button>
