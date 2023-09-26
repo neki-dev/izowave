@@ -2,9 +2,7 @@ import { NavigatorPathNodeData } from '~type/navigator';
 import { Vector2D } from '~type/world/level';
 
 export class PathNode {
-  readonly x: number;
-
-  readonly y: number;
+  readonly position: Vector2D;
 
   readonly distance: number;
 
@@ -14,11 +12,10 @@ export class PathNode {
 
   private listOpened: Nullable<boolean> = null;
 
-  constructor(parent: Nullable<PathNode>, {
-    position, cost = 1.0, distance,
+  constructor({
+    position, cost = 1.0, distance, parent = null,
   }: NavigatorPathNodeData) {
-    this.x = position.x;
-    this.y = position.y;
+    this.position = position;
     this.distance = distance;
     this.cost = cost;
     this.parent = parent;
@@ -61,20 +58,15 @@ export class PathNode {
   }
 
   public getPath() {
-    const path: Vector2D[] = [{
-      x: this.x,
-      y: this.y,
-    }];
+    const path: Vector2D[] = [this.position];
 
     let parent = this.getParent();
 
     while (parent) {
-      path.push({
-        x: parent.x,
-        y: parent.y,
-      });
+      path.push(parent.position);
       parent = parent.getParent();
     }
+
     path.reverse();
 
     return path;

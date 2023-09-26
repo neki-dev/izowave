@@ -26,7 +26,7 @@ export class NavigatorTask {
   constructor({
     id, from, to, grid, compress = false,
   }: NavigatorTaskData) {
-    this.id = id as string;
+    this.id = id ?? 'noid';
     this.from = from;
     this.to = to;
     this.grid = grid;
@@ -36,7 +36,7 @@ export class NavigatorTask {
       (nodeA, nodeB) => nodeA.bestGuessDistance() - nodeB.bestGuessDistance(),
     );
 
-    const node = new PathNode(null, {
+    const node = new PathNode({
       position: from,
       distance: getDistance(from, to),
     });
@@ -51,10 +51,10 @@ export class NavigatorTask {
   public addNode(node: PathNode) {
     this.nodes.push(node);
 
-    if (!this.tree[node.y]) {
-      this.tree[node.y] = [];
+    if (!this.tree[node.position.y]) {
+      this.tree[node.position.y] = [];
     }
-    this.tree[node.y][node.x] = node;
+    this.tree[node.position.y][node.position.x] = node;
   }
 
   public pickNode(position: Vector2D) {
@@ -97,8 +97,8 @@ export class NavigatorTask {
     points: number[][],
   ) {
     const position: Vector2D = {
-      x: currentNode.x + shift.x,
-      y: currentNode.y + shift.y,
+      x: currentNode.position.x + shift.x,
+      y: currentNode.position.y + shift.y,
     };
     const cost = currentNode.getCost() + getCost(currentNode, shift, points);
     const existNode = this.pickNode(position);
@@ -110,7 +110,8 @@ export class NavigatorTask {
         this.upNode(existNode);
       }
     } else {
-      const node = new PathNode(currentNode, {
+      const node = new PathNode({
+        parent: currentNode,
         position,
         cost,
         distance: getDistance(position, this.to),

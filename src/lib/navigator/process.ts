@@ -36,7 +36,7 @@ export class NavigatorProcess {
         continue;
       }
 
-      if (equalPositions(task.to, currentNode)) {
+      if (equalPositions(task.to, currentNode.position)) {
         this.taskQueue.shift();
         task.complete(currentNode);
         continue;

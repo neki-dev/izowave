@@ -1,3 +1,4 @@
+import { PathNode } from '~lib/navigator/node';
 import { Vector2D } from '~type/world/level';
 
 export interface INavigator {
@@ -48,6 +49,7 @@ export type NavigatorTaskData = {
 
 export type NavigatorPathNodeData = {
   position: Vector2D
+  parent?: Nullable<PathNode>
   cost?: number
   distance: number
 };
