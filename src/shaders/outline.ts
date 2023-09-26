@@ -6,9 +6,9 @@ type Config = {
 };
 
 export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipeline {
-  private _size: number = 1.0;
+  private size: number = 1.0;
 
-  private _color: Phaser.Display.Color = new Phaser.Display.Color();
+  private color: Phaser.Display.Color = new Phaser.Display.Color(255, 255, 255);
 
   constructor(game: Phaser.Game) {
     super({
@@ -48,24 +48,20 @@ export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipelin
         }
       `,
     });
-
-    this.setConfig({
-      color: 0xffffff,
-    });
   }
 
   public onPreRender() {
-    this.set1f('thickness', this._size);
-    this.set3f('outlineColor', this._color.redGL, this._color.greenGL, this._color.blueGL);
+    this.set1f('thickness', this.size);
+    this.set3f('outlineColor', this.color.redGL, this.color.greenGL, this.color.blueGL);
     this.set2f('imageSize', this.renderer.width, this.renderer.height);
   }
 
   public setConfig({ size, color }: Config) {
     if (size !== undefined) {
-      this._size = size;
+      this.size = size;
     }
     if (color !== undefined) {
-      this._color.setFromRGB(Phaser.Display.Color.IntegerToRGB(color));
+      this.color.setFromRGB(Phaser.Display.Color.IntegerToRGB(color));
     }
   }
 }

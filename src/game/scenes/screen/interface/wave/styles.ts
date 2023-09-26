@@ -28,16 +28,23 @@ export const Container = styled.div`
 `;
 
 export const CurrentNumber = styled.div<{
+  $paused?: boolean
   $going?: boolean
 }>`
   font-size: 24px;
   line-height: 24px;
   padding: 6px 17px 10px 17px;
   border-radius: 3px;
-  background: ${(props) => (props.$going
-    ? InterfaceBackgroundColor.ERROR
-    : InterfaceBackgroundColor.SUCCESS
-  )};
+  background: ${(props) => {
+    if (props.$paused) {
+      return InterfaceBackgroundColor.WARN;
+    }
+    if (props.$going) {
+      return InterfaceBackgroundColor.ERROR;
+    }
+
+    return InterfaceBackgroundColor.SUCCESS;
+  }};
   box-shadow: 0 20px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
 `;
 

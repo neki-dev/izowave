@@ -17,8 +17,8 @@ export function getCost(
   points: number[][],
 ) {
   const position: Vector2D = {
-    x: currentNode.x + shift.x,
-    y: currentNode.y + shift.y,
+    x: currentNode.position.x + shift.x,
+    y: currentNode.position.y + shift.y,
   };
   const cost = points[position.y]?.[position.x] ?? 1.0;
   const isDiagonal = Math.abs(shift.x) + Math.abs(shift.y) !== 1;
@@ -26,8 +26,8 @@ export function getCost(
   if (isDiagonal) {
     return (
       cost * Math.SQRT2
-      + (points[currentNode.y]?.[position.x] ?? 0.0)
-      + (points[position.y]?.[currentNode.x] ?? 0.0)
+      + (points[currentNode.position.y]?.[position.x] ?? 0.0)
+      + (points[position.y]?.[currentNode.position.x] ?? 0.0)
     );
   }
 
@@ -52,8 +52,8 @@ export function getDirections(grid: boolean[][], currentNode: PathNode) {
   const allowedDirs: Vector2D[] = [];
 
   eachEntries(straightDirs, (key, dir) => {
-    const x = currentNode.x + dir.x;
-    const y = currentNode.y + dir.y;
+    const x = currentNode.position.x + dir.x;
+    const y = currentNode.position.y + dir.y;
 
     if (grid[y]?.[x] === false) {
       straightFlags[key] = true;
@@ -63,8 +63,8 @@ export function getDirections(grid: boolean[][], currentNode: PathNode) {
 
   eachEntries(diagonalDirs, (key, dir) => {
     const dontCross = key.split('').every((flag) => straightFlags[flag]);
-    const x = currentNode.x + dir.x;
-    const y = currentNode.y + dir.y;
+    const x = currentNode.position.x + dir.x;
+    const y = currentNode.position.y + dir.y;
 
     if (dontCross && grid[y]?.[x] === false) {
       allowedDirs.push(dir);
