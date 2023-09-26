@@ -77,7 +77,7 @@ export const Preview = styled.div`
   overflow: hidden;
   width: 34px;
   height: 40px;
-  img {
+  img, div[data-texture-container] {
     height: 100%;
   }
 `;
@@ -92,5 +92,3 @@ export const Number = styled.div`
   top: 4px;
   opacity: 0.75;
 `;
-
-export const Image = styled.img``;

@@ -1,4 +1,4 @@
-import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import { Texture, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
@@ -6,9 +6,7 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import {
-  Container, Number, Preview, Image,
-} from './styles';
+import { Container, Number, Preview } from './styles';
 
 type Props = {
   number: number
@@ -76,7 +74,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
     >
       <Number>{number}</Number>
       <Preview>
-        <Image src={`assets/sprites/${BUILDINGS[variant].Texture}.png`} />
+        <Texture name={BUILDINGS[variant].Texture} frame={0} />
       </Preview>
     </Container>
   );
