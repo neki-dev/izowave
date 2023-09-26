@@ -23,16 +23,16 @@ export const Wave: React.FC = () => {
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isDisabled, setDisabled] = useState(true);
+  const [isPaused, setPaused] = useState(true);
 
   useSceneUpdate(world, () => {
-    const currentIsDisabled = world.wave.isPeaceMode || world.isTimePaused();
+    setDisabled(world.wave.isPeaceMode);
 
-    setDisabled(currentIsDisabled);
-
-    if (currentIsDisabled) {
+    if (world.wave.isPeaceMode) {
       return;
     }
 
+    setPaused(world.isTimePaused());
     setCurrentNumber(world.wave.number);
     setGoing(world.wave.isGoing);
 
@@ -54,7 +54,7 @@ export const Wave: React.FC = () => {
   ) : (
     <Wrapper>
       <Container>
-        <CurrentNumber $going={isGoing}>{currentNumber}</CurrentNumber>
+        <CurrentNumber $paused={isPaused} $going={isGoing}>{isPaused ? '||' : currentNumber}</CurrentNumber>
         <State>
           <Label>{isGoing ? 'Enemies' : 'Timeleft'}</Label>
           <Value $attention={isAlarm}>{value}</Value>
