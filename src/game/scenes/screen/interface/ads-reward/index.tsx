@@ -24,7 +24,7 @@ export const AdsReward: React.FC = () => {
   });
 
   const onConfirmAds = () => {
-    game.showAd(GameAdType.REWARDED, () => {
+    game.showAdv(GameAdType.REWARDED, () => {
       world.player.giveExperience(adsReward.experience);
       world.player.giveResources(adsReward.resources);
     });
