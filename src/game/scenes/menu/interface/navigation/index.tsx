@@ -49,8 +49,8 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       label: 'Settings',
       page: MenuPage.SETTINGS,
     }, {
-      label: 'About',
-      page: MenuPage.ABOUT,
+      label: 'About game',
+      page: MenuPage.ABOUT_GAME,
     }, {
       label: 'Controls',
       page: MenuPage.CONTROLS,

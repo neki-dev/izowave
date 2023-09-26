@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Wrapper } from './styles';
 
-export const About: React.FC = () => (
+export const AboutGame: React.FC = () => (
   <Wrapper>
     Your task is to survive on chosen planet as many waves as possible.
     <br />

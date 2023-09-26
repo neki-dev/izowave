@@ -10,6 +10,6 @@ export enum MenuPage {
   LOAD_GAME = 'LOAD_GAME',
   SAVE_GAME = 'SAVE_GAME',
   SETTINGS = 'SETTINGS',
-  ABOUT = 'ABOUT',
+  ABOUT_GAME = 'ABOUT_GAME',
   CONTROLS = 'CONTROLS',
 }

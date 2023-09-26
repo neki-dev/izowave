@@ -2,7 +2,7 @@ import React from 'react';
 
 import { MenuPage } from '~type/menu';
 
-import { About } from './about';
+import { AboutGame } from './about-game';
 import { Controls } from './controls';
 import { LoadGame } from './load-game';
 import { NewGame } from './new-game';
@@ -19,7 +19,7 @@ const PAGES: Record<MenuPage, React.FC> = {
   [MenuPage.SAVE_GAME]: SaveGame,
   [MenuPage.LOAD_GAME]: LoadGame,
   [MenuPage.SETTINGS]: Settings,
-  [MenuPage.ABOUT]: About,
+  [MenuPage.ABOUT_GAME]: AboutGame,
   [MenuPage.CONTROLS]: Controls,
 };
 
