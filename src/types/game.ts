@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 import { IAnalytics } from '~type/analytics';
 import { IScreen } from '~type/screen';
 import { IStorage, StorageSave } from '~type/storage';
@@ -110,7 +112,7 @@ export interface IGame extends Phaser.Game {
    * @param type - Ad type
    * @param callback - Complete callback
    */
-  showAdv(type: GameAdType, callback?: () => void): void
+  showAd(type: GameAdType, callback?: () => void): void
 
   /**
    * Get data for saving.

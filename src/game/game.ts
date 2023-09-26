@@ -4,10 +4,9 @@ import {
   AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, SETTINGS,
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
-import { SDK } from '~lib/sdk';
 import { Storage } from '~lib/storage';
 import { Tutorial } from '~lib/tutorial';
-import { eachEntries } from '~lib/utils';
+import { eachEntries, registerScript } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
@@ -28,7 +27,6 @@ import {
 } from '~type/game';
 import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
-import { ISDK, SDKPlatform } from '~type/sdk';
 import { IStorage, StorageSave } from '~type/storage';
 import { ITutorial } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -41,8 +39,6 @@ export class Game extends Phaser.Game implements IGame {
   readonly analytics: IAnalytics;
 
   readonly storage: IStorage;
-
-  private sdk: ISDK | null = null;
 
   private flags: string[];
 
@@ -108,7 +104,9 @@ export class Game extends Phaser.Game implements IGame {
     this.readFlags();
     this.readSettings();
 
-    this.createSDK();
+    if (this.isFlagEnabled(GameFlag.ADS)) {
+      registerScript('https://sdk.crazygames.com/crazygames-sdk-v2.js');
+    }
 
     this.events.on(Phaser.Core.Events.READY, () => {
       this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
@@ -244,7 +242,7 @@ export class Game extends Phaser.Game implements IGame {
       defaultPage: MenuPage.NEW_GAME,
     });
 
-    this.showAdv(GameAdType.MIDGAME);
+    this.showAd(GameAdType.MIDGAME);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
@@ -307,35 +305,29 @@ export class Game extends Phaser.Game implements IGame {
 
   private readFlags() {
     const query = new URLSearchParams(window.location.search);
-    const value = query.get('flags')?.toUpperCase() ?? '';
+    const rawFlags = query.get('flags');
 
-    this.flags = value.split(',');
+    this.flags = rawFlags?.toUpperCase().split(',') ?? [];
   }
 
-  public showAdv(type: GameAdType, callback?: () => void) {
-    if (!this.sdk || !this.isFlagEnabled(GameFlag.ADS)) {
+  public showAd(type: GameAdType, callback?: () => void) {
+    if (!this.isFlagEnabled(GameFlag.ADS)) {
       return;
     }
 
-    this.sdk.showAdv(
-      type,
-      () => {
+    // @ts-ignore
+    window.CrazyGames?.SDK?.ad?.requestAd(type, {
+      adStarted: () => {
         this.pause();
       },
-      () => {
+      adFinished: () => {
         this.resume();
         callback?.();
       },
-    );
-  }
-
-  private createSDK() {
-    const query = new URLSearchParams(window.location.search);
-    const platform = <SDKPlatform> query.get('sdk')?.toUpperCase();
-
-    if (platform) {
-      this.sdk = new SDK(platform);
-    }
+      adError: (error: any) => {
+        console.warn(`Error ${type} ad:`, error);
+      },
+    });
   }
 
   private getRecordStat(): Nullable<GameStat> {
