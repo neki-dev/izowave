@@ -12,10 +12,9 @@ And also upgrade skills of your character and his assistant.
 **Join Discord - https://discord.gg/cnFAdMsRxn**
 
 ## 🎮 [PLAY NOW](https://izowave.neki.guru/)
-  * *GameJolt* / https://gamejolt.com/games/izowave/822933
   * *Itch.io* / https://neki-dev.itch.io/izowave
   * *CrazyGames* / https://www.crazygames.com/game/izowave---build-and-defence
-  * *WebGamer* / https://webgamer.io/en/g/izowave
+  * *GameJolt* / https://gamejolt.com/games/izowave/822933
 
 .
 
