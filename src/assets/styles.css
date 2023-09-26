@@ -26,11 +26,11 @@ img {
   flex-direction: column;
   display: flex;
   padding: 100px;
-  font: 20px 'Verdana';
+  font: 14px 'Verdana';
   font-weight: bold;
-  line-height: 20pt;
-  letter-spacing: 2px;
-  color: #aaa;
+  line-height: 14pt;
+  letter-spacing: 1px;
+  color: #fff;
   text-align: center;
   z-index: 999;
 }

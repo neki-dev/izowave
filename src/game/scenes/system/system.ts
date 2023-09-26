@@ -8,23 +8,26 @@ import { MenuPage } from '~type/menu';
 
 export class System extends Scene {
   constructor() {
-    super({
-      key: GameScene.SYSTEM,
-      pack: getAssetsPack(),
-    });
-
-    setLoadingStatus('ASSETS LOADING');
+    super(GameScene.SYSTEM);
   }
 
-  public async create() {
-    await this.game.loadPayload();
+  public async preload() {
+    this.load.on('progress', (value: number) => {
+      setLoadingStatus(`LOADING\n${Math.round(value * 100)}%`);
+    });
+
+    this.load.addPack([getAssetsPack()]);
 
     await Promise.all([
       loadFontFace(InterfaceFont.PIXEL_LABEL, 'pixel_label.ttf'),
       loadFontFace(InterfaceFont.PIXEL_TEXT, 'pixel_text.ttf'),
     ]);
+  }
 
-    removeLoading();
+  public async create() {
+    setLoadingStatus('LOADING\nDONE');
+
+    await this.game.loadPayload();
 
     this.scene.launch(GameScene.WORLD);
     this.scene.launch(GameScene.MENU, {
@@ -32,6 +35,8 @@ export class System extends Scene {
     });
 
     this.scene.bringToTop();
+
+    removeLoading();
 
     this.input.keyboard?.on(CONTROL_KEY.PAUSE, () => {
       if (this.game.isPaused) {
