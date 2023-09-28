@@ -15,10 +15,6 @@ export const PLAYER_TILE_SIZE = {
   gamut: 4,
 };
 
-const {
-  RIGHT, LEFT, UP, DOWN, NONE,
-} = MovementDirection;
-
 export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
   [PlayerSkill.MAX_HEALTH]: {
     label: 'Maximum health',
@@ -69,24 +65,35 @@ export const PLAYER_SUPERSKILLS: Record<PlayerSuperskill, PlayerSuperskillData> 
   },
 };
 
-export const PLAYER_MOVE_DIRECTIONS = {
-  [`${LEFT}|${UP}`]: 180 + LEVEL_TILE_SIZE.deg,
-  [`${LEFT}|${NONE}`]: 180,
-  [`${LEFT}|${DOWN}`]: 180 - LEVEL_TILE_SIZE.deg,
-  [`${NONE}|${UP}`]: 270,
-  [`${NONE}|${DOWN}`]: 90,
-  [`${RIGHT}|${UP}`]: -LEVEL_TILE_SIZE.deg,
-  [`${RIGHT}|${NONE}`]: 0,
-  [`${RIGHT}|${DOWN}`]: LEVEL_TILE_SIZE.deg,
+export const PLAYER_MOVEMENT_TARGET = [
+  MovementDirection.LEFT,
+  MovementDirection.LEFT_UP,
+  MovementDirection.UP,
+  MovementDirection.RIGHT_UP,
+  MovementDirection.RIGHT,
+  MovementDirection.RIGHT_DOWN,
+  MovementDirection.DOWN,
+  MovementDirection.LEFT_DOWN,
+];
+
+export const PLAYER_MOVEMENT_ANGLES = {
+  [MovementDirection.LEFT]: 180,
+  [MovementDirection.LEFT_UP]: 180 + LEVEL_TILE_SIZE.deg,
+  [MovementDirection.UP]: 270,
+  [MovementDirection.RIGHT_UP]: 360 - LEVEL_TILE_SIZE.deg,
+  [MovementDirection.RIGHT]: 0,
+  [MovementDirection.RIGHT_DOWN]: 0 + LEVEL_TILE_SIZE.deg,
+  [MovementDirection.DOWN]: 90,
+  [MovementDirection.LEFT_DOWN]: 180 - LEVEL_TILE_SIZE.deg,
 };
 
-export const PLAYER_MOVE_ANIMATIONS = {
-  [`${LEFT}|${UP}`]: 'move_left_up',
-  [`${LEFT}|${NONE}`]: 'move_left',
-  [`${LEFT}|${DOWN}`]: 'move_left_down',
-  [`${NONE}|${UP}`]: 'move_up',
-  [`${NONE}|${DOWN}`]: 'move_down',
-  [`${RIGHT}|${UP}`]: 'move_right_up',
-  [`${RIGHT}|${NONE}`]: 'move_right',
-  [`${RIGHT}|${DOWN}`]: 'move_right_down',
+export const PLAYER_MOVEMENT_KEYS: Record<string, MovementDirection> = {
+  w: MovementDirection.UP,
+  ArrowUp: MovementDirection.UP,
+  s: MovementDirection.DOWN,
+  ArrowDown: MovementDirection.DOWN,
+  a: MovementDirection.LEFT,
+  ArrowLeft: MovementDirection.LEFT,
+  d: MovementDirection.RIGHT,
+  ArrowRight: MovementDirection.RIGHT,
 };

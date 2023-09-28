@@ -59,6 +59,7 @@
     "idb": "7.1.1",
     "phaser": "3.60.0",
     "phaser-react-ui": "1.6.1",
+    "phaser3-rex-plugins": "1.60.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "styled-components": "6.0.1",

@@ -44,7 +44,7 @@ export class Camera implements ICamera {
   }
 
   public addZoomControl() {
-    if (this.scene.sys.game.device.os.desktop) {
+    if (this.scene.game.device.os.desktop) {
       this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
         const force = pointer.deltaY / 500;
 
