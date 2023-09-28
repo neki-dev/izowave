@@ -44,13 +44,42 @@ export class Camera implements ICamera {
   }
 
   public addZoomControl() {
+    if (this.scene.sys.game.device.os.desktop) {
+      this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
+        const force = pointer.deltaY / 500;
+
+        this.updateZoom(force);
+      });
+    } else {
+      this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, () => {
+        const isMultitouch = this.scene.input.pointer1.isDown && this.scene.input.pointer2.isDown;
+
+        if (!isMultitouch) {
+          return;
+        }
+
+        const distanceStart = Phaser.Math.Distance.Between(
+          this.scene.input.pointer1.downX,
+          this.scene.input.pointer1.downY,
+          this.scene.input.pointer2.downX,
+          this.scene.input.pointer2.downY,
+        );
+        const distanceCurrent = Phaser.Math.Distance.BetweenPoints(
+          this.scene.input.pointer1.position,
+          this.scene.input.pointer2.position,
+        );
+        const force = (distanceStart - distanceCurrent) / 2000;
+
+        this.updateZoom(force);
+      });
+    }
+  }
+
+  private updateZoom(value: number) {
     const camera = this.scene.cameras.main;
+    const zoom = camera.zoom - value;
+    const clampZoom = Math.min(CAMERA_ZOOM, Math.max(CAMERA_ZOOM / 2, zoom));
 
-    this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
-      const zoom = camera.zoom - (pointer.deltaY / 500);
-      const clampZoom = Math.min(CAMERA_ZOOM, Math.max(CAMERA_ZOOM / 2, zoom));
-
-      camera.zoomTo(clampZoom, 10);
-    });
+    camera.zoomTo(clampZoom, 10);
   }
 }

@@ -38,6 +38,10 @@ export class System extends Scene {
 
     removeLoading();
 
+    if (!this.sys.game.device.os.desktop) {
+      this.input.addPointer(1);
+    }
+
     this.input.keyboard?.on(CONTROL_KEY.PAUSE, () => {
       if (this.game.isPaused) {
         // System pause
