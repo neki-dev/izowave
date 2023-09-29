@@ -48,6 +48,14 @@ export class Screen extends Scene implements IScreen {
     });
   }
 
+  public isJoystickUsing() {
+    if (!this.joystick) {
+      return false;
+    }
+
+    return !this.joystick.noKey;
+  }
+
   private handleJoystick() {
     if (!this.joystick) {
       return;

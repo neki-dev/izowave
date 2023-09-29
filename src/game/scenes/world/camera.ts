@@ -57,6 +57,10 @@ export class Camera implements ICamera {
       });
     } else {
       this.scene.input.on(Phaser.Input.Events.POINTER_MOVE, () => {
+        if (this.scene.game.screen.isJoystickUsing()) {
+          return;
+        }
+
         const isMultitouch = this.scene.input.pointer1.isDown && this.scene.input.pointer2.isDown;
 
         if (!isMultitouch) {

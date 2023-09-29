@@ -84,8 +84,6 @@ export class Game extends Phaser.Game implements IGame {
       pixelArt: true,
       autoRound: true,
       disableContextMenu: true,
-      width: window.innerWidth,
-      height: window.innerHeight,
       parent: CONTAINER_ID,
       transparent: true,
       scale: {

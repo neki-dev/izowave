@@ -12,7 +12,6 @@ export const Container = styled.div<{
   $disabled?: boolean
   $disallow?: boolean
   $active?: boolean
-  $newest?: boolean
   $usable?: boolean
 }>`
   width: 70px;
@@ -55,22 +54,20 @@ export const Container = styled.div<{
     opacity: 1.0;
     background: ${InterfaceBackgroundColor.BLUE};
   `)}
-  ${(props) => (props.$newest && css`
-    &::after {
-      position: absolute;
-      content: 'new';
-      color: #fff;
-      font-family: ${InterfaceFont.PIXEL_TEXT};
-      font-size: 9px;
-      line-height: 9px;
-      left: -3px;
-      top: -3px;
-      border-radius: 5px;
-      background: ${InterfaceBackgroundColor.SUCCESS};
-      padding: 2px 4px 3px 4px;
-      animation: ${animationBlink} 1s infinite;
-    }
-  `)}
+`;
+
+export const Newest = styled.div`
+  position: absolute;
+  color: #fff;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 9px;
+  line-height: 9px;
+  left: -3px;
+  top: -3px;
+  border-radius: 5px;
+  background: ${InterfaceBackgroundColor.SUCCESS};
+  padding: 2px 4px 3px 4px;
+  animation: ${animationBlink} 1s infinite;
 `;
 
 export const Preview = styled.div`

@@ -69,9 +69,11 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
       $disallow={isDisallow}
       $disabled={isDisabled}
       $active={isActive}
-      $newest={isNewest}
       $usable={isUsable}
     >
+      {isNewest && (
+        <Newest>new</Newest>
+      )}
       <Number>{number}</Number>
       <Preview>
         <Texture name={BUILDINGS[variant].Texture} frame={0} />
