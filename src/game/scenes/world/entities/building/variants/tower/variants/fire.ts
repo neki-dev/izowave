@@ -61,7 +61,9 @@ export class BuildingTowerFire extends BuildingTower {
       beg: () => {
         hintId = this.scene.showHint({
           side: 'top',
-          text: 'Hover and press [E] to upgrade',
+          text: this.scene.game.device.os.desktop
+            ? 'Hover and press [E] to upgrade'
+            : 'Click to upgrade',
           position: this.getPositionOnGround(),
         });
       },

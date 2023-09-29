@@ -47,7 +47,7 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
     setMaxHealth(building.live.maxHealth);
     setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
     setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
-  });
+  }, [building]);
 
   return (
     <Wrapper ref={refScale}>

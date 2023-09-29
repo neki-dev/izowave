@@ -104,12 +104,14 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  public unsetBuildingVariant() {
+  public unsetBuildingVariant(force?: boolean) {
     if (this.variant === null) {
       return;
     }
 
-    this.scene.sound.play(BuildingAudio.UNSELECT);
+    if (!force) {
+      this.scene.sound.play(BuildingAudio.UNSELECT);
+    }
 
     if (this.scene.game.device.os.desktop) {
       this.scene.game.tutorial.complete(TutorialStep.STOP_BUILD);
@@ -347,7 +349,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     if (!this.scene.game.device.os.desktop) {
-      this.unsetBuildingVariant();
+      this.unsetBuildingVariant(true);
     }
   }
 
