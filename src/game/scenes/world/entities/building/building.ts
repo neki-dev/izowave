@@ -484,7 +484,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public select() {
-    if (!this.isFocused || this.isSelected) {
+    if (this.isSelected) {
       return;
     }
 
@@ -721,13 +721,20 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private handlePointer() {
-    const handleInput = (pointer: Phaser.Input.Pointer) => {
+    let preventClick = false;
+
+    const handleClick = (pointer: Phaser.Input.Pointer) => {
       if (pointer.button === 0) {
-        if (this.isFocused) {
-          this.select();
-        } else {
-          this.unselect();
-        }
+        this.select();
+        preventClick = true;
+      }
+    };
+
+    const handleOutsideClick = () => {
+      if (preventClick) {
+        preventClick = false;
+      } else {
+        this.unselect();
       }
     };
 
@@ -736,15 +743,19 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unselect();
     };
 
-    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleInput);
+    this.on(Phaser.Input.Events.POINTER_DOWN, handleClick);
+
+    if (this.scene.game.device.os.desktop) {
+      this.on(Phaser.Input.Events.POINTER_OVER, this.focus, this);
+      this.on(Phaser.Input.Events.POINTER_OUT, this.unfocus, this);
+    }
+
+    this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
     this.scene.game.events.on(GameEvents.FINISH, handleClear);
     this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
 
-    this.on(Phaser.Input.Events.POINTER_OVER, this.focus, this);
-    this.on(Phaser.Input.Events.POINTER_OUT, this.unfocus, this);
-
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleInput);
+      this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
       this.scene.game.events.off(GameEvents.FINISH, handleClear);
       this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
     });
