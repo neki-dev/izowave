@@ -25,6 +25,7 @@ export class Camera implements ICamera {
 
     camera.resetFX();
     camera.startFollow(object);
+    camera.followOffset.set(0, object.displayHeight);
 
     camera.setZoom(CAMERA_ZOOM * 2);
     camera.zoomTo(CAMERA_ZOOM, 200);
