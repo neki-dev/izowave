@@ -13,8 +13,8 @@ export const Modal: React.FC<Props> = ({ children, onConfirm, onClose }) => (
   <Container>
     <Content>{children}</Content>
     <Buttons>
-        <Button view='confirm' onClick={onConfirm}>Yes</Button>
-        <Button view='decline' onClick={onClose}>No</Button>
+        <Button view='confirm' size='small' onClick={onConfirm}>Yes</Button>
+        <Button view='decline' size='small' onClick={onClose}>No</Button>
     </Buttons>
   </Container>
 );

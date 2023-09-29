@@ -23,25 +23,25 @@ export const Builder: React.FC = () => {
       case TutorialStep.BUILD_GENERATOR: {
         return setHint({
           variant: BuildingVariant.GENERATOR,
-          text: 'Build generator to get resources',
+          text: 'Build generator\nto get resources',
         });
       }
       case TutorialStep.BUILD_RADAR: {
         return setHint({
           variant: BuildingVariant.RADAR,
-          text: 'Build radar to uncover enemies',
+          text: 'Build radar\nto uncover enemies',
         });
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
         return setHint({
           variant: BuildingVariant.TOWER_FIRE,
-          text: 'Build tower to attack enemies',
+          text: 'Build tower\nto attack enemies',
         });
       }
       case TutorialStep.BUILD_AMMUNITION: {
         return setHint({
           variant: BuildingVariant.AMMUNITION,
-          text: 'Build ammunition to reload towers',
+          text: 'Build ammunition\nto reload towers',
         });
       }
     }

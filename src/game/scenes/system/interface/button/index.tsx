@@ -3,7 +3,7 @@ import React from 'react';
 import { Container } from './styles';
 
 type Props = {
-  size?: 'fixed' | 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large'
   view?: 'active' | 'primary' | 'confirm' | 'decline'
   disabled?: boolean
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void

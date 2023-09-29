@@ -6,7 +6,9 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { Container, Number, Preview } from './styles';
+import {
+  Container, Number, Preview, Newest,
+} from './styles';
 
 type Props = {
   number: number

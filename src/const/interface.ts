@@ -3,3 +3,5 @@ export const INTERFACE_SCALE = {
   min: 0.7,
   max: 1.0,
 };
+
+export const INTERFACE_MOBILE_BREAKPOINT = '(max-height: 400px)';

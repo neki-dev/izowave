@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -25,6 +26,9 @@ export const Container = styled.div`
   padding: 10px 15px 10px 10px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 7px 11px 7px 7px;
+  }
 `;
 
 export const CurrentNumber = styled.div<{
@@ -46,6 +50,11 @@ export const CurrentNumber = styled.div<{
     return InterfaceBackgroundColor.SUCCESS;
   }};
   box-shadow: 0 20px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 22px;
+    line-height: 22px;
+    padding: 4px 13px 8px 13px;
+  }
 `;
 
 export const State = styled.div`
@@ -57,6 +66,11 @@ export const Label = styled.div`
   line-height: 11px;
   opacity: 0.5;
   margin-top: -2px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 8px;
+    line-height: 8px;
+    opacity: 0.75;
+  }
 `;
 
 export const Value = styled.div<{
