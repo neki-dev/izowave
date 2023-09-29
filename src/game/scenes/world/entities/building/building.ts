@@ -484,7 +484,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public select() {
-    if (this.isSelected) {
+    if (this.isSelected || !this.active) {
       return;
     }
 
