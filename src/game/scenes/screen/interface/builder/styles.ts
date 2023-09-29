@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
 
 export const Wrapper = styled.div`
   pointer-events: all;
@@ -12,24 +12,36 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const Info = styled.div`
+export const Info = styled.div<{
+  $visible?: boolean
+}>`
   position: absolute;
   transform: translate(-100%, 50%);
   margin: -58px 0 0 -15px;
-  display: none;
   z-index: 2;
+  display: none;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    ${(props) => props.$visible && css`
+      display: block;
+      + [role=hint] {
+        display: none;
+      }
+    `}
+  }
 `;
 
 export const Variant = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  &:hover {
-    [role=hint] {
-      display: none;
-    }
-    ${Info} {
-      display: block;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    &:hover {
+      ${Info} {
+        display: block;
+        + [role=hint] {
+          display: none;
+        }
+      }
     }
   }
 `;

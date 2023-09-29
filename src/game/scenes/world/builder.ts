@@ -111,7 +111,9 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
 
-    this.scene.game.tutorial.complete(TutorialStep.STOP_BUILD);
+    if (this.scene.game.device.os.desktop) {
+      this.scene.game.tutorial.complete(TutorialStep.STOP_BUILD);
+    }
 
     this.clearBuildingVariant();
   }
@@ -343,6 +345,10 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
     this.scene.sound.play(BuildingAudio.BUILD);
+
+    if (!this.scene.game.device.os.desktop) {
+      this.unsetBuildingVariant();
+    }
   }
 
   public createBuilding(data: BuildingBuildData) {

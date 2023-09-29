@@ -1,9 +1,10 @@
-import { useGame } from 'phaser-react-ui';
+import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { Hint } from '~scene/system/interface/hint';
-import { IGame } from '~type/game';
+import { GameScene, IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import { BuilderInfo } from './info';
@@ -12,7 +13,9 @@ import { Variant, Info, Wrapper } from './styles';
 
 export const Builder: React.FC = () => {
   const game = useGame<IGame>();
+  const world = useScene<IWorld>(GameScene.WORLD);
 
+  const [activeVariant, setActiveVariant] = useState<Nullable<BuildingVariant>>(null);
   const [hint, setHint] = useState<Nullable<{
     variant: BuildingVariant
     text: string
@@ -66,17 +69,21 @@ export const Builder: React.FC = () => {
     [],
   );
 
+  useSceneUpdate(world, () => {
+    setActiveVariant(world.builder.variant);
+  });
+
   return (
     <Wrapper>
       {Object.values(BuildingVariant).map((variant, index) => (
         <Variant key={variant}>
+          <Info $visible={activeVariant === variant}>
+            <BuilderInfo variant={variant} />
+          </Info>
+
           {hint?.variant === variant && (
             <Hint side="right">{hint.text}</Hint>
           )}
-
-          <Info>
-            <BuilderInfo variant={variant} />
-          </Info>
 
           <BuilderPreview variant={variant} number={index + 1} />
         </Variant>

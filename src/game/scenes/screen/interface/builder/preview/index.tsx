@@ -66,7 +66,6 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
 
   return (
     <Container
-      onTouchStart={onClick}
       onClick={onClick}
       onMouseEnter={onHover}
       $disallow={isDisallow}
