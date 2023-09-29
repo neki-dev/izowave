@@ -26,7 +26,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
 
   const isNewest = !isUsed && !isDisallow && !isDisabled && !world.game.usedSave;
 
-  const selectBuilding = () => {
+  const onClick = () => {
     if (isDisallow) {
       return;
     }
@@ -66,7 +66,8 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
 
   return (
     <Container
-      onClick={selectBuilding}
+      onTouchStart={onClick}
+      onClick={onClick}
       onMouseEnter={onHover}
       $disallow={isDisallow}
       $disabled={isDisabled}

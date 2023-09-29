@@ -5,3 +5,5 @@ export const INTERFACE_SCALE = {
 };
 
 export const INTERFACE_MOBILE_BREAKPOINT = '(max-height: 400px)';
+
+export const INTERFACE_DESKTOP_BREAKPOINT = '(min-height: 401px)';

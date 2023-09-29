@@ -1,11 +1,17 @@
 import styled, { css } from 'styled-components';
 
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
-  margin-top: 80px;
-  position: absolute;
-  left: 50%;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    margin-top: 80px;
+    position: absolute;
+    left: 50%;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 0 16px 14px 16px;
+  }
 `;
 
 export const Label = styled.div`
@@ -24,9 +30,7 @@ export const Addon = styled.div`
 export const Action = styled.div<{
   $disabled?: boolean
 }>`
-  padding: 6px 9px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  transform: translateX(-50%);
   pointer-events: all;
   display: flex;
   align-items: center;
@@ -43,5 +47,12 @@ export const Action = styled.div<{
   &:hover {
     cursor: pointer;
     background: ${InterfaceBackgroundColor.BLACK};
+  }
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    transform: translateX(-50%);
+    padding: 6px 9px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 9px 14px;
   }
 `;

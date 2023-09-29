@@ -1,16 +1,24 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceFont,
   InterfaceBackgroundColor,
   InterfaceTextColor,
 } from '~type/interface';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{
+  $adaptive?: boolean
+}>`
   margin-top: 15px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-gap: 5px;
+  grid-template-columns: repeat(2, 1fr);
+  ${(props) => (props.$adaptive && css`
+    @media ${INTERFACE_MOBILE_BREAKPOINT} {
+      grid-template-columns: 1fr;
+    }
+  `)};
 `;
 
 export const Param = styled.div`
