@@ -44,7 +44,7 @@ export class Screen extends Scene implements IScreen {
     this.joystick = new VirtualJoystick(this, {
       ...params,
       base: this.add.circle(0, 0, params.radius, 0xffffff, 0.25),
-      thumb: this.add.circle(0, 0, params.radius / 2, 0xffffff, 0.75),
+      thumb: this.add.circle(0, 0, params.radius * 0.7, 0xffffff, 0.75),
     });
   }
 
@@ -75,8 +75,8 @@ export class Screen extends Scene implements IScreen {
       INTERFACE_SCALE.min,
     );
 
-    const radius = 80 * zoom;
-    const padding = 32 * zoom;
+    const radius = 64 * zoom;
+    const padding = 40 * zoom;
 
     return {
       x: padding + radius,
