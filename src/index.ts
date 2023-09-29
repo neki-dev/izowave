@@ -12,8 +12,8 @@ console.log([
   `Open-Source at ${pkg.repository.url.replace('git+', '')}`,
 ].join('\n'));
 
-function checkScreenOrientation() {
-  if (window.innerWidth > window.innerHeight) {
+function checkScreenOrientation(event?: MediaQueryListEvent) {
+  if (event ? event.matches : window.innerWidth >= window.innerHeight) {
     removeFailure(FailureType.BAD_SCREEN_SIZE);
   } else {
     throwFailure(FailureType.BAD_SCREEN_SIZE);
@@ -21,7 +21,8 @@ function checkScreenOrientation() {
 }
 
 checkScreenOrientation();
-window.addEventListener('resize', checkScreenOrientation);
+window.matchMedia('(orientation: landscape)')
+  .addEventListener('change', checkScreenOrientation);
 
 const game = new Game();
 
