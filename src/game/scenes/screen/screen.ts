@@ -14,6 +14,12 @@ import { ScreenUI } from './interface';
 export class Screen extends Scene implements IScreen {
   private joystick: Nullable<VirtualJoystick> = null;
 
+  private _joystickActivePointer: Nullable<Phaser.Input.Pointer> = null;
+
+  public get joystickActivePointer() { return this._joystickActivePointer; }
+
+  private set joystickActivePointer(v) { this._joystickActivePointer = v; }
+
   constructor() {
     super(GameScene.SCREEN);
   }
@@ -41,10 +47,23 @@ export class Screen extends Scene implements IScreen {
   private createJoystick() {
     const params = this.getJoystickParams();
 
+    const base = this.add.circle(0, 0, params.radius, 0xffffff, 0.25);
+
+    base.setInteractive();
+    base.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      this.joystickActivePointer = pointer;
+    });
+
+    this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+      if (this.joystickActivePointer === pointer) {
+        this.joystickActivePointer = null;
+      }
+    });
+
     this.joystick = new VirtualJoystick(this, {
       ...params,
-      base: this.add.circle(0, 0, params.radius, 0xffffff, 0.25),
-      thumb: this.add.circle(0, 0, params.radius * 0.7, 0xffffff, 0.75),
+      base,
+      thumb: this.add.circle(0, 0, params.radius * 0.5, 0xffffff, 0.75),
     });
   }
 
@@ -61,7 +80,9 @@ export class Screen extends Scene implements IScreen {
       return;
     }
 
-    const angle = this.joystick.noKey ? null : this.joystick.angle + 180;
+    const angle = this.joystick.noKey
+      ? null
+      : this.joystick.angle + 180;
 
     this.game.world.player.setMovementTarget(angle);
   }

@@ -177,6 +177,7 @@ export enum BuildingTexture {
 
 export enum BuildingIcon {
   ALERT = 'building/icons/alert',
+  PLACEHOLDER = 'building/icons/placeholder',
   UPGRADE = 'building/icons/upgrade',
   HEALTH = 'building/icons/params/health',
   RADIUS = 'building/icons/params/radius',
