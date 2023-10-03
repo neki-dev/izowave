@@ -1,3 +1,4 @@
+import { useMobilePlatform } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useRef } from 'react';
 
 import { PLAYER_SKILLS } from '~const/world/entities/player';
@@ -11,6 +12,8 @@ type Props = {
 };
 
 export const UpgradesList: React.FC<Props> = ({ onClose }) => {
+  const isMobile = useMobilePlatform();
+
   const refContainer = useRef<HTMLDivElement>(null);
 
   const upgradeTypes = useMemo(
@@ -18,7 +21,7 @@ export const UpgradesList: React.FC<Props> = ({ onClose }) => {
     [],
   );
 
-  const onClickOutside = (event: MouseEvent) => {
+  const onClickOutside = (event: MouseEvent | TouchEvent) => {
     const isOutside = event
       .composedPath()
       .every((element) => element !== refContainer.current);
@@ -36,11 +39,11 @@ export const UpgradesList: React.FC<Props> = ({ onClose }) => {
   };
 
   useEffect(() => {
-    document.addEventListener('click', onClickOutside);
+    document.addEventListener(isMobile ? 'touchend' : 'click', onClickOutside);
     document.addEventListener('keyup', onKeyPress);
 
     return () => {
-      document.removeEventListener('click', onClickOutside);
+      document.removeEventListener(isMobile ? 'touchend' : 'click', onClickOutside);
       document.removeEventListener('keyup', onKeyPress);
     };
   }, []);

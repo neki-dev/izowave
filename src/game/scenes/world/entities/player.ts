@@ -131,10 +131,6 @@ export class Player extends Sprite implements IPlayer {
       this.dustEffect.emitter.setDepth(this.depth - 1);
     }
 
-    // if (!this.scene.game.device.os.desktop) {
-    //   this.handleMovementByPointer();
-    // }
-
     this.updateMovement();
     this.updateVelocity();
   }

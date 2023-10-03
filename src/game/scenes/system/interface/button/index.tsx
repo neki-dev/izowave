@@ -1,3 +1,4 @@
+import { useMobilePlatform } from 'phaser-react-ui';
 import React from 'react';
 
 import { Container } from './styles';
@@ -11,9 +12,24 @@ type Props = {
 };
 
 export const Button: React.FC<Props> = ({
-  size, view, disabled, onClick, children,
-}) => (
-  <Container onClick={onClick} $size={size} $view={view} $disabled={disabled}>
-    {children}
-  </Container>
-);
+  size,
+  view,
+  disabled,
+  onClick,
+  children,
+}) => {
+  const isMobile = useMobilePlatform();
+
+  return (
+    <Container
+      $size={size}
+      $view={view}
+      $disabled={disabled}
+      {...{
+        [isMobile ? 'onTouchEnd' : 'onClick']: onClick,
+      }}
+    >
+      {children}
+    </Container>
+  );
+};
