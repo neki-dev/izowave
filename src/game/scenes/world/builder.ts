@@ -350,14 +350,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     if (!this.scene.game.device.os.desktop) {
-      const adjacentPosition = this.scene.level.getFreeAdjacentTile({
-        ...this.supposedPosition,
-        z: 1,
-      });
-
-      if (adjacentPosition) {
-        this.supposedPosition = adjacentPosition;
-      }
+      this.unsetBuildingVariant(true);
     }
   }
 

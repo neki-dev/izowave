@@ -5,8 +5,9 @@ import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
   background: #000;
-  width: 80px;
   position: relative;
+  border-radius: 0 0 5px 5px;
+  overflow: hidden;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 70px;
   }

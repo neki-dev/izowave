@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   padding: 32px;
   display: flex;
   justify-content: space-between;
+  user-select: none;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 16px;
   }
