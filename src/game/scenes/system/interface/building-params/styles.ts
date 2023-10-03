@@ -60,6 +60,11 @@ export const Label = styled.div`
   line-height: 10px;
   opacity: 0.75;
   margin: -1px 0 2px 0;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 8px;
+    line-height: 8px;
+    margin: -2px 0 3px 0;
+  }
 `;
 
 export const Value = styled.div`

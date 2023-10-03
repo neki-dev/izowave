@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor } from '~type/interface';
 
 const animationOpacity = keyframes`
@@ -26,5 +27,8 @@ export const Container = styled.div`
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 14px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 10px;
   }
 `;

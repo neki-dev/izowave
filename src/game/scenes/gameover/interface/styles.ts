@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
@@ -17,4 +18,9 @@ export const Label = styled.div`
   font-size: 66px;
   line-height: 66px;
   margin-bottom: 40px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 50px;
+    line-height: 50px;
+    margin-bottom: 30px;
+  }
 `;

@@ -53,6 +53,7 @@ export const Action = styled.div<{
     padding: 6px 9px;
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 9px 14px;
+    padding: 12px 13px;
+    zoom: 1.2;
   }
 `;

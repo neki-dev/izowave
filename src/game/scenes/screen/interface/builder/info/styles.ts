@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -14,17 +15,8 @@ const animationOpacity = keyframes`
 export const Wrapper = styled.div`
   width: 260px;
   animation: ${animationOpacity} 0.1s ease-in;
-  border-radius: 10px;
-  overflow: hidden;
-  &::after {
-    position: absolute;
-    content: "";
-    right: 0;
-    top: 30px;
-    transform: translate(100%, -50%);
-    border-top: 12px solid transparent;
-    border-bottom: 12px solid transparent;
-    border-left: 15px solid ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: auto;
   }
 `;
 
@@ -35,6 +27,29 @@ export const Head = styled.div`
   padding: 0 20px;
   background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   height: 59px;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  white-space: nowrap;
+  &::after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 50%;
+    transform: translate(100%, -50%);
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 15px solid ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    height: auto;
+    border-radius: 5px;
+    padding: 9px 12px;
+    flex-direction: column;
+    align-items: flex-end;
+    &::after {
+      display: none;
+    }
+  }
 `;
 
 export const Name = styled.div`
@@ -42,11 +57,18 @@ export const Name = styled.div`
   color: ${InterfaceTextColor.SUCCESS};
   font-size: 16px;
   line-height: 16px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-bottom: 9px;
+  }
 `;
 
 export const Body = styled.div`
   padding: 18px 20px 20px 20px;
   background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+  border-radius: 0 0 10px 10px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    display: none;
+  }
 `;
 
 export const Alert = styled.div<{

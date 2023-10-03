@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 100px;
   list-style: none;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-top: 40px;
+  }
 `;
 
 export const Item = styled.div`

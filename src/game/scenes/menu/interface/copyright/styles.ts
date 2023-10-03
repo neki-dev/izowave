@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceTextColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
@@ -8,6 +9,10 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    // TODO
+    display: none;
+  }
 `;
 
 export const About = styled.div`

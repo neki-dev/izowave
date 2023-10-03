@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor } from '~type/interface';
 
 export const Wrapper = styled.div`
@@ -22,6 +23,9 @@ export const Sidebar = styled.div`
   flex: 1;
   padding: 15vh 7vw;
   flex-grow: 0;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    justify-content: flex-start;
+  }
 `;
 
 export const Main = styled.div`
@@ -30,6 +34,9 @@ export const Main = styled.div`
   justify-content: center;
   flex: 1;
   padding: 15vh 7vw;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    justify-content: flex-start;
+  }
 `;
 
 export const Logotype = styled.img`

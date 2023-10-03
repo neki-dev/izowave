@@ -36,4 +36,9 @@ export const Item = styled.div<{
   &:not(:last-child) {
     margin-bottom: 8px;
   }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 14px;
+    line-height: 14px;
+    padding: 8px 15px;
+  }
 `;

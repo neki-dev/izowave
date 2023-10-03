@@ -23,6 +23,7 @@ export const Info = styled.div<{
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     ${(props) => props.$visible && css`
       display: block;
+      margin-left: -2px;
       + [role=hint] {
         display: none;
       }

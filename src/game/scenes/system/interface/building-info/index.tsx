@@ -4,7 +4,7 @@ import {
   useScene,
   useSceneUpdate,
 } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
@@ -37,6 +37,8 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
   const [params, setParams] = useState<BuildingParam[]>([]);
   const [controls, setControls] = useState<BuildingControl[]>([]);
 
+  const levels = useMemo(() => Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }), []);
+
   useSceneUpdate(world, () => {
     if (!building.active) {
       return;
@@ -63,7 +65,7 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
             <Health.Value>{`${health} HP`}</Health.Value>
           </Health>
           <Level>
-            {Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }).map(
+            {levels.map(
               (_, level) => (
                 <Level.Progress key={level} $active={level < upgradeLevel} />
               ),

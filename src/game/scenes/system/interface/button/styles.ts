@@ -68,6 +68,7 @@ export const Container = styled.div<{
         @media ${INTERFACE_MOBILE_BREAKPOINT} {
           font-size: 8px;
           line-height: 8px;
+          padding: 8px 0 9px 0;
         }
       `;
     }

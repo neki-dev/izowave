@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 const animationBlink = keyframes`
@@ -53,6 +54,9 @@ export const Container = styled.div<{
   ${(props) => (props.$active && css`
     opacity: 1.0;
     background: ${InterfaceBackgroundColor.BLUE};
+    &:hover {
+      background: ${InterfaceBackgroundColor.BLUE};
+    }
   `)}
 `;
 
@@ -88,4 +92,7 @@ export const Number = styled.div`
   right: 10px;
   top: 4px;
   opacity: 0.75;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    display: none;
+  }
 `;
