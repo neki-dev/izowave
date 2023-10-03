@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 import Phaser from 'phaser';
 
-import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
@@ -32,9 +32,11 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private buildArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
-  private buildingPreview: Nullable<Phaser.GameObjects.Image> = null;
+  private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
 
-  private buildingPlaceholder: Nullable<Phaser.GameObjects.Image> = null;
+  private buildPlaceholder: Nullable<Phaser.GameObjects.Image> = null;
+
+  private buildControls: Nullable<Phaser.GameObjects.Container> = null;
 
   private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
 
@@ -72,9 +74,9 @@ export class Builder extends EventEmitter implements IBuilder {
   public update() {
     if (this.isCanBuild()) {
       if (this.isBuild) {
-        this.updateAssumedPosition();
+        this.updateSupposedPosition();
         this.updateBuildAreaPosition();
-        this.updateBuildingPreview();
+        this.updateBuildInstance();
       } else {
         this.open();
       }
@@ -106,8 +108,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.variant = variant;
 
-    if (this.buildingPreview) {
-      this.buildingPreview.setTexture(BuildingInstance.Texture);
+    if (this.buildPreview) {
+      this.buildPreview.setTexture(BuildingInstance.Texture);
     }
   }
 
@@ -217,10 +219,17 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    this.createBuildArea();
-    this.createBuildingPreview();
-
     this.isBuild = true;
+
+    if (!this.scene.game.device.os.desktop) {
+      this.supposedPosition = this.scene.level.getFreeAdjacentTile({
+        ...this.scene.player.positionAtMatrix,
+        z: 1,
+      }) ?? this.scene.player.positionAtMatrix;
+    }
+
+    this.createBuildArea();
+    this.createBuildInstance();
 
     this.emit(BuilderEvents.BUILD_START);
   }
@@ -230,7 +239,7 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    this.destroyBuildingPreview();
+    this.destroyBuildInstance();
     this.destroyBuildArea();
 
     this.isBuild = false;
@@ -341,7 +350,14 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     if (!this.scene.game.device.os.desktop) {
-      this.unsetBuildingVariant(true);
+      const adjacentPosition = this.scene.level.getFreeAdjacentTile({
+        ...this.supposedPosition,
+        z: 1,
+      });
+
+      if (adjacentPosition) {
+        this.supposedPosition = adjacentPosition;
+      }
     }
   }
 
@@ -410,7 +426,7 @@ export class Builder extends EventEmitter implements IBuilder {
       this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
     );
     this.buildArea.updateDisplayOrigin();
-    this.buildArea.setDepth(WORLD_DEPTH_EFFECT);
+    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
   }
 
   private updateBuildAreaPosition() {
@@ -432,24 +448,54 @@ export class Builder extends EventEmitter implements IBuilder {
     this.buildArea = null;
   }
 
-  private createBuildingPreview() {
+  private createBuildPreview() {
     if (!this.variant) {
       return;
     }
 
     const BuildingInstance = BUILDINGS[this.variant];
 
-    this.buildingPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
-    this.buildingPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-
-    if (!this.scene.game.device.os.desktop) {
-      this.buildingPlaceholder = this.scene.add.image(0, 0, BuildingIcon.PLACEHOLDER);
-    }
-
-    this.updateBuildingPreview();
+    this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
+    this.buildPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
   }
 
-  private updateBuildingPreview() {
+  private createBuildPlaceholder() {
+    this.buildPlaceholder = this.scene.add.image(0, 0, BuildingIcon.PLACEHOLDER);
+  }
+
+  private createBuildControls() {
+    this.buildControls = this.scene.add.container(0, 0);
+
+    const confirm = this.scene.add.image(-16, 0, BuildingIcon.CONFIRM);
+
+    confirm.setInteractive();
+    confirm.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
+      pointer.reset();
+      this.build();
+    });
+
+    const decline = this.scene.add.image(16, 0, BuildingIcon.DECLINE);
+
+    decline.setInteractive();
+    decline.on(Phaser.Input.Events.POINTER_DOWN, () => {
+      this.unsetBuildingVariant();
+    });
+
+    this.buildControls.add([confirm, decline]);
+  }
+
+  private createBuildInstance() {
+    this.createBuildPreview();
+    this.createBuildPlaceholder();
+
+    if (!this.scene.game.device.os.desktop) {
+      this.createBuildControls();
+    }
+
+    this.updateBuildInstance();
+  }
+
+  private updateBuildInstance() {
     if (!this.supposedPosition) {
       return;
     }
@@ -459,28 +505,41 @@ export class Builder extends EventEmitter implements IBuilder {
     const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z) + 1;
     const isAllow = this.isAllowBuild();
 
-    if (this.buildingPreview) {
-      this.buildingPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
-      this.buildingPreview.setDepth(depth);
-      this.buildingPreview.setAlpha(isAllow ? 1.0 : 0.25);
+    if (this.buildPreview) {
+      this.buildPreview.setPosition(positionAtWorld.x, positionAtWorld.y);
+      this.buildPreview.setDepth(depth);
+      this.buildPreview.setAlpha(isAllow ? 1.0 : 0.25);
     }
 
-    if (this.buildingPlaceholder) {
-      this.buildingPlaceholder.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height * 0.5);
-      this.buildingPlaceholder.setDepth(depth);
-      this.buildingPlaceholder.setAlpha(isAllow ? 0.75 : 0.25);
+    if (this.buildPlaceholder) {
+      this.buildPlaceholder.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height * 0.5);
+      this.buildPlaceholder.setDepth(depth);
+      this.buildPlaceholder.setAlpha(isAllow ? 0.75 : 0.25);
+    }
+
+    if (this.buildControls) {
+      const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
+
+      this.buildControls.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height);
+      this.buildControls.setDepth(WORLD_DEPTH_GRAPHIC);
+      confirmBtton.setTexture(isAllow ? BuildingIcon.CONFIRM : BuildingIcon.CONFIRM_DISABLED);
     }
   }
 
-  private destroyBuildingPreview() {
-    if (this.buildingPreview) {
-      this.buildingPreview.destroy();
-      this.buildingPreview = null;
+  private destroyBuildInstance() {
+    if (this.buildPreview) {
+      this.buildPreview.destroy();
+      this.buildPreview = null;
     }
 
-    if (this.buildingPlaceholder) {
-      this.buildingPlaceholder.destroy();
-      this.buildingPlaceholder = null;
+    if (this.buildPlaceholder) {
+      this.buildPlaceholder.destroy();
+      this.buildPlaceholder = null;
+    }
+
+    if (this.buildControls) {
+      this.buildControls.destroy();
+      this.buildControls = null;
     }
   }
 
@@ -492,7 +551,7 @@ export class Builder extends EventEmitter implements IBuilder {
       : this.scene.input.pointer1;
   }
 
-  private updateAssumedPosition() {
+  private updateSupposedPosition() {
     let position: Vector2D;
 
     if (this.scene.game.device.os.desktop) {
@@ -503,17 +562,15 @@ export class Builder extends EventEmitter implements IBuilder {
     } else {
       const pointer = this.getCurrentPointer();
 
-      if (!pointer.active) {
+      if (!pointer.active || pointer.event.target !== this.scene.sys.canvas) {
         return;
       }
 
-      // Using instead of pointer.worldXY
-      // for get actual position in camera moving state
-      const worldPosition = this.scene.cameras.main.getWorldPoint(pointer.x, pointer.y);
+      pointer.updateWorldPoint(this.scene.cameras.main);
 
       position = {
-        x: worldPosition.x,
-        y: worldPosition.y - LEVEL_TILE_SIZE.height / this.scene.cameras.main.zoom,
+        x: pointer.worldX,
+        y: pointer.worldY - LEVEL_TILE_SIZE.height / this.scene.cameras.main.zoom,
       };
     }
 
@@ -529,19 +586,19 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handlePointer() {
+    if (!this.scene.game.device.os.desktop) {
+      return;
+    }
+
     this.scene.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
       if (!this.isBuild) {
         return;
       }
 
-      if (this.scene.game.device.os.desktop) {
-        if (pointer.button === 0) {
-          this.build();
-        } else if (pointer.button === 2) {
-          this.unsetBuildingVariant();
-        }
-      } else if (pointer === this.getCurrentPointer()) {
+      if (pointer.button === 0) {
         this.build();
+      } else if (pointer.button === 2) {
+        this.unsetBuildingVariant();
       }
     });
   }

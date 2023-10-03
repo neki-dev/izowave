@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
-import { WORLD_DEPTH_DEBUG } from '~const/world';
+import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
 import { Sprite } from '~entity/sprite';
 import { equalPositions } from '~lib/utils';
@@ -265,7 +265,7 @@ export class NPC extends Sprite implements INPC {
     }
 
     this.pathDebug = this.scene.add.graphics();
-    this.pathDebug.setDepth(WORLD_DEPTH_DEBUG);
+    this.pathDebug.setDepth(WORLD_DEPTH_GRAPHIC);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.pathDebug?.destroy();
