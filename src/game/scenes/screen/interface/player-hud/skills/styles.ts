@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor } from '~type/interface';
 
 export const Wrapper = styled.div`
@@ -13,26 +13,36 @@ const animationOpacity = keyframes`
 `;
 
 export const Container = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
-  padding: 20px;
-  margin-top: 14px;
-  pointer-events: all;
-  animation: ${animationOpacity} 0.1s ease-in;
-  border-radius: 10px;
-  &::after {
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     position: absolute;
-    content: '';
-    top: -14px;
-    left: 39px;
-    transform: translateX(-50%);
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 14px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    top: 100%;
+    left: 0;
+    background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    animation: ${animationOpacity} 0.1s ease-in;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 14px;
+    &::after {
+      position: absolute;
+      content: '';
+      top: -14px;
+      left: 39px;
+      transform: translateX(-50%);
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 14px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 10px;
+    padding: 16px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    z-index: 3;
+    background: ${InterfaceBackgroundColor.BLUE};
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 `;

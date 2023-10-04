@@ -9,7 +9,7 @@ import { IWorld } from '~type/world';
 import { PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
 
 import {
-  Item,
+  Container,
   Info,
   Action,
   Label,
@@ -46,7 +46,7 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
 
   return (
     data && (
-      <Item>
+      <Container>
         <Info>
           <Label>{data.label}</Label>
           <Description>
@@ -68,7 +68,7 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
             <Cost type="experience" value={data.experience} size='large' />
           </Action>
         )}
-      </Item>
+      </Container>
     )
   );
 };

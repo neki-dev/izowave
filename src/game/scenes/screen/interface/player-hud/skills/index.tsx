@@ -1,8 +1,9 @@
-import { useGame, useMobilePlatform } from 'phaser-react-ui';
+import { useGame, useMobilePlatform, useMatchMedia } from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { PLAYER_SKILLS } from '~const/world/entities/player';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
@@ -17,6 +18,7 @@ export const Skills: React.FC = () => {
   const game = useGame<IGame>();
 
   const isMobile = useMobilePlatform();
+  const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const upgradeTypes = useMemo(
     () => Object.keys(PLAYER_SKILLS) as PlayerSkill[],
@@ -84,9 +86,14 @@ export const Skills: React.FC = () => {
       </Button>
       {isOpened ? (
         <Container>
-          {upgradeTypes.map((type) => (
-            <UpgradesListItem key={type} type={type} />
-          ))}
+          <div>
+            {upgradeTypes.map((type) => (
+              <UpgradesListItem key={type} type={type} />
+            ))}
+          </div>
+          {isSmallScreen && (
+            <Button onClick={onClickButton}>Close</Button>
+          )}
         </Container>
       ) : (
         hint && (

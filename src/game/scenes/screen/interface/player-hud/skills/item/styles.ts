@@ -7,8 +7,9 @@ import {
   InterfaceBackgroundColor,
 } from '~type/interface';
 
-export const Item = styled.div`
+export const Container = styled.div`
   color: #fff;
+  pointer-events: all;
   display: flex;
   justify-content: space-between;
   border-radius: 5px;
