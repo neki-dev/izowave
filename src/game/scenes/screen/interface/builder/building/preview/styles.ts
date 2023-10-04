@@ -15,13 +15,9 @@ export const Container = styled.div<{
   $active?: boolean
   $usable?: boolean
 }>`
-  width: 70px;
-  height: 60px;
-  padding: 10px 16px 10px 10px;
+  padding: 11px 18px 11px 14px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
-  display: flex;
-  justify-content: center;
   position: relative;
   &::before {
     position: absolute;
@@ -58,6 +54,21 @@ export const Container = styled.div<{
       background: ${InterfaceBackgroundColor.BLUE};
     }
   `)}
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px 8px 12px;
+    height: 100%;
+  }
+`;
+
+export const Preview = styled.div`
+  overflow: hidden;
+  width: 34px;
+  height: 40px;
+  img, div[data-texture-container] {
+    height: 100%;
+  }
 `;
 
 export const Newest = styled.div`
@@ -74,15 +85,6 @@ export const Newest = styled.div`
   animation: ${animationBlink} 1s infinite;
 `;
 
-export const Preview = styled.div`
-  overflow: hidden;
-  width: 34px;
-  height: 40px;
-  img, div[data-texture-container] {
-    height: 100%;
-  }
-`;
-
 export const Number = styled.div`
   position: absolute;
   color: #fff;
@@ -92,7 +94,4 @@ export const Number = styled.div`
   right: 10px;
   top: 4px;
   opacity: 0.75;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    display: none;
-  }
 `;

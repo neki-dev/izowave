@@ -1,4 +1,6 @@
-import { Texture, useScene, useSceneUpdate } from 'phaser-react-ui';
+import {
+  Texture, useMobilePlatform, useScene, useSceneUpdate,
+} from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
@@ -17,6 +19,8 @@ type Props = {
 
 export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
+
+  const isMobile = useMobilePlatform();
 
   const [isDisallow, setDisallow] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
@@ -76,7 +80,9 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
       {isNewest && (
         <Newest>new</Newest>
       )}
-      <Number>{number}</Number>
+      {!isMobile && (
+        <Number>{number}</Number>
+      )}
       <Preview>
         <Texture name={BUILDINGS[variant].Texture} frame={0} />
       </Preview>

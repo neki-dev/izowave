@@ -17,6 +17,7 @@ export const Wrapper = styled.div`
   animation: ${animationOpacity} 0.1s ease-in;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: auto;
+    height: 100%;
   }
 `;
 
@@ -41,11 +42,12 @@ export const Head = styled.div`
     border-left: 15px solid ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    height: auto;
+    height: 100%;
     border-radius: 5px;
-    padding: 9px 12px;
+    padding: 10px 16px;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: center;
     &::after {
       display: none;
     }
@@ -58,6 +60,8 @@ export const Name = styled.div`
   font-size: 16px;
   line-height: 16px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 14px;
+    line-height: 14px;
     margin-bottom: 9px;
   }
 `;
