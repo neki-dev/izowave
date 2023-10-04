@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
@@ -8,9 +7,6 @@ export const Container = styled.div`
   position: relative;
   border-radius: 0 0 5px 5px;
   overflow: hidden;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    width: 70px;
-  }
 `;
 
 export const Progress = styled.div`

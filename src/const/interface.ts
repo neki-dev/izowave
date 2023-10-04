@@ -4,6 +4,6 @@ export const INTERFACE_SCALE = {
   max: 1.0,
 };
 
-export const INTERFACE_MOBILE_BREAKPOINT = '(max-height: 400px)';
+export const INTERFACE_MOBILE_BREAKPOINT = '(max-height: 440px)';
 
-export const INTERFACE_DESKTOP_BREAKPOINT = '(min-height: 401px)';
+export const INTERFACE_DESKTOP_BREAKPOINT = '(min-height: 441px)';
