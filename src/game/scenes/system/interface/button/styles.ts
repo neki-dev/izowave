@@ -12,6 +12,9 @@ export const Container = styled.div<{
   font-family: ${InterfaceFont.PIXEL_LABEL};
   border-radius: 5px;
   letter-spacing: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   ${(props) => {
     switch (props.$view) {
       case 'active': return css`
@@ -63,7 +66,6 @@ export const Container = styled.div<{
       default: return css`
         font-size: 10px;
         line-height: 10px;
-        text-align: center;
         padding: 6px 0 7px 0;
         @media ${INTERFACE_MOBILE_BREAKPOINT} {
           font-size: 8px;
