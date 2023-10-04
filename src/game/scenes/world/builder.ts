@@ -459,17 +459,21 @@ export class Builder extends EventEmitter implements IBuilder {
   private createBuildControls() {
     this.buildControls = this.scene.add.container(0, 0);
 
-    const confirm = this.scene.add.image(-16, 0, BuildingIcon.CONFIRM);
+    const confirm = this.scene.add.image(-2, 0, BuildingIcon.CONFIRM);
 
     confirm.setInteractive();
+    confirm.setOrigin(1.0, 0.5);
+
     confirm.on(Phaser.Input.Events.POINTER_DOWN, (pointer: Phaser.Input.Pointer) => {
       pointer.reset();
       this.build();
     });
 
-    const decline = this.scene.add.image(16, 0, BuildingIcon.DECLINE);
+    const decline = this.scene.add.image(2, 0, BuildingIcon.DECLINE);
 
     decline.setInteractive();
+    decline.setOrigin(0.0, 0.5);
+
     decline.on(Phaser.Input.Events.POINTER_DOWN, () => {
       this.unsetBuildingVariant();
     });

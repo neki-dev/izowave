@@ -83,6 +83,10 @@ export const Newest = styled.div`
   background: ${InterfaceBackgroundColor.SUCCESS};
   padding: 2px 4px 3px 4px;
   animation: ${animationBlink} 1s infinite;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 8px;
+    line-height: 8px;
+  }
 `;
 
 export const Number = styled.div`
