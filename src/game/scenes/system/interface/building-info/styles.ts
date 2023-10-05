@@ -36,6 +36,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.35);
   }
 `;
 

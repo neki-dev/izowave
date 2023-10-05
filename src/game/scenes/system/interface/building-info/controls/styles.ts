@@ -36,11 +36,6 @@ export const Action = styled.div<{
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  ${(props) => props.$disabled && css`
-    ${Label}, ${Addon} {
-      opacity: 0.7;
-    }
-  `}
   &:not(:last-child) {
     margin-bottom: 3px;
   }
@@ -51,9 +46,17 @@ export const Action = styled.div<{
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     transform: translateX(-50%);
     padding: 6px 9px;
+    ${(props) => props.$disabled && css`
+      ${Label}, ${Addon} {
+        opacity: 0.7;
+      }
+    `}
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 12px 13px;
     zoom: 1.2;
+    ${(props) => props.$disabled && css`
+      opacity: 0.5;
+    `}
   }
 `;

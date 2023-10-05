@@ -17,7 +17,7 @@ export const BuildingControls: React.FC<Props> = ({ list }) => (
       <Action key={control.label} onClick={control.onClick} $disabled={control.disabled}>
         <Label>{control.label}</Label>
 
-        {control.cost && (
+        {!!control.cost && (
           <Addon>
             <Cost
               type="resources"
