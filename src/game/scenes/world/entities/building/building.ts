@@ -539,7 +539,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeShader('OutlineShader');
     } else {
       const params = {
-        [BuildingOutlineState.FOCUSED]: { size: 2.0, color: 0xffffff },
+        [BuildingOutlineState.FOCUSED]: { size: 4.0, color: 0xffffff },
         [BuildingOutlineState.SELECTED]: { size: 4.0, color: 0xd0ff4f },
       }[state];
 
@@ -715,13 +715,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
     this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
       this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
-      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE_ANALOG, handleUpgrade);
     });
   }
 

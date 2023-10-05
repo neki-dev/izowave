@@ -34,8 +34,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
 
-  private buildPlaceholder: Nullable<Phaser.GameObjects.Image> = null;
-
   private buildControls: Nullable<Phaser.GameObjects.Container> = null;
 
   private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
@@ -450,10 +448,10 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-  }
-
-  private createBuildPlaceholder() {
-    this.buildPlaceholder = this.scene.add.image(0, 0, BuildingIcon.PLACEHOLDER);
+    this.buildPreview.addShader('OutlineShader', {
+      size: 2.0,
+      color: 0xffffff,
+    });
   }
 
   private createBuildControls() {
@@ -483,7 +481,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private createBuildInstance() {
     this.createBuildPreview();
-    this.createBuildPlaceholder();
 
     if (!this.scene.game.device.os.desktop) {
       this.createBuildControls();
@@ -508,12 +505,6 @@ export class Builder extends EventEmitter implements IBuilder {
       this.buildPreview.setAlpha(isAllow ? 1.0 : 0.25);
     }
 
-    if (this.buildPlaceholder) {
-      this.buildPlaceholder.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height * 0.5);
-      this.buildPlaceholder.setDepth(depth);
-      this.buildPlaceholder.setAlpha(isAllow ? 0.75 : 0.25);
-    }
-
     if (this.buildControls) {
       const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
 
@@ -527,11 +518,6 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.buildPreview) {
       this.buildPreview.destroy();
       this.buildPreview = null;
-    }
-
-    if (this.buildPlaceholder) {
-      this.buildPlaceholder.destroy();
-      this.buildPlaceholder = null;
     }
 
     if (this.buildControls) {
