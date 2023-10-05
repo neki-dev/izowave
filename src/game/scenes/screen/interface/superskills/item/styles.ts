@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceBackgroundColor,
   InterfaceTextColor,
@@ -20,6 +21,10 @@ export const Icon = styled.img`
   display: block;
   width: 26px;
   height: 26px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 22px;
+    height: 22px;
+  }
 `;
 
 export const Info = styled.div`
@@ -93,6 +98,9 @@ export const Container = styled.div<{
   )}
   &:not(:last-child) {
     margin-right: 10px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 10px;
   }
 `;
 
