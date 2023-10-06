@@ -1,14 +1,15 @@
 import {
   getModifiedObject,
+  useMatchMedia,
   useMobilePlatform,
   useScene,
   useSceneUpdate,
 } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { PLAYER_SKILLS } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
-import { Text } from '~scene/system/interface/text';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
@@ -18,7 +19,6 @@ import {
   Info,
   Action,
   Label,
-  Description,
   Level,
   Button,
   Limit,
@@ -32,8 +32,11 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();
+  const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const [data, setData] = useState<Nullable<PlayerSkillData>>(null);
+
+  const levels = useMemo(() => Array.from({ length: 10 }), []);
 
   const limit = data?.currentLevel && data.maxLevel <= data.currentLevel;
 
@@ -41,26 +44,32 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
     world.player.upgrade(type);
   };
 
-  useSceneUpdate(world, () => {
-    const newData: PlayerSkillData = {
-      ...PLAYER_SKILLS[type],
-      experience: world.player.getExperienceToUpgrade(type),
-      currentLevel: world.player.upgradeLevel[type],
-    };
+  useSceneUpdate(
+    world,
+    () => {
+      const newData: PlayerSkillData = {
+        ...PLAYER_SKILLS[type],
+        experience: world.player.getExperienceToUpgrade(type),
+        currentLevel: world.player.upgradeLevel[type],
+      };
 
-    setData((current) => getModifiedObject(current, newData));
-  }, []);
+      setData((current) => getModifiedObject(current, newData));
+    },
+    [],
+  );
 
   return (
     data && (
       <Container>
         <Info>
           <Label>{data.label}</Label>
-          <Description>
-            <Text>{data.description}</Text>
-          </Description>
           <Level>
-            LEVEL <b>{data.currentLevel}</b>
+            {levels.map((_, level) => (
+              <Level.Progress
+                key={level}
+                $active={data.currentLevel && level < data.currentLevel}
+              />
+            ))}
           </Level>
         </Info>
         {limit ? (
@@ -79,7 +88,11 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
             $active
           >
             <Button>UPGRADE</Button>
-            <Cost type="experience" value={data.experience} size="large" />
+            <Cost
+              type="experience"
+              value={data.experience}
+              size={isSmallScreen ? 'small' : 'medium'}
+            />
           </Action>
         )}
       </Container>

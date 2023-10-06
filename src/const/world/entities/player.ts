@@ -3,6 +3,7 @@ import {
   MovementDirection,
   PlayerSkill,
   PlayerSkillData,
+  PlayerSkillTarget,
   PlayerSuperskill,
   PlayerSuperskillData,
 } from '~type/world/entities/player';
@@ -18,27 +19,39 @@ export const PLAYER_TILE_SIZE = {
 export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
   [PlayerSkill.MAX_HEALTH]: {
     label: 'Health',
-    description: 'Grow health of player',
     experience: DIFFICULTY.PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
+    target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.SPEED]: {
     label: 'Speed',
-    description: 'Grow speed of player',
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
+    target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.BUILD_AREA]: {
     label: 'Build area',
-    description: 'Grow radius of build area',
     experience: DIFFICULTY.BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
+    target: PlayerSkillTarget.CHARACTER,
   },
-  [PlayerSkill.ASSISTANT]: {
-    label: 'Assistant',
-    description: 'Grow damage, radius and speed attack',
-    experience: DIFFICULTY.ASSISTANT_EXPERIENCE_TO_UPGRADE,
+  [PlayerSkill.ATTACK_DAMAGE]: {
+    label: 'Damage',
+    experience: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
+    target: PlayerSkillTarget.ASSISTANT,
+  },
+  [PlayerSkill.ATTACK_DISTANCE]: {
+    label: 'Attack distance',
+    experience: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE,
+    maxLevel: 10,
+    target: PlayerSkillTarget.ASSISTANT,
+  },
+  [PlayerSkill.ATTACK_SPEED]: {
+    label: 'Attack speed',
+    experience: DIFFICULTY.ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE,
+    maxLevel: 10,
+    target: PlayerSkillTarget.ASSISTANT,
   },
 };
 

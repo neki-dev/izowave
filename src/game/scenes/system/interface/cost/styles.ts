@@ -3,14 +3,21 @@ import styled, { css } from 'styled-components';
 import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
 export const Wrapper = styled.div<{
-  $size: 'small' | 'large'
+  $size: 'small' | 'medium' | 'large'
 }>`
   color: #fff;
   display: flex;
   align-items: center;
-  ${(props) => (props.$size === 'small') && css`
-    zoom: 0.75;
-  `}
+  ${(props) => {
+    switch (props.$size) {
+      case 'small': return css`
+        zoom: 0.75;
+      `;
+      case 'medium': return css`
+        zoom: 0.9;
+      `;
+    }
+  }}
 `;
 
 export const Icon = styled.img`

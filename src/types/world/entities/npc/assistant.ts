@@ -8,11 +8,6 @@ import { Vector2D } from '~type/world/level';
 
 export interface IAssistant extends INPC, IShotInitiator, IEnemyTarget {
   readonly body: Phaser.Physics.Arcade.Body
-
-  /**
-   * Upgrade level.
-   */
-  level: number
 }
 
 export enum AssistantTexture {

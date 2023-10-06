@@ -1,17 +1,11 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import {
-  ASSISTANT_PATH_BREAKPOINT,
-  ASSISTANT_TILE_SIZE,
-} from '~const/world/entities/assistant';
+import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
 import { getClosest } from '~lib/utils';
-import { Effect } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
   AssistantTexture,
@@ -19,7 +13,7 @@ import {
   IAssistant,
 } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
-import { IPlayer } from '~type/world/entities/player';
+import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
 import { WaveEvents } from '~type/world/wave';
 
@@ -31,8 +25,6 @@ export class Assistant extends NPC implements IAssistant {
   private shotDefaultParams: ShotParams;
 
   private nextAttackTimestamp: number = 0;
-
-  public level: number = 1;
 
   constructor(scene: IWorld, {
     owner, positionAtMatrix, speed,
@@ -105,7 +97,7 @@ export class Assistant extends NPC implements IAssistant {
     const pause = progressionQuadratic({
       defaultValue: DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
       scale: DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
-      level: this.level,
+      level: this.owner.upgradeLevel[PlayerSkill.ATTACK_SPEED],
     });
 
     this.nextAttackTimestamp = now + Math.max(pause, 200);
@@ -115,7 +107,7 @@ export class Assistant extends NPC implements IAssistant {
     const maxDistance = progressionQuadratic({
       defaultValue: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-      level: this.level,
+      level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
     });
 
     const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
@@ -142,21 +134,21 @@ export class Assistant extends NPC implements IAssistant {
         && progressionQuadratic({
           defaultValue: this.shotDefaultParams.maxDistance,
           scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
-          level: this.level,
+          level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
         }),
       speed:
         this.shotDefaultParams.speed
         && progressionQuadratic({
           defaultValue: this.shotDefaultParams.speed,
           scale: DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
-          level: this.level,
+          level: this.owner.upgradeLevel[PlayerSkill.ATTACK_SPEED],
         }),
       damage:
         this.shotDefaultParams.damage
         && progressionQuadratic({
           defaultValue: this.shotDefaultParams.damage,
           scale: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
-          level: this.level,
+          level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DAMAGE],
         }),
     };
 

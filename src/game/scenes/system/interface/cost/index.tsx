@@ -8,7 +8,7 @@ import { Wrapper, Icon, Value } from './styles';
 
 type Props = {
   type: 'resources' | 'experience'
-  size: 'large' | 'small'
+  size: 'small' | 'medium' | 'large'
   value: number
 };
 

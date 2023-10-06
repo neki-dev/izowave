@@ -53,7 +53,9 @@ export class Player extends Sprite implements IPlayer {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
     [PlayerSkill.BUILD_AREA]: 1,
-    [PlayerSkill.ASSISTANT]: 1,
+    [PlayerSkill.ATTACK_DAMAGE]: 1,
+    [PlayerSkill.ATTACK_DISTANCE]: 1,
+    [PlayerSkill.ATTACK_SPEED]: 1,
   };
 
   public get upgradeLevel() { return this._upgradeLevel; }
@@ -248,13 +250,17 @@ export class Player extends Sprite implements IPlayer {
           level: nextLevel,
         });
       }
-      case PlayerSkill.ASSISTANT: {
+      default: {
         return nextLevel;
       }
     }
   }
 
   public upgrade(type: PlayerSkill) {
+    if (this.upgradeLevel[type] === PLAYER_SKILLS[type].maxLevel) {
+      return;
+    }
+
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
@@ -285,17 +291,11 @@ export class Player extends Sprite implements IPlayer {
       }
       case PlayerSkill.SPEED: {
         this.speed = nextValue;
-          this.scene.assistant.speed = nextValue;
+        this.scene.assistant.speed = nextValue;
         break;
       }
       case PlayerSkill.BUILD_AREA: {
         this.scene.builder.setBuildAreaRadius(nextValue);
-        break;
-      }
-      case PlayerSkill.ASSISTANT: {
-        if (this.scene.assistant) {
-          this.scene.assistant.level = nextValue;
-        }
         break;
       }
     }
