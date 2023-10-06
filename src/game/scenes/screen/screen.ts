@@ -60,6 +60,12 @@ export class Screen extends Scene implements IScreen {
       }
     });
 
+    this.scale.on(Phaser.Scale.Events.RESIZE, () => {
+      const { x, y } = this.getJoystickParams();
+
+      this.joystick?.setPosition(x, y);
+    });
+
     this.joystick = new VirtualJoystick(this, {
       ...params,
       base,
@@ -96,7 +102,7 @@ export class Screen extends Scene implements IScreen {
       INTERFACE_SCALE.min,
     );
 
-    const radius = 64 * zoom;
+    const radius = 74 * zoom;
     const padding = 40 * zoom;
 
     return {
