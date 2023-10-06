@@ -199,6 +199,10 @@ export class BuildingTower extends Building implements IBuildingTower {
       this.addAlertIcon();
       this.needReload = true;
 
+      if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
+        this.scene.game.sound.play(BuildingAudio.OVER);
+      }
+
       this.scene.game.tutorial.start(TutorialStep.RELOAD_TOWER);
     }
   }
@@ -234,10 +238,12 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     this.scene.builder.on(BuilderEvents.UPGRADE, handler);
     this.scene.builder.on(BuilderEvents.BUILD, handler);
+    this.scene.builder.on(BuilderEvents.BUY_AMMO, handler);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.builder.off(BuilderEvents.UPGRADE, handler);
       this.scene.builder.off(BuilderEvents.BUILD, handler);
+      this.scene.builder.off(BuilderEvents.BUY_AMMO, handler);
     });
   }
 }

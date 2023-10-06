@@ -280,9 +280,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.experience -= experience;
 
-    this.scene.sound.play(PlayerAudio.UPGRADE);
-
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
+    this.scene.sound.play(PlayerAudio.UPGRADE);
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {

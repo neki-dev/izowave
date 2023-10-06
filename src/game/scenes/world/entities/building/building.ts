@@ -304,9 +304,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    this.scene.game.sound.play(BuildingAudio.UPGRADE);
-
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
+    this.scene.game.sound.play(BuildingAudio.UPGRADE);
   }
 
   private repair() {

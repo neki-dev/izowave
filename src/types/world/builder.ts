@@ -108,4 +108,5 @@ export enum BuilderEvents {
   BUILD_START = 'build_start',
   BUILD_STOP = 'build_stop',
   BUILD_COMPLETE = 'build_complete',
+  BUY_AMMO = 'BUY_AMMO',
 }
