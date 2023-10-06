@@ -39,14 +39,17 @@ export const Action = styled.div<{
   &:not(:last-child) {
     margin-bottom: 3px;
   }
-  &:hover {
-    cursor: pointer;
-    background: ${InterfaceBackgroundColor.BLACK};
-  }
+  ${(props) => !props.$disabled && css`
+    &:hover {
+      cursor: pointer;
+      background: ${InterfaceBackgroundColor.BLACK};
+    }
+  `}
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     transform: translateX(-50%);
     padding: 6px 9px;
     ${(props) => props.$disabled && css`
+      opacity: 0.75;
       ${Label}, ${Addon} {
         opacity: 0.7;
       }

@@ -110,6 +110,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (buildDuration && buildDuration > 0) {
       this.startBuildProcess(buildDuration);
+    } else {
+      this.completeBuildProcess();
     }
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
@@ -198,15 +200,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       });
     }
 
-    if (!this.live.isMaxHealth()) {
-      actions.push({
-        label: 'Repair',
-        cost: this.getRepairCost(),
-        onClick: () => {
-          this.repair();
-        },
-      });
-    }
+    actions.push({
+      label: 'Repair',
+      cost: this.getRepairCost(),
+      disabled: this.live.isMaxHealth(),
+      onClick: () => {
+        this.repair();
+      },
+    });
 
     return actions;
   }
