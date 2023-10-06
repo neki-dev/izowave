@@ -29,7 +29,7 @@ export const Skills: React.FC = () => {
 
   const refContainer = useRef<HTMLDivElement>(null);
 
-  const onClickButton = () => {
+  const onClick = () => {
     setOpened(!isOpened);
   };
 
@@ -70,7 +70,7 @@ export const Skills: React.FC = () => {
 
   return (
     <Wrapper ref={refContainer}>
-      <Button onClick={onClickButton} view={isOpened ? 'active' : undefined}>
+      <Button onClick={onClick} view={isOpened ? 'active' : undefined}>
         SKILLS
       </Button>
       {isOpened ? (
@@ -81,7 +81,7 @@ export const Skills: React.FC = () => {
             ))}
           </div>
           {isSmallScreen && (
-            <Button onClick={onClickButton}>Close</Button>
+            <Button onClick={onClick}>Close</Button>
           )}
         </Container>
       ) : (

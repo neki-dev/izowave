@@ -1,3 +1,4 @@
+import { useMobilePlatform } from 'phaser-react-ui';
 import React from 'react';
 
 import { Cost } from '~scene/system/interface/cost';
@@ -11,22 +12,27 @@ type Props = {
   list: BuildingControl[]
 };
 
-export const BuildingControls: React.FC<Props> = ({ list }) => (
-  <Wrapper>
-    {list.map((control) => (
-      <Action key={control.label} onClick={control.onClick} $disabled={control.disabled}>
-        <Label>{control.label}</Label>
+export const BuildingControls: React.FC<Props> = ({ list }) => {
+  const isMobile = useMobilePlatform();
 
-        {!!control.cost && (
-          <Addon>
-            <Cost
-              type="resources"
-              value={control.cost}
-              size="small"
-            />
-          </Addon>
-        )}
-      </Action>
-    ))}
-  </Wrapper>
-);
+  return (
+    <Wrapper>
+      {list.map((control) => (
+        <Action
+          key={control.label}
+          $disabled={control.disabled}
+          {...{
+            [isMobile ? 'onTouchEnd' : 'onClick']: control.onClick,
+          }}
+        >
+          <Label>{control.label}</Label>
+          {!!control.cost && (
+            <Addon>
+              <Cost type="resources" value={control.cost} size="small" />
+            </Addon>
+          )}
+        </Action>
+      ))}
+    </Wrapper>
+  );
+};
