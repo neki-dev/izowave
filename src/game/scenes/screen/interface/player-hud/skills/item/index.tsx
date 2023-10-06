@@ -8,7 +8,7 @@ import {
 import React, { useMemo, useState } from 'react';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { PLAYER_SKILLS } from '~const/world/entities/player';
+import { PLAYER_MAX_SKILL_LEVEL, PLAYER_SKILLS } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
@@ -36,9 +36,7 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
 
   const [data, setData] = useState<Nullable<PlayerSkillData>>(null);
 
-  const levels = useMemo(() => Array.from({ length: 10 }), []);
-
-  const limit = data?.currentLevel && data.maxLevel <= data.currentLevel;
+  const levels = useMemo(() => Array.from({ length: PLAYER_MAX_SKILL_LEVEL }), []);
 
   const onClick = () => {
     world.player.upgrade(type);
@@ -72,7 +70,7 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
             ))}
           </Level>
         </Info>
-        {limit ? (
+        {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (
           <Action>
             <Limit>
               MAX

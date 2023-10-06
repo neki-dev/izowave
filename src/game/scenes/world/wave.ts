@@ -129,12 +129,14 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private runTimeleft() {
-    const pause = progressionLinear({
-      defaultValue: DIFFICULTY.WAVE_TIMELEFT,
-      scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
-      level: this.number,
-      roundTo: 1000,
-    });
+    const pause = (this.number === 1 && this.scene.game.tutorial.isEnabled)
+      ? 5000
+      : progressionLinear({
+        defaultValue: DIFFICULTY.WAVE_TIMELEFT,
+        scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+        level: this.number,
+        roundTo: 1000,
+      });
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
   }

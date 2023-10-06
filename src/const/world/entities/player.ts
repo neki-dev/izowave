@@ -2,7 +2,7 @@ import { LEVEL_TILE_SIZE } from '~const/world/level';
 import {
   MovementDirection,
   PlayerSkill,
-  PlayerSkillData,
+  PlayerSkillInfo,
   PlayerSkillTarget,
   PlayerSuperskill,
   PlayerSuperskillData,
@@ -16,41 +16,37 @@ export const PLAYER_TILE_SIZE = {
   gamut: 4,
 };
 
-export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
+export const PLAYER_MAX_SKILL_LEVEL = 10;
+
+export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
   [PlayerSkill.MAX_HEALTH]: {
     label: 'Health',
     experience: DIFFICULTY.PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
     target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.SPEED]: {
     label: 'Speed',
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
     target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.BUILD_AREA]: {
     label: 'Build area',
     experience: DIFFICULTY.BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
     target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.ATTACK_DAMAGE]: {
     label: 'Damage',
     experience: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
     target: PlayerSkillTarget.ASSISTANT,
   },
   [PlayerSkill.ATTACK_DISTANCE]: {
     label: 'Attack distance',
     experience: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
     target: PlayerSkillTarget.ASSISTANT,
   },
   [PlayerSkill.ATTACK_SPEED]: {
     label: 'Attack speed',
     experience: DIFFICULTY.ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
     target: PlayerSkillTarget.ASSISTANT,
   },
 };

@@ -2,7 +2,13 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
-  PLAYER_TILE_SIZE, PLAYER_SKILLS, PLAYER_SUPERSKILLS, PLAYER_MOVEMENT_ANGLES, PLAYER_MOVEMENT_TARGET, PLAYER_MOVEMENT_KEYS,
+  PLAYER_TILE_SIZE,
+  PLAYER_SKILLS,
+  PLAYER_SUPERSKILLS,
+  PLAYER_MOVEMENT_ANGLES,
+  PLAYER_MOVEMENT_TARGET,
+  PLAYER_MOVEMENT_KEYS,
+  PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
@@ -257,7 +263,7 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public upgrade(type: PlayerSkill) {
-    if (this.upgradeLevel[type] === PLAYER_SKILLS[type].maxLevel) {
+    if (this.upgradeLevel[type] === PLAYER_MAX_SKILL_LEVEL) {
       return;
     }
 

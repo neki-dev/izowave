@@ -145,12 +145,14 @@ export type PlayerData = {
   positionAtMatrix: Vector2D
 };
 
-export type PlayerSkillData = {
+export type PlayerSkillInfo = {
   label: string
   experience: number
-  maxLevel: number
-  currentLevel?: number
   target: PlayerSkillTarget
+};
+
+export type PlayerSkillData = PlayerSkillInfo & {
+  currentLevel: number
 };
 
 export enum PlayerSkillTarget {

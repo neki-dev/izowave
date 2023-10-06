@@ -15,7 +15,6 @@ import {
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
-import { WaveEvents } from '~type/world/wave';
 
 export class Assistant extends NPC implements IAssistant {
   private shot: IShot;
@@ -52,16 +51,7 @@ export class Assistant extends NPC implements IAssistant {
 
     this.body.setCircle(this.width / 2, 0, 1);
 
-    this.handleWaveComplete();
     this.activate();
-
-    this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
-      enemy.attack(this);
-    });
-
-    this.addCollider(EntityType.ENEMY, 'overlap', (enemy: IEnemy) => {
-      enemy.overlapTarget();
-    });
   }
 
   public update() {
@@ -153,18 +143,6 @@ export class Assistant extends NPC implements IAssistant {
     };
 
     return params;
-  }
-
-  private handleWaveComplete() {
-    const handler = () => {
-      this.live.heal();
-    };
-
-    this.scene.wave.on(WaveEvents.COMPLETE, handler);
-
-    this.on(Phaser.Scenes.Events.DESTROY, () => {
-      this.scene.wave.off(WaveEvents.COMPLETE, handler);
-    });
   }
 }
 

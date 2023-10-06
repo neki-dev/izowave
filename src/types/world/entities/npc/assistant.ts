@@ -1,12 +1,11 @@
 import Phaser from 'phaser';
 
 import { INPC } from '~type/world/entities/npc';
-import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { IShotInitiator } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
 
-export interface IAssistant extends INPC, IShotInitiator, IEnemyTarget {
+export interface IAssistant extends INPC, IShotInitiator {
   readonly body: Phaser.Physics.Arcade.Body
 }
 
