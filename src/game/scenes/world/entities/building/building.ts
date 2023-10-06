@@ -292,7 +292,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setFrame(this.upgradeLevel - 1);
 
     this.emit(BuildingEvents.UPGRADE);
-    this.scene.builder.emit(BuilderEvents.UPGRADE, this);
+    this.scene.getEntitiesGroup(EntityType.BUILDING)
+      .emit(BuildingEvents.UPGRADE, this);
 
     this.scene.player.takeResources(cost);
 

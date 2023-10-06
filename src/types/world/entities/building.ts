@@ -153,6 +153,7 @@ export interface IBuildingFactory {
 
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
+  BUY_AMMO = 'BUY_AMMO',
 }
 
 export enum BuildingVariant {

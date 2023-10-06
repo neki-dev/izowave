@@ -158,6 +158,7 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     this.emit(WaveEvents.START, this.number);
+
     this.scene.sound.play(WaveAudio.START);
   }
 
@@ -169,9 +170,10 @@ export class Wave extends EventEmitter implements IWave {
 
     this.runTimeleft();
 
+    this.emit(WaveEvents.COMPLETE, prevNumber);
+
     this.scene.game.screen.notice(NoticeType.INFO, `Wave ${prevNumber} completed`);
     this.scene.sound.play(WaveAudio.COMPLETE);
-    this.emit(WaveEvents.COMPLETE, prevNumber);
 
     this.scene.level.looseEffects();
 

@@ -16,6 +16,7 @@ import {
   IBuildingTower,
   BuildingAudio,
   BuildingSavePayload,
+  BuildingEvents,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
@@ -236,14 +237,16 @@ export class BuildingTower extends Building implements IBuildingTower {
       }
     };
 
-    this.scene.builder.on(BuilderEvents.UPGRADE, handler);
+    const buidingsGroup = this.scene.getEntitiesGroup(EntityType.BUILDING);
+
     this.scene.builder.on(BuilderEvents.BUILD, handler);
-    this.scene.builder.on(BuilderEvents.BUY_AMMO, handler);
+    buidingsGroup.on(BuildingEvents.UPGRADE, handler);
+    buidingsGroup.on(BuildingEvents.BUY_AMMO, handler);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.builder.off(BuilderEvents.UPGRADE, handler);
       this.scene.builder.off(BuilderEvents.BUILD, handler);
-      this.scene.builder.off(BuilderEvents.BUY_AMMO, handler);
+      buidingsGroup.off(BuildingEvents.UPGRADE, handler);
+      buidingsGroup.off(BuildingEvents.BUY_AMMO, handler);
     });
   }
 }

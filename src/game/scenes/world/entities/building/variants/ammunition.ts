@@ -3,7 +3,7 @@ import { progressionQuadratic } from '~lib/difficulty';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
-import { BuilderEvents } from '~type/world/builder';
+import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
   BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition, BuildingSavePayload, BuildingControl,
@@ -162,7 +162,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.scene.player.takeResources(cost);
     this.removeAlertIcon();
 
-    this.scene.builder.emit(BuilderEvents.BUY_AMMO, this);
+    this.scene.getEntitiesGroup(EntityType.BUILDING)
+      .emit(BuildingEvents.BUY_AMMO, this);
+
     this.scene.game.tutorial.complete(TutorialStep.BUY_AMMO);
     this.scene.sound.play(BuildingAudio.RELOAD);
   }
