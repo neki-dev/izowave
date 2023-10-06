@@ -28,7 +28,7 @@ export interface IWorld extends IScene {
   /**
    * Player assistant.
    */
-  readonly assistant: Nullable<IAssistant>
+  readonly assistant: IAssistant
 
   /**
    * Level.

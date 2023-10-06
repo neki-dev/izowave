@@ -5,7 +5,7 @@ import {
 } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
 import { getClosest } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
@@ -16,7 +16,6 @@ import { EntityType } from '~type/world/entities';
 import {
   AssistantTexture,
   AssistantData,
-  AssistantAudio,
   IAssistant,
 } from '~type/world/entities/npc/assistant';
 import { IEnemy } from '~type/world/entities/npc/enemy';
@@ -36,13 +35,12 @@ export class Assistant extends NPC implements IAssistant {
   public level: number = 1;
 
   constructor(scene: IWorld, {
-    owner, positionAtMatrix, speed, health, level,
+    owner, positionAtMatrix, speed,
   }: AssistantData) {
     super(scene, {
       texture: AssistantTexture.ASSISTANT,
       positionAtMatrix,
       speed,
-      health,
       pathFindTriggerDistance: ASSISTANT_PATH_BREAKPOINT,
     });
     scene.add.existing(this);
@@ -59,15 +57,8 @@ export class Assistant extends NPC implements IAssistant {
 
     this.gamut = ASSISTANT_TILE_SIZE.gamut;
     this.owner = owner;
-    this.level = level;
 
     this.body.setCircle(this.width / 2, 0, 1);
-
-    this.addIndicator({
-      color: 0xd0ff4f,
-      value: () => this.live.health / this.live.maxHealth,
-      size: 20,
-    });
 
     this.handleWaveComplete();
     this.activate();
@@ -91,31 +82,6 @@ export class Assistant extends NPC implements IAssistant {
     if (this.isCanAttack()) {
       this.attack();
     }
-  }
-
-  public onDamage() {
-    this.scene.game.sound.play(
-      Phaser.Utils.Array.GetRandom([
-        AssistantAudio.DAMAGE_1,
-        AssistantAudio.DAMAGE_2,
-      ]),
-    );
-
-    super.onDamage();
-  }
-
-  public onDead() {
-    this.scene.sound.play(AssistantAudio.DEAD);
-
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.EXPLOSION,
-        position: this.body.center,
-        depth: this.depth + 1,
-      });
-    }
-
-    super.onDead();
   }
 
   private isCanAttack() {
@@ -210,5 +176,4 @@ export class Assistant extends NPC implements IAssistant {
   }
 }
 
-registerAudioAssets(AssistantAudio);
 registerSpriteAssets(AssistantTexture, ASSISTANT_TILE_SIZE);

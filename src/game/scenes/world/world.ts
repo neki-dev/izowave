@@ -46,7 +46,7 @@ export class World extends Scene implements IWorld {
 
   private set player(v) { this._player = v; }
 
-  private _assistant: Nullable<IAssistant> = null;
+  private _assistant: IAssistant;
 
   public get assistant() { return this._assistant; }
 
@@ -346,7 +346,6 @@ export class World extends Scene implements IWorld {
   }
 
   private addAssistant() {
-    const create = () => {
       const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
         const biome = this.level.map.getAt(spawn);
 
@@ -357,19 +356,7 @@ export class World extends Scene implements IWorld {
         owner: this.player,
         positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
         speed: this.player.speed,
-        health: this.player.live.maxHealth,
-        level: this.player.upgradeLevel[PlayerSkill.ASSISTANT],
-      });
-
-      this.assistant.once(Phaser.Scenes.Events.DESTROY, () => {
-        this.assistant = null;
-        this.wave.once(WaveEvents.COMPLETE, () => {
-          create();
-        });
-      });
-    };
-
-    create();
+    });
   }
 
   private addCrystals() {

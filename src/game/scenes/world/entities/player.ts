@@ -281,17 +281,11 @@ export class Player extends Sprite implements IPlayer {
 
         this.live.setMaxHealth(nextValue);
         this.live.addHealth(addedHealth);
-        if (this.scene.assistant) {
-          this.scene.assistant.live.setMaxHealth(nextValue);
-          this.scene.assistant.live.addHealth(addedHealth);
-        }
         break;
       }
       case PlayerSkill.SPEED: {
         this.speed = nextValue;
-        if (this.scene.assistant) {
           this.scene.assistant.speed = nextValue;
-        }
         break;
       }
       case PlayerSkill.BUILD_AREA: {

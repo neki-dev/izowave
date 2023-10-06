@@ -59,7 +59,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     scene.add.existing(this);
 
     this.positionAtMatrix = positionAtMatrix;
-    this.live = new Live({ health });
+    this.live = new Live({ health: health ?? 1 });
     this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
 

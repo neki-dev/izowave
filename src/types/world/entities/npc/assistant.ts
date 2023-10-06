@@ -19,16 +19,8 @@ export enum AssistantTexture {
   ASSISTANT = 'assistant',
 }
 
-export enum AssistantAudio {
-  DEAD = 'assistant/dead',
-  DAMAGE_1 = 'assistant/damage_1',
-  DAMAGE_2 = 'assistant/damage_2',
-}
-
 export type AssistantData = {
   owner: IPlayer
   positionAtMatrix: Vector2D
   speed: number
-  health: number
-  level: number
 };

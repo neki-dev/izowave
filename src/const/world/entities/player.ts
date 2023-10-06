@@ -18,13 +18,13 @@ export const PLAYER_TILE_SIZE = {
 export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
   [PlayerSkill.MAX_HEALTH]: {
     label: 'Health',
-    description: 'Grow health of player and assistant',
+    description: 'Grow health of player',
     experience: DIFFICULTY.PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
   },
   [PlayerSkill.SPEED]: {
     label: 'Speed',
-    description: 'Grow speed of player and assistant',
+    description: 'Grow speed of player',
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
     maxLevel: 10,
   },
