@@ -204,6 +204,14 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
+    if (
+      !this.scale.isFullscreen
+      && !this.device.os.desktop
+      && !IS_DEV_MODE
+    ) {
+      this.scale.startFullscreen();
+    }
+
     this.state = GameState.STARTED;
 
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
