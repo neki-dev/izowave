@@ -180,7 +180,6 @@ export enum BuildingIcon {
   CONFIRM_DISABLED = 'building/icons/confirm_disabled',
   DECLINE = 'building/icons/decline',
   ALERT = 'building/icons/alert',
-  PLACEHOLDER = 'building/icons/placeholder',
   UPGRADE = 'building/icons/upgrade',
   HEALTH = 'building/icons/params/health',
   RADIUS = 'building/icons/params/radius',
