@@ -180,7 +180,9 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = save;
 
-    this.loadSavePayload(this.usedSave.payload.game);
+    if (this.usedSave.payload.game) {
+      this.loadSavePayload(this.usedSave.payload.game);
+    }
 
     this.world.scene.restart(this.usedSave.payload.level);
 

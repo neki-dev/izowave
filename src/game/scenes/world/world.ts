@@ -30,7 +30,7 @@ import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
-import { IPlayer, PlayerSkill } from '~type/world/entities/player';
+import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
   ILevel, LevelData, SpawnTarget, Vector2D,
@@ -124,7 +124,10 @@ export class World extends Scene implements IWorld {
     this.addAssistant();
     this.addCrystals();
 
-    if (this.game.usedSave) {
+    if (
+      this.game.usedSave
+      && this.game.usedSave.payload.world
+    ) {
       this.loadSavePayload(this.game.usedSave.payload.world);
     }
   }
@@ -299,7 +302,10 @@ export class World extends Scene implements IWorld {
   private addWaveManager() {
     this.wave = new Wave(this);
 
-    if (this.game.usedSave) {
+    if (
+      this.game.usedSave
+      && this.game.usedSave.payload.wave
+    ) {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
     }
 
@@ -333,7 +339,10 @@ export class World extends Scene implements IWorld {
 
     this.player = new Player(this, { positionAtMatrix });
 
-    if (this.game.usedSave) {
+    if (
+      this.game.usedSave
+      && this.game.usedSave.payload.player
+    ) {
       this.player.loadSavePayload(this.game.usedSave.payload.player);
     }
 
@@ -346,16 +355,16 @@ export class World extends Scene implements IWorld {
   }
 
   private addAssistant() {
-      const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
-        const biome = this.level.map.getAt(spawn);
+    const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
+      const biome = this.level.map.getAt(spawn);
 
-        return biome?.solid;
-      });
+      return biome?.solid;
+    });
 
-      this.assistant = new Assistant(this, {
-        owner: this.player,
-        positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
-        speed: this.player.speed,
+    this.assistant = new Assistant(this, {
+      owner: this.player,
+      positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
+      speed: this.player.speed,
     });
   }
 

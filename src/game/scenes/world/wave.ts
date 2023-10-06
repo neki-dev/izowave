@@ -51,7 +51,7 @@ export class Wave extends EventEmitter implements IWave {
 
   private nextSpawnTimestamp: number = 0;
 
-  private alarmInterval: Nullable<NodeJS.Timer> = null;
+  private alarmInterval: Nullable<NodeJS.Timeout> = null;
 
   constructor(scene: IWorld) {
     super();
