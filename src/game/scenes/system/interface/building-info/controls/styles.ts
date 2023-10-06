@@ -5,7 +5,7 @@ import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    margin-top: 80px;
+    margin-top: 50px;
     position: absolute;
     left: 50%;
   }
