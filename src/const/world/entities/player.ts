@@ -25,13 +25,18 @@ export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
     target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.SPEED]: {
-    label: 'Speed',
+    label: 'Move speed',
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.BUILD_AREA]: {
     label: 'Build area',
     experience: DIFFICULTY.BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE,
+    target: PlayerSkillTarget.CHARACTER,
+  },
+  [PlayerSkill.BUILD_SPEED]: {
+    label: 'Build speed',
+    experience: DIFFICULTY.BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.ATTACK_DAMAGE]: {

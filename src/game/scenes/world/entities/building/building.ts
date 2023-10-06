@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_BUILD_DURATION, BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
+import { BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
@@ -78,7 +78,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private buildBar: Nullable<Phaser.GameObjects.Container> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, instant, health, texture, variant, radius, delay,
+    positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
@@ -108,8 +108,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
-    if (!instant) {
-      this.startBuildProcess();
+    if (buildDuration && buildDuration > 0) {
+      this.startBuildProcess(buildDuration);
     }
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
@@ -611,9 +611,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.destroy();
   }
 
-  private startBuildProcess() {
+  private startBuildProcess(duration: number) {
     this.addBuildBar();
-    this.addBuildTimer();
+    this.addBuildTimer(duration);
 
     this.setActive(false);
     this.setAlpha(0.5);
@@ -633,8 +633,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.removeBuildTimer();
   }
 
-  private addBuildTimer() {
-    const target = BUILDING_BUILD_DURATION / 50;
+  private addBuildTimer(duration: number) {
+    const target = duration / 50;
     let progress = 0;
 
     this.buildTimer = this.scene.time.addEvent({

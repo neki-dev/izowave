@@ -10,7 +10,7 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.55, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.75, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -98,6 +98,9 @@ export const DIFFICULTY = {
   BUILDER_BUILD_AREA: 140, // Radius of build area
   BUILDER_BUILD_AREA_GROWTH: 0.13, // Growth radius by upgrade (Quadratic)
   BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade radius
+  BUILDER_BUILD_DURATION: 2000, // Duration of build process
+  BUILDER_BUILD_DURATION_GROWTH: -0.12, // Experience growth by level (Linear)
+  BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
 
   /**
    * Buildings

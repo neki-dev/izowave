@@ -229,15 +229,13 @@ export type BuildingControl = {
   onClick: () => void
 };
 
-export type BuildingBuildData = {
-  variant: BuildingVariant
-  instant?: boolean
+export type BuildingVariantData = {
+  buildDuration?: number
   positionAtMatrix: Vector2D
 };
 
-export type BuildingVariantData = {
-  instant?: boolean
-  positionAtMatrix: Vector2D
+export type BuildingBuildData = BuildingVariantData & {
+  variant: BuildingVariant
 };
 
 export type BuildingData = BuildingVariantData & {

@@ -59,6 +59,7 @@ export class Player extends Sprite implements IPlayer {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
     [PlayerSkill.BUILD_AREA]: 1,
+    [PlayerSkill.BUILD_SPEED]: 1,
     [PlayerSkill.ATTACK_DAMAGE]: 1,
     [PlayerSkill.ATTACK_DISTANCE]: 1,
     [PlayerSkill.ATTACK_SPEED]: 1,

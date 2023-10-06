@@ -276,7 +276,6 @@ export class World extends Scene implements IWorld {
       const building = this.builder.createBuilding({
         variant: buildingData.variant,
         positionAtMatrix: buildingData.position,
-        instant: true,
       });
 
       building.loadSavePayload(buildingData);
