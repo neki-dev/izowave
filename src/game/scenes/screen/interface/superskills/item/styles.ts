@@ -73,6 +73,7 @@ export const Body = styled.div`
 
 export const Container = styled.div<{
   $active?: boolean
+  $selected?: boolean
 }>`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 14px;
@@ -86,15 +87,13 @@ export const Container = styled.div<{
         opacity: 0.5;
       }
     `
-    : css`
-      &:hover {
-        background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-        cursor: pointer;
-        ${Info} {
-          display: block;
-        }
+    : () => (props.$selected && css`
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+      cursor: pointer;
+      ${Info} {
+        display: block;
       }
-    `
+    `)
   )}
   &:not(:last-child) {
     margin-right: 10px;

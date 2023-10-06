@@ -22,7 +22,7 @@ export const Debug: React.FC = () => {
     if (heapSize) {
       setMemory((heapSize / 1024 / 1024).toFixed(2));
     }
-  });
+  }, []);
 
   return (
     <Value>

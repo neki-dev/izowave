@@ -10,8 +10,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: flex-end;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    // TODO
-    display: none;
+    margin-top: 30px;
   }
 `;
 
@@ -21,6 +20,10 @@ export const About = styled.div`
   white-space: pre-line;
   font-size: 12px;
   line-height: 12px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 8px;
+    line-height: 8px;
+  }
 `;
 
 export const Link = styled.a`
@@ -32,7 +35,7 @@ export const Link = styled.a`
 `;
 
 export const Version = styled.div`
-  margin-top: 6px;
+  margin-top: 8px;
 `;
 
 export const Discord = styled.a`
@@ -50,6 +53,9 @@ export const Discord = styled.a`
   background: #6170C1;
   &:hover {
     background: #111;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 3px 6px;
   }
 `;
 

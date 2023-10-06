@@ -12,7 +12,7 @@ export const Score: React.FC = () => {
 
   useSceneUpdate(world, () => {
     setAmount(world.player.score);
-  });
+  }, []);
 
   return <Amount type="score">{amount}</Amount>;
 };

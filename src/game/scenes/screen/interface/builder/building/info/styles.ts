@@ -44,7 +44,7 @@ export const Head = styled.div`
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     height: 100%;
     border-radius: 5px;
-    padding: 10px 16px;
+    padding: 10px 12px;
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
@@ -66,13 +66,30 @@ export const Name = styled.div`
   }
 `;
 
+export const Meta = styled.div`
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+`;
+
+export const Limit = styled.div`
+  border: 1px solid ${InterfaceTextColor.WARN};
+  color: ${InterfaceTextColor.WARN};
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-size: 8px;
+  line-height: 8px;
+  margin: -2px 0 0 8px;
+  padding: 2px 4px 3px 4px;
+  border-radius: 3px;
+`;
+
 export const Body = styled.div`
   padding: 18px 20px 20px 20px;
   background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   border-radius: 0 0 10px 10px;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    display: none;
-  }
 `;
 
 export const Alert = styled.div<{

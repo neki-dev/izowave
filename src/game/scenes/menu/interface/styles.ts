@@ -24,7 +24,7 @@ export const Sidebar = styled.div`
   padding: 15vh 7vw;
   flex-grow: 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    justify-content: flex-start;
+    padding: 10vh 7vw;
   }
 `;
 
@@ -35,6 +35,7 @@ export const Main = styled.div`
   flex: 1;
   padding: 15vh 7vw;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 10vh 7vw;
     justify-content: flex-start;
   }
 `;
@@ -42,4 +43,7 @@ export const Main = styled.div`
 export const Logotype = styled.img`
   height: 50px;
   margin-bottom: 50px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-bottom: 30px;
+  }
 `;

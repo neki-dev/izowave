@@ -42,7 +42,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
     }
   };
 
-  const onHover = () => {
+  const onMouseEnter = () => {
     if (!isDisallow && !isDisabled) {
       setUsed(true);
     }
@@ -66,12 +66,16 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
     if (currentIsActive) {
       setUsed(true);
     }
-  });
+  }, []);
 
   return (
     <Container
-      onClick={onClick}
-      onMouseEnter={onHover}
+      {...isMobile ? {
+        onTouchEnd: onClick,
+      } : {
+        onClick,
+        onMouseEnter,
+      }}
       $disallow={isDisallow}
       $disabled={isDisabled}
       $active={isActive}

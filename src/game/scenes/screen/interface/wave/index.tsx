@@ -47,7 +47,7 @@ export const Wave: React.FC = () => {
       setValue(formatTime(timeleft));
       setAlarm(timeleft <= WAVE_TIMELEFT_ALARM);
     }
-  });
+  }, []);
 
   return isDisabled ? (
     <div />

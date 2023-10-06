@@ -71,7 +71,7 @@ export const Builder: React.FC = () => {
 
   useSceneUpdate(world, () => {
     setActiveVariant(world.builder.variant);
-  });
+  }, []);
 
   return (
     <Wrapper ref={refScroll}>

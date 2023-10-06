@@ -1,4 +1,4 @@
-import { useGame, useMobilePlatform, useMatchMedia } from 'phaser-react-ui';
+import { useGame, useMatchMedia, useOutsideClick } from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -17,7 +17,6 @@ import { Wrapper, Container } from './styles';
 export const Skills: React.FC = () => {
   const game = useGame<IGame>();
 
-  const isMobile = useMobilePlatform();
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const upgradeTypes = useMemo(
@@ -38,18 +37,6 @@ export const Skills: React.FC = () => {
     setOpened(false);
   };
 
-  const onClickOutside = (event: MouseEvent | TouchEvent) => {
-    if (!refContainer.current) {
-      return;
-    }
-
-    const isInside = event.composedPath().includes(refContainer.current);
-
-    if (!isInside) {
-      onClose();
-    }
-  };
-
   const onKeyPress = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       onClose();
@@ -57,16 +44,18 @@ export const Skills: React.FC = () => {
     }
   };
 
+  useOutsideClick(refContainer, () => {
+    onClose();
+  }, []);
+
   useEffect(() => {
     if (!isOpened) {
       return;
     }
 
-    document.addEventListener(isMobile ? 'touchend' : 'click', onClickOutside);
     document.addEventListener('keyup', onKeyPress);
 
     return () => {
-      document.removeEventListener(isMobile ? 'touchend' : 'click', onClickOutside);
       document.removeEventListener('keyup', onKeyPress);
     };
   }, [isOpened]);
