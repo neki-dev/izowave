@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
 import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import {
   InterfaceFont,
@@ -8,19 +9,41 @@ import {
 } from '~type/interface';
 
 export const Wrapper = styled.div`
-  position: absolute;
-  width: 260px;
-  transform: translate(-50%, -100%);
-  margin-top: -32px;
-  &::after {
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    width: 260px;
     position: absolute;
-    content: "";
+    transform: translate(-50%, -100%);
+    margin-top: -32px;
+    &::after {
+      position: absolute;
+      content: "";
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 100%);
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 15px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    }
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 180px;
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    right: 0;
     bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 100%);
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-top: 15px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    background: ${InterfaceBackgroundColor.BLUE};
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.35);
+  }
+`;
+
+export const Container = styled.div`
+  overflow: hidden;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    border-radius: 10px;
   }
 `;
 
@@ -30,13 +53,11 @@ export const Head = styled.div`
   align-items: center;
   padding: 14px 16px;
   background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
-  border-radius: 10px 10px 0 0;
 `;
 
 export const Body = styled.div`
   background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   padding: 16px;
-  border-radius: 0 0 10px 10px;
 `;
 
 export const Name = styled.div`

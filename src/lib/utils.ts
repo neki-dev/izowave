@@ -1,4 +1,3 @@
-import { MIN_VALID_SCREEN_SIZE } from '~const/game';
 import { Vector2D, Vector3D } from '~type/world/level';
 
 /**
@@ -235,25 +234,6 @@ export function mapEntries<T extends Record<string, any>>(
   callback: (key: keyof T, value: T[keyof T], index: number) => any,
 ) {
   return Object.entries(obj).map(([key, value], index) => callback(key, value, index));
-}
-
-/**
- * Check device screen size.
- */
-export function isValidScreenSize() {
-  return (
-    window.innerWidth >= MIN_VALID_SCREEN_SIZE[0]
-    && window.innerHeight >= MIN_VALID_SCREEN_SIZE[1]
-  );
-}
-
-/**
- * Check device OS.
- */
-export function isMobileDevice() {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent,
-  );
 }
 
 /**

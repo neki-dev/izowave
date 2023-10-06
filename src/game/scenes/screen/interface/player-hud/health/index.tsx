@@ -15,7 +15,7 @@ export const Health: React.FC = () => {
   useSceneUpdate(world, () => {
     setHealth(world.player.live.health);
     setMaxHealth(world.player.live.maxHealth);
-  });
+  }, []);
 
   return (
     <Container>

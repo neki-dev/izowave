@@ -1,30 +1,26 @@
 import styled from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+
 export const Wrapper = styled.div`
-  pointer-events: all;
-`;
-
-export const Info = styled.div`
   position: absolute;
-  transform: translate(-100%, 50%);
-  margin: -58px 0 0 -15px;
-  display: none;
-  z-index: 2;
-`;
-
-export const Variant = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  &:not(:last-child) {
-    margin-bottom: 10px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-right: -16px;
+    padding: 1px 16px 1px 0;
+    overflow-y: scroll;
+    overflow-x: visible;
+    width: 100vw; // hacking overflow-x
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
-  &:hover {
-    [role=hint] {
-      display: none;
-    }
-    ${Info} {
-      display: block;
+  > *:not(:last-child) {
+    margin-bottom: 10px;
+    @media ${INTERFACE_MOBILE_BREAKPOINT} {
+      margin-bottom: 3px;
     }
   }
 `;

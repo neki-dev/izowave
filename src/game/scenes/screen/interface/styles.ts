@@ -1,11 +1,16 @@
 import styled, { css } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+
 export const Wrapper = styled.div`
-  width: 100%;
   height: 100%;
   padding: 32px;
   display: flex;
   justify-content: space-between;
+  user-select: none;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 16px;
+  }
 `;
 
 export const Grid = styled.div`
@@ -20,6 +25,7 @@ export const Column = styled.div<{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
   ${(props) => {
     switch (props.$side) {
       case 'left': return css`

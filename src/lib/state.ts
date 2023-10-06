@@ -11,11 +11,8 @@ export function throwFailure(type: FailureType) {
   overlay.id = `failure-${type}`;
 
   switch (type) {
-    case FailureType.BAD_DEVICE:
-      overlay.innerText = 'DEVICE IS NOT SUPPORTED';
-      break;
     case FailureType.BAD_SCREEN_SIZE:
-      overlay.innerText = 'SCREEN SIZE IS NOT SUPPORTED';
+      overlay.innerText = 'TURN PHONE TO LANDSCAPE ORIENTATION';
       break;
     case FailureType.UNCAUGHT_ERROR:
       overlay.innerText = 'UNCAUGHT ERROR';

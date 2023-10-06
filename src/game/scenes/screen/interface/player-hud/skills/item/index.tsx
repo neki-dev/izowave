@@ -1,4 +1,9 @@
-import { getModifiedObject, useScene, useSceneUpdate } from 'phaser-react-ui';
+import {
+  getModifiedObject,
+  useMobilePlatform,
+  useScene,
+  useSceneUpdate,
+} from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { PLAYER_SKILLS } from '~const/world/entities/player';
@@ -9,10 +14,11 @@ import { IWorld } from '~type/world';
 import { PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
 
 import {
-  Item,
+  Container,
   Info,
   Action,
   Label,
+  Description,
   Level,
   Button,
   Limit,
@@ -25,11 +31,13 @@ type Props = {
 export const UpgradesListItem: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
+  const isMobile = useMobilePlatform();
+
   const [data, setData] = useState<Nullable<PlayerSkillData>>(null);
 
   const limit = data?.currentLevel && data.maxLevel <= data.currentLevel;
 
-  const onUpgrade = () => {
+  const onClick = () => {
     world.player.upgrade(type);
   };
 
@@ -41,15 +49,19 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
     };
 
     setData((current) => getModifiedObject(current, newData));
-  });
+  }, []);
 
   return (
     data && (
-      <Item>
+      <Container>
         <Info>
           <Label>{data.label}</Label>
-          <Text>{data.description}</Text>
-          <Level>LEVEL <b>{data.currentLevel}</b></Level>
+          <Description>
+            <Text>{data.description}</Text>
+          </Description>
+          <Level>
+            LEVEL <b>{data.currentLevel}</b>
+          </Level>
         </Info>
         {limit ? (
           <Action>
@@ -60,12 +72,17 @@ export const UpgradesListItem: React.FC<Props> = ({ type }) => {
             </Limit>
           </Action>
         ) : (
-          <Action onClick={onUpgrade} $active>
+          <Action
+            {...{
+              [isMobile ? 'onTouchEnd' : 'onClick']: onClick,
+            }}
+            $active
+          >
             <Button>UPGRADE</Button>
-            <Cost type="experience" value={data.experience} size='large' />
+            <Cost type="experience" value={data.experience} size="large" />
           </Action>
         )}
-      </Item>
+      </Container>
     )
   );
 };

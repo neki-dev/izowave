@@ -84,8 +84,6 @@ export class Game extends Phaser.Game implements IGame {
       pixelArt: true,
       autoRound: true,
       disableContextMenu: true,
-      width: window.innerWidth,
-      height: window.innerHeight,
       parent: CONTAINER_ID,
       transparent: true,
       scale: {
@@ -204,6 +202,14 @@ export class Game extends Phaser.Game implements IGame {
   private startGame() {
     if (this.state !== GameState.IDLE) {
       return;
+    }
+
+    if (
+      !this.scale.isFullscreen
+      && !this.device.os.desktop
+      && !IS_DEV_MODE
+    ) {
+      this.scale.startFullscreen();
     }
 
     this.state = GameState.STARTED;

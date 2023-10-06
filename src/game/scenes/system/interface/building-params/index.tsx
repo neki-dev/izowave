@@ -14,10 +14,11 @@ import {
 
 type Props = {
   list: BuildingParam[]
+  adaptive?: boolean
 };
 
-export const BuildingParams: React.FC<Props> = ({ list }) => (
-  <Wrapper>
+export const BuildingParams: React.FC<Props> = ({ list, adaptive }) => (
+  <Wrapper $adaptive={adaptive}>
     {list.map((param) => (
       <Param key={param.label}>
         <IconContainer>

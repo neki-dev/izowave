@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 import { NoticeType } from '~type/screen';
 
@@ -17,6 +18,9 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   z-index: 2;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    top: 80px;
+  }
 `;
 
 export const Item = styled.div<{
@@ -28,8 +32,13 @@ export const Item = styled.div<{
   font-size: 16px;
   line-height: 16px;
   animation: ${animationOpacity} 0.2s ease-in;
+  background: ${(props) => InterfaceBackgroundColor[props.$type]};
   &:not(:last-child) {
     margin-bottom: 8px;
   }
-  background: ${(props) => InterfaceBackgroundColor[props.$type]}
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 14px;
+    line-height: 14px;
+    padding: 8px 15px;
+  }
 `;

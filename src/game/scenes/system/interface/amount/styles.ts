@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 export const Placeholder = styled.div`
@@ -42,10 +43,17 @@ export const IconContainer = styled.div`
   justify-content: center;
   width: 32px;
   height: 32px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 export const Icon = styled.img`
   width: 16px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 14px;
+  }
 `;
 
 export const Value = styled.div`
@@ -57,4 +65,10 @@ export const Value = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    height: 28px;
+    font-size: 15px;
+    line-height: 15px;
+    padding: 0 9px 0 6px;
+  }
 `;

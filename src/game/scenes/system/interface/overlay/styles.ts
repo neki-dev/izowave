@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  z-index: 3;
+  z-index: 4;
   pointer-events: all;
   > * {
     pointer-events: none;

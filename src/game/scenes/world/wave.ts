@@ -10,6 +10,7 @@ import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { registerAudioAssets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/difficulty';
 import { eachEntries } from '~lib/utils';
+import { GameState } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -98,7 +99,9 @@ export class Wave extends EventEmitter implements IWave {
       ) {
         this.scene.sound.play(WaveAudio.TICK);
         this.alarmInterval = setInterval(() => {
-          this.scene.sound.play(WaveAudio.TICK);
+          if (this.scene.game.state === GameState.STARTED) {
+            this.scene.sound.play(WaveAudio.TICK);
+          }
         }, 1000);
       }
     }

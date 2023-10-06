@@ -1,18 +1,21 @@
-import { useGame } from 'phaser-react-ui';
-import React, { useEffect, useState } from 'react';
+import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Hint } from '~scene/system/interface/hint';
-import { IGame } from '~type/game';
+import { GameScene, IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { BuilderInfo } from './info';
-import { BuilderPreview } from './preview';
-import { Variant, Info, Wrapper } from './styles';
+import { Building } from './building';
+import { Wrapper } from './styles';
 
 export const Builder: React.FC = () => {
   const game = useGame<IGame>();
+  const world = useScene<IWorld>(GameScene.WORLD);
 
+  const refScroll = useRef<HTMLDivElement>(null);
+
+  const [activeVariant, setActiveVariant] = useState<Nullable<BuildingVariant>>(null);
   const [hint, setHint] = useState<Nullable<{
     variant: BuildingVariant
     text: string
@@ -23,25 +26,25 @@ export const Builder: React.FC = () => {
       case TutorialStep.BUILD_GENERATOR: {
         return setHint({
           variant: BuildingVariant.GENERATOR,
-          text: 'Build generator to get resources',
+          text: 'Build generator\nto get resources',
         });
       }
       case TutorialStep.BUILD_RADAR: {
         return setHint({
           variant: BuildingVariant.RADAR,
-          text: 'Build radar to uncover enemies',
+          text: 'Build radar\nto uncover enemies',
         });
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
         return setHint({
           variant: BuildingVariant.TOWER_FIRE,
-          text: 'Build tower to attack enemies',
+          text: 'Build tower\nto attack enemies',
         });
       }
       case TutorialStep.BUILD_AMMUNITION: {
         return setHint({
           variant: BuildingVariant.AMMUNITION,
-          text: 'Build ammunition to reload towers',
+          text: 'Build ammunition\nto reload towers',
         });
       }
     }
@@ -66,20 +69,21 @@ export const Builder: React.FC = () => {
     [],
   );
 
+  useSceneUpdate(world, () => {
+    setActiveVariant(world.builder.variant);
+  }, []);
+
   return (
-    <Wrapper>
+    <Wrapper ref={refScroll}>
       {Object.values(BuildingVariant).map((variant, index) => (
-        <Variant key={variant}>
-          {hint?.variant === variant && (
-            <Hint side="right">{hint.text}</Hint>
-          )}
-
-          <Info>
-            <BuilderInfo variant={variant} />
-          </Info>
-
-          <BuilderPreview variant={variant} number={index + 1} />
-        </Variant>
+        <Building
+          key={variant}
+          variant={variant}
+          number={index + 1}
+          isActive={activeVariant === variant}
+          hint={hint?.variant === variant ? hint.text : undefined}
+          refScroll={refScroll}
+        />
       ))}
     </Wrapper>
   );

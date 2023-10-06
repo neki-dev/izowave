@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 const animationBlink = keyframes`
@@ -12,16 +13,11 @@ export const Container = styled.div<{
   $disabled?: boolean
   $disallow?: boolean
   $active?: boolean
-  $newest?: boolean
   $usable?: boolean
 }>`
-  width: 70px;
-  height: 60px;
-  padding: 10px 16px 10px 10px;
+  padding: 11px 18px 11px 14px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
-  display: flex;
-  justify-content: center;
   position: relative;
   &::before {
     position: absolute;
@@ -54,23 +50,16 @@ export const Container = styled.div<{
   ${(props) => (props.$active && css`
     opacity: 1.0;
     background: ${InterfaceBackgroundColor.BLUE};
-  `)}
-  ${(props) => (props.$newest && css`
-    &::after {
-      position: absolute;
-      content: 'new';
-      color: #fff;
-      font-family: ${InterfaceFont.PIXEL_TEXT};
-      font-size: 9px;
-      line-height: 9px;
-      left: -3px;
-      top: -3px;
-      border-radius: 5px;
-      background: ${InterfaceBackgroundColor.SUCCESS};
-      padding: 2px 4px 3px 4px;
-      animation: ${animationBlink} 1s infinite;
+    &:hover {
+      background: ${InterfaceBackgroundColor.BLUE};
     }
   `)}
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px 8px 12px;
+    height: 100%;
+  }
 `;
 
 export const Preview = styled.div`
@@ -79,6 +68,24 @@ export const Preview = styled.div`
   height: 40px;
   img, div[data-texture-container] {
     height: 100%;
+  }
+`;
+
+export const Newest = styled.div`
+  position: absolute;
+  color: #fff;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 9px;
+  line-height: 9px;
+  left: -3px;
+  top: -3px;
+  border-radius: 5px;
+  background: ${InterfaceBackgroundColor.SUCCESS};
+  padding: 2px 4px 3px 4px;
+  animation: ${animationBlink} 1s infinite;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 8px;
+    line-height: 8px;
   }
 `;
 

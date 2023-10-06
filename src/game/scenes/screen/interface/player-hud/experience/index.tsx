@@ -12,7 +12,7 @@ export const Experience: React.FC = () => {
 
   useSceneUpdate(world, () => {
     setAmount(world.player.experience);
-  });
+  }, []);
 
   return <Amount type="experience">{amount}</Amount>;
 };

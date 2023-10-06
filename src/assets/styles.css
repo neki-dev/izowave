@@ -25,7 +25,7 @@ img {
   align-items: center;
   flex-direction: column;
   display: flex;
-  padding: 100px;
+  padding: 10vh;
   font: 14px 'Verdana';
   font-weight: bold;
   line-height: 14pt;
@@ -40,6 +40,6 @@ img {
   height: 90px;
   background: url('./loading.gif') center top no-repeat;
   background-size: 100%;
-  margin-bottom: 40px;
+  margin-bottom: 5vh;
   position: relative;
 }

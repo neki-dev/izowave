@@ -91,6 +91,12 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   getSuperskillCost(type: PlayerSuperskill): number
 
   /**
+   * Set angle of target movement direction.
+   * @param angle - Angle
+   */
+  setMovementTarget(angle: Nullable<number>): void
+
+  /**
    * Get data for saving.
    */
   getSavePayload(): PlayerSavePayload
@@ -123,11 +129,14 @@ export enum PlayerSkill {
 }
 
 export enum MovementDirection {
-  LEFT = -1,
-  RIGHT = 1,
-  UP = -1,
-  DOWN = 1,
-  NONE = 0,
+  LEFT_UP = 'left_up',
+  LEFT = 'left',
+  LEFT_DOWN = 'left_down',
+  UP = 'up',
+  DOWN = 'down',
+  RIGHT_UP = 'right_up',
+  RIGHT = 'right',
+  RIGHT_DOWN = 'right_down',
 }
 
 export type PlayerData = {

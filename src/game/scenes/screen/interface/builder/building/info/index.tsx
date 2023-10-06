@@ -1,6 +1,7 @@
-import { useScene, useSceneUpdate } from 'phaser-react-ui';
+import { useMatchMedia, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { BuildingParams } from '~scene/system/interface/building-params';
 import { Cost } from '~scene/system/interface/cost';
@@ -10,7 +11,7 @@ import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Alert, Head, Name, Wrapper, Body,
+  Alert, Head, Meta, Limit, Name, Wrapper, Body,
 } from './styles';
 
 type Props = {
@@ -19,6 +20,8 @@ type Props = {
 
 export const BuilderInfo: React.FC<Props> = ({ variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
+
+  const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const [limit, setLimit] = useState<Nullable<number>>(null);
   const [existCount, setExistCount] = useState(0);
@@ -36,16 +39,22 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
     if (currentLimit) {
       setExistCount(world.builder.getBuildingsByVariant(variant).length);
     }
-  });
+  }, []);
 
   return (
     isAllowByTutorial && (
       <Wrapper>
         <Head>
           <Name>{BUILDINGS[variant].Name}</Name>
-          <Cost type="resources" value={BUILDINGS[variant].Cost} size="large" />
+          <Meta>
+            <Cost type="resources" value={BUILDINGS[variant].Cost} size="large" />
+            {(isSmallScreen && limit && existCount >= limit) && (
+              <Limit>Limit</Limit>
+            )}
+          </Meta>
         </Head>
-        <Body>
+        {!isSmallScreen && (
+          <Body>
           <Text>{BUILDINGS[variant].Description}</Text>
           {isAllowByWave ? (
             !!limit && (
@@ -59,7 +68,8 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
             </Alert>
           )}
           <BuildingParams list={BUILDINGS[variant].Params} />
-        </Body>
+          </Body>
+        )}
       </Wrapper>
     )
   );

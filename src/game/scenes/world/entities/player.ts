@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
-  PLAYER_TILE_SIZE, PLAYER_MOVE_DIRECTIONS, PLAYER_MOVE_ANIMATIONS, PLAYER_SKILLS, PLAYER_SUPERSKILLS,
+  PLAYER_TILE_SIZE, PLAYER_SKILLS, PLAYER_SUPERSKILLS, PLAYER_MOVEMENT_ANGLES, PLAYER_MOVEMENT_TARGET, PLAYER_MOVEMENT_KEYS,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
@@ -19,7 +19,7 @@ import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerTexture, MovementDirection, PlayerAudio, PlayerData, IPlayer, PlayerSkill, PlayerSuperskill, PlayerSavePayload,
+  PlayerTexture, PlayerAudio, PlayerData, IPlayer, PlayerSkill, PlayerSuperskill, PlayerSavePayload, MovementDirection,
 } from '~type/world/entities/player';
 import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -60,11 +60,9 @@ export class Player extends Sprite implements IPlayer {
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private movementKeysState: Partial<Record<keyof typeof MovementDirection, boolean>> = {};
+  private movementTarget: Nullable<MovementDirection> = null;
 
-  private direction: number = 0;
-
-  private isMoving: boolean = false;
+  private movementAngle: Nullable<number> = null;
 
   private dustEffect: Nullable<IParticles> = null;
 
@@ -85,7 +83,9 @@ export class Player extends Sprite implements IPlayer {
 
     this.gamut = PLAYER_TILE_SIZE.gamut;
 
-    this.handleKeyboard();
+    if (this.scene.game.device.os.desktop) {
+      this.handleMovementByKeyboard();
+    }
 
     this.registerAnimations();
 
@@ -131,7 +131,7 @@ export class Player extends Sprite implements IPlayer {
       this.dustEffect.emitter.setDepth(this.depth - 1);
     }
 
-    this.updateDirection();
+    this.updateMovement();
     this.updateVelocity();
   }
 
@@ -377,39 +377,45 @@ export class Player extends Sprite implements IPlayer {
     this.live.heal();
   }
 
-  private handleKeyboard() {
-    const keysMap: Record<string, keyof typeof MovementDirection> = {
-      w: 'UP',
-      ArrowUp: 'UP',
-      s: 'DOWN',
-      ArrowDown: 'DOWN',
-      a: 'LEFT',
-      ArrowLeft: 'LEFT',
-      d: 'RIGHT',
-      ArrowRight: 'RIGHT',
+  private handleMovementByKeyboard() {
+    const keysState: Partial<Record<MovementDirection, boolean>> = {};
+
+    const toggleKeyState = (key: string, state: boolean) => {
+      if (!PLAYER_MOVEMENT_KEYS[key]) {
+        return;
+      }
+
+      keysState[PLAYER_MOVEMENT_KEYS[key]] = state;
+
+      const result = [
+        [MovementDirection.LEFT, MovementDirection.RIGHT],
+        [MovementDirection.UP, MovementDirection.DOWN],
+      ].reduce((list, line) => {
+        const direction = line.find((section) => keysState[section]);
+
+        return direction ? list.concat(direction) : list;
+      }, []);
+
+      this.movementTarget = result.length > 0 ? result.join('_') as MovementDirection : null;
     };
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, (event: KeyboardEvent) => {
-      if (keysMap[event.key]) {
-        this.movementKeysState[keysMap[event.key]] = true;
-      }
+      toggleKeyState(event.key, true);
     });
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
-      if (keysMap[event.key]) {
-        this.movementKeysState[keysMap[event.key]] = false;
-      }
+      toggleKeyState(event.key, false);
     });
   }
 
   private updateVelocity() {
-    if (!this.isMoving) {
+    if (this.movementAngle === null) {
       this.setVelocity(0, 0);
 
       return;
     }
 
-    const collide = this.handleCollide(this.direction);
+    const collide = this.handleCollide(this.movementAngle);
 
     if (collide) {
       this.setVelocity(0, 0);
@@ -419,48 +425,74 @@ export class Player extends Sprite implements IPlayer {
 
     const friction = this.currentBiome?.friction ?? 1;
     const speed = this.speed / friction;
-    const velocity = this.scene.physics.velocityFromAngle(this.direction, speed);
+    const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
 
     this.setVelocity(velocity.x, velocity.y);
   }
 
-  private updateDirection() {
-    const x = this.getKeyboardSingleDirection(['LEFT', 'RIGHT']);
-    const y = this.getKeyboardSingleDirection(['UP', 'DOWN']);
-    const key = `${x}|${y}`;
-
-    const oldMoving = this.isMoving;
-    const oldDirection = this.direction;
-
-    if (x !== 0 || y !== 0) {
-      this.isMoving = true;
-      this.direction = PLAYER_MOVE_DIRECTIONS[key];
-    } else {
-      this.isMoving = false;
-    }
-
-    if (oldMoving !== this.isMoving || oldDirection !== this.direction) {
-      if (this.isMoving) {
-        this.anims.play(PLAYER_MOVE_ANIMATIONS[key]);
-
-        if (!oldMoving) {
-          if (this.dustEffect) {
-            this.dustEffect.emitter.start();
-          }
-
-          this.scene.game.sound.play(PlayerAudio.WALK, {
-            loop: true,
-            rate: 1.8,
-          });
-        }
-      } else {
+  private updateMovement() {
+    if (this.movementTarget === null) {
+      if (this.movementAngle !== null) {
         this.stopMovement();
+      }
+    } else {
+      const newDirection = PLAYER_MOVEMENT_ANGLES[this.movementTarget];
+
+      if (this.movementAngle === null) {
+        this.startMovement(newDirection);
+      } else {
+        this.setMovementAngle(newDirection);
       }
     }
   }
 
+  private startMovement(angle: number) {
+    if (this.movementTarget === null) {
+      return;
+    }
+
+    this.movementAngle = angle;
+
+    this.anims.play(this.movementTarget);
+
+    if (this.dustEffect) {
+      this.dustEffect.emitter.start();
+    }
+
+    this.scene.game.sound.play(PlayerAudio.WALK, {
+      loop: true,
+      rate: 1.8,
+    });
+  }
+
+  public setMovementTarget(angle: Nullable<number>) {
+    if (angle === null) {
+      this.movementTarget = null;
+    } else {
+      const section = Math.round(angle / 45) % 8;
+
+      this.movementTarget = PLAYER_MOVEMENT_TARGET[section];
+    }
+  }
+
+  private setMovementAngle(angle: number) {
+    if (
+      this.movementTarget === null
+      || this.movementAngle === angle
+    ) {
+      return;
+    }
+
+    this.movementAngle = angle;
+    this.anims.play(this.movementTarget);
+  }
+
   private stopMovement() {
-    this.isMoving = false;
+    if (this.movementAngle === null) {
+      return;
+    }
+
+    this.movementAngle = null;
 
     if (this.anims.currentAnim) {
       this.anims.setProgress(0);
@@ -472,12 +504,6 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.scene.sound.stopByKey(PlayerAudio.WALK);
-  }
-
-  private getKeyboardSingleDirection(directions: (keyof typeof MovementDirection)[]) {
-    const type = directions.find((direction) => this.movementKeysState[direction]) ?? 'NONE';
-
-    return MovementDirection[type];
   }
 
   private addDustEffect() {
@@ -505,7 +531,7 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private registerAnimations() {
-    Object.values(PLAYER_MOVE_ANIMATIONS).forEach((key, index) => {
+    Object.values(MovementDirection).forEach((key, index) => {
       this.anims.create({
         key,
         frames: this.anims.generateFrameNumbers(PlayerTexture.PLAYER, {

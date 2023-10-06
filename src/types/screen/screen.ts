@@ -1,6 +1,18 @@
+import Phaser from 'phaser';
+
 import { IScene } from '~type/scene';
 
 export interface IScreen extends IScene {
+  /**
+   * Joystick active pointer.
+   */
+  readonly joystickActivePointer: Nullable<Phaser.Input.Pointer>
+
+  /**
+   * Get state of using virtual joystick.
+   */
+  isJoystickUsing(): boolean
+
   /**
    * Send notice message.
    * @param type - Notice type

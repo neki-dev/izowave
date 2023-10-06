@@ -1,4 +1,6 @@
-import { Texture, useScene, useSceneUpdate } from 'phaser-react-ui';
+import {
+  Texture, useMobilePlatform, useScene, useSceneUpdate,
+} from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
@@ -6,7 +8,9 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { Container, Number, Preview } from './styles';
+import {
+  Container, Number, Preview, Newest,
+} from './styles';
 
 type Props = {
   number: number
@@ -16,6 +20,8 @@ type Props = {
 export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
+  const isMobile = useMobilePlatform();
+
   const [isDisallow, setDisallow] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
   const [isActive, setActive] = useState(false);
@@ -24,7 +30,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
 
   const isNewest = !isUsed && !isDisallow && !isDisabled && !world.game.usedSave;
 
-  const selectBuilding = () => {
+  const onClick = () => {
     if (isDisallow) {
       return;
     }
@@ -36,7 +42,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
     }
   };
 
-  const onHover = () => {
+  const onMouseEnter = () => {
     if (!isDisallow && !isDisabled) {
       setUsed(true);
     }
@@ -60,19 +66,27 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
     if (currentIsActive) {
       setUsed(true);
     }
-  });
+  }, []);
 
   return (
     <Container
-      onClick={selectBuilding}
-      onMouseEnter={onHover}
+      {...isMobile ? {
+        onTouchEnd: onClick,
+      } : {
+        onClick,
+        onMouseEnter,
+      }}
       $disallow={isDisallow}
       $disabled={isDisabled}
       $active={isActive}
-      $newest={isNewest}
       $usable={isUsable}
     >
-      <Number>{number}</Number>
+      {isNewest && (
+        <Newest>new</Newest>
+      )}
+      {!isMobile && (
+        <Number>{number}</Number>
+      )}
       <Preview>
         <Texture name={BUILDINGS[variant].Texture} frame={0} />
       </Preview>

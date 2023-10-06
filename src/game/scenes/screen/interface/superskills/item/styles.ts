@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceBackgroundColor,
   InterfaceTextColor,
@@ -20,6 +21,10 @@ export const Icon = styled.img`
   display: block;
   width: 26px;
   height: 26px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 22px;
+    height: 22px;
+  }
 `;
 
 export const Info = styled.div`
@@ -68,6 +73,7 @@ export const Body = styled.div`
 
 export const Container = styled.div<{
   $active?: boolean
+  $selected?: boolean
 }>`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 14px;
@@ -81,18 +87,19 @@ export const Container = styled.div<{
         opacity: 0.5;
       }
     `
-    : css`
-      &:hover {
-        background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-        cursor: pointer;
-        ${Info} {
-          display: block;
-        }
+    : () => (props.$selected && css`
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+      cursor: pointer;
+      ${Info} {
+        display: block;
       }
-    `
+    `)
   )}
   &:not(:last-child) {
     margin-right: 10px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 10px;
   }
 `;
 

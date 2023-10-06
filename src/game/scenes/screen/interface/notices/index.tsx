@@ -57,7 +57,7 @@ export const Notices: React.FC = () => {
         ? currentNotices
         : newNotices;
     });
-  });
+  }, []);
 
   return (
     <Wrapper>

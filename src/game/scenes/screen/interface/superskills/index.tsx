@@ -20,7 +20,7 @@ export const Superskills: React.FC = () => {
 
   useSceneUpdate(world, () => {
     setWaveGoing(world.wave.isGoing);
-  });
+  }, []);
 
   return isWaveGoing ? (
     <Wrapper>
