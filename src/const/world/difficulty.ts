@@ -176,7 +176,7 @@ export const DIFFICULTY = {
   BUILDING_GENERATOR_COST: 20, // Building cost
   BUILDING_GENERATOR_HEALTH: 300, // Health
   BUILDING_GENERATOR_DELAY: 1300, // Pause between resource generations
-  BUILDING_GENERATOR_DELAY_GROWTH: -0.154, // Pause growth by level (Linear)
+  BUILDING_GENERATOR_DELAY_GROWTH: -0.153, // Pause growth by level (Linear)
 
   /**
    * Building: Ammunition
