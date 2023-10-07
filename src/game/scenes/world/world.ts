@@ -82,8 +82,6 @@ export class World extends Scene implements IWorld {
 
   private lifecyle: Phaser.Time.TimerEvent;
 
-  private currentHintId: Nullable<string> = null;
-
   private _deltaTime: number = 1;
 
   public get deltaTime() { return this._deltaTime; }
@@ -145,17 +143,15 @@ export class World extends Scene implements IWorld {
   }
 
   public showHint(hint: WorldHint) {
-    this.currentHintId = uuidv4();
-    this.events.emit(WorldEvents.SHOW_HINT, hint);
+    const id = uuidv4();
 
-    return this.currentHintId;
+    this.events.emit(WorldEvents.SHOW_HINT, id, hint);
+
+    return id;
   }
 
-  public hideHint(id?: string) {
-    if (!id || id === this.currentHintId) {
-      this.events.emit(WorldEvents.HIDE_HINT);
-      this.currentHintId = null;
-    }
+  public hideHint(id: string) {
+    this.events.emit(WorldEvents.HIDE_HINT, id);
   }
 
   public getTime() {

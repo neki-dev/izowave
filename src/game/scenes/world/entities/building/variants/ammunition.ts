@@ -53,32 +53,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
 
-    let hintId: Nullable<string> = null;
-
-    const hideCurrentHint = () => {
-      if (hintId) {
-        this.scene.hideHint(hintId);
-        hintId = null;
-      }
-    };
-
-    const unbindBuyAmmoStep = this.scene.game.tutorial.bind(TutorialStep.BUY_AMMO, {
-      beg: () => {
-        if (this.ammo === 0) {
-          hintId = this.scene.showHint({
-            side: 'top',
-            text: 'Click to buy ammo',
-            position: this.getPositionOnGround(),
-          });
-        }
-      },
-      end: hideCurrentHint,
-    });
-
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      hideCurrentHint();
-      unbindBuyAmmoStep();
-    });
+    this.bindTutorialHint(TutorialStep.BUY_AMMO, 'Click to buy ammo', () => this.ammo === 0);
   }
 
   public getInfo() {

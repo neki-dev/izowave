@@ -11,14 +11,27 @@ import { Wrapper } from './styles';
 export const RelativeHint: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [hint, setHint] = useState<Nullable<WorldHint>>(null);
+  const [hints, setHints] = useState<Record<string, WorldHint>>({});
 
-  const showHint = (target: WorldHint) => {
-    setHint(target);
+  const showHint = (id: string, hint: WorldHint) => {
+    setHints((current) => ({
+      ...current,
+      [id]: hint,
+    }));
   };
 
-  const hideHint = () => {
-    setHint(null);
+  const hideHint = (id: string) => {
+    setHints((current) => {
+      if (!current[id]) {
+        return current;
+      }
+
+      const newHints = { ...current };
+
+      delete newHints[id];
+
+      return newHints;
+    });
   };
 
   useEffect(() => {
@@ -31,13 +44,13 @@ export const RelativeHint: React.FC = () => {
     };
   }, []);
 
-  return hint && (
-    <RelativePosition x={hint.position.x} y={hint.position.y}>
+  return Object.entries(hints).map(([id, hint]) => (
+    <RelativePosition key={id} x={hint.position.x} y={hint.position.y}>
       <Wrapper>
         <RelativeScale {...INTERFACE_SCALE}>
           <Hint side={hint.side}>{hint.text}</Hint>
         </RelativeScale>
       </Wrapper>
     </RelativePosition>
-  );
+  ));
 };

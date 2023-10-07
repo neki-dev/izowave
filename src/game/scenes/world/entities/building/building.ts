@@ -347,6 +347,35 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
+  public bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean) {
+    let hintId: Nullable<string> = null;
+
+    const hideHint = () => {
+      if (hintId) {
+        this.scene.hideHint(hintId);
+        hintId = null;
+      }
+    };
+
+    const unbindStep = this.scene.game.tutorial.bind(step, {
+      beg: () => {
+        if (!condition || condition()) {
+          hintId = this.scene.showHint({
+            side: 'top',
+            text,
+            position: this.getPositionOnGround(),
+          });
+        }
+      },
+      end: hideHint,
+    });
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      hideHint();
+      unbindStep();
+    });
+  }
+
   public getSavePayload(): BuildingSavePayload {
     return {
       variant: this.variant,
