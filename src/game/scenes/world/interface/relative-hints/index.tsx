@@ -8,7 +8,7 @@ import { IWorld, WorldEvents, WorldHint } from '~type/world';
 
 import { Wrapper } from './styles';
 
-export const RelativeHint: React.FC = () => {
+export const RelativeHints: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [hints, setHints] = useState<Record<string, WorldHint>>({});

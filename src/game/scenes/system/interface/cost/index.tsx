@@ -9,7 +9,7 @@ import { Wrapper, Icon, Value } from './styles';
 type Props = {
   type: 'resources' | 'experience'
   size: 'small' | 'medium' | 'large'
-  value: number
+  value: number | string
 };
 
 export const Cost: React.FC<Props> = ({ type, value, size }) => {
@@ -24,7 +24,7 @@ export const Cost: React.FC<Props> = ({ type, value, size }) => {
   return (
     <Wrapper $size={size}>
       <Icon src={`assets/sprites/hud/${type}.png`} />
-      <Value $attention={haveAmount < value}>{value}</Value>
+      <Value $attention={typeof value === 'number' && haveAmount < value}>{value}</Value>
     </Wrapper>
   );
 };

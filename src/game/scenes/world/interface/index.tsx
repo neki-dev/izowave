@@ -1,12 +1,14 @@
 import React from 'react';
 
+import { CrystalsAmount } from './crystals-amount';
 import { RelativeBuildingInfo } from './relative-building-info';
-import { RelativeHint } from './relative-hint';
+import { RelativeHints } from './relative-hints';
 
 export const WorldUI: React.FC = () => (
   <>
     <RelativeBuildingInfo />
-    <RelativeHint />
+    <RelativeHints />
+    <CrystalsAmount />
   </>
 );
 
