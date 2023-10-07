@@ -100,7 +100,7 @@ export const DIFFICULTY = {
   BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade radius
   BUILDER_BUILD_DURATION: 2000, // Duration of build process
   BUILDER_BUILD_DURATION_GROWTH: -0.12, // Experience growth by level (Linear)
-  BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
+  BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade speed
 
   /**
    * Buildings
