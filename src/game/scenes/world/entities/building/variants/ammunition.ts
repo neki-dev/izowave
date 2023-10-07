@@ -139,7 +139,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   private getAmmoCost() {
     const needAmmo = this.maxAmmo - this.ammo;
-    const costPerAmmo = DIFFICULTY.BUILDING_AMMUNITION_COST / DIFFICULTY.BUILDING_AMMUNITION_AMMO;
+    const costPerAmmo = (DIFFICULTY.BUILDING_AMMUNITION_COST / DIFFICULTY.BUILDING_AMMUNITION_AMMO) * 0.5;
 
     return Math.ceil(costPerAmmo * needAmmo);
   }
