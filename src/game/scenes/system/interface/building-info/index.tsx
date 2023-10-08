@@ -1,8 +1,6 @@
 import { getModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { INTERFACE_SCALE } from '~const/interface';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { BuildingParams } from '~scene/system/interface/building-params';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
@@ -30,7 +28,9 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
   const [params, setParams] = useState<BuildingParam[]>([]);
   const [controls, setControls] = useState<BuildingControl[]>([]);
 
-  const levels = useMemo(() => Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }), []);
+  const levels = useMemo(() => Array.from({
+    length: building.getMeta().MaxLevel,
+  }), [building]);
 
   useSceneUpdate(world, () => {
     if (!building.active) {
@@ -57,12 +57,10 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
             />
             <Health.Value>{`${health} HP`}</Health.Value>
           </Health>
-          <Level>
-            {levels.map(
-              (_, level) => (
-                <Level.Progress key={level} $active={level < upgradeLevel} />
-              ),
-            )}
+          <Level $count={levels.length}>
+            {levels.map((_, level) => (
+              <Level.Progress key={level} $active={level < upgradeLevel} />
+            ))}
           </Level>
           <BuildingParams list={params} adaptive={true} />
         </Body>

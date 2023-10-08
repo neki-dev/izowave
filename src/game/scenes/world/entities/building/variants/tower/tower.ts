@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionLinear } from '~lib/difficulty';
 import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -137,7 +137,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     };
 
     if (this.shotDefaultParams.speed) {
-      params.speed = progressionQuadratic({
+      params.speed = progressionLinear({
         defaultValue: this.shotDefaultParams.speed,
         scale: DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
         level: this.upgradeLevel,
@@ -147,7 +147,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (this.shotDefaultParams.damage) {
       const rage = this.scene.player.activeSuperskills[PlayerSuperskill.RAGE];
 
-      params.damage = progressionQuadratic({
+      params.damage = progressionLinear({
         defaultValue: this.shotDefaultParams.damage,
         scale: DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         level: this.upgradeLevel,
@@ -155,7 +155,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
 
     if (this.shotDefaultParams.freeze) {
-      params.freeze = progressionQuadratic({
+      params.freeze = progressionLinear({
         defaultValue: this.shotDefaultParams.freeze,
         scale: DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
         level: this.upgradeLevel,

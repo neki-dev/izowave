@@ -26,6 +26,8 @@ export class BuildingGenerator extends Building {
 
   static Limit = true;
 
+  static MaxLevel = 4;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
@@ -60,7 +62,7 @@ export class BuildingGenerator extends Building {
   public getTopCenterByLevel() {
     return {
       x: this.x,
-      y: this.y - 6 + (3 - Math.min(this.upgradeLevel, 3)) * 8,
+      y: this.y - 6 + (this.upgradeLevel === 1 ? 10 : 0),
     };
   }
 

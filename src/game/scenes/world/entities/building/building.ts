@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
+import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
@@ -238,10 +238,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getUpgradeCost(level?: number) {
-    const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+    const costPerLevel = this.getMeta().Cost * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER;
     const nextLevel = level ?? this.upgradeLevel;
 
-    return Math.round(costPerLevel * nextLevel * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER);
+    return Math.round(costPerLevel * nextLevel);
   }
 
   private getRepairCost() {
@@ -256,7 +256,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private isUpgradeAllowed() {
-    return this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL;
+    return this.upgradeLevel < this.getMeta().MaxLevel;
   }
 
   private getUpgradeAllowedByWave() {

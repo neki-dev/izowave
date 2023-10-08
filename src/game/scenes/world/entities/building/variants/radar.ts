@@ -24,6 +24,8 @@ export class BuildingRadar extends Building {
 
   static AllowByWave = DIFFICULTY.BUILDING_RADAR_ALLOW_BY_WAVE;
 
+  static MaxLevel = 4;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,

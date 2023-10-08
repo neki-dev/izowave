@@ -157,6 +157,7 @@ export interface IBuildingFactory {
   Health: number
   Limit?: boolean
   AllowByWave?: number
+  MaxLevel: number
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
 

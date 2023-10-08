@@ -27,6 +27,8 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Health = DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH;
 
+  static MaxLevel = 5;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
       damage: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE,
