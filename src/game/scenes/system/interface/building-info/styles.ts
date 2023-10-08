@@ -8,22 +8,22 @@ import {
 } from '~type/interface';
 
 export const Wrapper = styled.div`
-@media ${INTERFACE_DESKTOP_BREAKPOINT} {
-  width: 260px;
-  position: absolute;
-  transform: translate(-50%, -100%);
-  margin-top: -32px;
-  &::after {
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    width: 260px;
     position: absolute;
-    content: "";
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 100%);
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-top: 15px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    transform: translate(-50%, -100%);
+    margin-top: -32px;
+    &::after {
+      position: absolute;
+      content: "";
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 100%);
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 15px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    }
   }
-}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     pointer-events: all;
     width: 180px;

@@ -24,7 +24,7 @@ export const Label = styled.div`
 `;
 
 export const Addon = styled.div`
-  margin: 1px 0 0 6px;
+  margin: 0 0 -1px 6px;
 `;
 
 export const Action = styled.div<{
