@@ -27,6 +27,8 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Health = DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH;
 
+  static MaxLevel = 5;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
       damage: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE,
@@ -48,46 +50,18 @@ export class BuildingTowerFire extends BuildingTower {
       },
     }, shot);
 
-    let hintId: Nullable<string> = null;
+    this.bindTutorialHint(
+      TutorialStep.UPGRADE_BUILDING,
+      this.scene.game.device.os.desktop
+        ? 'Hover and press [E] to upgrade'
+        : 'Click to upgrade',
+    );
 
-    const hideCurrentHint = () => {
-      if (hintId) {
-        this.scene.hideHint(hintId);
-        hintId = null;
-      }
-    };
-
-    const unbindUpgradeStep = this.scene.game.tutorial.bind(TutorialStep.UPGRADE_BUILDING, {
-      beg: () => {
-        hintId = this.scene.showHint({
-          side: 'top',
-          text: this.scene.game.device.os.desktop
-            ? 'Hover and press [E] to upgrade'
-            : 'Click to upgrade',
-          position: this.getPositionOnGround(),
-        });
-      },
-      end: hideCurrentHint,
-    });
-
-    const unbindReloadStep = this.scene.game.tutorial.bind(TutorialStep.RELOAD_TOWER, {
-      beg: () => {
-        if (this.ammo === 0) {
-          hintId = this.scene.showHint({
-            side: 'top',
-            text: 'Build ammunition nearby',
-            position: this.getPositionOnGround(),
-          });
-        }
-      },
-      end: hideCurrentHint,
-    });
-
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      hideCurrentHint();
-      unbindUpgradeStep();
-      unbindReloadStep();
-    });
+    this.bindTutorialHint(
+      TutorialStep.RELOAD_TOWER,
+      'Build ammunition nearby',
+      () => this.ammo === 0,
+    );
 
     if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
       this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);

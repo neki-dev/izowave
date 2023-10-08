@@ -105,7 +105,7 @@ export const Container = styled.div<{
 
 export const Timeout = styled.div`
   position: absolute;
-  background: ${InterfaceBackgroundColor.INFO};
+  background: ${InterfaceBackgroundColor.SUCCESS_LIGHT};
   right: 0;
   left: 0;
   bottom: -6px;

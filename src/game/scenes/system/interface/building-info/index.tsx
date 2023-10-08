@@ -1,13 +1,6 @@
-import {
-  getModifiedArray,
-  useRelativeScale,
-  useScene,
-  useSceneUpdate,
-} from 'phaser-react-ui';
+import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { INTERFACE_SCALE } from '~const/interface';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import { BuildingParams } from '~scene/system/interface/building-params';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
@@ -29,15 +22,15 @@ type Props = {
 export const BuildingInfo: React.FC<Props> = ({ building }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);
-
   const [upgradeLevel, setUpgradeLevel] = useState(1);
   const [health, setHealth] = useState(1);
   const [maxHealth, setMaxHealth] = useState(1);
   const [params, setParams] = useState<BuildingParam[]>([]);
   const [controls, setControls] = useState<BuildingControl[]>([]);
 
-  const levels = useMemo(() => Array.from({ length: BUILDING_MAX_UPGRADE_LEVEL }), []);
+  const levels = useMemo(() => Array.from({
+    length: building.getMeta().MaxLevel,
+  }), [building]);
 
   useSceneUpdate(world, () => {
     if (!building.active) {
@@ -47,12 +40,12 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
     setUpgradeLevel(building.upgradeLevel);
     setHealth(building.live.health);
     setMaxHealth(building.live.maxHealth);
-    setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
-    setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
+    setParams(ifModifiedArray(building.getInfo(), ['value', 'attention']));
+    setControls(ifModifiedArray(building.getControls(), ['label', 'cost', 'disabled']));
   }, [building]);
 
   return (
-    <Wrapper ref={refScale}>
+    <Wrapper>
       <Container>
         <Head>
           <Name>{building.getMeta().Name}</Name>
@@ -64,12 +57,10 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
             />
             <Health.Value>{`${health} HP`}</Health.Value>
           </Health>
-          <Level>
-            {levels.map(
-              (_, level) => (
-                <Level.Progress key={level} $active={level < upgradeLevel} />
-              ),
-            )}
+          <Level $count={levels.length}>
+            {levels.map((_, level) => (
+              <Level.Progress key={level} $active={level < upgradeLevel} />
+            ))}
           </Level>
           <BuildingParams list={params} adaptive={true} />
         </Body>

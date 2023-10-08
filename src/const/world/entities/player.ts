@@ -2,7 +2,8 @@ import { LEVEL_TILE_SIZE } from '~const/world/level';
 import {
   MovementDirection,
   PlayerSkill,
-  PlayerSkillData,
+  PlayerSkillInfo,
+  PlayerSkillTarget,
   PlayerSuperskill,
   PlayerSuperskillData,
 } from '~type/world/entities/player';
@@ -15,30 +16,43 @@ export const PLAYER_TILE_SIZE = {
   gamut: 4,
 };
 
-export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillData> = {
+export const PLAYER_MAX_SKILL_LEVEL = 10;
+
+export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
   [PlayerSkill.MAX_HEALTH]: {
     label: 'Health',
-    description: 'Grow health of player and assistant',
     experience: DIFFICULTY.PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
+    target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.SPEED]: {
-    label: 'Speed',
-    description: 'Grow speed of player and assistant',
+    label: 'Move speed',
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
+    target: PlayerSkillTarget.CHARACTER,
   },
   [PlayerSkill.BUILD_AREA]: {
     label: 'Build area',
-    description: 'Grow radius of build area',
     experience: DIFFICULTY.BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
+    target: PlayerSkillTarget.CHARACTER,
   },
-  [PlayerSkill.ASSISTANT]: {
-    label: 'Assistant',
-    description: 'Grow damage, radius and speed attack',
-    experience: DIFFICULTY.ASSISTANT_EXPERIENCE_TO_UPGRADE,
-    maxLevel: 10,
+  [PlayerSkill.BUILD_SPEED]: {
+    label: 'Build speed',
+    experience: DIFFICULTY.BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE,
+    target: PlayerSkillTarget.CHARACTER,
+  },
+  [PlayerSkill.ATTACK_DAMAGE]: {
+    label: 'Damage',
+    experience: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE,
+    target: PlayerSkillTarget.ASSISTANT,
+  },
+  [PlayerSkill.ATTACK_DISTANCE]: {
+    label: 'Attack distance',
+    experience: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE,
+    target: PlayerSkillTarget.ASSISTANT,
+  },
+  [PlayerSkill.ATTACK_SPEED]: {
+    label: 'Attack speed',
+    experience: DIFFICULTY.ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE,
+    target: PlayerSkillTarget.ASSISTANT,
   },
 };
 

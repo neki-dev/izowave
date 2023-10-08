@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { PLAYER_MAX_SKILL_LEVEL } from '~const/world/entities/player';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -9,7 +10,6 @@ import {
 
 export const Container = styled.div`
   color: #fff;
-  pointer-events: all;
   display: flex;
   justify-content: space-between;
   border-radius: 5px;
@@ -23,6 +23,9 @@ export const Info = styled.div`
   padding: 10px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 export const Label = styled.div`
@@ -30,7 +33,7 @@ export const Label = styled.div`
   color: ${InterfaceTextColor.SUCCESS};
   font-size: 14px;
   line-height: 14px;
-  margin: 0 10px 4px 0;
+  margin-right: 10px;
   white-space: nowrap;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 12px;
@@ -38,31 +41,25 @@ export const Label = styled.div`
   }
 `;
 
-export const Description = styled.div`
-  margin: 0 10px 6px 0;
-  white-space: nowrap;
+export const Level: any = styled.div`
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(${PLAYER_MAX_SKILL_LEVEL}, 1fr);
+  grid-gap: 2px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    display: none;
+    margin-top: 8px;
   }
 `;
 
-export const Level = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 9px;
-  line-height: 9px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
-  padding: 3px 5px;
-  display: inline-flex;
-  align-items: center;
-  b {
-    font-size: 12px;
-    line-height: 12px;
-    margin-left: 5px;
-  }
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 8px;
-    line-height: 8px;
-  }
+Level.Progress = styled.div<{
+  $active?: boolean
+}>`
+  height: 8px;
+  transition: all 0.2s ease-out;
+  background: ${InterfaceBackgroundColor.BLACK};
+  ${(props) => props.$active && css`
+    background: ${InterfaceBackgroundColor.SUCCESS};
+  `}
 `;
 
 export const Action = styled.div<{
@@ -81,13 +78,20 @@ export const Action = styled.div<{
       background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
     }
   `}
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    height: 54px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 10px 0;
+    width: 90px;
+  }
 `;
 
 export const Button = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 10px;
   line-height: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 8px;
     line-height: 8px;
@@ -101,4 +105,8 @@ export const Limit = styled.div`
   line-height: 12px;
   text-align: center;
   white-space: pre;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 8px;
+    line-height: 10px;
+  }
 `;

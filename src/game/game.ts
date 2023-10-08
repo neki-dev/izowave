@@ -156,7 +156,7 @@ export class Game extends Phaser.Game implements IGame {
     this.screen.scene.pause();
 
     this.scene.systemScene.scene.launch(GameScene.MENU, {
-      defaultPage: null,
+      defaultPage: MenuPage.ABOUT_GAME,
     });
   }
 
@@ -180,7 +180,9 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = save;
 
-    this.loadSavePayload(this.usedSave.payload.game);
+    if (this.usedSave.payload.game) {
+      this.loadSavePayload(this.usedSave.payload.game);
+    }
 
     this.world.scene.restart(this.usedSave.payload.level);
 
@@ -242,7 +244,6 @@ export class Game extends Phaser.Game implements IGame {
     this.state = GameState.IDLE;
 
     this.world.scene.restart();
-
     this.tutorial.reset();
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);

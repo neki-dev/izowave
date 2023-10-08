@@ -6,6 +6,7 @@
     "default-case": "off",
     "consistent-return": "off",
     "func-names": "off",
+    "no-bitwise": "off",
     "import/order": ["warn", {
       "newlines-between": "always",
       "groups": ["builtin", "external", "parent", "sibling", "index"],

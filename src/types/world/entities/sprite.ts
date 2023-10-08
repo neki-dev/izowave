@@ -98,7 +98,7 @@ export type SpriteData = {
   texture: string
   positionAtMatrix: Vector2D
   frame?: number
-  health: number
+  health?: number
   speed: number
 };
 

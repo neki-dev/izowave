@@ -51,7 +51,7 @@ export class Wave extends EventEmitter implements IWave {
 
   private nextSpawnTimestamp: number = 0;
 
-  private alarmInterval: Nullable<NodeJS.Timer> = null;
+  private alarmInterval: Nullable<NodeJS.Timeout> = null;
 
   constructor(scene: IWorld) {
     super();
@@ -129,12 +129,14 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private runTimeleft() {
-    const pause = progressionLinear({
-      defaultValue: DIFFICULTY.WAVE_TIMELEFT,
-      scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
-      level: this.number,
-      roundTo: 1000,
-    });
+    const pause = (this.number === 1 && this.scene.game.tutorial.isEnabled)
+      ? 5000
+      : progressionLinear({
+        defaultValue: DIFFICULTY.WAVE_TIMELEFT,
+        scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+        level: this.number,
+        roundTo: 1000,
+      });
 
     this.nextWaveTimestamp = this.scene.getTime() + pause;
   }
@@ -155,9 +157,9 @@ export class Wave extends EventEmitter implements IWave {
       this.alarmInterval = null;
     }
 
-    this.scene.sound.play(WaveAudio.START);
-
     this.emit(WaveEvents.START, this.number);
+
+    this.scene.sound.play(WaveAudio.START);
   }
 
   private complete() {
@@ -168,20 +170,30 @@ export class Wave extends EventEmitter implements IWave {
 
     this.runTimeleft();
 
+    this.emit(WaveEvents.COMPLETE, prevNumber);
+
     this.scene.game.screen.notice(NoticeType.INFO, `Wave ${prevNumber} completed`);
     this.scene.sound.play(WaveAudio.COMPLETE);
 
-    this.emit(WaveEvents.COMPLETE, prevNumber);
-
     this.scene.level.looseEffects();
 
-    if (this.number === 2) {
-      this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
-      this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
-    } else if (this.number === 3) {
-      this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
-    } else if (this.number === 8) {
-      this.scene.game.tutorial.start(TutorialStep.BUILD_RADAR);
+    switch (this.number) {
+      case 2: {
+        this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
+        break;
+      }
+      case 3: {
+        this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
+        break;
+      }
+      case 4: {
+        this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
+        break;
+      }
+      case 8: {
+        this.scene.game.tutorial.start(TutorialStep.BUILD_RADAR);
+        break;
+      }
     }
 
     this.scene.game.analytics.trackEvent({

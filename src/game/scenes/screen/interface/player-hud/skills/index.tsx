@@ -9,19 +9,30 @@ import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
 import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
-import { PlayerSkill } from '~type/world/entities/player';
+import { PlayerSkill, PlayerSkillTarget } from '~type/world/entities/player';
 
 import { UpgradesListItem } from './item';
-import { Wrapper, Container } from './styles';
+import { Wrapper, Container, Targets } from './styles';
 
 export const Skills: React.FC = () => {
   const game = useGame<IGame>();
 
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
-  const upgradeTypes = useMemo(
-    () => Object.keys(PLAYER_SKILLS) as PlayerSkill[],
+  const [target, setTarget] = useState<PlayerSkillTarget>(
+    PlayerSkillTarget.CHARACTER,
+  );
+
+  const targetTypes = useMemo(
+    () => Object.keys(PlayerSkillTarget) as PlayerSkillTarget[],
     [],
+  );
+
+  const upgradeTypes = useMemo(
+    () => Object.entries(PLAYER_SKILLS)
+      .filter(([, data]) => data.target === target)
+      .map(([type]) => type) as PlayerSkill[],
+    [target],
   );
 
   const [isOpened, setOpened] = useState(false);
@@ -44,9 +55,13 @@ export const Skills: React.FC = () => {
     }
   };
 
-  useOutsideClick(refContainer, () => {
-    onClose();
-  }, []);
+  useOutsideClick(
+    refContainer,
+    () => {
+      onClose();
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!isOpened) {
@@ -76,13 +91,22 @@ export const Skills: React.FC = () => {
       {isOpened ? (
         <Container>
           <div>
+            <Targets>
+              {targetTypes.map((type) => (
+                <Button
+                  key={type}
+                  onClick={() => setTarget(type)}
+                  view={target === type ? 'confirm' : undefined}
+                >
+                  {type}
+                </Button>
+              ))}
+            </Targets>
             {upgradeTypes.map((type) => (
               <UpgradesListItem key={type} type={type} />
             ))}
           </div>
-          {isSmallScreen && (
-            <Button onClick={onClick}>Close</Button>
-          )}
+          {isSmallScreen && <Button onClick={onClick}>Close</Button>}
         </Container>
       ) : (
         hint && (

@@ -2,7 +2,13 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
-  PLAYER_TILE_SIZE, PLAYER_SKILLS, PLAYER_SUPERSKILLS, PLAYER_MOVEMENT_ANGLES, PLAYER_MOVEMENT_TARGET, PLAYER_MOVEMENT_KEYS,
+  PLAYER_TILE_SIZE,
+  PLAYER_SKILLS,
+  PLAYER_SUPERSKILLS,
+  PLAYER_MOVEMENT_ANGLES,
+  PLAYER_MOVEMENT_TARGET,
+  PLAYER_MOVEMENT_KEYS,
+  PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
@@ -53,7 +59,10 @@ export class Player extends Sprite implements IPlayer {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
     [PlayerSkill.BUILD_AREA]: 1,
-    [PlayerSkill.ASSISTANT]: 1,
+    [PlayerSkill.BUILD_SPEED]: 1,
+    [PlayerSkill.ATTACK_DAMAGE]: 1,
+    [PlayerSkill.ATTACK_DISTANCE]: 1,
+    [PlayerSkill.ATTACK_SPEED]: 1,
   };
 
   public get upgradeLevel() { return this._upgradeLevel; }
@@ -248,13 +257,17 @@ export class Player extends Sprite implements IPlayer {
           level: nextLevel,
         });
       }
-      case PlayerSkill.ASSISTANT: {
+      default: {
         return nextLevel;
       }
     }
   }
 
   public upgrade(type: PlayerSkill) {
+    if (this.upgradeLevel[type] === PLAYER_MAX_SKILL_LEVEL) {
+      return;
+    }
+
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
@@ -267,9 +280,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.experience -= experience;
 
-    this.scene.sound.play(PlayerAudio.UPGRADE);
-
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
+    this.scene.sound.play(PlayerAudio.UPGRADE);
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
@@ -281,10 +293,6 @@ export class Player extends Sprite implements IPlayer {
 
         this.live.setMaxHealth(nextValue);
         this.live.addHealth(addedHealth);
-        if (this.scene.assistant) {
-          this.scene.assistant.live.setMaxHealth(nextValue);
-          this.scene.assistant.live.addHealth(addedHealth);
-        }
         break;
       }
       case PlayerSkill.SPEED: {
@@ -296,12 +304,6 @@ export class Player extends Sprite implements IPlayer {
       }
       case PlayerSkill.BUILD_AREA: {
         this.scene.builder.setBuildAreaRadius(nextValue);
-        break;
-      }
-      case PlayerSkill.ASSISTANT: {
-        if (this.scene.assistant) {
-          this.scene.assistant.level = nextValue;
-        }
         break;
       }
     }
@@ -396,7 +398,9 @@ export class Player extends Sprite implements IPlayer {
         return direction ? list.concat(direction) : list;
       }, []);
 
-      this.movementTarget = result.length > 0 ? result.join('_') as MovementDirection : null;
+      this.movementTarget = result.length > 0
+        ? result.join('_') as MovementDirection
+        : null;
     };
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, (event: KeyboardEvent) => {

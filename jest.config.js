@@ -5,7 +5,7 @@ module.exports = {
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     ...alias.fromFile(__dirname, './tsconfig.json').toJest(),
-    'worker-loader!(.*)': './$1',
+    '(.*)\\?worker': './$1',
   },
   testRegex: '\\.test\\.tsx?$',
 };

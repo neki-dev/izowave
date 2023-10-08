@@ -9,7 +9,6 @@ export interface IEffect extends Phaser.GameObjects.Sprite {
 
 export enum EffectTexture {
   BLOOD = 'effect/blood',
-  EXPLOSION = 'effect/explosion',
   SMOKE = 'effect/smoke',
   DAMAGE = 'effect/damage',
 }

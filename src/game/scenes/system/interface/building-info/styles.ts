@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
-import { BUILDING_MAX_UPGRADE_LEVEL } from '~const/world/entities/building';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -26,6 +25,7 @@ export const Wrapper = styled.div`
     }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    pointer-events: all;
     width: 180px;
     position: fixed;
     z-index: 3;
@@ -67,9 +67,11 @@ export const Name = styled.div`
   line-height: 16px;
 `;
 
-export const Level: any = styled.div`
+export const Level: any = styled.div<{
+  $count: number
+}>`
   display: grid;
-  grid-template-columns: repeat(${BUILDING_MAX_UPGRADE_LEVEL}, 1fr);
+  grid-template-columns: repeat(${(props) => props.$count}, 1fr);
   grid-gap: 5px;
 `;
 

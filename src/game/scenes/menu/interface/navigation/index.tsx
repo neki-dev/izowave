@@ -51,10 +51,14 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
     }, {
       label: 'About game',
       page: MenuPage.ABOUT_GAME,
-    }, {
-      label: 'Controls',
-      page: MenuPage.CONTROLS,
     });
+
+    if (game.device.os.desktop) {
+      items.push({
+        label: 'Controls',
+        page: MenuPage.CONTROLS,
+      });
+    }
 
     return items;
   }, []);

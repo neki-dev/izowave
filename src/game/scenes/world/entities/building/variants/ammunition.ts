@@ -3,9 +3,10 @@ import { progressionQuadratic } from '~lib/difficulty';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
+import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
-  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition, BuildingSavePayload,
+  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition, BuildingSavePayload, BuildingControl,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
@@ -27,6 +28,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   static Health = DIFFICULTY.BUILDING_AMMUNITION_HEALTH;
 
   static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
+
+  static MaxLevel = 4;
 
   private maxAmmo: number = DIFFICULTY.BUILDING_AMMUNITION_AMMO;
 
@@ -51,6 +54,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
 
     this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
+
+    this.bindTutorialHint(TutorialStep.BUY_AMMO, 'Click to buy ammo', () => this.ammo === 0);
   }
 
   public getInfo() {
@@ -61,6 +66,19 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     }];
 
     return super.getInfo().concat(info);
+  }
+
+  public getControls() {
+    const actions: BuildingControl[] = [{
+      label: 'Buy ammo',
+      cost: this.getAmmoCost(),
+      disabled: (this.ammo >= this.maxAmmo),
+      onClick: () => {
+        this.buyAmmo();
+      },
+    }];
+
+    return super.getControls().concat(actions);
   }
 
   public getSavePayload() {
@@ -79,22 +97,53 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   }
 
   public use(amount: number) {
-    if (this.ammo <= amount) {
-      const left = this.ammo;
+    const totalAmount = (this.ammo < amount) ? this.ammo : amount;
 
-      this.scene.game.screen.notice(NoticeType.WARN, `${this.getMeta().Name} are over`);
+    this.ammo -= totalAmount;
+
+    if (this.ammo === 0) {
       if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
         this.scene.game.sound.play(BuildingAudio.OVER);
       }
 
-      this.destroy();
+      this.addAlertIcon();
 
-      return left;
+      this.scene.game.tutorial.start(TutorialStep.BUY_AMMO);
     }
 
-    this.ammo -= amount;
+    return totalAmount;
+  }
 
-    return amount;
+  private getAmmoCost() {
+    const needAmmo = this.maxAmmo - this.ammo;
+    const costPerAmmo = (DIFFICULTY.BUILDING_AMMUNITION_COST / DIFFICULTY.BUILDING_AMMUNITION_AMMO) * 0.5;
+
+    return Math.ceil(costPerAmmo * needAmmo);
+  }
+
+  private buyAmmo() {
+    if (this.ammo >= this.maxAmmo) {
+      return;
+    }
+
+    const cost = this.getAmmoCost();
+
+    if (this.scene.player.resources < cost) {
+      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+
+      return;
+    }
+
+    this.ammo = this.maxAmmo;
+
+    this.scene.player.takeResources(cost);
+    this.removeAlertIcon();
+
+    this.scene.getEntitiesGroup(EntityType.BUILDING)
+      .emit(BuildingEvents.BUY_AMMO, this);
+
+    this.scene.game.tutorial.complete(TutorialStep.BUY_AMMO);
+    this.scene.sound.play(BuildingAudio.RELOAD);
   }
 
   private onUpgrade() {

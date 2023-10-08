@@ -5,7 +5,7 @@ import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    margin-top: 80px;
+    margin-top: 50px;
     position: absolute;
     left: 50%;
   }
@@ -24,7 +24,7 @@ export const Label = styled.div`
 `;
 
 export const Addon = styled.div`
-  margin: 1px 0 0 6px;
+  margin: 0 0 -1px 6px;
 `;
 
 export const Action = styled.div<{
@@ -39,14 +39,17 @@ export const Action = styled.div<{
   &:not(:last-child) {
     margin-bottom: 3px;
   }
-  &:hover {
-    cursor: pointer;
-    background: ${InterfaceBackgroundColor.BLACK};
-  }
+  ${(props) => !props.$disabled && css`
+    &:hover {
+      cursor: pointer;
+      background: ${InterfaceBackgroundColor.BLACK};
+    }
+  `}
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     transform: translateX(-50%);
     padding: 6px 9px;
     ${(props) => props.$disabled && css`
+      opacity: 0.75;
       ${Label}, ${Addon} {
         opacity: 0.7;
       }

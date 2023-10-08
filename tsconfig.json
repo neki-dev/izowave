@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "strict": true,
     "strictPropertyInitialization": false,
+    "types": ["vite/client", "jest"],
     "paths": {
       "~entity/*": ["./src/game/scenes/world/entities/*"],
       "~scene/*": ["./src/game/scenes/*"],
@@ -19,5 +20,9 @@
       "~const/*": ["./src/const/*"],
       "~lib/*": ["./src/lib/*"]
     }
-  }
+  },
+  "exclude": [
+    "./src/**/__tests__/**",
+    "./src/**/__mocks__/**"
+  ]
 }

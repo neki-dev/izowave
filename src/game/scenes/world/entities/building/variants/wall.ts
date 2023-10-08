@@ -23,6 +23,8 @@ export class BuildingWall extends Building {
 
   static AllowByWave = DIFFICULTY.BUILDING_WALL_ALLOW_BY_WAVE;
 
+  static MaxLevel = 3;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,

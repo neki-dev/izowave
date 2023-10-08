@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_BUILD_DURATION, BUILDING_MAX_UPGRADE_LEVEL, BUILDING_PATH_COST } from '~const/world/entities/building';
+import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
@@ -78,7 +78,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private buildBar: Nullable<Phaser.GameObjects.Container> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, instant, health, texture, variant, radius, delay,
+    positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
   }: BuildingData) {
     const tilePosition = { ...positionAtMatrix, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
@@ -94,10 +94,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live = new Live({ health });
 
     this.addActionArea();
-    this.setInteractive({
-      pixelPerfect: true,
-      useHandCursor: true,
-    });
 
     this.handleKeyboard();
     this.handlePointer();
@@ -108,8 +104,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
-    if (!instant) {
-      this.startBuildProcess();
+    if (buildDuration && buildDuration > 0) {
+      this.startBuildProcess(buildDuration);
+    } else {
+      this.completeBuildProcess();
     }
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
@@ -198,15 +196,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       });
     }
 
-    if (!this.live.isMaxHealth()) {
-      actions.push({
-        label: 'Repair',
-        cost: this.getRepairCost(),
-        onClick: () => {
-          this.repair();
-        },
-      });
-    }
+    actions.push({
+      label: 'Repair',
+      cost: this.getRepairCost(),
+      disabled: this.live.isMaxHealth(),
+      onClick: () => {
+        this.repair();
+      },
+    });
 
     return actions;
   }
@@ -237,10 +234,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getUpgradeCost(level?: number) {
-    const costPerLevel = this.getMeta().Cost / BUILDING_MAX_UPGRADE_LEVEL;
+    const costPerLevel = this.getMeta().Cost * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER;
     const nextLevel = level ?? this.upgradeLevel;
 
-    return Math.round(costPerLevel * nextLevel * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER);
+    return Math.round(costPerLevel * nextLevel);
   }
 
   private getRepairCost() {
@@ -255,7 +252,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private isUpgradeAllowed() {
-    return this.upgradeLevel < BUILDING_MAX_UPGRADE_LEVEL;
+    return this.upgradeLevel < this.getMeta().MaxLevel;
   }
 
   private getUpgradeAllowedByWave() {
@@ -291,7 +288,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setFrame(this.upgradeLevel - 1);
 
     this.emit(BuildingEvents.UPGRADE);
-    this.scene.builder.emit(BuilderEvents.UPGRADE, this);
+    this.scene.getEntitiesGroup(EntityType.BUILDING)
+      .emit(BuildingEvents.UPGRADE, this);
 
     this.scene.player.takeResources(cost);
 
@@ -303,9 +301,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    this.scene.game.sound.play(BuildingAudio.UPGRADE);
-
     this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
+    this.scene.game.sound.play(BuildingAudio.UPGRADE);
   }
 
   private repair() {
@@ -343,6 +340,36 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       scale: DIFFICULTY.BUILDING_HEALTH_GROWTH,
       level: this.upgradeLevel,
       roundTo: 100,
+    });
+  }
+
+  public bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean) {
+    let hintId: Nullable<string> = null;
+
+    const hideHint = () => {
+      if (hintId) {
+        this.scene.hideHint(hintId);
+        hintId = null;
+      }
+    };
+
+    const unbindStep = this.scene.game.tutorial.bind(step, {
+      beg: () => {
+        if (!condition || condition()) {
+          hintId = this.scene.showHint({
+            side: 'top',
+            text,
+            position: this.getPositionOnGround(),
+            unique: true,
+          });
+        }
+      },
+      end: hideHint,
+    });
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      hideHint();
+      unbindStep();
     });
   }
 
@@ -611,9 +638,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.destroy();
   }
 
-  private startBuildProcess() {
+  private startBuildProcess(duration: number) {
     this.addBuildBar();
-    this.addBuildTimer();
+    this.addBuildTimer(duration);
 
     this.setActive(false);
     this.setAlpha(0.5);
@@ -625,6 +652,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setActive(true);
     this.setAlpha(1.0);
 
+    this.setInteractive({
+      pixelPerfect: true,
+      useHandCursor: true,
+    });
+
     this.scene.builder.emit(BuilderEvents.BUILD, this);
   }
 
@@ -633,8 +665,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.removeBuildTimer();
   }
 
-  private addBuildTimer() {
-    const target = BUILDING_BUILD_DURATION / 50;
+  private addBuildTimer(duration: number) {
+    const target = duration / 50;
     let progress = 0;
 
     this.buildTimer = this.scene.time.addEvent({
@@ -645,7 +677,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
         this.setAlpha(this.alpha + (0.5 / target));
 
-        if (progress === target) {
+        if (progress >= target) {
           this.completeBuildProcess();
         } else if (this.buildBar) {
           const bar = <Phaser.GameObjects.Rectangle> this.buildBar.getAt(1);

@@ -125,6 +125,18 @@ export function rawAmount(value: string) {
 }
 
 /**
+ * Get string hash
+ * @param value - String
+ */
+export function hashString(value: string) {
+  return value.split('').reduce((a, b) => {
+    const h = ((a << 5) - a) + b.charCodeAt(0);
+
+    return h & h;
+  }, 0).toString();
+}
+
+/**
  * Get stage of period.
  * @param start - Start value
  * @param current - Current value

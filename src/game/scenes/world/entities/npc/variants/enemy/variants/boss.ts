@@ -11,7 +11,7 @@ export class EnemyBoss extends Enemy {
       score: 10,
       multipliers: {
         health: 7.0,
-        damage: 1.0,
+        damage: 1.2,
         speed: 0.5,
       },
     });

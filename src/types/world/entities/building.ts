@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { ILive } from '~type/live';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
@@ -50,6 +51,14 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Check is actions not paused.
    */
   isActionAllowed(): boolean
+
+  /**
+   * Bind hint on tutorial step
+   * @param step - Tutorial step
+   * @param text - Message
+   * @param condition - Show condition
+   */
+  bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean): void
 
   /**
    * Get building information params.
@@ -148,11 +157,13 @@ export interface IBuildingFactory {
   Health: number
   Limit?: boolean
   AllowByWave?: number
+  MaxLevel: number
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
 
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
+  BUY_AMMO = 'buy_ammo',
 }
 
 export enum BuildingVariant {
@@ -229,15 +240,13 @@ export type BuildingControl = {
   onClick: () => void
 };
 
-export type BuildingBuildData = {
-  variant: BuildingVariant
-  instant?: boolean
+export type BuildingVariantData = {
+  buildDuration?: number
   positionAtMatrix: Vector2D
 };
 
-export type BuildingVariantData = {
-  instant?: boolean
-  positionAtMatrix: Vector2D
+export type BuildingBuildData = BuildingVariantData & {
+  variant: BuildingVariant
 };
 
 export type BuildingData = BuildingVariantData & {

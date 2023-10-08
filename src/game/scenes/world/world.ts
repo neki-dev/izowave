@@ -12,7 +12,7 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, sortByDistance } from '~lib/utils';
+import { aroundPosition, hashString, sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
@@ -30,7 +30,7 @@ import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
-import { IPlayer, PlayerSkill } from '~type/world/entities/player';
+import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
   ILevel, LevelData, SpawnTarget, Vector2D,
@@ -46,7 +46,7 @@ export class World extends Scene implements IWorld {
 
   private set player(v) { this._player = v; }
 
-  private _assistant: Nullable<IAssistant> = null;
+  private _assistant: IAssistant;
 
   public get assistant() { return this._assistant; }
 
@@ -81,8 +81,6 @@ export class World extends Scene implements IWorld {
   private enemySpawnPositionsAnalog: Vector2D[] = [];
 
   private lifecyle: Phaser.Time.TimerEvent;
-
-  private currentHintId: Nullable<string> = null;
 
   private _deltaTime: number = 1;
 
@@ -124,7 +122,7 @@ export class World extends Scene implements IWorld {
     this.addAssistant();
     this.addCrystals();
 
-    if (this.game.usedSave) {
+    if (this.game.usedSave?.payload.world) {
       this.loadSavePayload(this.game.usedSave.payload.world);
     }
   }
@@ -142,17 +140,17 @@ export class World extends Scene implements IWorld {
   }
 
   public showHint(hint: WorldHint) {
-    this.currentHintId = uuidv4();
-    this.events.emit(WorldEvents.SHOW_HINT, hint);
+    const id = hint.unique
+      ? hashString(hint.text)
+      : uuidv4();
 
-    return this.currentHintId;
+    this.events.emit(WorldEvents.SHOW_HINT, id, hint);
+
+    return id;
   }
 
-  public hideHint(id?: string) {
-    if (!id || id === this.currentHintId) {
-      this.events.emit(WorldEvents.HIDE_HINT);
-      this.currentHintId = null;
-    }
+  public hideHint(id: string) {
+    this.events.emit(WorldEvents.HIDE_HINT, id);
   }
 
   public getTime() {
@@ -273,7 +271,6 @@ export class World extends Scene implements IWorld {
       const building = this.builder.createBuilding({
         variant: buildingData.variant,
         positionAtMatrix: buildingData.position,
-        instant: true,
       });
 
       building.loadSavePayload(buildingData);
@@ -299,7 +296,7 @@ export class World extends Scene implements IWorld {
   private addWaveManager() {
     this.wave = new Wave(this);
 
-    if (this.game.usedSave) {
+    if (this.game.usedSave?.payload.wave) {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
     }
 
@@ -321,19 +318,15 @@ export class World extends Scene implements IWorld {
   }
 
   private addPlayer() {
-    let positionAtMatrix: Vector2D;
-
-    if (this.game.usedSave) {
-      positionAtMatrix = this.game.usedSave.payload.player.position;
-    } else {
-      positionAtMatrix = Phaser.Utils.Array.GetRandom(
+    const positionAtMatrix = this.game.usedSave?.payload.player
+      ? this.game.usedSave.payload.player.position
+      : Phaser.Utils.Array.GetRandom(
         this.level.readSpawnPositions(SpawnTarget.PLAYER),
       );
-    }
 
     this.player = new Player(this, { positionAtMatrix });
 
-    if (this.game.usedSave) {
+    if (this.game.usedSave?.payload.player) {
       this.player.loadSavePayload(this.game.usedSave.payload.player);
     }
 
@@ -346,30 +339,17 @@ export class World extends Scene implements IWorld {
   }
 
   private addAssistant() {
-    const create = () => {
-      const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
-        const biome = this.level.map.getAt(spawn);
+    const positionAtMatrix = aroundPosition(this.player.positionAtMatrix).find((spawn) => {
+      const biome = this.level.map.getAt(spawn);
 
-        return biome?.solid;
-      });
+      return biome?.solid;
+    });
 
-      this.assistant = new Assistant(this, {
-        owner: this.player,
-        positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
-        speed: this.player.speed,
-        health: this.player.live.maxHealth,
-        level: this.player.upgradeLevel[PlayerSkill.ASSISTANT],
-      });
-
-      this.assistant.once(Phaser.Scenes.Events.DESTROY, () => {
-        this.assistant = null;
-        this.wave.once(WaveEvents.COMPLETE, () => {
-          create();
-        });
-      });
-    };
-
-    create();
+    this.assistant = new Assistant(this, {
+      owner: this.player,
+      positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
+      speed: this.player.speed,
+    });
   }
 
   private addCrystals() {
@@ -394,7 +374,7 @@ export class World extends Scene implements IWorld {
       Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
 
-    if (this.game.usedSave) {
+    if (this.game.usedSave?.payload.world.crystals) {
       this.game.usedSave.payload.world.crystals.forEach((crystal) => {
         create(crystal.position);
       });
