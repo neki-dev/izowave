@@ -94,10 +94,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live = new Live({ health });
 
     this.addActionArea();
-    this.setInteractive({
-      pixelPerfect: true,
-      useHandCursor: true,
-    });
 
     this.handleKeyboard();
     this.handlePointer();
@@ -656,6 +652,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setActive(true);
     this.setAlpha(1.0);
 
+    this.setInteractive({
+      pixelPerfect: true,
+      useHandCursor: true,
+    });
+
     this.scene.builder.emit(BuilderEvents.BUILD, this);
   }
 
@@ -676,7 +677,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
         this.setAlpha(this.alpha + (0.5 / target));
 
-        if (progress === target) {
+        if (progress >= target) {
           this.completeBuildProcess();
         } else if (this.buildBar) {
           const bar = <Phaser.GameObjects.Rectangle> this.buildBar.getAt(1);
