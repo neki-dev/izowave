@@ -187,7 +187,7 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
-  BUILDING_AMMUNITION_AMMO: 150, // Ammo amount
+  BUILDING_AMMUNITION_AMMO: 120, // Ammo amount
   BUILDING_AMMUNITION_AMMO_GROWTH: 1.0, // Ammo amount growth by level (Quadratic)
 
   /**
