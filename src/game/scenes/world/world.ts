@@ -122,10 +122,7 @@ export class World extends Scene implements IWorld {
     this.addAssistant();
     this.addCrystals();
 
-    if (
-      this.game.usedSave
-      && this.game.usedSave.payload.world
-    ) {
+    if (this.game.usedSave?.payload.world) {
       this.loadSavePayload(this.game.usedSave.payload.world);
     }
   }
@@ -299,10 +296,7 @@ export class World extends Scene implements IWorld {
   private addWaveManager() {
     this.wave = new Wave(this);
 
-    if (
-      this.game.usedSave
-      && this.game.usedSave.payload.wave
-    ) {
+    if (this.game.usedSave?.payload.wave) {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
     }
 
@@ -324,22 +318,15 @@ export class World extends Scene implements IWorld {
   }
 
   private addPlayer() {
-    let positionAtMatrix: Vector2D;
-
-    if (this.game.usedSave) {
-      positionAtMatrix = this.game.usedSave.payload.player.position;
-    } else {
-      positionAtMatrix = Phaser.Utils.Array.GetRandom(
+    const positionAtMatrix = this.game.usedSave?.payload.player
+      ? this.game.usedSave.payload.player.position
+      : Phaser.Utils.Array.GetRandom(
         this.level.readSpawnPositions(SpawnTarget.PLAYER),
       );
-    }
 
     this.player = new Player(this, { positionAtMatrix });
 
-    if (
-      this.game.usedSave
-      && this.game.usedSave.payload.player
-    ) {
+    if (this.game.usedSave?.payload.player) {
       this.player.loadSavePayload(this.game.usedSave.payload.player);
     }
 
@@ -387,7 +374,7 @@ export class World extends Scene implements IWorld {
       Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
     );
 
-    if (this.game.usedSave) {
+    if (this.game.usedSave?.payload.world.crystals) {
       this.game.usedSave.payload.world.crystals.forEach((crystal) => {
         create(crystal.position);
       });

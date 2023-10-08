@@ -1,4 +1,4 @@
-import { getModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
+import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { BuildingParams } from '~scene/system/interface/building-params';
@@ -40,8 +40,8 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
     setUpgradeLevel(building.upgradeLevel);
     setHealth(building.live.health);
     setMaxHealth(building.live.maxHealth);
-    setParams((current) => getModifiedArray(current, building.getInfo(), ['value', 'attention']));
-    setControls((current) => getModifiedArray(current, building.getControls(), ['label', 'cost']));
+    setParams(ifModifiedArray(building.getInfo(), ['value', 'attention']));
+    setControls(ifModifiedArray(building.getControls(), ['label', 'cost', 'disabled']));
   }, [building]);
 
   return (

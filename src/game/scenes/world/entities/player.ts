@@ -398,7 +398,9 @@ export class Player extends Sprite implements IPlayer {
         return direction ? list.concat(direction) : list;
       }, []);
 
-      this.movementTarget = result.length > 0 ? result.join('_') as MovementDirection : null;
+      this.movementTarget = result.length > 0
+        ? result.join('_') as MovementDirection
+        : null;
     };
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, (event: KeyboardEvent) => {
