@@ -1,11 +1,15 @@
-import { RelativePosition, useMatchMedia, useScene } from 'phaser-react-ui';
+import {
+  RelativePosition, RelativeScale, useMatchMedia, useScene,
+} from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~const/interface';
 import { BuildingInfo } from '~scene/system/interface/building-info';
 import { GameScene } from '~type/game';
 import { IWorld, WorldEvents } from '~type/world';
 import { IBuilding } from '~type/world/entities/building';
+
+import { TranslateToScreen } from './translate-to-screen';
 
 export const RelativeBuildingInfo: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
@@ -34,10 +38,12 @@ export const RelativeBuildingInfo: React.FC = () => {
 
   return (
     building && (isSmallScreen ? (
-      <BuildingInfo building={building} />
+      <TranslateToScreen building={building} />
     ) : (
       <RelativePosition x={building.x} y={building.y}>
-        <BuildingInfo building={building} />
+        <RelativeScale {...INTERFACE_SCALE}>
+          <BuildingInfo building={building} />
+        </RelativeScale>
       </RelativePosition>
     ))
   );

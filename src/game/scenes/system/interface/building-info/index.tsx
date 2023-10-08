@@ -1,9 +1,4 @@
-import {
-  getModifiedArray,
-  useRelativeScale,
-  useScene,
-  useSceneUpdate,
-} from 'phaser-react-ui';
+import { getModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
@@ -29,8 +24,6 @@ type Props = {
 export const BuildingInfo: React.FC<Props> = ({ building }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);
-
   const [upgradeLevel, setUpgradeLevel] = useState(1);
   const [health, setHealth] = useState(1);
   const [maxHealth, setMaxHealth] = useState(1);
@@ -52,7 +45,7 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
   }, [building]);
 
   return (
-    <Wrapper ref={refScale}>
+    <Wrapper>
       <Container>
         <Head>
           <Name>{building.getMeta().Name}</Name>
