@@ -144,6 +144,7 @@ export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   text: string
   position: Vector2D
+  unique?: boolean
 };
 
 export type WorldSavePayload = {

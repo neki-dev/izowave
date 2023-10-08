@@ -364,6 +364,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
             side: 'top',
             text,
             position: this.getPositionOnGround(),
+            unique: true,
           });
         }
       },

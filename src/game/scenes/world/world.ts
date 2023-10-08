@@ -12,7 +12,7 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, sortByDistance } from '~lib/utils';
+import { aroundPosition, hashString, sortByDistance } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
@@ -143,7 +143,9 @@ export class World extends Scene implements IWorld {
   }
 
   public showHint(hint: WorldHint) {
-    const id = uuidv4();
+    const id = hint.unique
+      ? hashString(hint.text)
+      : uuidv4();
 
     this.events.emit(WorldEvents.SHOW_HINT, id, hint);
 
