@@ -156,7 +156,7 @@ export class Game extends Phaser.Game implements IGame {
     this.screen.scene.pause();
 
     this.scene.systemScene.scene.launch(GameScene.MENU, {
-      defaultPage: null,
+      defaultPage: MenuPage.ABOUT_GAME,
     });
   }
 
@@ -244,7 +244,6 @@ export class Game extends Phaser.Game implements IGame {
     this.state = GameState.IDLE;
 
     this.world.scene.restart();
-
     this.tutorial.reset();
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
