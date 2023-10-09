@@ -40,11 +40,12 @@ export class Live extends EventEmmiter implements ILive {
   }
 
   public damage(amount: number) {
-    let totalAmount = amount;
+    const normalAmount = Math.ceil(amount);
+    let totalAmount = normalAmount;
 
     if (this.armour > 0) {
-      totalAmount = amount - this.armour;
-      this.setArmour(this.armour - amount);
+      totalAmount = normalAmount - this.armour;
+      this.setArmour(this.armour - normalAmount);
 
       if (totalAmount <= 0) {
         return;
