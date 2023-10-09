@@ -45,14 +45,6 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
       gamut: 4,
     },
   },
-  [EnemyTexture.UNDEAD]: {
-    frameRate: 4,
-    size: {
-      width: 18,
-      height: 26,
-      gamut: 4,
-    },
-  },
   [EnemyTexture.OVERLORD]: {
     frameRate: 8,
     size: {

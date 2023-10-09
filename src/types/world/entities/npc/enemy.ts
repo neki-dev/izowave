@@ -33,7 +33,6 @@ export enum EnemyTexture {
   OVERLORD = 'enemy/overlord',
   BOSS = 'enemy/boss',
   IMPURE = 'enemy/impure',
-  UNDEAD = 'enemy/undead',
   TERMER = 'enemy/termer',
 }
 
@@ -45,7 +44,6 @@ export enum EnemyVariant {
   OVERLORD = 'OVERLORD',
   BOSS = 'BOSS',
   IMPURE = 'IMPURE',
-  UNDEAD = 'UNDEAD',
   TERMER = 'TERMER',
 }
 

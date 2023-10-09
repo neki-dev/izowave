@@ -6,7 +6,6 @@ import { EnemyOverlord } from '~entity/npc/variants/enemy/variants/overlord';
 import { EnemyRisper } from '~entity/npc/variants/enemy/variants/risper';
 import { EnemySpike } from '~entity/npc/variants/enemy/variants/spike';
 import { EnemyTermer } from '~entity/npc/variants/enemy/variants/termer';
-import { EnemyUndead } from '~entity/npc/variants/enemy/variants/undead';
 import { EnemyVariant, IEnemyFactory } from '~type/world/entities/npc/enemy';
 
 export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
@@ -16,7 +15,6 @@ export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
   [EnemyVariant.SPIKE]: EnemySpike,
   [EnemyVariant.OVERLORD]: EnemyOverlord,
   [EnemyVariant.BOSS]: EnemyBoss,
-  [EnemyVariant.UNDEAD]: EnemyUndead,
   [EnemyVariant.IMPURE]: EnemyImpure,
   [EnemyVariant.TERMER]: EnemyTermer,
 };
