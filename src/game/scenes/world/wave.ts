@@ -99,7 +99,7 @@ export class Wave extends EventEmitter implements IWave {
       ) {
         this.scene.sound.play(WaveAudio.TICK);
         this.alarmInterval = setInterval(() => {
-          if (this.scene.game.state === GameState.STARTED) {
+          if (this.scene.game.state === GameState.STARTED && !this.isPeaceMode) {
             this.scene.sound.play(WaveAudio.TICK);
           }
         }, 1000);
