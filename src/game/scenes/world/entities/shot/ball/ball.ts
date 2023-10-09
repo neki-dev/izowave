@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
 import { registerAudioAssets, registerImageAssets } from '~lib/assets';
+import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
@@ -70,7 +71,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       return;
     }
 
-    const distance = Phaser.Math.Distance.BetweenPoints(this, this.startPosition);
+    const distance = getIsometricDistance(this, this.startPosition);
 
     if (distance > this.params.maxDistance) {
       this.stop();
@@ -114,7 +115,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     this.startPosition = { x: this.x, y: this.y };
 
-    const distanceToTarget = Phaser.Math.Distance.BetweenPoints(this, target.body.center);
+    const distanceToTarget = getIsometricDistance(this, target.body.center);
     const speed = Math.min(this.params.speed, 1200);
     const timeToTarget = (distanceToTarget / speed);
     const targetPosition = this.scene.getFuturePosition(target, timeToTarget);
@@ -141,7 +142,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
       this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
         if (enemy !== target) {
-          const distance = Phaser.Math.Distance.BetweenPoints(target, enemy);
+          const distance = getIsometricDistance(target, enemy);
 
           if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
             const damageByDistance = damage

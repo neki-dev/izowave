@@ -4,7 +4,7 @@ import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { registerSpriteAssets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
-import { getClosest } from '~lib/utils';
+import { getClosest, getIsometricDistance } from '~lib/utils';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
@@ -109,7 +109,7 @@ export class Assistant extends NPC implements IAssistant {
       const positionTo = enemy.getPositionOnGround();
 
       return (
-        Phaser.Math.Distance.BetweenPoints(positionFrom, positionTo) <= maxDistance
+        getIsometricDistance(positionFrom, positionTo) <= maxDistance
         && !this.scene.level.hasTilesBetweenPositions(positionFrom, positionTo)
       );
     });

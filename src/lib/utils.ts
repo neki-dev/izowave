@@ -1,3 +1,4 @@
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Vector2D, Vector3D } from '~type/world/level';
 
 /**
@@ -69,6 +70,21 @@ export function getClosest<T extends Vector2D>(
   });
 
   return closest.position;
+}
+
+/**
+ * Get distance between points on isometric grid.
+ * @param pointA - First position
+ * @param pointB - Second position
+ */
+export function getIsometricDistance(
+  pointA: Vector2D,
+  pointB: Vector2D,
+) {
+  return Math.sqrt(
+    (pointB.x - pointA.x) ** 2
+    + ((pointB.y - pointA.y) / LEVEL_TILE_SIZE.persperctive) ** 2,
+  );
 }
 
 /**

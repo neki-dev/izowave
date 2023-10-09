@@ -4,7 +4,7 @@ import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
 import { Sprite } from '~entity/sprite';
-import { equalPositions } from '~lib/utils';
+import { equalPositions, getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
@@ -191,7 +191,7 @@ export class NPC extends Sprite implements INPC {
   }
 
   public getDistanceToTarget() {
-    return Phaser.Math.Distance.BetweenPoints(
+    return getIsometricDistance(
       this.getPositionOnGround(),
       this.scene.player.getPositionOnGround(),
     );

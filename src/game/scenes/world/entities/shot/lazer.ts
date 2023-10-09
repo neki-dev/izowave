@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { registerAudioAssets } from '~lib/assets';
+import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -138,7 +139,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       || !this.params.maxDistance
       || !this.target?.body
       || this.target.live.isDead()
-      || Phaser.Math.Distance.BetweenPoints(this.initiator, this.target.body.center) > this.params.maxDistance
+      || getIsometricDistance(this.initiator, this.target.body.center) > this.params.maxDistance
     ) {
       this.stop();
 
