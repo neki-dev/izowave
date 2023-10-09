@@ -404,11 +404,11 @@ export class Player extends Sprite implements IPlayer {
     };
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, (event: KeyboardEvent) => {
-      toggleKeyState(event.key, true);
+      toggleKeyState(event.code, true);
     });
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
-      toggleKeyState(event.key, false);
+      toggleKeyState(event.code, false);
     });
   }
 
