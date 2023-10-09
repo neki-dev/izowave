@@ -102,12 +102,12 @@ export const PLAYER_MOVEMENT_ANGLES = {
 };
 
 export const PLAYER_MOVEMENT_KEYS: Record<string, MovementDirection> = {
-  w: MovementDirection.UP,
+  KeyW: MovementDirection.UP,
   ArrowUp: MovementDirection.UP,
-  s: MovementDirection.DOWN,
+  KeyS: MovementDirection.DOWN,
   ArrowDown: MovementDirection.DOWN,
-  a: MovementDirection.LEFT,
+  KeyA: MovementDirection.LEFT,
   ArrowLeft: MovementDirection.LEFT,
-  d: MovementDirection.RIGHT,
+  KeyD: MovementDirection.RIGHT,
   ArrowRight: MovementDirection.RIGHT,
 };
