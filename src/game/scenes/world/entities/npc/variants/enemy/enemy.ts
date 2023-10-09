@@ -29,7 +29,11 @@ import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 
 export class Enemy extends NPC implements IEnemy {
-  private damage: number;
+  private _damage: number;
+
+  public get damage() { return this._damage; }
+
+  private set damage(v) { this._damage = v; }
 
   private might: number;
 

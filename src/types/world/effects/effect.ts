@@ -11,6 +11,11 @@ export enum EffectTexture {
   BLOOD = 'effect/blood',
   SMOKE = 'effect/smoke',
   DAMAGE = 'effect/damage',
+  EXPLOSION = 'effect/explosion',
+}
+
+export enum EffectAudio {
+  EXPLOSION = 'effect/explosion',
 }
 
 export type EffectData = {

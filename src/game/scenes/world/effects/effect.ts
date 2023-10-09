@@ -1,8 +1,10 @@
 import Phaser from 'phaser';
 
-import { registerSpriteAssets } from '~lib/assets';
+import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
 import { IWorld } from '~type/world';
-import { EffectData, EffectTexture, IEffect } from '~type/world/effects';
+import {
+  EffectAudio, EffectData, EffectTexture, IEffect,
+} from '~type/world/effects';
 
 export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
   readonly scene: IWorld;
@@ -30,6 +32,7 @@ export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
   }
 }
 
+registerAudioAssets(EffectAudio);
 registerSpriteAssets(EffectTexture, {
   width: 32,
   height: 32,

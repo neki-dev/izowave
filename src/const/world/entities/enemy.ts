@@ -45,7 +45,7 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
       gamut: 4,
     },
   },
-  [EnemyTexture.OVERLORD]: {
+  [EnemyTexture.TANK]: {
     frameRate: 8,
     size: {
       width: 32,
@@ -53,7 +53,7 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
       gamut: 6,
     },
   },
-  [EnemyTexture.IMPURE]: {
+  [EnemyTexture.GHOST]: {
     frameRate: 8,
     size: {
       width: 32,
@@ -62,6 +62,14 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     },
   },
   [EnemyTexture.TERMER]: {
+    frameRate: 4,
+    size: {
+      width: 32,
+      height: 40,
+      gamut: 6,
+    },
+  },
+  [EnemyTexture.EXPLOSIVE]: {
     frameRate: 4,
     size: {
       width: 32,
