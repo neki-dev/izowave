@@ -11,7 +11,7 @@ export class EnemyRisper extends Enemy {
       ...data,
       texture: EnemyTexture.RISPER,
       multipliers: {
-        health: 0.7,
+        health: 0.6,
         damage: 0.5,
         speed: 1.1,
       },

@@ -77,17 +77,17 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 90, // Health
+  ENEMY_HEALTH: 85, // Health
   ENEMY_HEALTH_GROWTH: 0.4, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
   ENEMY_ARMOUR_GROWTH: 0.4, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.1, // Speed growth by wave number (Linear)
-  ENEMY_SPEED_GROWTH_MAX_LEVEL: 13, // Level for limit speed growth
+  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Linear)
+  ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.22, // Damage growth by wave number (Quadratic)
+  ENEMY_DAMAGE_GROWTH: 0.35, // Damage growth by wave number (Linear)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
@@ -124,7 +124,7 @@ export const DIFFICULTY = {
    * Building: Towers
    */
 
-  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.75, // Shot damage growth by level (Linear)
+  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.85, // Shot damage growth by level (Linear)
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.5, // Frozen duration growth by level (Lienear)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.2, // Shot speed growth by level (Linear)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip

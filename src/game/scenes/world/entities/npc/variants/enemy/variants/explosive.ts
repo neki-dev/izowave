@@ -18,15 +18,15 @@ export class EnemyExplosive extends Enemy {
       ...data,
       texture: EnemyTexture.EXPLOSIVE,
       multipliers: {
-        health: 1.0,
-        damage: 0.5,
-        speed: 0.7,
+        health: 0.8,
+        damage: 0.4,
+        speed: 0.5,
       },
     });
   }
 
   public onDead() {
-    this.createExplosion(160);
+    this.createExplosion(140);
     super.onDead();
   }
 
@@ -56,7 +56,7 @@ export class EnemyExplosive extends Enemy {
         return;
       }
 
-      const damageByDistance = this.damage * (1 - (distance / radius));
+      const damageByDistance = this.damage * (1 - (distance / radius)) * 0.5;
 
       target.live.damage(damageByDistance);
     });
