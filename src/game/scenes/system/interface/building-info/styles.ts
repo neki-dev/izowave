@@ -26,7 +26,7 @@ export const Wrapper = styled.div`
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     pointer-events: all;
-    width: 180px;
+    width: 210px;
     position: fixed;
     z-index: 3;
     top: 0;

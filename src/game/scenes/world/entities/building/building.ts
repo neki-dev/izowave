@@ -95,7 +95,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.addActionArea();
 
-    this.handleKeyboard();
     this.handlePointer();
 
     this.scene.builder.addFoundation(positionAtMatrix);
@@ -111,6 +110,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
+
+    this.bindHotKey(CONTROL_KEY.BUILDING_REPEAR, () => this.repair());
+    this.bindHotKey(CONTROL_KEY.BUILDING_UPGRADE, () => this.upgrade());
+    this.bindHotKey(CONTROL_KEY.BUILDING_DESTROY, () => this.break());
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
@@ -190,6 +193,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         label: 'Upgrade',
         cost: this.getUpgradeCost(),
         disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
+        hotkey: 'E',
         onClick: () => {
           this.upgrade();
         },
@@ -200,6 +204,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       label: 'Repair',
       cost: this.getRepairCost(),
       disabled: this.live.isMaxHealth(),
+      hotkey: 'R',
       onClick: () => {
         this.repair();
       },
@@ -729,8 +734,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.buildBar = null;
   }
 
-  private handleKeyboard() {
-    const handler = (callback: () => void) => (event: KeyboardEvent) => {
+  public bindHotKey(key: string, callback: () => void) {
+    const handler = (event: KeyboardEvent) => {
       if (
         this.isSelected
         || (this.isFocused && this.scene.builder.selectedBuilding === null)
@@ -740,18 +745,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
-    const handleRepair = handler(() => this.repair());
-    const handleBreak = handler(() => this.break());
-    const handleUpgrade = handler(() => this.upgrade());
-
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
-    this.scene.input.keyboard?.on(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
+    this.scene.input.keyboard?.on(key, handler);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_REPEAR, handleRepair);
-      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_DESTROY, handleBreak);
-      this.scene.input.keyboard?.off(CONTROL_KEY.BUILDING_UPGRADE, handleUpgrade);
+      this.scene.input.keyboard?.off(key, handler);
     });
   }
 

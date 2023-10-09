@@ -53,6 +53,13 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   isActionAllowed(): boolean
 
   /**
+   * Bind hot key for action.
+   * @param key - Key
+   * @param callback - Callback
+   */
+  bindHotKey(key: string, callback: () => void): void
+
+  /**
    * Bind hint on tutorial step
    * @param step - Tutorial step
    * @param text - Message
@@ -237,6 +244,7 @@ export type BuildingControl = {
   label: string
   cost?: number
   disabled?: boolean
+  hotkey: string
   onClick: () => void
 };
 

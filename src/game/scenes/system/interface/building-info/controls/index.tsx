@@ -5,7 +5,7 @@ import { Cost } from '~scene/system/interface/cost';
 import { BuildingControl } from '~type/world/entities/building';
 
 import {
-  Wrapper, Action, Label, Addon,
+  Wrapper, Action, Label, Addon, Main, Key,
 } from './styles';
 
 type Props = {
@@ -25,7 +25,12 @@ export const BuildingControls: React.FC<Props> = ({ list }) => {
             [isMobile ? 'onTouchEnd' : 'onClick']: control.onClick,
           }}
         >
-          <Label>{control.label}</Label>
+          <Main>
+            {!isMobile && (
+              <Key>{control.hotkey}</Key>
+            )}
+            <Label>{control.label}</Label>
+          </Main>
           {!!control.cost && (
             <Addon>
               <Cost type="resources" value={control.cost} size="small" />

@@ -1,3 +1,4 @@
+import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionQuadratic } from '~lib/difficulty';
 import { NoticeType } from '~type/screen';
@@ -56,6 +57,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
 
     this.bindTutorialHint(TutorialStep.BUY_AMMO, 'Click to buy ammo', () => this.ammo === 0);
+
+    this.bindHotKey(CONTROL_KEY.BUILDING_BUY_AMMO, () => this.buyAmmo());
   }
 
   public getInfo() {
@@ -73,6 +76,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       label: 'Buy ammo',
       cost: this.getAmmoCost(),
       disabled: (this.ammo >= this.maxAmmo),
+      hotkey: 'F',
       onClick: () => {
         this.buyAmmo();
       },
