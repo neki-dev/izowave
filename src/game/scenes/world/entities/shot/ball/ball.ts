@@ -140,9 +140,11 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     if (damage) {
       target.live.damage(damage);
 
+      const position = target.getPositionOnGround();
+
       this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
         if (enemy !== target) {
-          const distance = getIsometricDistance(target, enemy);
+          const distance = getIsometricDistance(position, enemy.getPositionOnGround());
 
           if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
             const damageByDistance = damage

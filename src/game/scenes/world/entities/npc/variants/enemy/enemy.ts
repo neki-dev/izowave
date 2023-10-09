@@ -68,7 +68,7 @@ export class Enemy extends NPC implements IEnemy {
     });
     scene.addEntity(EntityType.ENEMY, this);
 
-    this.damage = progressionQuadratic({
+    this.damage = progressionLinear({
       defaultValue: DIFFICULTY.ENEMY_DAMAGE
         * multipliers.damage
         * scene.game.getDifficultyMultiplier(),

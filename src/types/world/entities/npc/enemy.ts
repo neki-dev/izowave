@@ -28,6 +28,7 @@ export interface IEnemyFactory {
 
 export interface IEnemyTarget extends Vector2D {
   readonly live: ILive
+  getPositionOnGround(): Vector2D
 }
 
 export enum EnemyTexture {

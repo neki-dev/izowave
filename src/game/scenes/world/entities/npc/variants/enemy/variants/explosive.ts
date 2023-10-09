@@ -50,7 +50,7 @@ export class EnemyExplosive extends Enemy {
     targets.push(this.scene.player);
 
     targets.forEach((target) => {
-      const distance = getIsometricDistance(position, target);
+      const distance = getIsometricDistance(position, target.getPositionOnGround());
 
       if (distance >= radius) {
         return;
