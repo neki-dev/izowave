@@ -23,7 +23,7 @@ export interface ICrystal extends Phaser.GameObjects.Image {
 }
 
 export enum CrystalTexture {
-  CRYSTAL = 'crystal',
+  CRYSTAL = 'crystal/crystal',
 }
 
 export enum CrystalAudio {

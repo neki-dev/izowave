@@ -92,7 +92,6 @@ export type TileMeta = {
   persperctive: number
   width: number
   height: number
-  deg: number
 };
 
 export enum SpawnTarget {

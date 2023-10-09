@@ -9,7 +9,7 @@ export const MAX_GAME_SAVES = 5;
 export const DEBUG_MODS = {
   basic: false,
   position: false,
-  path: false,
+  path: true,
 };
 
 export const SETTINGS: Record<GameSettings, GameSettingsData> = {

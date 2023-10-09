@@ -1,4 +1,3 @@
-import { LEVEL_TILE_SIZE } from '~const/world/level';
 import {
   MovementDirection,
   PlayerSkill,
@@ -77,28 +76,6 @@ export const PLAYER_SUPERSKILLS: Record<PlayerSuperskill, PlayerSuperskillData> 
     cost: DIFFICULTY.SUPERSKILL_FIRE_COST,
     duration: DIFFICULTY.SUPERSKILL_FIRE_DURATION,
   },
-};
-
-export const PLAYER_MOVEMENT_TARGET = [
-  MovementDirection.LEFT,
-  MovementDirection.LEFT_UP,
-  MovementDirection.UP,
-  MovementDirection.RIGHT_UP,
-  MovementDirection.RIGHT,
-  MovementDirection.RIGHT_DOWN,
-  MovementDirection.DOWN,
-  MovementDirection.LEFT_DOWN,
-];
-
-export const PLAYER_MOVEMENT_ANGLES = {
-  [MovementDirection.LEFT]: 180,
-  [MovementDirection.LEFT_UP]: 180 + LEVEL_TILE_SIZE.deg,
-  [MovementDirection.UP]: 270,
-  [MovementDirection.RIGHT_UP]: 360 - LEVEL_TILE_SIZE.deg,
-  [MovementDirection.RIGHT]: 0,
-  [MovementDirection.RIGHT_DOWN]: 0 + LEVEL_TILE_SIZE.deg,
-  [MovementDirection.DOWN]: 90,
-  [MovementDirection.LEFT_DOWN]: 180 - LEVEL_TILE_SIZE.deg,
 };
 
 export const PLAYER_MOVEMENT_KEYS: Record<string, MovementDirection> = {

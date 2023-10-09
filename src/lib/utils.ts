@@ -88,6 +88,21 @@ export function getIsometricDistance(
 }
 
 /**
+ * Get angle between points on isometric grid.
+ * @param pointA - First position
+ * @param pointB - Second position
+ */
+export function getIsometricAngle(
+  pointA: Vector2D,
+  pointB: Vector2D,
+) {
+  return Math.atan2(
+    (pointB.y - pointA.y) / LEVEL_TILE_SIZE.persperctive,
+    pointB.x - pointA.x,
+  );
+}
+
+/**
  * Sort position by distance to target.
  * @param positions - Positions list
  * @param target - Target position

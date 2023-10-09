@@ -109,7 +109,7 @@ export interface IPlayer extends ISprite, IEnemyTarget {
 }
 
 export enum PlayerTexture {
-  PLAYER = 'player',
+  PLAYER = 'player/player',
 }
 
 export enum PlayerAudio {
@@ -132,14 +132,10 @@ export enum PlayerSkill {
 }
 
 export enum MovementDirection {
-  LEFT_UP = 'left_up',
-  LEFT = 'left',
-  LEFT_DOWN = 'left_down',
   UP = 'up',
   DOWN = 'down',
-  RIGHT_UP = 'right_up',
+  LEFT = 'left',
   RIGHT = 'right',
-  RIGHT_DOWN = 'right_down',
 }
 
 export type PlayerData = {

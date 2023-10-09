@@ -5,11 +5,10 @@ import {
   PLAYER_TILE_SIZE,
   PLAYER_SKILLS,
   PLAYER_SUPERSKILLS,
-  PLAYER_MOVEMENT_ANGLES,
-  PLAYER_MOVEMENT_TARGET,
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
@@ -69,7 +68,7 @@ export class Player extends Sprite implements IPlayer {
 
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
-  private movementTarget: Nullable<MovementDirection> = null;
+  private movementTarget: Nullable<number> = null;
 
   private movementAngle: Nullable<number> = null;
 
@@ -380,27 +379,42 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private handleMovementByKeyboard() {
-    const keysState: Partial<Record<MovementDirection, boolean>> = {};
+    const activeKeys = new Set<MovementDirection>();
 
     const toggleKeyState = (key: string, state: boolean) => {
       if (!PLAYER_MOVEMENT_KEYS[key]) {
         return;
       }
 
-      keysState[PLAYER_MOVEMENT_KEYS[key]] = state;
+      if (state) {
+        activeKeys.add(PLAYER_MOVEMENT_KEYS[key]);
+      } else {
+        activeKeys.delete(PLAYER_MOVEMENT_KEYS[key]);
+      }
 
-      const result = [
-        [MovementDirection.LEFT, MovementDirection.RIGHT],
-        [MovementDirection.UP, MovementDirection.DOWN],
-      ].reduce((list, line) => {
-        const direction = line.find((section) => keysState[section]);
-
-        return direction ? list.concat(direction) : list;
-      }, []);
-
-      this.movementTarget = result.length > 0
-        ? result.join('_') as MovementDirection
-        : null;
+      if (activeKeys.has(MovementDirection.DOWN)) {
+        if (activeKeys.has(MovementDirection.LEFT)) {
+          this.movementTarget = 135;
+        } else if (activeKeys.has(MovementDirection.RIGHT)) {
+          this.movementTarget = 45;
+        } else {
+          this.movementTarget = 90;
+        }
+      } else if (activeKeys.has(MovementDirection.UP)) {
+        if (activeKeys.has(MovementDirection.LEFT)) {
+          this.movementTarget = 225;
+        } else if (activeKeys.has(MovementDirection.RIGHT)) {
+          this.movementTarget = 315;
+        } else {
+          this.movementTarget = 270;
+        }
+      } else if (activeKeys.has(MovementDirection.LEFT)) {
+        this.movementTarget = 180;
+      } else if (activeKeys.has(MovementDirection.RIGHT)) {
+        this.movementTarget = 0;
+      } else {
+        this.movementTarget = null;
+      }
     };
 
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, (event: KeyboardEvent) => {
@@ -431,33 +445,29 @@ export class Player extends Sprite implements IPlayer {
     const speed = this.speed / friction;
     const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
 
-    this.setVelocity(velocity.x, velocity.y);
+    this.setVelocity(
+      velocity.x,
+      velocity.y * LEVEL_TILE_SIZE.persperctive,
+    );
   }
 
   private updateMovement() {
     if (this.movementTarget === null) {
-      if (this.movementAngle !== null) {
-        this.stopMovement();
-      }
+      this.stopMovement();
+    } else if (this.movementAngle === null) {
+      this.startMovement();
     } else {
-      const newDirection = PLAYER_MOVEMENT_ANGLES[this.movementTarget];
-
-      if (this.movementAngle === null) {
-        this.startMovement(newDirection);
-      } else {
-        this.setMovementAngle(newDirection);
-      }
+      this.setMovementAngle();
     }
   }
 
-  private startMovement(angle: number) {
+  private startMovement() {
     if (this.movementTarget === null) {
       return;
     }
 
-    this.movementAngle = angle;
-
-    this.anims.play(this.movementTarget);
+    this.movementAngle = this.movementTarget;
+    this.anims.play(`dir_${Math.floor(this.movementTarget / 45)}`);
 
     if (this.dustEffect) {
       this.dustEffect.emitter.start();
@@ -470,25 +480,19 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public setMovementTarget(angle: Nullable<number>) {
-    if (angle === null) {
-      this.movementTarget = null;
-    } else {
-      const section = Math.round(angle / 45) % 8;
-
-      this.movementTarget = PLAYER_MOVEMENT_TARGET[section];
-    }
+    this.movementTarget = angle;
   }
 
-  private setMovementAngle(angle: number) {
+  private setMovementAngle() {
     if (
-      this.movementTarget === null
-      || this.movementAngle === angle
+      this.movementAngle === this.movementTarget
+      || this.movementTarget === null
     ) {
       return;
     }
 
-    this.movementAngle = angle;
-    this.anims.play(this.movementTarget);
+    this.movementAngle = this.movementTarget;
+    this.anims.play(`dir_${Math.floor(this.movementTarget / 45)}`);
   }
 
   private stopMovement() {
@@ -535,9 +539,9 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private registerAnimations() {
-    Object.values(MovementDirection).forEach((key, index) => {
+    Array.from({ length: 8 }).forEach((_, index) => {
       this.anims.create({
-        key,
+        key: `dir_${index}`,
         frames: this.anims.generateFrameNumbers(PlayerTexture.PLAYER, {
           start: index * 4,
           end: (index + 1) * 4 - 1,

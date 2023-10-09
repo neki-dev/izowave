@@ -3,8 +3,9 @@ import Phaser from 'phaser';
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
-import { equalPositions, getIsometricDistance } from '~lib/utils';
+import { equalPositions, getIsometricAngle, getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
@@ -198,7 +199,7 @@ export class NPC extends Sprite implements INPC {
   }
 
   public moveTo(position: Vector2D) {
-    const rotation = Phaser.Math.Angle.BetweenPoints(this.getPositionOnGround(), position);
+    const rotation = getIsometricAngle(this.getPositionOnGround(), position);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
 
@@ -211,7 +212,10 @@ export class NPC extends Sprite implements INPC {
     const speed = this.isFreezed() ? (this.speed * 0.1) : this.speed;
     const velocity = this.scene.physics.velocityFromRotation(rotation, speed);
 
-    this.setVelocity(velocity.x, velocity.y);
+    this.setVelocity(
+      velocity.x,
+      velocity.y * LEVEL_TILE_SIZE.persperctive,
+    );
   }
 
   private nextPathTile() {
