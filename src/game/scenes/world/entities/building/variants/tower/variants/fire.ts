@@ -53,7 +53,7 @@ export class BuildingTowerFire extends BuildingTower {
     this.bindTutorialHint(
       TutorialStep.UPGRADE_BUILDING,
       this.scene.game.device.os.desktop
-        ? 'Hover and press [E] to upgrade'
+        ? 'Hover and press [E]\nto upgrade'
         : 'Click to upgrade',
     );
 

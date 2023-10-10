@@ -45,7 +45,7 @@ export class Enemy extends NPC implements IEnemy {
 
   private isOverlapTarget: boolean = false;
 
-  private damageLabel: Nullable<Phaser.GameObjects.Container> = null;
+  private damageLabel: Nullable<Phaser.GameObjects.Text> = null;
 
   private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
 
@@ -92,6 +92,7 @@ export class Enemy extends NPC implements IEnemy {
     this.body.setCircle((this.width * 0.5) - 2);
     this.body.setOffset(2, 2);
 
+    this.addDamageLabel();
     this.addIndicator({
       color: 0xdb2323,
       value: () => this.live.health / this.live.maxHealth,
@@ -112,6 +113,7 @@ export class Enemy extends NPC implements IEnemy {
     this.on(NPCEvent.PATH_NOT_FOUND, this.onPathNotFound.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.removeDamageLabel();
       if (this.damageTimer) {
         this.damageTimer.destroy();
       }
@@ -159,46 +161,69 @@ export class Enemy extends NPC implements IEnemy {
     this.setPosition(position.x, position.y);
   }
 
-  public onDamage(amount: number): void {
-    if (this.scene.game.isSettingEnabled(GameSettings.SHOW_DAMAGE)) {
-      if (this.damageLabel) {
-        this.damageLabel.destroy();
-      }
-      if (this.damageLabelTween) {
-        this.damageLabelTween.destroy();
-      }
+  private addDamageLabel() {
+    this.damageLabel = this.scene.add.text(0, 0, '', {
+      fontSize: '6px',
+      fontFamily: InterfaceFont.PIXEL_TEXT,
+      align: 'center',
+      color: '#fff',
+      resolution: 2,
+    });
 
-      this.damageLabel = this.scene.add.container(this.body.center.x, this.body.center.y);
+    this.damageLabel.setOrigin(0.5, 0.5);
+    this.damageLabel.setDepth(WORLD_DEPTH_GRAPHIC);
+    this.damageLabel.setActive(false);
+    this.damageLabel.setVisible(false);
+  }
 
-      this.damageLabel.setDepth(WORLD_DEPTH_GRAPHIC);
+  private updateDamageLabel(amount: number) {
+    if (!this.damageLabel) {
+      return;
+    }
 
-      for (let i = 1; i >= 0; i--) {
-        const label = this.scene.add.text(i, i, amount.toString(), {
-          fontSize: '6px',
-          fontFamily: InterfaceFont.PIXEL_TEXT,
-          align: 'center',
-          color: i === 0 ? '#fff' : '#000',
-          resolution: 2,
-        });
+    this.damageLabel.setText(amount.toString());
+    this.damageLabel.setPosition(this.body.center.x, this.body.center.y);
+    this.damageLabel.setActive(true);
+    this.damageLabel.setVisible(true);
+    this.damageLabel.setAlpha(1.0);
 
-        label.setOrigin(0.5, 0.5);
-
-        this.damageLabel.add(label);
-      }
-
+    if (this.damageLabelTween) {
+      this.damageLabelTween.reset();
+    } else {
       this.damageLabelTween = this.scene.tweens.add({
         targets: this.damageLabel,
-        alpha: 0.0,
+        alpha: { from: 1.0, to: 0.0 },
         duration: 1000,
-        delay: 500,
+        delay: 250,
         onComplete: () => {
-          this.damageLabelTween = null;
           if (this.damageLabel) {
-            this.damageLabel.destroy();
-            this.damageLabel = null;
+            if (this.active) {
+              this.damageLabel.setActive(false);
+              this.damageLabel.setVisible(false);
+            } else {
+              this.damageLabel.destroy();
+              this.damageLabel = null;
+            }
+          }
+          if (this.damageLabelTween) {
+            this.damageLabelTween.destroy();
+            this.damageLabelTween = null;
           }
         },
       });
+    }
+  }
+
+  private removeDamageLabel() {
+    if (this.damageLabel && !this.damageLabelTween) {
+      this.damageLabel.destroy();
+      this.damageLabel = null;
+    }
+  }
+
+  public onDamage(amount: number): void {
+    if (this.scene.game.isSettingEnabled(GameSettings.SHOW_DAMAGE)) {
+      this.updateDamageLabel(amount);
     }
 
     super.onDamage(amount);

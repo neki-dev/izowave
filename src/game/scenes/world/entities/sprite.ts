@@ -84,7 +84,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     const positionOnGround = this.getPositionOnGround();
     const depth = Level.GetDepth(positionOnGround.y, 1);
-    const positionOfTop = this.getTopCenter();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
@@ -92,7 +91,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.setDepth(depth);
 
     this.container.setDepth(depth + 19);
-    this.container.setPosition(positionOfTop.x, (positionOfTop?.y ?? 0) - 10);
+    this.container.setPosition(this.body.center.x, this.body.center.y);
     this.container.setAlpha(this.alpha);
     this.container.setVisible(this.visible);
 
@@ -230,7 +229,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     bar.setOrigin(0.0, 0.0);
 
-    const container = this.scene.add.container(-width / 2, this.indicators.length * -6);
+    const container = this.scene.add.container(
+      -width / 2,
+      -this.body.halfHeight - 10 - (this.indicators.length * 6),
+    );
 
     container.setSize(body.width, body.height);
     container.add([body, bar]);

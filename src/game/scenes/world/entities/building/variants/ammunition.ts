@@ -56,7 +56,13 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
 
-    this.bindTutorialHint(TutorialStep.BUY_AMMO, 'Click to buy ammo', () => this.ammo === 0);
+    this.bindTutorialHint(
+      TutorialStep.BUY_AMMO,
+      this.scene.game.device.os.desktop
+        ? 'Hover and press [F]\nto buy ammo'
+        : 'Click to buy ammo',
+      () => this.ammo === 0,
+    );
 
     this.bindHotKey(CONTROL_KEY.BUILDING_BUY_AMMO, () => this.buyAmmo());
   }

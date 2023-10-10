@@ -355,7 +355,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public addIndicator() {
-    if (this.indicator) {
+    if (this.indicator || !this.active) {
       return;
     }
 
@@ -508,7 +508,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.alertIcon = this.scene.add.image(this.x, this.y, BuildingIcon.ALERT);
     this.alertIcon.setDepth(this.depth + 1);
 
-    this.alertTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+    this.alertTween = this.scene.tweens.add({
       targets: this.alertIcon,
       alpha: { from: 1.0, to: 0.0 },
       duration: 500,
@@ -538,7 +538,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.upgradeIcon = this.scene.add.image(this.x, this.y, BuildingIcon.UPGRADE);
     this.upgradeIcon.setDepth(this.depth + 1);
 
-    this.upgradeTween = <Phaser.Tweens.Tween> this.scene.tweens.add({
+    this.upgradeTween = this.scene.tweens.add({
       targets: this.upgradeIcon,
       y: { from: this.y, to: this.y - 32 },
       alpha: { from: 1.0, to: 0.0 },
