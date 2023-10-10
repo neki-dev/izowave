@@ -6,7 +6,9 @@ import { IWorld } from '~type/world';
 import { EffectAudio, EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IBuilding } from '~type/world/entities/building';
-import { EnemyVariantData, EnemyTexture, IEnemyTarget } from '~type/world/entities/npc/enemy';
+import {
+  EnemyVariantData, EnemyTexture, IEnemyTarget, IEnemy,
+} from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
 
@@ -45,20 +47,21 @@ export class EnemyExplosive extends Enemy {
       },
     });
 
-    const targets: IEnemyTarget[] = this.scene.getEntities<IBuilding>(EntityType.BUILDING);
+    let targets: IEnemyTarget[] = [this.scene.player];
 
-    targets.push(this.scene.player);
+    targets = targets.concat(this.scene.getEntities<IEnemy>(EntityType.ENEMY));
+    targets = targets.concat(this.scene.getEntities<IBuilding>(EntityType.BUILDING));
 
     targets.forEach((target) => {
-      const distance = getIsometricDistance(position, target.getPositionOnGround());
+      if (target !== this) {
+        const distance = getIsometricDistance(position, target.getPositionOnGround());
 
-      if (distance >= radius) {
-        return;
+        if (distance < radius) {
+          const damageByDistance = this.damage * (1 - (distance / radius)) * 0.5;
+
+          target.live.damage(damageByDistance);
+        }
       }
-
-      const damageByDistance = this.damage * (1 - (distance / radius)) * 0.5;
-
-      target.live.damage(damageByDistance);
     });
 
     this.scene.sound.play(EffectAudio.EXPLOSION);

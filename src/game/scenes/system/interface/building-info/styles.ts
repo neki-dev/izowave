@@ -9,7 +9,7 @@ import {
 
 export const Wrapper = styled.div`
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    width: 260px;
+    width: 280px;
     position: absolute;
     transform: translate(-50%, -100%);
     margin-top: -32px;

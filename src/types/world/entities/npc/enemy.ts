@@ -26,7 +26,7 @@ export interface IEnemyFactory {
   new (scene: IWorld, data: EnemyVariantData): IEnemy
 }
 
-export interface IEnemyTarget extends Vector2D {
+export interface IEnemyTarget {
   readonly live: ILive
   getPositionOnGround(): Vector2D
 }

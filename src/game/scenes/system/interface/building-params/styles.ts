@@ -30,8 +30,8 @@ export const Param = styled.div`
 `;
 
 export const IconContainer = styled.div`
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   display: flex;
   align-items: center;
@@ -40,8 +40,8 @@ export const IconContainer = styled.div`
 `;
 
 export const Icon = styled.img`
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 `;
 
 export const Info = styled.div<{
@@ -56,8 +56,8 @@ export const Info = styled.div<{
 
 export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 10px;
-  line-height: 10px;
+  font-size: 9px;
+  line-height: 9px;
   opacity: 0.75;
   margin: -1px 0 2px 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {

@@ -206,7 +206,7 @@ export enum BuildingIcon {
   DAMAGE = 'building/icons/params/damage',
   RESOURCES = 'building/icons/params/resources',
   SPEED = 'building/icons/params/speed',
-  DELAY = 'building/icons/params/pause',
+  DELAY = 'building/icons/params/delay',
 }
 
 export enum BuildingAudio {
