@@ -88,7 +88,7 @@ export class Screen extends Scene implements IScreen {
 
     const angle = this.joystick.noKey
       ? null
-      : this.joystick.angle + 180;
+      : (this.joystick.angle + 360) % 360;
 
     this.game.world.player.setMovementTarget(angle);
   }

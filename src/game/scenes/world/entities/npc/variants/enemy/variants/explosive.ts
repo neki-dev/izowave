@@ -28,13 +28,13 @@ export class EnemyExplosive extends Enemy {
   }
 
   public onDead() {
-    this.createExplosion(140);
+    this.createExplosion(70);
     super.onDead();
   }
 
   private createExplosion(radius: number) {
     const position = this.getPositionOnGround();
-    const area = this.scene.add.ellipse(position.x, position.y, radius, radius * LEVEL_TILE_SIZE.persperctive);
+    const area = this.scene.add.ellipse(position.x, position.y, radius * 2, radius * 2 * LEVEL_TILE_SIZE.persperctive);
 
     area.setFillStyle(0xff0000, 0.25);
 

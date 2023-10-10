@@ -394,22 +394,22 @@ export class Player extends Sprite implements IPlayer {
 
       if (activeKeys.has(MovementDirection.DOWN)) {
         if (activeKeys.has(MovementDirection.LEFT)) {
-          this.movementTarget = 135;
+          this.movementTarget = 3;
         } else if (activeKeys.has(MovementDirection.RIGHT)) {
-          this.movementTarget = 45;
+          this.movementTarget = 1;
         } else {
-          this.movementTarget = 90;
+          this.movementTarget = 2;
         }
       } else if (activeKeys.has(MovementDirection.UP)) {
         if (activeKeys.has(MovementDirection.LEFT)) {
-          this.movementTarget = 225;
+          this.movementTarget = 5;
         } else if (activeKeys.has(MovementDirection.RIGHT)) {
-          this.movementTarget = 315;
+          this.movementTarget = 7;
         } else {
-          this.movementTarget = 270;
+          this.movementTarget = 6;
         }
       } else if (activeKeys.has(MovementDirection.LEFT)) {
-        this.movementTarget = 180;
+        this.movementTarget = 4;
       } else if (activeKeys.has(MovementDirection.RIGHT)) {
         this.movementTarget = 0;
       } else {
@@ -466,8 +466,8 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.movementAngle = this.movementTarget;
-    this.anims.play(`dir_${Math.floor(this.movementTarget / 45)}`);
+    this.movementAngle = this.movementTarget * 45;
+    this.anims.play(`dir_${this.movementTarget}`);
 
     if (this.dustEffect) {
       this.dustEffect.emitter.start();
@@ -480,19 +480,19 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public setMovementTarget(angle: Nullable<number>) {
-    this.movementTarget = angle;
+    this.movementTarget = angle === null ? null : Math.round(angle / 45) % 8;
   }
 
   private setMovementAngle() {
     if (
-      this.movementAngle === this.movementTarget
-      || this.movementTarget === null
+      this.movementTarget === null
+      || this.movementAngle === this.movementTarget * 45
     ) {
       return;
     }
 
-    this.movementAngle = this.movementTarget;
-    this.anims.play(`dir_${Math.floor(this.movementTarget / 45)}`);
+    this.movementAngle = this.movementTarget * 45;
+    this.anims.play(`dir_${this.movementTarget}`);
   }
 
   private stopMovement() {
