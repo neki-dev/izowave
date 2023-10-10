@@ -189,6 +189,7 @@ export enum BuildingEvents {
   UPGRADE = 'upgrade',
   BUY_AMMO = 'buy_ammo',
   BREAK = 'break',
+  CREATE = 'create',
 }
 
 export enum BuildingVariant {

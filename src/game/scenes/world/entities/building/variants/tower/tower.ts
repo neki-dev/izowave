@@ -4,7 +4,6 @@ import { progressionLinear } from '~lib/difficulty';
 import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
-import { BuilderEvents } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingData,
@@ -46,6 +45,8 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shotDefaultParams = shot.params;
 
     this.handleBuildingRelease();
+
+    this.calculatePower();
   }
 
   public update() {
@@ -71,10 +72,14 @@ export class BuildingTower extends Building implements IBuildingTower {
     }
 
     if (params.freeze) {
+      const format = (value: number) => (value / 1000).toFixed(1);
+
       info.push({
         label: 'Freeze',
         icon: BuildingIcon.DAMAGE,
-        value: `${(params.freeze / 1000).toFixed(1)} s`,
+        value: this.power > 1.0
+          ? `${format(params.freeze)} → ${format(params.freeze * this.power)}`
+          : format(params.freeze),
       });
     }
 
@@ -94,21 +99,6 @@ export class BuildingTower extends Building implements IBuildingTower {
     });
 
     return super.getInfo().concat(info);
-  }
-
-  public getSavePayload() {
-    return {
-      ...super.getSavePayload(),
-      ammo: this.ammo,
-    };
-  }
-
-  public loadSavePayload(data: BuildingSavePayload) {
-    super.loadSavePayload(data);
-
-    if (data.ammo) {
-      this.ammo = data.ammo;
-    }
   }
 
   private isCanAttack() {
@@ -251,7 +241,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getBooster() {
     const boosters = this.scene.builder.getBuildingsByVariant<IBuildingBooster>(BuildingVariant.BOOSTER)
-      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
+      .filter((building) => building.active && building.actionsAreaContains(this.getPositionOnGround()));
 
     if (boosters.length === 0) {
       return null;
@@ -283,16 +273,31 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     const buidingsGroup = this.scene.getEntitiesGroup(EntityType.BUILDING);
 
-    this.scene.builder.on(BuilderEvents.BUILD, handler);
+    buidingsGroup.on(BuildingEvents.CREATE, handler);
     buidingsGroup.on(BuildingEvents.UPGRADE, handler);
     buidingsGroup.on(BuildingEvents.BUY_AMMO, handler);
     buidingsGroup.on(BuildingEvents.BREAK, handler);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.builder.off(BuilderEvents.BUILD, handler);
+      buidingsGroup.off(BuildingEvents.CREATE, handler);
       buidingsGroup.off(BuildingEvents.UPGRADE, handler);
       buidingsGroup.off(BuildingEvents.BUY_AMMO, handler);
       buidingsGroup.off(BuildingEvents.BREAK, handler);
     });
+  }
+
+  public getSavePayload() {
+    return {
+      ...super.getSavePayload(),
+      ammo: this.ammo,
+    };
+  }
+
+  public loadSavePayload(data: BuildingSavePayload) {
+    super.loadSavePayload(data);
+
+    if (data.ammo) {
+      this.ammo = data.ammo;
+    }
   }
 }

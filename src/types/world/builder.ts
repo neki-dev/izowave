@@ -103,7 +103,6 @@ export interface IBuilder extends EventEmitter {
 }
 
 export enum BuilderEvents {
-  BUILD = 'build',
   BUILD_START = 'build_start',
   BUILD_STOP = 'build_stop',
 }

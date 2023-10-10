@@ -108,7 +108,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     if (buildDuration && buildDuration > 0) {
       this.startBuildProcess(buildDuration);
     } else {
-      this.completeBuildProcess();
+      setTimeout(() => {
+        this.completeBuildProcess();
+      }, 0);
     }
 
     this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
@@ -425,24 +427,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public getSavePayload(): BuildingSavePayload {
-    return {
-      variant: this.variant,
-      position: this.positionAtMatrix,
-      health: this.live.health,
-      upgradeLevel: this.upgradeLevel,
-    };
-  }
-
-  public loadSavePayload(data: BuildingSavePayload) {
-    this.upgradeLevel = data.upgradeLevel;
-    this.updateActionArea();
-    this.setFrame(this.upgradeLevel - 1);
-
-    this.live.setMaxHealth(this.getMaxHealth());
-    this.live.setHealth(data.health);
-  }
-
   private onDamage() {
     const audio = Phaser.Utils.Array.GetRandom([
       BuildingAudio.DAMAGE_1,
@@ -724,7 +708,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       useHandCursor: true,
     });
 
-    this.scene.builder.emit(BuilderEvents.BUILD, this);
+    this.scene.getEntitiesGroup(EntityType.BUILDING)
+      .emit(BuildingEvents.CREATE, this);
   }
 
   private stopBuildProcess() {
@@ -853,6 +838,32 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.game.events.off(GameEvents.FINISH, handleClear);
       this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
     });
+  }
+
+  public getSavePayload(): BuildingSavePayload {
+    return {
+      variant: this.variant,
+      position: this.positionAtMatrix,
+      health: this.live.health,
+      upgradeLevel: this.upgradeLevel,
+    };
+  }
+
+  public loadSavePayload(data: BuildingSavePayload) {
+    if (data.upgradeLevel > 1) {
+      this.upgradeLevel = data.upgradeLevel;
+
+      this.updateActionArea();
+      this.setFrame(this.upgradeLevel - 1);
+
+      this.live.setMaxHealth(this.getMaxHealth());
+
+      this.emit(BuildingEvents.UPGRADE);
+      this.scene.getEntitiesGroup(EntityType.BUILDING)
+        .emit(BuildingEvents.UPGRADE, this);
+    }
+
+    this.live.setHealth(data.health);
   }
 }
 

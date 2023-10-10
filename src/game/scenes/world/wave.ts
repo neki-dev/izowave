@@ -202,18 +202,6 @@ export class Wave extends EventEmitter implements IWave {
     });
   }
 
-  public getSavePayload(): WaveSavePayload {
-    return {
-      number: this.number,
-      timeleft: this.getTimeleft(),
-    };
-  }
-
-  public loadSavePayload(data: WaveSavePayload) {
-    this.number = data.number;
-    this.nextWaveTimestamp = this.scene.getTime() + data.timeleft;
-  }
-
   private spawnEnemy() {
     const variant = this.getEnemyVariant();
 
@@ -266,6 +254,18 @@ export class Wave extends EventEmitter implements IWave {
     this.scene.input.keyboard?.on(CONTROL_KEY.SKIP_WAVE_TIMELEFT, () => {
       this.skipTimeleft();
     });
+  }
+
+  public getSavePayload(): WaveSavePayload {
+    return {
+      number: this.number,
+      timeleft: this.getTimeleft(),
+    };
+  }
+
+  public loadSavePayload(data: WaveSavePayload) {
+    this.number = data.number;
+    this.nextWaveTimestamp = this.scene.getTime() + data.timeleft;
   }
 }
 

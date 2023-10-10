@@ -91,21 +91,6 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     return super.getControls().concat(actions);
   }
 
-  public getSavePayload() {
-    return {
-      ...super.getSavePayload(),
-      ammo: this.ammo,
-    };
-  }
-
-  public loadSavePayload(data: BuildingSavePayload) {
-    super.loadSavePayload(data);
-
-    if (data.ammo) {
-      this.ammo = data.ammo;
-    }
-  }
-
   public use(amount: number) {
     const totalAmount = (this.ammo < amount) ? this.ammo : amount;
 
@@ -163,10 +148,24 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       level: this.upgradeLevel,
       roundTo: 10,
     });
-
     const addedAmmo = maxAmmo - this.maxAmmo;
 
     this.maxAmmo = maxAmmo;
     this.ammo += addedAmmo;
+  }
+
+  public getSavePayload() {
+    return {
+      ...super.getSavePayload(),
+      ammo: this.ammo,
+    };
+  }
+
+  public loadSavePayload(data: BuildingSavePayload) {
+    super.loadSavePayload(data);
+
+    if (data.ammo) {
+      this.ammo = data.ammo;
+    }
   }
 }

@@ -310,33 +310,6 @@ export class Player extends Sprite implements IPlayer {
     this.upgradeLevel[type] = level;
   }
 
-  public getSavePayload(): PlayerSavePayload {
-    return {
-      position: this.positionAtMatrix,
-      score: this.score,
-      experience: this.experience,
-      resources: this.resources,
-      kills: this.kills,
-      health: this.live.health,
-      upgradeLevel: this.upgradeLevel,
-    };
-  }
-
-  public loadSavePayload(data: PlayerSavePayload) {
-    this.score = data.score;
-    this.experience = data.experience;
-    this.resources = data.resources;
-    this.kills = data.kills;
-
-    eachEntries(data.upgradeLevel, (type, level) => {
-      if (level > 1) {
-        this.setSkillUpgrade(type, level);
-      }
-    });
-
-    this.live.setHealth(data.health);
-  }
-
   public onDamage(amount: number) {
     this.scene.camera.shake();
 
@@ -550,6 +523,33 @@ export class Player extends Sprite implements IPlayer {
         repeat: -1,
       });
     });
+  }
+
+  public getSavePayload(): PlayerSavePayload {
+    return {
+      position: this.positionAtMatrix,
+      score: this.score,
+      experience: this.experience,
+      resources: this.resources,
+      kills: this.kills,
+      health: this.live.health,
+      upgradeLevel: this.upgradeLevel,
+    };
+  }
+
+  public loadSavePayload(data: PlayerSavePayload) {
+    this.score = data.score;
+    this.experience = data.experience;
+    this.resources = data.resources;
+    this.kills = data.kills;
+
+    eachEntries(data.upgradeLevel, (type, level) => {
+      if (level > 1) {
+        this.setSkillUpgrade(type, level);
+      }
+    });
+
+    this.live.setHealth(data.health);
   }
 }
 
