@@ -151,6 +151,7 @@ export enum GameState {
 
 export enum GameSettings {
   AUDIO = 'AUDIO',
+  SHOW_DAMAGE = 'SHOW_DAMAGE',
   EFFECTS = 'EFFECTS',
   TUTORIAL = 'TUTORIAL',
 }

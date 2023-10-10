@@ -337,7 +337,7 @@ export class Player extends Sprite implements IPlayer {
     this.live.setHealth(data.health);
   }
 
-  public onDamage() {
+  public onDamage(amount: number) {
     this.scene.camera.shake();
 
     const audio = Phaser.Utils.Array.GetRandom([
@@ -350,7 +350,7 @@ export class Player extends Sprite implements IPlayer {
       this.scene.game.sound.play(audio);
     }
 
-    super.onDamage();
+    super.onDamage(amount);
   }
 
   public onDead() {

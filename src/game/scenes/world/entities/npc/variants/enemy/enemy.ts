@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   ENEMY_PATH_BREAKPOINT,
@@ -15,6 +16,7 @@ import { excludePosition } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
+import { InterfaceFont } from '~type/interface';
 import { IWorld, WorldEvents } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
@@ -42,6 +44,10 @@ export class Enemy extends NPC implements IEnemy {
   private score: number;
 
   private isOverlapTarget: boolean = false;
+
+  private damageLabel: Nullable<Phaser.GameObjects.Container> = null;
+
+  private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
 
   constructor(scene: IWorld, {
     positionAtMatrix, texture, score, multipliers,
@@ -151,6 +157,51 @@ export class Enemy extends NPC implements IEnemy {
     const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
 
     this.setPosition(position.x, position.y);
+  }
+
+  public onDamage(amount: number): void {
+    if (this.scene.game.isSettingEnabled(GameSettings.SHOW_DAMAGE)) {
+      if (this.damageLabel) {
+        this.damageLabel.destroy();
+      }
+      if (this.damageLabelTween) {
+        this.damageLabelTween.destroy();
+      }
+
+      this.damageLabel = this.scene.add.container(this.body.center.x, this.body.center.y);
+
+      this.damageLabel.setDepth(WORLD_DEPTH_GRAPHIC);
+
+      for (let i = 1; i >= 0; i--) {
+        const label = this.scene.add.text(i, i, amount.toString(), {
+          fontSize: '6px',
+          fontFamily: InterfaceFont.PIXEL_TEXT,
+          align: 'center',
+          color: i === 0 ? '#fff' : '#000',
+          resolution: 2,
+        });
+
+        label.setOrigin(0.5, 0.5);
+
+        this.damageLabel.add(label);
+      }
+
+      this.damageLabelTween = this.scene.tweens.add({
+        targets: this.damageLabel,
+        alpha: 0.0,
+        duration: 1000,
+        delay: 500,
+        onComplete: () => {
+          this.damageLabelTween = null;
+          if (this.damageLabel) {
+            this.damageLabel.destroy();
+            this.damageLabel = null;
+          }
+        },
+      });
+    }
+
+    super.onDamage(amount);
   }
 
   public onDead() {

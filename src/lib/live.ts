@@ -77,7 +77,7 @@ export class Live extends EventEmmiter implements ILive {
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
 
     if (this.health < prevHealth) {
-      this.emit(LiveEvents.DAMAGE, prevHealth - this.health);
+      this.emit(LiveEvents.DAMAGE, prevHealth - amount);
 
       if (this.health === 0) {
         this.emit(LiveEvents.DEAD);

@@ -308,7 +308,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.strokePath();
   }
 
-  public onDamage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public onDamage(amount: number) {
     if (
       !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
       || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
