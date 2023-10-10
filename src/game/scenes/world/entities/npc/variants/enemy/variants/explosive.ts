@@ -57,7 +57,7 @@ export class EnemyExplosive extends Enemy {
         const distance = getIsometricDistance(position, target.getPositionOnGround());
 
         if (distance < radius) {
-          const damageByDistance = this.damage * (1 - (distance / radius)) * 0.7;
+          const damageByDistance = this.damage * (1 - (distance / radius));
 
           target.live.damage(damageByDistance);
         }
