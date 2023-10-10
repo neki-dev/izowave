@@ -87,7 +87,7 @@ export const DIFFICULTY = {
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
-  ENEMY_DAMAGE_GROWTH: 0.35, // Damage growth by wave number (Linear)
+  ENEMY_DAMAGE_GROWTH: 0.32, // Damage growth by wave number (Linear)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
   ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
 
@@ -197,6 +197,6 @@ export const DIFFICULTY = {
   BUILDING_RADAR_COST: 60, // Building cost
   BUILDING_RADAR_HEALTH: 300, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
-  BUILDING_RADAR_RADIUS: 130, // Unhidden radius
+  BUILDING_RADAR_RADIUS: 140, // Unhidden radius
   BUILDING_RADAR_RADIUS_GROWTH: 0.3, // Radius growth by level (Linear)
 };
