@@ -15,7 +15,7 @@ export class EnemyTank extends Enemy {
       multipliers: {
         health: 1.0,
         damage: 0.6,
-        speed: 0.8,
+        speed: 0.7,
       },
     });
 

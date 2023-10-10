@@ -6,11 +6,11 @@ export const DIFFICULTY = {
   PLAYER_START_RESOURCES: 70, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
   PLAYER_SPEED_GROWTH: 0.05, // Growth speed by upgrade (Quadratic)
-  PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade speed
+  PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.55, // Growth health by upgrade (Quadratic)
-  PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.65, // Growth experience need to upgrade (Quadratic)
+  PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -77,7 +77,7 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 85, // Health
+  ENEMY_HEALTH: 90, // Health
   ENEMY_HEALTH_GROWTH: 0.4, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
