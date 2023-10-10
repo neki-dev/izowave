@@ -71,7 +71,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     const info: BuildingParam[] = [{
       label: 'Ammo',
       icon: BuildingIcon.AMMO,
-      value: this.ammo,
+      value: `${this.ammo}/${this.maxAmmo}`,
     }];
 
     return super.getInfo().concat(info);

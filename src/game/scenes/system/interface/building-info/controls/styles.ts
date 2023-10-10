@@ -21,6 +21,7 @@ export const Label = styled.div`
   line-height: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  white-space: nowrap;
 `;
 
 export const Addon = styled.div`
