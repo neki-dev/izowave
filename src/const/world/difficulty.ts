@@ -199,4 +199,16 @@ export const DIFFICULTY = {
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_RADAR_RADIUS: 140, // Unhidden radius
   BUILDING_RADAR_RADIUS_GROWTH: 0.3, // Radius growth by level (Linear)
+
+  /**
+   * Building: Booster
+   */
+
+  BUILDING_BOOSTER_COST: 80, // Building cost
+  BUILDING_BOOSTER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
+  BUILDING_BOOSTER_HEALTH: 300, // Health
+  BUILDING_BOOSTER_RADIUS: 80, // Increase radius
+  BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
+  BUILDING_BOOSTER_POWER: 15, // Power multiplier
+  BUILDING_BOOSTER_POWER_GROWTH: 1.0, // Multiplier growth by level (Linear)
 };

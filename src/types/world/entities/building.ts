@@ -158,6 +158,13 @@ export interface IBuildingAmmunition extends IBuilding {
   use(amount: number): number
 }
 
+export interface IBuildingBooster extends IBuilding {
+  /**
+   * Increase power.
+   */
+  readonly power: number
+}
+
 export interface IBuildingTower extends IBuilding {
   /**
    * Current ammo in clip.
@@ -181,6 +188,7 @@ export interface IBuildingFactory {
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
   BUY_AMMO = 'buy_ammo',
+  BREAK = 'break',
 }
 
 export enum BuildingVariant {
@@ -191,6 +199,7 @@ export enum BuildingVariant {
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   RADAR = 'RADAR',
+  BOOSTER = 'BOOSTER',
 }
 
 export enum BuildingTexture {
@@ -201,6 +210,7 @@ export enum BuildingTexture {
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
   RADAR = 'building/textures/radar',
+  BOOSTER = 'building/textures/booster',
 }
 
 export enum BuildingIcon {
@@ -217,6 +227,7 @@ export enum BuildingIcon {
   RESOURCES = 'building/icons/params/resources',
   SPEED = 'building/icons/params/speed',
   DELAY = 'building/icons/params/delay',
+  POWER = 'building/icons/params/power',
 }
 
 export enum BuildingAudio {

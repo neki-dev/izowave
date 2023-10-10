@@ -132,6 +132,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
       this.live.removeAllListeners();
+
+      this.scene.getEntitiesGroup(EntityType.BUILDING)
+        .emit(BuildingEvents.BREAK, this);
     });
   }
 

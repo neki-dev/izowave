@@ -17,6 +17,7 @@ import {
   BuildingAudio,
   BuildingSavePayload,
   BuildingEvents,
+  IBuildingBooster,
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
@@ -28,6 +29,8 @@ export class BuildingTower extends Building implements IBuildingTower {
   private shotDefaultParams: ShotParams;
 
   private needReload: boolean = false;
+
+  private power: number = 1.0;
 
   private _ammo: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
 
@@ -42,7 +45,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
-    this.handleAmmunitionRelease();
+    this.handleBuildingRelease();
   }
 
   public update() {
@@ -61,7 +64,9 @@ export class BuildingTower extends Building implements IBuildingTower {
       info.push({
         label: 'Damage',
         icon: BuildingIcon.DAMAGE,
-        value: params.damage,
+        value: this.power > 1.0
+          ? `${params.damage} → ${Math.round(params.damage * this.power)}`
+          : params.damage,
       });
     }
 
@@ -231,13 +236,48 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private shoot(target: IEnemy) {
     this.shot.params = this.getShotCurrentParams();
+
+    if (this.power > 1.0) {
+      if (this.shot.params.damage) {
+        this.shot.params.damage *= this.power;
+      }
+      if (this.shot.params.freeze) {
+        this.shot.params.freeze *= this.power;
+      }
+    }
+
     this.shot.shoot(target);
   }
 
-  private handleAmmunitionRelease() {
+  private getBooster() {
+    const boosters = this.scene.builder.getBuildingsByVariant<IBuildingBooster>(BuildingVariant.BOOSTER)
+      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
+
+    if (boosters.length === 0) {
+      return null;
+    }
+
+    const priorityBooster = boosters.reduce((max, current) => (
+      max.power > current.power ? max : current
+    ));
+
+    return priorityBooster;
+  }
+
+  private calculatePower() {
+    const booster = this.getBooster();
+
+    this.power = 1.0 + (booster ? (booster.power / 100) : 0);
+  }
+
+  private handleBuildingRelease() {
     const handler = (building: IBuilding) => {
-      if (this.needReload && building.variant === BuildingVariant.AMMUNITION) {
-        this.reload();
+      if (building.variant === BuildingVariant.AMMUNITION) {
+        if (this.needReload) {
+          this.reload();
+        }
+      } else if (building.variant === BuildingVariant.BOOSTER) {
+        this.calculatePower();
       }
     };
 
@@ -246,11 +286,13 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.scene.builder.on(BuilderEvents.BUILD, handler);
     buidingsGroup.on(BuildingEvents.UPGRADE, handler);
     buidingsGroup.on(BuildingEvents.BUY_AMMO, handler);
+    buidingsGroup.on(BuildingEvents.BREAK, handler);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.builder.off(BuilderEvents.BUILD, handler);
       buidingsGroup.off(BuildingEvents.UPGRADE, handler);
       buidingsGroup.off(BuildingEvents.BUY_AMMO, handler);
+      buidingsGroup.off(BuildingEvents.BREAK, handler);
     });
   }
 }
