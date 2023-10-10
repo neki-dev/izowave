@@ -114,6 +114,16 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   unselect(): void
 
   /**
+   * Add health indicator.
+   */
+  addIndicator(): void
+
+  /**
+   * Remove health indicator.
+   */
+  removeIndicator(): void
+
+  /**
    * Add alert icon.
    */
   addAlertIcon(): void

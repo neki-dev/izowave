@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
+import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
@@ -88,6 +89,12 @@ export class World extends Scene implements IWorld {
 
   private set deltaTime(v) { this._deltaTime = v; }
 
+  private _isIndicatorsActive: boolean = false;
+
+  public get isIndicatorsActive() { return this._isIndicatorsActive; }
+
+  private set isIndicatorsActive(v) { this._isIndicatorsActive = v; }
+
   constructor() {
     super(GameScene.WORLD);
   }
@@ -113,6 +120,8 @@ export class World extends Scene implements IWorld {
     this.camera.addZoomControl();
 
     this.resetTime();
+
+    this.handleKeyboard();
 
     this.addWaveManager();
     this.addBuilder();
@@ -394,6 +403,24 @@ export class World extends Scene implements IWorld {
 
         create(position);
       }
+    });
+  }
+
+  private handleKeyboard() {
+    if (!this.game.device.os.desktop) {
+      return;
+    }
+
+    this.input.keyboard?.on(CONTROL_KEY.TOGGLE_INDICATORS, () => {
+      this.isIndicatorsActive = !this.isIndicatorsActive;
+
+      this.getEntities<IBuilding>(EntityType.BUILDING).forEach((building) => {
+        if (this.isIndicatorsActive) {
+          building.addIndicator();
+        } else {
+          building.removeIndicator();
+        }
+      });
     });
   }
 }

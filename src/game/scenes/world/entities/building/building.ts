@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
@@ -77,6 +77,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private buildBar: Nullable<Phaser.GameObjects.Container> = null;
 
+  private indicator: Nullable<Phaser.GameObjects.Container> = null;
+
   constructor(scene: IWorld, {
     positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
   }: BuildingData) {
@@ -120,10 +122,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.stopBuildProcess();
+
+      this.removeIndicator();
       this.removeAlertIcon();
       this.removeUpgradeIcon();
+
       this.unfocus();
       this.unselect();
+
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
       this.live.removeAllListeners();
     });
@@ -131,6 +137,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
+    this.updateIndicator();
 
     // Catch focus by camera moving
     if (this.toFocus) {
@@ -166,11 +173,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getInfo() {
-    const info: BuildingParam[] = [{
-      label: 'Health',
-      icon: BuildingIcon.HEALTH,
-      value: this.live.health,
-    }];
+    const info: BuildingParam[] = [];
 
     const delay = this.getActionsDelay();
 
@@ -346,6 +349,47 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       level: this.upgradeLevel,
       roundTo: 100,
     });
+  }
+
+  public addIndicator() {
+    if (this.indicator) {
+      return;
+    }
+
+    const width = LEVEL_TILE_SIZE.width * 0.5;
+    const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
+
+    body.setOrigin(0.0, 0.0);
+
+    const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xd0ff4f);
+
+    bar.setOrigin(0.0, 0.0);
+
+    this.indicator = this.scene.add.container(this.x - (width / 2), this.y - 8);
+
+    this.indicator.setSize(body.width, body.height);
+    this.indicator.setDepth(WORLD_DEPTH_GRAPHIC);
+    this.indicator.add([body, bar]);
+  }
+
+  private updateIndicator() {
+    if (!this.indicator) {
+      return;
+    }
+
+    const value = this.live.health / this.live.maxHealth;
+    const bar = <Phaser.GameObjects.Rectangle> this.indicator.getAt(1);
+
+    bar.setSize((this.indicator.width - 2) * value, this.indicator.height - 2);
+  }
+
+  public removeIndicator() {
+    if (!this.indicator) {
+      return;
+    }
+
+    this.indicator.destroy();
+    this.indicator = null;
   }
 
   public bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean) {
@@ -533,6 +577,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.builder.selectedBuilding = this;
     this.isSelected = true;
 
+    if (this.indicator) {
+      this.indicator.setVisible(false);
+    }
+
     if (this.actionsArea) {
       this.actionsArea.setVisible(true);
     }
@@ -547,6 +595,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.builder.selectedBuilding = null;
     this.isSelected = false;
+
+    if (this.indicator) {
+      this.indicator.setVisible(true);
+    }
 
     if (this.actionsArea) {
       this.actionsArea.setVisible(false);
@@ -612,7 +664,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.updateActionArea();
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.actionsArea?.destroy();
+      if (this.actionsArea) {
+        this.actionsArea.destroy();
+        this.actionsArea = null;
+      }
     });
   }
 
@@ -656,6 +711,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.setActive(true);
     this.setAlpha(1.0);
+
+    if (this.scene.isIndicatorsActive) {
+      this.addIndicator();
+    }
 
     this.setInteractive({
       pixelPerfect: true,
