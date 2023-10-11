@@ -412,6 +412,10 @@ export class World extends Scene implements IWorld {
     }
 
     this.input.keyboard?.on(CONTROL_KEY.TOGGLE_INDICATORS, () => {
+      if (this.game.state !== GameState.STARTED) {
+        return;
+      }
+
       this.isIndicatorsActive = !this.isIndicatorsActive;
 
       this.getEntities<IBuilding>(EntityType.BUILDING).forEach((building) => {

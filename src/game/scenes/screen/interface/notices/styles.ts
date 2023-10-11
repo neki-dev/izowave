@@ -28,7 +28,7 @@ export const Item = styled.div<{
   $type: NoticeType
 }>`
   padding: 8px 13px 9px 13px;
-  border-radius: 5px;;
+  border-radius: 5px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 12px;
@@ -37,8 +37,8 @@ export const Item = styled.div<{
   animation: ${animationOpacity} 0.2s ease-in;
   background: ${(props) => InterfaceBackgroundColor[props.$type]};
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 14px;
-    line-height: 14px;
-    padding: 8px 15px;
+    font-size: 10px;
+    line-height: 10px;
+    padding: 7px 11px 8px 11px;
   }
 `;
