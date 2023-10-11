@@ -103,7 +103,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}s`);
 
       return;
     }
@@ -318,7 +318,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}s`);
 
       return;
     }
