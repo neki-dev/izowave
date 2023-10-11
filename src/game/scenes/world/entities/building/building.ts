@@ -373,7 +373,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addIndicatorsContainer() {
-    this.indicators = this.scene.add.container(this.x - (LEVEL_TILE_SIZE.width / 4), this.y - 8);
+    this.indicators = this.scene.add.container(this.x - (LEVEL_TILE_SIZE.width / 4), this.y - 6);
 
     this.indicators.setDepth(WORLD_DEPTH_GRAPHIC);
     this.indicators.setActive(false);

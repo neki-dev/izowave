@@ -81,6 +81,10 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
   private handlePointer() {
     this.on(Phaser.Input.Events.POINTER_OVER, () => {
+      if (this.scene.builder.isBuild) {
+        return;
+      }
+
       this.addShader('OutlineShader', {
         size: 4.0,
         color: 0xffffff,

@@ -5,7 +5,7 @@ import { InterfaceFont } from '~type/interface';
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 17px;
 `;
 
 export const Control = styled.div`
@@ -22,10 +22,12 @@ export const Keys = styled.div`
 export const Key = styled.div`
   color: #000;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 13px;
-  line-height: 13px;
+  font-size: 12px;
+  line-height: 12px;
   padding: 4px 7px 5px 7px;
   background: #fff;
+  box-shadow: 0 4px 0 #999;
   text-align: center;
+  margin-top: -3px;
   border-radius: 3px;
 `;

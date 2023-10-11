@@ -57,7 +57,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     });
 
     this.addIndicator({
-      color: 0xaf9ae0,
+      color: 0xfcb97e,
       size: LEVEL_TILE_SIZE.width / 2,
       value: () => this.ammo / this.maxAmmo,
     });
