@@ -15,6 +15,8 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Description = 'Basic fire attack of enemies';
 
+  static Category = 'Attack';
+
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
     { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS, icon: BuildingIcon.RADIUS },

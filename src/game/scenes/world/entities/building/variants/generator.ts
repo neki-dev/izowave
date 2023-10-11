@@ -15,6 +15,8 @@ export class BuildingGenerator extends Building {
 
   static Description = 'Generates resources for builds and upgrades';
 
+  static Category = 'Resources';
+
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
   ];

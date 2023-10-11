@@ -15,6 +15,6 @@ export const BUILDINGS: Record<BuildingVariant, IBuildingFactory> = {
   [BuildingVariant.TOWER_LAZER]: BuildingTowerLazer,
   [BuildingVariant.GENERATOR]: BuildingGenerator,
   [BuildingVariant.AMMUNITION]: BuildingAmmunition,
-  [BuildingVariant.RADAR]: BuildingRadar,
   [BuildingVariant.BOOSTER]: BuildingBooster,
+  [BuildingVariant.RADAR]: BuildingRadar,
 };

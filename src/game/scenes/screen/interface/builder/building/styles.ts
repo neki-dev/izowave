@@ -1,27 +1,35 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
+import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~type/interface';
 
-export const Info = styled.div<{
-  $visible?: boolean
-}>`
+export const Info = styled.div`
   position: absolute;
-  left: 0;
-  top: 0;
   transform: translateX(-100%);
-  margin-left: -15px;
-  z-index: 2;
   display: none;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    margin-left: -2px;
-    height: 100%;
-    ${(props) => props.$visible && css`
-      display: block;
-      + [role=hint] {
-        display: none;
-      }
-    `}
-  }
+  pointer-events: none;
+  width: 150px;
+  height: 100%;
+  padding: 10px;
+  background: ${InterfaceBackgroundColor.BLUE_DARK};
+  border-radius: 5px 0 0 5px;
+`;
+
+export const Name = styled.div`
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: ${InterfaceTextColor.SUCCESS};
+  font-size: 14px;
+  line-height: 14px;
+  margin-bottom: 8px;
+  white-space: nowrap;
+`;
+
+export const Text = styled.div`
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 9px;
+  line-height: 11px;
+  letter-spacing: 1px;
+  color: #fff;
 `;
 
 export const Container = styled.div`
@@ -38,8 +46,5 @@ export const Container = styled.div`
         }
       }
     }
-  }
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    height: 100%;
   }
 `;

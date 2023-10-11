@@ -4,13 +4,14 @@ import {
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
+import { Cost } from '~scene/system/interface/cost';
 import { Builder } from '~scene/world/builder';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Container, Number, Preview, Newest,
+  Container, Number, Preview, Newest, Info, Frame,
 } from './styles';
 
 type Props = {
@@ -23,19 +24,14 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
 
   const isMobile = useMobilePlatform();
 
-  const [isDisallow, setDisallow] = useState(false);
-  const [isDisabled, setDisabled] = useState(false);
+  const [isAllow, setAllow] = useState(false);
   const [isActive, setActive] = useState(false);
   const [isUsed, setUsed] = useState(false);
   const [isUsable, setUsable] = useState(false);
 
-  const isNewest = !isUsed && !isDisallow && !isDisabled && !world.game.usedSave;
+  const isNewest = !isUsed && isAllow && !world.game.usedSave;
 
   const onClick = () => {
-    if (isDisallow) {
-      return;
-    }
-
     if (world.builder.variant === variant) {
       world.builder.unsetBuildingVariant();
     } else {
@@ -44,25 +40,24 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
   };
 
   const onMouseEnter = () => {
-    if (!isDisallow && !isDisabled) {
+    if (isAllow) {
       setUsed(true);
     }
   };
 
   useSceneUpdate(world, () => {
     const currentIsActive = world.builder.variant === variant;
-    const currentIsDisallow = !world.builder.isBuildingAllowByWave(variant);
-    const currentIsDisabled = !Builder.IsBuildingAllowByTutorial(variant);
+    const currentIsAllow = (
+      world.builder.isBuildingAllowByWave(variant)
+      && Builder.IsBuildingAllowByTutorial(variant)
+    );
     const currentIsUsable = (
-      !currentIsDisallow
-      && !currentIsDisabled
-      && world.player.resources >= BUILDINGS[variant].Cost
+      world.player.resources >= BUILDINGS[variant].Cost
       && !world.builder.isBuildingLimitReached(variant)
     );
 
     setActive(currentIsActive);
-    setDisallow(currentIsDisallow);
-    setDisabled(currentIsDisabled);
+    setAllow(currentIsAllow);
     setUsable(currentIsUsable);
     if (currentIsActive) {
       setUsed(true);
@@ -77,8 +72,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
         onClick,
         onMouseEnter,
       }}
-      $disallow={isDisallow}
-      $disabled={isDisabled}
+      $allow={isAllow}
       $active={isActive}
       $usable={isUsable}
     >
@@ -89,8 +83,13 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
         <Number>{number}</Number>
       )}
       <Preview>
-        <Texture name={BUILDINGS[variant].Texture} frame={0} />
+        <Frame>
+          <Texture name={BUILDINGS[variant].Texture} frame={0} />
+        </Frame>
       </Preview>
+      <Info>
+        <Cost type="resources" value={BUILDINGS[variant].Cost} size="small" />
+      </Info>
     </Container>
   );
 };

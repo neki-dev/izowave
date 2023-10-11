@@ -18,6 +18,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   static Description = 'Reloads towers ammo within building radius';
 
+  static Category = 'Resources';
+
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
     { label: 'Ammo', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },

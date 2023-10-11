@@ -182,6 +182,7 @@ export interface IBuildingFactory {
   Limit?: boolean
   AllowByWave?: number
   MaxLevel: number
+  Category: string
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
 

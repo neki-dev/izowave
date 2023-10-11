@@ -11,7 +11,9 @@ import { Building } from '../building';
 export class BuildingRadar extends Building {
   static Name = 'Radar';
 
-  static Description = 'Makes hidden enemies visible within building radius';
+  static Description = 'Uncovers enemies within building radius';
+
+  static Category = 'Other';
 
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_RADAR_HEALTH, icon: BuildingIcon.HEALTH },
