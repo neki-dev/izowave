@@ -26,9 +26,11 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   private positionCallback: Nullable<() => Vector2D> = null;
 
-  private timer: Nullable<Phaser.Time.TimerEvent> = null;
-
   private target: Nullable<IEnemy> = null;
+
+  private processingTimestamp: number = 0;
+
+  private processingHitsCount: number = 0;
 
   constructor(scene: IWorld, params: ShotParams) {
     super(scene);
@@ -42,12 +44,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.setStrokeStyle(2, 0xb136ff, 0.5);
     this.setDepth(WORLD_DEPTH_EFFECT);
     this.setOrigin(0.0, 0.0);
-
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      if (this.timer) {
-        this.timer.destroy();
-      }
-    });
   }
 
   public setInitiator(initiator: IShotInitiator, positionCallback: Nullable<() => Vector2D> = null) {
@@ -61,6 +57,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   public update() {
     this.updateLine();
+    this.processing();
   }
 
   public shoot(target: IEnemy) {
@@ -69,12 +66,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
 
     this.target = target;
-
-    this.timer = this.scene.time.addEvent({
-      delay: SHOT_LAZER_DELAY,
-      repeat: SHOT_LAZER_REPEAT,
-      callback: () => this.processing(),
-    });
+    this.processingHitsCount = 0;
 
     this.updateLine();
     this.setActive(true);
@@ -87,11 +79,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   private stop() {
     this.target = null;
-
-    if (this.timer) {
-      this.timer.destroy();
-      this.timer = null;
-    }
 
     this.setVisible(false);
     this.setActive(false);
@@ -136,12 +123,23 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   private processing() {
+    if (!this.initiator) {
+      return;
+    }
+
+    const now = this.scene.getTime();
+
+    if (this.processingTimestamp > now) {
+      return;
+    }
+
     if (
-      !this.initiator
-      || !this.params.maxDistance
-      || !this.target?.body
+      !this.target?.body
       || this.target.live.isDead()
-      || getIsometricDistance(this.initiator, this.target.body.center) > this.params.maxDistance
+      || (
+        this.params.maxDistance
+        && getIsometricDistance(this.initiator, this.target.body.center) > this.params.maxDistance
+      )
     ) {
       this.stop();
 
@@ -150,7 +148,10 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.hit();
 
-    if (this.timer?.repeatCount === 0) {
+    this.processingTimestamp = now + SHOT_LAZER_DELAY;
+    this.processingHitsCount++;
+
+    if (this.processingHitsCount === SHOT_LAZER_REPEAT) {
       this.stop();
     }
   }
