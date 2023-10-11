@@ -5,6 +5,7 @@ import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { Indicator } from '~entity/indicator';
 import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
 import { Live } from '~lib/live';
@@ -24,6 +25,7 @@ import {
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
   BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon, BuildingGrowthValue, BuildingSavePayload,
 } from '~type/world/entities/building';
+import { IIndicator, IndicatorData } from '~type/world/entities/indicator';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
@@ -83,9 +85,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private buildTimer: Nullable< Phaser.Time.TimerEvent> = null;
 
-  private buildBar: Nullable<Phaser.GameObjects.Container> = null;
+  private buildBar: Nullable<IIndicator> = null;
 
-  private indicator: Nullable<Phaser.GameObjects.Container> = null;
+  private indicators: Phaser.GameObjects.Container;
 
   constructor(scene: IWorld, {
     positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
@@ -103,15 +105,21 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.positionAtMatrix = positionAtMatrix;
     this.live = new Live({ health });
 
+    this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
+    this.scene.level.putTile(this, tilePosition);
+
     this.addActionArea();
+    this.addIndicatorsContainer();
+    this.addIndicator({
+      color: 0xd0ff4f,
+      size: LEVEL_TILE_SIZE.width / 2,
+      value: () => this.live.health / this.live.maxHealth,
+    });
 
     this.handlePointer();
 
     this.scene.builder.addFoundation(positionAtMatrix);
-
-    this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
-    this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-    this.scene.level.putTile(this, tilePosition);
 
     if (buildDuration && buildDuration > 0) {
       this.startBuildProcess(buildDuration);
@@ -133,7 +141,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.stopBuildProcess();
 
-      this.removeIndicator();
+      this.removeIndicatorsContainer();
       this.removeAlertIcon();
       this.removeUpgradeIcon();
 
@@ -150,7 +158,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public update() {
     this.updateOutline();
-    this.updateIndicator();
+    this.updateIndicators();
 
     // Catch focus by camera moving
     if (this.toFocus) {
@@ -364,45 +372,41 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public addIndicator() {
-    if (this.indicator || !this.active) {
-      return;
-    }
+  private addIndicatorsContainer() {
+    this.indicators = this.scene.add.container(this.x - (LEVEL_TILE_SIZE.width / 4), this.y - 8);
 
-    const width = LEVEL_TILE_SIZE.width * 0.5;
-    const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
-
-    body.setOrigin(0.0, 0.0);
-
-    const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xd0ff4f);
-
-    bar.setOrigin(0.0, 0.0);
-
-    this.indicator = this.scene.add.container(this.x - (width / 2), this.y - 8);
-
-    this.indicator.setSize(body.width, body.height);
-    this.indicator.setDepth(WORLD_DEPTH_GRAPHIC);
-    this.indicator.add([body, bar]);
+    this.indicators.setDepth(WORLD_DEPTH_GRAPHIC);
+    this.indicators.setActive(false);
+    this.indicators.setVisible(false);
   }
 
-  private updateIndicator() {
-    if (!this.indicator) {
-      return;
-    }
+  public addIndicator(data: IndicatorData) {
+    const indicator = new Indicator(this, data);
 
-    const value = this.live.health / this.live.maxHealth;
-    const bar = <Phaser.GameObjects.Rectangle> this.indicator.getAt(1);
+    indicator.setPosition(0, this.indicators.length * -6);
 
-    bar.setSize((this.indicator.width - 2) * value, this.indicator.height - 2);
+    this.indicators.add(indicator);
   }
 
-  public removeIndicator() {
-    if (!this.indicator) {
+  public toggleIndicators() {
+    const isActive = !this.isSelected && this.active && this.scene.isIndicatorsActive;
+
+    this.indicators.setActive(isActive);
+    this.indicators.setVisible(isActive);
+  }
+
+  private updateIndicators() {
+    if (!this.indicators.visible) {
       return;
     }
 
-    this.indicator.destroy();
-    this.indicator = null;
+    (<IIndicator[]> this.indicators.getAll()).forEach((indicator) => {
+      indicator.updateValue();
+    });
+  }
+
+  private removeIndicatorsContainer() {
+    this.indicators.destroy();
   }
 
   public bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean) {
@@ -572,9 +576,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.builder.selectedBuilding = this;
     this.isSelected = true;
 
-    if (this.indicator) {
-      this.indicator.setVisible(false);
-    }
+    this.toggleIndicators();
 
     if (this.actionsArea) {
       this.actionsArea.setVisible(true);
@@ -591,9 +593,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.builder.selectedBuilding = null;
     this.isSelected = false;
 
-    if (this.indicator) {
-      this.indicator.setVisible(true);
-    }
+    this.toggleIndicators();
 
     if (this.actionsArea) {
       this.actionsArea.setVisible(false);
@@ -707,9 +707,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.setActive(true);
     this.setAlpha(1.0);
 
-    if (this.scene.isIndicatorsActive) {
-      this.addIndicator();
-    }
+    this.toggleIndicators();
 
     this.setInteractive({
       pixelPerfect: true,
@@ -739,11 +737,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
         if (progress >= target) {
           this.completeBuildProcess();
-        } else if (this.buildBar) {
-          const bar = <Phaser.GameObjects.Rectangle> this.buildBar.getAt(1);
-          const value = progress / target;
-
-          bar.setSize((this.buildBar.width - 2) * value, this.buildBar.height - 2);
+        } else {
+          this.buildBar?.updateValue(progress / target);
         }
       },
     });
@@ -763,21 +758,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const width = 20;
-    const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
+    this.buildBar = new Indicator(this, {
+      size: 20,
+      color: 0xffffff,
+    });
 
-    body.setOrigin(0.0, 0.0);
-
-    const bar = this.scene.add.rectangle(1, 1, 0, 0, 0xffffff);
-
-    bar.setOrigin(0.0, 0.0);
-
-    this.buildBar = this.scene.add.container(-width / 2, 0);
-
-    this.buildBar.setSize(body.width, body.height);
-    this.buildBar.add([body, bar]);
-    this.buildBar.setPosition(this.x - body.width / 2, this.y + 20);
-    this.buildBar.setDepth(this.depth + LEVEL_TILE_SIZE.height * 0.5);
+    this.buildBar.setPosition(this.x - this.buildBar.width / 2, this.y + 20);
   }
 
   private removeBuildBar() {

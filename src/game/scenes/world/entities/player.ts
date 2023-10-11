@@ -105,7 +105,6 @@ export class Player extends Sprite implements IPlayer {
     this.addIndicator({
       color: 0xd0ff4f,
       value: () => this.live.health / this.live.maxHealth,
-      size: 20,
     });
 
     this.body.setSize(14, 26);

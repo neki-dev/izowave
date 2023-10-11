@@ -4,6 +4,7 @@ import { ILive } from '~type/live';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
+import { IndicatorData } from '~type/world/entities/indicator';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IShotInitiator } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
@@ -83,6 +84,16 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   getMeta(): IBuildingFactory
 
   /**
+   * Add indicator.
+   */
+  addIndicator(data: IndicatorData): void
+
+  /**
+   * Toggle indicators visible.
+   */
+  toggleIndicators(): void
+
+  /**
    * Get actions radius.
    */
   getActionsRadius(): number
@@ -112,16 +123,6 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Remove building active state.
    */
   unselect(): void
-
-  /**
-   * Add health indicator.
-   */
-  addIndicator(): void
-
-  /**
-   * Remove health indicator.
-   */
-  removeIndicator(): void
 
   /**
    * Add alert icon.

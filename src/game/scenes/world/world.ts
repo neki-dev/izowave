@@ -415,11 +415,7 @@ export class World extends Scene implements IWorld {
       this.isIndicatorsActive = !this.isIndicatorsActive;
 
       this.getEntities<IBuilding>(EntityType.BUILDING).forEach((building) => {
-        if (this.isIndicatorsActive) {
-          building.addIndicator();
-        } else {
-          building.removeIndicator();
-        }
+        building.toggleIndicators();
       });
     });
   }

@@ -1,5 +1,6 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { progressionQuadratic } from '~lib/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { NoticeType } from '~type/screen';
@@ -53,6 +54,12 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
         default: DIFFICULTY.BUILDING_AMMUNITION_RADIUS,
         growth: DIFFICULTY.BUILDING_AMMUNITION_RADIUS_GROWTH,
       },
+    });
+
+    this.addIndicator({
+      color: 0xaf9ae0,
+      size: LEVEL_TILE_SIZE.width / 2,
+      value: () => this.ammo / this.maxAmmo,
     });
 
     Tutorial.Complete(TutorialStep.BUILD_AMMUNITION);
