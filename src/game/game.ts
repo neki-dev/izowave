@@ -287,7 +287,10 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public isSettingEnabled(key: GameSettings) {
-    return (this.settings[key] === 'on');
+    return (
+      this.settings[key] === 'on'
+      && (!SETTINGS[key].onlyDesktop || this.device.os.desktop)
+    );
   }
 
   private readSettings() {

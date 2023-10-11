@@ -150,6 +150,7 @@ export type GameSettingsData = {
   description: string
   values: string[]
   default: string
+  onlyDesktop?: boolean
 };
 
 export type GameSavePayload = {

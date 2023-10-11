@@ -27,6 +27,7 @@ export const SETTINGS: Record<GameSettings, GameSettingsData> = {
     description: 'Show damage',
     values: ['on', 'off'],
     default: 'on',
+    onlyDesktop: true,
   },
   [GameSettings.EFFECTS]: {
     description: 'Effects',
