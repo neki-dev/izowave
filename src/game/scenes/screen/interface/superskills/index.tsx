@@ -5,7 +5,7 @@ import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerSuperskill } from '~type/world/entities/player';
 
-import { SuperskillItem } from './item';
+import { Item } from './item';
 import { Wrapper } from './styles';
 
 export const Superskills: React.FC = () => {
@@ -25,7 +25,7 @@ export const Superskills: React.FC = () => {
   return isWaveGoing ? (
     <Wrapper>
       {superskills.map((superskill) => (
-        <SuperskillItem key={superskill} type={superskill} />
+        <Item key={superskill} type={superskill} />
       ))}
     </Wrapper>
   ) : (

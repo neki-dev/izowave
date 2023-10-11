@@ -11,15 +11,16 @@ import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Container, Number, Preview, Newest, Info, Frame,
+  Container, Number, Image, Newest, Info, Frame,
 } from './styles';
 
 type Props = {
   number: number
   variant: BuildingVariant
+  isGlowing?: boolean
 };
 
-export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
+export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();
@@ -73,6 +74,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
         onMouseEnter,
       }}
       $allow={isAllow}
+      $glow={isGlowing}
       $active={isActive}
       $usable={isUsable}
     >
@@ -82,11 +84,11 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
       {!isMobile && (
         <Number>{number}</Number>
       )}
-      <Preview>
+      <Image>
         <Frame>
           <Texture name={BUILDINGS[variant].Texture} frame={0} />
         </Frame>
-      </Preview>
+      </Image>
       <Info>
         <Cost type="resources" value={BUILDINGS[variant].Cost} size="small" />
       </Info>

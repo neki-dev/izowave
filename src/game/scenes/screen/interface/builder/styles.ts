@@ -8,11 +8,11 @@ export const Wrapper = styled.div`
   top: 0;
   right: 0;
   bottom: 0;
-  > *:not(:last-child) {
-    margin-bottom: 20px;
-    @media ${INTERFACE_MOBILE_BREAKPOINT} {
-      margin-bottom: 13px;
-    }
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    gap: 13px;
   }
 `;
 
@@ -40,10 +40,8 @@ export const Label = styled.div`
 export const Variants = styled.div`
   display: flex;
   justify-content: flex-end;
-  > *:not(:last-child) {
-    margin-right: 5px;
-    @media ${INTERFACE_MOBILE_BREAKPOINT} {
-      margin-right: 2px;
-    }
+  gap: 5px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    gap: 2px;
   }
 `;

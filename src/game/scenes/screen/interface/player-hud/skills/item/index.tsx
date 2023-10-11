@@ -22,7 +22,7 @@ type Props = {
   type: PlayerSkill
 };
 
-export const UpgradesListItem: React.FC<Props> = ({ type }) => {
+export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();

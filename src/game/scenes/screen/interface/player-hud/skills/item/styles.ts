@@ -14,9 +14,6 @@ export const Container = styled.div`
   justify-content: space-between;
   border-radius: 5px;
   overflow: hidden;
-  &:not(:last-child) {
-    margin-bottom: 4px;
-  }
 `;
 
 export const Info = styled.div`

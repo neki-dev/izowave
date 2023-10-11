@@ -11,8 +11,10 @@ import { Hint } from '~scene/system/interface/hint';
 import { TutorialStep } from '~type/tutorial';
 import { PlayerSkill, PlayerSkillTarget } from '~type/world/entities/player';
 
-import { UpgradesListItem } from './item';
-import { Wrapper, Container, Targets } from './styles';
+import { Item } from './item';
+import {
+  Wrapper, Container, Targets, List,
+} from './styles';
 
 export const Skills: React.FC = () => {
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
@@ -88,22 +90,22 @@ export const Skills: React.FC = () => {
       </Button>
       {isOpened ? (
         <Container>
-          <div>
-            <Targets>
-              {targetTypes.map((type) => (
-                <Button
-                  key={type}
-                  onClick={() => setTarget(type)}
-                  view={target === type ? 'confirm' : undefined}
-                >
-                  {type}
-                </Button>
-              ))}
-            </Targets>
-            {upgradeTypes.map((type) => (
-              <UpgradesListItem key={type} type={type} />
+          <Targets>
+            {targetTypes.map((type) => (
+              <Button
+                key={type}
+                onClick={() => setTarget(type)}
+                view={target === type ? 'confirm' : undefined}
+              >
+                {type}
+              </Button>
             ))}
-          </div>
+          </Targets>
+          <List>
+            {upgradeTypes.map((type) => (
+              <Item key={type} type={type} />
+            ))}
+          </List>
           {isSmallScreen && <Button onClick={onClick}>Close</Button>}
         </Container>
       ) : (

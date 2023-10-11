@@ -3,20 +3,20 @@ import styled from 'styled-components';
 import { InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 `;
 
 export const Control = styled.div`
   display: flex;
   align-items: center;
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
 `;
 
 export const Keys = styled.div`
   margin-right: 8px;
   display: flex;
+  gap: 3px;
 `;
 
 export const Key = styled.div`
@@ -28,7 +28,4 @@ export const Key = styled.div`
   background: #fff;
   text-align: center;
   border-radius: 3px;
-  &:not(:last-child) {
-    margin-right: 3px;
-  }
 `;

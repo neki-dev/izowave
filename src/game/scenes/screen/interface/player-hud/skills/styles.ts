@@ -15,12 +15,17 @@ const animationOpacity = keyframes`
 export const Targets = styled.div`
   display: flex;
   margin-bottom: 15px;
+  gap: 5px;
   > * {
     flex: 1;
-    &:not(:last-child) {
-      margin-right: 5px;
-    }
   }
+`;
+
+export const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
 `;
 
 export const Container = styled.div`
@@ -57,7 +62,6 @@ export const Container = styled.div`
     background: ${InterfaceBackgroundColor.BLUE};
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     box-shadow: 10px 0 20px rgba(0, 0, 0, 0.35);
   }
 `;

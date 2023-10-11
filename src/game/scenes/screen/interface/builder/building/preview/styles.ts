@@ -13,6 +13,7 @@ export const Container = styled.div<{
   $allow?: boolean
   $active?: boolean
   $usable?: boolean
+  $glow?: boolean
 }>`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
@@ -36,9 +37,12 @@ export const Container = styled.div<{
       background: ${InterfaceBackgroundColor.BLUE};
     }
   `)}
+  ${(props) => (props.$glow && css`
+    box-shadow: 0 0 50px 20px #fff;
+  `)}
 `;
 
-export const Preview = styled.div`
+export const Image = styled.div`
   padding: 10px 10px 7px 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 8px 10px 5px 10px;

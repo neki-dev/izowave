@@ -8,8 +8,7 @@ export const Wrapper = styled.div`
 
 export const Params = styled.div`
   margin-bottom: 40px;
-
-  > *:not(:last-child) {
-    margin-bottom: 25px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 `;

@@ -17,6 +17,7 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 8px;
   z-index: 2;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     top: 80px;
@@ -35,9 +36,6 @@ export const Item = styled.div<{
   letter-spacing: 1px;
   animation: ${animationOpacity} 0.2s ease-in;
   background: ${(props) => InterfaceBackgroundColor[props.$type]};
-  &:not(:last-child) {
-    margin-bottom: 8px;
-  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 14px;
     line-height: 14px;

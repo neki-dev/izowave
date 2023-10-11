@@ -43,9 +43,6 @@ export const Container = styled.div<{
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  &:not(:last-child) {
-    margin-bottom: 3px;
-  }
   ${(props) => !props.$disabled && css`
     &:hover {
       cursor: pointer;

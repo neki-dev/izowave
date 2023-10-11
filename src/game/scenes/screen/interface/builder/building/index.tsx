@@ -4,7 +4,7 @@ import { BUILDINGS } from '~const/world/entities/buildings';
 import { Hint } from '~scene/system/interface/hint';
 import { BuildingVariant } from '~type/world/entities/building';
 
-import { BuilderPreview } from './preview';
+import { Preview } from './preview';
 import {
   Container, Info, Name, Text,
 } from './styles';
@@ -15,17 +15,13 @@ type Props = {
   hint?: string
 };
 
-export const Building: React.FC<Props> = ({
-  variant,
-  number,
-  hint,
-}) => (
+export const Building: React.FC<Props> = ({ variant, number, hint }) => (
   <Container>
     <Info>
       <Name>{BUILDINGS[variant].Name}</Name>
       <Text>{BUILDINGS[variant].Description}</Text>
     </Info>
     {hint && <Hint side="right">{hint}</Hint>}
-    <BuilderPreview variant={variant} number={number} />
+    <Preview variant={variant} number={number} isGlowing={Boolean(hint)} />
   </Container>
 );

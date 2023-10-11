@@ -29,7 +29,5 @@ export const Content = styled.div`
 export const Buttons = styled.div`
   display: flex;
   margin-top: 15px;
-  > div:not(:last-child) {
-    margin-right: 10px;
-  }
+  gap: 10px;
 `;

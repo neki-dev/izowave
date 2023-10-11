@@ -38,6 +38,7 @@ const animationKickBottom = keyframes`
 export const Wrapper = styled.div`
   position: relative;
   pointer-events: none;
+  z-index: 2;
 `;
 
 export const Key = styled.span`
@@ -54,7 +55,6 @@ export const Key = styled.span`
 export const Container = styled.div<{
   $width?: number
 }>`
-  box-shadow: 0 0 90px 20px #fff;
   background: ${InterfaceBackgroundColor.BLACK};
   padding: 9px 12px 10px 12px;
   border-radius: 5px;

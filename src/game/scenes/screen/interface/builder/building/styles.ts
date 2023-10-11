@@ -5,6 +5,7 @@ import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~ty
 
 export const Info = styled.div`
   position: absolute;
+  z-index: 2;
   transform: translateX(-100%);
   display: none;
   pointer-events: none;

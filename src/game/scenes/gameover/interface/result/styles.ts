@@ -5,7 +5,9 @@ import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
 export const Wrapper = styled.div`
   margin-top: 100px;
-  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     margin-top: 40px;
   }
@@ -16,9 +18,6 @@ export const Item = styled.div`
   align-items: center;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  &:not(:last-child) {
-    margin-bottom: 15px;
-  }
 `;
 
 export const Value = styled.div`

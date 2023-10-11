@@ -23,6 +23,7 @@ export const Values = styled.ul<{
 }>`
   list-style: none;
   display: flex;
+  gap: 5px;
   ${(props) => (props.$disabled ? css`
     opacity: 0.5;
   ` : css`
@@ -46,9 +47,6 @@ export const Value = styled.li<{
   )};
   padding: 4px 7px 6px 7px;
   border-radius: 3px;
-  &:not(:last-child) {
-    margin-right: 5px;
-  }
   &:hover {
     cursor: pointer;
     ${(props) => !props.$active && css`
