@@ -1,26 +1,47 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Wrapper = styled.div`
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    margin-right: -16px;
-    padding: 1px 16px 1px 0;
-    overflow-y: scroll;
-    overflow-x: visible;
-    width: 100vw; // hacking overflow-x
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    gap: 13px;
   }
-  > *:not(:last-child) {
-    margin-bottom: 10px;
-    @media ${INTERFACE_MOBILE_BREAKPOINT} {
-      margin-bottom: 3px;
-    }
+`;
+
+export const Category = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+
+export const Label = styled.div`
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: #fff;
+  letter-spacing: 1px;
+  font-size: 9px;
+  line-height: 9px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  padding: 3px 5px 4px 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-bottom: 5px;
+  }
+`;
+
+export const Variants = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    gap: 2px;
   }
 `;

@@ -3,8 +3,9 @@ import Phaser from 'phaser';
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
-import { equalPositions } from '~lib/utils';
+import { equalPositions, getIsometricAngle, getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
@@ -124,8 +125,11 @@ export class NPC extends Sprite implements INPC {
     });
   }
 
-  public isFreezed() {
-    return (this.freezeTimestamp > this.scene.getTime());
+  public isFreezed(withEffects?: boolean) {
+    return (
+      (this.freezeTimestamp > this.scene.getTime())
+      && (!withEffects || Boolean(this.freezeEffectTimer))
+    );
   }
 
   private findPathToTarget() {
@@ -188,14 +192,14 @@ export class NPC extends Sprite implements INPC {
   }
 
   public getDistanceToTarget() {
-    return Phaser.Math.Distance.BetweenPoints(
+    return getIsometricDistance(
       this.getPositionOnGround(),
       this.scene.player.getPositionOnGround(),
     );
   }
 
   public moveTo(position: Vector2D) {
-    const rotation = Phaser.Math.Angle.BetweenPoints(this.getPositionOnGround(), position);
+    const rotation = getIsometricAngle(this.getPositionOnGround(), position);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
 
@@ -208,11 +212,14 @@ export class NPC extends Sprite implements INPC {
     const speed = this.isFreezed() ? (this.speed * 0.1) : this.speed;
     const velocity = this.scene.physics.velocityFromRotation(rotation, speed);
 
-    this.setVelocity(velocity.x, velocity.y);
+    this.setVelocity(
+      velocity.x,
+      velocity.y * LEVEL_TILE_SIZE.persperctive,
+    );
   }
 
   private nextPathTile() {
-    const [firstNode] = this.pathToTarget;
+    const firstNode = this.pathToTarget[0];
     const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 0 });
     const currentPosition = this.getPositionOnGround();
     const signX = Math.sign(this.body.velocity.x);
@@ -243,7 +250,7 @@ export class NPC extends Sprite implements INPC {
   }
 
   private moveToTile() {
-    const [target] = this.pathToTarget;
+    const target = this.pathToTarget[0];
 
     if (target) {
       const positionAtWorld = Level.ToWorldPosition({ ...target, z: 0 });

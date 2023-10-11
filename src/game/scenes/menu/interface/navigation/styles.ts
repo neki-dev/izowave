@@ -8,6 +8,7 @@ export const Wrapper = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  gap: 10px;
 `;
 
 export const Space = styled.div`
@@ -41,7 +42,4 @@ export const Item = styled.li<{
   ` : css`
     pointer-events: all;
   `)}
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
 `;

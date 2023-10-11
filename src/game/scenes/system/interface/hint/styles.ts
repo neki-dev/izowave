@@ -38,6 +38,7 @@ const animationKickBottom = keyframes`
 export const Wrapper = styled.div`
   position: relative;
   pointer-events: none;
+  z-index: 2;
 `;
 
 export const Key = styled.span`
@@ -91,7 +92,7 @@ export const Positioner = styled.div<{
             transform: translate(-100%, -50%);
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-right: 10px solid #000;
+            border-right: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
@@ -106,7 +107,7 @@ export const Positioner = styled.div<{
             transform: translate(100%, -50%);
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-left: 10px solid #000;
+            border-left: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
@@ -122,7 +123,7 @@ export const Positioner = styled.div<{
             transform: translate(-50%, -100%);
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
-            border-bottom: 10px solid #000;
+            border-bottom: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
@@ -138,7 +139,7 @@ export const Positioner = styled.div<{
             transform: translate(-50%, 100%);
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
-            border-top: 10px solid #000;
+            border-top: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;

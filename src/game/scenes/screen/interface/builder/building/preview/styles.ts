@@ -10,42 +10,25 @@ const animationBlink = keyframes`
 `;
 
 export const Container = styled.div<{
-  $disabled?: boolean
-  $disallow?: boolean
+  $allow?: boolean
   $active?: boolean
   $usable?: boolean
+  $glow?: boolean
 }>`
-  padding: 11px 18px 11px 14px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
   position: relative;
-  &::before {
-    position: absolute;
-    content: '';
-    right: 3px;
-    top: 3px;
-    bottom: 3px;
-    background: ${InterfaceBackgroundColor.ERROR_LIGHT};
-    border-radius: 2px;
-    width: 3px;
+  &:hover {
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
   }
-  ${(props) => (!props.$disabled && css`
-    &:hover {
-      background: ${InterfaceBackgroundColor.BLACK};
-      cursor: pointer;
-    }
-  `)}
-  ${(props) => ((props.$disabled || props.$disallow) && css`
-    opacity: 0.5;
-    filter: grayscale(100%);
-    &::before {
-      background: #aaa;
-    }
-  `)}
-  ${(props) => (props.$usable && css`
-    &::before {
-      background: ${InterfaceBackgroundColor.SUCCESS_LIGHT};
-    }
+  ${(props) => (props.$allow ? css`
+    ${() => (!props.$usable && css`
+      background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
+    `)}
+  ` : css`
+      opacity: 0.5;
+      filter: grayscale(100%);
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
@@ -54,21 +37,33 @@ export const Container = styled.div<{
       background: ${InterfaceBackgroundColor.BLUE};
     }
   `)}
+  ${(props) => (props.$glow && css`
+    box-shadow: 0 0 50px 20px #fff;
+  `)}
+`;
+
+export const Image = styled.div`
+  padding: 10px 10px 7px 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    display: flex;
-    align-items: center;
-    padding: 8px 16px 8px 12px;
-    height: 100%;
+    padding: 8px 10px 5px 10px;
   }
 `;
 
-export const Preview = styled.div`
+export const Frame = styled.div`
   overflow: hidden;
   width: 34px;
   height: 40px;
   img, div[data-texture-container] {
     height: 100%;
   }
+`;
+
+export const Info = styled.div`
+  background: #000;
+  display: flex;
+  justify-content: center;
+  padding: 5px 0;
+  border-radius: 0 0 5px 5px;
 `;
 
 export const Newest = styled.div`
@@ -95,7 +90,7 @@ export const Number = styled.div`
   font-family: ${InterfaceFont.PIXEL_TEXT};
   font-size: 10px;
   line-height: 10px;
-  right: 10px;
+  right: 4px;
   top: 4px;
   opacity: 0.75;
 `;

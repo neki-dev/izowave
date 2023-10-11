@@ -84,12 +84,6 @@ export interface IBuilder extends EventEmitter {
   isBuildingLimitReached(variant: BuildingVariant): boolean
 
   /**
-   * Check is tutorial allow building variant.
-   * @param variant - Building variant
-   */
-  isBuildingAllowByTutorial(variant: BuildingVariant): boolean
-
-  /**
    * Check is current wave allow building variant.
    * @param variant - Building variant
    */
@@ -103,7 +97,6 @@ export interface IBuilder extends EventEmitter {
 }
 
 export enum BuilderEvents {
-  BUILD = 'build',
   BUILD_START = 'build_start',
   BUILD_STOP = 'build_stop',
 }

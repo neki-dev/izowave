@@ -10,7 +10,7 @@ export interface IAssistant extends INPC, IShotInitiator {
 }
 
 export enum AssistantTexture {
-  ASSISTANT = 'assistant',
+  ASSISTANT = 'assistant/assistant',
 }
 
 export type AssistantData = {

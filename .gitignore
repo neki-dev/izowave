@@ -3,5 +3,8 @@
 node_modules/
 dist/
 .DS_Store
-.psd
 TODO.md
+*.sh
+*.psd
+*.log
+*.zip

@@ -1,4 +1,5 @@
 import { BuildingAmmunition } from '~entity/building/variants/ammunition';
+import { BuildingBooster } from '~entity/building/variants/booster';
 import { BuildingGenerator } from '~entity/building/variants/generator';
 import { BuildingRadar } from '~entity/building/variants/radar';
 import { BuildingTowerFire } from '~entity/building/variants/tower/variants/fire';
@@ -14,5 +15,6 @@ export const BUILDINGS: Record<BuildingVariant, IBuildingFactory> = {
   [BuildingVariant.TOWER_LAZER]: BuildingTowerLazer,
   [BuildingVariant.GENERATOR]: BuildingGenerator,
   [BuildingVariant.AMMUNITION]: BuildingAmmunition,
+  [BuildingVariant.BOOSTER]: BuildingBooster,
   [BuildingVariant.RADAR]: BuildingRadar,
 };

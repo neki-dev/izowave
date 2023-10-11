@@ -5,14 +5,16 @@ import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { Live } from '~lib/live';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
+import { Indicator } from '~scene/world/entities/indicator';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
 import { ILive, LiveEvents } from '~type/live';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
+import { IIndicator } from '~type/world/entities/indicator';
 import {
-  ISprite, SpriteData, SpriteIndicator, SpriteIndicatorData,
+  ISprite, SpriteData, SpriteIndicatorData,
 } from '~type/world/entities/sprite';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
@@ -43,7 +45,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   private collisionGround: boolean = false;
 
-  private indicators: SpriteIndicator[] = [];
+  private indicators: Phaser.GameObjects.Container;
 
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
@@ -68,6 +70,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.setImmovable(true);
     this.setPushable(false);
 
+    this.addIndicatorsContainer();
     this.addDebugPosition();
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
@@ -84,7 +87,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     const positionOnGround = this.getPositionOnGround();
     const depth = Level.GetDepth(positionOnGround.y, 1);
-    const positionOfTop = this.getTopCenter();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
@@ -92,7 +94,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.setDepth(depth);
 
     this.container.setDepth(depth + 19);
-    this.container.setPosition(positionOfTop.x, (positionOfTop?.y ?? 0) - 10);
+    this.container.setPosition(this.body.center.x, this.body.center.y);
     this.container.setAlpha(this.alpha);
     this.container.setVisible(this.visible);
 
@@ -220,36 +222,37 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return points;
   }
 
+  private addIndicatorsContainer() {
+    this.indicators = this.scene.add.container();
+
+    this.container.add(this.indicators);
+
+    // Need to wait body configure
+    setTimeout(() => {
+      this.indicators.setPosition(
+        -this.displayWidth / 2,
+        -this.body.halfHeight - 10,
+      );
+    }, 0);
+  }
+
   public addIndicator(data: SpriteIndicatorData) {
-    const width = data.size ?? this.displayWidth;
-    const body = this.scene.add.rectangle(0, 0, width, 5, 0x000000);
+    const indicator = new Indicator(this, {
+      ...data,
+      size: this.displayWidth,
+    });
 
-    body.setOrigin(0.0, 0.0);
+    indicator.setPosition(0, this.indicators.length * -6);
 
-    const bar = this.scene.add.rectangle(1, 1, 0, 0, data.color);
-
-    bar.setOrigin(0.0, 0.0);
-
-    const container = this.scene.add.container(-width / 2, this.indicators.length * -6);
-
-    container.setSize(body.width, body.height);
-    container.add([body, bar]);
-
-    this.container.add(container);
-    this.indicators.push({ container, value: data.value });
+    this.indicators.add(indicator);
   }
 
   private updateIndicators() {
-    this.indicators.forEach((indicator, index) => {
-      const value = indicator.value();
+    (<IIndicator[]> this.indicators.getAll()).forEach((indicator) => {
+      const value = indicator.updateValue();
 
       if (value <= 0.0) {
-        indicator.container.destroy();
-        this.indicators.splice(index, 1);
-      } else {
-        const bar = <Phaser.GameObjects.Rectangle> indicator.container.getAt(1);
-
-        bar.setSize((indicator.container.width - 2) * value, indicator.container.height - 2);
+        indicator.destroy();
       }
     });
   }
@@ -308,7 +311,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.strokePath();
   }
 
-  public onDamage() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public onDamage(amount: number) {
     if (
       !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
       || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)

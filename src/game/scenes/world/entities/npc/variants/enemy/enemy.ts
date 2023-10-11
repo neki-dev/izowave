@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   ENEMY_PATH_BREAKPOINT,
@@ -9,12 +10,13 @@ import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
-import { registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
 import { excludePosition } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
+import { InterfaceFont } from '~type/interface';
 import { IWorld, WorldEvents } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
@@ -28,8 +30,14 @@ import {
 import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 
+Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);
+
 export class Enemy extends NPC implements IEnemy {
-  private damage: number;
+  private _damage: number;
+
+  public get damage() { return this._damage; }
+
+  private set damage(v) { this._damage = v; }
 
   private might: number;
 
@@ -38,6 +46,10 @@ export class Enemy extends NPC implements IEnemy {
   private score: number;
 
   private isOverlapTarget: boolean = false;
+
+  private damageLabel: Nullable<Phaser.GameObjects.Text> = null;
+
+  private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
 
   constructor(scene: IWorld, {
     positionAtMatrix, texture, score, multipliers,
@@ -64,7 +76,7 @@ export class Enemy extends NPC implements IEnemy {
     });
     scene.addEntity(EntityType.ENEMY, this);
 
-    this.damage = progressionQuadratic({
+    this.damage = progressionLinear({
       defaultValue: DIFFICULTY.ENEMY_DAMAGE
         * multipliers.damage
         * scene.game.getDifficultyMultiplier(),
@@ -82,6 +94,7 @@ export class Enemy extends NPC implements IEnemy {
     this.body.setCircle((this.width * 0.5) - 2);
     this.body.setOffset(2, 2);
 
+    this.addDamageLabel();
     this.addIndicator({
       color: 0xdb2323,
       value: () => this.live.health / this.live.maxHealth,
@@ -102,6 +115,7 @@ export class Enemy extends NPC implements IEnemy {
     this.on(NPCEvent.PATH_NOT_FOUND, this.onPathNotFound.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.removeDamageLabel();
       if (this.damageTimer) {
         this.damageTimer.destroy();
       }
@@ -147,6 +161,74 @@ export class Enemy extends NPC implements IEnemy {
     const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
 
     this.setPosition(position.x, position.y);
+  }
+
+  private addDamageLabel() {
+    this.damageLabel = this.scene.add.text(0, 0, '', {
+      fontSize: '6px',
+      fontFamily: InterfaceFont.PIXEL_TEXT,
+      align: 'center',
+      color: '#fff',
+      resolution: 2,
+    });
+
+    this.damageLabel.setOrigin(0.5, 0.5);
+    this.damageLabel.setDepth(WORLD_DEPTH_GRAPHIC);
+    this.damageLabel.setActive(false);
+    this.damageLabel.setVisible(false);
+  }
+
+  private updateDamageLabel(amount: number) {
+    if (!this.damageLabel) {
+      return;
+    }
+
+    this.damageLabel.setText(amount.toString());
+    this.damageLabel.setPosition(this.body.center.x, this.body.center.y);
+    this.damageLabel.setActive(true);
+    this.damageLabel.setVisible(true);
+    this.damageLabel.setAlpha(1.0);
+
+    if (this.damageLabelTween) {
+      this.damageLabelTween.reset();
+    } else {
+      this.damageLabelTween = this.scene.tweens.add({
+        targets: this.damageLabel,
+        alpha: { from: 1.0, to: 0.0 },
+        duration: 1000,
+        delay: 250,
+        onComplete: () => {
+          if (this.damageLabel) {
+            if (this.active) {
+              this.damageLabel.setActive(false);
+              this.damageLabel.setVisible(false);
+            } else {
+              this.damageLabel.destroy();
+              this.damageLabel = null;
+            }
+          }
+          if (this.damageLabelTween) {
+            this.damageLabelTween.destroy();
+            this.damageLabelTween = null;
+          }
+        },
+      });
+    }
+  }
+
+  private removeDamageLabel() {
+    if (this.damageLabel && !this.damageLabelTween) {
+      this.damageLabel.destroy();
+      this.damageLabel = null;
+    }
+  }
+
+  public onDamage(amount: number): void {
+    if (this.scene.game.isSettingEnabled(GameSettings.SHOW_DAMAGE)) {
+      this.updateDamageLabel(amount);
+    }
+
+    super.onDamage(amount);
   }
 
   public onDead() {
@@ -289,5 +371,3 @@ export class Enemy extends NPC implements IEnemy {
     });
   }
 }
-
-registerSpriteAssets(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);

@@ -105,10 +105,4 @@ export type SpriteData = {
 export type SpriteIndicatorData = {
   color: number
   value: () => number
-  size?: number
-};
-
-export type SpriteIndicator = {
-  container: Phaser.GameObjects.Container
-  value: () => number
 };

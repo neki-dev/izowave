@@ -51,6 +51,11 @@ export interface IWorld extends IScene {
   readonly deltaTime: number
 
   /**
+   * State of indicators visible.
+   */
+  readonly isIndicatorsActive: boolean
+
+  /**
    * List of generated enemy spawn positions
    */
   enemySpawnPositions: Vector2D[]

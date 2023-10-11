@@ -11,6 +11,8 @@ export class BuildingWall extends Building {
 
   static Description = 'Defends other buildings';
 
+  static Category = 'Defend';
+
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
   ];

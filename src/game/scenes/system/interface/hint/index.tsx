@@ -38,10 +38,10 @@ export const Hint: React.FC<Props> = ({
   }, [children]);
 
   return (
-  <Wrapper role="hint">
-    <Positioner $side={side} $align={align}>
-      <Container $width={width}>{content}</Container>
-    </Positioner>
-  </Wrapper>
+    <Wrapper role="hint">
+      <Positioner $side={side} $align={align}>
+        <Container $width={width}>{content}</Container>
+      </Positioner>
+    </Wrapper>
   );
 };

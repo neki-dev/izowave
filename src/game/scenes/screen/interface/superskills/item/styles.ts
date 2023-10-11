@@ -95,9 +95,6 @@ export const Container = styled.div<{
       }
     `)
   )}
-  &:not(:last-child) {
-    margin-right: 10px;
-  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 10px;
   }

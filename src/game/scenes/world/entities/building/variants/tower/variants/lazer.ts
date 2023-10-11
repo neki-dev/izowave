@@ -13,6 +13,8 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static Description = 'Instant and continuous laser attack of enemies';
 
+  static Category = 'Attack';
+
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: BuildingIcon.HEALTH },
     { label: 'Readius', value: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS, icon: BuildingIcon.RADIUS },

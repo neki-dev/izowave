@@ -1,5 +1,8 @@
+import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
+import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { progressionQuadratic } from '~lib/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -15,6 +18,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   static Name = 'Ammunition';
 
   static Description = 'Reloads towers ammo within building radius';
+
+  static Category = 'Resources';
 
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
@@ -51,18 +56,32 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       },
     });
 
-    this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
+    this.addIndicator({
+      color: 0xfcb97e,
+      size: LEVEL_TILE_SIZE.width / 2,
+      value: () => this.ammo / this.maxAmmo,
+    });
+
+    Tutorial.Complete(TutorialStep.BUILD_AMMUNITION);
 
     this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
 
-    this.bindTutorialHint(TutorialStep.BUY_AMMO, 'Click to buy ammo', () => this.ammo === 0);
+    this.bindTutorialHint(
+      TutorialStep.BUY_AMMO,
+      this.scene.game.device.os.desktop
+        ? 'Hover and press [F]\nto buy ammo'
+        : 'Click to buy ammo',
+      () => this.ammo === 0,
+    );
+
+    this.bindHotKey(CONTROL_KEY.BUILDING_BUY_AMMO, () => this.buyAmmo());
   }
 
   public getInfo() {
     const info: BuildingParam[] = [{
       label: 'Ammo',
       icon: BuildingIcon.AMMO,
-      value: this.ammo,
+      value: `${this.ammo}/${this.maxAmmo}`,
     }];
 
     return super.getInfo().concat(info);
@@ -73,27 +92,13 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       label: 'Buy ammo',
       cost: this.getAmmoCost(),
       disabled: (this.ammo >= this.maxAmmo),
+      hotkey: 'F',
       onClick: () => {
         this.buyAmmo();
       },
     }];
 
     return super.getControls().concat(actions);
-  }
-
-  public getSavePayload() {
-    return {
-      ...super.getSavePayload(),
-      ammo: this.ammo,
-    };
-  }
-
-  public loadSavePayload(data: BuildingSavePayload) {
-    super.loadSavePayload(data);
-
-    if (data.ammo) {
-      this.ammo = data.ammo;
-    }
   }
 
   public use(amount: number) {
@@ -108,7 +113,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
       this.addAlertIcon();
 
-      this.scene.game.tutorial.start(TutorialStep.BUY_AMMO);
+      Tutorial.Start(TutorialStep.BUY_AMMO);
     }
 
     return totalAmount;
@@ -142,8 +147,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.scene.getEntitiesGroup(EntityType.BUILDING)
       .emit(BuildingEvents.BUY_AMMO, this);
 
-    this.scene.game.tutorial.complete(TutorialStep.BUY_AMMO);
     this.scene.sound.play(BuildingAudio.RELOAD);
+
+    Tutorial.Complete(TutorialStep.BUY_AMMO);
   }
 
   private onUpgrade() {
@@ -153,10 +159,24 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       level: this.upgradeLevel,
       roundTo: 10,
     });
-
     const addedAmmo = maxAmmo - this.maxAmmo;
 
     this.maxAmmo = maxAmmo;
     this.ammo += addedAmmo;
+  }
+
+  public getSavePayload() {
+    return {
+      ...super.getSavePayload(),
+      ammo: this.ammo,
+    };
+  }
+
+  public loadSavePayload(data: BuildingSavePayload) {
+    super.loadSavePayload(data);
+
+    if (data.ammo) {
+      this.ammo = data.ammo;
+    }
   }
 }

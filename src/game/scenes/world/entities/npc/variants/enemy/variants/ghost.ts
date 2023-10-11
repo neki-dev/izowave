@@ -4,15 +4,15 @@ import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
 
-export class EnemyImpure extends Enemy {
+export class EnemyGhost extends Enemy {
   static SpawnWaveRange = [8];
 
   constructor(scene: IWorld, data: EnemyVariantData) {
     super(scene, {
       ...data,
-      texture: EnemyTexture.IMPURE,
+      texture: EnemyTexture.GHOST,
       multipliers: {
-        health: 1.3,
+        health: 1.0,
         damage: 0.7,
         speed: 0.8,
       },
@@ -24,7 +24,7 @@ export class EnemyImpure extends Enemy {
 
     const isVisible = this.scene.builder
       .getBuildingsByVariant(BuildingVariant.RADAR)
-      .some((building) => building.actionsAreaContains(this));
+      .some((building) => building.active && building.actionsAreaContains(this));
 
     this.setAlpha(isVisible ? 1.0 : 0.5);
   }

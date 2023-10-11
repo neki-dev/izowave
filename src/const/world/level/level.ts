@@ -11,8 +11,7 @@ export const LEVEL_TILE_SIZE: TileMeta = {
   width: 42,
   height: 48,
   origin: 0.25,
-  persperctive: 0.571,
-  deg: 29.726,
+  persperctive: (48 / 2) / 42,
 };
 
 export const LEVEL_MAP_MAX_HEIGHT = 4;

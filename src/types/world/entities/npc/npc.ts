@@ -18,8 +18,9 @@ export interface INPC extends ISprite {
 
   /**
    * Check is NPC actions is paused.
+   * @param withEffects - Effects state
    */
-  isFreezed(): boolean
+  isFreezed(withEffects?: boolean): boolean
 
   /**
    * Get distance to target.

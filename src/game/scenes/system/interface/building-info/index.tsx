@@ -1,7 +1,6 @@
 import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { BuildingParams } from '~scene/system/interface/building-params';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import {
@@ -11,6 +10,7 @@ import {
 } from '~type/world/entities/building';
 
 import { BuildingControls } from './controls';
+import { BuildingParams } from './params';
 import {
   Name, Level, Health, Wrapper, Head, Body, Container,
 } from './styles';

@@ -4,6 +4,7 @@ import { ILive } from '~type/live';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
+import { IndicatorData } from '~type/world/entities/indicator';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IShotInitiator } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
@@ -53,6 +54,13 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   isActionAllowed(): boolean
 
   /**
+   * Bind hot key for action.
+   * @param key - Key
+   * @param callback - Callback
+   */
+  bindHotKey(key: string, callback: () => void): void
+
+  /**
    * Bind hint on tutorial step
    * @param step - Tutorial step
    * @param text - Message
@@ -74,6 +82,16 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Get building meta.
    */
   getMeta(): IBuildingFactory
+
+  /**
+   * Add indicator.
+   */
+  addIndicator(data: IndicatorData): void
+
+  /**
+   * Toggle indicators visible.
+   */
+  toggleIndicators(): void
 
   /**
    * Get actions radius.
@@ -141,6 +159,13 @@ export interface IBuildingAmmunition extends IBuilding {
   use(amount: number): number
 }
 
+export interface IBuildingBooster extends IBuilding {
+  /**
+   * Increase power.
+   */
+  readonly power: number
+}
+
 export interface IBuildingTower extends IBuilding {
   /**
    * Current ammo in clip.
@@ -158,12 +183,15 @@ export interface IBuildingFactory {
   Limit?: boolean
   AllowByWave?: number
   MaxLevel: number
+  Category: string
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
 
 export enum BuildingEvents {
   UPGRADE = 'upgrade',
   BUY_AMMO = 'buy_ammo',
+  BREAK = 'break',
+  CREATE = 'create',
 }
 
 export enum BuildingVariant {
@@ -174,6 +202,7 @@ export enum BuildingVariant {
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   RADAR = 'RADAR',
+  BOOSTER = 'BOOSTER',
 }
 
 export enum BuildingTexture {
@@ -184,6 +213,7 @@ export enum BuildingTexture {
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
   RADAR = 'building/textures/radar',
+  BOOSTER = 'building/textures/booster',
 }
 
 export enum BuildingIcon {
@@ -199,7 +229,8 @@ export enum BuildingIcon {
   DAMAGE = 'building/icons/params/damage',
   RESOURCES = 'building/icons/params/resources',
   SPEED = 'building/icons/params/speed',
-  DELAY = 'building/icons/params/pause',
+  DELAY = 'building/icons/params/delay',
+  POWER = 'building/icons/params/power',
 }
 
 export enum BuildingAudio {
@@ -237,6 +268,7 @@ export type BuildingControl = {
   label: string
   cost?: number
   disabled?: boolean
+  hotkey: string
   onClick: () => void
 };
 

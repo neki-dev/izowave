@@ -5,6 +5,11 @@ import { Vector2D } from '~type/world/level';
 
 export interface IEnemy extends INPC {
   /**
+   * Damage amount.
+   */
+  readonly damage: number
+
+  /**
    * Set overlaped state.
    */
   overlapTarget(): void
@@ -23,6 +28,7 @@ export interface IEnemyFactory {
 
 export interface IEnemyTarget {
   readonly live: ILive
+  getPositionOnGround(): Vector2D
 }
 
 export enum EnemyTexture {
@@ -30,11 +36,11 @@ export enum EnemyTexture {
   SPIKE = 'enemy/spike',
   RISPER = 'enemy/risper',
   DEMON = 'enemy/demon',
-  OVERLORD = 'enemy/overlord',
+  TANK = 'enemy/tank',
   BOSS = 'enemy/boss',
-  IMPURE = 'enemy/impure',
-  UNDEAD = 'enemy/undead',
+  GHOST = 'enemy/ghost',
   TERMER = 'enemy/termer',
+  EXPLOSIVE = 'enemy/explosive',
 }
 
 export enum EnemyVariant {
@@ -42,11 +48,11 @@ export enum EnemyVariant {
   SPIKE = 'SPIKE',
   RISPER = 'RISPER',
   DEMON = 'DEMON',
-  OVERLORD = 'OVERLORD',
+  TANK = 'TANK',
   BOSS = 'BOSS',
-  IMPURE = 'IMPURE',
-  UNDEAD = 'UNDEAD',
+  GHOST = 'GHOST',
   TERMER = 'TERMER',
+  EXPLOSIVE = 'EXPLOSIVE',
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {

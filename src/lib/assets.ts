@@ -2,68 +2,65 @@ import Phaser from 'phaser';
 
 import { AssetsSource, AssetsSpriteParams } from '~type/assets';
 
-const ASSETS_PACK: {
-  files: Phaser.Types.Loader.FileConfig[]
-} = {
-  files: [],
-};
+export class Assets {
+  static Files: Phaser.Types.Loader.FileConfig[] = [];
 
-function normalizeAssetsFiles<T extends string>(files: AssetsSource<T>) {
-  if (typeof files === 'string') {
-    return [files];
+  static RegisterAudio(files: AssetsSource) {
+    this.Files = this.Files.concat(
+      this.Normalize(files).map((file) => ({
+        key: file,
+        type: 'audio',
+        url: `assets/audio/${file}.mp3`,
+      })),
+    );
   }
 
-  return Object.values(files);
-}
+  static RegisterImages(files: AssetsSource) {
+    this.Files = this.Files.concat(
+      this.Normalize(files).map((file) => ({
+        key: file,
+        type: 'image',
+        url: `assets/sprites/${file}.png`,
+      })),
+    );
+  }
 
-export function registerAudioAssets(files: AssetsSource) {
-  ASSETS_PACK.files = ASSETS_PACK.files.concat(
-    normalizeAssetsFiles(files).map((audio) => ({
-      key: audio,
-      type: 'audio',
-      url: `assets/audio/${audio}.mp3`,
-    })),
-  );
-}
+  static RegisterSprites<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
+    this.Files = this.Files.concat(
+      this.Normalize(files).map((file) => {
+        const { width, height } = (typeof params === 'function') ? params(file) : params;
 
-export function registerImageAssets(files: AssetsSource) {
-  ASSETS_PACK.files = ASSETS_PACK.files.concat(
-    normalizeAssetsFiles(files).map((image) => ({
-      key: image,
-      type: 'image',
-      url: `assets/sprites/${image}.png`,
-    })),
-  );
-}
+        return {
+          key: file,
+          type: 'spritesheet',
+          url: `assets/sprites/${file}.png`,
+          frameConfig: {
+            frameWidth: width,
+            frameHeight: height,
+          },
+        };
+      }),
+    );
+  }
 
-export function registerSpriteAssets<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
-  ASSETS_PACK.files = ASSETS_PACK.files.concat(
-    normalizeAssetsFiles(files).map((sprite) => {
-      const { width, height } = (typeof params === 'function') ? params(sprite) : params;
+  static async ImportFontFace(name: string, file: string) {
+    const font = new FontFace(name, `url('assets/fonts/${file}')`);
 
-      return {
-        key: sprite,
-        type: 'spritesheet',
-        url: `assets/sprites/${sprite}.png`,
-        frameConfig: {
-          frameWidth: width,
-          frameHeight: height,
-        },
-      };
-    }),
-  );
-}
-
-export function getAssetsPack() {
-  return ASSETS_PACK;
-}
-
-export async function loadFontFace(name: string, file: string) {
-  const font = new FontFace(name, `url('assets/fonts/${file}')`);
-
-  return font.load().then(() => {
+    await font.load();
     document.fonts.add(font);
 
     return font;
-  });
+  }
+
+  static Clear() {
+    this.Files = [];
+  }
+
+  private static Normalize<T extends string>(files: AssetsSource<T>) {
+    if (typeof files === 'string') {
+      return [files];
+    }
+
+    return Object.values(files);
+  }
 }

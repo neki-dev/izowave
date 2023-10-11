@@ -22,7 +22,7 @@ type Props = {
   type: PlayerSuperskill
 };
 
-export const SuperskillItem: React.FC<Props> = ({ type }) => {
+export const Item: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.SYSTEM);

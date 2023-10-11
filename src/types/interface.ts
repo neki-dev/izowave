@@ -15,6 +15,7 @@ export enum InterfaceBackgroundColor {
   ERROR_LIGHT = '#ff6d6d',
   ERROR = '#db2323',
   ERROR_DARK = '#BC1927',
+  ERROR_DARK_TRANSPARENT_75 = 'rgba(120, 0, 10, 0.75)',
   WHITE_TRANSPARENT_15 = 'rgba(255, 255, 255, 0.15)',
   WHITE_TRANSPARENT_75 = 'rgba(255, 255, 255, 0.75)',
   BLACK = '#000000',

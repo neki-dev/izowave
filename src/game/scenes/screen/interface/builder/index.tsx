@@ -1,25 +1,43 @@
-import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
-import { GameScene, IGame } from '~type/game';
+import { BUILDINGS } from '~const/world/entities/buildings';
+import { Tutorial } from '~lib/tutorial';
+import { eachEntries } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import { Building } from './building';
-import { Wrapper } from './styles';
+import {
+  Category, Label, Variants, Wrapper,
+} from './styles';
 
 export const Builder: React.FC = () => {
-  const game = useGame<IGame>();
-  const world = useScene<IWorld>(GameScene.WORLD);
-
-  const refScroll = useRef<HTMLDivElement>(null);
-
-  const [activeVariant, setActiveVariant] = useState<Nullable<BuildingVariant>>(null);
   const [hint, setHint] = useState<Nullable<{
     variant: BuildingVariant
     text: string
   }>>(null);
+
+  const categories = useMemo(() => {
+    const result: Record<string, {
+      number: number
+      variant: BuildingVariant
+    }[]> = {};
+
+    eachEntries(BUILDINGS, (variant, building, index) => {
+      if (!result[building.Category]) {
+        result[building.Category] = [];
+      }
+      result[building.Category].push({
+        number: index + 1,
+        variant,
+      });
+    });
+
+    return Object.entries(result).map(([label, buildings]) => ({
+      label,
+      buildings,
+    }));
+  }, []);
 
   const showHint = (step: TutorialStep) => {
     switch (step) {
@@ -61,29 +79,27 @@ export const Builder: React.FC = () => {
     }
   };
 
-  useEffect(
-    () => game.tutorial.bindAll({
-      beg: showHint,
-      end: hideHint,
-    }),
-    [],
-  );
-
-  useSceneUpdate(world, () => {
-    setActiveVariant(world.builder.variant);
-  }, []);
+  useEffect(() => Tutorial.BindAll({
+    beg: showHint,
+    end: hideHint,
+  }), []);
 
   return (
-    <Wrapper ref={refScroll}>
-      {Object.values(BuildingVariant).map((variant, index) => (
-        <Building
-          key={variant}
-          variant={variant}
-          number={index + 1}
-          isActive={activeVariant === variant}
-          hint={hint?.variant === variant ? hint.text : undefined}
-          refScroll={refScroll}
-        />
+    <Wrapper>
+      {categories.map((category) => (
+        <Category key={category.label}>
+          <Label>{category.label}</Label>
+          <Variants>
+            {category.buildings.map((building) => (
+              <Building
+                key={building.variant}
+                variant={building.variant}
+                number={building.number}
+                hint={hint?.variant === building.variant ? hint.text : undefined}
+              />
+            ))}
+          </Variants>
+        </Category>
       ))}
     </Wrapper>
   );

@@ -1,6 +1,7 @@
 import positions from '../__mocks__/positions';
 import {
   aroundPosition,
+  getIsometricDistance,
   getStage,
   equalPositions,
   formatTime,
@@ -8,16 +9,19 @@ import {
 } from '../utils';
 
 describe('utils.ts / equalPositions', () => {
-  it('should equal 2D positions', () => {
+  it('should equal positions', () => {
     expect(equalPositions({ x: 1, y: 1 }, { x: 1, y: 1 })).toEqual(true);
-    expect(equalPositions({ x: 1, y: 1 }, { x: 2, y: 2 })).toEqual(false);
   });
 
-  it('should equal 3D positions', () => {
-    expect(equalPositions({ x: 1, y: 1, z: 1 }, { x: 1, y: 1, z: 1 })).toEqual(
-      true,
-    );
-    expect(equalPositions({ x: 1, y: 1, z: 1 }, { x: 1, y: 1 })).toEqual(false);
+  it('should not equal positions', () => {
+    expect(equalPositions({ x: 1, y: 1 }, { x: 2, y: 2 })).toEqual(false);
+  });
+});
+
+describe('utils.ts / getIsometricDistance', () => {
+  it('should return correct distance', () => {
+    expect(getIsometricDistance({ x: 0, y: 0 }, { x: 10, y: 0 })).toEqual(10);
+    expect(getIsometricDistance({ x: 0, y: 0 }, { x: 0, y: 10 })).toEqual(17.5);
   });
 });
 

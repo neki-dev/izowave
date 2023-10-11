@@ -13,6 +13,8 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Description = 'Freezing enemies for some time';
 
+  static Category = 'Attack';
+
   static Params: BuildingParam[] = [
     { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: BuildingIcon.HEALTH },
     { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS, icon: BuildingIcon.RADIUS },

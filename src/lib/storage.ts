@@ -1,18 +1,14 @@
 import { openDB, IDBPDatabase } from 'idb';
 
 import { IGame } from '~type/game';
-import { IStorage, StorageSave, StorageSavePayload } from '~type/storage';
+import { StorageSave, StorageSavePayload } from '~type/storage';
 
-export class Storage implements IStorage {
-  private db: Nullable<IDBPDatabase> = null;
+export class Storage {
+  private static DB: Nullable<IDBPDatabase> = null;
 
-  private _saves: StorageSave[] = [];
+  public static Saves: StorageSave[] = [];
 
-  public get saves() { return this._saves; }
-
-  private set saves(v) { this._saves = v; }
-
-  public async init() {
+  public static async Register() {
     return openDB('save', 1, {
       upgrade: (db) => {
         if (!db.objectStoreNames.contains('save')) {
@@ -21,29 +17,29 @@ export class Storage implements IStorage {
       },
     })
       .then((db) => {
-        this.db = db;
+        this.DB = db;
       })
       .catch((error) => {
         console.error('Game storage error:', error);
       });
   }
 
-  public async load() {
-    if (!this.db) {
+  public static async LoadSaves() {
+    if (!this.DB) {
       return Promise.resolve();
     }
 
-    const transaction = this.db.transaction('save', 'readonly');
+    const transaction = this.DB.transaction('save', 'readonly');
     const store = transaction.objectStore('save');
 
-    this.saves = [];
+    this.Saves = [];
 
     await store
       .getAll()
       .then((data: StorageSave[]) => {
         data.forEach((save) => {
           try {
-            this.saves.push({
+            this.Saves.push({
               ...save,
               payload: JSON.parse(save.payload as unknown as string),
             });
@@ -52,36 +48,36 @@ export class Storage implements IStorage {
           }
         });
 
-        this.saves = this.saves.sort((a, b) => b.date - a.date);
+        this.Saves = this.Saves.sort((a, b) => b.date - a.date);
       })
       .catch((error) => {
         console.error('Game saves load error:', error);
       });
   }
 
-  public async delete(name: string) {
-    if (!this.db) {
+  public static async DeleteSave(name: string) {
+    if (!this.DB) {
       return Promise.resolve();
     }
 
-    const transaction = this.db.transaction('save', 'readwrite');
+    const transaction = this.DB.transaction('save', 'readwrite');
     const store = transaction.objectStore('save');
 
     await store.delete(name);
 
-    const index = this.saves.findIndex((save) => save.name === name);
+    const index = this.Saves.findIndex((save) => save.name === name);
 
     if (index !== -1) {
-      this.saves.splice(index, 1);
+      this.Saves.splice(index, 1);
     }
   }
 
-  public async save(game: IGame, name: string) {
-    if (!this.db) {
+  public static async AddSave(game: IGame, name: string) {
+    if (!this.DB) {
       return Promise.resolve(null);
     }
 
-    const transaction = this.db.transaction('save', 'readwrite');
+    const transaction = this.DB.transaction('save', 'readwrite');
     const store = transaction.objectStore('save');
 
     const payload: StorageSavePayload = {
@@ -98,11 +94,11 @@ export class Storage implements IStorage {
       date: Date.now(),
     };
 
-    const existIndex = this.saves.findIndex((s) => s.name === name);
+    const existIndex = this.Saves.findIndex((s) => s.name === name);
 
     if (existIndex !== -1) {
       await store.delete(name);
-      this.saves.splice(existIndex, 1);
+      this.Saves.splice(existIndex, 1);
     }
 
     return store
@@ -111,7 +107,7 @@ export class Storage implements IStorage {
         payload: JSON.stringify(payload),
       })
       .then(() => {
-        this.saves.unshift(save);
+        this.Saves.unshift(save);
 
         return save;
       })

@@ -40,22 +40,40 @@ export class Live extends EventEmmiter implements ILive {
   }
 
   public damage(amount: number) {
-    let totalAmount = amount;
+    if (this.isDead()) {
+      return;
+    }
+
+    const normalAmount = Math.ceil(amount);
+    let leftAmount = normalAmount;
 
     if (this.armour > 0) {
-      totalAmount = amount - this.armour;
-      this.setArmour(this.armour - amount);
+      leftAmount -= this.armour;
 
-      if (totalAmount <= 0) {
+      this.setArmour(this.armour - normalAmount);
+
+      if (leftAmount <= 0) {
         return;
       }
     }
 
-    this.setHealth(this.health - totalAmount);
+    this.setHealth(this.health - leftAmount);
+
+    this.emit(LiveEvents.DAMAGE, leftAmount);
+
+    if (this.isDead()) {
+      this.emit(LiveEvents.DEAD);
+    }
   }
 
   public kill() {
-    this.setHealth(0);
+    if (this.isDead()) {
+      return;
+    }
+
+    this.health = 0;
+
+    this.emit(LiveEvents.DEAD);
   }
 
   public heal() {
@@ -71,17 +89,7 @@ export class Live extends EventEmmiter implements ILive {
       return;
     }
 
-    const prevHealth = this.health;
-
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
-
-    if (this.health < prevHealth) {
-      this.emit(LiveEvents.DAMAGE, prevHealth - this.health);
-
-      if (this.health === 0) {
-        this.emit(LiveEvents.DEAD);
-      }
-    }
   }
 
   public setArmour(amount: number) {

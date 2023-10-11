@@ -7,8 +7,10 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
-import { registerAudioAssets } from '~lib/assets';
+import { Analytics } from '~lib/analytics';
+import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { GameState } from '~type/game';
 import { NoticeType } from '~type/screen';
@@ -19,6 +21,8 @@ import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import {
   IWave, WaveAudio, WaveEvents, WaveSavePayload,
 } from '~type/world/wave';
+
+Assets.RegisterAudio(WaveAudio);
 
 export class Wave extends EventEmitter implements IWave {
   readonly scene: IWorld;
@@ -99,7 +103,7 @@ export class Wave extends EventEmitter implements IWave {
       ) {
         this.scene.sound.play(WaveAudio.TICK);
         this.alarmInterval = setInterval(() => {
-          if (this.scene.game.state === GameState.STARTED) {
+          if (this.scene.game.state === GameState.STARTED && !this.isPeaceMode) {
             this.scene.sound.play(WaveAudio.TICK);
           }
         }, 1000);
@@ -129,7 +133,7 @@ export class Wave extends EventEmitter implements IWave {
   }
 
   private runTimeleft() {
-    const pause = (this.number === 1 && this.scene.game.tutorial.isEnabled)
+    const pause = (this.number === 1 && Tutorial.IsEnabled)
       ? 5000
       : progressionLinear({
         defaultValue: DIFFICULTY.WAVE_TIMELEFT,
@@ -179,39 +183,27 @@ export class Wave extends EventEmitter implements IWave {
 
     switch (this.number) {
       case 2: {
-        this.scene.game.tutorial.start(TutorialStep.UPGRADE_BUILDING);
+        Tutorial.Start(TutorialStep.UPGRADE_BUILDING);
         break;
       }
       case 3: {
-        this.scene.game.tutorial.start(TutorialStep.BUILD_AMMUNITION);
+        Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
         break;
       }
       case 4: {
-        this.scene.game.tutorial.start(TutorialStep.UPGRADE_SKILL);
+        Tutorial.Start(TutorialStep.UPGRADE_SKILL);
         break;
       }
       case 8: {
-        this.scene.game.tutorial.start(TutorialStep.BUILD_RADAR);
+        Tutorial.Start(TutorialStep.BUILD_RADAR);
         break;
       }
     }
 
-    this.scene.game.analytics.trackEvent({
+    Analytics.TrackEvent({
       world: this.scene,
       success: true,
     });
-  }
-
-  public getSavePayload(): WaveSavePayload {
-    return {
-      number: this.number,
-      timeleft: this.getTimeleft(),
-    };
-  }
-
-  public loadSavePayload(data: WaveSavePayload) {
-    this.number = data.number;
-    this.nextWaveTimestamp = this.scene.getTime() + data.timeleft;
   }
 
   private spawnEnemy() {
@@ -244,13 +236,14 @@ export class Wave extends EventEmitter implements IWave {
     const variants: EnemyVariant[] = [];
 
     eachEntries(ENEMIES, (variant, Instance) => {
-      if (variant !== this.lastSpawnedEnemyVariant) {
-        if (Instance.SpawnWaveRange) {
-          const [min, max] = Instance.SpawnWaveRange;
+      if (
+        variant !== this.lastSpawnedEnemyVariant
+        && Instance.SpawnWaveRange
+      ) {
+        const [min, max] = Instance.SpawnWaveRange;
 
-          if (this.number >= min && (!max || this.number <= max)) {
-            variants.push(variant);
-          }
+        if (this.number >= min && (!max || this.number <= max)) {
+          variants.push(variant);
         }
       }
     });
@@ -267,6 +260,16 @@ export class Wave extends EventEmitter implements IWave {
       this.skipTimeleft();
     });
   }
-}
 
-registerAudioAssets(WaveAudio);
+  public getSavePayload(): WaveSavePayload {
+    return {
+      number: this.number,
+      timeleft: this.getTimeleft(),
+    };
+  }
+
+  public loadSavePayload(data: WaveSavePayload) {
+    this.number = data.number;
+    this.nextWaveTimestamp = this.scene.getTime() + data.timeleft;
+  }
+}

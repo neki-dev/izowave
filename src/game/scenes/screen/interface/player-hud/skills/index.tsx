@@ -1,22 +1,22 @@
-import { useGame, useMatchMedia, useOutsideClick } from 'phaser-react-ui';
+import { useMatchMedia, useOutsideClick } from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { PLAYER_SKILLS } from '~const/world/entities/player';
+import { Tutorial } from '~lib/tutorial';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
-import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { PlayerSkill, PlayerSkillTarget } from '~type/world/entities/player';
 
-import { UpgradesListItem } from './item';
-import { Wrapper, Container, Targets } from './styles';
+import { Item } from './item';
+import {
+  Wrapper, Container, Targets, List,
+} from './styles';
 
 export const Skills: React.FC = () => {
-  const game = useGame<IGame>();
-
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const [target, setTarget] = useState<PlayerSkillTarget>(
@@ -76,7 +76,7 @@ export const Skills: React.FC = () => {
   }, [isOpened]);
 
   useEffect(
-    () => game.tutorial.bind(TutorialStep.UPGRADE_SKILL, {
+    () => Tutorial.Bind(TutorialStep.UPGRADE_SKILL, {
       beg: () => setHint(true),
       end: () => setHint(false),
     }),
@@ -90,22 +90,22 @@ export const Skills: React.FC = () => {
       </Button>
       {isOpened ? (
         <Container>
-          <div>
-            <Targets>
-              {targetTypes.map((type) => (
-                <Button
-                  key={type}
-                  onClick={() => setTarget(type)}
-                  view={target === type ? 'confirm' : undefined}
-                >
-                  {type}
-                </Button>
-              ))}
-            </Targets>
-            {upgradeTypes.map((type) => (
-              <UpgradesListItem key={type} type={type} />
+          <Targets>
+            {targetTypes.map((type) => (
+              <Button
+                key={type}
+                onClick={() => setTarget(type)}
+                view={target === type ? 'confirm' : undefined}
+              >
+                {type}
+              </Button>
             ))}
-          </div>
+          </Targets>
+          <List>
+            {upgradeTypes.map((type) => (
+              <Item key={type} type={type} />
+            ))}
+          </List>
           {isSmallScreen && <Button onClick={onClick}>Close</Button>}
         </Container>
       ) : (

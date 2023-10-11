@@ -2,32 +2,32 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from '../../package.json';
 import { ANALYTICS_SERVER } from '~const/analytics';
-import { AnalyticEventData, IAnalytics } from '~type/analytics';
+import { AnalyticEventData } from '~type/analytics';
 
-export class Analytics implements IAnalytics {
-  private userId: string;
+export class Analytics {
+  private static UserId: string;
 
-  private host: string;
+  private static Host: string;
 
-  constructor() {
+  static Register() {
     const userId = localStorage.getItem('USER_ID');
 
     if (userId) {
-      this.userId = userId;
+      this.UserId = userId;
     } else {
-      this.userId = uuidv4();
-      localStorage.setItem('USER_ID', this.userId);
+      this.UserId = uuidv4();
+      localStorage.setItem('USER_ID', this.UserId);
     }
 
     if (document.referrer) {
-      this.host = document.referrer.replace(/(https?:\/\/)?([^/?]+).*/, '$2');
+      this.Host = document.referrer.replace(/(https?:\/\/)?([^/?]+).*/, '$2');
     } else {
-      this.host = window.location.host;
+      this.Host = window.location.host;
     }
   }
 
-  public trackEvent(data: AnalyticEventData) {
-    const payload = this.getEventPayload(data);
+  static TrackEvent(data: AnalyticEventData) {
+    const payload = this.GetEventPayload(data);
 
     if (IS_DEV_MODE) {
       console.log('Track analytic event:', payload);
@@ -42,12 +42,12 @@ export class Analytics implements IAnalytics {
     }
   }
 
-  public trackError(data: Error) {
+  static TrackError(data: Error) {
     if (IS_DEV_MODE) {
       return;
     }
 
-    const payload = this.getErrorPayload(data);
+    const payload = this.GetErrorPayload(data);
 
     fetch(`${ANALYTICS_SERVER}/api/create-error.php`, {
       method: 'POST',
@@ -58,7 +58,7 @@ export class Analytics implements IAnalytics {
     });
   }
 
-  private getEventPayload(data: AnalyticEventData) {
+  private static GetEventPayload(data: AnalyticEventData) {
     return {
       // Game progress
       success: data.success,
@@ -67,19 +67,19 @@ export class Analytics implements IAnalytics {
       waveNumber: data.world.wave.number,
       resources: data.world.player.resources,
       // System info
-      userId: this.userId,
-      host: this.host,
+      userId: this.UserId,
+      host: this.Host,
       version: pkg.version,
     };
   }
 
-  private getErrorPayload(data: Error) {
+  private static GetErrorPayload(data: Error) {
     return {
       // Error info
       message: data.message,
       stack: data.stack,
       // System info
-      userId: this.userId,
+      userId: this.UserId,
       version: pkg.version,
       userAgent: window.navigator.userAgent,
     };

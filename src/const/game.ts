@@ -23,6 +23,12 @@ export const SETTINGS: Record<GameSettings, GameSettingsData> = {
     values: ['on', 'off'],
     default: 'on',
   },
+  [GameSettings.SHOW_DAMAGE]: {
+    description: 'Show damage',
+    values: ['on', 'off'],
+    default: 'on',
+    onlyDesktop: true,
+  },
   [GameSettings.EFFECTS]: {
     description: 'Effects',
     values: ['on', 'off'],
