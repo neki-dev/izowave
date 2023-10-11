@@ -209,6 +209,6 @@ export const DIFFICULTY = {
   BUILDING_BOOSTER_HEALTH: 300, // Health
   BUILDING_BOOSTER_RADIUS: 80, // Increase radius
   BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
-  BUILDING_BOOSTER_POWER: 15, // Power multiplier
+  BUILDING_BOOSTER_POWER: 10, // Power multiplier
   BUILDING_BOOSTER_POWER_GROWTH: 1.0, // Multiplier growth by level (Linear)
 };

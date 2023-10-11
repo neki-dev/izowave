@@ -11,7 +11,7 @@ export class EnemyTermer extends Enemy {
       ...data,
       texture: EnemyTexture.TERMER,
       multipliers: {
-        health: 1.5,
+        health: 1.7,
         damage: 1.1,
         speed: 0.8,
       },
