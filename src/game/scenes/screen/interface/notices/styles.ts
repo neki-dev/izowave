@@ -26,11 +26,13 @@ export const Wrapper = styled.div`
 export const Item = styled.div<{
   $type: NoticeType
 }>`
-  padding: 8px 15px 9px 15px;
+  padding: 8px 13px 9px 13px;
+  border-radius: 5px;;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 1px;
   animation: ${animationOpacity} 0.2s ease-in;
   background: ${(props) => InterfaceBackgroundColor[props.$type]};
   &:not(:last-child) {

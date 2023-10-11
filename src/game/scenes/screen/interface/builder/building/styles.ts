@@ -8,9 +8,9 @@ export const Info = styled.div`
   transform: translateX(-100%);
   display: none;
   pointer-events: none;
-  width: 150px;
+  width: 164px;
   height: 100%;
-  padding: 10px;
+  padding: 12px 14px;
   background: ${InterfaceBackgroundColor.BLUE_DARK};
   border-radius: 5px 0 0 5px;
 `;

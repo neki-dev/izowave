@@ -54,6 +54,7 @@ export const Key = styled.span`
 export const Container = styled.div<{
   $width?: number
 }>`
+  box-shadow: 0 0 90px 20px #fff;
   background: ${InterfaceBackgroundColor.BLACK};
   padding: 9px 12px 10px 12px;
   border-radius: 5px;
@@ -91,7 +92,7 @@ export const Positioner = styled.div<{
             transform: translate(-100%, -50%);
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-right: 10px solid #000;
+            border-right: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
@@ -106,7 +107,7 @@ export const Positioner = styled.div<{
             transform: translate(100%, -50%);
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-left: 10px solid #000;
+            border-left: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
@@ -122,7 +123,7 @@ export const Positioner = styled.div<{
             transform: translate(-50%, -100%);
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
-            border-bottom: 10px solid #000;
+            border-bottom: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
@@ -138,7 +139,7 @@ export const Positioner = styled.div<{
             transform: translate(-50%, 100%);
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
-            border-top: 10px solid #000;
+            border-top: 10px solid ${InterfaceBackgroundColor.BLACK};
           }
         }
       `;
