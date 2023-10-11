@@ -118,7 +118,7 @@ export const DIFFICULTY = {
 
   BUILDING_WALL_COST: 10, // Building cost
   BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
-  BUILDING_WALL_HEALTH: 1500, // Health
+  BUILDING_WALL_HEALTH: 2000, // Health
 
   /**
    * Building: Towers
@@ -134,7 +134,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_FIRE_COST: 30, // Building cost
-  BUILDING_TOWER_FIRE_HEALTH: 200, // Health
+  BUILDING_TOWER_FIRE_HEALTH: 300, // Health
   BUILDING_TOWER_FIRE_RADIUS: 160, // Attack radius
   BUILDING_TOWER_FIRE_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
   BUILDING_TOWER_FIRE_DELAY: 1400, // Pause between attacks
@@ -147,7 +147,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_FROZEN_COST: 40, // Building cost
-  BUILDING_TOWER_FROZEN_HEALTH: 300, // Health
+  BUILDING_TOWER_FROZEN_HEALTH: 400, // Health
   BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_TOWER_FROZEN_RADIUS: 150, // Freeze radius
   BUILDING_TOWER_FROZEN_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
@@ -161,7 +161,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_LAZER_COST: 80, // Building cost
-  BUILDING_TOWER_LAZER_HEALTH: 150, // Health
+  BUILDING_TOWER_LAZER_HEALTH: 200, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_RADIUS: 140, // Attack radius
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
@@ -183,7 +183,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_AMMUNITION_COST: 40, // Building cost
-  BUILDING_AMMUNITION_HEALTH: 200, // Health
+  BUILDING_AMMUNITION_HEALTH: 400, // Health
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
   BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
   BUILDING_AMMUNITION_RADIUS_GROWTH: 0.25, // Radius growth by level (Linear)
@@ -195,7 +195,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_RADAR_COST: 60, // Building cost
-  BUILDING_RADAR_HEALTH: 300, // Health
+  BUILDING_RADAR_HEALTH: 400, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_RADAR_RADIUS: 140, // Unhidden radius
   BUILDING_RADAR_RADIUS_GROWTH: 0.3, // Radius growth by level (Linear)
@@ -206,7 +206,7 @@ export const DIFFICULTY = {
 
   BUILDING_BOOSTER_COST: 80, // Building cost
   BUILDING_BOOSTER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
-  BUILDING_BOOSTER_HEALTH: 300, // Health
+  BUILDING_BOOSTER_HEALTH: 600, // Health
   BUILDING_BOOSTER_RADIUS: 80, // Increase radius
   BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
   BUILDING_BOOSTER_POWER: 10, // Power multiplier
