@@ -1,15 +1,12 @@
-import { useGame } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
+import { Tutorial } from '~lib/tutorial';
 import { Hint } from '~scene/system/interface/hint';
-import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 
 import { Wrapper } from './styles';
 
 export const GeneralHints: React.FC = () => {
-  const game = useGame<IGame>();
-
   const [hint, setHint] = useState<Nullable<string>>(null);
 
   const showHint = (step: TutorialStep) => {
@@ -29,7 +26,7 @@ export const GeneralHints: React.FC = () => {
   };
 
   useEffect(
-    () => game.tutorial.bindAll({
+    () => Tutorial.BindAll({
       beg: showHint,
       end: hideHint,
     }),

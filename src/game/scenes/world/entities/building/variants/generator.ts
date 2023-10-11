@@ -1,8 +1,9 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
+import { Tutorial } from '~lib/tutorial';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
@@ -40,10 +41,10 @@ export class BuildingGenerator extends Building {
       },
     });
 
-    if (this.scene.game.tutorial.state(TutorialStep.BUILD_GENERATOR) === TutorialStepState.IN_PROGRESS) {
-      this.scene.game.tutorial.complete(TutorialStep.BUILD_GENERATOR);
+    if (Tutorial.IsInProgress(TutorialStep.BUILD_GENERATOR)) {
+      Tutorial.Complete(TutorialStep.BUILD_GENERATOR);
       if (this.scene.game.device.os.desktop) {
-        this.scene.game.tutorial.start(TutorialStep.STOP_BUILD);
+        Tutorial.Start(TutorialStep.STOP_BUILD);
       }
     }
   }

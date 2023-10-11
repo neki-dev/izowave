@@ -5,7 +5,7 @@ import {
   LEVEL_TILE_SIZE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
   LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
 } from '~const/world/level';
-import { registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { Navigator } from '~lib/navigator';
 import { interpolate } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
@@ -19,6 +19,9 @@ import {
 import { ITile } from '~type/world/level/tile-matrix';
 
 import { TileMatrix } from './tile-matrix';
+
+Assets.RegisterSprites(LevelTilesetTexture, LEVEL_TILE_SIZE);
+Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE_SIZE);
 
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;
@@ -352,6 +355,3 @@ export class Level extends TileMatrix implements ILevel {
     return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + LEVEL_TILE_SIZE.height * 0.5;
   }
 }
-
-registerSpriteAssets(LevelTilesetTexture, LEVEL_TILE_SIZE);
-registerSpriteAssets(LevelSceneryTexture, LEVEL_SCENERY_TILE_SIZE);

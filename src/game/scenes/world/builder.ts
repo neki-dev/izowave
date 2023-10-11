@@ -7,10 +7,11 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { progressionLinear } from '~lib/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { getStage, equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
 import { EntityType } from '~type/world/entities';
@@ -88,7 +89,7 @@ export class Builder extends EventEmitter implements IBuilder {
   public setBuildingVariant(variant: BuildingVariant) {
     if (
       this.variant === variant
-      || !this.isBuildingAllowByTutorial(variant)
+      || !Builder.IsBuildingAllowByTutorial(variant)
     ) {
       return;
     }
@@ -123,7 +124,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.scene.game.device.os.desktop) {
-      this.scene.game.tutorial.complete(TutorialStep.STOP_BUILD);
+      Tutorial.Complete(TutorialStep.STOP_BUILD);
     }
 
     this.clearBuildingVariant();
@@ -167,26 +168,6 @@ export class Builder extends EventEmitter implements IBuilder {
         }
       }
     }
-  }
-
-  public isBuildingAllowByTutorial(variant: BuildingVariant) {
-    if (!this.scene.game.tutorial.isEnabled) {
-      return true;
-    }
-
-    const links: {
-      step: TutorialStep
-      variant: BuildingVariant
-    }[] = [
-      { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
-      { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
-    ];
-
-    const current = links.find((link) => (
-      this.scene.game.tutorial.state(link.step) === TutorialStepState.IN_PROGRESS
-    ));
-
-    return (!current || current.variant === variant);
   }
 
   public isBuildingAllowByWave(variant: BuildingVariant) {
@@ -594,7 +575,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handleTutorial() {
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_TOWER_FIRE, {
+    Tutorial.Bind(TutorialStep.BUILD_TOWER_FIRE, {
       beg: () => {
         this.scene.setTimePause(true);
       },
@@ -604,7 +585,7 @@ export class Builder extends EventEmitter implements IBuilder {
       },
     });
 
-    this.scene.game.tutorial.bind(TutorialStep.BUILD_GENERATOR, {
+    Tutorial.Bind(TutorialStep.BUILD_GENERATOR, {
       beg: () => {
         this.scene.setTimePause(true);
       },
@@ -614,7 +595,25 @@ export class Builder extends EventEmitter implements IBuilder {
     });
 
     this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
-      this.scene.game.tutorial.start(TutorialStep.BUILD_TOWER_FIRE);
+      Tutorial.Start(TutorialStep.BUILD_TOWER_FIRE);
     });
+  }
+
+  public static IsBuildingAllowByTutorial(variant: BuildingVariant) {
+    if (!Tutorial.IsEnabled) {
+      return true;
+    }
+
+    const links: {
+      step: TutorialStep
+      variant: BuildingVariant
+    }[] = [
+      { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
+      { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
+    ];
+
+    const current = links.find((link) => Tutorial.IsInProgress(link.step));
+
+    return (!current || current.variant === variant);
   }
 }

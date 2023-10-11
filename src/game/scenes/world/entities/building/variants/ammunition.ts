@@ -1,6 +1,7 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionQuadratic } from '~lib/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -52,7 +53,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       },
     });
 
-    this.scene.game.tutorial.complete(TutorialStep.BUILD_AMMUNITION);
+    Tutorial.Complete(TutorialStep.BUILD_AMMUNITION);
 
     this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
 
@@ -103,7 +104,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
       this.addAlertIcon();
 
-      this.scene.game.tutorial.start(TutorialStep.BUY_AMMO);
+      Tutorial.Start(TutorialStep.BUY_AMMO);
     }
 
     return totalAmount;
@@ -137,8 +138,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.scene.getEntitiesGroup(EntityType.BUILDING)
       .emit(BuildingEvents.BUY_AMMO, this);
 
-    this.scene.game.tutorial.complete(TutorialStep.BUY_AMMO);
     this.scene.sound.play(BuildingAudio.RELOAD);
+
+    Tutorial.Complete(TutorialStep.BUY_AMMO);
   }
 
   private onUpgrade() {

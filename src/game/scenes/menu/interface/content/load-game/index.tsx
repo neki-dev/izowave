@@ -1,20 +1,18 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
+import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
 import { Table } from '~scene/system/interface/table';
 import { IGame } from '~type/game';
-import { StorageSave } from '~type/storage';
 
 import { Wrapper, Empty } from './styles';
 
 export const LoadGame: React.FC = () => {
   const game = useGame<IGame>();
 
-  const [selectedSave, setSelectedSave] = useState<StorageSave>(
-    game.storage.saves[0],
-  );
-  const [saves, setSaves] = useState(game.storage.saves);
+  const [selectedSave, setSelectedSave] = useState(Storage.Saves[0]);
+  const [saves, setSaves] = useState(Storage.Saves);
 
   const onClickStart = () => {
     game.continueGame(selectedSave);
@@ -25,10 +23,10 @@ export const LoadGame: React.FC = () => {
 
     // eslint-disable-next-line no-alert
     if (window.confirm('Do you confirm delete this save?')) {
-      game.storage.delete(name).then(() => {
-        setSaves([...game.storage.saves]);
+      Storage.DeleteSave(name).then(() => {
+        setSaves([...Storage.Saves]);
         if (selectedSave.name === name) {
-          setSelectedSave(game.storage.saves[0]);
+          setSelectedSave(Storage.Saves[0]);
         }
       });
     }

@@ -5,7 +5,6 @@ import {
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
 import { SDK } from '~lib/sdk';
-import { Storage } from '~lib/storage';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
@@ -13,7 +12,6 @@ import { Menu } from '~scene/menu';
 import { Screen } from '~scene/screen';
 import { System } from '~scene/system';
 import { World } from '~scene/world';
-import { IAnalytics } from '~type/analytics';
 import {
   GameAdType,
   GameDifficulty,
@@ -29,19 +27,12 @@ import {
 import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
 import { ISDK, SDKPlatform } from '~type/sdk';
-import { IStorage, StorageSave } from '~type/storage';
-import { ITutorial } from '~type/tutorial';
+import { StorageSave } from '~type/storage';
 import { IWorld } from '~type/world';
 
 import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
-  readonly tutorial: ITutorial;
-
-  readonly analytics: IAnalytics;
-
-  readonly storage: IStorage;
-
   private sdk: ISDK | null = null;
 
   private flags: string[];
@@ -99,9 +90,8 @@ export class Game extends Phaser.Game implements IGame {
       },
     });
 
-    this.tutorial = new Tutorial();
-    this.analytics = new Analytics();
-    this.storage = new Storage();
+    Analytics.Register();
+    Tutorial.Register();
 
     this.readFlags();
     this.readSettings();
@@ -123,26 +113,21 @@ export class Game extends Phaser.Game implements IGame {
 
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (value: string) => {
       if (value === 'on') {
-        this.tutorial.enable();
+        Tutorial.Enable();
       } else {
-        this.tutorial.disable();
+        Tutorial.Disable();
       }
     });
 
     window.onerror = (message, path, line, column, error) => {
       if (error) {
-        this.analytics.trackError(error);
+        Analytics.TrackError(error);
       } else if (typeof message === 'string') {
-        this.analytics.trackError(new Error(message));
+        Analytics.TrackError(new Error(message));
       }
 
       return false;
     };
-  }
-
-  public async loadPayload() {
-    return this.storage.init()
-      .then(() => this.storage.load());
   }
 
   public pauseGame() {
@@ -219,7 +204,7 @@ export class Game extends Phaser.Game implements IGame {
     this.state = GameState.STARTED;
 
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
-      this.tutorial.disable();
+      Tutorial.Disable();
     }
 
     this.scene.systemScene.scene.stop(GameScene.MENU);
@@ -246,7 +231,8 @@ export class Game extends Phaser.Game implements IGame {
     this.state = GameState.IDLE;
 
     this.world.scene.restart();
-    this.tutorial.reset();
+
+    Tutorial.Reset();
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.MENU, {
@@ -279,7 +265,7 @@ export class Game extends Phaser.Game implements IGame {
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
 
-    this.analytics.trackEvent({
+    Analytics.TrackEvent({
       world: this.world,
       success: false,
     });
@@ -379,13 +365,13 @@ export class Game extends Phaser.Game implements IGame {
   public getSavePayload(): GameSavePayload {
     return {
       difficulty: this.difficulty,
-      tutorial: this.tutorial.progress,
+      tutorial: Tutorial.Progress,
     };
   }
 
   private loadSavePayload(data: GameSavePayload) {
     this.difficulty = data.difficulty;
-    this.tutorial.progress = data.tutorial;
+    Tutorial.Progress = data.tutorial;
   }
 
   private registerShaders() {

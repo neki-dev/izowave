@@ -11,13 +11,14 @@ import {
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
@@ -28,6 +29,9 @@ import {
 } from '~type/world/entities/player';
 import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
+
+Assets.RegisterAudio(PlayerAudio);
+Assets.RegisterSprites(PlayerTexture, PLAYER_TILE_SIZE);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
@@ -166,8 +170,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.resources += amount;
 
-    if (this.scene.game.tutorial.state(TutorialStep.RESOURCES) === TutorialStepState.IN_PROGRESS) {
-      this.scene.game.tutorial.complete(TutorialStep.RESOURCES);
+    if (Tutorial.IsInProgress(TutorialStep.RESOURCES)) {
+      Tutorial.Complete(TutorialStep.RESOURCES);
     }
   }
 
@@ -178,7 +182,7 @@ export class Player extends Sprite implements IPlayer {
       this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
       && this.scene.builder.getBuildingsByVariant(BuildingVariant.GENERATOR).length === 0
     ) {
-      this.scene.game.tutorial.start(TutorialStep.RESOURCES);
+      Tutorial.Start(TutorialStep.RESOURCES);
     }
   }
 
@@ -279,8 +283,9 @@ export class Player extends Sprite implements IPlayer {
 
     this.experience -= experience;
 
-    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_SKILL);
     this.scene.sound.play(PlayerAudio.UPGRADE);
+
+    Tutorial.Complete(TutorialStep.UPGRADE_SKILL);
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
@@ -552,6 +557,3 @@ export class Player extends Sprite implements IPlayer {
     this.live.setHealth(data.health);
   }
 }
-
-registerAudioAssets(PlayerAudio);
-registerSpriteAssets(PlayerTexture, PLAYER_TILE_SIZE);

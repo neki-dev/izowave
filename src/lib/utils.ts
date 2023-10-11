@@ -1,20 +1,12 @@
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { Vector2D, Vector3D } from '~type/world/level';
+import { Vector2D } from '~type/world/level';
 
 /**
  * Check positions is equals.
  * @param a - First position
  * @param b - Second position
  */
-export function equalPositions(a: Vector2D | Vector3D, b: Vector2D | Vector3D) {
-  if ('z' in a) {
-    if ('z' in b) {
-      return a.x === b.x && a.y === b.y && a.z === b.z;
-    }
-
-    return false;
-  }
-
+export function equalPositions(a: Vector2D, b: Vector2D) {
   return a.x === b.x && a.y === b.y;
 }
 
@@ -203,15 +195,11 @@ export function interpolate(beg: Vector2D, end: Vector2D) {
   let err = dx - dy;
   let shift;
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    line.push({ ...current });
+  line.push({ ...current });
 
-    if (equalPositions(current, end)) {
-      break;
-    }
-
+  while (!equalPositions(current, end)) {
     shift = 2 * err;
+
     if (shift > -dy) {
       err -= dy;
       current.x += sx;
@@ -220,37 +208,11 @@ export function interpolate(beg: Vector2D, end: Vector2D) {
       err += dx;
       current.y += sy;
     }
+
+    line.push({ ...current });
   }
 
   return line;
-}
-
-/**
- * Call function with frequency limit.
- * @param fn - Function
- * @param delay - Call delay
- */
-export function debounce(fn: (...params: any[]) => void, delay: number) {
-  let timeout: Nullable<NodeJS.Timeout> = null;
-
-  return {
-    call(this: any, ...args: any[]) {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-
-      timeout = setTimeout(() => {
-        fn.apply(this, args);
-        timeout = null;
-      }, delay);
-    },
-    reject() {
-      if (timeout) {
-        clearTimeout(timeout);
-        timeout = null;
-      }
-    },
-  };
 }
 
 /**

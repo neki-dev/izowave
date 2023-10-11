@@ -1,7 +1,8 @@
-import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
+import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { GameScene, IGame } from '~type/game';
+import { Tutorial } from '~lib/tutorial';
+import { GameScene } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -10,7 +11,6 @@ import { Building } from './building';
 import { Wrapper } from './styles';
 
 export const Builder: React.FC = () => {
-  const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const refScroll = useRef<HTMLDivElement>(null);
@@ -62,7 +62,7 @@ export const Builder: React.FC = () => {
   };
 
   useEffect(
-    () => game.tutorial.bindAll({
+    () => Tutorial.BindAll({
       beg: showHint,
       end: hideHint,
     }),

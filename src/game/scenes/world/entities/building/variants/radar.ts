@@ -1,4 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
@@ -38,6 +39,6 @@ export class BuildingRadar extends Building {
       },
     });
 
-    this.scene.game.tutorial.complete(TutorialStep.BUILD_RADAR);
+    Tutorial.Complete(TutorialStep.BUILD_RADAR);
   }
 }

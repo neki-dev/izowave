@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { registerAudioAssets, registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { progressionLinear } from '~lib/difficulty';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
@@ -12,6 +12,9 @@ import {
 } from '~type/world/entities/crystal';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
+
+Assets.RegisterAudio(CrystalAudio);
+Assets.RegisterSprites(CrystalTexture, LEVEL_TILE_SIZE);
 
 export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile {
   readonly scene: IWorld;
@@ -89,6 +92,3 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     });
   }
 }
-
-registerAudioAssets(CrystalAudio);
-registerSpriteAssets(CrystalTexture, LEVEL_TILE_SIZE);

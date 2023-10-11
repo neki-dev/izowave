@@ -5,9 +5,10 @@ import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { registerAudioAssets, registerImageAssets, registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
 import { Live } from '~lib/live';
+import { Tutorial } from '~lib/tutorial';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
@@ -25,6 +26,13 @@ import {
 } from '~type/world/entities/building';
 import { TileType, Vector2D } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
+
+Assets.RegisterAudio(BuildingAudio);
+Assets.RegisterImages(BuildingIcon);
+Assets.RegisterSprites(BuildingTexture, {
+  width: LEVEL_TILE_SIZE.width,
+  height: LEVEL_TILE_SIZE.height,
+});
 
 export class Building extends Phaser.GameObjects.Image implements IBuilding, ITile {
   readonly scene: IWorld;
@@ -314,7 +322,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    this.scene.game.tutorial.complete(TutorialStep.UPGRADE_BUILDING);
+    Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
   }
 
@@ -407,7 +415,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
-    const unbindStep = this.scene.game.tutorial.bind(step, {
+    const unbindStep = Tutorial.Bind(step, {
       beg: () => {
         if (!condition || condition()) {
           hintId = this.scene.showHint({
@@ -866,10 +874,3 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live.setHealth(data.health);
   }
 }
-
-registerAudioAssets(BuildingAudio);
-registerImageAssets(BuildingIcon);
-registerSpriteAssets(BuildingTexture, {
-  width: LEVEL_TILE_SIZE.width,
-  height: LEVEL_TILE_SIZE.height,
-});

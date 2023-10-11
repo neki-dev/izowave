@@ -4,6 +4,7 @@ import {
 import React, { useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
+import { Builder } from '~scene/world/builder';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -51,7 +52,7 @@ export const BuilderPreview: React.FC<Props> = ({ number, variant }) => {
   useSceneUpdate(world, () => {
     const currentIsActive = world.builder.variant === variant;
     const currentIsDisallow = !world.builder.isBuildingAllowByWave(variant);
-    const currentIsDisabled = !world.builder.isBuildingAllowByTutorial(variant);
+    const currentIsDisabled = !Builder.IsBuildingAllowByTutorial(variant);
     const currentIsUsable = (
       !currentIsDisallow
       && !currentIsDisabled

@@ -1,5 +1,5 @@
 import { WORLD_DEPTH_EFFECT } from '~const/world';
-import { registerImageAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { IWorld } from '~type/world';
 import {
   ParticlesTexture,
@@ -7,6 +7,8 @@ import {
   IParticlesParent,
   IParticles,
 } from '~type/world/effects';
+
+Assets.RegisterImages(ParticlesTexture);
 
 export class Particles implements IParticles {
   readonly scene: IWorld;
@@ -61,5 +63,3 @@ export class Particles implements IParticles {
     this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);
   }
 }
-
-registerImageAssets(ParticlesTexture);

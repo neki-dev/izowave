@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
-import { registerAudioAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
@@ -14,6 +14,8 @@ import {
   IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
 } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
+
+Assets.RegisterAudio(ShotLazerAudio);
 
 export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   readonly scene: IWorld;
@@ -153,5 +155,3 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
   }
 }
-
-registerAudioAssets(ShotLazerAudio);

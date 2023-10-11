@@ -1,13 +1,13 @@
-import { useGame, useMatchMedia, useOutsideClick } from 'phaser-react-ui';
+import { useMatchMedia, useOutsideClick } from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { PLAYER_SKILLS } from '~const/world/entities/player';
+import { Tutorial } from '~lib/tutorial';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
-import { IGame } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { PlayerSkill, PlayerSkillTarget } from '~type/world/entities/player';
 
@@ -15,8 +15,6 @@ import { UpgradesListItem } from './item';
 import { Wrapper, Container, Targets } from './styles';
 
 export const Skills: React.FC = () => {
-  const game = useGame<IGame>();
-
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const [target, setTarget] = useState<PlayerSkillTarget>(
@@ -76,7 +74,7 @@ export const Skills: React.FC = () => {
   }, [isOpened]);
 
   useEffect(
-    () => game.tutorial.bind(TutorialStep.UPGRADE_SKILL, {
+    () => Tutorial.Bind(TutorialStep.UPGRADE_SKILL, {
       beg: () => setHint(true),
       end: () => setHint(false),
     }),

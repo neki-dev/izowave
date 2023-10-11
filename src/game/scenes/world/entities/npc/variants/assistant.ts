@@ -2,7 +2,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { progressionQuadratic } from '~lib/difficulty';
 import { getClosest, getIsometricDistance } from '~lib/utils';
 import { IWorld } from '~type/world';
@@ -15,6 +15,8 @@ import {
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer, PlayerSkill } from '~type/world/entities/player';
 import { IShot, ShotParams } from '~type/world/entities/shot';
+
+Assets.RegisterSprites(AssistantTexture, ASSISTANT_TILE_SIZE);
 
 export class Assistant extends NPC implements IAssistant {
   private shot: IShot;
@@ -145,5 +147,3 @@ export class Assistant extends NPC implements IAssistant {
     return params;
   }
 }
-
-registerSpriteAssets(AssistantTexture, ASSISTANT_TILE_SIZE);

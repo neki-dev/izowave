@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { progressionLinear } from '~lib/difficulty';
+import { Tutorial } from '~lib/tutorial';
 import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -189,7 +190,7 @@ export class BuildingTower extends Building implements IBuildingTower {
           this.scene.game.sound.play(BuildingAudio.RELOAD);
         }
 
-        this.scene.game.tutorial.complete(TutorialStep.RELOAD_TOWER);
+        Tutorial.Complete(TutorialStep.RELOAD_TOWER);
       }
     } else if (!this.needReload) {
       this.addAlertIcon();
@@ -199,7 +200,7 @@ export class BuildingTower extends Building implements IBuildingTower {
         this.scene.game.sound.play(BuildingAudio.OVER);
       }
 
-      this.scene.game.tutorial.start(TutorialStep.RELOAD_TOWER);
+      Tutorial.Start(TutorialStep.RELOAD_TOWER);
     }
   }
 

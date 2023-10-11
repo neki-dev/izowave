@@ -1,7 +1,6 @@
-import { IAnalytics } from '~type/analytics';
 import { IScreen } from '~type/screen';
-import { IStorage, StorageSave } from '~type/storage';
-import { ITutorial, TutorialStep, TutorialStepState } from '~type/tutorial';
+import { StorageSave } from '~type/storage';
+import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
 
 export interface IGame extends Phaser.Game {
@@ -19,21 +18,6 @@ export interface IGame extends Phaser.Game {
    * Game state.
    */
   readonly state: GameState
-
-  /**
-   * Analytics manager.
-   */
-  readonly analytics: IAnalytics
-
-  /**
-   * Tutorial manager.
-   */
-  readonly tutorial: ITutorial
-
-  /**
-   * Data storage.
-   */
-  readonly storage: IStorage
 
   /**
    * Game settings.
@@ -116,11 +100,6 @@ export interface IGame extends Phaser.Game {
    * Get data for saving.
    */
   getSavePayload(): GameSavePayload
-
-  /**
-   * Load saved data.
-   */
-  loadPayload(): Promise<void>
 }
 
 export enum GameAdType {

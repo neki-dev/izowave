@@ -3,13 +3,15 @@ import VirtualJoystick from 'phaser3-rex-plugins/plugins/virtualjoystick';
 
 import { INTERFACE_SCALE } from '~const/interface';
 import { Scene } from '~game/scenes';
-import { registerAudioAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { GameScene } from '~type/game';
 import {
   IScreen, NoticeType, ScreenAudio, ScreenEvents,
 } from '~type/screen';
 
 import { ScreenUI } from './interface';
+
+Assets.RegisterAudio(ScreenAudio);
 
 export class Screen extends Scene implements IScreen {
   private joystick: Nullable<VirtualJoystick> = null;
@@ -112,5 +114,3 @@ export class Screen extends Scene implements IScreen {
     };
   }
 }
-
-registerAudioAssets(ScreenAudio);

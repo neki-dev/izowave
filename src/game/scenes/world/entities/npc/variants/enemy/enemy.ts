@@ -10,7 +10,7 @@ import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
-import { registerSpriteAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
 import { excludePosition } from '~lib/utils';
 import { Effect, Particles } from '~scene/world/effects';
@@ -29,6 +29,8 @@ import {
 } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
+
+Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);
 
 export class Enemy extends NPC implements IEnemy {
   private _damage: number;
@@ -369,5 +371,3 @@ export class Enemy extends NPC implements IEnemy {
     });
   }
 }
-
-registerSpriteAssets(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);

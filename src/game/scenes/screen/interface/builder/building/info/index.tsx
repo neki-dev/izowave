@@ -6,6 +6,7 @@ import { BUILDINGS } from '~const/world/entities/buildings';
 import { BuildingParams } from '~scene/system/interface/building-params';
 import { Cost } from '~scene/system/interface/cost';
 import { Text } from '~scene/system/interface/text';
+import { Builder } from '~scene/world/builder';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -30,7 +31,7 @@ export const BuilderInfo: React.FC<Props> = ({ variant }) => {
 
   useSceneUpdate(world, () => {
     const currentIsAllowByWave = world.builder.isBuildingAllowByWave(variant);
-    const currentIsAllowByTutorial = world.builder.isBuildingAllowByTutorial(variant);
+    const currentIsAllowByTutorial = Builder.IsBuildingAllowByTutorial(variant);
     const currentLimit = world.builder.getBuildingLimit(variant);
 
     setAllowByWave(currentIsAllowByWave);

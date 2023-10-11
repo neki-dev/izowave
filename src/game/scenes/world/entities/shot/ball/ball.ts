@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
-import { registerAudioAssets, registerImageAssets } from '~lib/assets';
+import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -14,6 +14,9 @@ import {
   ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShotBall,
 } from '~type/world/entities/shot';
 import { Vector2D } from '~type/world/level';
+
+Assets.RegisterAudio(ShotBallAudio);
+Assets.RegisterImages(ShotBallTexture);
 
 export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   readonly scene: IWorld;
@@ -174,6 +177,3 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.scene.physics.world.disable(this);
   }
 }
-
-registerAudioAssets(ShotBallAudio);
-registerImageAssets(ShotBallTexture);

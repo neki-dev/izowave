@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { TutorialStep, TutorialStepState } from '~type/tutorial';
+import { Tutorial } from '~lib/tutorial';
+import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingIcon,
@@ -63,9 +64,9 @@ export class BuildingTowerFire extends BuildingTower {
       () => this.ammo === 0,
     );
 
-    if (this.scene.game.tutorial.state(TutorialStep.BUILD_TOWER_FIRE) === TutorialStepState.IN_PROGRESS) {
-      this.scene.game.tutorial.complete(TutorialStep.BUILD_TOWER_FIRE);
-      this.scene.game.tutorial.start(TutorialStep.BUILD_GENERATOR);
+    if (Tutorial.IsInProgress(TutorialStep.BUILD_TOWER_FIRE)) {
+      Tutorial.Complete(TutorialStep.BUILD_TOWER_FIRE);
+      Tutorial.Start(TutorialStep.BUILD_GENERATOR);
     }
   }
 }
