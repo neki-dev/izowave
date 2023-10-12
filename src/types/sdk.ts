@@ -3,7 +3,7 @@ export enum SDKPlatform {
   POKI = 'POKI',
 }
 
-export enum SDKAdvType {
+export enum SDKAdsType {
   MIDGAME = 'midgame',
   REWARDED = 'rewarded',
 }

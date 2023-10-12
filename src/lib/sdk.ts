@@ -1,5 +1,5 @@
 import { SDK_PLATFORMS } from '~const/sdk';
-import { SDKPlatform, SDKAdvType } from '~type/sdk';
+import { SDKPlatform, SDKAdsType } from '~type/sdk';
 
 export class SDK {
   private static Platform: Nullable<SDKPlatform> = null;
@@ -35,8 +35,8 @@ export class SDK {
       });
   }
 
-  public static ShowAdv(
-    type: SDKAdvType,
+  public static ShowAds(
+    type: SDKAdsType,
     callbackBeg: () => void,
     callbackEnd: (success: boolean) => void,
   ) {
@@ -54,7 +54,7 @@ export class SDK {
           break;
         }
         case SDKPlatform.POKI: {
-          const method = type === SDKAdvType.REWARDED
+          const method = type === SDKAdsType.REWARDED
             ? 'rewardedBreak'
             : 'commercialBreak';
 

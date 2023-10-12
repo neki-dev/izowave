@@ -5,9 +5,8 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinear } from '~lib/difficulty';
 import { Amount } from '~scene/system/interface/amount';
 import { Modal } from '~scene/system/interface/modal';
-import {
-  IGame, GameScene, GameAdType, GameFlag,
-} from '~type/game';
+import { IGame, GameScene, GameFlag } from '~type/game';
+import { SDKAdsType } from '~type/sdk';
 import { IWorld } from '~type/world';
 import { WaveEvents } from '~type/world/wave';
 
@@ -24,7 +23,7 @@ export const AdsReward: React.FC = () => {
   });
 
   const onConfirmAds = () => {
-    game.showAdv(GameAdType.REWARDED, () => {
+    game.showAds(SDKAdsType.REWARDED, () => {
       world.player.giveExperience(adsReward.experience);
       world.player.giveResources(adsReward.resources);
     });

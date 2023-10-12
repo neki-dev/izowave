@@ -25,7 +25,7 @@ import {
 } from '~type/game';
 import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
-import { SDKAdvType } from '~type/sdk';
+import { SDKAdsType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { IWorld } from '~type/world';
 
@@ -242,7 +242,7 @@ export class Game extends Phaser.Game implements IGame {
       defaultPage: MenuPage.NEW_GAME,
     });
 
-    this.showAdv(SDKAdvType.MIDGAME);
+    this.showAds(SDKAdsType.MIDGAME);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
@@ -315,12 +315,12 @@ export class Game extends Phaser.Game implements IGame {
     this.flags = value.split(',');
   }
 
-  public showAdv(type: SDKAdvType, callback?: () => void) {
+  public showAds(type: SDKAdsType, callback?: () => void) {
     if (!this.isFlagEnabled(GameFlag.ADS)) {
       return;
     }
 
-    SDK.ShowAdv(
+    SDK.ShowAds(
       type,
       () => {
         this.pause();
