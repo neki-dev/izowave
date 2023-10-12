@@ -8,10 +8,12 @@ import { EnemySpike } from '~entity/npc/variants/enemy/variants/spike';
 import { EnemyStranger } from '~entity/npc/variants/enemy/variants/stranger';
 import { EnemyTank } from '~entity/npc/variants/enemy/variants/tank';
 import { EnemyTermer } from '~entity/npc/variants/enemy/variants/termer';
+import { EnemyUndead } from '~entity/npc/variants/enemy/variants/undead';
 import { EnemyVariant, IEnemyFactory } from '~type/world/entities/npc/enemy';
 
 export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
   [EnemyVariant.DEMON]: EnemyDemon,
+  [EnemyVariant.UNDEAD]: EnemyUndead,
   [EnemyVariant.RISPER]: EnemyRisper,
   [EnemyVariant.SPIKE]: EnemySpike,
   [EnemyVariant.TANK]: EnemyTank,
