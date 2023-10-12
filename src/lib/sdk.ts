@@ -44,6 +44,15 @@ export class SDK {
       return;
     }
 
+    if (IS_DEV_MODE) {
+      callbackBeg();
+      // eslint-disable-next-line no-alert
+      alert('Ads was showed');
+      callbackEnd(true);
+
+      return;
+    }
+
     try {
       switch (this.Platform) {
         case SDKPlatform.CRAZY_GAMES: {

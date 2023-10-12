@@ -166,6 +166,8 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
+    this.showAds(SDKAdsType.MIDGAME);
+
     this.usedSave = save;
 
     if (this.usedSave.payload.game) {
@@ -228,6 +230,8 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     if (this.state === GameState.FINISHED) {
+      this.showAds(SDKAdsType.MIDGAME);
+
       this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
     }
 
@@ -241,8 +245,6 @@ export class Game extends Phaser.Game implements IGame {
     this.scene.systemScene.scene.launch(GameScene.MENU, {
       defaultPage: MenuPage.NEW_GAME,
     });
-
-    this.showAds(SDKAdsType.MIDGAME);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
