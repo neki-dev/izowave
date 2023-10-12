@@ -47,6 +47,12 @@ export const Builder: React.FC = () => {
           text: 'Build generator\nto get resources',
         });
       }
+      case TutorialStep.BUILD_GENERATOR_SECOND: {
+        return setHint({
+          variant: BuildingVariant.GENERATOR,
+          text: 'Build second generator\nto get more resources',
+        });
+      }
       case TutorialStep.BUILD_RADAR: {
         return setHint({
           variant: BuildingVariant.RADAR,
@@ -71,6 +77,7 @@ export const Builder: React.FC = () => {
   const hideHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR:
+      case TutorialStep.BUILD_GENERATOR_SECOND:
       case TutorialStep.BUILD_RADAR:
       case TutorialStep.BUILD_TOWER_FIRE:
       case TutorialStep.BUILD_AMMUNITION: {

@@ -623,6 +623,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }[] = [
       { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
       { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
+      { step: TutorialStep.BUILD_GENERATOR_SECOND, variant: BuildingVariant.GENERATOR },
     ];
 
     const current = links.find((link) => Tutorial.IsInProgress(link.step));
