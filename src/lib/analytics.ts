@@ -27,19 +27,19 @@ export class Analytics {
   }
 
   static TrackEvent(data: AnalyticEventData) {
+    if (IS_DEV_MODE) {
+      return;
+    }
+
     const payload = this.GetEventPayload(data);
 
-    if (IS_DEV_MODE) {
-      console.log('Track analytic event:', payload);
-    } else {
-      fetch(`${ANALYTICS_SERVER}/api/create-event.php`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).catch((e) => {
-        console.warn('Failed analytics event tracking:', payload, e);
-      });
-    }
+    fetch(`${ANALYTICS_SERVER}/api/create-event.php`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch((e) => {
+      console.warn('Failed analytics event tracking:', payload, e);
+    });
   }
 
   static TrackError(data: Error) {

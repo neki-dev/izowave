@@ -265,9 +265,7 @@ export class Game extends Phaser.Game implements IGame {
     const record = this.getRecordStat();
     const stat = this.getCurrentStat();
 
-    if (!IS_DEV_MODE) {
-      this.writeBestStat(stat, record);
-    }
+    this.writeBestStat(stat, record);
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });

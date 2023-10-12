@@ -9,7 +9,7 @@ export class EnemyAdherent extends Enemy {
       ...data,
       texture: EnemyTexture.ADHERENT,
       multipliers: {
-        health: 0.3,
+        health: 0.4,
         damage: 0.2,
         speed: 0.9,
       },
