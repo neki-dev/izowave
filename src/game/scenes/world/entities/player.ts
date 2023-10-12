@@ -223,21 +223,23 @@ export class Player extends Sprite implements IPlayer {
 
     this.takeResources(cost);
 
-    const position = this.getPositionOnGround();
-    const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
-
-    effect.setDepth(WORLD_DEPTH_EFFECT);
-
-    this.scene.tweens.add({
-      targets: effect,
-      scale: { from: 0.0, to: 2.0 },
-      duration: 500,
-      onComplete: () => {
-        effect.destroy();
-      },
-    });
-
     this.scene.sound.play(PlayerAudio.SUPERSKILL);
+
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      const position = this.getPositionOnGround();
+      const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
+
+      effect.setDepth(WORLD_DEPTH_EFFECT);
+
+      this.scene.tweens.add({
+        targets: effect,
+        scale: { from: 0.0, to: 2.0 },
+        duration: 500,
+        onComplete: () => {
+          effect.destroy();
+        },
+      });
+    }
 
     this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
 

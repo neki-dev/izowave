@@ -262,7 +262,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   private updateIndicators() {
-    (<IIndicator[]> this.indicators.getAll()).forEach((indicator) => {
+    this.indicators.each((indicator: IIndicator) => {
       const value = indicator.updateValue();
 
       if (value <= 0.0) {

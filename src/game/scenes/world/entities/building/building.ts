@@ -400,7 +400,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    (<IIndicator[]> this.indicators.getAll()).forEach((indicator) => {
+    this.indicators.each((indicator: IIndicator) => {
       indicator.updateValue();
     });
   }
@@ -445,7 +445,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       BuildingAudio.DAMAGE_2,
     ]);
 
-    if (this.scene.game.sound.getAll(audio).length < 3) {
+    if (this.scene.game.sound.getAll(audio).length === 0) {
       this.scene.game.sound.play(audio);
     }
 
