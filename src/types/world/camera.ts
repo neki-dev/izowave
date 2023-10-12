@@ -25,4 +25,9 @@ export interface ICamera {
    * Add zoom control.
    */
   addZoomControl(): void
+
+  /**
+   * Check is zooming by touches.
+   */
+  isZooming(): boolean
 }

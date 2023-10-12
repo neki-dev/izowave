@@ -297,7 +297,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   public loadSavePayload(data: BuildingSavePayload) {
     super.loadSavePayload(data);
 
-    if (data.ammo) {
+    if (data.ammo !== undefined) {
       this.ammo = data.ammo;
     }
   }

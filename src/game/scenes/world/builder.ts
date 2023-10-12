@@ -540,6 +540,10 @@ export class Builder extends EventEmitter implements IBuilder {
         y: this.scene.input.activePointer.worldY,
       };
     } else {
+      if (this.scene.camera.isZooming()) {
+        return;
+      }
+
       const pointer = this.getCurrentPointer();
 
       if (!pointer.active || pointer.event.target !== this.scene.sys.canvas) {

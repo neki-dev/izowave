@@ -845,7 +845,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public loadSavePayload(data: BuildingSavePayload) {
     if (data.upgradeLevel > 1) {
-      this.upgradeLevel = data.upgradeLevel;
+      this.upgradeLevel = Math.min(data.upgradeLevel, this.getMeta().MaxLevel);
 
       this.updateActionArea();
       this.setFrame(this.upgradeLevel - 1);
