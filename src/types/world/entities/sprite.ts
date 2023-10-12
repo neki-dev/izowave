@@ -96,7 +96,8 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
 
 export type SpriteData = {
   texture: string
-  positionAtMatrix: Vector2D
+  positionAtMatrix?: Vector2D
+  positionAtWorld?: Vector2D
   frame?: number
   health?: number
   speed: number

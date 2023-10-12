@@ -33,13 +33,11 @@ export class NPC extends Sprite implements INPC {
   private freezeEffectTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, health, speed, pathFindTriggerDistance, frameRate = 4,
+    pathFindTriggerDistance, texture, frameRate = 4, ...data
   }: NPCData) {
     super(scene, {
+      ...data,
       texture,
-      positionAtMatrix,
-      health,
-      speed,
     });
     scene.addEntity(EntityType.NPC, this);
 

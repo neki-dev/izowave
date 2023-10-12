@@ -37,6 +37,14 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
       gamut: 4,
     },
   },
+  [EnemyTexture.ADHERENT]: {
+    frameRate: 4,
+    size: {
+      width: 16,
+      height: 24,
+      gamut: 4,
+    },
+  },
   [EnemyTexture.SPIKE]: {
     frameRate: 4,
     size: {
@@ -62,6 +70,14 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     },
   },
   [EnemyTexture.TERMER]: {
+    frameRate: 4,
+    size: {
+      width: 32,
+      height: 40,
+      gamut: 6,
+    },
+  },
+  [EnemyTexture.STRANGER]: {
     frameRate: 4,
     size: {
       width: 32,

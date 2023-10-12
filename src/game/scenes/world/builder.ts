@@ -212,10 +212,10 @@ export class Builder extends EventEmitter implements IBuilder {
     this.isBuild = true;
 
     if (!this.scene.game.device.os.desktop) {
-      this.supposedPosition = this.scene.level.getFreeAdjacentTile({
+      this.supposedPosition = this.scene.level.getFreeAdjacentTiles({
         ...this.scene.player.positionAtMatrix,
         z: 1,
-      }) ?? this.scene.player.positionAtMatrix;
+      })[0] ?? this.scene.player.positionAtMatrix;
     }
 
     this.createBuildArea();
