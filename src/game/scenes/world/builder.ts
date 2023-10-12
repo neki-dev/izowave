@@ -391,6 +391,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private createBuildArea() {
     this.buildArea = this.scene.add.ellipse();
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
+    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
 
     this.updateBuildAreaPosition();
     this.updateBuildAreaSize();
@@ -414,7 +415,6 @@ export class Builder extends EventEmitter implements IBuilder {
       this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
     );
     this.buildArea.updateDisplayOrigin();
-    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
   }
 
   private updateBuildAreaPosition() {

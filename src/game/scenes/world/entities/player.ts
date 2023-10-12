@@ -443,11 +443,7 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.movementAngle = this.movementTarget * 45;
-    this.anims.play({
-      key: `dir_${this.movementTarget}`,
-      startFrame: 1,
-    });
+    this.setMovementAngle();
 
     if (this.dustEffect) {
       this.dustEffect.emitter.start();
