@@ -104,6 +104,7 @@ export interface IWorld extends IScene {
 
   /**
    * Spawn enemy in random position.
+   * @param variant - Enemy variant
    */
   spawnEnemy(variant: EnemyVariant): Nullable<IEnemy>
 

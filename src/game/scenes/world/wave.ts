@@ -183,7 +183,7 @@ export class Wave extends EventEmitter implements IWave {
 
     switch (this.number) {
       case 2: {
-        Tutorial.Start(TutorialStep.UPGRADE_BUILDING);
+        Tutorial.Start(TutorialStep.BUILD_GENERATOR_SECOND);
         break;
       }
       case 3: {

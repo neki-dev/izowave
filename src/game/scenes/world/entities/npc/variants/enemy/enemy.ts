@@ -26,10 +26,12 @@ import {
   EnemyData,
   EnemyTexture,
   IEnemy,
+  EnemyAudio,
 } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 
+Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);
 
 export class Enemy extends NPC implements IEnemy {
@@ -51,12 +53,14 @@ export class Enemy extends NPC implements IEnemy {
 
   private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
 
+  private spawnEffect: boolean;
+
   constructor(scene: IWorld, {
-    positionAtMatrix, texture, score, multipliers,
+    texture, score, multipliers, spawnEffect = true, ...data
   }: EnemyData) {
     super(scene, {
+      ...data,
       texture,
-      positionAtMatrix,
       frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: progressionQuadratic({
@@ -83,6 +87,7 @@ export class Enemy extends NPC implements IEnemy {
       scale: DIFFICULTY.ENEMY_DAMAGE_GROWTH,
       level: scene.wave.number,
     });
+    this.spawnEffect = spawnEffect;
     this.score = score ?? 1;
     this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
     this.might = (
@@ -137,7 +142,9 @@ export class Enemy extends NPC implements IEnemy {
   public activate() {
     super.activate();
 
-    this.addSpawnEffect();
+    if (this.spawnEffect) {
+      this.addSpawnEffect();
+    }
   }
 
   public overlapTarget() {

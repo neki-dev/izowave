@@ -400,7 +400,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    (<IIndicator[]> this.indicators.getAll()).forEach((indicator) => {
+    this.indicators.each((indicator: IIndicator) => {
       indicator.updateValue();
     });
   }
@@ -445,7 +445,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       BuildingAudio.DAMAGE_2,
     ]);
 
-    if (this.scene.game.sound.getAll(audio).length < 3) {
+    if (this.scene.game.sound.getAll(audio).length === 0) {
       this.scene.game.sound.play(audio);
     }
 
@@ -652,8 +652,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const position = this.getPositionOnGround();
 
     this.actionsArea = this.scene.add.ellipse(position.x, position.y);
-    this.actionsArea.setStrokeStyle(2, 0xffffff, 0.5);
-    this.actionsArea.setFillStyle(0xffffff, 0.2);
+    this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
+    this.actionsArea.setFillStyle(0xffffff, 0.35);
     this.actionsArea.setVisible(false);
 
     this.updateActionArea();
@@ -674,7 +674,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const d = this.getActionsRadius() * 2;
 
     this.actionsArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
-    this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
     this.actionsArea.updateDisplayOrigin();
   }
 

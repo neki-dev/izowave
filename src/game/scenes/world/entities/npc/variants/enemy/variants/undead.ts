@@ -3,17 +3,17 @@ import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
 
-export class EnemySpike extends Enemy {
-  static SpawnWaveRange = [2, 7];
+export class EnemyUndead extends Enemy {
+  static SpawnWaveRange = [4, 9];
 
   constructor(scene: IWorld, data: EnemyVariantData) {
     super(scene, {
       ...data,
-      texture: EnemyTexture.SPIKE,
+      texture: EnemyTexture.UNDEAD,
       multipliers: {
-        health: 0.7,
-        damage: 0.4,
-        speed: 0.8,
+        health: 1.0,
+        damage: 0.5,
+        speed: 0.7,
       },
     });
   }

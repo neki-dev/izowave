@@ -50,17 +50,31 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   constructor(scene: IWorld, {
-    texture, positionAtMatrix, health, speed, frame = 0,
+    texture, positionAtWorld, positionAtMatrix, health, speed, frame = 0,
   }: SpriteData) {
-    const positionAtWorld = Level.ToWorldPosition({
-      ...positionAtMatrix,
-      z: 0,
-    });
+    let position: Nullable<{
+      matrix: Vector2D
+      world: Vector2D
+    }> = null;
 
-    super(scene, positionAtWorld.x, positionAtWorld.y, texture, frame);
+    if (positionAtWorld) {
+      position = {
+        world: positionAtWorld,
+        matrix: Level.ToMatrixPosition(positionAtWorld),
+      };
+    } else if (positionAtMatrix) {
+      position = {
+        world: Level.ToWorldPosition({ ...positionAtMatrix, z: 0 }),
+        matrix: positionAtMatrix,
+      };
+    } else {
+      throw Error('Invalid sprite position');
+    }
+
+    super(scene, position.world.x, position.world.y, texture, frame);
     scene.add.existing(this);
 
-    this.positionAtMatrix = positionAtMatrix;
+    this.positionAtMatrix = position.matrix;
     this.live = new Live({ health: health ?? 1 });
     this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
@@ -248,7 +262,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   private updateIndicators() {
-    (<IIndicator[]> this.indicators.getAll()).forEach((indicator) => {
+    this.indicators.each((indicator: IIndicator) => {
       const value = indicator.updateValue();
 
       if (value <= 0.0) {

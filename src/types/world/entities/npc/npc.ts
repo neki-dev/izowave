@@ -39,7 +39,8 @@ export enum NPCEvent {
 }
 
 export type NPCData = {
-  positionAtMatrix: Vector2D
+  positionAtMatrix?: Vector2D
+  positionAtWorld?: Vector2D
   texture: EnemyTexture | AssistantTexture
   speed: number
   health?: number

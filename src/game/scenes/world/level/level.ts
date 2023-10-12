@@ -137,7 +137,7 @@ export class Level extends TileMatrix implements ILevel {
     return LEVEL_PLANETS[this.planet].BIOMES.find((biome) => (biome.data.type === type))?.data ?? null;
   }
 
-  public getFreeAdjacentTile(position: Vector3D) {
+  public getFreeAdjacentTiles(position: Vector3D) {
     const positions: Vector2D[] = [
       { x: position.x + 1, y: position.y },
       { x: position.x, y: position.y + 1 },
@@ -149,10 +149,10 @@ export class Level extends TileMatrix implements ILevel {
       { x: position.x - 1, y: position.y - 1 },
     ];
 
-    return positions.find((p) => this.isFreePoint({
+    return positions.filter((p) => this.isFreePoint({
       ...p,
       z: position.z,
-    })) ?? null;
+    }));
   }
 
   private addTilemap() {

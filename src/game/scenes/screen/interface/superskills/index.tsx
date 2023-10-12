@@ -11,18 +11,15 @@ import { Wrapper } from './styles';
 export const Superskills: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const superskills = useMemo(
-    () => Object.keys(PlayerSuperskill) as PlayerSuperskill[],
-    [],
-  );
+  const superskills = useMemo(() => Object.keys(PlayerSuperskill) as PlayerSuperskill[], []);
 
-  const [isWaveGoing, setWaveGoing] = useState(false);
+  const [isAllow, setAllow] = useState(false);
 
   useSceneUpdate(world, () => {
-    setWaveGoing(world.wave.isGoing);
+    setAllow(world.wave.isGoing && world.wave.number >= 3);
   }, []);
 
-  return isWaveGoing ? (
+  return isAllow ? (
     <Wrapper>
       {superskills.map((superskill) => (
         <Item key={superskill} type={superskill} />

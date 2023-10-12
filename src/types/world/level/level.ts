@@ -69,10 +69,10 @@ export interface ILevel extends ITileMatrix {
   getBiome(type: BiomeType): Nullable<LevelBiome>
 
   /**
-   * Get free adjacent tile around source position.
+   * Get free adjacent tiles around source position.
    * @param position - Source position
    */
-  getFreeAdjacentTile(position: Vector3D): Nullable<Vector2D>
+  getFreeAdjacentTiles(position: Vector3D): Vector2D[]
 
   /**
    * Get data for saving.

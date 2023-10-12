@@ -8,7 +8,7 @@ export class SDK {
     const query = new URLSearchParams(window.location.search);
     const platform = <SDKPlatform> query.get('sdk')?.toUpperCase();
 
-    if (!platform || !SDKPlatform[platform]) {
+    if (!platform || !SDK_PLATFORMS[platform]) {
       return;
     }
 
@@ -56,7 +56,7 @@ export class SDK {
     try {
       switch (this.Platform) {
         case SDKPlatform.CRAZY_GAMES: {
-          window.CrazyGames?.SDK?.ad?.requestAd(type, {
+          window.CrazyGames?.SDK.ad.requestAd(type, {
             adStarted: callbackBeg,
             adFinished: () => callbackEnd(true),
           });

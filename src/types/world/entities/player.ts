@@ -110,6 +110,7 @@ export interface IPlayer extends ISprite, IEnemyTarget {
 
 export enum PlayerTexture {
   PLAYER = 'player/player',
+  SUPERSKILL = 'player/superskill',
 }
 
 export enum PlayerAudio {
@@ -119,6 +120,7 @@ export enum PlayerAudio {
   DAMAGE_1 = 'player/damage_1',
   DAMAGE_2 = 'player/damage_2',
   DAMAGE_3 = 'player/damage_3',
+  SUPERSKILL = 'player/superskill',
 }
 
 export enum PlayerSkill {

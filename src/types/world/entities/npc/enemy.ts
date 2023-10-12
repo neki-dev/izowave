@@ -31,28 +31,36 @@ export interface IEnemyTarget {
   getPositionOnGround(): Vector2D
 }
 
+export enum EnemyAudio {
+  ROAR = 'enemy/roar',
+}
+
 export enum EnemyTexture {
-  BAT = 'enemy/bat',
   SPIKE = 'enemy/spike',
   RISPER = 'enemy/risper',
   DEMON = 'enemy/demon',
+  UNDEAD = 'enemy/undead',
   TANK = 'enemy/tank',
   BOSS = 'enemy/boss',
   GHOST = 'enemy/ghost',
   TERMER = 'enemy/termer',
   EXPLOSIVE = 'enemy/explosive',
+  STRANGER = 'enemy/stranger',
+  ADHERENT = 'enemy/adherent',
 }
 
 export enum EnemyVariant {
-  BAT = 'BAT',
   SPIKE = 'SPIKE',
   RISPER = 'RISPER',
   DEMON = 'DEMON',
+  UNDEAD = 'UNDEAD',
   TANK = 'TANK',
   BOSS = 'BOSS',
   GHOST = 'GHOST',
   TERMER = 'TERMER',
   EXPLOSIVE = 'EXPLOSIVE',
+  STRANGER = 'STRANGER',
+  ADHERENT = 'ADHERENT',
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {
@@ -65,7 +73,9 @@ export type EnemyTexturesMeta = Record<EnemyTexture, {
 }>;
 
 export type EnemyVariantData = {
-  positionAtMatrix: Vector2D
+  spawnEffect?: boolean
+  positionAtMatrix?: Vector2D
+  positionAtWorld?: Vector2D
 };
 
 export type EnemyData = EnemyVariantData & {

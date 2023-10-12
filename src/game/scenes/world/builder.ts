@@ -212,10 +212,10 @@ export class Builder extends EventEmitter implements IBuilder {
     this.isBuild = true;
 
     if (!this.scene.game.device.os.desktop) {
-      this.supposedPosition = this.scene.level.getFreeAdjacentTile({
+      this.supposedPosition = this.scene.level.getFreeAdjacentTiles({
         ...this.scene.player.positionAtMatrix,
         z: 1,
-      }) ?? this.scene.player.positionAtMatrix;
+      })[0] ?? this.scene.player.positionAtMatrix;
     }
 
     this.createBuildArea();
@@ -391,6 +391,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private createBuildArea() {
     this.buildArea = this.scene.add.ellipse();
     this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
+    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
 
     this.updateBuildAreaPosition();
     this.updateBuildAreaSize();
@@ -414,7 +415,6 @@ export class Builder extends EventEmitter implements IBuilder {
       this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
     );
     this.buildArea.updateDisplayOrigin();
-    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
   }
 
   private updateBuildAreaPosition() {
@@ -623,6 +623,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }[] = [
       { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
       { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
+      { step: TutorialStep.BUILD_GENERATOR_SECOND, variant: BuildingVariant.GENERATOR },
     ];
 
     const current = links.find((link) => Tutorial.IsInProgress(link.step));
