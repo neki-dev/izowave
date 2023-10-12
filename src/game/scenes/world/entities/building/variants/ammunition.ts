@@ -152,13 +152,17 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     Tutorial.Complete(TutorialStep.BUY_AMMO);
   }
 
-  private onUpgrade() {
-    const maxAmmo = progressionQuadratic({
+  private getMaxAmmo() {
+    return progressionQuadratic({
       defaultValue: DIFFICULTY.BUILDING_AMMUNITION_AMMO,
       scale: DIFFICULTY.BUILDING_AMMUNITION_AMMO_GROWTH,
       level: this.upgradeLevel,
       roundTo: 10,
     });
+  }
+
+  private onUpgrade() {
+    const maxAmmo = this.getMaxAmmo();
     const addedAmmo = maxAmmo - this.maxAmmo;
 
     this.maxAmmo = maxAmmo;
@@ -175,8 +179,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
   public loadSavePayload(data: BuildingSavePayload) {
     super.loadSavePayload(data);
 
-    if (data.ammo) {
-      this.ammo = data.ammo;
+    if (data.ammo !== undefined) {
+      this.ammo = Math.min(data.ammo, this.getMaxAmmo());
     }
   }
 }
