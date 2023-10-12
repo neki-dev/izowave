@@ -242,7 +242,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getBooster() {
     const boosters = this.scene.builder.getBuildingsByVariant<IBuildingBooster>(BuildingVariant.BOOSTER)
-      .filter((building) => building.active && building.actionsAreaContains(this.getPositionOnGround()));
+      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
 
     if (boosters.length === 0) {
       return null;

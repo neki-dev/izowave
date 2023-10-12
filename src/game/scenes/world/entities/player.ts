@@ -143,16 +143,12 @@ export class Player extends Sprite implements IPlayer {
   public update() {
     super.update();
 
-    if (this.live.isDead()) {
-      return;
-    }
+    if (!this.live.isDead()) {
+      this.dustEffect?.emitter.setDepth(this.depth - 1);
 
-    if (this.dustEffect) {
-      this.dustEffect.emitter.setDepth(this.depth - 1);
+      this.updateMovement();
+      this.updateVelocity();
     }
-
-    this.updateMovement();
-    this.updateVelocity();
   }
 
   public giveScore(amount: number) {
@@ -433,26 +429,22 @@ export class Player extends Sprite implements IPlayer {
   private updateVelocity() {
     if (this.movementAngle === null) {
       this.setVelocity(0, 0);
+    } else {
+      const collide = this.handleCollide(this.movementAngle);
 
-      return;
+      if (collide) {
+        this.setVelocity(0, 0);
+      } else {
+        const friction = this.currentBiome?.friction ?? 1;
+        const speed = this.speed / friction;
+        const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
+
+        this.setVelocity(
+          velocity.x,
+          velocity.y * LEVEL_TILE_SIZE.persperctive,
+        );
+      }
     }
-
-    const collide = this.handleCollide(this.movementAngle);
-
-    if (collide) {
-      this.setVelocity(0, 0);
-
-      return;
-    }
-
-    const friction = this.currentBiome?.friction ?? 1;
-    const speed = this.speed / friction;
-    const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
-
-    this.setVelocity(
-      velocity.x,
-      velocity.y * LEVEL_TILE_SIZE.persperctive,
-    );
   }
 
   private updateMovement() {
@@ -513,9 +505,7 @@ export class Player extends Sprite implements IPlayer {
       this.anims.stop();
     }
 
-    if (this.dustEffect) {
-      this.dustEffect.emitter.stop();
-    }
+    this.dustEffect?.emitter.stop();
 
     this.scene.sound.stopByKey(PlayerAudio.WALK);
   }

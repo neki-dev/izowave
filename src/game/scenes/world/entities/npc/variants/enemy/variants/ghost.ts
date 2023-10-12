@@ -24,7 +24,7 @@ export class EnemyGhost extends Enemy {
 
     const isVisible = this.scene.builder
       .getBuildingsByVariant(BuildingVariant.RADAR)
-      .some((building) => building.active && building.actionsAreaContains(this));
+      .some((building) => building.actionsAreaContains(this));
 
     this.setAlpha(isVisible ? 1.0 : 0.5);
   }

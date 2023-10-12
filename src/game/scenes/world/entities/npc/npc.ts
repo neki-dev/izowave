@@ -68,23 +68,19 @@ export class NPC extends Sprite implements INPC {
   public update() {
     super.update();
 
-    if (!this.isCanPursuit()) {
+    if (this.isCanPursuit()) {
+      if (this.getDistanceToTarget() <= this.pathFindTriggerDistance) {
+        this.resetPath();
+        this.isPathPassed = true;
+      } else {
+        this.findPathToTarget();
+        this.moveByPath();
+        this.isPathPassed = false;
+      }
+    } else {
       this.setVelocity(0, 0);
       this.isPathPassed = false;
-
-      return;
     }
-
-    if (this.getDistanceToTarget() > this.pathFindTriggerDistance) {
-      this.findPathToTarget();
-      this.moveByPath();
-      this.isPathPassed = false;
-
-      return;
-    }
-
-    this.resetPath();
-    this.isPathPassed = true;
   }
 
   public freeze(duration: number, effects = false) {
@@ -104,23 +100,21 @@ export class NPC extends Sprite implements INPC {
       });
     }
 
-    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      return;
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      new Particles(this, {
+        key: 'freeze',
+        texture: ParticlesTexture.GLOW,
+        params: {
+          duration: 200,
+          follow: this,
+          followOffset: this.getBodyOffset(),
+          lifespan: { min: 100, max: 150 },
+          scale: 0.2,
+          speed: 80,
+          tint: 0x00ddff,
+        },
+      });
     }
-
-    new Particles(this, {
-      key: 'freeze',
-      texture: ParticlesTexture.GLOW,
-      params: {
-        duration: 200,
-        follow: this,
-        followOffset: this.getBodyOffset(),
-        lifespan: { min: 100, max: 150 },
-        scale: 0.2,
-        speed: 80,
-        tint: 0x00ddff,
-      },
-    });
   }
 
   public isFreezed(withEffects?: boolean) {
@@ -162,26 +156,24 @@ export class NPC extends Sprite implements INPC {
         return;
       }
 
-      if (!path) {
+      if (path) {
+        if (!this.visible) {
+          this.activate();
+        }
+
+        path.shift();
+        this.pathToTarget = path;
+        this.pathFindingTask = null;
+
+        if (this.isCanPursuit()) {
+          this.moveToTile();
+        }
+
+        this.drawDebugPath();
+      } else {
         this.pathFindingTask = null;
         this.emit(NPCEvent.PATH_NOT_FOUND, from);
-
-        return;
       }
-
-      if (!this.visible) {
-        this.activate();
-      }
-
-      path.shift();
-      this.pathToTarget = path;
-      this.pathFindingTask = null;
-
-      if (this.isCanPursuit()) {
-        this.moveToTile();
-      }
-
-      this.drawDebugPath();
     });
   }
 
@@ -203,18 +195,16 @@ export class NPC extends Sprite implements INPC {
 
     if (collide) {
       this.setVelocity(0, 0);
+    } else {
+      const speed = this.isFreezed() ? (this.speed * 0.1) : this.speed;
+      const velocity = this.scene.physics.velocityFromRotation(rotation, speed);
 
-      return;
+      this.flipX = (velocity.x > 0);
+      this.setVelocity(
+        velocity.x,
+        velocity.y * LEVEL_TILE_SIZE.persperctive,
+      );
     }
-
-    const speed = this.isFreezed() ? (this.speed * 0.1) : this.speed;
-    const velocity = this.scene.physics.velocityFromRotation(rotation, speed);
-
-    this.flipX = (velocity.x > 0);
-    this.setVelocity(
-      velocity.x,
-      velocity.y * LEVEL_TILE_SIZE.persperctive,
-    );
   }
 
   private nextPathTile() {

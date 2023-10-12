@@ -167,7 +167,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public actionsAreaContains(position: Vector2D) {
-    if (!this.actionsArea) {
+    if (!this.active || !this.actionsArea) {
       return false;
     }
 
@@ -190,12 +190,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return true;
     }
 
-    return (this.nextActionTimestamp < this.scene.getTime());
+    return this.nextActionTimestamp < this.scene.getTime();
   }
 
   public getInfo() {
     const info: BuildingParam[] = [];
-
     const delay = this.getActionsDelay();
 
     if (delay) {
@@ -296,7 +295,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `Upgrade will be available on ${waveNumber} wave`);
+      this.scene.game.screen.notice(NoticeType.ERROR, `Will be available on ${waveNumber} wave`);
 
       return;
     }
@@ -449,16 +448,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.game.sound.play(audio);
     }
 
-    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      return;
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      new Effect(this.scene, {
+        texture: EffectTexture.DAMAGE,
+        position: this.getTopCenterByLevel(),
+        depth: this.depth + 1,
+        rate: 14,
+      });
     }
-
-    new Effect(this.scene, {
-      texture: EffectTexture.DAMAGE,
-      position: this.getTopCenterByLevel(),
-      depth: this.depth + 1,
-      rate: 14,
-    });
   }
 
   private onDead() {
@@ -469,27 +466,20 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.toFocus = true;
 
     if (
-      this.isFocused
-      || this.scene.player.live.isDead()
-      || this.scene.builder.isBuild
+      !this.isFocused
+      && !this.scene.player.live.isDead()
+      && !this.scene.builder.isBuild
     ) {
-      return;
+      this.isFocused = true;
     }
-
-    this.isFocused = true;
   }
 
   private unfocus() {
     this.toFocus = false;
-
-    if (!this.isFocused) {
-      return;
-    }
-
     this.isFocused = false;
   }
 
-  public getPositionOnGround(): Vector2D {
+  public getPositionOnGround() {
     return {
       x: this.x,
       y: this.y + LEVEL_TILE_SIZE.height * 0.5,
