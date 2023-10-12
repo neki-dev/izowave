@@ -1,5 +1,4 @@
 import { EnemyAdherent } from '~entity/npc/variants/enemy/variants/adherent';
-import { EnemyBat } from '~entity/npc/variants/enemy/variants/bat';
 import { EnemyBoss } from '~entity/npc/variants/enemy/variants/boss';
 import { EnemyDemon } from '~entity/npc/variants/enemy/variants/demon';
 import { EnemyExplosive } from '~entity/npc/variants/enemy/variants/explosive';
@@ -12,7 +11,6 @@ import { EnemyTermer } from '~entity/npc/variants/enemy/variants/termer';
 import { EnemyVariant, IEnemyFactory } from '~type/world/entities/npc/enemy';
 
 export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
-  [EnemyVariant.BAT]: EnemyBat,
   [EnemyVariant.DEMON]: EnemyDemon,
   [EnemyVariant.RISPER]: EnemyRisper,
   [EnemyVariant.SPIKE]: EnemySpike,

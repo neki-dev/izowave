@@ -13,14 +13,6 @@ export const ENEMY_PATH_BREAKPOINT = 32;
 export const ENEMY_SPAWN_POSITIONS_GRID = 4;
 
 export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
-  [EnemyTexture.BAT]: {
-    frameRate: 4,
-    size: {
-      width: 12,
-      height: 18,
-      gamut: 4,
-    },
-  },
   [EnemyTexture.RISPER]: {
     frameRate: 4,
     size: {
