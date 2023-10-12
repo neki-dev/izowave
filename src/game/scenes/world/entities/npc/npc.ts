@@ -210,6 +210,7 @@ export class NPC extends Sprite implements INPC {
     const speed = this.isFreezed() ? (this.speed * 0.1) : this.speed;
     const velocity = this.scene.physics.velocityFromRotation(rotation, speed);
 
+    this.flipX = (velocity.x > 0);
     this.setVelocity(
       velocity.x,
       velocity.y * LEVEL_TILE_SIZE.persperctive,
