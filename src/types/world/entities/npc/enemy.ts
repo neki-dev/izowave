@@ -31,6 +31,10 @@ export interface IEnemyTarget {
   getPositionOnGround(): Vector2D
 }
 
+export enum EnemyAudio {
+  ROAR = 'enemy/roar',
+}
+
 export enum EnemyTexture {
   SPIKE = 'enemy/spike',
   RISPER = 'enemy/risper',

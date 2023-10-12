@@ -26,10 +26,12 @@ import {
   EnemyData,
   EnemyTexture,
   IEnemy,
+  EnemyAudio,
 } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 
+Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);
 
 export class Enemy extends NPC implements IEnemy {

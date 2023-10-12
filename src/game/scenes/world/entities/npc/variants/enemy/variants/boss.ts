@@ -1,5 +1,5 @@
 import { IWorld } from '~type/world';
-import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
+import { EnemyVariantData, EnemyTexture, EnemyAudio } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
 
@@ -15,5 +15,10 @@ export class EnemyBoss extends Enemy {
         speed: 0.5,
       },
     });
+  }
+
+  public onDead() {
+    this.scene.sound.play(EnemyAudio.ROAR);
+    super.onDead();
   }
 }
