@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   PLAYER_TILE_SIZE,
@@ -25,13 +26,21 @@ import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  PlayerTexture, PlayerAudio, PlayerData, IPlayer, PlayerSkill, PlayerSuperskill, PlayerSavePayload, MovementDirection,
+  PlayerTexture,
+  PlayerAudio,
+  PlayerData,
+  IPlayer,
+  PlayerSkill,
+  PlayerSuperskill,
+  PlayerSavePayload,
+  MovementDirection,
 } from '~type/world/entities/player';
 import { TileType } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 Assets.RegisterAudio(PlayerAudio);
-Assets.RegisterSprites(PlayerTexture, PLAYER_TILE_SIZE);
+Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
+Assets.RegisterImages(PlayerTexture.SUPERSKILL);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
@@ -213,6 +222,22 @@ export class Player extends Sprite implements IPlayer {
     this.activeSuperskills[type] = true;
 
     this.takeResources(cost);
+
+    const position = this.getPositionOnGround();
+    const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
+
+    effect.setDepth(WORLD_DEPTH_EFFECT);
+
+    this.scene.tweens.add({
+      targets: effect,
+      scale: { from: 0.0, to: 2.0 },
+      duration: 500,
+      onComplete: () => {
+        effect.destroy();
+      },
+    });
+
+    this.scene.sound.play(PlayerAudio.SUPERSKILL);
 
     this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
 
