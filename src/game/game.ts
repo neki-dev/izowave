@@ -13,7 +13,6 @@ import { Screen } from '~scene/screen';
 import { System } from '~scene/system';
 import { World } from '~scene/world';
 import {
-  GameAdType,
   GameDifficulty,
   GameEvents,
   GameFlag,
@@ -26,15 +25,13 @@ import {
 } from '~type/game';
 import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
-import { ISDK, SDKPlatform } from '~type/sdk';
+import { SDKAdvType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { IWorld } from '~type/world';
 
 import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
-  private sdk: ISDK | null = null;
-
   private flags: string[];
 
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
@@ -93,10 +90,10 @@ export class Game extends Phaser.Game implements IGame {
     Analytics.Register();
     Tutorial.Register();
 
+    SDK.ToggleLoadState(true);
+
     this.readFlags();
     this.readSettings();
-
-    this.createSDK();
 
     this.events.on(Phaser.Core.Events.READY, () => {
       this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
@@ -137,6 +134,8 @@ export class Game extends Phaser.Game implements IGame {
 
     this.state = GameState.PAUSED;
 
+    SDK.TogglePlayState(false);
+
     this.world.scene.pause();
     this.screen.scene.pause();
 
@@ -153,6 +152,8 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.state = GameState.STARTED;
+
+    SDK.TogglePlayState(true);
 
     this.scene.systemScene.scene.stop(GameScene.MENU);
 
@@ -203,6 +204,8 @@ export class Game extends Phaser.Game implements IGame {
 
     this.state = GameState.STARTED;
 
+    SDK.TogglePlayState(true);
+
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
       Tutorial.Disable();
     }
@@ -239,7 +242,7 @@ export class Game extends Phaser.Game implements IGame {
       defaultPage: MenuPage.NEW_GAME,
     });
 
-    this.showAdv(GameAdType.MIDGAME);
+    this.showAdv(SDKAdvType.MIDGAME);
 
     if (!IS_DEV_MODE) {
       window.onbeforeunload = null;
@@ -252,6 +255,8 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.state = GameState.FINISHED;
+
+    SDK.TogglePlayState(false);
 
     this.events.emit(GameEvents.FINISH);
 
@@ -310,12 +315,12 @@ export class Game extends Phaser.Game implements IGame {
     this.flags = value.split(',');
   }
 
-  public showAdv(type: GameAdType, callback?: () => void) {
-    if (!this.sdk || !this.isFlagEnabled(GameFlag.ADS)) {
+  public showAdv(type: SDKAdvType, callback?: () => void) {
+    if (!this.isFlagEnabled(GameFlag.ADS)) {
       return;
     }
 
-    this.sdk.showAdv(
+    SDK.ShowAdv(
       type,
       () => {
         this.pause();
@@ -325,15 +330,6 @@ export class Game extends Phaser.Game implements IGame {
         callback?.();
       },
     );
-  }
-
-  private createSDK() {
-    const query = new URLSearchParams(window.location.search);
-    const platform = <SDKPlatform> query.get('sdk')?.toUpperCase();
-
-    if (platform) {
-      this.sdk = new SDK(platform);
-    }
   }
 
   private getRecordStat(): Nullable<GameStat> {

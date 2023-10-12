@@ -240,19 +240,3 @@ export function mapEntries<T extends Record<string, any>>(
 ) {
   return Object.entries(obj).map(([key, value], index) => callback(key, value, index));
 }
-
-/**
- * Add script to document.
- * @param url - Script src
- */
-export function registerScript(url: string) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-
-    script.setAttribute('src', url);
-    script.addEventListener('load', resolve);
-    script.addEventListener('error', reject);
-
-    document.body.appendChild(script);
-  });
-}

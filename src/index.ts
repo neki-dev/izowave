@@ -1,3 +1,4 @@
+import { SDK } from '~lib/sdk';
 import { removeFailure, throwFailure } from '~lib/state';
 import { FailureType } from '~type/state';
 
@@ -24,8 +25,10 @@ checkScreenOrientation();
 window.matchMedia('(orientation: landscape)')
   .addEventListener('change', checkScreenOrientation);
 
-const game = new Game();
+SDK.Register().then(() => {
+  const game = new Game();
 
-if (IS_DEV_MODE) {
-  window.GAME = game;
-}
+  if (IS_DEV_MODE) {
+    window.GAME = game;
+  }
+});
