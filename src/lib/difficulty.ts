@@ -75,6 +75,7 @@ export function progressionQuadratic(params: {
 
     return progressionLinear({
       ...params,
+      scale: params.scale / 2,
       defaultValue: point,
       level: params.level - params.retardationLevel + 1,
     });
