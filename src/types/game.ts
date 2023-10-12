@@ -1,4 +1,5 @@
 import { IScreen } from '~type/screen';
+import { SDKAdsType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -94,17 +95,12 @@ export interface IGame extends Phaser.Game {
    * @param type - Ad type
    * @param callback - Complete callback
    */
-  showAdv(type: GameAdType, callback?: () => void): void
+  showAds(type: SDKAdsType, callback?: () => void): void
 
   /**
    * Get data for saving.
    */
   getSavePayload(): GameSavePayload
-}
-
-export enum GameAdType {
-  MIDGAME = 'midgame',
-  REWARDED = 'rewarded',
 }
 
 export enum GameScene {

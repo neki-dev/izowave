@@ -51,8 +51,9 @@ export const DIFFICULTY = {
   WAVE_TIMELEFT_GROWTH: 0.5, // Pause growth by wave number (Linear)
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
-  WAVE_ENEMIES_SPAWN_PAUSE: 2300, // Pause between enemies spawn
-  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.035, // Enemies spawn pause growth by wave number (Quadratic)
+  WAVE_ENEMIES_SPAWN_PAUSE: 2200, // Pause between enemies spawn
+  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.038, // Enemies spawn pause growth by wave number (Quadratic)
+  WAVE_ENEMIES_SPAWN_PAUSE_LEVEL: 20, // Level for limit spawn pause growth
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
 
@@ -79,10 +80,10 @@ export const DIFFICULTY = {
 
   ENEMY_HEALTH: 90, // Health
   ENEMY_HEALTH_GROWTH: 0.4, // Health growth by wave number (Quadratic)
-  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 13, // Level for health growth retardation
+  ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
   ENEMY_ARMOUR_GROWTH: 0.4, // Armour growth by wave number (Quadratic)
-  ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 15, // Level for armour growth retardation
+  ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 12, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
@@ -99,7 +100,7 @@ export const DIFFICULTY = {
   BUILDER_BUILD_AREA_GROWTH: 0.13, // Growth radius by upgrade (Quadratic)
   BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade radius
   BUILDER_BUILD_DURATION: 2000, // Duration of build process
-  BUILDER_BUILD_DURATION_GROWTH: -0.12, // Experience growth by level (Linear)
+  BUILDER_BUILD_DURATION_GROWTH: -0.115, // Experience growth by level (Linear)
   BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade speed
 
   /**

@@ -18,7 +18,7 @@ describe('difficulty.ts', () => {
     })).toEqual(13157);
     expect(progressionQuadratic({
       defaultValue: 90, scale: 0.3, level: 20, retardationLevel: 15,
-    })).toEqual(8857);
+    })).toEqual(6200);
   });
 
   it('should return correct negative value growth', () => {

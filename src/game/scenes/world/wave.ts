@@ -219,9 +219,10 @@ export class Wave extends EventEmitter implements IWave {
       defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       scale: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       level: this.number,
+      maxLevel: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_LEVEL,
     });
 
-    this.nextSpawnTimestamp = this.scene.getTime() + Math.max(pause, 500);
+    this.nextSpawnTimestamp = this.scene.getTime() + pause;
     this.spawnedEnemiesCount++;
   }
 
