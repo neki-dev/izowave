@@ -2,10 +2,9 @@ import React from 'react';
 
 import { CONTROLS } from '~const/controls';
 import { phrase } from '~lib/lang';
-import { Text } from '~scene/system/interface/text';
 
 import {
-  Wrapper, Control, Keys, Key,
+  Wrapper, Control, Keys, Key, Description,
 } from './styles';
 
 export const Controls: React.FC = () => (
@@ -17,7 +16,7 @@ export const Controls: React.FC = () => (
             <Key key={key}>{key}</Key>
           ))}
         </Keys>
-        <Text>- {phrase(control.label)}</Text>
+        <Description>- {phrase(control.label)}</Description>
       </Control>
     ))}
   </Wrapper>

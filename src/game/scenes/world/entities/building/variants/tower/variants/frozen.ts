@@ -18,7 +18,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Description: LangPhrase = 'BUILDING_DESCRIPTION_TOWER_FROZEN';
 
-  static Category = BuildingCategory.ATTACK;
+  static Category = BuildingCategory.DEFENSE;
 
   static Params: BuildingParam[] = [
     { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: BuildingIcon.HEALTH },
