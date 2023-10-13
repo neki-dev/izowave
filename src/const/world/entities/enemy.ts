@@ -54,7 +54,7 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     },
   },
   [EnemyTexture.TANK]: {
-    frameRate: 8,
+    frameRate: 4,
     size: {
       width: 32,
       height: 40,
@@ -62,7 +62,7 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     },
   },
   [EnemyTexture.GHOST]: {
-    frameRate: 8,
+    frameRate: 4,
     size: {
       width: 32,
       height: 40,
@@ -94,7 +94,7 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     },
   },
   [EnemyTexture.BOSS]: {
-    frameRate: 4,
+    frameRate: 8,
     size: {
       width: 64,
       height: 80,
