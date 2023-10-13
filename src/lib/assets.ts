@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import pkg from '../../package.json';
 import { AssetsSource, AssetsSpriteParams } from '~type/assets';
 
 export class Assets {
@@ -10,7 +11,7 @@ export class Assets {
       this.Normalize(files).map((file) => ({
         key: file,
         type: 'audio',
-        url: `assets/audio/${file}.mp3`,
+        url: `assets/audio/${file}.mp3?v=${pkg.version}`,
       })),
     );
   }
@@ -20,7 +21,7 @@ export class Assets {
       this.Normalize(files).map((file) => ({
         key: file,
         type: 'image',
-        url: `assets/sprites/${file}.png`,
+        url: `assets/sprites/${file}.png?v=${pkg.version}`,
       })),
     );
   }
@@ -33,7 +34,7 @@ export class Assets {
         return {
           key: file,
           type: 'spritesheet',
-          url: `assets/sprites/${file}.png`,
+          url: `assets/sprites/${file}.png?v=${pkg.version}`,
           frameConfig: {
             frameWidth: width,
             frameHeight: height,
