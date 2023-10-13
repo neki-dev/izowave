@@ -343,10 +343,12 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     if (this.scene.game.device.os.desktop) {
-      if (this.isBuildingLimitReached(this.variant)) {
-        this.clearBuildingVariant();
-      } else {
-        Tutorial.Start(TutorialStep.STOP_BUILD);
+      if (this.variant) {
+        if (this.isBuildingLimitReached(this.variant)) {
+          this.clearBuildingVariant();
+        } else {
+          Tutorial.Start(TutorialStep.STOP_BUILD);
+        }
       }
     } else {
       this.clearBuildingVariant();
