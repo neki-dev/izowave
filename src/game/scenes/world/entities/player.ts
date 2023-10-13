@@ -140,10 +140,10 @@ export class Player extends Sprite implements IPlayer {
     this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
 
     this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
-      if (value === 'off') {
-        this.removeDustEffect();
-      } else {
+      if (value === 'on') {
         this.addDustEffect();
+      } else {
+        this.removeDustEffect();
       }
     });
   }
@@ -218,7 +218,7 @@ export class Player extends Sprite implements IPlayer {
     const cost = this.getSuperskillCost(type);
 
     if (this.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -304,7 +304,7 @@ export class Player extends Sprite implements IPlayer {
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough experience');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_EXPERIENCE');
 
       return;
     }

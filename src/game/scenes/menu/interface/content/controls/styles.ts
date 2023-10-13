@@ -31,3 +31,11 @@ export const Key = styled.div`
   margin-top: -3px;
   border-radius: 3px;
 `;
+
+export const Description = styled.div`
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 12px;
+  line-height: 13px;
+  letter-spacing: 1px;
+  color: #fff;
+`;

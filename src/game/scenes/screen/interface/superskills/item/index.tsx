@@ -8,14 +8,14 @@ import {
 import React, { useRef, useState } from 'react';
 
 import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
+import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { Text } from '~scene/system/interface/text';
 import { GameScene, GameState, IGame } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerSuperskill } from '~type/world/entities/player';
 
 import {
-  Container, Timeout, Info, Icon, Body, Head, Name,
+  Container, Timeout, Info, Icon, Body, Head, Name, Description,
 } from './styles';
 
 type Props = {
@@ -77,11 +77,11 @@ export const Item: React.FC<Props> = ({ type }) => {
     >
       <Info>
         <Head>
-          <Name>{type}</Name>
+          <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
           <Cost type="resources" value={cost} />
         </Head>
         <Body>
-          <Text>{PLAYER_SUPERSKILLS[type].description}</Text>
+          <Description>{phrase(`SUPERSKILL_DESCRIPTION_${type}`)}</Description>
         </Body>
       </Info>
       {isActive && (

@@ -14,5 +14,5 @@ export const Score: React.FC = () => {
     setAmount(world.player.score);
   }, []);
 
-  return <Amount type="score">{amount}</Amount>;
+  return <Amount type="SCORE" hint={true}>{amount}</Amount>;
 };

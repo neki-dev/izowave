@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 
 import { MAX_GAME_SAVES } from '~const/game';
+import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
 import { Table } from '~scene/system/interface/table';
@@ -67,12 +68,12 @@ export const SaveGame: React.FC = () => {
         <Table>
           <Table.Head>
             <Table.HeadRow>
-              <Table.Cell>Name</Table.Cell>
-              <Table.Cell>Planet</Table.Cell>
-              <Table.Cell>Difficulty</Table.Cell>
-              <Table.Cell>Wave</Table.Cell>
-              <Table.Cell>Score</Table.Cell>
-              <Table.Cell>Date</Table.Cell>
+              <Table.Cell>{phrase('SAVE_NAME')}</Table.Cell>
+              <Table.Cell>{phrase('PLANET')}</Table.Cell>
+              <Table.Cell>{phrase('DIFFICULTY')}</Table.Cell>
+              <Table.Cell>{phrase('WAVE')}</Table.Cell>
+              <Table.Cell>{phrase('SCORE')}</Table.Cell>
+              <Table.Cell>{phrase('SAVE_DATE')}</Table.Cell>
               <Table.Cell />
             </Table.HeadRow>
           </Table.Head>
@@ -84,8 +85,8 @@ export const SaveGame: React.FC = () => {
                 $active={save.name === saveName}
               >
                 <Table.Cell>{save.name}</Table.Cell>
-                <Table.Cell>{save.payload.level.planet}</Table.Cell>
-                <Table.Cell>{save.payload.game.difficulty}</Table.Cell>
+                <Table.Cell>{phrase(save.payload.level.planet)}</Table.Cell>
+                <Table.Cell>{phrase(save.payload.game.difficulty)}</Table.Cell>
                 <Table.Cell>{save.payload.wave.number}</Table.Cell>
                 <Table.Cell>{save.payload.player.score}</Table.Cell>
                 <Table.Cell>{new Date(save.date).toLocaleString()}</Table.Cell>
@@ -101,7 +102,7 @@ export const SaveGame: React.FC = () => {
         </Table>
       )}
       {saves.length >= MAX_GAME_SAVES ? (
-        <Limit>You have maximum saves. Delete or rewrite exist</Limit>
+        <Limit>{phrase('SAVES_LIMIT')}</Limit>
       ) : (
         <Input
           type="text"
@@ -117,7 +118,7 @@ export const SaveGame: React.FC = () => {
         disabled={!saveName}
         onClick={onClickSave}
       >
-        Save
+        {phrase('SAVE')}
       </Button>
     </Wrapper>
   );

@@ -5,6 +5,7 @@ import { INTERFACE_SCALE } from '~const/interface';
 import { Scene } from '~game/scenes';
 import { Assets } from '~lib/assets';
 import { GameScene } from '~type/game';
+import { LangPhrase } from '~type/lang';
 import {
   IScreen, NoticeType, ScreenAudio, ScreenEvents,
 } from '~type/screen';
@@ -38,8 +39,8 @@ export class Screen extends Scene implements IScreen {
     this.handleJoystick();
   }
 
-  public notice(type: NoticeType, text: string) {
-    this.events.emit(ScreenEvents.NOTICE, { type, text });
+  public notice(type: NoticeType, text: LangPhrase, format?: any[]) {
+    this.events.emit(ScreenEvents.NOTICE, { type, text, format });
 
     if (type === NoticeType.ERROR) {
       this.game.sound.play(ScreenAudio.ERROR);
@@ -48,7 +49,6 @@ export class Screen extends Scene implements IScreen {
 
   private createJoystick() {
     const params = this.getJoystickParams();
-
     const base = this.add.circle(0, 0, params.radius, 0xffffff, 0.25);
 
     base.setInteractive();

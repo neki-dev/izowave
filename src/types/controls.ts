@@ -1,4 +1,6 @@
+import { LangPhrase } from './lang';
+
 export type ControlItem = {
-  name: string
-  description: string
+  keys: string
+  label: LangPhrase
 };

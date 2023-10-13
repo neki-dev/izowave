@@ -30,13 +30,9 @@ export const Resources: React.FC = () => {
 
   return (
     <Wrapper>
-      <Amount type="resources">{amount}</Amount>
+      <Amount type="RESOURCES" hint={true}>{amount}</Amount>
       {hint && (
-        <Hint side="top" align="left">
-          If resources not enough
-          <br />
-          you can find crystals on map
-        </Hint>
+        <Hint label='TUTORIAL_RESOURCES' side="top" align="left" />
       )}
     </Wrapper>
   );

@@ -55,6 +55,9 @@ export const Head = styled.div`
   padding: 10px 14px;
   background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   border-radius: 10px 10px 0 0;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 9px 11px;
+  }
 `;
 
 export const Name = styled.div`
@@ -63,12 +66,27 @@ export const Name = styled.div`
   font-size: 14px;
   line-height: 14px;
   padding-bottom: 2px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 13px;
+    line-height: 13px;
+  }
+`;
+
+export const Description = styled.div`
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 11px;
+  line-height: 12px;
+  letter-spacing: 1px;
+  color: #fff;
 `;
 
 export const Body = styled.div`
   background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   padding: 10px 14px 12px 14px;
   border-radius: 0 0 10px 10px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 7px 11px 11px 11px;
+  }
 `;
 
 export const Container = styled.div<{

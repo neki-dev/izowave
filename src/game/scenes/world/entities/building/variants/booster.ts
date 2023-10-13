@@ -1,22 +1,30 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinear } from '~lib/difficulty';
+import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
-  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon, BuildingEvents, IBuildingBooster,
+  BuildingVariant,
+  BuildingTexture,
+  BuildingParam,
+  BuildingVariantData,
+  BuildingIcon,
+  BuildingEvents,
+  IBuildingBooster,
+  BuildingCategory,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
 
 export class BuildingBooster extends Building implements IBuildingBooster {
-  static Name = 'Booster';
+  static Name: LangPhrase = 'BUILDING_NAME_BOOSTER';
 
-  static Description = 'Increases towers damage';
+  static Description: LangPhrase = 'BUILDING_DESCRIPTION_BOOSTER';
 
-  static Category = 'Other';
+  static Category = BuildingCategory.OTHER;
 
   static Params: BuildingParam[] = [
-    { label: 'Health', value: DIFFICULTY.BUILDING_BOOSTER_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Power', value: `+${DIFFICULTY.BUILDING_BOOSTER_POWER}%`, icon: BuildingIcon.POWER },
+    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_BOOSTER_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'BUILDING_POWER', value: `+${DIFFICULTY.BUILDING_BOOSTER_POWER}%`, icon: BuildingIcon.POWER },
   ];
 
   static Texture = BuildingTexture.BOOSTER;
@@ -52,7 +60,7 @@ export class BuildingBooster extends Building implements IBuildingBooster {
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'Power',
+      label: 'BUILDING_POWER',
       icon: BuildingIcon.POWER,
       value: `+${this.power}%`,
     }];

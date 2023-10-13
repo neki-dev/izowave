@@ -1,27 +1,32 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { Tutorial } from '~lib/tutorial';
+import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
+  BuildingCategory,
   BuildingIcon,
-  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData,
+  BuildingParam,
+  BuildingTexture,
+  BuildingVariant,
+  BuildingVariantData,
 } from '~type/world/entities/building';
 
 import { BuildingTower } from '../tower';
 
 export class BuildingTowerFire extends BuildingTower {
-  static Name = 'Fire tower';
+  static Name: LangPhrase = 'BUILDING_NAME_TOWER_FIRE';
 
-  static Description = 'Basic fire attack of enemies';
+  static Description: LangPhrase = 'BUILDING_DESCRIPTION_TOWER_FIRE';
 
-  static Category = 'Attack';
+  static Category = BuildingCategory.ATTACK;
 
   static Params: BuildingParam[] = [
-    { label: 'Health', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Radius', value: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'Damage', value: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE, icon: BuildingIcon.DAMAGE },
-    { label: 'Speed', value: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED, icon: BuildingIcon.SPEED },
+    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'BUILDING_RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS, icon: BuildingIcon.RADIUS },
+    { label: 'BUILDING_DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE, icon: BuildingIcon.DAMAGE },
+    { label: 'BUILDING_SPEED', value: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED, icon: BuildingIcon.SPEED },
   ];
 
   static Texture = BuildingTexture.TOWER_FIRE;
@@ -56,13 +61,13 @@ export class BuildingTowerFire extends BuildingTower {
     this.bindTutorialHint(
       TutorialStep.UPGRADE_BUILDING,
       this.scene.game.device.os.desktop
-        ? 'Hover and press [E]\nto upgrade'
-        : 'Click to upgrade',
+        ? 'TUTORIAL_HOVER_TO_UPGRADE'
+        : 'TUTORIAL_CLICK_TO_UPGRADE',
     );
 
     this.bindTutorialHint(
       TutorialStep.RELOAD_TOWER,
-      'Build ammunition nearby',
+      'TUTORIAL_RELOAD_TOWER',
       () => this.ammo === 0,
     );
 

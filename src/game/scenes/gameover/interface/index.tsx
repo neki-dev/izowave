@@ -1,6 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React from 'react';
 
+import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
 import { Overlay } from '~scene/system/interface/overlay';
 import { GameStat, IGame } from '~type/game';
@@ -25,7 +26,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
       <Wrapper>
         <Label>GAME OVER</Label>
         <Button onClick={onRestartClick} size="large" view="confirm">
-          Play again
+          {phrase('PLAY_AGAIN')}
         </Button>
         <Result stat={stat} record={record} />
       </Wrapper>

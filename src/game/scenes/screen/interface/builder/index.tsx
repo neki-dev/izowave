@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
+import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
-import { eachEntries } from '~lib/utils';
+import { mapEntries } from '~lib/utils';
+import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
-import { BuildingVariant } from '~type/world/entities/building';
+import { BuildingCategory, BuildingVariant } from '~type/world/entities/building';
 
 import { Building } from './building';
 import {
@@ -14,28 +16,19 @@ import {
 export const Builder: React.FC = () => {
   const [hint, setHint] = useState<Nullable<{
     variant: BuildingVariant
-    text: string
+    label: LangPhrase
   }>>(null);
 
   const categories = useMemo(() => {
-    const result: Record<string, {
-      number: number
-      variant: BuildingVariant
-    }[]> = {};
+    const buildings = mapEntries(BUILDINGS, (variant, building, index) => ({
+      variant,
+      category: building.Category,
+      number: index + 1,
+    }));
 
-    eachEntries(BUILDINGS, (variant, building, index) => {
-      if (!result[building.Category]) {
-        result[building.Category] = [];
-      }
-      result[building.Category].push({
-        number: index + 1,
-        variant,
-      });
-    });
-
-    return Object.entries(result).map(([label, buildings]) => ({
-      label,
-      buildings,
+    return Object.values(BuildingCategory).map((type) => ({
+      type,
+      buildings: buildings.filter((building) => building.category === type),
     }));
   }, []);
 
@@ -44,31 +37,31 @@ export const Builder: React.FC = () => {
       case TutorialStep.BUILD_GENERATOR: {
         return setHint({
           variant: BuildingVariant.GENERATOR,
-          text: 'Build generator\nto get resources',
+          label: 'TUTORIAL_BUILD_GENERATOR',
         });
       }
       case TutorialStep.BUILD_GENERATOR_SECOND: {
         return setHint({
           variant: BuildingVariant.GENERATOR,
-          text: 'Build second generator\nto get more resources',
+          label: 'TUTORIAL_BUILD_GENERATOR_SECOND',
         });
       }
       case TutorialStep.BUILD_RADAR: {
         return setHint({
           variant: BuildingVariant.RADAR,
-          text: 'Build radar\nto uncover enemies',
+          label: 'TUTORIAL_BUILD_RADAR',
         });
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
         return setHint({
           variant: BuildingVariant.TOWER_FIRE,
-          text: 'Build tower\nto attack enemies',
+          label: 'TUTORIAL_BUILD_TOWER_FIRE',
         });
       }
       case TutorialStep.BUILD_AMMUNITION: {
         return setHint({
           variant: BuildingVariant.AMMUNITION,
-          text: 'Build ammunition\nto reload towers',
+          label: 'TUTORIAL_BUILD_AMMUNITION',
         });
       }
     }
@@ -94,15 +87,15 @@ export const Builder: React.FC = () => {
   return (
     <Wrapper>
       {categories.map((category) => (
-        <Category key={category.label}>
-          <Label>{category.label}</Label>
+        <Category key={category.type}>
+          <Label>{phrase(`BUILDING_CATEGORY_${category.type}`)}</Label>
           <Variants>
             {category.buildings.map((building) => (
               <Building
                 key={building.variant}
                 variant={building.variant}
                 number={building.number}
-                hint={hint?.variant === building.variant ? hint.text : undefined}
+                hint={hint?.variant === building.variant ? hint.label : undefined}
               />
             ))}
           </Variants>

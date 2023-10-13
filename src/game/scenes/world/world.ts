@@ -150,7 +150,7 @@ export class World extends Scene implements IWorld {
 
   public showHint(hint: WorldHint) {
     const id = hint.unique
-      ? hashString(hint.text)
+      ? hashString(hint.label)
       : uuidv4();
 
     this.events.emit(WorldEvents.SHOW_HINT, id, hint);

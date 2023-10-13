@@ -1,6 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React from 'react';
 
+import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
 import { GameState, IGame } from '~type/game';
 
@@ -17,7 +18,7 @@ export const MenuButton: React.FC = () => {
 
   return (
     <Button onClick={onClick}>
-      <Icon>≡</Icon> MENU
+      <Icon>≡</Icon> {phrase('MENU')}
     </Button>
   );
 };

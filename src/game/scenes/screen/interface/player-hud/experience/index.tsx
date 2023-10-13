@@ -14,5 +14,5 @@ export const Experience: React.FC = () => {
     setAmount(world.player.experience);
   }, []);
 
-  return <Amount type="experience">{amount}</Amount>;
+  return <Amount type="EXPERIENCE" hint={true}>{amount}</Amount>;
 };

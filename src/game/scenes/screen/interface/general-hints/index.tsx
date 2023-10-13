@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 
 import { Tutorial } from '~lib/tutorial';
 import { Hint } from '~scene/system/interface/hint';
+import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 
 import { Wrapper } from './styles';
 
 export const GeneralHints: React.FC = () => {
-  const [hint, setHint] = useState<Nullable<string>>(null);
+  const [hint, setHint] = useState<Nullable<LangPhrase>>(null);
 
   const showHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.STOP_BUILD: {
-        return setHint('Use [Right click] to stop build');
+        return setHint('TUTORIAL_STOP_BUILD');
       }
     }
   };
@@ -36,9 +37,7 @@ export const GeneralHints: React.FC = () => {
   return (
     hint && (
       <Wrapper>
-        <Hint side="top" align="center">
-          {hint}
-        </Hint>
+        <Hint label={hint} side="top" align="center" />
       </Wrapper>
     )
   );

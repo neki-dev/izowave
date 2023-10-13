@@ -3,22 +3,23 @@ import { Building } from '~entity/building';
 import { Tutorial } from '~lib/tutorial';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
+import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
-  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon,
+  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon, BuildingCategory,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
-  static Name = 'Generator';
+  static Name: LangPhrase = 'BUILDING_NAME_GENERATOR';
 
-  static Description = 'Generates resources for builds and upgrades';
+  static Description: LangPhrase = 'BUILDING_DESCRIPTION_GENERATOR';
 
-  static Category = 'Resources';
+  static Category = BuildingCategory.RESOURCES;
 
   static Params: BuildingParam[] = [
-    { label: 'Health', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.GENERATOR;

@@ -48,7 +48,7 @@ export const RelativeHints: React.FC = () => {
     <RelativePosition key={id} x={hint.position.x} y={hint.position.y}>
       <Wrapper>
         <RelativeScale {...INTERFACE_SCALE}>
-          <Hint side={hint.side}>{hint.text}</Hint>
+          <Hint label={hint.label} side={hint.side} />
         </RelativeScale>
       </Wrapper>
     </RelativePosition>

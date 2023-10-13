@@ -14,23 +14,19 @@ export const DEBUG_MODS = {
 
 export const SETTINGS: Record<GameSettings, GameSettingsData> = {
   [GameSettings.TUTORIAL]: {
-    description: 'Tutorial',
     values: ['on', 'off'],
     default: 'on',
   },
   [GameSettings.AUDIO]: {
-    description: 'Audio',
     values: ['on', 'off'],
     default: 'on',
   },
   [GameSettings.SHOW_DAMAGE]: {
-    description: 'Show damage',
     values: ['on', 'off'],
     default: 'on',
     onlyDesktop: true,
   },
   [GameSettings.EFFECTS]: {
-    description: 'Effects',
     values: ['on', 'off'],
     default: 'on',
   },

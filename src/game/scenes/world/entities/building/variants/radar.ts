@@ -1,22 +1,28 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Tutorial } from '~lib/tutorial';
+import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
-  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
+  BuildingVariant,
+  BuildingTexture,
+  BuildingParam,
+  BuildingVariantData,
+  BuildingIcon,
+  BuildingCategory,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
 
 export class BuildingRadar extends Building {
-  static Name = 'Radar';
+  static Name: LangPhrase = 'BUILDING_NAME_RADAR';
 
-  static Description = 'Uncovers enemies within building radius';
+  static Description: LangPhrase = 'BUILDING_DESCRIPTION_RADAR';
 
-  static Category = 'Other';
+  static Category = BuildingCategory.OTHER;
 
   static Params: BuildingParam[] = [
-    { label: 'Health', value: DIFFICULTY.BUILDING_RADAR_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_RADAR_HEALTH, icon: BuildingIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.RADAR;
