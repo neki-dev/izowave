@@ -17,7 +17,7 @@ import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
+import { GameEvents, GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents } from '~type/world';
@@ -138,6 +138,14 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
+
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
+      if (value === 'off') {
+        this.removeDustEffect();
+      } else {
+        this.addDustEffect();
+      }
+    });
   }
 
   public update() {
@@ -464,9 +472,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.setMovementAngle();
 
-    if (this.dustEffect) {
-      this.dustEffect.emitter.start();
-    }
+    this.dustEffect?.emitter.start();
 
     this.scene.game.sound.play(PlayerAudio.WALK, {
       loop: true,
@@ -532,6 +538,15 @@ export class Player extends Sprite implements IPlayer {
         emitting: false,
       },
     });
+  }
+
+  private removeDustEffect() {
+    if (!this.dustEffect) {
+      return;
+    }
+
+    this.dustEffect.destroy();
+    this.dustEffect = null;
   }
 
   private registerAnimations() {
