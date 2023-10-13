@@ -5,7 +5,7 @@ export const DIFFICULTY = {
 
   PLAYER_START_RESOURCES: 70, // Resources on game start
   PLAYER_SPEED: 90, // Movement speed
-  PLAYER_SPEED_GROWTH: 0.05, // Growth speed by upgrade (Quadratic)
+  PLAYER_SPEED_GROWTH: 0.035, // Growth speed by upgrade (Quadratic)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade speed
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
