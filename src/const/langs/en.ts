@@ -54,6 +54,7 @@ export const EN = {
    * Skills
    */
   SKILLS: 'Skills',
+  SKILLS_CLOSE: 'Close',
   SKILL_TARGET_CHARACTER: 'Character',
   SKILL_TARGET_ASSISTANT: 'Assistant',
   SKILL_UPGRADE: 'Upgrade',
@@ -72,6 +73,17 @@ export const EN = {
   RESOURCES: 'Resources',
   EXPERIENCE: 'Experience',
   SCORE: 'Score',
+
+  /**
+   * Ads
+   */
+  ADS_OFFER: 'Do you want to get reward\nby watching ads?',
+
+  /**
+   * Modal
+   */
+  YES: 'Yes',
+  NO: 'No',
 
   /**
    * Superskills

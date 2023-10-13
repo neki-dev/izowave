@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinear } from '~lib/difficulty';
+import { phrase } from '~lib/lang';
 import { Amount } from '~scene/system/interface/amount';
 import { Modal } from '~scene/system/interface/modal';
 import { IGame, GameScene, GameFlag } from '~type/game';
@@ -10,7 +11,7 @@ import { SDKAdsType } from '~type/sdk';
 import { IWorld } from '~type/world';
 import { WaveEvents } from '~type/world/wave';
 
-import { Amounts } from './styles';
+import { Amounts, Text } from './styles';
 
 export const AdsReward: React.FC = () => {
   const game = useGame<IGame>();
@@ -69,9 +70,7 @@ export const AdsReward: React.FC = () => {
   return (
     isAdsOfferOpen && (
       <Modal onConfirm={onConfirmAds} onClose={onDeclineAds}>
-        Do you want to get reward
-        <br />
-        by watching ads?
+        <Text>{phrase('ADS_OFFER')}</Text>
         <Amounts>
           <Amount type="RESOURCES">+{adsReward.resources}</Amount>
           <Amount type="EXPERIENCE">+{adsReward.experience}</Amount>

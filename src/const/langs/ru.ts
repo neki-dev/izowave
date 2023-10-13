@@ -21,7 +21,7 @@ export const RU = {
   BUILDING_NAME_GENERATOR: 'Генератор',
   BUILDING_DESCRIPTION_GENERATOR: 'Генерация ресурсов для построек',
   BUILDING_NAME_AMMUNITION: 'Амуниция',
-  BUILDING_DESCRIPTION_AMMUNITION: 'Перезарядка башен в радиусе действия',
+  BUILDING_DESCRIPTION_AMMUNITION: 'Патроны для перезарядки башен в радиусе действия',
   BUILDING_NAME_RADAR: 'Радар',
   BUILDING_DESCRIPTION_RADAR: 'Раскрывает врагов в радиусе действия',
   BUILDING_NAME_BOOSTER: 'Бустер',
@@ -54,6 +54,7 @@ export const RU = {
    * Skills
    */
   SKILLS: 'Навыки',
+  SKILLS_CLOSE: 'Закрыть',
   SKILL_TARGET_CHARACTER: 'Персонаж',
   SKILL_TARGET_ASSISTANT: 'Помощник',
   SKILL_UPGRADE: 'Улучшить',
@@ -72,6 +73,17 @@ export const RU = {
   RESOURCES: 'Ресурсы',
   EXPERIENCE: 'Опыт',
   SCORE: 'Счет',
+
+  /**
+   * Ads
+   */
+  ADS_OFFER: 'Хотите получить награду\nза просмотр рекламы?',
+
+  /**
+   * Modal
+   */
+  YES: 'Да',
+  NO: 'Нет',
 
   /**
    * Superskills

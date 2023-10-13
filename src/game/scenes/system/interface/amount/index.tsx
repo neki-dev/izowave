@@ -9,14 +9,17 @@ import {
 type Props = {
   children: React.ReactNode
   type: 'RESOURCES' | 'EXPERIENCE' | 'SCORE'
+  hint?: boolean
 };
 
-export const Amount: React.FC<Props> = ({ children, type }) => (
+export const Amount: React.FC<Props> = ({ children, type, hint }) => (
   <Wrapper>
     <IconContainer>
       <Icon src={`assets/sprites/hud/${type.toLowerCase()}.png`} />
     </IconContainer>
     <Value>{children}</Value>
-    <Placeholder>{phrase(type)}</Placeholder>
+    {hint && (
+      <Placeholder>{phrase(type)}</Placeholder>
+    )}
   </Wrapper>
 );

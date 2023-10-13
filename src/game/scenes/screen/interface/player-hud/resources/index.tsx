@@ -30,7 +30,7 @@ export const Resources: React.FC = () => {
 
   return (
     <Wrapper>
-      <Amount type="RESOURCES">{amount}</Amount>
+      <Amount type="RESOURCES" hint={true}>{amount}</Amount>
       {hint && (
         <Hint label='TUTORIAL_RESOURCES' side="top" align="left" />
       )}

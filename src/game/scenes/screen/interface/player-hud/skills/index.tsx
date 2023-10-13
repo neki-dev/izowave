@@ -103,7 +103,9 @@ export const Skills: React.FC = () => {
               <Item key={type} type={type} />
             ))}
           </List>
-          {isSmallScreen && <Button onClick={onClick}>Close</Button>}
+          {isSmallScreen && (
+            <Button onClick={onClick}>{phrase('SKILLS_CLOSE')}</Button>
+          )}
         </Container>
       ) : (
         hint && (
