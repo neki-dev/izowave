@@ -86,7 +86,7 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
       )}
       <Image>
         <Frame>
-          <Texture name={BUILDINGS[variant].Texture} frame={0} />
+          <Texture name={BUILDINGS[variant].Texture} />
         </Frame>
       </Image>
       <Info>
