@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { phrase } from '~lib/lang';
 import { BuildingParam } from '~type/world/entities/building';
 
 import {
@@ -25,7 +26,7 @@ export const BuildingParams: React.FC<Props> = ({ list, adaptive }) => (
           <Icon src={`assets/sprites/${param.icon}.png`} />
         </IconContainer>
         <Info $attention={param.attention}>
-          <Label>{param.label}</Label>
+          <Label>{phrase(param.label)}</Label>
           <Value>{param.value}</Value>
         </Info>
       </Param>

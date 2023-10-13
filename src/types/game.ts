@@ -143,7 +143,6 @@ export enum GameFlag {
 }
 
 export type GameSettingsData = {
-  description: string
   values: string[]
   default: string
   onlyDesktop?: boolean

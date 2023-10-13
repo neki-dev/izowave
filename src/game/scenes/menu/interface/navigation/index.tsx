@@ -1,6 +1,8 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useMemo } from 'react';
 
+import { phrase } from '~lib/lang';
+import { Tutorial } from '~lib/tutorial';
 import { GameState, IGame } from '~type/game';
 import { MenuItem, MenuPage } from '~type/menu';
 
@@ -19,23 +21,22 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
 
     if (game.state === GameState.IDLE) {
       items.push({
-        label: 'New game',
+        label: 'NEW_GAME',
         page: MenuPage.NEW_GAME,
       }, {
-        label: 'Load game',
+        label: 'LOAD_GAME',
         page: MenuPage.LOAD_GAME,
       });
     } else {
       items.push({
-        label: 'Continue',
+        label: 'CONTINUE',
         onClick: () => game.resumeGame(),
       }, {
-        label: 'Save game',
+        label: 'SAVE_GAME',
         page: MenuPage.SAVE_GAME,
         disabled: game.world.wave.isGoing,
       }, {
-        label: 'Main menu',
-        page: MenuPage.NEW_GAME,
+        label: 'MAIN_MENU',
         onClick: () => {
           // eslint-disable-next-line no-alert
           if (window.confirm('Do you confirm stop game?')) {
@@ -46,16 +47,16 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
     }
 
     items.push(null, {
-      label: 'Settings',
+      label: 'SETTINGS',
       page: MenuPage.SETTINGS,
     }, {
-      label: 'About game',
+      label: 'ABOUT_GAME',
       page: MenuPage.ABOUT_GAME,
     });
 
     if (game.device.os.desktop) {
       items.push({
-        label: 'Controls',
+        label: 'CONTROLS',
         page: MenuPage.CONTROLS,
       });
     }
@@ -72,7 +73,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
           $active={item.page === page}
           $disabled={item.disabled}
         >
-          {item.label}
+          {phrase(item.label)}
         </Item>
       ) : (
         <Space key={index} />

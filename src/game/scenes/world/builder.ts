@@ -97,19 +97,19 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[variant];
 
     if (!this.isBuildingAllowByWave(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `Will be available on ${BuildingInstance.AllowByWave} wave`);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_WILL_BE_AVAILABLE', [BuildingInstance.AllowByWave]);
 
       return;
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}s`);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [BuildingInstance.Name]);
 
       return;
     }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -318,13 +318,13 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `You have maximum ${BuildingInstance.Name}s`);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [BuildingInstance.Name]);
 
       return;
     }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
 
       return;
     }

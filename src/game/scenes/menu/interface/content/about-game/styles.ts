@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
   line-height: 22px;
   letter-spacing: 1px;
   margin-top: -2px;
+  white-space: pre;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 13px;
     line-height: 18px;

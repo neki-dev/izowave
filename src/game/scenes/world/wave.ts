@@ -176,7 +176,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
 
-    this.scene.game.screen.notice(NoticeType.INFO, `Wave ${prevNumber} completed`);
+    this.scene.game.screen.notice(NoticeType.INFO, 'WAVE_COMPLETED', [prevNumber]);
     this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.scene.level.looseEffects();

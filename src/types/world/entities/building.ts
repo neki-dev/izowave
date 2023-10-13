@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { LangPhrase } from '~type/lang';
 import { ILive } from '~type/live';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -63,10 +64,10 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Bind hint on tutorial step
    * @param step - Tutorial step
-   * @param text - Message
+   * @param label - Phrase key
    * @param condition - Show condition
    */
-  bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean): void
+  bindTutorialHint(step: TutorialStep, label: LangPhrase, condition?: () => boolean): void
 
   /**
    * Get building information params.
@@ -174,8 +175,9 @@ export interface IBuildingTower extends IBuilding {
 }
 
 export interface IBuildingFactory {
-  Name: string
-  Description: string
+  Name: LangPhrase
+  Description: LangPhrase
+  Category: BuildingCategory
   Params: BuildingParam[]
   Texture: BuildingTexture
   Cost: number
@@ -183,7 +185,6 @@ export interface IBuildingFactory {
   Limit?: boolean
   AllowByWave?: number
   MaxLevel: number
-  Category: string
   new (scene: IWorld, data: BuildingVariantData): IBuilding
 }
 
@@ -252,20 +253,27 @@ export enum BuildingOutlineState {
   SELECTED = 'SELECTED',
 }
 
+export enum BuildingCategory {
+  DEFENSE = 'DEFENSE',
+  ATTACK = 'ATTACK',
+  RESOURCES = 'RESOURCES',
+  OTHER = 'OTHER',
+}
+
 export type BuildingGrowthValue = {
   default: number
   growth: number
 };
 
 export type BuildingParam = {
-  label: string
+  label: LangPhrase
   value: string | number
   icon: BuildingIcon
   attention?: boolean
 };
 
 export type BuildingControl = {
-  label: string
+  label: LangPhrase
   cost?: number
   disabled?: boolean
   hotkey: string

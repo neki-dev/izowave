@@ -1,20 +1,26 @@
 import { DIFFICULTY } from '~const/world/difficulty';
+import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
-  BuildingVariant, BuildingTexture, BuildingParam, BuildingVariantData, BuildingIcon,
+  BuildingVariant,
+  BuildingTexture,
+  BuildingParam,
+  BuildingVariantData,
+  BuildingIcon,
+  BuildingCategory,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
 
 export class BuildingWall extends Building {
-  static Name = 'Wall';
+  static Name: LangPhrase = 'BUILDING_NAME_WALL';
 
-  static Description = 'Defends other buildings';
+  static Description: LangPhrase = 'BUILDING_DESCRIPTION_WALL';
 
-  static Category = 'Defend';
+  static Category = BuildingCategory.DEFENSE;
 
   static Params: BuildingParam[] = [
-    { label: 'Health', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
   ];
 
   static Texture = BuildingTexture.WALL;

@@ -1,6 +1,7 @@
 import { useMobilePlatform } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
+import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { BuildingControl } from '~type/world/entities/building';
 
@@ -45,7 +46,7 @@ export const Action: React.FC<Props> = ({ control }) => {
         {!isMobile && (
           <Key>{control.hotkey}</Key>
         )}
-        <Label>{control.label}</Label>
+        <Label>{phrase(control.label)}</Label>
       </Main>
       {!!control.cost && (
         <Addon>

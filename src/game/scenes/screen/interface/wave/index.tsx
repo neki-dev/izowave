@@ -2,6 +2,7 @@ import { useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
+import { phrase } from '~lib/lang';
 import { formatTime } from '~lib/utils';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
@@ -56,7 +57,7 @@ export const Wave: React.FC = () => {
       <Container>
         <CurrentNumber $paused={isPaused} $going={isGoing}>{isPaused ? '||' : currentNumber}</CurrentNumber>
         <State>
-          <Label>{isGoing ? 'Enemies' : 'Timeleft'}</Label>
+          <Label>{phrase(isGoing ? 'WAVE_ENEMIES' : 'WAVE_TIMELEFT')}</Label>
           <Value $attention={isAlarm}>{value}</Value>
         </State>
       </Container>

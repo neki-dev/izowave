@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { Setting } from '~scene/system/interface/setting';
 import { GameSettings, GameSettingsData, IGame } from '~type/game';
+import { LangPhrase } from '~type/lang';
 
 type Props = {
   type: GameSettings
@@ -21,9 +22,9 @@ export const Param: React.FC<Props> = ({ type, data }) => {
 
   return (
     <Setting
-      label={data.description}
-      values={data.values}
-      currentValue={currentValue}
+      label={type}
+      values={data.values as LangPhrase[]}
+      currentValue={currentValue as LangPhrase}
       onChange={updateSetting}
     />
   );

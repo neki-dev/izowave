@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { LangPhrase } from '~type/lang';
 import { IScene } from '~type/scene';
 import { StorageSavePayload } from '~type/storage';
 import { IBuilder } from '~type/world/builder';
@@ -148,7 +149,7 @@ export enum WorldEvents {
 
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
-  text: string
+  label: LangPhrase
   position: Vector2D
   unique?: boolean
 };

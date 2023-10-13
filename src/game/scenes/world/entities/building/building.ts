@@ -13,6 +13,7 @@ import { Tutorial } from '~lib/tutorial';
 import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
+import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
@@ -199,7 +200,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (delay) {
       info.push({
-        label: 'Delay',
+        label: 'BUILDING_DELAY',
         icon: BuildingIcon.DELAY,
         value: `${delay / 1000} s`,
       });
@@ -213,7 +214,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.isUpgradeAllowed()) {
       actions.push({
-        label: 'Upgrade',
+        label: 'BUILDING_UPGRADE',
         cost: this.getUpgradeCost(),
         disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
         hotkey: 'E',
@@ -224,7 +225,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     actions.push({
-      label: 'Repair',
+      label: 'BUILDING_REPAIR',
       cost: this.getRepairCost(),
       disabled: this.live.isMaxHealth(),
       hotkey: 'R',
@@ -295,7 +296,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, `Will be available on ${waveNumber} wave`);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
 
       return;
     }
@@ -303,7 +304,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -341,7 +342,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getRepairCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -408,7 +409,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.indicators.destroy();
   }
 
-  public bindTutorialHint(step: TutorialStep, text: string, condition?: () => boolean) {
+  public bindTutorialHint(step: TutorialStep, label: LangPhrase, condition?: () => boolean) {
     let hintId: Nullable<string> = null;
 
     const hideHint = () => {
@@ -423,7 +424,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         if (!condition || condition()) {
           hintId = this.scene.showHint({
             side: 'top',
-            text,
+            label,
             position: this.getPositionOnGround(),
             unique: true,
           });

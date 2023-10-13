@@ -27,14 +27,14 @@ export const Info = styled.div`
 
 export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  color: ${InterfaceTextColor.SUCCESS};
-  font-size: 14px;
-  line-height: 14px;
+  color: #fff;
+  font-size: 13px;
+  line-height: 13px;
   margin-right: 10px;
   white-space: nowrap;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 11px;
+    line-height: 11px;
   }
 `;
 

@@ -14,13 +14,13 @@ export const CONTROL_KEY = {
 };
 
 export const CONTROLS: ControlItem[] = [
-  { name: 'W,A,S,D', description: 'Movement' },
-  { name: 'LEFT CLICK', description: 'Build' },
-  { name: 'RIGHT CLICK', description: 'Stop build' },
-  { name: 'E', description: 'Upgrade building' },
-  { name: 'R', description: 'Repair building' },
-  { name: 'F', description: 'Buy ammo' },
-  { name: 'BACKSPACE', description: 'Destroy building' },
-  { name: 'Q', description: 'Toggle buildings indicators' },
-  { name: 'N', description: 'Skip wave timeleft' },
+  { keys: 'W,A,S,D', label: 'MOVEMENT' },
+  { keys: 'LEFT CLICK', label: 'BUILD' },
+  { keys: 'RIGHT CLICK', label: 'STOP_BUILD' },
+  { keys: 'E', label: 'UPGRADE_BUILDING' },
+  { keys: 'R', label: 'REPAIR_BUILDING' },
+  { keys: 'F', label: 'BUY_AMMO' },
+  { keys: 'BACKSPACE', label: 'DESTROY_BUILDING' },
+  { keys: 'Q', label: 'SHOW_BUILDINGS_INDICATORS' },
+  { keys: 'N', label: 'SKIP_WAVE_TIMELEFT' },
 ];

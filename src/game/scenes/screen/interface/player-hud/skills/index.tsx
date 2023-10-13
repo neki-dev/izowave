@@ -5,6 +5,7 @@ import React, {
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { PLAYER_SKILLS } from '~const/world/entities/player';
+import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
@@ -19,21 +20,17 @@ import {
 export const Skills: React.FC = () => {
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
-  const [target, setTarget] = useState<PlayerSkillTarget>(
-    PlayerSkillTarget.CHARACTER,
-  );
+  const [target, setTarget] = useState<PlayerSkillTarget>(PlayerSkillTarget.CHARACTER);
 
-  const targetTypes = useMemo(
-    () => Object.keys(PlayerSkillTarget) as PlayerSkillTarget[],
-    [],
-  );
+  const targetTypes = useMemo(() => (
+    Object.keys(PlayerSkillTarget) as PlayerSkillTarget[]
+  ), []);
 
-  const upgradeTypes = useMemo(
-    () => Object.entries(PLAYER_SKILLS)
+  const upgradeTypes = useMemo(() => (
+    Object.entries(PLAYER_SKILLS)
       .filter(([, data]) => data.target === target)
-      .map(([type]) => type) as PlayerSkill[],
-    [target],
-  );
+      .map(([type]) => type) as PlayerSkill[]
+  ), [target]);
 
   const [isOpened, setOpened] = useState(false);
   const [hint, setHint] = useState(false);
@@ -86,7 +83,7 @@ export const Skills: React.FC = () => {
   return (
     <Wrapper ref={refContainer}>
       <Button onClick={onClick} view={isOpened ? 'active' : undefined}>
-        SKILLS
+        {phrase('SKILLS')}
       </Button>
       {isOpened ? (
         <Container>
@@ -97,7 +94,7 @@ export const Skills: React.FC = () => {
                 onClick={() => setTarget(type)}
                 view={target === type ? 'confirm' : undefined}
               >
-                {type}
+                {phrase(`SKILL_TARGET_${type}`)}
               </Button>
             ))}
           </Targets>
@@ -110,9 +107,7 @@ export const Skills: React.FC = () => {
         </Container>
       ) : (
         hint && (
-          <Hint side="top" align="left">
-            Click to upgrade skills
-          </Hint>
+          <Hint label='TUTORIAL_CLICK_TO_UPGRADE' side="top" align="left" />
         )
       )}
     </Wrapper>

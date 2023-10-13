@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
 import { Setting } from '~scene/system/interface/setting';
+import { LangPhrase } from '~type/lang';
 
 type Props = {
-  label: string
-  values: string[]
-  defaultValue: string
+  label: LangPhrase
+  values: LangPhrase[]
+  defaultValue: LangPhrase
   onChange: (value: any) => void
 };
 
@@ -17,7 +18,7 @@ export const Param: React.FC<Props> = ({
 }) => {
   const [currentValue, setCurrentValue] = useState(defaultValue);
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: LangPhrase) => {
     onChange(value);
     setCurrentValue(value);
   };

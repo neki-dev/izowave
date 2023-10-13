@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { LangPhrase } from '~type/lang';
 import { IScene } from '~type/scene';
 
 export interface IScreen extends IScene {
@@ -16,9 +17,10 @@ export interface IScreen extends IScene {
   /**
    * Send notice message.
    * @param type - Notice type
-   * @param text - Message
+   * @param text - Phrase key
+   * @param format - Values for format
    */
-  notice(type: NoticeType, text: string): void
+  notice(type: NoticeType, text: LangPhrase, format?: any[]): void
 }
 
 export enum ScreenAudio {
@@ -37,6 +39,7 @@ export enum NoticeType {
 
 export type Notice = {
   type: NoticeType
-  text: string
+  text: LangPhrase
   timestamp: number
+  format?: any[]
 };

@@ -9,7 +9,7 @@ export const Info = styled.div`
   transform: translateX(-100%);
   display: none;
   pointer-events: none;
-  width: 164px;
+  min-width: 164px;
   height: 100%;
   padding: 12px 14px;
   background: ${InterfaceBackgroundColor.BLUE_DARK};

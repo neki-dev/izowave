@@ -1,6 +1,7 @@
 import { useCurrentScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
+import { phrase } from '~lib/lang';
 import { IScreen, Notice, ScreenEvents } from '~type/screen';
 
 import { Item, Wrapper } from './styles';
@@ -63,7 +64,7 @@ export const Notices: React.FC = () => {
     <Wrapper>
       {notices.map((notice) => (
         <Item role="notice" key={notice.text} $type={notice.type}>
-          {notice.text}
+          {phrase(notice.text, notice.format)}
         </Item>
       ))}
     </Wrapper>

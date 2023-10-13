@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { CONTROLS } from '~const/controls';
+import { phrase } from '~lib/lang';
 import { Text } from '~scene/system/interface/text';
 
 import {
@@ -12,11 +13,11 @@ export const Controls: React.FC = () => (
     {CONTROLS.map((control, index) => (
       <Control key={index}>
         <Keys>
-          {control.name.split(',').map((key) => (
+          {control.keys.split(',').map((key) => (
             <Key key={key}>{key}</Key>
           ))}
         </Keys>
-        <Text>- {control.description}</Text>
+        <Text>- {phrase(control.label)}</Text>
       </Control>
     ))}
   </Wrapper>

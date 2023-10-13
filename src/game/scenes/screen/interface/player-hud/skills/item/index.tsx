@@ -7,6 +7,7 @@ import {
 import React, { useMemo, useState } from 'react';
 
 import { PLAYER_MAX_SKILL_LEVEL, PLAYER_SKILLS } from '~const/world/entities/player';
+import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
@@ -26,7 +27,8 @@ export const Item: React.FC<Props> = ({ type }) => {
   const isMobile = useMobilePlatform();
 
   const getData = (): PlayerSkillData => ({
-    ...PLAYER_SKILLS[type],
+    type,
+    target: PLAYER_SKILLS[type].target,
     experience: world.player.getExperienceToUpgrade(type),
     currentLevel: world.player.upgradeLevel[type],
   });
@@ -48,7 +50,7 @@ export const Item: React.FC<Props> = ({ type }) => {
   return (
     <Container>
       <Info>
-        <Label>{data.label}</Label>
+        <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
         <Level>
           {levels.map((_, level) => (
             <Level.Progress
@@ -61,19 +63,17 @@ export const Item: React.FC<Props> = ({ type }) => {
       {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (
         <Action>
           <Limit>
-            MAX
-            <br />
-            LEVEL
+            {phrase('SKILL_MAX_LEVEL')}
           </Limit>
         </Action>
       ) : (
         <Action
+          $active={true}
           {...{
             [isMobile ? 'onTouchEnd' : 'onClick']: onClick,
           }}
-          $active
         >
-          <Button>UPGRADE</Button>
+          <Button>{phrase('SKILL_UPGRADE')}</Button>
           <Cost type="experience" value={data.experience} />
         </Action>
       )}

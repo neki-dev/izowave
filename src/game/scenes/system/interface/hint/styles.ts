@@ -52,9 +52,7 @@ export const Key = styled.span`
   border-radius: 3px;
 `;
 
-export const Container = styled.div<{
-  $width?: number
-}>`
+export const Container = styled.div`
   background: ${InterfaceBackgroundColor.BLACK};
   padding: 9px 12px 10px 12px;
   border-radius: 5px;
@@ -64,10 +62,6 @@ export const Container = styled.div<{
   line-height: 12px;
   letter-spacing: 1px;
   white-space: pre;
-  width: ${(props) => (props.$width
-    ? `${props.$width}px`
-    : 'auto'
-  )};
   &::after {
     position: absolute;
     content: '';

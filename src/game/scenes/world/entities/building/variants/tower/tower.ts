@@ -64,7 +64,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     if (params.damage) {
       info.push({
-        label: 'Damage',
+        label: 'BUILDING_DAMAGE',
         icon: BuildingIcon.DAMAGE,
         value: this.power > 1.0
           ? `${params.damage} → ${Math.round(params.damage * this.power)}`
@@ -76,7 +76,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       const format = (value: number) => (value / 1000).toFixed(1);
 
       info.push({
-        label: 'Freeze',
+        label: 'BUILDING_FREEZE',
         icon: BuildingIcon.DAMAGE,
         value: this.power > 1.0
           ? `${format(params.freeze)} → ${format(params.freeze * this.power)}`
@@ -86,14 +86,14 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     if (params.speed) {
       info.push({
-        label: 'Speed',
+        label: 'BUILDING_SPEED',
         icon: BuildingIcon.SPEED,
         value: params.speed,
       });
     }
 
     info.push({
-      label: 'Ammo',
+      label: 'BUILDING_AMMO',
       icon: BuildingIcon.AMMO,
       attention: (this.ammo === 0),
       value: `${this.ammo}/${DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT}`,

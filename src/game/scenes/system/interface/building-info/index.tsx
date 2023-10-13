@@ -1,6 +1,7 @@
 import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
+import { phrase } from '~lib/lang';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import {
@@ -48,7 +49,7 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
     <Wrapper>
       <Container>
         <Head>
-          <Name>{building.getMeta().Name}</Name>
+          <Name>{phrase(building.getMeta().Name)}</Name>
         </Head>
         <Body>
           <Health>

@@ -73,8 +73,8 @@ export const AdsReward: React.FC = () => {
         <br />
         by watching ads?
         <Amounts>
-          <Amount type="resources">+{adsReward.resources}</Amount>
-          <Amount type="experience">+{adsReward.experience}</Amount>
+          <Amount type="RESOURCES">+{adsReward.resources}</Amount>
+          <Amount type="EXPERIENCE">+{adsReward.experience}</Amount>
         </Amounts>
       </Modal>
     )

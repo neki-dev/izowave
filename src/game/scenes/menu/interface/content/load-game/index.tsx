@@ -1,6 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
+import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
 import { Table } from '~scene/system/interface/table';
@@ -35,17 +36,17 @@ export const LoadGame: React.FC = () => {
   return (
     <Wrapper>
       {saves.length === 0 ? (
-        <Empty>Saves not found</Empty>
+        <Empty>{phrase('SAVES_NOT_FOUND')}</Empty>
       ) : (
         <Table>
           <Table.Head>
             <Table.HeadRow>
-              <Table.Cell>Name</Table.Cell>
-              <Table.Cell>Planet</Table.Cell>
-              <Table.Cell>Difficulty</Table.Cell>
-              <Table.Cell>Wave</Table.Cell>
-              <Table.Cell>Score</Table.Cell>
-              <Table.Cell>Date</Table.Cell>
+              <Table.Cell>{phrase('SAVE_NAME')}</Table.Cell>
+              <Table.Cell>{phrase('PLANET')}</Table.Cell>
+              <Table.Cell>{phrase('DIFFICULTY')}</Table.Cell>
+              <Table.Cell>{phrase('WAVE')}</Table.Cell>
+              <Table.Cell>{phrase('SCORE')}</Table.Cell>
+              <Table.Cell>{phrase('SAVE_DATE')}</Table.Cell>
               <Table.Cell />
             </Table.HeadRow>
           </Table.Head>
@@ -57,8 +58,8 @@ export const LoadGame: React.FC = () => {
                 $active={save.name === selectedSave.name}
               >
                 <Table.Cell>{save.name}</Table.Cell>
-                <Table.Cell>{save.payload.level.planet}</Table.Cell>
-                <Table.Cell>{save.payload.game.difficulty}</Table.Cell>
+                <Table.Cell>{phrase(save.payload.level.planet)}</Table.Cell>
+                <Table.Cell>{phrase(save.payload.game.difficulty)}</Table.Cell>
                 <Table.Cell>{save.payload.wave.number}</Table.Cell>
                 <Table.Cell>{save.payload.player.score}</Table.Cell>
                 <Table.Cell>{new Date(save.date).toLocaleString()}</Table.Cell>
@@ -79,7 +80,7 @@ export const LoadGame: React.FC = () => {
         onClick={onClickStart}
         disabled={saves.length === 0}
       >
-        Start
+        {phrase('START')}
       </Button>
     </Wrapper>
   );

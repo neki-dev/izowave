@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 
+import { phrase } from '~lib/lang';
 import { GameStat } from '~type/game';
+import { LangPhrase } from '~type/lang';
 
 import {
   Wrapper, Item, Value, Label, Record,
@@ -14,26 +16,23 @@ type Props = {
 export const Result: React.FC<Props> = ({ stat, record }) => {
   const statItems: {
     key: keyof GameStat
-    label: string
+    label: LangPhrase
     value: number | string
-  }[] = useMemo(
-    () => [
-      { key: 'score', label: 'Total score', value: stat.score },
-      { key: 'waves', label: 'Waves completed', value: stat.waves },
-      { key: 'kills', label: 'Enemies killed', value: stat.kills },
-      { key: 'lived', label: 'Minutes lived', value: stat.lived.toFixed(1) },
-    ],
-    [],
-  );
+  }[] = useMemo(() => [
+    { key: 'score', label: 'TOTAL_SCORE', value: stat.score },
+    { key: 'waves', label: 'WAVES_COMPLETED', value: stat.waves },
+    { key: 'kills', label: 'ENEMIES_KILLED', value: stat.kills },
+    { key: 'lived', label: 'MINUTES_LIVED', value: stat.lived.toFixed(1) },
+  ], []);
 
   return (
     <Wrapper>
       {statItems.map((item) => (
         <Item key={item.key}>
           <Value>{item.value}</Value>
-          <Label>{item.label}</Label>
+          <Label>{phrase(item.label)}</Label>
           {(record?.[item.key] ?? 0) < stat[item.key] && (
-            <Record>RECORD</Record>
+            <Record>{phrase('RECORD')}</Record>
           )}
         </Item>
       ))}

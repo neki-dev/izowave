@@ -8,6 +8,7 @@ import {
 import React, { useRef, useState } from 'react';
 
 import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
+import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { Text } from '~scene/system/interface/text';
 import { GameScene, GameState, IGame } from '~type/game';
@@ -77,11 +78,11 @@ export const Item: React.FC<Props> = ({ type }) => {
     >
       <Info>
         <Head>
-          <Name>{type}</Name>
+          <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
           <Cost type="resources" value={cost} />
         </Head>
         <Body>
-          <Text>{PLAYER_SUPERSKILLS[type].description}</Text>
+          <Text>{phrase(`SUPERSKILL_DESCRIPTION_${type}`)}</Text>
         </Body>
       </Info>
       {isActive && (

@@ -234,9 +234,9 @@ export function eachEntries<T extends Record<string, any>>(
  * @param obj - Object
  * @param callback - Callback
  */
-export function mapEntries<T extends Record<string, any>>(
+export function mapEntries<T extends Record<string, any>, R>(
   obj: T,
-  callback: (key: keyof T, value: T[keyof T], index: number) => any,
-) {
+  callback: (key: keyof T, value: T[keyof T], index: number) => R,
+): R[] {
   return Object.entries(obj).map(([key, value], index) => callback(key, value, index));
 }

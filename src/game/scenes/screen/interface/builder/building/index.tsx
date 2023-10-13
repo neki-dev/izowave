@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
+import { phrase } from '~lib/lang';
 import { Hint } from '~scene/system/interface/hint';
+import { LangPhrase } from '~type/lang';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import { Preview } from './preview';
@@ -12,16 +14,16 @@ import {
 type Props = {
   variant: BuildingVariant
   number: number
-  hint?: string
+  hint?: LangPhrase
 };
 
 export const Building: React.FC<Props> = ({ variant, number, hint }) => (
   <Container>
     <Info>
-      <Name>{BUILDINGS[variant].Name}</Name>
-      <Text>{BUILDINGS[variant].Description}</Text>
+      <Name>{phrase(BUILDINGS[variant].Name)}</Name>
+      <Text>{phrase(BUILDINGS[variant].Description)}</Text>
     </Info>
-    {hint && <Hint side="right">{hint}</Hint>}
+    {hint && <Hint label={hint} side="right" />}
     <Preview variant={variant} number={number} isGlowing={Boolean(hint)} />
   </Container>
 );

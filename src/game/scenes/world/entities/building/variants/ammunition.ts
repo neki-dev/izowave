@@ -3,27 +3,37 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { progressionQuadratic } from '~lib/difficulty';
 import { Tutorial } from '~lib/tutorial';
+import { LangPhrase } from '~type/lang';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
-  BuildingAudio, BuildingParam, BuildingEvents, BuildingTexture,
-  BuildingVariant, BuildingVariantData, BuildingIcon, IBuildingAmmunition, BuildingSavePayload, BuildingControl,
+  BuildingAudio,
+  BuildingParam,
+  BuildingEvents,
+  BuildingTexture,
+  BuildingVariant,
+  BuildingVariantData,
+  BuildingIcon,
+  IBuildingAmmunition,
+  BuildingSavePayload,
+  BuildingControl,
+  BuildingCategory,
 } from '~type/world/entities/building';
 
 import { Building } from '../building';
 
 export class BuildingAmmunition extends Building implements IBuildingAmmunition {
-  static Name = 'Ammunition';
+  static Name: LangPhrase = 'BUILDING_NAME_AMMUNITION';
 
-  static Description = 'Reloads towers ammo within building radius';
+  static Description: LangPhrase = 'BUILDING_DESCRIPTION_AMMUNITION';
 
-  static Category = 'Resources';
+  static Category = BuildingCategory.RESOURCES;
 
   static Params: BuildingParam[] = [
-    { label: 'Health', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'Ammo', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
+    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
+    { label: 'BUILDING_AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
   ];
 
   static Texture = BuildingTexture.AMMUNITION;
@@ -69,8 +79,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.bindTutorialHint(
       TutorialStep.BUY_AMMO,
       this.scene.game.device.os.desktop
-        ? 'Hover and press [F]\nto buy ammo'
-        : 'Click to buy ammo',
+        ? 'TUTORIAL_HOVER_TO_BUY_AMMO'
+        : 'TUTORIAL_CLICK_TO_BUY_AMMO',
       () => this.ammo === 0,
     );
 
@@ -79,7 +89,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   public getInfo() {
     const info: BuildingParam[] = [{
-      label: 'Ammo',
+      label: 'BUILDING_AMMO',
       icon: BuildingIcon.AMMO,
       value: `${this.ammo}/${this.maxAmmo}`,
     }];
@@ -89,7 +99,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   public getControls() {
     const actions: BuildingControl[] = [{
-      label: 'Buy ammo',
+      label: 'BUILDING_BUY_AMMO',
       cost: this.getAmmoCost(),
       disabled: (this.ammo >= this.maxAmmo),
       hotkey: 'F',
@@ -134,7 +144,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     const cost = this.getAmmoCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'Not enough resources');
+      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
 
       return;
     }

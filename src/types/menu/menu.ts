@@ -1,5 +1,7 @@
+import { LangPhrase } from '~type/lang';
+
 export type MenuItem = {
-  label: string
+  label: LangPhrase
   page?: MenuPage
   disabled?: boolean
   onClick?: () => void

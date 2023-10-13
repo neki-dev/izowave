@@ -145,12 +145,12 @@ export type PlayerData = {
 };
 
 export type PlayerSkillInfo = {
-  label: string
   experience: number
   target: PlayerSkillTarget
 };
 
 export type PlayerSkillData = PlayerSkillInfo & {
+  type: PlayerSkill
   currentLevel: number
 };
 
@@ -167,7 +167,6 @@ export enum PlayerSuperskill {
 }
 
 export type PlayerSuperskillData = {
-  description: string
   cost: number
   duration: number
 };

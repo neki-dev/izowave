@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { useGame } from 'phaser-react-ui';
 import React, { useMemo } from 'react';
 
+import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
 import { GameDifficulty, IGame } from '~type/game';
 import { LevelPlanet } from '~type/world/level';
@@ -12,11 +13,12 @@ import { Wrapper, Params } from './styles';
 export const NewGame: React.FC = () => {
   const game = useGame<IGame>();
 
-  const planets = useMemo(() => Object.keys(LevelPlanet) as LevelPlanet[], []);
-  const difficulties = useMemo(
-    () => Object.keys(GameDifficulty) as GameDifficulty[],
-    [],
-  );
+  const planets = useMemo(() => (
+    Object.keys(LevelPlanet) as LevelPlanet[]
+  ), []);
+  const difficulties = useMemo(() => (
+    Object.keys(GameDifficulty) as GameDifficulty[]
+  ), []);
 
   const onChangePlanet = (planet: LevelPlanet) => {
     game.world.scene.restart({ planet });
@@ -38,20 +40,20 @@ export const NewGame: React.FC = () => {
     <Wrapper>
       <Params>
         <Param
-          label="Planet"
+          label="PLANET"
           values={planets}
           defaultValue={game.world.level.planet}
           onChange={onChangePlanet}
         />
         <Param
-          label="Difficulty"
+          label="DIFFICULTY"
           values={difficulties}
           defaultValue={game.difficulty}
           onChange={onChangeDifficulty}
         />
       </Params>
       <Button onClick={onClickStart} view='primary' size="medium">
-        Start
+        {phrase('START')}
       </Button>
     </Wrapper>
   );
