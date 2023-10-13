@@ -1,28 +1,23 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceTextColor } from '~type/interface';
 
-export const Wrapper = styled.div<{
-  $size: 'small' | 'medium' | 'large'
-}>`
+export const Wrapper = styled.div`
   color: #fff;
   display: flex;
   align-items: center;
-  ${(props) => {
-    switch (props.$size) {
-      case 'small': return css`
-        zoom: 0.75;
-      `;
-      case 'medium': return css`
-        zoom: 0.9;
-      `;
-    }
-  }}
 `;
 
 export const Icon = styled.img`
-  width: 16px;
-  margin-right: 5px;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    width: 12px;
+    margin-right: 5px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 10px;
+    margin-right: 4px;
+  }
 `;
 
 export const Value = styled.div<{
@@ -30,10 +25,11 @@ export const Value = styled.div<{
 }>`
   margin-top: -2px;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 15px;
-  line-height: 15px;
-  color: ${(props) => (props.$attention
-    ? InterfaceTextColor.ERROR
-    : '#fff'
-  )};
+  font-size: 12px;
+  line-height: 12px;
+  color: ${(props) => (props.$attention ? InterfaceTextColor.ERROR : '#fff')};
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 10px;
+    line-height: 10px;
+  }
 `;

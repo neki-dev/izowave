@@ -78,7 +78,7 @@ export const Item: React.FC<Props> = ({ type }) => {
       <Info>
         <Head>
           <Name>{type}</Name>
-          <Cost type="resources" value={cost} size="small" />
+          <Cost type="resources" value={cost} />
         </Head>
         <Body>
           <Text>{PLAYER_SUPERSKILLS[type].description}</Text>

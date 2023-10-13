@@ -1,13 +1,11 @@
 import {
   ifModifiedObject,
-  useMatchMedia,
   useMobilePlatform,
   useScene,
   useSceneUpdate,
 } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { PLAYER_MAX_SKILL_LEVEL, PLAYER_SKILLS } from '~const/world/entities/player';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
@@ -26,7 +24,6 @@ export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();
-  const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
   const getData = (): PlayerSkillData => ({
     ...PLAYER_SKILLS[type],
@@ -77,11 +74,7 @@ export const Item: React.FC<Props> = ({ type }) => {
           $active
         >
           <Button>UPGRADE</Button>
-          <Cost
-            type="experience"
-            value={data.experience}
-            size={isSmallScreen ? 'small' : 'medium'}
-          />
+          <Cost type="experience" value={data.experience} />
         </Action>
       )}
     </Container>

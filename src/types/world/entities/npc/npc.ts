@@ -45,5 +45,4 @@ export type NPCData = {
   speed: number
   health?: number
   pathFindTriggerDistance: number
-  frameRate?: number
 };

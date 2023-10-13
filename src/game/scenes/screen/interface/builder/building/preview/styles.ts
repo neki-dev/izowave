@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 const animationBlink = keyframes`
@@ -18,10 +18,6 @@ export const Container = styled.div<{
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
   position: relative;
-  &:hover {
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-  }
   ${(props) => (props.$allow ? css`
     ${() => (!props.$usable && css`
       background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
@@ -40,6 +36,12 @@ export const Container = styled.div<{
   ${(props) => (props.$glow && css`
     box-shadow: 0 0 50px 20px #fff;
   `)}
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    &:hover {
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+    }
+  }
 `;
 
 export const Image = styled.div`

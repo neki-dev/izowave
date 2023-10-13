@@ -64,12 +64,9 @@ export enum EnemyVariant {
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {
-  frameRate: number
-  size: {
-    width: number
-    height: number
-    gamut: number
-  }
+  width: number
+  height: number
+  gamut: number
 }>;
 
 export type EnemyVariantData = {

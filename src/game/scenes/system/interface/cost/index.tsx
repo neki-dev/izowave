@@ -8,23 +8,25 @@ import { Wrapper, Icon, Value } from './styles';
 
 type Props = {
   type: 'resources' | 'experience'
-  size: 'small' | 'medium' | 'large'
+  check?: boolean
   value: number | string
 };
 
-export const Cost: React.FC<Props> = ({ type, value, size }) => {
+export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [haveAmount, setHaveAmount] = useState(0);
+  const [isNotEnough, setNotEnough] = useState(false);
 
   useSceneUpdate(world, () => {
-    setHaveAmount(world.player[type]);
-  }, []);
+    if (check && typeof value === 'number') {
+      setNotEnough(world.player[type] < value);
+    }
+  }, [check, value]);
 
   return (
-    <Wrapper $size={size}>
+    <Wrapper>
       <Icon src={`assets/sprites/hud/${type}.png`} />
-      <Value $attention={typeof value === 'number' && haveAmount < value}>{value}</Value>
+      <Value $attention={isNotEnough}>{value}</Value>
     </Wrapper>
   );
 };
