@@ -49,7 +49,7 @@ export const Amount: React.FC<Props> = ({ position, value, onHide }) => {
     <RelativePosition x={position.x} y={position.y}>
         <RelativeScale {...INTERFACE_SCALE}>
           <Container ref={refContainer}>
-            <Cost type='resources' value={`+${value}`} size='medium' />
+            <Cost type='resources' value={`+${value}`} />
           </Container>
         </RelativeScale>
     </RelativePosition>

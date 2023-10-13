@@ -60,8 +60,7 @@ export const Container = styled.div<{
     `}
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 12px 13px;
-    zoom: 1.2;
+    padding: 14px 15px;
     ${(props) => props.$disabled && css`
       opacity: 0.5;
     `}
