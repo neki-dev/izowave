@@ -9,10 +9,10 @@ export const Wrapper = styled.div`
   font-size: 15px;
   line-height: 22px;
   letter-spacing: 1px;
-  margin-top: -2px;
-  white-space: pre;
+  white-space: pre-wrap;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 13px;
     line-height: 18px;
+    width: 70%;
   }
 `;

@@ -117,8 +117,8 @@ export const RU = {
    * Menu navigation
    */
   NEW_GAME: 'Новая игра',
-  LOAD_GAME: 'Зарузить игру',
-  SAVE_GAME: 'Сохранить игру',
+  LOAD_GAME: 'Загрузить',
+  SAVE_GAME: 'Сохранить',
   CONTINUE: 'Продолжить',
   MAIN_MENU: 'Выйти в меню',
   SETTINGS: 'Настройки',
