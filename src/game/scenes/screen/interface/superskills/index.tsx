@@ -16,7 +16,7 @@ export const Superskills: React.FC = () => {
   const [isAllow, setAllow] = useState(false);
 
   useSceneUpdate(world, () => {
-    setAllow(world.wave.isGoing && world.wave.number >= 3);
+    setAllow(world.wave.number >= 3);
   }, []);
 
   return isAllow ? (
