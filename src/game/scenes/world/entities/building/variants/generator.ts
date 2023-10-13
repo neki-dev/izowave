@@ -46,9 +46,6 @@ export class BuildingGenerator extends Building {
 
     if (Tutorial.IsInProgress(TutorialStep.BUILD_GENERATOR)) {
       Tutorial.Complete(TutorialStep.BUILD_GENERATOR);
-      if (this.scene.game.device.os.desktop) {
-        Tutorial.Start(TutorialStep.STOP_BUILD);
-      }
     } else if (Tutorial.IsInProgress(TutorialStep.BUILD_GENERATOR_SECOND)) {
       Tutorial.Complete(TutorialStep.BUILD_GENERATOR_SECOND);
       Tutorial.Start(TutorialStep.UPGRADE_BUILDING);

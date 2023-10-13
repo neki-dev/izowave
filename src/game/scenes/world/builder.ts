@@ -130,10 +130,10 @@ export class Builder extends EventEmitter implements IBuilder {
 
     if (!force) {
       this.scene.sound.play(BuildingAudio.UNSELECT);
-    }
 
-    if (this.scene.game.device.os.desktop) {
-      Tutorial.Complete(TutorialStep.STOP_BUILD);
+      if (this.scene.game.device.os.desktop) {
+        Tutorial.Complete(TutorialStep.STOP_BUILD);
+      }
     }
 
     this.clearBuildingVariant();
@@ -344,7 +344,13 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    if (!this.scene.game.device.os.desktop) {
+    if (this.scene.game.device.os.desktop) {
+      if (this.isBuildingLimitReached(this.variant)) {
+        this.unsetBuildingVariant(true);
+      } else {
+        Tutorial.Start(TutorialStep.STOP_BUILD);
+      }
+    } else {
       this.unsetBuildingVariant(true);
     }
   }
