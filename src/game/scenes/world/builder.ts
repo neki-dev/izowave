@@ -382,7 +382,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const limit = this.getBuildingLimit(variant);
 
     if (limit) {
-      return (this.getBuildingsByVariant(variant).length >= limit);
+      return this.getBuildingsByVariant(variant).length >= limit;
     }
 
     return false;
@@ -562,6 +562,10 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handleKeyboard() {
+    if (!this.scene.game.device.os.desktop) {
+      return;
+    }
+
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
       if (Number(event.key)) {
         this.switchBuildingVariant(Number(event.key) - 1);

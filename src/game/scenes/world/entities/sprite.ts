@@ -122,7 +122,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public getAllPositionsAtMatrix() {
-    return this.getProjectionOnGround().map((point) => Level.ToMatrixPosition(point));
+    return this.getProjectionOnGround().map(Level.ToMatrixPosition);
   }
 
   public addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void) {

@@ -75,23 +75,21 @@ export class BuildingGenerator extends Building {
   private generateResource() {
     this.scene.player.giveResources(1);
 
-    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      return;
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      new Particles(this, {
+        key: 'generate',
+        texture: ParticlesTexture.BIT,
+        positionAtWorld: this.getTopCenterByLevel(),
+        params: {
+          duration: 300,
+          lifespan: { min: 100, max: 200 },
+          scale: { start: 1.0, end: 0.5 },
+          alpha: { start: 1.0, end: 0.0 },
+          speed: 60,
+          maxAliveParticles: 8,
+          tint: 0x2dffb2,
+        },
+      });
     }
-
-    new Particles(this, {
-      key: 'generate',
-      texture: ParticlesTexture.BIT,
-      positionAtWorld: this.getTopCenterByLevel(),
-      params: {
-        duration: 300,
-        lifespan: { min: 100, max: 200 },
-        scale: { start: 1.0, end: 0.5 },
-        alpha: { start: 1.0, end: 0.0 },
-        speed: 60,
-        maxAliveParticles: 8,
-        tint: 0x2dffb2,
-      },
-    });
   }
 }

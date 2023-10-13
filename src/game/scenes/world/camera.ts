@@ -83,7 +83,10 @@ export class Camera implements ICamera {
       return false;
     }
 
-    return this.scene.input.pointer1.isDown && this.scene.input.pointer2.isDown;
+    return (
+      this.scene.input.pointer1.isDown
+      && this.scene.input.pointer2.isDown
+    );
   }
 
   private updateZoom(value: number) {
