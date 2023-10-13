@@ -2,7 +2,6 @@ import { useGame, useScene } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinear } from '~lib/difficulty';
 import { phrase } from '~lib/lang';
 import { Amount } from '~scene/system/interface/amount';
 import { Button } from '~scene/system/interface/button';
@@ -42,19 +41,11 @@ export const AdsReward: React.FC = () => {
       return;
     }
 
-    const experience = progressionLinear({
-      defaultValue: DIFFICULTY.ADS_REWARD_EXPERIENCE,
-      scale: DIFFICULTY.ADS_REWARD_GROWTH,
-      level: number,
-    });
-    const resources = progressionLinear({
-      defaultValue: DIFFICULTY.ADS_REWARD_RESOURCES,
-      scale: DIFFICULTY.ADS_REWARD_GROWTH,
-      level: number,
-    });
-
     setAdsOfferOpen(true);
-    setAdsReward({ experience, resources });
+    setAdsReward({
+      experience: DIFFICULTY.ADS_REWARD_EXPERIENCE * number,
+      resources: DIFFICULTY.ADS_REWARD_RESOURCES * number,
+    });
   };
 
   useEffect(() => {
