@@ -32,7 +32,7 @@ import { PlayerSuperskill } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
-Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture].size);
+Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture]);
 
 export class Enemy extends NPC implements IEnemy {
   private _damage: number;
@@ -61,7 +61,6 @@ export class Enemy extends NPC implements IEnemy {
     super(scene, {
       ...data,
       texture,
-      frameRate: ENEMY_TEXTURE_META[texture].frameRate,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       health: progressionQuadratic({
         defaultValue: DIFFICULTY.ENEMY_HEALTH
@@ -89,7 +88,7 @@ export class Enemy extends NPC implements IEnemy {
     });
     this.spawnEffect = spawnEffect;
     this.score = score ?? 1;
-    this.gamut = ENEMY_TEXTURE_META[texture].size.gamut;
+    this.gamut = ENEMY_TEXTURE_META[texture].gamut;
     this.might = (
       multipliers.health
       + multipliers.damage

@@ -33,7 +33,7 @@ export class NPC extends Sprite implements INPC {
   private freezeEffectTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld, {
-    pathFindTriggerDistance, texture, frameRate = 4, ...data
+    pathFindTriggerDistance, texture, ...data
   }: NPCData) {
     super(scene, {
       ...data,
@@ -49,7 +49,7 @@ export class NPC extends Sprite implements INPC {
     this.anims.create({
       key: 'idle',
       frames: this.anims.generateFrameNumbers(texture, {}),
-      frameRate,
+      frameRate: 4,
       repeat: -1,
       delay: Math.random() * 500,
     });
