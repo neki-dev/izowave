@@ -7,21 +7,24 @@ export const Table: any = styled.table`
   margin-bottom: 30px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 14px;
-  line-height: 14px;
   border-collapse: separate; 
-  border-spacing: 1px 5px;
+  border-spacing: 1px 3px;
 `;
 
 Table.Head = styled.thead`
   top: 0;
+  font-size: 14px;
+  line-height: 14px;
 `;
 
 Table.HeadRow = styled.tr`
   opacity: 0.5;
 `;
 
-Table.Body = styled.tbody``;
+Table.Body = styled.tbody`
+  font-size: 12px;
+  line-height: 12px;
+`;
 
 Table.BodyRow = styled.tr<{
   $active?: boolean

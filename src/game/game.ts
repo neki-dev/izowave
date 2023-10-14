@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import {
-  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, SETTINGS,
+  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS,
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
 import { SDK } from '~lib/sdk';
@@ -54,7 +54,12 @@ export class Game extends Phaser.Game implements IGame {
 
   private set world(v) { this._world = v; }
 
-  private _settings: Partial<Record<GameSettings, string>> = {};
+  private _settings: Record<GameSettings, boolean> = {
+    [GameSettings.AUDIO]: true,
+    [GameSettings.TUTORIAL]: true,
+    [GameSettings.EFFECTS]: true,
+    [GameSettings.SHOW_DAMAGE]: true,
+  };
 
   public get settings() { return this._settings; }
 
@@ -105,12 +110,12 @@ export class Game extends Phaser.Game implements IGame {
       this.registerShaders();
     });
 
-    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (value: string) => {
-      this.sound.mute = (value === 'off');
+    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (enabled: boolean) => {
+      this.sound.mute = !enabled;
     });
 
-    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (value: string) => {
-      if (value === 'on') {
+    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (enabled: boolean) => {
+      if (enabled) {
         Tutorial.Enable();
       } else {
         Tutorial.Disable();
@@ -289,23 +294,28 @@ export class Game extends Phaser.Game implements IGame {
     }
   }
 
-  public updateSetting(key: GameSettings, value: string) {
+  public updateSetting(key: GameSettings, value: boolean) {
     this.settings[key] = value;
-    localStorage.setItem(`SETTINGS.${key}`, value);
+    localStorage.setItem(`SETTINGS.${key}`, value ? 'on' : 'off');
 
     this.events.emit(`${GameEvents.UPDATE_SETTINGS}.${key}`, value);
   }
 
   public isSettingEnabled(key: GameSettings) {
-    return (
-      this.settings[key] === 'on'
-      && (!SETTINGS[key].onlyDesktop || this.device.os.desktop)
-    );
+    if (!this.device.os.desktop && key === GameSettings.SHOW_DAMAGE) {
+      return false;
+    }
+
+    return this.settings[key];
   }
 
   private readSettings() {
     eachEntries(GameSettings, (key) => {
-      this.settings[key] = localStorage.getItem(`SETTINGS.${key}`) ?? SETTINGS[key].default;
+      const userValue = localStorage.getItem(`SETTINGS.${key}`);
+
+      if (userValue) {
+        this.settings[key] = userValue === 'on';
+      }
     });
   }
 

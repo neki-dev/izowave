@@ -1,30 +1,40 @@
 import { useGame } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Setting } from '~scene/system/interface/setting';
-import { GameSettings, GameSettingsData, IGame } from '~type/game';
+import { GameSettings, IGame } from '~type/game';
+import { InterfaceTextColor } from '~type/interface';
 import { LangPhrase } from '~type/lang';
 
 type Props = {
   type: GameSettings
-  data: GameSettingsData
 };
 
-export const Param: React.FC<Props> = ({ type, data }) => {
+export const Param: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
 
   const [currentValue, setCurrentValue] = useState(game.settings[type]);
 
+  const values = useMemo<{
+    value: LangPhrase
+    color?: InterfaceTextColor
+  }[]>(() => [
+    { value: 'ON' },
+    { value: 'OFF', color: InterfaceTextColor.ERROR },
+  ], []);
+
   const updateSetting = (value: string) => {
-    game.updateSetting(type, value);
-    setCurrentValue(value);
+    const enabled = value === 'ON';
+
+    game.updateSetting(type, enabled);
+    setCurrentValue(enabled);
   };
 
   return (
     <Setting
       label={type}
-      values={data.values as LangPhrase[]}
-      currentValue={currentValue as LangPhrase}
+      values={values}
+      currentValue={currentValue ? 'ON' : 'OFF'}
       onChange={updateSetting}
     />
   );
