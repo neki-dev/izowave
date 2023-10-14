@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
@@ -135,6 +136,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     if (!this.active) {
       // ISSUE: [https://github.com/neki-dev/izowave/issues/69]
       // Temporarily fix
+      Analytics.TrackWarn('Unregistered call of ball hit');
+
       return;
     }
 
