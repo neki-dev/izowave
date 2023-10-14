@@ -1,5 +1,5 @@
 import { useMobilePlatform } from 'phaser-react-ui';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
@@ -18,10 +18,10 @@ export const Action: React.FC<Props> = ({ control }) => {
 
   const refContainer = useRef<HTMLDivElement>(null);
 
-  const onClick = (event: MouseEvent) => {
+  const onClick = useCallback((event: MouseEvent) => {
     control.onClick();
     event.stopPropagation();
-  };
+  }, [control.onClick]);
 
   useEffect(() => {
     const el = refContainer.current;
@@ -35,7 +35,7 @@ export const Action: React.FC<Props> = ({ control }) => {
     return () => {
       el.removeEventListener('mousedown', onClick);
     };
-  }, []);
+  }, [onClick]);
 
   return (
     <Container

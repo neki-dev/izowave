@@ -1,5 +1,5 @@
 import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { phrase } from '~lib/lang';
 import { GameScene } from '~type/game';
@@ -43,6 +43,10 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
     setMaxHealth(building.live.maxHealth);
     setParams(ifModifiedArray(building.getInfo(), ['value', 'attention']));
     setControls(ifModifiedArray(building.getControls(), ['label', 'cost', 'disabled']));
+  }, [building]);
+
+  useEffect(() => {
+    setControls(building.getControls());
   }, [building]);
 
   return (

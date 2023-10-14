@@ -6,6 +6,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Indicator } from '~entity/indicator';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
 import { Live } from '~lib/live';
@@ -220,11 +221,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
         hotkey: 'E',
         onClick: () => {
-          // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
-          // Temporarily fix
-          if (this.active) {
-            this.upgrade();
+          if (!this.active) {
+            // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
+            // Temporarily fix
+            Analytics.TrackWarn('Unregistered call of building upgrade');
+
+            return;
           }
+
+          this.upgrade();
         },
       });
     }
@@ -235,11 +240,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       disabled: this.live.isMaxHealth(),
       hotkey: 'R',
       onClick: () => {
-        // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
-        // Temporarily fix
-        if (this.active) {
-          this.repair();
+        if (!this.active) {
+          // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
+          // Temporarily fix
+          Analytics.TrackWarn('Unregistered call of building repair');
+
+          return;
         }
+
+        this.repair();
       },
     });
 
