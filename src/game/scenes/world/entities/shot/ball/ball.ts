@@ -122,7 +122,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     const distanceToTarget = getIsometricDistance(this, target.body.center);
     const speed = Math.min(this.params.speed, 1200);
-    const timeToTarget = (distanceToTarget / speed);
+    const timeToTarget = distanceToTarget / speed;
     const targetPosition = this.scene.getFuturePosition(target, timeToTarget);
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
@@ -134,7 +134,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   private hit(target: IEnemy) {
-    if (!this.active) {
+    if (!this.scene) {
       // ISSUE: [https://github.com/neki-dev/izowave/issues/69]
       // Temporarily fix
       Analytics.TrackWarn('Unregistered call of ball hit');
