@@ -1,7 +1,6 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { Analytics } from '~lib/analytics';
 import { progressionQuadratic } from '~lib/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { LangPhrase } from '~type/lang';
@@ -105,14 +104,6 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       disabled: (this.ammo >= this.maxAmmo),
       hotkey: 'F',
       onClick: () => {
-        if (!this.active) {
-          // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
-          // Temporarily fix
-          Analytics.TrackWarn('Unregistered call of building buy ammo');
-
-          return;
-        }
-
         this.buyAmmo();
       },
     }];
