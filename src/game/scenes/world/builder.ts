@@ -130,7 +130,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       Tutorial.Complete(TutorialStep.STOP_BUILD);
     }
 
@@ -209,7 +209,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.isBuild = true;
 
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       this.supposedPosition = this.scene.level.getFreeAdjacentTiles({
         ...this.scene.player.positionAtMatrix,
         z: 1,
@@ -344,7 +344,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     if (this.variant) {
-      if (this.scene.game.device.os.desktop) {
+      if (this.scene.game.isDesktop()) {
         if (this.isBuildingLimitReached(this.variant)) {
           this.clearBuildingVariant();
         } else {
@@ -486,7 +486,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private createBuildInstance() {
     this.createBuildPreview();
 
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       this.createBuildControls();
     }
 
@@ -541,7 +541,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private updateSupposedPosition() {
     let position: Vector2D;
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       position = {
         x: this.scene.input.activePointer.worldX,
         y: this.scene.input.activePointer.worldY,
@@ -569,7 +569,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handleKeyboard() {
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       return;
     }
 
@@ -581,7 +581,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handlePointer() {
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       return;
     }
 

@@ -30,7 +30,7 @@ export class Screen extends Scene implements IScreen {
   public create() {
     new Interface(this, ScreenUI);
 
-    if (!this.game.device.os.desktop) {
+    if (!this.game.isDesktop()) {
       this.createJoystick();
     }
   }

@@ -108,7 +108,7 @@ export class Player extends Sprite implements IPlayer {
     });
     scene.add.existing(this);
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       this.handleMovementByKeyboard();
     }
 

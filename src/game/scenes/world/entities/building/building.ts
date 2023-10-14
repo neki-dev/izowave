@@ -809,7 +809,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.on(Phaser.Input.Events.POINTER_DOWN, handleClick);
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       this.on(Phaser.Input.Events.POINTER_OVER, this.focus, this);
       this.on(Phaser.Input.Events.POINTER_OUT, this.unfocus, this);
     }

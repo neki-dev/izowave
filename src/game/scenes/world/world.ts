@@ -406,7 +406,7 @@ export class World extends Scene implements IWorld {
   }
 
   private handleKeyboard() {
-    if (!this.game.device.os.desktop) {
+    if (!this.game.isDesktop()) {
       return;
     }
 

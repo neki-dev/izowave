@@ -96,6 +96,11 @@ export interface IGame extends Phaser.Game {
   isFlagEnabled(key: GameFlag): boolean
 
   /**
+   * Check platform is desktop.
+   */
+  isDesktop(): boolean
+
+  /**
    * Show game ad.
    * @param type - Ad type
    * @param callback - Complete callback

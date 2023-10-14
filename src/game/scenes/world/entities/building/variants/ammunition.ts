@@ -78,7 +78,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.bindTutorialHint(
       TutorialStep.BUY_AMMO,
-      this.scene.game.device.os.desktop
+      this.scene.game.isDesktop()
         ? 'TUTORIAL_HOVER_TO_BUY_AMMO'
         : 'TUTORIAL_CLICK_TO_BUY_AMMO',
       () => this.ammo === 0,

@@ -27,7 +27,7 @@ export class Camera implements ICamera {
     camera.startFollow(object);
     camera.followOffset.set(0, object.displayHeight);
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       camera.setZoom(CAMERA_MAX_ZOOM * 2);
       camera.zoomTo(CAMERA_MAX_ZOOM, 200);
     } else {
@@ -49,7 +49,7 @@ export class Camera implements ICamera {
   }
 
   public addZoomControl() {
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
         const force = pointer.deltaY / 500;
 

@@ -159,7 +159,7 @@ export class Game extends Phaser.Game implements IGame {
     this.screen.scene.pause();
 
     this.scene.systemScene.scene.launch(GameScene.MENU, {
-      defaultPage: this.device.os.desktop
+      defaultPage: this.isDesktop()
         ? MenuPage.CONTROLS
         : MenuPage.ABOUT_GAME,
     });
@@ -219,7 +219,7 @@ export class Game extends Phaser.Game implements IGame {
 
     if (
       !this.scale.isFullscreen
-      && !this.device.os.desktop
+      && !this.isDesktop()
       && !IS_DEV_MODE
     ) {
       try {
@@ -291,6 +291,10 @@ export class Game extends Phaser.Game implements IGame {
     });
   }
 
+  public isDesktop() {
+    return this.device.os.desktop;
+  }
+
   public getDifficultyMultiplier() {
     switch (this.difficulty) {
       case GameDifficulty.EASY: return 0.8;
@@ -307,7 +311,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public isSettingEnabled(key: GameSettings) {
-    if (!this.device.os.desktop && key === GameSettings.SHOW_DAMAGE) {
+    if (!this.isDesktop() && key === GameSettings.SHOW_DAMAGE) {
       return false;
     }
 

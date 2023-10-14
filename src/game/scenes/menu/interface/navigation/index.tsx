@@ -56,7 +56,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       page: MenuPage.ABOUT_GAME,
     });
 
-    if (game.device.os.desktop) {
+    if (game.isDesktop()) {
       items.push({
         label: 'CONTROLS',
         page: MenuPage.CONTROLS,
