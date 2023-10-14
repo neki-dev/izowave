@@ -4,8 +4,6 @@ import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
   BuildingCategory,
-  BuildingIcon,
-  BuildingParam,
   BuildingTexture,
   BuildingVariant,
   BuildingVariantData,
@@ -19,12 +17,6 @@ export class BuildingTowerLazer extends BuildingTower {
   static Description: LangPhrase = 'BUILDING_DESCRIPTION_TOWER_LAZER';
 
   static Category = BuildingCategory.ATTACK;
-
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_RADIUS', value: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'BUILDING_DAMAGE', value: DIFFICULTY.BUILDING_TOWER_LAZER_DAMAGE, icon: BuildingIcon.DAMAGE },
-  ];
 
   static Texture = BuildingTexture.TOWER_LAZER;
 

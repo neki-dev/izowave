@@ -6,8 +6,6 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingCategory,
-  BuildingIcon,
-  BuildingParam,
   BuildingTexture,
   BuildingVariant,
   BuildingVariantData,
@@ -21,13 +19,6 @@ export class BuildingTowerFire extends BuildingTower {
   static Description: LangPhrase = 'BUILDING_DESCRIPTION_TOWER_FIRE';
 
   static Category = BuildingCategory.ATTACK;
-
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'BUILDING_DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE, icon: BuildingIcon.DAMAGE },
-    { label: 'BUILDING_SPEED', value: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED, icon: BuildingIcon.SPEED },
-  ];
 
   static Texture = BuildingTexture.TOWER_FIRE;
 

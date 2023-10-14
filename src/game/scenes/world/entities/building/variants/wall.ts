@@ -4,9 +4,7 @@ import { IWorld } from '~type/world';
 import {
   BuildingVariant,
   BuildingTexture,
-  BuildingParam,
   BuildingVariantData,
-  BuildingIcon,
   BuildingCategory,
 } from '~type/world/entities/building';
 
@@ -18,10 +16,6 @@ export class BuildingWall extends Building {
   static Description: LangPhrase = 'BUILDING_DESCRIPTION_WALL';
 
   static Category = BuildingCategory.DEFENSE;
-
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
-  ];
 
   static Texture = BuildingTexture.WALL;
 

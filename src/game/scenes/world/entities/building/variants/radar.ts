@@ -6,9 +6,7 @@ import { IWorld } from '~type/world';
 import {
   BuildingVariant,
   BuildingTexture,
-  BuildingParam,
   BuildingVariantData,
-  BuildingIcon,
   BuildingCategory,
 } from '~type/world/entities/building';
 
@@ -20,10 +18,6 @@ export class BuildingRadar extends Building {
   static Description: LangPhrase = 'BUILDING_DESCRIPTION_RADAR';
 
   static Category = BuildingCategory.OTHER;
-
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_RADAR_HEALTH, icon: BuildingIcon.HEALTH },
-  ];
 
   static Texture = BuildingTexture.RADAR;
 

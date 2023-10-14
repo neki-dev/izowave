@@ -22,11 +22,6 @@ export class BuildingBooster extends Building implements IBuildingBooster {
 
   static Category = BuildingCategory.OTHER;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_BOOSTER_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_POWER', value: `+${DIFFICULTY.BUILDING_BOOSTER_POWER}%`, icon: BuildingIcon.POWER },
-  ];
-
   static Texture = BuildingTexture.BOOSTER;
 
   static Cost = DIFFICULTY.BUILDING_BOOSTER_COST;

@@ -31,11 +31,6 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   static Category = BuildingCategory.RESOURCES;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
-  ];
-
   static Texture = BuildingTexture.AMMUNITION;
 
   static Cost = DIFFICULTY.BUILDING_AMMUNITION_COST;
