@@ -73,6 +73,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     super(scene, position.world.x, position.world.y, texture, frame);
     scene.add.existing(this);
+    scene.addEntityToGroup(this, EntityType.SPRITE);
 
     this.positionAtMatrix = position.matrix;
     this.live = new Live({ health: health ?? 1 });
@@ -93,8 +94,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public update() {
-    super.update();
-
     const positionOnGround = this.getPositionOnGround();
     const depth = Level.GetDepth(positionOnGround.y, 1);
 

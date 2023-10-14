@@ -4,4 +4,5 @@ export enum EntityType {
   ENEMY = 'ENEMY',
   SHOT = 'SHOT',
   CRYSTAL = 'CRYSTAL',
+  SPRITE = 'SPRITE',
 }

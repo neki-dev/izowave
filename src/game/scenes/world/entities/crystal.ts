@@ -30,7 +30,8 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
-    scene.addEntity(EntityType.CRYSTAL, this);
+    scene.add.existing(this);
+    scene.addEntityToGroup(this, EntityType.CRYSTAL);
 
     this.positionAtMatrix = positionAtMatrix;
 

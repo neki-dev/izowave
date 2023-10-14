@@ -81,7 +81,7 @@ export class Enemy extends NPC implements IEnemy {
         type: 'circle',
       },
     });
-    scene.addEntity(EntityType.ENEMY, this);
+    scene.addEntityToGroup(this, EntityType.ENEMY);
 
     this.damage = progressionLinear({
       defaultValue: DIFFICULTY.ENEMY_DAMAGE

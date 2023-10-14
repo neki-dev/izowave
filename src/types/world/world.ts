@@ -90,8 +90,10 @@ export interface IWorld extends IScene {
 
   /**
    * Add entity to group.
+   * @param gameObject - Entity
+   * @param type - Group type
    */
-  addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject): void
+  addEntityToGroup(gameObject: Phaser.GameObjects.GameObject, type: EntityType): void
 
   /**
    * Get entities group.

@@ -42,7 +42,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     texture, audio, glowColor = null, scale = 1.0,
   }: ShotBallData) {
     super(scene, 0, 0, texture);
-    scene.addEntity(EntityType.SHOT, this);
+    scene.add.existing(this);
+    scene.addEntityToGroup(this, EntityType.SHOT);
 
     this.params = params;
     this.audio = audio;

@@ -143,7 +143,6 @@ export class World extends Scene implements IWorld {
 
     this.deltaTime = delta;
 
-    this.player.update();
     this.builder.update();
     this.wave.update();
   }
@@ -188,8 +187,7 @@ export class World extends Scene implements IWorld {
     return countPerSecond;
   }
 
-  public addEntity(type: EntityType, gameObject: Phaser.GameObjects.GameObject) {
-    this.add.existing(gameObject);
+  public addEntityToGroup(gameObject: Phaser.GameObjects.GameObject, type: EntityType) {
     this.entityGroups[type].add(gameObject);
   }
 
@@ -289,14 +287,15 @@ export class World extends Scene implements IWorld {
   private addEntityGroups() {
     this.entityGroups = {
       [EntityType.CRYSTAL]: this.add.group(),
+      [EntityType.NPC]: this.add.group(),
       [EntityType.ENEMY]: this.add.group(),
-      [EntityType.NPC]: this.add.group({
-        runChildUpdate: true,
-      }),
       [EntityType.BUILDING]: this.add.group({
         runChildUpdate: true,
       }),
       [EntityType.SHOT]: this.add.group({
+        runChildUpdate: true,
+      }),
+      [EntityType.SPRITE]: this.add.group({
         runChildUpdate: true,
       }),
     };
