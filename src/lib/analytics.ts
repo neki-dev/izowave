@@ -31,8 +31,34 @@ export class Analytics {
       return;
     }
 
-    const payload = this.GetEventPayload(data);
+    this.FetchEventRequest(
+      this.GetEventPayload(data),
+    );
+  }
 
+  static TrackError(data: Error) {
+    if (IS_DEV_MODE) {
+      return;
+    }
+
+    this.FetchErrorRequest(
+      this.GetErrorPayload(data),
+    );
+  }
+
+  static TrackWarn(message: string) {
+    if (IS_DEV_MODE) {
+      console.warn(message);
+
+      return;
+    }
+
+    this.FetchErrorRequest(
+      this.GetWarnPayload(message),
+    );
+  }
+
+  private static FetchEventRequest(payload: any) {
     fetch(`${ANALYTICS_SERVER}/api/create-event.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -42,13 +68,7 @@ export class Analytics {
     });
   }
 
-  static TrackError(data: Error) {
-    if (IS_DEV_MODE) {
-      return;
-    }
-
-    const payload = this.GetErrorPayload(data);
-
+  private static FetchErrorRequest(payload: any) {
     fetch(`${ANALYTICS_SERVER}/api/create-error.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -76,8 +96,21 @@ export class Analytics {
   private static GetErrorPayload(data: Error) {
     return {
       // Error info
+      type: 'error',
       message: data.message,
       stack: data.stack,
+      // System info
+      userId: this.UserId,
+      version: pkg.version,
+      userAgent: window.navigator.userAgent,
+    };
+  }
+
+  private static GetWarnPayload(message: string) {
+    return {
+      // Warn info
+      type: 'warn',
+      message,
       // System info
       userId: this.UserId,
       version: pkg.version,

@@ -97,7 +97,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
-    scene.addEntity(EntityType.BUILDING, this);
+    scene.add.existing(this);
+    scene.addEntityToGroup(this, EntityType.BUILDING);
 
     this.radius = radius ?? null;
     this.delay = delay ?? null;
@@ -219,11 +220,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
         hotkey: 'E',
         onClick: () => {
-          // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
-          // Temporarily fix
-          if (this.active) {
-            this.upgrade();
-          }
+          this.upgrade();
         },
       });
     }
@@ -234,11 +231,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       disabled: this.live.isMaxHealth(),
       hotkey: 'R',
       onClick: () => {
-        // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
-        // Temporarily fix
-        if (this.active) {
-          this.repair();
-        }
+        this.repair();
       },
     });
 

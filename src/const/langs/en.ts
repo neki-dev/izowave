@@ -159,8 +159,8 @@ export const EN = {
   /**
    * States
    */
-  on: 'On',
-  off: 'Off',
+  ON: 'On',
+  OFF: 'Off',
 
   /**
    * Settings

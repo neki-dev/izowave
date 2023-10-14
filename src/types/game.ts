@@ -23,7 +23,7 @@ export interface IGame extends Phaser.Game {
   /**
    * Game settings.
    */
-  readonly settings: Partial<Record<GameSettings, string>>
+  readonly settings: Record<GameSettings, boolean>
 
   /**
    * Used save data.
@@ -76,7 +76,7 @@ export interface IGame extends Phaser.Game {
    * @param key - Settings key
    * @param value - New value
    */
-  updateSetting(key: GameSettings, value: string): void
+  updateSetting(key: GameSettings, value: boolean): void
 
   /**
    * Check is setting enabled.
@@ -141,12 +141,6 @@ export enum GameFlag {
   NO_BLOOD = 'NO_BLOOD',
   ADS = 'ADS',
 }
-
-export type GameSettingsData = {
-  values: string[]
-  default: string
-  onlyDesktop?: boolean
-};
 
 export type GameSavePayload = {
   difficulty: GameDifficulty

@@ -20,7 +20,7 @@ export const Keys = styled.div`
 `;
 
 export const Key = styled.div`
-  color: #000;
+  color: #444;
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 12px;
   line-height: 12px;

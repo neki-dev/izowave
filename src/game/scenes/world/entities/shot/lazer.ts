@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
@@ -34,7 +35,8 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   constructor(scene: IWorld, params: ShotParams) {
     super(scene);
-    scene.addEntity(EntityType.SHOT, this);
+    scene.add.existing(this);
+    scene.addEntityToGroup(this, EntityType.SHOT);
 
     this.params = params;
 
@@ -98,6 +100,8 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     if (!this.active) {
       // ISSUE: [https://github.com/neki-dev/izowave/issues/67]
       // Temporarily fix
+      Analytics.TrackWarn('Unregistered call of laser hit');
+
       return;
     }
 

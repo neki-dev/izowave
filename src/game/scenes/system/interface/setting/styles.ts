@@ -7,7 +7,6 @@ import {
 } from '~type/interface';
 
 export const Wrapper = styled.div`
-
 `;
 
 export const Label = styled.div`
@@ -33,16 +32,17 @@ export const Values = styled.ul<{
 
 export const Value = styled.li<{
   $active?: boolean
+  $color?: InterfaceTextColor
 }>`
   color: ${(props) => (props.$active
-    ? InterfaceTextColor.SUCCESS
+    ? (props.$color ?? InterfaceTextColor.SUCCESS)
     : InterfaceBackgroundColor.WHITE_TRANSPARENT_75
   )};
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 14px;
   line-height: 14px;
   border: 1px solid ${(props) => (props.$active
-    ? InterfaceTextColor.SUCCESS
+    ? (props.$color ?? InterfaceTextColor.SUCCESS)
     : InterfaceBackgroundColor.WHITE_TRANSPARENT_75
   )};
   padding: 4px 7px 6px 7px;

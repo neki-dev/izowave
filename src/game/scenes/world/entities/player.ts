@@ -141,8 +141,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
 
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
-      if (value === 'on') {
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (enabled: boolean) => {
+      if (enabled) {
         this.addDustEffect();
       } else {
         this.removeDustEffect();

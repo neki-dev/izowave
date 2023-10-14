@@ -2,13 +2,21 @@ import { LANGS } from '~const/langs';
 import { LangPhrase, Lang } from '~type/lang';
 
 function getLang() {
-  const query = new URLSearchParams(window.location.search);
-  const value = query.get('lang')?.toUpperCase()
-    ?? (navigator.language ?? navigator.languages?.[0])?.split('-')?.[0]?.toUpperCase();
+  try {
+    let value = (
+      new URLSearchParams(window.location.search).get('lang')
+      || Intl.DateTimeFormat().resolvedOptions().locale
+      || navigator.language.split('-')[0]
+    );
 
-  return (value && value in LANGS)
-    ? LANGS[value as Lang]
-    : LANGS.EN;
+    value = value?.toUpperCase();
+
+    return (value && value in LANGS)
+      ? LANGS[value as Lang]
+      : LANGS.EN;
+  } catch (error) {
+    return LANGS.EN;
+  }
 }
 
 const LANG = getLang();

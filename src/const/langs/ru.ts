@@ -159,8 +159,8 @@ export const RU = {
   /**
    * States
    */
-  on: 'Вкл',
-  off: 'Выкл',
+  ON: 'Вкл',
+  OFF: 'Выкл',
 
   /**
    * Settings
