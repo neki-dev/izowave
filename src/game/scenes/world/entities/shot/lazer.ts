@@ -95,6 +95,12 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   private hit() {
+    if (!this.active) {
+      // ISSUE: [https://github.com/neki-dev/izowave/issues/67]
+      // Temporarily fix
+      return;
+    }
+
     if (!this.target || !this.params.damage) {
       return;
     }
@@ -103,9 +109,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.target.live.damage(momentDamage);
 
-    // ISSUE: [https://github.com/neki-dev/izowave/issues/67]
-    // Temporarily fixed by optional chain
-    if (this.scene?.game.isSettingEnabled(GameSettings.EFFECTS)) {
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Particles(this.target, {
         key: 'glow',
         texture: ParticlesTexture.GLOW,

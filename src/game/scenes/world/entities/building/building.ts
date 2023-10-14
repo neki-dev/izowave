@@ -219,7 +219,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         disabled: this.getUpgradeAllowedByWave() > this.scene.wave.number,
         hotkey: 'E',
         onClick: () => {
-          this.upgrade();
+          // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
+          // Temporarily fix
+          if (this.active) {
+            this.upgrade();
+          }
         },
       });
     }
@@ -230,7 +234,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       disabled: this.live.isMaxHealth(),
       hotkey: 'R',
       onClick: () => {
-        this.repair();
+        // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
+        // Temporarily fix
+        if (this.active) {
+          this.repair();
+        }
       },
     });
 

@@ -104,7 +104,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       disabled: (this.ammo >= this.maxAmmo),
       hotkey: 'F',
       onClick: () => {
-        this.buyAmmo();
+        // ISSUE: [https://github.com/neki-dev/izowave/issues/68]
+        // Temporarily fix
+        if (this.active) {
+          this.buyAmmo();
+        }
       },
     }];
 
