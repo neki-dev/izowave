@@ -100,6 +100,7 @@ export class Game extends Phaser.Game implements IGame {
       this.world = <IWorld> this.scene.getScene(GameScene.WORLD);
 
       this.sound.setVolume(AUDIO_VOLUME);
+      this.sound.mute = !this.isSettingEnabled(GameSettings.AUDIO);
 
       this.registerShaders();
     });
