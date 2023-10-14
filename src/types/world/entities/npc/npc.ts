@@ -1,6 +1,6 @@
 import { AssistantTexture } from '~type/world/entities/npc/assistant';
 import { EnemyTexture } from '~type/world/entities/npc/enemy';
-import { ISprite } from '~type/world/entities/sprite';
+import { ISprite, SpriteBodyData } from '~type/world/entities/sprite';
 import { Vector2D } from '~type/world/level';
 
 export interface INPC extends ISprite {
@@ -45,4 +45,5 @@ export type NPCData = {
   speed: number
   health?: number
   pathFindTriggerDistance: number
+  body: SpriteBodyData
 };

@@ -76,6 +76,10 @@ export class Enemy extends NPC implements IEnemy {
         level: scene.wave.number,
         maxLevel: DIFFICULTY.ENEMY_SPEED_GROWTH_MAX_LEVEL,
       }),
+      body: {
+        ...ENEMY_TEXTURE_META[texture],
+        type: 'circle',
+      },
     });
     scene.addEntity(EntityType.ENEMY, this);
 
@@ -88,15 +92,11 @@ export class Enemy extends NPC implements IEnemy {
     });
     this.spawnEffect = spawnEffect;
     this.score = score ?? 1;
-    this.gamut = ENEMY_TEXTURE_META[texture].gamut;
     this.might = (
       multipliers.health
       + multipliers.damage
       + multipliers.speed
     ) / 3;
-
-    this.body.setCircle((this.width * 0.5) - 2);
-    this.body.setOffset(2, 2);
 
     this.addDamageLabel();
     this.addIndicator({

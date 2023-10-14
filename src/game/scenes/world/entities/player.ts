@@ -99,10 +99,14 @@ export class Player extends Sprite implements IPlayer {
       texture: PlayerTexture.PLAYER,
       health: DIFFICULTY.PLAYER_HEALTH,
       speed: DIFFICULTY.PLAYER_SPEED,
+      body: {
+        type: 'rect',
+        width: 14,
+        height: 26,
+        gamut: PLAYER_TILE_SIZE.gamut,
+      },
     });
     scene.add.existing(this);
-
-    this.gamut = PLAYER_TILE_SIZE.gamut;
 
     if (this.scene.game.device.os.desktop) {
       this.handleMovementByKeyboard();
@@ -115,8 +119,6 @@ export class Player extends Sprite implements IPlayer {
       color: 0xd0ff4f,
       value: () => this.live.health / this.live.maxHealth,
     });
-
-    this.body.setSize(14, 26);
 
     this.setTilesGroundCollision(true);
     this.setTilesCollision([

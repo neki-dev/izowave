@@ -35,6 +35,10 @@ export class Assistant extends NPC implements IAssistant {
       positionAtMatrix,
       speed,
       pathFindTriggerDistance: ASSISTANT_PATH_BREAKPOINT,
+      body: {
+        ...ASSISTANT_TILE_SIZE,
+        type: 'circle',
+      },
     });
     scene.add.existing(this);
 
@@ -48,10 +52,7 @@ export class Assistant extends NPC implements IAssistant {
     this.shot.setInitiator(this, () => this.body.center);
     this.shotDefaultParams = this.shot.params;
 
-    this.gamut = ASSISTANT_TILE_SIZE.gamut;
     this.owner = owner;
-
-    this.body.setCircle(this.width / 2, 0, 1);
 
     this.activate();
   }

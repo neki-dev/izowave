@@ -94,6 +94,13 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   addIndicator(data: SpriteIndicatorData): void
 }
 
+export type SpriteBodyData = {
+  type: 'rect' | 'circle'
+  width: number
+  height: number
+  gamut: number
+};
+
 export type SpriteData = {
   texture: string
   positionAtMatrix?: Vector2D
@@ -101,6 +108,7 @@ export type SpriteData = {
   frame?: number
   health?: number
   speed: number
+  body: SpriteBodyData
 };
 
 export type SpriteIndicatorData = {
