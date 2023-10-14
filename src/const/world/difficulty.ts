@@ -157,7 +157,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FROZEN_SHOT_SPEED: 300, // Shot speed
 
   /**
-   * Building: Tower: Lazer
+   * Building: Tower: Laser
    */
 
   BUILDING_TOWER_LAZER_COST: 80, // Building cost

@@ -16,7 +16,7 @@ export const EN = {
   BUILDING_DESCRIPTION_TOWER_FIRE: 'Basic fire attack of enemies',
   BUILDING_NAME_TOWER_FROZEN: 'Frozen tower',
   BUILDING_DESCRIPTION_TOWER_FROZEN: 'Freezes enemies for some time',
-  BUILDING_NAME_TOWER_LAZER: 'Lazer tower',
+  BUILDING_NAME_TOWER_LAZER: 'Laser tower',
   BUILDING_DESCRIPTION_TOWER_LAZER: 'Instant and continuous laser attack of enemies',
   BUILDING_NAME_GENERATOR: 'Generator',
   BUILDING_DESCRIPTION_GENERATOR: 'Generates resources for builds and upgrades',

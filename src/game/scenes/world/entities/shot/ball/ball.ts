@@ -145,7 +145,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
       const position = target.getPositionOnGround();
 
-      this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+      // ISSUE: [https://github.com/neki-dev/izowave/issues/69]
+      // Temporarily fixed by optional chain
+      this.scene?.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
         if (enemy !== target) {
           const distance = getIsometricDistance(position, enemy.getPositionOnGround());
 
