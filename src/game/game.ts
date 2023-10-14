@@ -36,6 +36,8 @@ export class Game extends Phaser.Game implements IGame {
 
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
+  public isSaved: boolean = false;
+
   private _state: GameState = GameState.IDLE;
 
   public get state() { return this._state; }
@@ -122,6 +124,17 @@ export class Game extends Phaser.Game implements IGame {
       }
     });
 
+    window.onbeforeunload = () => {
+      const needConfirm = !IS_DEV_MODE && (
+        (this.state === GameState.PAUSED && !this.isSaved)
+        || this.state === GameState.STARTED
+      );
+
+      return needConfirm
+        ? 'Do you confirm leave game without save?'
+        : undefined;
+    };
+
     window.onerror = (message, path, line, column, error) => {
       if (error) {
         Analytics.TrackError(error);
@@ -165,6 +178,8 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.scene.resume();
     this.screen.scene.resume();
+
+    this.isSaved = false;
   }
 
   public continueGame(save: StorageSave) {
@@ -226,12 +241,6 @@ export class Game extends Phaser.Game implements IGame {
     this.scene.systemScene.scene.launch(GameScene.SCREEN);
 
     this.world.start();
-
-    if (!IS_DEV_MODE) {
-      window.onbeforeunload = function confirmLeave() {
-        return 'Do you confirm leave game?';
-      };
-    }
   }
 
   public stopGame() {
@@ -255,10 +264,6 @@ export class Game extends Phaser.Game implements IGame {
     this.scene.systemScene.scene.launch(GameScene.MENU, {
       defaultPage: MenuPage.NEW_GAME,
     });
-
-    if (!IS_DEV_MODE) {
-      window.onbeforeunload = null;
-    }
   }
 
   public finishGame() {

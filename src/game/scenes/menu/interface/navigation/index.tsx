@@ -41,8 +41,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       }, {
         label: 'MAIN_MENU',
         onClick: () => {
-          // eslint-disable-next-line no-alert
-          if (window.confirm('Do you confirm stop game?')) {
+          if (window.confirm(phrase('CONFIRM_STOP_GAME'))) {
             game.stopGame();
           }
         },

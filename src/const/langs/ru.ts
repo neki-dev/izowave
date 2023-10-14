@@ -125,6 +125,7 @@ export const RU = {
   ABOUT_GAME: 'Об игре',
   CONTROLS: 'Управление',
   MENU: 'Меню',
+  CONFIRM_STOP_GAME: 'Остановить игру?',
 
   /**
    * Game params
@@ -141,6 +142,8 @@ export const RU = {
   SAVE: 'Сохранить',
   SAVE_NAME: 'Название',
   SAVE_DATE: 'Дата',
+  CONFIRM_REWRITE_SAVE: 'Перезаписать это сохранение?',
+  CONFIRM_DELETE_SAVE: 'Удалить это сохранение?',
 
   /**
    * Planets

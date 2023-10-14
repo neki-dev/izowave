@@ -36,11 +36,11 @@ export const SaveGame: React.FC = () => {
 
     const exist = saves.some((save) => save.name === saveName);
 
-    // eslint-disable-next-line no-alert
-    if (!exist || window.confirm('Do you confirm rewrite this save?')) {
+    if (!exist || window.confirm(phrase('CONFIRM_REWRITE_SAVE'))) {
       Storage.AddSave(game, saveName).then(() => {
         setSaveName('');
         setSaves([...Storage.Saves]);
+        game.isSaved = true;
       });
     }
   };
@@ -48,8 +48,7 @@ export const SaveGame: React.FC = () => {
   const deleteSave = (event: MouseEvent, name: string) => {
     event.stopPropagation();
 
-    // eslint-disable-next-line no-alert
-    if (window.confirm('Do you confirm delete this save?')) {
+    if (window.confirm(phrase('CONFIRM_DELETE_SAVE'))) {
       Storage.DeleteSave(name).then(() => {
         setSaves([...Storage.Saves]);
       });

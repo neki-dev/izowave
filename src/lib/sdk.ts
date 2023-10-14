@@ -46,8 +46,7 @@ export class SDK {
 
     if (IS_DEV_MODE) {
       callbackBeg();
-      // eslint-disable-next-line no-alert
-      alert('Ads was showed');
+      window.alert('Ads was showed');
       callbackEnd(true);
 
       return;

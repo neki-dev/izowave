@@ -125,6 +125,7 @@ export const EN = {
   ABOUT_GAME: 'About game',
   CONTROLS: 'Controls',
   MENU: 'Menu',
+  CONFIRM_STOP_GAME: 'Do you confirm stop game?',
 
   /**
    * Game params
@@ -141,6 +142,8 @@ export const EN = {
   SAVE: 'Save',
   SAVE_NAME: 'Name',
   SAVE_DATE: 'Date',
+  CONFIRM_REWRITE_SAVE: 'Do you confirm rewrite this save?',
+  CONFIRM_DELETE_SAVE: 'Do you confirm delete this save?',
 
   /**
    * Planets

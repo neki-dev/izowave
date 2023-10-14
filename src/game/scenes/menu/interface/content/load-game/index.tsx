@@ -22,8 +22,7 @@ export const LoadGame: React.FC = () => {
   const deleteSave = (event: MouseEvent, name: string) => {
     event.stopPropagation();
 
-    // eslint-disable-next-line no-alert
-    if (window.confirm('Do you confirm delete this save?')) {
+    if (window.confirm(phrase('CONFIRM_DELETE_SAVE'))) {
       Storage.DeleteSave(name).then(() => {
         setSaves([...Storage.Saves]);
         if (selectedSave.name === name) {
