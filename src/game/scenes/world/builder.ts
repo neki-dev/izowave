@@ -18,7 +18,7 @@ import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio, BuildingBuildData, BuildingIcon, BuildingVariant, IBuilding,
 } from '~type/world/entities/building';
-import { INPC } from '~type/world/entities/npc';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import { PlayerSkill } from '~type/world/entities/player';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
@@ -289,13 +289,14 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    let spritePositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
+    const targets = [
+      this.scene.player,
+      ...this.scene.getEntities<IEnemy>(EntityType.ENEMY),
+    ];
 
-    this.scene.getEntities<INPC>(EntityType.NPC).forEach((npc) => {
-      spritePositionsAtMatrix = spritePositionsAtMatrix.concat(npc.getAllPositionsAtMatrix());
-    });
-
-    const isFreeFromSprite = spritePositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+    const isFreeFromSprite = targets.every((npc) => (
+      npc.getAllPositionsAtMatrix().every((point) => !equalPositions(positionAtMatrix, point))
+    ));
 
     if (!isFreeFromSprite) {
       return false;
