@@ -14,7 +14,7 @@ import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IIndicator } from '~type/world/entities/indicator';
 import {
-  ISprite, SpriteData, SpriteIndicatorData,
+  ISprite, SpriteBodyData, SpriteData, SpriteIndicatorData,
 } from '~type/world/entities/sprite';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
@@ -50,7 +50,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   constructor(scene: IWorld, {
-    texture, positionAtWorld, positionAtMatrix, health, speed, frame = 0,
+    texture, positionAtWorld, positionAtMatrix, health, speed, body, frame = 0,
   }: SpriteData) {
     let position: Nullable<{
       matrix: Vector2D
@@ -79,11 +79,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
 
-    this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.setOrigin(0.5, 1.0);
-    this.setImmovable(true);
-    this.setPushable(false);
-
+    this.configureBody(body);
     this.addIndicatorsContainer();
     this.addDebugPosition();
 
@@ -115,6 +111,20 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.updateIndicators();
 
     this.drawDebugGroundPosition();
+  }
+
+  private configureBody(body: SpriteBodyData) {
+    this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
+    this.gamut = body.gamut;
+    if (body.type === 'rect') {
+      this.body.setSize(body.width, body.height);
+    } else if (body.type === 'circle') {
+      this.body.setCircle(body.width / 2);
+    }
+
+    this.setOrigin(0.5, 1.0);
+    this.setImmovable(true);
+    this.setPushable(false);
   }
 
   public isStopped() {
@@ -238,16 +248,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   private addIndicatorsContainer() {
     this.indicators = this.scene.add.container();
+    this.indicators.setPosition(
+      -this.displayWidth / 2,
+      -this.body.halfHeight - 10,
+    );
 
     this.container.add(this.indicators);
-
-    // Need to wait body configure
-    setTimeout(() => {
-      this.indicators.setPosition(
-        -this.displayWidth / 2,
-        -this.body.halfHeight - 10,
-      );
-    }, 0);
   }
 
   public addIndicator(data: SpriteIndicatorData) {

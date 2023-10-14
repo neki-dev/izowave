@@ -18,6 +18,8 @@ export const ScreenUI: React.FC = () => {
 
   return (
     <Wrapper ref={refScale}>
+      <AdsReward />
+
       <Grid>
         <Column $side="left">
           <PlayerHUD />
@@ -26,7 +28,6 @@ export const ScreenUI: React.FC = () => {
 
         <Column $side="center">
           <Wave />
-          <AdsReward />
           <GeneralHints />
           <Superskills />
         </Column>

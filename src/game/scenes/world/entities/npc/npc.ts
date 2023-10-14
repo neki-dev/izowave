@@ -35,10 +35,7 @@ export class NPC extends Sprite implements INPC {
   constructor(scene: IWorld, {
     pathFindTriggerDistance, texture, ...data
   }: NPCData) {
-    super(scene, {
-      ...data,
-      texture,
-    });
+    super(scene, { ...data, texture });
     scene.addEntity(EntityType.NPC, this);
 
     this.setVisible(false);

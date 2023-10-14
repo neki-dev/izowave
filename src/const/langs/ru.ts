@@ -95,7 +95,7 @@ export const RU = {
   SUPERSKILL_NAME_SHIELD: 'Щит',
   SUPERSKILL_DESCRIPTION_SHIELD: 'Останавливает урон всем постройкам',
   SUPERSKILL_NAME_FIRE: 'Огонь',
-  SUPERSKILL_DESCRIPTION_FIRE: 'Наносит всем врагам урон огнем',
+  SUPERSKILL_DESCRIPTION_FIRE: 'Наносит урон огнем всем врагам',
 
   /**
    * Tutorial

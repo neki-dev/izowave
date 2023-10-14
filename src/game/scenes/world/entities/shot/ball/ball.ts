@@ -132,6 +132,12 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   private hit(target: IEnemy) {
+    if (!this.active) {
+      // ISSUE: [https://github.com/neki-dev/izowave/issues/69]
+      // Temporarily fix
+      return;
+    }
+
     const { damage, freeze } = this.params;
 
     if (freeze && target.live.armour <= 0) {

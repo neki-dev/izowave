@@ -25,6 +25,7 @@ export const AdsReward: React.FC = () => {
   });
 
   const onConfirmAds = () => {
+    game.resume();
     game.showAds(SDKAdsType.REWARDED, () => {
       world.player.giveExperience(adsReward.experience);
       world.player.giveResources(adsReward.resources);
@@ -33,6 +34,7 @@ export const AdsReward: React.FC = () => {
   };
 
   const onDeclineAds = () => {
+    game.resume();
     setAdsOfferOpen(false);
   };
 
@@ -41,20 +43,13 @@ export const AdsReward: React.FC = () => {
       return;
     }
 
+    game.pause();
     setAdsOfferOpen(true);
     setAdsReward({
       experience: DIFFICULTY.ADS_REWARD_EXPERIENCE * number,
       resources: DIFFICULTY.ADS_REWARD_RESOURCES * number,
     });
   };
-
-  useEffect(() => {
-    if (isAdsOfferOpen) {
-      game.pause();
-    } else {
-      game.resume();
-    }
-  }, [isAdsOfferOpen]);
 
   useEffect(() => {
     if (!game.isFlagEnabled(GameFlag.ADS)) {

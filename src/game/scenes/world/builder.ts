@@ -123,14 +123,12 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  public unsetBuildingVariant(force?: boolean) {
+  public unsetBuildingVariant() {
     if (this.variant === null) {
       return;
     }
 
-    if (!force) {
-      this.scene.sound.play(BuildingAudio.UNSELECT);
-    }
+    this.scene.sound.play(BuildingAudio.UNSELECT);
 
     if (this.scene.game.device.os.desktop) {
       Tutorial.Complete(TutorialStep.STOP_BUILD);
@@ -344,8 +342,16 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.BUILD);
 
-    if (!this.scene.game.device.os.desktop) {
-      this.unsetBuildingVariant(true);
+    if (this.variant) {
+      if (this.scene.game.device.os.desktop) {
+        if (this.isBuildingLimitReached(this.variant)) {
+          this.clearBuildingVariant();
+        } else {
+          Tutorial.Start(TutorialStep.STOP_BUILD);
+        }
+      } else {
+        this.clearBuildingVariant();
+      }
     }
   }
 
