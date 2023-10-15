@@ -195,7 +195,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private updateTileCost() {
-    const cost = 2.0 + (this.live.health / 1000);
+    const cost = 2.0 + Number((this.live.health / 1000).toFixed(1));
 
     this.scene.level.navigator.setPointCost(this.positionAtMatrix, cost);
   }
