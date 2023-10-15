@@ -47,7 +47,7 @@ export class System extends Scene {
 
     removeLoading();
 
-    if (!this.game.device.os.desktop) {
+    if (!this.game.isDesktop()) {
       this.input.addPointer(1);
     }
 

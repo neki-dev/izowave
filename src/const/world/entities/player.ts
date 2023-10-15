@@ -26,10 +26,6 @@ export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.CHARACTER,
   },
-  [PlayerSkill.BUILD_AREA]: {
-    experience: DIFFICULTY.BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE,
-    target: PlayerSkillTarget.CHARACTER,
-  },
   [PlayerSkill.BUILD_SPEED]: {
     experience: DIFFICULTY.BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.CHARACTER,
@@ -53,13 +49,13 @@ export const PLAYER_SUPERSKILLS: Record<PlayerSuperskill, PlayerSuperskillData> 
     cost: DIFFICULTY.SUPERSKILL_FROST_COST,
     duration: DIFFICULTY.SUPERSKILL_FROST_DURATION,
   },
-  [PlayerSuperskill.RAGE]: {
-    cost: DIFFICULTY.SUPERSKILL_RAGE_COST,
-    duration: DIFFICULTY.SUPERSKILL_RAGE_DURATION,
-  },
   [PlayerSuperskill.SHIELD]: {
     cost: DIFFICULTY.SUPERSKILL_SHIELD_COST,
     duration: DIFFICULTY.SUPERSKILL_SHIELD_DURATION,
+  },
+  [PlayerSuperskill.RAGE]: {
+    cost: DIFFICULTY.SUPERSKILL_RAGE_COST,
+    duration: DIFFICULTY.SUPERSKILL_RAGE_DURATION,
   },
   [PlayerSuperskill.FIRE]: {
     cost: DIFFICULTY.SUPERSKILL_FIRE_COST,

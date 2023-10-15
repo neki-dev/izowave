@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { PLAYER_MAX_SKILL_LEVEL } from '~const/world/entities/player';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -31,7 +30,6 @@ export const Label = styled.div`
   font-size: 13px;
   line-height: 13px;
   margin-right: 10px;
-  white-space: nowrap;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 11px;
     line-height: 11px;
@@ -40,9 +38,8 @@ export const Label = styled.div`
 
 export const Level: any = styled.div`
   margin-top: 10px;
-  display: grid;
-  grid-template-columns: repeat(${PLAYER_MAX_SKILL_LEVEL}, 1fr);
-  grid-gap: 2px;
+  display: flex;
+  gap: 2px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     margin-top: 8px;
   }
@@ -51,11 +48,14 @@ export const Level: any = styled.div`
 Level.Progress = styled.div<{
   $active?: boolean
 }>`
+  flex: 1;
   height: 8px;
   transition: all 0.2s ease-out;
   background: ${InterfaceBackgroundColor.BLACK};
+  box-shadow: 0 4px 0 #222 inset;
   ${(props) => props.$active && css`
     background: ${InterfaceBackgroundColor.SUCCESS};
+    box-shadow: 0 4px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
   `}
 `;
 
@@ -75,9 +75,6 @@ export const Action = styled.div<{
       background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
     }
   `}
-  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    height: 54px;
-  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 10px 0;
     width: 90px;

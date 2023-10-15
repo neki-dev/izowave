@@ -7,6 +7,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { progressionLinear } from '~lib/difficulty';
+import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { getStage, equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
@@ -18,7 +19,7 @@ import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio, BuildingBuildData, BuildingIcon, BuildingVariant, IBuilding,
 } from '~type/world/entities/building';
-import { INPC } from '~type/world/entities/npc';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import { PlayerSkill } from '~type/world/entities/player';
 import { BiomeType, TileType, Vector2D } from '~type/world/level';
 
@@ -33,9 +34,9 @@ export class Builder extends EventEmitter implements IBuilder {
 
   public selectedBuilding: Nullable<IBuilding> = null;
 
-  private buildArea: Nullable<Phaser.GameObjects.Ellipse> = null;
-
   private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
+
+  private buildActionRadius: Nullable<Phaser.GameObjects.Ellipse> = null;
 
   private buildControls: Nullable<Phaser.GameObjects.Container> = null;
 
@@ -48,12 +49,6 @@ export class Builder extends EventEmitter implements IBuilder {
   public get variant() { return this._variant; }
 
   private set variant(v) { this._variant = v; }
-
-  private _radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
-
-  public get radius() { return this._radius; }
-
-  private set radius(v) { this._radius = v; }
 
   constructor(scene: IWorld) {
     super();
@@ -76,7 +71,6 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.isCanBuild()) {
       if (this.isBuild) {
         this.updateSupposedPosition();
-        this.updateBuildAreaPosition();
         this.updateBuildInstance();
       } else {
         this.open();
@@ -103,7 +97,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [BuildingInstance.Name]);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
 
       return;
     }
@@ -114,13 +108,15 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    this.scene.sound.play(BuildingAudio.SELECT);
-
-    this.variant = variant;
-
-    if (this.buildPreview) {
-      this.buildPreview.setTexture(BuildingInstance.Texture);
+    if (this.isBuild) {
+      this.destroyBuildInstance();
+      this.variant = variant;
+      this.createBuildInstance();
+    } else {
+      this.variant = variant;
     }
+
+    this.scene.sound.play(BuildingAudio.SELECT);
   }
 
   public unsetBuildingVariant() {
@@ -130,7 +126,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       Tutorial.Complete(TutorialStep.STOP_BUILD);
     }
 
@@ -209,14 +205,13 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.isBuild = true;
 
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       this.supposedPosition = this.scene.level.getFreeAdjacentTiles({
         ...this.scene.player.positionAtMatrix,
         z: 1,
       })[0] ?? this.scene.player.positionAtMatrix;
     }
 
-    this.createBuildArea();
     this.createBuildInstance();
 
     this.emit(BuilderEvents.BUILD_START);
@@ -228,7 +223,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.destroyBuildInstance();
-    this.destroyBuildArea();
 
     this.isBuild = false;
     this.supposedPosition = null;
@@ -261,22 +255,11 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private isAllowBuild() {
-    if (!this.buildArea || !this.supposedPosition) {
+    if (!this.supposedPosition) {
       return false;
     }
 
     const positionAtMatrix = this.supposedPosition;
-    const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
-    const offset = this.buildArea.getTopLeft() as Vector2D;
-    const inArea = this.buildArea.geom.contains(
-      positionAtWorld.x - offset.x,
-      positionAtWorld.y - offset.y,
-    );
-
-    if (!inArea) {
-      return false;
-    }
-
     const biome = this.scene.level.map.getAt(positionAtMatrix);
 
     if (!biome?.solid) {
@@ -289,13 +272,14 @@ export class Builder extends EventEmitter implements IBuilder {
       return false;
     }
 
-    let spritePositionsAtMatrix = this.scene.player.getAllPositionsAtMatrix();
+    const targets = [
+      this.scene.player,
+      ...this.scene.getEntities<IEnemy>(EntityType.ENEMY),
+    ];
 
-    this.scene.getEntities<INPC>(EntityType.NPC).forEach((npc) => {
-      spritePositionsAtMatrix = spritePositionsAtMatrix.concat(npc.getAllPositionsAtMatrix());
-    });
-
-    const isFreeFromSprite = spritePositionsAtMatrix.every((point) => !equalPositions(positionAtMatrix, point));
+    const isFreeFromSprite = targets.every((npc) => (
+      npc.getAllPositionsAtMatrix().every((point) => !equalPositions(positionAtMatrix, point))
+    ));
 
     if (!isFreeFromSprite) {
       return false;
@@ -316,7 +300,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [BuildingInstance.Name]);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
 
       return;
     }
@@ -343,7 +327,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.BUILD);
 
     if (this.variant) {
-      if (this.scene.game.device.os.desktop) {
+      if (this.scene.game.isDesktop()) {
         if (this.isBuildingLimitReached(this.variant)) {
           this.clearBuildingVariant();
         } else {
@@ -394,54 +378,6 @@ export class Builder extends EventEmitter implements IBuilder {
     return false;
   }
 
-  private createBuildArea() {
-    this.buildArea = this.scene.add.ellipse();
-    this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
-    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
-
-    this.updateBuildAreaPosition();
-    this.updateBuildAreaSize();
-  }
-
-  public setBuildAreaRadius(radius: number) {
-    this.radius = radius;
-
-    if (this.buildArea) {
-      this.updateBuildAreaSize();
-    }
-  }
-
-  private updateBuildAreaSize() {
-    if (!this.buildArea) {
-      return;
-    }
-
-    this.buildArea.setSize(
-      this.radius * 2,
-      this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
-    );
-    this.buildArea.updateDisplayOrigin();
-  }
-
-  private updateBuildAreaPosition() {
-    if (!this.buildArea) {
-      return;
-    }
-
-    const position = this.scene.player.getPositionOnGround();
-
-    this.buildArea.setPosition(position.x, position.y);
-  }
-
-  private destroyBuildArea() {
-    if (!this.buildArea) {
-      return;
-    }
-
-    this.buildArea.destroy();
-    this.buildArea = null;
-  }
-
   private createBuildPreview() {
     if (!this.variant) {
       return;
@@ -455,6 +391,24 @@ export class Builder extends EventEmitter implements IBuilder {
       size: 2.0,
       color: 0xffffff,
     });
+  }
+
+  private createBuildActionRadius() {
+    if (!this.variant) {
+      return;
+    }
+
+    const BuildingInstance = BUILDINGS[this.variant];
+
+    if (!BuildingInstance.Radius) {
+      return;
+    }
+
+    const d = BuildingInstance.Radius * 2;
+
+    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_TILE_SIZE.persperctive);
+    this.buildActionRadius.setFillStyle(0xffffff, 0.2);
+    this.buildActionRadius.setDepth(WORLD_DEPTH_GRAPHIC);
   }
 
   private createBuildControls() {
@@ -484,8 +438,9 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private createBuildInstance() {
     this.createBuildPreview();
+    this.createBuildActionRadius();
 
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       this.createBuildControls();
     }
 
@@ -508,6 +463,13 @@ export class Builder extends EventEmitter implements IBuilder {
       this.buildPreview.setAlpha(isAllow ? 1.0 : 0.25);
     }
 
+    if (this.buildActionRadius) {
+      const groundPositionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 0 });
+
+      this.buildActionRadius.setPosition(groundPositionAtWorld.x, groundPositionAtWorld.y);
+      this.buildActionRadius.setVisible(isAllow);
+    }
+
     if (this.buildControls) {
       const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
 
@@ -521,6 +483,11 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.buildPreview) {
       this.buildPreview.destroy();
       this.buildPreview = null;
+    }
+
+    if (this.buildActionRadius) {
+      this.buildActionRadius.destroy();
+      this.buildActionRadius = null;
     }
 
     if (this.buildControls) {
@@ -540,7 +507,7 @@ export class Builder extends EventEmitter implements IBuilder {
   private updateSupposedPosition() {
     let position: Vector2D;
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       position = {
         x: this.scene.input.activePointer.worldX,
         y: this.scene.input.activePointer.worldY,
@@ -568,7 +535,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handleKeyboard() {
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       return;
     }
 
@@ -580,7 +547,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handlePointer() {
-    if (!this.scene.game.device.os.desktop) {
+    if (!this.scene.game.isDesktop()) {
       return;
     }
 

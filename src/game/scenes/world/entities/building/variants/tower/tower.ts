@@ -66,21 +66,15 @@ export class BuildingTower extends Building implements IBuildingTower {
       info.push({
         label: 'BUILDING_DAMAGE',
         icon: BuildingIcon.DAMAGE,
-        value: this.power > 1.0
-          ? `${params.damage} → ${Math.round(params.damage * this.power)}`
-          : params.damage,
+        value: Math.round(params.damage * this.power),
       });
     }
 
     if (params.freeze) {
-      const format = (value: number) => (value / 1000).toFixed(1);
-
       info.push({
         label: 'BUILDING_FREEZE',
-        icon: BuildingIcon.DAMAGE,
-        value: this.power > 1.0
-          ? `${format(params.freeze)} → ${format(params.freeze * this.power)}`
-          : format(params.freeze),
+        icon: BuildingIcon.FREEZE,
+        value: `${((params.freeze * this.power) / 1000).toFixed(1)} s`,
       });
     }
 

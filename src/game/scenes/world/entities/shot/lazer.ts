@@ -97,7 +97,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   private hit() {
-    if (!this.active) {
+    if (!this.scene) {
       // ISSUE: [https://github.com/neki-dev/izowave/issues/67]
       // Temporarily fix
       Analytics.TrackWarn('Unregistered call of laser hit');

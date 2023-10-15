@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
@@ -7,18 +7,14 @@ import {
   InterfaceTextColor,
 } from '~type/interface';
 
-export const Wrapper = styled.div<{
-  $adaptive?: boolean
-}>`
+export const Wrapper = styled.div`
   margin-top: 15px;
   display: grid;
-  grid-gap: 5px;
+  grid-gap: 3px;
   grid-template-columns: repeat(2, 1fr);
-  ${(props) => (props.$adaptive && css`
-    @media ${INTERFACE_MOBILE_BREAKPOINT} {
-      grid-template-columns: 1fr;
-    }
-  `)};
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const Param = styled.div`
@@ -30,18 +26,18 @@ export const Param = styled.div`
 `;
 
 export const IconContainer = styled.div`
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0 5px 5px 0;
-`;
-
-export const Icon = styled.img`
-  width: 14px;
-  height: 14px;
+  border-radius: 5px;
+  flex-shrink: 0;
+  img, div[data-texture-container] {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 export const Info = styled.div<{
@@ -59,7 +55,7 @@ export const Label = styled.div`
   font-size: 9px;
   line-height: 9px;
   opacity: 0.75;
-  margin: -1px 0 2px 0;
+  margin: -1px 0 3px 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 8px;
     line-height: 8px;
@@ -69,6 +65,6 @@ export const Label = styled.div`
 
 export const Value = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 11px;
+  line-height: 11px;
 `;

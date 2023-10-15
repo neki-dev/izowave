@@ -41,8 +41,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       }, {
         label: 'MAIN_MENU',
         onClick: () => {
-          // eslint-disable-next-line no-alert
-          if (window.confirm('Do you confirm stop game?')) {
+          if (window.confirm(phrase('CONFIRM_STOP_GAME'))) {
             game.stopGame();
           }
         },
@@ -57,7 +56,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       page: MenuPage.ABOUT_GAME,
     });
 
-    if (game.device.os.desktop) {
+    if (game.isDesktop()) {
       items.push({
         label: 'CONTROLS',
         page: MenuPage.CONTROLS,

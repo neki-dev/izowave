@@ -10,8 +10,8 @@ import {
   IBuilding,
 } from '~type/world/entities/building';
 
-import { BuildingControls } from './controls';
-import { BuildingParams } from './params';
+import { Controls } from './controls';
+import { Params } from './params';
 import {
   Name, Level, Health, Wrapper, Head, Body, Container,
 } from './styles';
@@ -62,16 +62,18 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
             />
             <Health.Value>{`${health} HP`}</Health.Value>
           </Health>
-          <Level $count={levels.length}>
+          <Level>
             {levels.map((_, level) => (
               <Level.Progress key={level} $active={level < upgradeLevel} />
             ))}
           </Level>
-          <BuildingParams list={params} adaptive={true} />
+          {params.length > 0 && (
+            <Params list={params} />
+          )}
         </Body>
       </Container>
 
-      <BuildingControls list={controls} />
+      <Controls list={controls} />
     </Wrapper>
   );
 };

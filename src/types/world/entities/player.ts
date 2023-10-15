@@ -126,7 +126,6 @@ export enum PlayerAudio {
 export enum PlayerSkill {
   MAX_HEALTH = 'MAX_HEALTH',
   SPEED = 'SPEED',
-  BUILD_AREA = 'BUILD_AREA',
   BUILD_SPEED = 'BUILD_SPEED',
   ATTACK_DAMAGE = 'ATTACK_DAMAGE',
   ATTACK_DISTANCE = 'ATTACK_DISTANCE',
@@ -161,8 +160,8 @@ export enum PlayerSkillTarget {
 
 export enum PlayerSuperskill {
   FROST = 'FROST',
-  RAGE = 'RAGE',
   SHIELD = 'SHIELD',
+  RAGE = 'RAGE',
   FIRE = 'FIRE',
 }
 

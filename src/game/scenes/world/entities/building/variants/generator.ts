@@ -8,7 +8,10 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import {
-  BuildingParam, BuildingTexture, BuildingVariant, BuildingVariantData, BuildingIcon, BuildingCategory,
+  BuildingTexture,
+  BuildingVariant,
+  BuildingVariantData,
+  BuildingCategory,
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
@@ -18,15 +21,9 @@ export class BuildingGenerator extends Building {
 
   static Category = BuildingCategory.RESOURCES;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_GENERATOR_HEALTH, icon: BuildingIcon.HEALTH },
-  ];
-
   static Texture = BuildingTexture.GENERATOR;
 
   static Cost = DIFFICULTY.BUILDING_GENERATOR_COST;
-
-  static Health = DIFFICULTY.BUILDING_GENERATOR_HEALTH;
 
   static Limit = true;
 
@@ -36,7 +33,7 @@ export class BuildingGenerator extends Building {
     super(scene, {
       ...data,
       variant: BuildingVariant.GENERATOR,
-      health: BuildingGenerator.Health,
+      health: DIFFICULTY.BUILDING_GENERATOR_HEALTH,
       texture: BuildingGenerator.Texture,
       delay: {
         default: DIFFICULTY.BUILDING_GENERATOR_DELAY,

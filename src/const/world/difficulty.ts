@@ -78,7 +78,7 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 90, // Health
-  ENEMY_HEALTH_GROWTH: 0.4, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
   ENEMY_ARMOUR_GROWTH: 0.4, // Armour growth by wave number (Quadratic)
@@ -95,9 +95,6 @@ export const DIFFICULTY = {
    * Builder
    */
 
-  BUILDER_BUILD_AREA: 140, // Radius of build area
-  BUILDER_BUILD_AREA_GROWTH: 0.13, // Growth radius by upgrade (Quadratic)
-  BUILDER_BUILD_AREA_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade radius
   BUILDER_BUILD_DURATION: 2000, // Duration of build process
   BUILDER_BUILD_DURATION_GROWTH: -0.115, // Experience growth by level (Linear)
   BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade speed
@@ -111,6 +108,7 @@ export const DIFFICULTY = {
   BUILDING_UPGRADE_EXPERIENCE: 15, // Gained experience per upgrade level
   BUILDING_UPGRADE_EXPERIENCE_GROWTH: 0.75, // Experience growth by level (Linear)
   BUILDING_UPGRADE_COST_MULTIPLIER: 0.5, // Upgrade cost multiplier
+  BUILDING_REPAIR_COST_MULTIPLIER: 0.75, // Repair cost multiplier
 
   /**
    * Building: Wall

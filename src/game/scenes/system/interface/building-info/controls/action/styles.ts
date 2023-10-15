@@ -6,15 +6,23 @@ import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 export const Label = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 11px;
-  line-height: 11px;
-  text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
+  font-size: 11px;
+  line-height: 11px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 13px;
+    line-height: 13px;
+  }
 `;
 
 export const Addon = styled.div`
-  margin: 0 0 -1px 6px;
+  transform: scale(0.9);
+  margin: 0 -2px -1px 6px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    transform: scale(1.25);
+    margin: 0 2px -1px 6px;
+  }
 `;
 
 export const Main = styled.div`

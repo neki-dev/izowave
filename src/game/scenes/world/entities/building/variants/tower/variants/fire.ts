@@ -6,8 +6,6 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
   BuildingCategory,
-  BuildingIcon,
-  BuildingParam,
   BuildingTexture,
   BuildingVariant,
   BuildingVariantData,
@@ -22,18 +20,11 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Category = BuildingCategory.ATTACK;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_RADIUS', value: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'BUILDING_DAMAGE', value: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE, icon: BuildingIcon.DAMAGE },
-    { label: 'BUILDING_SPEED', value: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED, icon: BuildingIcon.SPEED },
-  ];
-
   static Texture = BuildingTexture.TOWER_FIRE;
 
   static Cost = DIFFICULTY.BUILDING_TOWER_FIRE_COST;
 
-  static Health = DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS;
 
   static MaxLevel = 5;
 
@@ -46,7 +37,7 @@ export class BuildingTowerFire extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_FIRE,
-      health: BuildingTowerFire.Health,
+      health: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH,
       texture: BuildingTowerFire.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS,
@@ -60,7 +51,7 @@ export class BuildingTowerFire extends BuildingTower {
 
     this.bindTutorialHint(
       TutorialStep.UPGRADE_BUILDING,
-      this.scene.game.device.os.desktop
+      this.scene.game.isDesktop()
         ? 'TUTORIAL_HOVER_TO_UPGRADE'
         : 'TUTORIAL_CLICK_TO_UPGRADE',
     );

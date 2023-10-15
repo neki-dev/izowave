@@ -38,15 +38,26 @@ export class Navigator implements INavigator {
   }
 
   public setPointCost(position: Vector2D, cost: number) {
+    if (this.getPointCost(position) === cost) {
+      return;
+    }
+
     if (!this.pointsCost[position.y]) {
       this.pointsCost[position.y] = [];
     }
     this.pointsCost[position.y][position.x] = cost;
 
     this.worker.postMessage({
-      event: NavigatorEvent.UPDATE_POINTS_COST,
-      payload: this.pointsCost,
+      event: NavigatorEvent.UPDATE_POINT_COST,
+      payload: {
+        position,
+        cost,
+      },
     });
+  }
+
+  public getPointCost(position: Vector2D) {
+    return this.pointsCost[position.y]?.[position.x] ?? 1.0;
   }
 
   public resetPointCost(position: Vector2D) {
@@ -57,8 +68,11 @@ export class Navigator implements INavigator {
     delete this.pointsCost[position.y][position.x];
 
     this.worker.postMessage({
-      event: NavigatorEvent.UPDATE_POINTS_COST,
-      payload: this.pointsCost,
+      event: NavigatorEvent.UPDATE_POINT_COST,
+      payload: {
+        position,
+        cost: null,
+      },
     });
   }
 

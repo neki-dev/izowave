@@ -31,6 +31,11 @@ export interface IGame extends Phaser.Game {
   readonly usedSave: Nullable<StorageSave>
 
   /**
+   * Game save state.
+   */
+  isSaved: boolean
+
+  /**
    * Game difficulty.
    */
   difficulty: GameDifficulty
@@ -89,6 +94,11 @@ export interface IGame extends Phaser.Game {
    * @param key - Flag key
    */
   isFlagEnabled(key: GameFlag): boolean
+
+  /**
+   * Check platform is desktop.
+   */
+  isDesktop(): boolean
 
   /**
    * Show game ad.

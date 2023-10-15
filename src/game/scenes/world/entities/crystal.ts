@@ -35,7 +35,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
     this.positionAtMatrix = positionAtMatrix;
 
-    if (this.scene.game.device.os.desktop) {
+    if (this.scene.game.isDesktop()) {
       this.setInteractive({
         pixelPerfect: true,
       });

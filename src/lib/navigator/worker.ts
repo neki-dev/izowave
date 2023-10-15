@@ -23,8 +23,8 @@ self.onmessage = ({ data }) => {
       navigatorProcess.cancelTask(data.payload.id);
       break;
 
-    case NavigatorEvent.UPDATE_POINTS_COST:
-      navigatorProcess.updatePointsCost(data.payload);
+    case NavigatorEvent.UPDATE_POINT_COST:
+      navigatorProcess.setPointCost(data.payload.position, data.payload.cost);
       break;
   }
 };

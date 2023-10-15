@@ -9,7 +9,7 @@ import {
 
 export const Wrapper = styled.div`
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    width: 280px;
+    width: 250px;
     position: absolute;
     transform: translate(-50%, -100%);
     margin-top: -32px;
@@ -63,21 +63,19 @@ export const Body = styled.div`
 export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   color: ${InterfaceTextColor.SUCCESS};
-  font-size: 16px;
-  line-height: 16px;
+  font-size: 14px;
+  line-height: 14px;
 `;
 
-export const Level: any = styled.div<{
-  $count: number
-}>`
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.$count}, 1fr);
-  grid-gap: 5px;
+export const Level: any = styled.div`
+  display: flex;
+  gap: 5px;
 `;
 
 Level.Progress = styled.div<{
   $active?: boolean
 }>`
+  flex: 1;
   height: 12px;
   transition: all 0.2s ease-out;
   background: ${InterfaceBackgroundColor.BLACK};

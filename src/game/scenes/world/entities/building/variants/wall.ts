@@ -4,9 +4,7 @@ import { IWorld } from '~type/world';
 import {
   BuildingVariant,
   BuildingTexture,
-  BuildingParam,
   BuildingVariantData,
-  BuildingIcon,
   BuildingCategory,
 } from '~type/world/entities/building';
 
@@ -19,15 +17,9 @@ export class BuildingWall extends Building {
 
   static Category = BuildingCategory.DEFENSE;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_WALL_HEALTH, icon: BuildingIcon.HEALTH },
-  ];
-
   static Texture = BuildingTexture.WALL;
 
   static Cost = DIFFICULTY.BUILDING_WALL_COST;
-
-  static Health = DIFFICULTY.BUILDING_WALL_HEALTH;
 
   static AllowByWave = DIFFICULTY.BUILDING_WALL_ALLOW_BY_WAVE;
 
@@ -37,7 +29,7 @@ export class BuildingWall extends Building {
     super(scene, {
       ...data,
       variant: BuildingVariant.WALL,
-      health: BuildingWall.Health,
+      health: DIFFICULTY.BUILDING_WALL_HEALTH,
       texture: BuildingWall.Texture,
     });
   }

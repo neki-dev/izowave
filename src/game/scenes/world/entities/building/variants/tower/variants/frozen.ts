@@ -4,8 +4,6 @@ import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
   BuildingCategory,
-  BuildingIcon,
-  BuildingParam,
   BuildingTexture,
   BuildingVariant,
   BuildingVariantData,
@@ -20,19 +18,11 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Category = BuildingCategory.DEFENSE;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_RADIUS', value: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS, icon: BuildingIcon.RADIUS },
-    // eslint-disable-next-line max-len
-    { label: 'BUILDING_FREEZE', value: `${(DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION / 1000).toFixed(1)} s`, icon: BuildingIcon.DAMAGE },
-    { label: 'BUILDING_SPEED', value: DIFFICULTY.BUILDING_TOWER_FROZEN_SHOT_SPEED, icon: BuildingIcon.SPEED },
-  ];
-
   static Texture = BuildingTexture.TOWER_FROZEN;
 
   static Cost = DIFFICULTY.BUILDING_TOWER_FROZEN_COST;
 
-  static Health = DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE;
 
@@ -47,7 +37,7 @@ export class BuildingTowerFrozen extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_FROZEN,
-      health: BuildingTowerFrozen.Health,
+      health: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH,
       texture: BuildingTowerFrozen.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS,

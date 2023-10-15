@@ -31,16 +31,11 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   static Category = BuildingCategory.RESOURCES;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_AMMUNITION_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_AMMO', value: DIFFICULTY.BUILDING_AMMUNITION_AMMO, icon: BuildingIcon.AMMO },
-  ];
-
   static Texture = BuildingTexture.AMMUNITION;
 
   static Cost = DIFFICULTY.BUILDING_AMMUNITION_COST;
 
-  static Health = DIFFICULTY.BUILDING_AMMUNITION_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_AMMUNITION_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
 
@@ -58,7 +53,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     super(scene, {
       ...data,
       variant: BuildingVariant.AMMUNITION,
-      health: BuildingAmmunition.Health,
+      health: DIFFICULTY.BUILDING_AMMUNITION_HEALTH,
       texture: BuildingAmmunition.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_AMMUNITION_RADIUS,
@@ -78,7 +73,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.bindTutorialHint(
       TutorialStep.BUY_AMMO,
-      this.scene.game.device.os.desktop
+      this.scene.game.isDesktop()
         ? 'TUTORIAL_HOVER_TO_BUY_AMMO'
         : 'TUTORIAL_CLICK_TO_BUY_AMMO',
       () => this.ammo === 0,

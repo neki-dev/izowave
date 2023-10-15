@@ -39,7 +39,7 @@ export const Container = styled.div`
     border-radius: 10px;
     padding: 20px;
     margin-top: 14px;
-    width: 360px;
+    width: 340px;
     &::after {
       position: absolute;
       content: '';

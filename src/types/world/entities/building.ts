@@ -178,10 +178,9 @@ export interface IBuildingFactory {
   Name: LangPhrase
   Description: LangPhrase
   Category: BuildingCategory
-  Params: BuildingParam[]
   Texture: BuildingTexture
   Cost: number
-  Health: number
+  Radius?: number
   Limit?: boolean
   AllowByWave?: number
   MaxLevel: number
@@ -223,15 +222,12 @@ export enum BuildingIcon {
   DECLINE = 'building/icons/decline',
   ALERT = 'building/icons/alert',
   UPGRADE = 'building/icons/upgrade',
-  HEALTH = 'building/icons/params/health',
-  RADIUS = 'building/icons/params/radius',
   AMMO = 'building/icons/params/ammo',
-  HEAL = 'building/icons/params/heal',
   DAMAGE = 'building/icons/params/damage',
-  RESOURCES = 'building/icons/params/resources',
   SPEED = 'building/icons/params/speed',
   DELAY = 'building/icons/params/delay',
   POWER = 'building/icons/params/power',
+  FREEZE = 'building/icons/params/freeze',
 }
 
 export enum BuildingAudio {

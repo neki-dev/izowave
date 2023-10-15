@@ -4,8 +4,6 @@ import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
   BuildingCategory,
-  BuildingIcon,
-  BuildingParam,
   BuildingTexture,
   BuildingVariant,
   BuildingVariantData,
@@ -20,17 +18,11 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static Category = BuildingCategory.ATTACK;
 
-  static Params: BuildingParam[] = [
-    { label: 'BUILDING_HEALTH', value: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH, icon: BuildingIcon.HEALTH },
-    { label: 'BUILDING_RADIUS', value: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS, icon: BuildingIcon.RADIUS },
-    { label: 'BUILDING_DAMAGE', value: DIFFICULTY.BUILDING_TOWER_LAZER_DAMAGE, icon: BuildingIcon.DAMAGE },
-  ];
-
   static Texture = BuildingTexture.TOWER_LAZER;
 
   static Cost = DIFFICULTY.BUILDING_TOWER_LAZER_COST;
 
-  static Health = DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_TOWER_LAZER_ALLOW_BY_WAVE;
 
@@ -44,7 +36,7 @@ export class BuildingTowerLazer extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_LAZER,
-      health: BuildingTowerLazer.Health,
+      health: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH,
       texture: BuildingTowerLazer.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS,
