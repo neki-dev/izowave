@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
@@ -7,18 +7,14 @@ import {
   InterfaceTextColor,
 } from '~type/interface';
 
-export const Wrapper = styled.div<{
-  $adaptive?: boolean
-}>`
+export const Wrapper = styled.div`
   margin-top: 15px;
   display: grid;
   grid-gap: 3px;
   grid-template-columns: repeat(2, 1fr);
-  ${(props) => (props.$adaptive && css`
-    @media ${INTERFACE_MOBILE_BREAKPOINT} {
-      grid-template-columns: 1fr;
-    }
-  `)};
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const Param = styled.div`
@@ -37,11 +33,10 @@ export const IconContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-`;
-
-export const Icon = styled.img`
-  width: 15px;
-  height: 15px;
+  img, div[data-texture-container] {
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 export const Info = styled.div<{

@@ -161,8 +161,8 @@ export enum PlayerSkillTarget {
 
 export enum PlayerSuperskill {
   FROST = 'FROST',
-  RAGE = 'RAGE',
   SHIELD = 'SHIELD',
+  RAGE = 'RAGE',
   FIRE = 'FIRE',
 }
 

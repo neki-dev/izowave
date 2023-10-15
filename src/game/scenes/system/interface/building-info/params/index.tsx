@@ -1,10 +1,10 @@
+import { Texture } from 'phaser-react-ui';
 import React from 'react';
 
 import { phrase } from '~lib/lang';
 import { BuildingParam } from '~type/world/entities/building';
 
 import {
-  Icon,
   Info,
   IconContainer,
   Label,
@@ -15,15 +15,14 @@ import {
 
 type Props = {
   list: BuildingParam[]
-  adaptive?: boolean
 };
 
-export const BuildingParams: React.FC<Props> = ({ list, adaptive }) => (
-  <Wrapper $adaptive={adaptive}>
+export const Params: React.FC<Props> = ({ list }) => (
+  <Wrapper>
     {list.map((param) => (
       <Param key={param.label}>
         <IconContainer>
-          <Icon src={`assets/sprites/${param.icon}.png`} />
+          <Texture name={param.icon} />
         </IconContainer>
         <Info $attention={param.attention}>
           <Label>{phrase(param.label)}</Label>

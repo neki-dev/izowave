@@ -53,13 +53,13 @@ export const PLAYER_SUPERSKILLS: Record<PlayerSuperskill, PlayerSuperskillData> 
     cost: DIFFICULTY.SUPERSKILL_FROST_COST,
     duration: DIFFICULTY.SUPERSKILL_FROST_DURATION,
   },
-  [PlayerSuperskill.RAGE]: {
-    cost: DIFFICULTY.SUPERSKILL_RAGE_COST,
-    duration: DIFFICULTY.SUPERSKILL_RAGE_DURATION,
-  },
   [PlayerSuperskill.SHIELD]: {
     cost: DIFFICULTY.SUPERSKILL_SHIELD_COST,
     duration: DIFFICULTY.SUPERSKILL_SHIELD_DURATION,
+  },
+  [PlayerSuperskill.RAGE]: {
+    cost: DIFFICULTY.SUPERSKILL_RAGE_COST,
+    duration: DIFFICULTY.SUPERSKILL_RAGE_DURATION,
   },
   [PlayerSuperskill.FIRE]: {
     cost: DIFFICULTY.SUPERSKILL_FIRE_COST,
