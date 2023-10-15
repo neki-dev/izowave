@@ -78,7 +78,7 @@ export const DIFFICULTY = {
    */
 
   ENEMY_HEALTH: 90, // Health
-  ENEMY_HEALTH_GROWTH: 0.4, // Health growth by wave number (Quadratic)
+  ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
   ENEMY_ARMOUR_GROWTH: 0.4, // Armour growth by wave number (Quadratic)
