@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
@@ -67,6 +66,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.positionCallback = positionCallback;
 
     initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.effect?.destroy();
       this.destroy();
     });
   }
@@ -134,14 +134,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   private hit(target: IEnemy) {
-    if (!this.scene) {
-      // ISSUE: [https://github.com/neki-dev/izowave/issues/69]
-      // Temporarily fix
-      Analytics.TrackWarn('Unregistered call of ball hit');
-
-      return;
-    }
-
     const { damage, freeze } = this.params;
 
     if (freeze && target.live.armour <= 0) {
@@ -152,6 +144,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
     if (damage) {
       target.live.damage(damage);
+
+      if (!this.active) {
+        return;
+      }
 
       const position = target.getPositionOnGround();
 
