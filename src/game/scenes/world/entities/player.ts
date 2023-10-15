@@ -70,7 +70,6 @@ export class Player extends Sprite implements IPlayer {
   private _upgradeLevel: Record<PlayerSkill, number> = {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
-    [PlayerSkill.BUILD_AREA]: 1,
     [PlayerSkill.BUILD_SPEED]: 1,
     [PlayerSkill.ATTACK_DAMAGE]: 1,
     [PlayerSkill.ATTACK_DISTANCE]: 1,
@@ -285,13 +284,6 @@ export class Player extends Sprite implements IPlayer {
           level: nextLevel,
         });
       }
-      case PlayerSkill.BUILD_AREA: {
-        return progressionQuadratic({
-          defaultValue: DIFFICULTY.BUILDER_BUILD_AREA,
-          scale: DIFFICULTY.BUILDER_BUILD_AREA_GROWTH,
-          level: nextLevel,
-        });
-      }
       default: {
         return nextLevel;
       }
@@ -336,10 +328,6 @@ export class Player extends Sprite implements IPlayer {
         if (this.scene.assistant) {
           this.scene.assistant.speed = nextValue;
         }
-        break;
-      }
-      case PlayerSkill.BUILD_AREA: {
-        this.scene.builder.setBuildAreaRadius(nextValue);
         break;
       }
     }

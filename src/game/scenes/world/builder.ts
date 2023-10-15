@@ -34,8 +34,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
   public selectedBuilding: Nullable<IBuilding> = null;
 
-  private buildArea: Nullable<Phaser.GameObjects.Ellipse> = null;
-
   private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
 
   private buildActionRadius: Nullable<Phaser.GameObjects.Ellipse> = null;
@@ -51,12 +49,6 @@ export class Builder extends EventEmitter implements IBuilder {
   public get variant() { return this._variant; }
 
   private set variant(v) { this._variant = v; }
-
-  private _radius: number = DIFFICULTY.BUILDER_BUILD_AREA;
-
-  public get radius() { return this._radius; }
-
-  private set radius(v) { this._radius = v; }
 
   constructor(scene: IWorld) {
     super();
@@ -79,7 +71,6 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.isCanBuild()) {
       if (this.isBuild) {
         this.updateSupposedPosition();
-        this.updateBuildAreaPosition();
         this.updateBuildInstance();
       } else {
         this.open();
@@ -221,7 +212,6 @@ export class Builder extends EventEmitter implements IBuilder {
       })[0] ?? this.scene.player.positionAtMatrix;
     }
 
-    this.createBuildArea();
     this.createBuildInstance();
 
     this.emit(BuilderEvents.BUILD_START);
@@ -233,7 +223,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.destroyBuildInstance();
-    this.destroyBuildArea();
 
     this.isBuild = false;
     this.supposedPosition = null;
@@ -266,22 +255,11 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private isAllowBuild() {
-    if (!this.buildArea || !this.supposedPosition) {
+    if (!this.supposedPosition) {
       return false;
     }
 
     const positionAtMatrix = this.supposedPosition;
-    const positionAtWorld = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
-    const offset = this.buildArea.getTopLeft() as Vector2D;
-    const inArea = this.buildArea.geom.contains(
-      positionAtWorld.x - offset.x,
-      positionAtWorld.y - offset.y,
-    );
-
-    if (!inArea) {
-      return false;
-    }
-
     const biome = this.scene.level.map.getAt(positionAtMatrix);
 
     if (!biome?.solid) {
@@ -398,54 +376,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     return false;
-  }
-
-  private createBuildArea() {
-    this.buildArea = this.scene.add.ellipse();
-    this.buildArea.setStrokeStyle(1, 0xffffff, 0.4);
-    this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
-
-    this.updateBuildAreaPosition();
-    this.updateBuildAreaSize();
-  }
-
-  public setBuildAreaRadius(radius: number) {
-    this.radius = radius;
-
-    if (this.buildArea) {
-      this.updateBuildAreaSize();
-    }
-  }
-
-  private updateBuildAreaSize() {
-    if (!this.buildArea) {
-      return;
-    }
-
-    this.buildArea.setSize(
-      this.radius * 2,
-      this.radius * 2 * LEVEL_TILE_SIZE.persperctive,
-    );
-    this.buildArea.updateDisplayOrigin();
-  }
-
-  private updateBuildAreaPosition() {
-    if (!this.buildArea) {
-      return;
-    }
-
-    const position = this.scene.player.getPositionOnGround();
-
-    this.buildArea.setPosition(position.x, position.y);
-  }
-
-  private destroyBuildArea() {
-    if (!this.buildArea) {
-      return;
-    }
-
-    this.buildArea.destroy();
-    this.buildArea = null;
   }
 
   private createBuildPreview() {

@@ -18,11 +18,6 @@ export interface IBuilder extends EventEmitter {
   readonly variant: Nullable<BuildingVariant>
 
   /**
-   * Radius of build area.
-   */
-  readonly radius: number
-
-  /**
    * Current active building.
    */
   selectedBuilding: Nullable<IBuilding>
@@ -57,12 +52,6 @@ export interface IBuilder extends EventEmitter {
    * Unset building variant.
    */
   unsetBuildingVariant(): void
-
-  /**
-   * Update radius of build area.
-   * @param radius - Radius
-   */
-  setBuildAreaRadius(radius: number): void
 
   /**
    * Add rubble foundation on position.
