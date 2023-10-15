@@ -10,6 +10,12 @@ export interface INavigator {
   setPointCost(position: Vector2D, cost: number): void
 
   /**
+   * Get point cost.
+   * @param position - Position at matrix
+   */
+  getPointCost(position: Vector2D): number
+
+  /**
    * Reset point cost.
    * @param position - Position at matrix
    */
@@ -36,7 +42,7 @@ export enum NavigatorEvent {
   CREATE_TASK = 'create_task',
   COMPLETE_TASK = 'complete_task',
   CANCEL_TASK = 'cancel_task',
-  UPDATE_POINTS_COST = 'update_points_cost',
+  UPDATE_POINT_COST = 'update_point_cost',
 }
 
 export type NavigatorTaskData = {

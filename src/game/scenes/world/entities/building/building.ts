@@ -3,14 +3,13 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_PATH_COST } from '~const/world/entities/building';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Indicator } from '~entity/indicator';
 import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
-import { Live } from '~lib/live';
 import { Tutorial } from '~lib/tutorial';
 import { Effect } from '~scene/world/effects';
+import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
 import { LangPhrase } from '~type/lang';
@@ -119,6 +118,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       value: () => this.live.health / this.live.maxHealth,
     });
 
+    this.updateTileCost();
+
     this.handlePointer();
 
     this.scene.builder.addFoundation(positionAtMatrix);
@@ -130,8 +131,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         this.completeBuildProcess();
       }, 0);
     }
-
-    this.scene.level.navigator.setPointCost(positionAtMatrix, BUILDING_PATH_COST);
 
     this.bindHotKey(CONTROL_KEY.BUILDING_REPEAR, () => this.repair());
     this.bindHotKey(CONTROL_KEY.BUILDING_UPGRADE, () => this.upgrade());
@@ -193,6 +192,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     return this.nextActionTimestamp < this.scene.getTime();
+  }
+
+  private updateTileCost() {
+    const cost = 2.0 + (this.live.health / 1000);
+
+    this.scene.level.navigator.setPointCost(this.positionAtMatrix, cost);
   }
 
   public getInfo() {
@@ -350,6 +355,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.live.heal();
 
+    this.updateTileCost();
+
     this.scene.player.takeResources(cost);
 
     this.scene.sound.play(BuildingAudio.REPAIR);
@@ -362,6 +369,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.live.setMaxHealth(maxHealth);
     this.live.addHealth(addedHealth);
+
+    this.updateTileCost();
   }
 
   private getMaxHealth() {
@@ -441,6 +450,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private onDamage() {
+    this.updateTileCost();
+
     const audio = Phaser.Utils.Array.GetRandom([
       BuildingAudio.DAMAGE_1,
       BuildingAudio.DAMAGE_2,
@@ -849,5 +860,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.live.setHealth(data.health);
+
+    this.updateTileCost();
   }
 }

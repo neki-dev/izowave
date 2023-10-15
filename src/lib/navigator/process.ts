@@ -1,5 +1,6 @@
 /* eslint-disable no-continue */
 import { equalPositions } from '~lib/utils';
+import { Vector2D } from '~type/world/level';
 
 import { NavigatorTask } from './task';
 import { getDirections } from './tools';
@@ -21,8 +22,19 @@ export class NavigatorProcess {
     }
   }
 
-  public updatePointsCost(matrix: number[][]) {
-    this.pointsCost = matrix;
+  public setPointCost(position: Vector2D, cost: Nullable<number>) {
+    if (cost === null) {
+      if (!this.pointsCost[position.y]) {
+        return;
+      }
+
+      delete this.pointsCost[position.y][position.x];
+    } else {
+      if (!this.pointsCost[position.y]) {
+        this.pointsCost[position.y] = [];
+      }
+      this.pointsCost[position.y][position.x] = cost;
+    }
   }
 
   public processing() {

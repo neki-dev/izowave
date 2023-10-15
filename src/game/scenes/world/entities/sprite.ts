@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '~const/world';
-import { Live } from '~lib/live';
 import { equalPositions } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Indicator } from '~scene/world/entities/indicator';
+import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
 import { ILive, LiveEvents } from '~type/live';
