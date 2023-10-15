@@ -227,6 +227,7 @@ export enum BuildingIcon {
   SPEED = 'building/icons/params/speed',
   DELAY = 'building/icons/params/delay',
   POWER = 'building/icons/params/power',
+  FREEZE = 'building/icons/params/freeze',
 }
 
 export enum BuildingAudio {

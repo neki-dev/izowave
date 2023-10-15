@@ -203,7 +203,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       info.push({
         label: 'BUILDING_DELAY',
         icon: BuildingIcon.DELAY,
-        value: `${delay / 1000} s`,
+        value: `${(delay / 1000).toFixed(1)} s`,
       });
     }
 
