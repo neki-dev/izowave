@@ -38,6 +38,8 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
 
+  private buildActionRadius: Nullable<Phaser.GameObjects.Ellipse> = null;
+
   private buildControls: Nullable<Phaser.GameObjects.Container> = null;
 
   private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
@@ -115,13 +117,15 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    this.scene.sound.play(BuildingAudio.SELECT);
-
-    this.variant = variant;
-
-    if (this.buildPreview) {
-      this.buildPreview.setTexture(BuildingInstance.Texture);
+    if (this.isBuild) {
+      this.destroyBuildInstance();
+      this.variant = variant;
+      this.createBuildInstance();
+    } else {
+      this.variant = variant;
     }
+
+    this.scene.sound.play(BuildingAudio.SELECT);
   }
 
   public unsetBuildingVariant() {
@@ -398,7 +402,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private createBuildArea() {
     this.buildArea = this.scene.add.ellipse();
-    this.buildArea.setStrokeStyle(2, 0xffffff, 0.4);
+    this.buildArea.setStrokeStyle(1, 0xffffff, 0.4);
     this.buildArea.setDepth(WORLD_DEPTH_GRAPHIC);
 
     this.updateBuildAreaPosition();
@@ -459,6 +463,24 @@ export class Builder extends EventEmitter implements IBuilder {
     });
   }
 
+  private createBuildActionRadius() {
+    if (!this.variant) {
+      return;
+    }
+
+    const BuildingInstance = BUILDINGS[this.variant];
+
+    if (!BuildingInstance.Radius) {
+      return;
+    }
+
+    const d = BuildingInstance.Radius * 2;
+
+    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_TILE_SIZE.persperctive);
+    this.buildActionRadius.setFillStyle(0xffffff, 0.2);
+    this.buildActionRadius.setDepth(WORLD_DEPTH_GRAPHIC);
+  }
+
   private createBuildControls() {
     this.buildControls = this.scene.add.container(0, 0);
 
@@ -486,6 +508,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private createBuildInstance() {
     this.createBuildPreview();
+    this.createBuildActionRadius();
 
     if (!this.scene.game.isDesktop()) {
       this.createBuildControls();
@@ -510,6 +533,13 @@ export class Builder extends EventEmitter implements IBuilder {
       this.buildPreview.setAlpha(isAllow ? 1.0 : 0.25);
     }
 
+    if (this.buildActionRadius) {
+      const groundPositionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 0 });
+
+      this.buildActionRadius.setPosition(groundPositionAtWorld.x, groundPositionAtWorld.y);
+      this.buildActionRadius.setVisible(isAllow);
+    }
+
     if (this.buildControls) {
       const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
 
@@ -523,6 +553,11 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.buildPreview) {
       this.buildPreview.destroy();
       this.buildPreview = null;
+    }
+
+    if (this.buildActionRadius) {
+      this.buildActionRadius.destroy();
+      this.buildActionRadius = null;
     }
 
     if (this.buildControls) {

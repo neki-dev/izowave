@@ -22,7 +22,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static Cost = DIFFICULTY.BUILDING_TOWER_FROZEN_COST;
 
-  static Health = DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE;
 
@@ -37,7 +37,7 @@ export class BuildingTowerFrozen extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_FROZEN,
-      health: BuildingTowerFrozen.Health,
+      health: DIFFICULTY.BUILDING_TOWER_FROZEN_HEALTH,
       texture: BuildingTowerFrozen.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_TOWER_FROZEN_RADIUS,

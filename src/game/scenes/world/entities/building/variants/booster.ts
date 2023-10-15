@@ -26,7 +26,7 @@ export class BuildingBooster extends Building implements IBuildingBooster {
 
   static Cost = DIFFICULTY.BUILDING_BOOSTER_COST;
 
-  static Health = DIFFICULTY.BUILDING_BOOSTER_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_BOOSTER_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_BOOSTER_ALLOW_BY_WAVE;
 
@@ -42,7 +42,7 @@ export class BuildingBooster extends Building implements IBuildingBooster {
     super(scene, {
       ...data,
       variant: BuildingVariant.BOOSTER,
-      health: BuildingBooster.Health,
+      health: DIFFICULTY.BUILDING_BOOSTER_HEALTH,
       texture: BuildingBooster.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_BOOSTER_RADIUS,

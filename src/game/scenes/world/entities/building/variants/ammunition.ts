@@ -35,7 +35,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   static Cost = DIFFICULTY.BUILDING_AMMUNITION_COST;
 
-  static Health = DIFFICULTY.BUILDING_AMMUNITION_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_AMMUNITION_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_AMMUNITION_ALLOW_BY_WAVE;
 
@@ -53,7 +53,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     super(scene, {
       ...data,
       variant: BuildingVariant.AMMUNITION,
-      health: BuildingAmmunition.Health,
+      health: DIFFICULTY.BUILDING_AMMUNITION_HEALTH,
       texture: BuildingAmmunition.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_AMMUNITION_RADIUS,

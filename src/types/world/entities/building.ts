@@ -180,7 +180,7 @@ export interface IBuildingFactory {
   Category: BuildingCategory
   Texture: BuildingTexture
   Cost: number
-  Health: number
+  Radius?: number
   Limit?: boolean
   AllowByWave?: number
   MaxLevel: number

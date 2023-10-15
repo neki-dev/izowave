@@ -22,7 +22,7 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static Cost = DIFFICULTY.BUILDING_TOWER_LAZER_COST;
 
-  static Health = DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_TOWER_LAZER_ALLOW_BY_WAVE;
 
@@ -36,7 +36,7 @@ export class BuildingTowerLazer extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_LAZER,
-      health: BuildingTowerLazer.Health,
+      health: DIFFICULTY.BUILDING_TOWER_LAZER_HEALTH,
       texture: BuildingTowerLazer.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_TOWER_LAZER_RADIUS,

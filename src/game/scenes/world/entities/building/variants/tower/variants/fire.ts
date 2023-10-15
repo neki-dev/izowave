@@ -24,7 +24,7 @@ export class BuildingTowerFire extends BuildingTower {
 
   static Cost = DIFFICULTY.BUILDING_TOWER_FIRE_COST;
 
-  static Health = DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS;
 
   static MaxLevel = 5;
 
@@ -37,7 +37,7 @@ export class BuildingTowerFire extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_FIRE,
-      health: BuildingTowerFire.Health,
+      health: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH,
       texture: BuildingTowerFire.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS,

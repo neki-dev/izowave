@@ -25,8 +25,6 @@ export class BuildingGenerator extends Building {
 
   static Cost = DIFFICULTY.BUILDING_GENERATOR_COST;
 
-  static Health = DIFFICULTY.BUILDING_GENERATOR_HEALTH;
-
   static Limit = true;
 
   static MaxLevel = 4;
@@ -35,7 +33,7 @@ export class BuildingGenerator extends Building {
     super(scene, {
       ...data,
       variant: BuildingVariant.GENERATOR,
-      health: BuildingGenerator.Health,
+      health: DIFFICULTY.BUILDING_GENERATOR_HEALTH,
       texture: BuildingGenerator.Texture,
       delay: {
         default: DIFFICULTY.BUILDING_GENERATOR_DELAY,

@@ -23,7 +23,7 @@ export class BuildingRadar extends Building {
 
   static Cost = DIFFICULTY.BUILDING_RADAR_COST;
 
-  static Health = DIFFICULTY.BUILDING_RADAR_HEALTH;
+  static Radius = DIFFICULTY.BUILDING_RADAR_RADIUS;
 
   static AllowByWave = DIFFICULTY.BUILDING_RADAR_ALLOW_BY_WAVE;
 
@@ -33,7 +33,7 @@ export class BuildingRadar extends Building {
     super(scene, {
       ...data,
       variant: BuildingVariant.RADAR,
-      health: BuildingRadar.Health,
+      health: DIFFICULTY.BUILDING_RADAR_HEALTH,
       texture: BuildingRadar.Texture,
       radius: {
         default: DIFFICULTY.BUILDING_RADAR_RADIUS,

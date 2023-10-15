@@ -656,7 +656,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
-    this.actionsArea.setFillStyle(0xffffff, 0.35);
+    this.actionsArea.setFillStyle(0xffffff, 0.3);
     this.actionsArea.setVisible(false);
 
     this.updateActionArea();
