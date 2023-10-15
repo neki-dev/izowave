@@ -42,7 +42,7 @@ export const RU = {
   BUILDING_BUY_AMMO: 'Купить патроны',
   BUILDING_REPAIR: 'Починить',
   BUILDING_WILL_BE_AVAILABLE: 'Будет доступно на %1 волне',
-  BUILDING_LIMIT_REACHED: 'Максимальное количество %1',
+  BUILDING_LIMIT_REACHED: 'Достигнут лимит %1ов',
 
   /**
    * Checks amounts

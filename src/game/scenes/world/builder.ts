@@ -7,6 +7,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { progressionLinear } from '~lib/difficulty';
+import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { getStage, equalPositions } from '~lib/utils';
 import { Level } from '~scene/world/level';
@@ -103,7 +104,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [BuildingInstance.Name]);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
 
       return;
     }
@@ -317,7 +318,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [BuildingInstance.Name]);
+      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
 
       return;
     }

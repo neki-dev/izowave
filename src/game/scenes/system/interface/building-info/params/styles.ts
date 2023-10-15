@@ -33,6 +33,7 @@ export const IconContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 5px;
+  flex-shrink: 0;
   img, div[data-texture-container] {
     width: 15px;
     height: 15px;

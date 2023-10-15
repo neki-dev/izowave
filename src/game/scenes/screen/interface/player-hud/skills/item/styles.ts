@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -30,7 +30,6 @@ export const Label = styled.div`
   font-size: 13px;
   line-height: 13px;
   margin-right: 10px;
-  white-space: nowrap;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 11px;
     line-height: 11px;
@@ -76,9 +75,6 @@ export const Action = styled.div<{
       background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
     }
   `}
-  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    height: 54px;
-  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 10px 0;
     width: 90px;
