@@ -10,8 +10,8 @@ import { BuildingVariant, IBuildingFactory } from '~type/world/entities/building
 
 export const BUILDINGS: Record<BuildingVariant, IBuildingFactory> = {
   [BuildingVariant.WALL]: BuildingWall,
-  [BuildingVariant.TOWER_FIRE]: BuildingTowerFire,
   [BuildingVariant.TOWER_FROZEN]: BuildingTowerFrozen,
+  [BuildingVariant.TOWER_FIRE]: BuildingTowerFire,
   [BuildingVariant.TOWER_LAZER]: BuildingTowerLazer,
   [BuildingVariant.GENERATOR]: BuildingGenerator,
   [BuildingVariant.AMMUNITION]: BuildingAmmunition,
