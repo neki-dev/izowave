@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
@@ -97,14 +96,6 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
   }
 
   private hit() {
-    if (!this.scene) {
-      // ISSUE: [https://github.com/neki-dev/izowave/issues/67]
-      // Temporarily fix
-      Analytics.TrackWarn('Unregistered call of laser hit');
-
-      return;
-    }
-
     if (!this.target || !this.params.damage) {
       return;
     }
@@ -113,7 +104,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
     this.target.live.damage(momentDamage);
 
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+    if (this.active && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Particles(this.target, {
         key: 'glow',
         texture: ParticlesTexture.GLOW,
