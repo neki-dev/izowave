@@ -111,6 +111,7 @@ export const DIFFICULTY = {
   BUILDING_UPGRADE_EXPERIENCE: 15, // Gained experience per upgrade level
   BUILDING_UPGRADE_EXPERIENCE_GROWTH: 0.75, // Experience growth by level (Linear)
   BUILDING_UPGRADE_COST_MULTIPLIER: 0.5, // Upgrade cost multiplier
+  BUILDING_REPAIR_COST_MULTIPLIER: 0.75, // Repair cost multiplier
 
   /**
    * Building: Wall

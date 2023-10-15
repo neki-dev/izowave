@@ -264,10 +264,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public getUpgradeCost(level?: number) {
-    const costPerLevel = this.getMeta().Cost * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER;
+    const costPerLevel = this.getMeta().Cost;
     const nextLevel = level ?? this.upgradeLevel;
 
-    return Math.round(costPerLevel * nextLevel);
+    return Math.round(costPerLevel * nextLevel * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER);
   }
 
   private getRepairCost() {
@@ -278,7 +278,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       cost += this.getUpgradeCost(i);
     }
 
-    return Math.ceil(cost * damaged);
+    return Math.ceil(cost * damaged * DIFFICULTY.BUILDING_REPAIR_COST_MULTIPLIER);
   }
 
   private isUpgradeAllowed() {
