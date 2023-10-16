@@ -111,6 +111,8 @@ export class Player extends Sprite implements IPlayer {
       this.handleMovementByKeyboard();
     }
 
+    this.handleToggleEffects();
+
     this.registerAnimations();
 
     this.addDustEffect();
@@ -139,14 +141,6 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
-
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (enabled: boolean) => {
-      if (enabled) {
-        this.addDustEffect();
-      } else {
-        this.removeDustEffect();
-      }
-    });
   }
 
   public update() {
@@ -550,6 +544,22 @@ export class Player extends Sprite implements IPlayer {
         frameRate: 8,
         repeat: -1,
       });
+    });
+  }
+
+  private handleToggleEffects() {
+    const handler = (enabled: boolean) => {
+      if (enabled) {
+        this.addDustEffect();
+      } else {
+        this.removeDustEffect();
+      }
+    };
+
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.game.events.off(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
     });
   }
 
