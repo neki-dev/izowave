@@ -585,22 +585,27 @@ export class Player extends Sprite implements IPlayer {
 
     const now = Date.now();
     const path = [...this.currentPathToCrystal];
+    const halfVisibleLength = 4;
 
     if (this.pathToCrystalEffectTimestamp <= now) {
       this.pathToCrystalEffectIndex++;
       this.pathToCrystalEffectTimestamp = now + (1000 / path.length);
     }
     if (this.pathToCrystalEffectIndex >= path.length) {
-      this.pathToCrystalEffectIndex = 1;
+      this.pathToCrystalEffectIndex = 0;
     }
 
-    for (let i = 2; i < path.length - 1; i++) {
-      const prev = (i > 1) ? Level.ToWorldPosition({ ...path[i - 1], z: 0 }) : path[i - 1];
-      const next = Level.ToWorldPosition({ ...path[i], z: 0 });
-      const alpha = 1.0 - (Math.abs((i - this.pathToCrystalEffectIndex)) / (path.length - 1));
+    for (let i = -halfVisibleLength; i <= halfVisibleLength; i++) {
+      const ri = this.pathToCrystalEffectIndex + i;
 
-      this.pathToCrystal.lineStyle(1, 0xffffff, alpha);
-      this.pathToCrystal.lineBetween(prev.x, prev.y, next.x, next.y);
+      if (ri > 1 && ri < path.length) {
+        const prev = Level.ToWorldPosition({ ...path[ri - 1], z: 0 });
+        const next = Level.ToWorldPosition({ ...path[ri], z: 0 });
+        const alpha = 1.0 - Math.min(Math.abs(i / halfVisibleLength), 0.9);
+
+        this.pathToCrystal.lineStyle(2, 0xffffff, alpha);
+        this.pathToCrystal.lineBetween(prev.x, prev.y, next.x, next.y);
+      }
     }
   }
 
