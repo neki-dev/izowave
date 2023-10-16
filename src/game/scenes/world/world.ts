@@ -13,6 +13,7 @@ import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
 import { aroundPosition, sortByMatrixDistance } from '~lib/dimension';
+import { progressionLinear } from '~lib/progression';
 import { hashString } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
@@ -392,15 +393,20 @@ export class World extends Scene implements IWorld {
       });
     };
 
-    const maxCount = Math.ceil(
-      Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
-    );
+    const getMaxCount = () => progressionLinear({
+      defaultValue: DIFFICULTY.CRYSTAL_COUNT / this.game.getDifficultyMultiplier(),
+      scale: DIFFICULTY.CRYSTAL_COUNT_GROWTH,
+      level: this.wave.number,
+      maxLevel: DIFFICULTY.CRYSTAL_COUNT_GROWTH_MAX_LEVEL,
+    });
 
     if (this.game.usedSave?.payload.world.crystals) {
       this.game.usedSave.payload.world.crystals.forEach((crystal) => {
         create(crystal.position);
       });
     } else {
+      const maxCount = getMaxCount();
+
       for (let i = 0; i < maxCount; i++) {
         const position = getRandomPosition();
 
@@ -409,7 +415,7 @@ export class World extends Scene implements IWorld {
     }
 
     this.wave.on(WaveEvents.COMPLETE, () => {
-      const newCount = maxCount - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
+      const newCount = getMaxCount() - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
         const position = getRandomPosition();
