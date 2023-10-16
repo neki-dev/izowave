@@ -161,6 +161,7 @@ export enum WorldEvents {
 export enum WorldMode {
   BUILDING_INDICATORS = 'BUILDING_INDICATORS',
   AUTO_REPAIR = 'AUTO_REPAIR',
+  PATH_TO_CRYSTAL = 'PATH_TO_CRYSTAL',
 }
 
 export type WorldHint = {
