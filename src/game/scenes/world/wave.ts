@@ -134,7 +134,7 @@ export class Wave extends EventEmitter implements IWave {
 
   private runTimeleft() {
     const pause = (this.number === 1 && Tutorial.IsEnabled)
-      ? 5000
+      ? WAVE_TIMELEFT_ALARM
       : progressionLinear({
         defaultValue: DIFFICULTY.WAVE_TIMELEFT,
         scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
