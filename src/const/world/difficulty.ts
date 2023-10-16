@@ -69,7 +69,9 @@ export const DIFFICULTY = {
    * Crystals
    */
 
-  CRYSTAL_SPAWN_FACTOR: 0.15, // Crystal spawn factor
+  CRYSTAL_COUNT: 6, // Crystal spawn factor
+  CRYSTAL_COUNT_GROWTH: 0.17, // Count growth by wave number (Linear)
+  CRYSTAL_COUNT_GROWTH_MAX_LEVEL: 10, // Level for limit count growth
   CRYSTAL_RESOURCES: 4, // Resources in crystal
   CRYSTAL_RESOURCES_GROWTH: 0.8, // Resources amount growth by wave number (Linear)
 

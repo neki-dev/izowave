@@ -32,6 +32,7 @@ export const Container = styled.div`
   pointer-events: all;
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     position: absolute;
+    z-index: 2;
     top: 100%;
     left: 0;
     background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};

@@ -1,4 +1,4 @@
-import { progressionQuadratic, progressionLinear } from '../difficulty';
+import { progressionQuadratic, progressionLinear } from '../progression';
 
 describe('difficulty.ts', () => {
   it('should return correct value growth', () => {

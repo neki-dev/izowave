@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Assets } from '~lib/assets';
-import { progressionLinear } from '~lib/difficulty';
+import { progressionLinear } from '~lib/progression';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';

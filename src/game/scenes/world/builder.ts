@@ -6,10 +6,11 @@ import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { progressionLinear } from '~lib/difficulty';
+import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
+import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
-import { getStage, equalPositions } from '~lib/utils';
+import { getStage } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
@@ -60,6 +61,8 @@ export class Builder extends EventEmitter implements IBuilder {
     this.handleKeyboard();
     this.handlePointer();
     this.handleTutorial();
+
+    Tutorial.Start(TutorialStep.BUILD_TOWER_FIRE);
   }
 
   public destroy() {
@@ -126,10 +129,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
 
-    if (this.scene.game.isDesktop()) {
-      Tutorial.Complete(TutorialStep.STOP_BUILD);
-    }
-
     this.clearBuildingVariant();
   }
 
@@ -164,7 +163,7 @@ export class Builder extends EventEmitter implements IBuilder {
           this.scene.level.effectsOnGround.forEach((effect) => {
             const positionAtMatrix = Level.ToMatrixPosition(effect);
 
-            if (equalPositions(positionAtMatrix, { x, y })) {
+            if (isPositionsEqual(positionAtMatrix, { x, y })) {
               effect.destroy();
             }
           });
@@ -278,7 +277,7 @@ export class Builder extends EventEmitter implements IBuilder {
     ];
 
     const isFreeFromSprite = targets.every((npc) => (
-      npc.getAllPositionsAtMatrix().every((point) => !equalPositions(positionAtMatrix, point))
+      npc.getAllPositionsAtMatrix().every((point) => !isPositionsEqual(positionAtMatrix, point))
     ));
 
     if (!isFreeFromSprite) {
@@ -560,6 +559,10 @@ export class Builder extends EventEmitter implements IBuilder {
         this.build();
       } else if (pointer.button === 2) {
         this.unsetBuildingVariant();
+
+        if (this.scene.game.isDesktop()) {
+          Tutorial.Complete(TutorialStep.STOP_BUILD);
+        }
       }
     });
   }
@@ -582,10 +585,6 @@ export class Builder extends EventEmitter implements IBuilder {
       end: () => {
         this.scene.setTimePause(false);
       },
-    });
-
-    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
-      Tutorial.Start(TutorialStep.BUILD_TOWER_FIRE);
     });
   }
 

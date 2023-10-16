@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
 import { Assets } from '~lib/assets';
-import { getIsometricDistance } from '~lib/utils';
+import { getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';

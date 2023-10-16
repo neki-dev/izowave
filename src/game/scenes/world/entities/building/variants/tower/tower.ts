@@ -1,8 +1,8 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionLinear } from '~lib/difficulty';
+import { progressionLinear } from '~lib/progression';
+import { getClosest } from '~lib/dimension';
 import { Tutorial } from '~lib/tutorial';
-import { getClosest } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';

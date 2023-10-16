@@ -1,5 +1,5 @@
 /* eslint-disable no-continue */
-import { equalPositions } from '~lib/utils';
+import { isPositionsEqual } from '~lib/dimension';
 import { Vector2D } from '~type/world/level';
 
 import { NavigatorTask } from './task';
@@ -48,7 +48,7 @@ export class NavigatorProcess {
         continue;
       }
 
-      if (equalPositions(task.to, currentNode.position)) {
+      if (isPositionsEqual(task.to, currentNode.position)) {
         this.taskQueue.shift();
         task.complete(currentNode);
         continue;

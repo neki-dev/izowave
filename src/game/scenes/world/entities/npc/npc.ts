@@ -5,7 +5,7 @@ import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
-import { equalPositions, getIsometricAngle, getIsometricDistance } from '~lib/utils';
+import { isPositionsEqual, getIsometricAngle, getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
@@ -135,7 +135,7 @@ export class NPC extends Sprite implements INPC {
     if (this.pathToTarget.length > 0) {
       const prevPosition = this.pathToTarget[this.pathToTarget.length - 1];
 
-      if (equalPositions(prevPosition, this.scene.player.positionAtMatrix)) {
+      if (isPositionsEqual(prevPosition, this.scene.player.positionAtMatrix)) {
         return;
       }
     }
@@ -147,7 +147,6 @@ export class NPC extends Sprite implements INPC {
       from,
       to: this.scene.player.positionAtMatrix,
       grid: this.scene.level.gridCollide,
-      compress: true,
     }, (path: Nullable<Vector2D[]>) => {
       if (!this.active) {
         return;

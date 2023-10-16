@@ -1,12 +1,12 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { LangPhrase } from '~type/lang';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio,
@@ -67,9 +67,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       value: () => this.ammo / this.maxAmmo,
     });
 
-    Tutorial.Complete(TutorialStep.BUILD_AMMUNITION);
+    this.handleToggleAutoAmmo();
 
-    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
+    Tutorial.Complete(TutorialStep.BUILD_AMMUNITION);
 
     this.bindTutorialHint(
       TutorialStep.BUY_AMMO,
@@ -80,6 +80,8 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     );
 
     this.bindHotKey(CONTROL_KEY.BUILDING_BUY_AMMO, () => this.buyAmmo());
+
+    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public getInfo() {
@@ -112,13 +114,19 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.ammo -= totalAmount;
 
     if (this.ammo === 0) {
-      if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
-        this.scene.game.sound.play(BuildingAudio.OVER);
+      if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
+        this.autoBuyAmmo();
+      } else {
+        if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
+          this.scene.game.sound.play(BuildingAudio.OVER);
+        }
+
+        Tutorial.Start(TutorialStep.BUY_AMMO);
       }
 
-      this.addAlertIcon();
-
-      Tutorial.Start(TutorialStep.BUY_AMMO);
+      if (this.ammo === 0) {
+        this.addAlertIcon();
+      }
     }
 
     return totalAmount;
@@ -131,7 +139,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     return Math.ceil(costPerAmmo * needAmmo);
   }
 
-  private buyAmmo() {
+  private buyAmmo(auto?: boolean) {
     if (this.ammo >= this.maxAmmo) {
       return;
     }
@@ -139,7 +147,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     const cost = this.getAmmoCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      if (!auto) {
+        this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      }
 
       return;
     }
@@ -157,6 +167,12 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     Tutorial.Complete(TutorialStep.BUY_AMMO);
   }
 
+  private autoBuyAmmo() {
+    if (this.ammo === 0) {
+      this.buyAmmo(true);
+    }
+  }
+
   private getMaxAmmo() {
     return progressionQuadratic({
       defaultValue: DIFFICULTY.BUILDING_AMMUNITION_AMMO,
@@ -172,6 +188,25 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.maxAmmo = maxAmmo;
     this.ammo += addedAmmo;
+  }
+
+  private handleToggleAutoAmmo() {
+    const handler = (mode: WorldMode, state: boolean) => {
+      switch (mode) {
+        case WorldMode.AUTO_REPAIR: {
+          if (state) {
+            this.autoBuyAmmo();
+          }
+          break;
+        }
+      }
+    };
+
+    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
+    });
   }
 
   public getSavePayload() {

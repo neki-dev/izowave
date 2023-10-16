@@ -4,7 +4,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { Tutorial } from '~lib/tutorial';
 import { Analytics } from '~lib/analytics';
-import { progressionLinear } from '~lib/difficulty';
+import { progressionLinear } from '~lib/progression';
 import { IWorld } from '~type/world';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -18,7 +18,6 @@ describe('wave.ts', () => {
   let helper: any;
 
   beforeAll(() => {
-    Tutorial.Register();
     Tutorial.Disable();
     Analytics.TrackEvent = jest.fn();
   });

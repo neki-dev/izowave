@@ -4,19 +4,19 @@ import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { Indicator } from '~entity/indicator';
+import { Indicator } from '~entity/addons/indicator';
+import { Live } from '~entity/addons/live';
 import { Assets } from '~lib/assets';
-import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
+import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { Effect } from '~scene/world/effects';
-import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldEvents } from '~type/world';
+import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
 import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
@@ -121,6 +121,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.updateTileCost();
 
     this.handlePointer();
+    this.handleToggleModes();
 
     this.scene.builder.addFoundation(positionAtMatrix);
 
@@ -195,7 +196,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private updateTileCost() {
-    const cost = 2.0 + Number((this.live.health / 1000).toFixed(1));
+    const cost = 2.0 + Number((this.live.maxHealth / 1000).toFixed(1));
 
     this.scene.level.navigator.setPointCost(this.positionAtMatrix, cost);
   }
@@ -340,7 +341,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
   }
 
-  private repair() {
+  private repair(auto?: boolean) {
     if (this.live.isMaxHealth()) {
       return;
     }
@@ -348,7 +349,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getRepairCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      if (!auto) {
+        this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      }
 
       return;
     }
@@ -360,6 +363,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.player.takeResources(cost);
 
     this.scene.sound.play(BuildingAudio.REPAIR);
+  }
+
+  private autoRepair() {
+    if (this.live.health / this.live.maxHealth <= 0.5) {
+      this.repair(true);
+    }
   }
 
   private upgradeHealth() {
@@ -399,7 +408,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public toggleIndicators() {
-    const isActive = !this.isSelected && this.active && this.scene.isIndicatorsActive;
+    const isActive = (
+      !this.isSelected
+      && this.active
+      && this.scene.isModeActive(WorldMode.BUILDING_INDICATORS)
+    );
 
     this.indicators.setActive(isActive);
     this.indicators.setVisible(isActive);
@@ -459,6 +472,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.scene.game.sound.getAll(audio).length === 0) {
       this.scene.game.sound.play(audio);
+    }
+
+    if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
+      this.autoRepair();
     }
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
@@ -792,6 +809,29 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.keyboard?.off(key, handler);
+    });
+  }
+
+  private handleToggleModes() {
+    const handler = (mode: WorldMode, state: boolean) => {
+      switch (mode) {
+        case WorldMode.BUILDING_INDICATORS: {
+          this.toggleIndicators();
+          break;
+        }
+        case WorldMode.AUTO_REPAIR: {
+          if (state) {
+            this.autoRepair();
+          }
+          break;
+        }
+      }
+    };
+
+    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
     });
   }
 

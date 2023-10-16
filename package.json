@@ -1,7 +1,7 @@
 {
   "name": "izowave",
   "description": "Isometric game. Build and defense in open world",
-  "version": "1.12.8",
+  "version": "1.13.0",
   "keywords": [
     "game",
     "isometric",
@@ -19,7 +19,9 @@
   "main": "./dist/index.html",
   "scripts": {
     "start": "vite --host",
-    "build": "vite build",
+    "build": "vite build --mode vanilla",
+    "build:crazy_games": "vite build --mode crazy_games",
+    "build:poki": "vite build --mode poki",
     "test": "jest",
     "lint": "eslint \"./**/*.{js,ts,tsx}\" --ignore-path .gitignore --fix"
   },
@@ -43,7 +45,8 @@
     "typescript": "5.2.2",
     "vite": "4.4.11",
     "vite-plugin-checker": "0.6.2",
-    "vite-plugin-static-copy": "0.17.0"
+    "vite-plugin-static-copy": "0.17.0",
+    "vite-plugin-zip-pack": "1.0.6"
   },
   "dependencies": {
     "events": "3.3.0",

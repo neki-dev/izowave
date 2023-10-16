@@ -13,17 +13,20 @@ import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Assets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
+import { getClosest, isPositionsEqual } from '~lib/dimension';
+import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
+import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldEvents } from '~type/world';
+import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
+import { ICrystal } from '~type/world/entities/crystal';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   PlayerTexture,
@@ -35,7 +38,7 @@ import {
   PlayerSavePayload,
   MovementDirection,
 } from '~type/world/entities/player';
-import { TileType } from '~type/world/level';
+import { TileType, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 Assets.RegisterAudio(PlayerAudio);
@@ -92,6 +95,16 @@ export class Player extends Sprite implements IPlayer {
 
   private set activeSuperskills(v) { this._activeSuperskills = v; }
 
+  private pathToCrystal: Nullable<Phaser.GameObjects.Graphics> = null;
+
+  private pathToCrystalFindingTask: Nullable<string> = null;
+
+  private pathToCrystalEffectIndex: number = 0;
+
+  private pathToCrystalEffectTimestamp: number = 1;
+
+  private currentPathToCrystal: Nullable<Vector2D[]> = null;
+
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
       ...data,
@@ -111,6 +124,9 @@ export class Player extends Sprite implements IPlayer {
       this.handleMovementByKeyboard();
     }
 
+    this.handleToggleEffects();
+    this.handleTogglePathToCrystal();
+
     this.registerAnimations();
 
     this.addDustEffect();
@@ -127,6 +143,7 @@ export class Player extends Sprite implements IPlayer {
     ], (tile) => {
       if (tile instanceof Crystal) {
         tile.pickup();
+        this.currentPathToCrystal = null;
       }
     });
 
@@ -139,18 +156,13 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
-
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (enabled: boolean) => {
-      if (enabled) {
-        this.addDustEffect();
-      } else {
-        this.removeDustEffect();
-      }
-    });
   }
 
   public update() {
     super.update();
+
+    this.findPathToCrystal();
+    this.drawPathToCrystal();
 
     if (!this.live.isDead()) {
       this.dustEffect?.emitter.setDepth(this.depth - 1);
@@ -507,7 +519,10 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private addDustEffect() {
-    if (!this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+    if (
+      this.dustEffect
+      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+    ) {
       return;
     }
 
@@ -539,6 +554,89 @@ export class Player extends Sprite implements IPlayer {
     this.dustEffect = null;
   }
 
+  private addPathToCrystal() {
+    if (this.pathToCrystal) {
+      return;
+    }
+
+    this.pathToCrystal = this.scene.add.graphics();
+    this.pathToCrystal.setDepth(WORLD_DEPTH_EFFECT);
+  }
+
+  private removePathToCrystal() {
+    if (!this.pathToCrystal) {
+      return;
+    }
+
+    this.pathToCrystal.destroy();
+    this.pathToCrystal = null;
+  }
+
+  private drawPathToCrystal() {
+    if (!this.pathToCrystal) {
+      return;
+    }
+
+    this.pathToCrystal.clear();
+
+    if (!this.currentPathToCrystal) {
+      return;
+    }
+
+    const now = Date.now();
+    const halfVisibleLength = 4;
+
+    if (this.pathToCrystalEffectTimestamp <= now) {
+      this.pathToCrystalEffectIndex++;
+      this.pathToCrystalEffectTimestamp = now + (1000 / this.currentPathToCrystal.length);
+    }
+    if (this.pathToCrystalEffectIndex >= this.currentPathToCrystal.length) {
+      this.pathToCrystalEffectIndex = 0;
+    }
+
+    for (let k = -halfVisibleLength; k <= halfVisibleLength; k++) {
+      const i = this.pathToCrystalEffectIndex + k;
+
+      if (i > 1 && i < this.currentPathToCrystal.length) {
+        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1], z: 0 });
+        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i], z: 0 });
+        const alpha = 1.0 - Math.min(Math.abs(k / halfVisibleLength), 0.9);
+
+        this.pathToCrystal.lineStyle(2, 0xffffff, alpha * 0.75);
+        this.pathToCrystal.lineBetween(prev.x, prev.y, next.x, next.y);
+      }
+    }
+  }
+
+  private findPathToCrystal() {
+    if (
+      !this.pathToCrystal
+      || this.pathToCrystalFindingTask
+      || (
+        this.currentPathToCrystal?.[0]
+        && isPositionsEqual(this.currentPathToCrystal[0], this.scene.player.positionAtMatrix)
+      )
+    ) {
+      return;
+    }
+
+    const crystals = this.scene.getEntities<ICrystal>(EntityType.CRYSTAL);
+    const crystal = getClosest(crystals, this);
+
+    if (!crystal) {
+      return;
+    }
+
+    this.pathToCrystalFindingTask = this.scene.level.navigator.createTask({
+      from: this.scene.player.positionAtMatrix,
+      to: crystal.positionAtMatrix,
+      grid: this.scene.level.gridSolid,
+    }, (path: Nullable<Vector2D[]>) => {
+      this.currentPathToCrystal = (path && path.length > 2) ? path : null;
+      this.pathToCrystalFindingTask = null;
+    });
+  }
+
   private registerAnimations() {
     Array.from({ length: 8 }).forEach((_, index) => {
       this.anims.create({
@@ -550,6 +648,43 @@ export class Player extends Sprite implements IPlayer {
         frameRate: 8,
         repeat: -1,
       });
+    });
+  }
+
+  private handleToggleEffects() {
+    const handler = (enabled: boolean) => {
+      if (enabled) {
+        this.addDustEffect();
+      } else {
+        this.removeDustEffect();
+      }
+    };
+
+    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.game.events.off(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
+    });
+  }
+
+  private handleTogglePathToCrystal() {
+    const handler = (mode: WorldMode, state: boolean) => {
+      switch (mode) {
+        case WorldMode.PATH_TO_CRYSTAL: {
+          if (state) {
+            this.addPathToCrystal();
+          } else {
+            this.removePathToCrystal();
+          }
+          break;
+        }
+      }
+    };
+
+    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
     });
   }
 

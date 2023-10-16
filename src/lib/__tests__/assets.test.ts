@@ -1,4 +1,4 @@
-import { Assets } from '~lib/assets';
+import { Assets } from '../assets';
 
 import assets from '../__mocks__/assets';
 

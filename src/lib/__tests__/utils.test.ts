@@ -1,29 +1,10 @@
-import positions from '../__mocks__/positions';
 import {
-  aroundPosition,
-  getIsometricDistance,
   getStage,
-  equalPositions,
   formatTime,
-  getClosest,
+  hashString,
+  formatAmount,
+  rawAmount,
 } from '../utils';
-
-describe('utils.ts / equalPositions', () => {
-  it('should equal positions', () => {
-    expect(equalPositions({ x: 1, y: 1 }, { x: 1, y: 1 })).toEqual(true);
-  });
-
-  it('should not equal positions', () => {
-    expect(equalPositions({ x: 1, y: 1 }, { x: 2, y: 2 })).toEqual(false);
-  });
-});
-
-describe('utils.ts / getIsometricDistance', () => {
-  it('should return correct distance', () => {
-    expect(getIsometricDistance({ x: 0, y: 0 }, { x: 10, y: 0 })).toEqual(10);
-    expect(getIsometricDistance({ x: 0, y: 0 }, { x: 0, y: 10 })).toEqual(17.5);
-  });
-});
 
 describe('utils.ts / formatTime', () => {
   it('should convert timestamp seconds to string time', () => {
@@ -33,8 +14,40 @@ describe('utils.ts / formatTime', () => {
   });
 });
 
+describe('utils.ts / formatAmount', () => {
+  it('should format positive amount', () => {
+    expect(formatAmount(5)).toEqual('+5');
+  });
+
+  it('should format negative amount', () => {
+    expect(formatAmount(-5)).toEqual('-5');
+  });
+});
+
+describe('utils.ts / rawAmount', () => {
+  it('should get raw positive amount', () => {
+    expect(rawAmount('+5')).toEqual(5);
+  });
+
+  it('should get raw negative amount', () => {
+    expect(rawAmount('-5')).toEqual(-5);
+  });
+});
+
+describe('utils.ts / hashString', () => {
+  it('should get string hash', () => {
+    expect(hashString('a')).toEqual('97');
+  });
+
+  it('should get similar hash for similar string', () => {
+    const string = 'test';
+
+    expect(hashString(string)).toEqual(hashString(string));
+  });
+});
+
 describe('utils.ts / getStage', () => {
-  it('should calculate period', () => {
+  it('should calculate stage', () => {
     expect(getStage(1, 1)).toEqual(1);
     expect(getStage(1, 2)).toEqual(2);
     expect(getStage(1, 3)).toEqual(2);
@@ -47,22 +60,3 @@ describe('utils.ts / getStage', () => {
   });
 });
 
-describe('utils.ts / getClosest', () => {
-  it('should return closes position', () => {
-    const closest = getClosest(positions, { x: 4, y: 4 });
-
-    expect(`${closest?.x},${closest?.y}`).toEqual('0,0');
-  });
-
-  it('should return empty positions', () => {
-    const closest = getClosest([], { x: 4, y: 4 });
-
-    expect(closest).toEqual(null);
-  });
-});
-
-describe('utils.ts / aroundPosition', () => {
-  it('should return correct around positions', () => {
-    expect(aroundPosition(positions[0]).length).toEqual(8);
-  });
-});

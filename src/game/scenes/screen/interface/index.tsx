@@ -2,11 +2,13 @@ import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
+import { Section } from '~scene/system/interface/section';
 
 import { AdsReward } from './ads-reward';
 import { Builder } from './builder';
 import { Debug } from './debug';
 import { GeneralHints } from './general-hints';
+import { Modes } from './modes';
 import { Notices } from './notices';
 import { PlayerHUD } from './player-hud';
 import { Column, Grid, Wrapper } from './styles';
@@ -22,7 +24,10 @@ export const ScreenUI: React.FC = () => {
 
       <Grid>
         <Column $side="left">
-          <PlayerHUD />
+          <Section direction='vertical' gap={32}>
+            <PlayerHUD />
+            <Modes />
+          </Section>
           <Debug />
         </Column>
 

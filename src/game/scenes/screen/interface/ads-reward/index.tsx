@@ -2,6 +2,7 @@ import { useGame, useScene } from 'phaser-react-ui';
 import React, { useState, useEffect } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
+import { Environment } from '~lib/environment';
 import { phrase } from '~lib/lang';
 import { Amount } from '~scene/system/interface/amount';
 import { Button } from '~scene/system/interface/button';
@@ -52,7 +53,7 @@ export const AdsReward: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!game.isFlagEnabled(GameFlag.ADS)) {
+    if (!Environment.GetFlag(GameFlag.ADS)) {
       return;
     }
 

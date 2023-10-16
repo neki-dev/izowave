@@ -44,9 +44,13 @@ export const Wave: React.FC = () => {
       setAlarm(false);
     } else {
       const timeleft = world.wave.getTimeleft();
+      const currentIsAlarm = (
+        timeleft <= WAVE_TIMELEFT_ALARM
+        && !world.isTimePaused()
+      );
 
       setValue(formatTime(timeleft));
-      setAlarm(timeleft <= WAVE_TIMELEFT_ALARM);
+      setAlarm(currentIsAlarm);
     }
   }, []);
 

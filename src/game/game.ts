@@ -4,6 +4,7 @@ import {
   AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS,
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
+import { Environment } from '~lib/environment';
 import { SDK } from '~lib/sdk';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
@@ -32,7 +33,7 @@ import { IWorld } from '~type/world';
 import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
-  private flags: string[];
+  private flags: GameFlag[];
 
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
@@ -95,11 +96,9 @@ export class Game extends Phaser.Game implements IGame {
     });
 
     Analytics.Register();
-    Tutorial.Register();
 
     SDK.ToggleLoadState(true);
 
-    this.readFlags();
     this.readSettings();
 
     this.events.on(Phaser.Core.Events.READY, () => {
@@ -125,7 +124,7 @@ export class Game extends Phaser.Game implements IGame {
     });
 
     window.onbeforeunload = () => {
-      const needConfirm = !IS_DEV_MODE && (
+      const needConfirm = Environment.Platform !== 'development' && (
         (this.state === GameState.PAUSED && !this.isSaved)
         || this.state === GameState.STARTED
       );
@@ -220,7 +219,7 @@ export class Game extends Phaser.Game implements IGame {
     if (
       !this.scale.isFullscreen
       && !this.isDesktop()
-      && !IS_DEV_MODE
+      && Environment.Platform !== 'development'
     ) {
       try {
         this.scale.startFullscreen();
@@ -328,22 +327,7 @@ export class Game extends Phaser.Game implements IGame {
     });
   }
 
-  public isFlagEnabled(key: GameFlag) {
-    return this.flags.includes(key);
-  }
-
-  private readFlags() {
-    const query = new URLSearchParams(window.location.search);
-    const value = query.get('flags')?.toUpperCase() ?? '';
-
-    this.flags = value.split(',');
-  }
-
   public showAds(type: SDKAdsType, callback?: () => void) {
-    if (!this.isFlagEnabled(GameFlag.ADS)) {
-      return;
-    }
-
     SDK.ShowAds(
       type,
       () => {

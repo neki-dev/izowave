@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import {
@@ -13,7 +12,9 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, hashString, sortByDistance } from '~lib/utils';
+import { aroundPosition, sortByMatrixDistance } from '~lib/dimension';
+import { progressionLinear } from '~lib/progression';
+import { hashString } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
@@ -22,7 +23,7 @@ import { Wave } from '~scene/world/wave';
 import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
 import {
-  IWorld, WorldEvents, WorldHint, WorldSavePayload,
+  IWorld, WorldEvents, WorldHint, WorldMode, WorldSavePayload,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
@@ -89,11 +90,11 @@ export class World extends Scene implements IWorld {
 
   private set deltaTime(v) { this._deltaTime = v; }
 
-  private _isIndicatorsActive: boolean = false;
-
-  public get isIndicatorsActive() { return this._isIndicatorsActive; }
-
-  private set isIndicatorsActive(v) { this._isIndicatorsActive = v; }
+  private modes: Record<WorldMode, boolean> = {
+    [WorldMode.BUILDING_INDICATORS]: false,
+    [WorldMode.AUTO_REPAIR]: false,
+    [WorldMode.PATH_TO_CRYSTAL]: false,
+  };
 
   constructor() {
     super(GameScene.WORLD);
@@ -111,6 +112,12 @@ export class World extends Scene implements IWorld {
     this.level = new Level(this, data);
     this.camera = new Camera(this);
 
+    this.modes = {
+      [WorldMode.BUILDING_INDICATORS]: false,
+      [WorldMode.AUTO_REPAIR]: false,
+      [WorldMode.PATH_TO_CRYSTAL]: false,
+    };
+
     this.generateEnemySpawnPositions();
   }
 
@@ -120,8 +127,6 @@ export class World extends Scene implements IWorld {
     this.camera.addZoomControl();
 
     this.resetTime();
-
-    this.handleKeyboard();
 
     this.addWaveManager();
     this.addBuilder();
@@ -176,6 +181,16 @@ export class World extends Scene implements IWorld {
   private resetTime() {
     this.setTimePause(false);
     this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
+  }
+
+  public setModeActive(mode: WorldMode, state: boolean) {
+    this.modes[mode] = state;
+
+    this.events.emit(WorldEvents.TOGGLE_MODE, mode, state);
+  }
+
+  public isModeActive(mode: WorldMode) {
+    return this.modes[mode];
   }
 
   public getResourceExtractionSpeed() {
@@ -241,7 +256,7 @@ export class World extends Scene implements IWorld {
       freePositions = this.enemySpawnPositionsAnalog;
     }
 
-    const closestPositions = sortByDistance(freePositions, this.player.positionAtMatrix)
+    const closestPositions = sortByMatrixDistance(freePositions, this.player.positionAtMatrix)
       .slice(0, ENEMY_SPAWN_POSITIONS);
     const positionAtMatrix = Phaser.Utils.Array.GetRandom(closestPositions);
 
@@ -378,15 +393,20 @@ export class World extends Scene implements IWorld {
       });
     };
 
-    const maxCount = Math.ceil(
-      Math.floor((this.level.size * DIFFICULTY.CRYSTAL_SPAWN_FACTOR) / this.game.getDifficultyMultiplier()),
-    );
+    const getMaxCount = () => progressionLinear({
+      defaultValue: DIFFICULTY.CRYSTAL_COUNT / this.game.getDifficultyMultiplier(),
+      scale: DIFFICULTY.CRYSTAL_COUNT_GROWTH,
+      level: this.wave.number,
+      maxLevel: DIFFICULTY.CRYSTAL_COUNT_GROWTH_MAX_LEVEL,
+    });
 
     if (this.game.usedSave?.payload.world.crystals) {
       this.game.usedSave.payload.world.crystals.forEach((crystal) => {
         create(crystal.position);
       });
     } else {
+      const maxCount = getMaxCount();
+
       for (let i = 0; i < maxCount; i++) {
         const position = getRandomPosition();
 
@@ -395,31 +415,13 @@ export class World extends Scene implements IWorld {
     }
 
     this.wave.on(WaveEvents.COMPLETE, () => {
-      const newCount = maxCount - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
+      const newCount = getMaxCount() - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {
         const position = getRandomPosition();
 
         create(position);
       }
-    });
-  }
-
-  private handleKeyboard() {
-    if (!this.game.isDesktop()) {
-      return;
-    }
-
-    this.input.keyboard?.on(CONTROL_KEY.TOGGLE_INDICATORS, () => {
-      if (this.game.state !== GameState.STARTED) {
-        return;
-      }
-
-      this.isIndicatorsActive = !this.isIndicatorsActive;
-
-      this.getEntities<IBuilding>(EntityType.BUILDING).forEach((building) => {
-        building.toggleIndicators();
-      });
     });
   }
 }

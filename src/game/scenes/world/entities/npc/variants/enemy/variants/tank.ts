@@ -1,5 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionQuadratic } from '~lib/progression';
 import { IWorld } from '~type/world';
 import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
