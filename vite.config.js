@@ -27,6 +27,7 @@ export default defineConfig(({ mode }) => ({
     }),
   ],
   root: './src',
+  base: '',
   build: {
     target: 'esnext',
     outDir: '../dist',
