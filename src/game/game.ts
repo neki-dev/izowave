@@ -95,7 +95,6 @@ export class Game extends Phaser.Game implements IGame {
     });
 
     Analytics.Register();
-    Tutorial.Register();
 
     SDK.ToggleLoadState(true);
 

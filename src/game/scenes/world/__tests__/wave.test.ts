@@ -18,7 +18,6 @@ describe('wave.ts', () => {
   let helper: any;
 
   beforeAll(() => {
-    Tutorial.Register();
     Tutorial.Disable();
     Analytics.TrackEvent = jest.fn();
   });

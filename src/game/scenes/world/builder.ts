@@ -61,6 +61,8 @@ export class Builder extends EventEmitter implements IBuilder {
     this.handleKeyboard();
     this.handlePointer();
     this.handleTutorial();
+
+    Tutorial.Start(TutorialStep.BUILD_TOWER_FIRE);
   }
 
   public destroy() {
@@ -126,10 +128,6 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     this.scene.sound.play(BuildingAudio.UNSELECT);
-
-    if (this.scene.game.isDesktop()) {
-      Tutorial.Complete(TutorialStep.STOP_BUILD);
-    }
 
     this.clearBuildingVariant();
   }
@@ -561,6 +559,10 @@ export class Builder extends EventEmitter implements IBuilder {
         this.build();
       } else if (pointer.button === 2) {
         this.unsetBuildingVariant();
+
+        if (this.scene.game.isDesktop()) {
+          Tutorial.Complete(TutorialStep.STOP_BUILD);
+        }
       }
     });
   }
@@ -583,10 +585,6 @@ export class Builder extends EventEmitter implements IBuilder {
       end: () => {
         this.scene.setTimePause(false);
       },
-    });
-
-    this.scene.game.screen.events.on(Phaser.Interface.Events.MOUNT, () => {
-      Tutorial.Start(TutorialStep.BUILD_TOWER_FIRE);
     });
   }
 

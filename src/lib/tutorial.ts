@@ -1,8 +1,9 @@
-import EventEmitter from 'events';
-
 import {
-  TutorialEvents, TutorialStepState, TutorialStep,
-  TutorialBindCallbacks, TutorialBindAllCallbacks,
+  TutorialEvents,
+  TutorialStepState,
+  TutorialStep,
+  TutorialBindCallbacks,
+  TutorialBindAllCallbacks,
 } from '~type/tutorial';
 
 export class Tutorial {
@@ -14,16 +15,25 @@ export class Tutorial {
 
   private static set IsEnabled(v) { this._IsEnabled = v; }
 
-  private static Events: EventEmitter;
+  private static EventHistory: {
+    event: TutorialEvents
+    step: TutorialStep
+  }[] = [];
+
+  private static EventListeners: {
+    event: TutorialEvents
+    step: Nullable<TutorialStep>
+    callback: (step: TutorialStep) => void
+  }[] = [];
 
   public static Register() {
-    this.Events = new EventEmitter();
-    this.Events.setMaxListeners(0);
+    //
   }
 
   public static Reset() {
-    this.Events.removeAllListeners();
     this.Progress = {};
+    this.EventListeners = [];
+    this.EventHistory = [];
   }
 
   public static Start(step: TutorialStep) {
@@ -40,8 +50,7 @@ export class Tutorial {
       return;
     }
 
-    this.Events.emit(TutorialEvents.BEG, step);
-    this.Events.emit(`${TutorialEvents.BEG}_${step}`);
+    this.Emit(TutorialEvents.BEG, step);
   }
 
   public static Pause(step: TutorialStep) {
@@ -55,8 +64,7 @@ export class Tutorial {
       return;
     }
 
-    this.Events.emit(TutorialEvents.END, step);
-    this.Events.emit(`${TutorialEvents.END}_${step}`);
+    this.Emit(TutorialEvents.END, step);
   }
 
   public static Complete(step: TutorialStep) {
@@ -70,8 +78,7 @@ export class Tutorial {
       return;
     }
 
-    this.Events.emit(TutorialEvents.END, step);
-    this.Events.emit(`${TutorialEvents.END}_${step}`);
+    this.Emit(TutorialEvents.END, step);
   }
 
   public static IsInProgress(step: TutorialStep) {
@@ -80,36 +87,36 @@ export class Tutorial {
 
   public static Bind(step: TutorialStep, callbacks: TutorialBindCallbacks) {
     if (callbacks.beg) {
-      this.Events.on(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
+      this.Subscribe(TutorialEvents.BEG, step, callbacks.beg);
     }
     if (callbacks.end) {
-      this.Events.on(`${TutorialEvents.END}_${step}`, callbacks.end);
+      this.Subscribe(TutorialEvents.END, step, callbacks.end);
     }
 
     return () => {
       if (callbacks.beg) {
-        this.Events.off(`${TutorialEvents.BEG}_${step}`, callbacks.beg);
+        this.Unsubscribe(TutorialEvents.BEG, step, callbacks.beg);
       }
       if (callbacks.end) {
-        this.Events.off(`${TutorialEvents.END}_${step}`, callbacks.end);
+        this.Unsubscribe(TutorialEvents.END, step, callbacks.end);
       }
     };
   }
 
   public static BindAll(callbacks: TutorialBindAllCallbacks) {
     if (callbacks.beg) {
-      this.Events.on(TutorialEvents.BEG, callbacks.beg);
+      this.Subscribe(TutorialEvents.BEG, null, callbacks.beg);
     }
     if (callbacks.end) {
-      this.Events.on(TutorialEvents.END, callbacks.end);
+      this.Subscribe(TutorialEvents.END, null, callbacks.end);
     }
 
     return () => {
       if (callbacks.beg) {
-        this.Events.off(TutorialEvents.BEG, callbacks.beg);
+        this.Unsubscribe(TutorialEvents.BEG, null, callbacks.beg);
       }
       if (callbacks.end) {
-        this.Events.off(TutorialEvents.END, callbacks.end);
+        this.Unsubscribe(TutorialEvents.END, null, callbacks.end);
       }
     };
   }
@@ -121,8 +128,7 @@ export class Tutorial {
 
     states.forEach((step) => {
       if (this.IsInProgress(step)) {
-        this.Events.emit(TutorialEvents.BEG, step);
-        this.Events.emit(`${TutorialEvents.BEG}_${step}`);
+        this.Emit(TutorialEvents.BEG, step);
       }
     });
   }
@@ -132,11 +138,58 @@ export class Tutorial {
 
     states.forEach((step) => {
       if (this.IsInProgress(step)) {
-        this.Events.emit(TutorialEvents.END, step);
-        this.Events.emit(`${TutorialEvents.END}_${step}`);
+        this.Emit(TutorialEvents.END, step);
       }
     });
 
     this.IsEnabled = false;
+  }
+
+  private static Emit(event: TutorialEvents, step: TutorialStep) {
+    const isEmited = this.EventHistory.some((data) => (
+      data.event === event
+      && data.step === step
+    ));
+
+    if (isEmited) {
+      console.warn('Tutorial event', event, 'for step', step, 'already was emited');
+
+      return;
+    }
+
+    this.EventHistory.push({ event, step });
+    this.EventListeners.forEach((data) => {
+      if (data.event === event && (!data.step || data.step === step)) {
+        data.callback(step);
+      }
+    });
+  }
+
+  private static Subscribe(
+    event: TutorialEvents,
+    step: Nullable<TutorialStep>,
+    callback: (step: TutorialStep) => void,
+  ) {
+    this.EventListeners.push({ event, step, callback });
+    this.EventHistory.forEach((data) => {
+      if (
+        data.event === event
+        && (!step || data.step === step)
+      ) {
+        callback(data.step);
+      }
+    });
+  }
+
+  private static Unsubscribe(
+    event: TutorialEvents,
+    step: Nullable<TutorialStep>,
+    callback: (step: TutorialStep) => void,
+  ) {
+    this.EventListeners = this.EventListeners.filter((data) => (
+      data.event !== event
+      && data.step !== step
+      && data.callback !== callback
+    ));
   }
 }
