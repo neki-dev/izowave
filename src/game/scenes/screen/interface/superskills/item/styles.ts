@@ -34,7 +34,7 @@ export const Info = styled.div`
   bottom: 100%;
   left: 50%;
   margin-bottom: 12px;
-  width: 200px;
+  min-width: 200px;
   animation: ${animationOpacity} 0.1s ease-in;
   &::after {
     position: absolute;
@@ -52,7 +52,7 @@ export const Head = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  padding: 11px 14px 9px 14px;
   background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
   border-radius: 5px 5px 0 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
@@ -65,6 +65,7 @@ export const Name = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 14px;
   line-height: 14px;
+  margin: -2px 10px 0 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 13px;
     line-height: 13px;
