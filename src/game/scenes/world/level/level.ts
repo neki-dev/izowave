@@ -6,8 +6,8 @@ import {
   LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
 } from '~const/world/level';
 import { Assets } from '~lib/assets';
+import { interpolate } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
-import { interpolate } from '~lib/utils';
 import { Effect } from '~scene/world/effects';
 import { GameEvents, GameSettings } from '~type/game';
 import { INavigator } from '~type/navigator';

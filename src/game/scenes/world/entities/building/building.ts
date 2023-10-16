@@ -4,12 +4,12 @@ import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { Indicator } from '~entity/indicator';
+import { Indicator } from '~entity/addons/indicator';
+import { Live } from '~entity/addons/live';
 import { Assets } from '~lib/assets';
-import { progressionQuadratic, progressionLinear } from '~lib/difficulty';
+import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { Effect } from '~scene/world/effects';
-import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
 import { LangPhrase } from '~type/lang';
@@ -195,7 +195,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private updateTileCost() {
-    const cost = 2.0 + Number((this.live.health / 1000).toFixed(1));
+    const cost = 2.0 + Number((this.live.maxHealth / 1000).toFixed(1));
 
     this.scene.level.navigator.setPointCost(this.positionAtMatrix, cost);
   }

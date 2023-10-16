@@ -1,7 +1,7 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { progressionQuadratic } from '~lib/difficulty';
+import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { LangPhrase } from '~type/lang';
 import { NoticeType } from '~type/screen';

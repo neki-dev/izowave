@@ -6,10 +6,11 @@ import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { progressionLinear } from '~lib/difficulty';
+import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
+import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
-import { getStage, equalPositions } from '~lib/utils';
+import { getStage } from '~lib/utils';
 import { Level } from '~scene/world/level';
 import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
@@ -164,7 +165,7 @@ export class Builder extends EventEmitter implements IBuilder {
           this.scene.level.effectsOnGround.forEach((effect) => {
             const positionAtMatrix = Level.ToMatrixPosition(effect);
 
-            if (equalPositions(positionAtMatrix, { x, y })) {
+            if (isPositionsEqual(positionAtMatrix, { x, y })) {
               effect.destroy();
             }
           });
@@ -278,7 +279,7 @@ export class Builder extends EventEmitter implements IBuilder {
     ];
 
     const isFreeFromSprite = targets.every((npc) => (
-      npc.getAllPositionsAtMatrix().every((point) => !equalPositions(positionAtMatrix, point))
+      npc.getAllPositionsAtMatrix().every((point) => !isPositionsEqual(positionAtMatrix, point))
     ));
 
     if (!isFreeFromSprite) {

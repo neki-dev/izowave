@@ -13,7 +13,8 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, hashString, sortByDistance } from '~lib/utils';
+import { aroundPosition, sortByMatrixDistance } from '~lib/dimension';
+import { hashString } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
@@ -241,7 +242,7 @@ export class World extends Scene implements IWorld {
       freePositions = this.enemySpawnPositionsAnalog;
     }
 
-    const closestPositions = sortByDistance(freePositions, this.player.positionAtMatrix)
+    const closestPositions = sortByMatrixDistance(freePositions, this.player.positionAtMatrix)
       .slice(0, ENEMY_SPAWN_POSITIONS);
     const positionAtMatrix = Phaser.Utils.Array.GetRandom(closestPositions);
 

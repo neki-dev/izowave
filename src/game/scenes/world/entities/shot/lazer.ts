@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { Assets } from '~lib/assets';
-import { getIsometricDistance } from '~lib/utils';
+import { getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';

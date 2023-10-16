@@ -9,7 +9,7 @@ import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/difficulty';
+import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { GameState } from '~type/game';

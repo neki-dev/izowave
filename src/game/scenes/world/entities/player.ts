@@ -13,7 +13,7 @@ import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Assets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic } from '~lib/difficulty';
+import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';

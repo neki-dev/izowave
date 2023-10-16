@@ -1,5 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { progressionLinear } from '~lib/difficulty';
+import { progressionLinear } from '~lib/progression';
 import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {

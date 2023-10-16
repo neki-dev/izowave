@@ -1,5 +1,5 @@
 import { LEVEL_TILE_SIZE } from '~const/world/level';
-import { getIsometricDistance } from '~lib/utils';
+import { getIsometricDistance } from '~lib/dimension';
 import { Effect } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';

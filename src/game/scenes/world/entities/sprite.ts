@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '~const/world';
-import { equalPositions } from '~lib/utils';
+import { Indicator } from '~entity/addons/indicator';
+import { Live } from '~entity/addons/live';
+import { isPositionsEqual } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
-import { Indicator } from '~scene/world/entities/indicator';
-import { Live } from '~scene/world/entities/live';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
 import { ILive, LiveEvents } from '~type/live';
@@ -127,7 +127,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public isStopped() {
-    return equalPositions(this.body.velocity, { x: 0, y: 0 });
+    return isPositionsEqual(this.body.velocity, { x: 0, y: 0 });
   }
 
   public getAllPositionsAtMatrix() {
