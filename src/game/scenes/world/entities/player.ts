@@ -600,9 +600,9 @@ export class Player extends Sprite implements IPlayer {
       if (i > 1 && i < this.currentPathToCrystal.length) {
         const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1], z: 0 });
         const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i], z: 0 });
-        const alpha = 1.0 - Math.min(Math.abs(i / halfVisibleLength), 0.9);
+        const alpha = 1.0 - Math.min(Math.abs(k / halfVisibleLength), 0.9);
 
-        this.pathToCrystal.lineStyle(2, 0xffffff, alpha);
+        this.pathToCrystal.lineStyle(2, 0xffffff, alpha * 0.75);
         this.pathToCrystal.lineBetween(prev.x, prev.y, next.x, next.y);
       }
     }
