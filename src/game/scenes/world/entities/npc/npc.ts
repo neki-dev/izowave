@@ -147,7 +147,6 @@ export class NPC extends Sprite implements INPC {
       from,
       to: this.scene.player.positionAtMatrix,
       grid: this.scene.level.gridCollide,
-      compress: true,
     }, (path: Nullable<Vector2D[]>) => {
       if (!this.active) {
         return;

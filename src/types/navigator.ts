@@ -50,7 +50,6 @@ export type NavigatorTaskData = {
   from: Vector2D
   to: Vector2D
   grid: boolean[][]
-  compress?: boolean
 };
 
 export type NavigatorPathNodeData = {
