@@ -90,12 +90,6 @@ export interface IGame extends Phaser.Game {
   isSettingEnabled(key: GameSettings): boolean
 
   /**
-   * Check is flag enabled.
-   * @param key - Flag key
-   */
-  isFlagEnabled(key: GameFlag): boolean
-
-  /**
    * Check platform is desktop.
    */
   isDesktop(): boolean
@@ -152,6 +146,13 @@ export enum GameFlag {
   ADS = 'ADS',
 }
 
+export enum GamePlatform {
+  DEVELOPMENT = 'development',
+  POKI = 'poki',
+  CRAZY_GAMES = 'crazy_games',
+  VANILLA = 'vanilla',
+}
+
 export type GameSavePayload = {
   difficulty: GameDifficulty
   tutorial: Partial<Record<TutorialStep, TutorialStepState>>
@@ -164,10 +165,14 @@ export type GameStat = {
   lived: number
 };
 
-declare global {
-  const IS_DEV_MODE: boolean;
+export type GameEnvironment = {
+  flags: Partial<Record<GameFlag, boolean>>
+  sdk?: string
+};
 
+declare global {
   interface Window {
-    GAME: IGame
+    GAME?: IGame
+    PLATFORM: GamePlatform
   }
 }

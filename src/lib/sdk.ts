@@ -1,31 +1,25 @@
-import { SDK_PLATFORMS } from '~const/sdk';
-import { SDKPlatform, SDKAdsType } from '~type/sdk';
+import { GameEnvironment, GamePlatform } from '~type/game';
+import { SDKAdsType } from '~type/sdk';
 
 export class SDK {
-  private static Platform: Nullable<SDKPlatform> = null;
-
-  public static async Register() {
-    const query = new URLSearchParams(window.location.search);
-    const platform = <SDKPlatform> query.get('sdk')?.toUpperCase();
-
-    if (!platform || !SDK_PLATFORMS[platform]) {
+  public static async Register(environment: GameEnvironment) {
+    if (!environment.sdk) {
       return;
     }
-
-    this.Platform = platform;
 
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
 
-      script.setAttribute('src', SDK_PLATFORMS[platform]);
+      // @ts-ignore
+      script.setAttribute('src', environment.sdk);
       script.addEventListener('load', resolve);
       script.addEventListener('error', reject);
 
       document.body.appendChild(script);
     })
       .then(() => {
-        switch (this.Platform) {
-          case SDKPlatform.POKI: {
+        switch (window.PLATFORM) {
+          case GamePlatform.POKI: {
             window.PokiSDK?.init();
           }
         }
@@ -40,28 +34,22 @@ export class SDK {
     callbackBeg: () => void,
     callbackEnd: (success: boolean) => void,
   ) {
-    if (!this.Platform) {
-      return;
-    }
-
-    if (IS_DEV_MODE) {
-      callbackBeg();
-      window.alert('Ads was showed');
-      callbackEnd(true);
-
-      return;
-    }
-
     try {
-      switch (this.Platform) {
-        case SDKPlatform.CRAZY_GAMES: {
+      switch (window.PLATFORM) {
+        case GamePlatform.DEVELOPMENT: {
+          callbackBeg();
+          window.alert('Ads was showed');
+          callbackEnd(true);
+          break;
+        }
+        case GamePlatform.CRAZY_GAMES: {
           window.CrazyGames?.SDK.ad.requestAd(type, {
             adStarted: callbackBeg,
             adFinished: () => callbackEnd(true),
           });
           break;
         }
-        case SDKPlatform.POKI: {
+        case GamePlatform.POKI: {
           const method = type === SDKAdsType.REWARDED
             ? 'rewardedBreak'
             : 'commercialBreak';
@@ -78,13 +66,9 @@ export class SDK {
   }
 
   public static ToggleLoadState(state: boolean) {
-    if (!this.Platform) {
-      return;
-    }
-
     try {
-      switch (this.Platform) {
-        case SDKPlatform.CRAZY_GAMES: {
+      switch (window.PLATFORM) {
+        case GamePlatform.CRAZY_GAMES: {
           if (state) {
             window.CrazyGames?.SDK.game.sdkGameLoadingStart();
           } else {
@@ -92,7 +76,7 @@ export class SDK {
           }
           break;
         }
-        case SDKPlatform.POKI: {
+        case GamePlatform.POKI: {
           if (!state) {
             window.PokiSDK?.gameLoadingFinished();
           }
@@ -105,13 +89,9 @@ export class SDK {
   }
 
   public static TogglePlayState(state: boolean) {
-    if (!this.Platform) {
-      return;
-    }
-
     try {
-      switch (this.Platform) {
-        case SDKPlatform.CRAZY_GAMES: {
+      switch (window.PLATFORM) {
+        case GamePlatform.CRAZY_GAMES: {
           if (state) {
             window.CrazyGames?.SDK.game.gameplayStart();
           } else {
@@ -119,7 +99,7 @@ export class SDK {
           }
           break;
         }
-        case SDKPlatform.POKI: {
+        case GamePlatform.POKI: {
           if (state) {
             window.PokiSDK?.gameplayStart();
           } else {

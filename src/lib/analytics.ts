@@ -27,7 +27,7 @@ export class Analytics {
   }
 
   static TrackEvent(data: AnalyticEventData) {
-    if (IS_DEV_MODE) {
+    if (window.PLATFORM === 'development') {
       return;
     }
 
@@ -37,7 +37,7 @@ export class Analytics {
   }
 
   static TrackError(data: Error) {
-    if (IS_DEV_MODE) {
+    if (window.PLATFORM === 'development') {
       return;
     }
 
@@ -47,7 +47,7 @@ export class Analytics {
   }
 
   static TrackWarn(message: string) {
-    if (IS_DEV_MODE) {
+    if (window.PLATFORM === 'development') {
       console.warn(message);
 
       return;

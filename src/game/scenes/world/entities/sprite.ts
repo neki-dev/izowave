@@ -4,6 +4,7 @@ import { DEBUG_MODS } from '~const/game';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
+import { Game } from '~game/game';
 import { isPositionsEqual } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
@@ -334,7 +335,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public onDamage(amount: number) {
     if (
       !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
+      || Game.GetFlag(GameFlag.NO_BLOOD)
     ) {
       return;
     }

@@ -10,9 +10,10 @@ import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
+import { Game } from '~game/game';
 import { Assets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { excludePosition } from '~lib/dimension';
+import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Effect, Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
@@ -306,7 +307,7 @@ export class Enemy extends NPC implements IEnemy {
     if (
       !this.currentBiome?.solid
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      || this.scene.game.isFlagEnabled(GameFlag.NO_BLOOD)
+      || Game.GetFlag(GameFlag.NO_BLOOD)
     ) {
       return;
     }

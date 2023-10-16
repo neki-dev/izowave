@@ -1,15 +1,23 @@
+import { ENVIRONMENTS } from '~const/game';
 import { SDK } from '~lib/sdk';
 import { removeFailure, throwFailure } from '~lib/state';
+import { GamePlatform } from '~type/game';
 import { FailureType } from '~type/state';
 
 import pkg from '../package.json';
 
 import { Game } from '~game';
 
+const customPlatform = new URLSearchParams(window.location.search).get('sdk')?.toLowerCase();
+
+if (customPlatform && customPlatform in ENVIRONMENTS) {
+  window.PLATFORM = customPlatform as GamePlatform;
+}
+
 console.clear();
 console.log([
   `Created by ${pkg.author.name} / ${pkg.author.url}`,
-  `Version ${pkg.version}`,
+  `Build v${pkg.version}-${window.PLATFORM}`,
   `Open-Source at ${pkg.repository.url.replace('git+', '')}`,
 ].join('\n'));
 
@@ -25,10 +33,12 @@ checkScreenOrientation();
 window.matchMedia('(orientation: landscape)')
   .addEventListener('change', checkScreenOrientation);
 
-SDK.Register().then(() => {
+const environment = Game.GetEnvironment();
+
+SDK.Register(environment).then(() => {
   const game = new Game();
 
-  if (IS_DEV_MODE) {
+  if (window.PLATFORM === 'development') {
     window.GAME = game;
   }
 });

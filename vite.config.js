@@ -4,8 +4,11 @@ import alias from 'alias-reuse';
 import { defineConfig } from 'vite';
 import checkerPlugin from 'vite-plugin-checker';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import zipPackPlugin from 'vite-plugin-zip-pack';
 
-export default defineConfig(({ command }) => ({
+import pkg from './package.json';
+
+export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
     checkerPlugin({
@@ -16,6 +19,11 @@ export default defineConfig(({ command }) => ({
         src: 'assets',
         dest: '',
       }],
+    }),
+    (mode !== 'development') && zipPackPlugin({
+      inDir: 'dist',
+      outDir: 'dist',
+      outFileName: `${pkg.name}-${pkg.version}-${mode}.zip`,
     }),
   ],
   root: './src',
@@ -29,7 +37,7 @@ export default defineConfig(({ command }) => ({
     port: 9999,
   },
   define: {
-    IS_DEV_MODE: JSON.stringify(command === 'serve'),
+    PLATFORM: JSON.stringify(mode),
   },
   resolve: {
     alias: alias

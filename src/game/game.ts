@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import {
-  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS,
+  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, ENVIRONMENTS,
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
 import { SDK } from '~lib/sdk';
@@ -32,7 +32,7 @@ import { IWorld } from '~type/world';
 import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
-  private flags: string[];
+  private flags: GameFlag[];
 
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
@@ -98,7 +98,6 @@ export class Game extends Phaser.Game implements IGame {
 
     SDK.ToggleLoadState(true);
 
-    this.readFlags();
     this.readSettings();
 
     this.events.on(Phaser.Core.Events.READY, () => {
@@ -124,7 +123,7 @@ export class Game extends Phaser.Game implements IGame {
     });
 
     window.onbeforeunload = () => {
-      const needConfirm = !IS_DEV_MODE && (
+      const needConfirm = window.PLATFORM !== 'development' && (
         (this.state === GameState.PAUSED && !this.isSaved)
         || this.state === GameState.STARTED
       );
@@ -219,7 +218,7 @@ export class Game extends Phaser.Game implements IGame {
     if (
       !this.scale.isFullscreen
       && !this.isDesktop()
-      && !IS_DEV_MODE
+      && window.PLATFORM !== 'development'
     ) {
       try {
         this.scale.startFullscreen();
@@ -327,22 +326,7 @@ export class Game extends Phaser.Game implements IGame {
     });
   }
 
-  public isFlagEnabled(key: GameFlag) {
-    return this.flags.includes(key);
-  }
-
-  private readFlags() {
-    const query = new URLSearchParams(window.location.search);
-    const value = query.get('flags')?.toUpperCase() ?? '';
-
-    this.flags = value.split(',');
-  }
-
   public showAds(type: SDKAdsType, callback?: () => void) {
-    if (!this.isFlagEnabled(GameFlag.ADS)) {
-      return;
-    }
-
     SDK.ShowAds(
       type,
       () => {
@@ -402,5 +386,13 @@ export class Game extends Phaser.Game implements IGame {
     eachEntries(shaders, (name, Shader) => {
       renderer.pipelines.addPostPipeline(name, Shader);
     });
+  }
+
+  public static GetEnvironment() {
+    return ENVIRONMENTS[window.PLATFORM];
+  }
+
+  public static GetFlag(flag: GameFlag) {
+    return ENVIRONMENTS[window.PLATFORM].flags[flag];
   }
 }
