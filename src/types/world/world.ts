@@ -52,11 +52,6 @@ export interface IWorld extends IScene {
   readonly deltaTime: number
 
   /**
-   * State of indicators visible.
-   */
-  readonly isIndicatorsActive: boolean
-
-  /**
    * List of generated enemy spawn positions
    */
   enemySpawnPositions: Vector2D[]
@@ -136,6 +131,19 @@ export interface IWorld extends IScene {
   getEnemySpawnPosition(): Vector2D
 
   /**
+   * Check is mode active.
+   * @param mode - Mode
+   */
+  isModeActive(mode: WorldMode): boolean
+
+  /**
+   * Set mode active state.
+   * @param mode - Mode
+   * @param state - State
+   */
+  setModeActive(mode: WorldMode, state: boolean): void
+
+  /**
    * Get data for saving.
    */
   getSavePayload(): WorldSavePayload
@@ -147,6 +155,12 @@ export enum WorldEvents {
   SHOW_HINT = 'show_hint',
   HIDE_HINT = 'hide_hint',
   USE_SUPERSKILL = 'use_superskill',
+  TOGGLE_MODE = 'toggle_mode',
+}
+
+export enum WorldMode {
+  BUILDING_INDICATORS = 'BUILDING_INDICATORS',
+  AUTO_REPAIR = 'AUTO_REPAIR',
 }
 
 export type WorldHint = {

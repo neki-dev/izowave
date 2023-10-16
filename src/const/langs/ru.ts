@@ -51,6 +51,13 @@ export const RU = {
   NOT_ENOUGH_EXPERIENCE: 'Недостаточно опыта',
 
   /**
+   * Modes
+   */
+  BUILDING_INDICATORS: 'Отображение жизней\nи патронов построек',
+  AUTO_REPAIR: 'Автоматическая перезарядка\nи ремонт построек',
+  PATH_TO_CRYSTAL: 'Отображение пути\nдо ближайшего кристалла',
+
+  /**
    * Skills
    */
   SKILLS: 'Навыки',
@@ -183,7 +190,6 @@ export const RU = {
   REPAIR_BUILDING: 'Починить здание',
   DESTROY_BUILDING: 'Уничтожить здание',
   BUY_AMMO: 'Купить патроны',
-  SHOW_BUILDINGS_INDICATORS: 'Отобразить индикаторы зданий',
   SKIP_WAVE_TIMELEFT: 'Начать волну',
 
   /**

@@ -51,6 +51,13 @@ export const EN = {
   NOT_ENOUGH_EXPERIENCE: 'Not enough experience',
 
   /**
+   * Modes
+   */
+  BUILDING_INDICATORS: 'Display buildings\nhealth and ammo',
+  AUTO_REPAIR: 'Auto buy ammo\nand repair buildings',
+  PATH_TO_CRYSTAL: 'Display path\nto nearest crystal',
+
+  /**
    * Skills
    */
   SKILLS: 'Skills',
@@ -183,7 +190,6 @@ export const EN = {
   REPAIR_BUILDING: 'Repair building',
   DESTROY_BUILDING: 'Destroy building',
   BUY_AMMO: 'Buy ammo',
-  SHOW_BUILDINGS_INDICATORS: 'Show buildings indicators',
   SKIP_WAVE_TIMELEFT: 'Skip wave timeleft',
 
   /**

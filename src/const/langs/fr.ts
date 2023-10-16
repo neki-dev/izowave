@@ -51,6 +51,13 @@ export const FR = {
   NOT_ENOUGH_EXPERIENCE: 'Pas aasez d`experience',
 
   /**
+   * Modes
+   */
+  BUILDING_INDICATORS: 'Display buildings\nhealth and ammo', // TODO
+  AUTO_REPAIR: 'Auto buy ammo\nand repair buildings', // TODO
+  PATH_TO_CRYSTAL: 'Display path\nto nearest crystal', // TODO
+
+  /**
    * Skills
    */
   SKILLS: 'Skills', // (too long) Competences
@@ -183,7 +190,6 @@ export const FR = {
   REPAIR_BUILDING: 'Reparer batiment',
   DESTROY_BUILDING: 'Detruire batiment',
   BUY_AMMO: 'Acheter des balles',
-  SHOW_BUILDINGS_INDICATORS: 'Afficher les indices des batiments',
   SKIP_WAVE_TIMELEFT: 'Commencer le vague',
 
   /**
