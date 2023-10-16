@@ -53,9 +53,9 @@ export const FR = {
   /**
    * Modes
    */
-  BUILDING_INDICATORS: 'Display buildings\nhealth and ammo', // TODO
-  AUTO_REPAIR: 'Auto buy ammo\nand repair buildings', // TODO
-  PATH_TO_CRYSTAL: 'Display path\nto nearest crystal', // TODO
+  BUILDING_INDICATORS: 'Afficher des vies\net des munitions des batiments',
+  AUTO_REPAIR: 'Automatiquement acheter munition\net reparer les batiments',
+  PATH_TO_CRYSTAL: 'Afficher le chemin\nvers le cristal le plus proche',
 
   /**
    * Skills

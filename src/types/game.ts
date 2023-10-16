@@ -171,8 +171,9 @@ export type GameEnvironment = {
 };
 
 declare global {
+  const PLATFORM: GamePlatform;
+
   interface Window {
     GAME?: IGame
-    PLATFORM: GamePlatform
   }
 }

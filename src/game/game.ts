@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
 
 import {
-  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS, ENVIRONMENTS,
+  AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS,
 } from '~const/game';
 import { Analytics } from '~lib/analytics';
+import { Environment } from '~lib/environment';
 import { SDK } from '~lib/sdk';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
@@ -123,7 +124,7 @@ export class Game extends Phaser.Game implements IGame {
     });
 
     window.onbeforeunload = () => {
-      const needConfirm = window.PLATFORM !== 'development' && (
+      const needConfirm = Environment.Platform !== 'development' && (
         (this.state === GameState.PAUSED && !this.isSaved)
         || this.state === GameState.STARTED
       );
@@ -218,7 +219,7 @@ export class Game extends Phaser.Game implements IGame {
     if (
       !this.scale.isFullscreen
       && !this.isDesktop()
-      && window.PLATFORM !== 'development'
+      && Environment.Platform !== 'development'
     ) {
       try {
         this.scale.startFullscreen();
@@ -386,13 +387,5 @@ export class Game extends Phaser.Game implements IGame {
     eachEntries(shaders, (name, Shader) => {
       renderer.pipelines.addPostPipeline(name, Shader);
     });
-  }
-
-  public static GetEnvironment() {
-    return ENVIRONMENTS[window.PLATFORM];
-  }
-
-  public static GetFlag(flag: GameFlag) {
-    return ENVIRONMENTS[window.PLATFORM].flags[flag];
   }
 }

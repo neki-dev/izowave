@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import pkg from '../../package.json';
 import { ANALYTICS_SERVER } from '~const/analytics';
+import { Environment } from '~lib/environment';
 import { AnalyticEventData } from '~type/analytics';
 
 export class Analytics {
@@ -27,7 +28,7 @@ export class Analytics {
   }
 
   static TrackEvent(data: AnalyticEventData) {
-    if (window.PLATFORM === 'development') {
+    if (Environment.Platform === 'development') {
       return;
     }
 
@@ -37,7 +38,7 @@ export class Analytics {
   }
 
   static TrackError(data: Error) {
-    if (window.PLATFORM === 'development') {
+    if (Environment.Platform === 'development') {
       return;
     }
 
@@ -47,7 +48,7 @@ export class Analytics {
   }
 
   static TrackWarn(message: string) {
-    if (window.PLATFORM === 'development') {
+    if (Environment.Platform === 'development') {
       console.warn(message);
 
       return;

@@ -1,24 +1,26 @@
-import { GameEnvironment, GamePlatform } from '~type/game';
+import { Environment } from '~lib/environment';
+import { GamePlatform } from '~type/game';
 import { SDKAdsType } from '~type/sdk';
 
 export class SDK {
-  public static async Register(environment: GameEnvironment) {
-    if (!environment.sdk) {
+  public static async Register() {
+    const sdk = Environment.GetSDK();
+
+    if (!sdk) {
       return;
     }
 
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
 
-      // @ts-ignore
-      script.setAttribute('src', environment.sdk);
+      script.setAttribute('src', sdk);
       script.addEventListener('load', resolve);
       script.addEventListener('error', reject);
 
       document.body.appendChild(script);
     })
       .then(() => {
-        switch (window.PLATFORM) {
+        switch (Environment.Platform) {
           case GamePlatform.POKI: {
             window.PokiSDK?.init();
           }
@@ -35,7 +37,7 @@ export class SDK {
     callbackEnd: (success: boolean) => void,
   ) {
     try {
-      switch (window.PLATFORM) {
+      switch (Environment.Platform) {
         case GamePlatform.DEVELOPMENT: {
           callbackBeg();
           window.alert('Ads was showed');
@@ -67,7 +69,7 @@ export class SDK {
 
   public static ToggleLoadState(state: boolean) {
     try {
-      switch (window.PLATFORM) {
+      switch (Environment.Platform) {
         case GamePlatform.CRAZY_GAMES: {
           if (state) {
             window.CrazyGames?.SDK.game.sdkGameLoadingStart();
@@ -90,7 +92,7 @@ export class SDK {
 
   public static TogglePlayState(state: boolean) {
     try {
-      switch (window.PLATFORM) {
+      switch (Environment.Platform) {
         case GamePlatform.CRAZY_GAMES: {
           if (state) {
             window.CrazyGames?.SDK.game.gameplayStart();
