@@ -12,7 +12,7 @@ export class EnemyGhost extends Enemy {
       ...data,
       texture: EnemyTexture.GHOST,
       multipliers: {
-        health: 1.0,
+        health: 1.5,
         damage: 0.7,
         speed: 0.8,
       },

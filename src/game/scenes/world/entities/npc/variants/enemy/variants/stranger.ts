@@ -12,7 +12,7 @@ export class EnemyStranger extends Enemy {
       ...data,
       texture: EnemyTexture.STRANGER,
       multipliers: {
-        health: 1.0,
+        health: 1.5,
         damage: 0.8,
         speed: 0.7,
       },

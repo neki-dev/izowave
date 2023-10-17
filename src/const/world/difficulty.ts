@@ -34,13 +34,16 @@ export const DIFFICULTY = {
    */
 
   SUPERSKILL_FROST_COST: 40, // Cost of use
-  SUPERSKILL_FROST_DURATION: 6000, // Superskill duration
-  SUPERSKILL_RAGE_COST: 60, // Cost of use
-  SUPERSKILL_RAGE_DURATION: 10000, // Superskill duration
+  SUPERSKILL_FROST_DURATION: 6000, // Frost duration
   SUPERSKILL_SHIELD_COST: 40, // Cost of use
-  SUPERSKILL_SHIELD_DURATION: 10000, // Superskill duration
-  SUPERSKILL_FIRE_COST: 70, // Cost of use
-  SUPERSKILL_FIRE_DURATION: 1000, // Superskill duration
+  SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
+  SUPERSKILL_RAGE_COST: 60, // Cost of use
+  SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
+  SUPERSKILL_FIRE_COST: 60, // Cost of use
+  SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
+  SUPERSKILL_FIRE_DAMAGE: 40, // Fire damage
+  SUPERSKILL_FIRE_DAMAGE_GROWTH: 0.35, // Growth damage by wave number (Quadratic)
+  SUPERSKILL_FIRE_DAMAGE_GROWTH_RETARDATION_LEVEL: 12, // Level for damage growth retardation
   SUPERSKILL_COST_GROWTH: 0.15, // Growth cost by wave number (Linear)
 
   /**
@@ -79,7 +82,7 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 90, // Health
+  ENEMY_HEALTH: 60, // Health
   ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
