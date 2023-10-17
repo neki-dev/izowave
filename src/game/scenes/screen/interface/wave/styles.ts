@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceFont,
   InterfaceTextColor,
@@ -23,9 +23,9 @@ export const Container = styled.div`
   display: flex;
   color: #fff;
   align-items: center;
-  padding: 10px 15px 10px 10px;
+  padding: 10px 16px 10px 10px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  border-radius: 5px;
+  border-radius: 5px 0 0 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 7px 11px 7px 7px;
   }
@@ -35,9 +35,7 @@ export const CurrentNumber = styled.div<{
   $paused?: boolean
   $going?: boolean
 }>`
-  font-size: 24px;
-  line-height: 24px;
-  padding: 6px 17px 10px 17px;
+  text-align: center;
   border-radius: 3px;
   background: ${(props) => {
     if (props.$paused) {
@@ -49,11 +47,18 @@ export const CurrentNumber = styled.div<{
 
     return InterfaceBackgroundColor.SUCCESS;
   }};
-  box-shadow: 0 20px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    font-size: 24px;
+    line-height: 24px;
+    padding: 6px 12px 10px 12px;
+    min-width: 40px;
+    box-shadow: 0 20px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 22px;
     line-height: 22px;
-    padding: 4px 13px 8px 13px;
+    padding: 4px 13px 7px 13px;
+    box-shadow: 0 16px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
   }
 `;
 
@@ -83,4 +88,8 @@ export const Value = styled.div<{
     color: ${InterfaceTextColor.ERROR};
     animation: ${animationPulse} 1s infinite;
   `}
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 18px;
+    line-height: 18px;
+  }
 `;

@@ -434,6 +434,16 @@ export class Player extends Sprite implements IPlayer {
     this.scene.input.keyboard?.on(Phaser.Input.Keyboard.Events.ANY_KEY_UP, (event: KeyboardEvent) => {
       toggleKeyState(event.code, false);
     });
+
+    const handleMovementStop = () => {
+      this.movementTarget = null;
+    };
+
+    window.addEventListener('blur', handleMovementStop);
+
+    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+      window.removeEventListener('blur', handleMovementStop);
+    });
   }
 
   private updateVelocity() {
