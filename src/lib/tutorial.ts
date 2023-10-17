@@ -26,10 +26,6 @@ export class Tutorial {
     callback: (step: TutorialStep) => void
   }[] = [];
 
-  public static Register() {
-    //
-  }
-
   public static Reset() {
     this.Progress = {};
     this.EventListeners = [];

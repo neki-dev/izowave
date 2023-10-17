@@ -1,9 +1,10 @@
 import {
   useGame,
   useMobilePlatform,
-  useOutsideClick,
+  useClickOutside,
   useScene,
   useSceneUpdate,
+  useClick,
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
@@ -36,25 +37,29 @@ export const Item: React.FC<Props> = ({ type }) => {
 
   const refContainer = useRef<HTMLDivElement>(null);
 
-  const onClick = () => {
+  const onMouseEnter = () => {
+    if (!isMobile) {
+      setSelected(true);
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (!isMobile) {
+      setSelected(false);
+    }
+  };
+
+  useClickOutside(refContainer, () => {
+    setSelected(false);
+  }, []);
+
+  useClick(refContainer, 'down', () => {
     if (isSelected) {
       world.player.useSuperskill(type);
     } else {
       setSelected(true);
     }
-  };
-
-  const onMouseEnter = () => {
-    setSelected(true);
-  };
-
-  const onMouseLeave = () => {
-    setSelected(false);
-  };
-
-  useOutsideClick(refContainer, () => {
-    setSelected(false);
-  }, []);
+  }, [isSelected, type]);
 
   useSceneUpdate(scene, () => {
     setPaused(game.state === GameState.PAUSED);
@@ -65,13 +70,8 @@ export const Item: React.FC<Props> = ({ type }) => {
   return (
     <Container
       ref={refContainer}
-      {...isMobile ? {
-        onTouchEnd: onClick,
-      } : {
-        onClick,
-        onMouseEnter,
-        onMouseLeave,
-      }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       $selected={isSelected}
       $active={isActive}
     >
