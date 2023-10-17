@@ -130,6 +130,8 @@ export class Tutorial {
   }
 
   public static Disable() {
+    this.EventHistory = [];
+
     const states = Object.keys(this.Progress) as TutorialStep[];
 
     states.forEach((step) => {
