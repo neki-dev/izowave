@@ -41,19 +41,16 @@ export const Skills: React.FC = () => {
     setOpened(!isOpened);
   };
 
-  const onClose = () => {
-    setOpened(false);
-  };
-
   const onKeyPress = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      onClose();
+      setOpened(false);
       event.stopPropagation();
+      event.preventDefault();
     }
   };
 
   useClickOutside(refContainer, () => {
-    onClose();
+    setOpened(false);
   }, []);
 
   useEffect(() => {

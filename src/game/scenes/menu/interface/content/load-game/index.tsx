@@ -19,9 +19,7 @@ export const LoadGame: React.FC = () => {
     game.continueGame(selectedSave);
   };
 
-  const deleteSave = (event: MouseEvent, name: string) => {
-    event.stopPropagation();
-
+  const deleteSave = (name: string) => {
     if (window.confirm(phrase('CONFIRM_DELETE_SAVE'))) {
       Storage.DeleteSave(name).then(() => {
         setSaves([...Storage.Saves]);
@@ -64,7 +62,7 @@ export const LoadGame: React.FC = () => {
                 <Table.Cell>{new Date(save.date).toLocaleString()}</Table.Cell>
                 <Table.Cell
                   $type="delete"
-                  onClick={(event: MouseEvent) => deleteSave(event, save.name)}
+                  onClick={() => deleteSave(save.name)}
                 >
                   X
                 </Table.Cell>
