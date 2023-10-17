@@ -7,7 +7,6 @@ import { Section } from '~scene/system/interface/section';
 import { AdsReward } from './ads-reward';
 import { Builder } from './builder';
 import { Debug } from './debug';
-import { GeneralHints } from './general-hints';
 import { Modes } from './modes';
 import { Notices } from './notices';
 import { PlayerHUD } from './player-hud';
@@ -33,7 +32,6 @@ export const ScreenUI: React.FC = () => {
             <Wave />
             <Modes />
           </Section>
-          <GeneralHints />
           <Superskills />
         </Column>
 

@@ -5,7 +5,6 @@ import React, { useRef, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { Cost } from '~scene/system/interface/cost';
-import { Builder } from '~scene/world/builder';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -52,7 +51,7 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
     const currentIsActive = world.builder.variant === variant;
     const currentIsAllow = (
       world.builder.isBuildingAllowByWave(variant)
-      && Builder.IsBuildingAllowByTutorial(variant)
+      && world.builder.isBuildingAllowByTutorial(variant)
     );
     const currentIsUsable = (
       world.player.resources >= BUILDINGS[variant].Cost

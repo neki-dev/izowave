@@ -1,20 +1,33 @@
+import {
+  RelativePosition, RelativeScale, useScene, useSceneUpdate,
+} from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { INTERFACE_SCALE } from '~const/interface';
 import { BUILDINGS } from '~const/world/entities/buildings';
+import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { mapEntries } from '~lib/utils';
+import { Hint } from '~scene/system/interface/hint';
+import { Level } from '~scene/world/level';
+import { GameScene } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
+import { IWorld } from '~type/world';
 import { BuildingCategory, BuildingVariant } from '~type/world/entities/building';
+import { Vector2D } from '~type/world/level';
 
 import { Building } from './building';
 import {
-  Category, Label, Variants, Wrapper,
+  Category, Label, HintTranslator, Variants, Wrapper,
 } from './styles';
 
 export const Builder: React.FC = () => {
-  const [hint, setHint] = useState<Nullable<{
+  const world = useScene<IWorld>(GameScene.WORLD);
+
+  const [hintStopBuild, setHintStopBuild] = useState<Nullable<Vector2D>>(null);
+  const [hintBuilding, setHintBuilding] = useState<Nullable<{
     variant: BuildingVariant
     label: LangPhrase
   }>>(null);
@@ -32,37 +45,48 @@ export const Builder: React.FC = () => {
     }));
   }, []);
 
+  const getSupposedPosition = () => {
+    if (world.builder.supposedPosition) {
+      return Level.ToWorldPosition({ ...world.builder.supposedPosition, z: 1 });
+    }
+
+    return null;
+  };
+
   const showHint = (step: TutorialStep) => {
     switch (step) {
       case TutorialStep.BUILD_GENERATOR: {
-        return setHint({
+        return setHintBuilding({
           variant: BuildingVariant.GENERATOR,
           label: 'TUTORIAL_BUILD_GENERATOR',
         });
       }
       case TutorialStep.BUILD_GENERATOR_SECOND: {
-        return setHint({
+        return setHintBuilding({
           variant: BuildingVariant.GENERATOR,
           label: 'TUTORIAL_BUILD_GENERATOR_SECOND',
         });
       }
       case TutorialStep.BUILD_RADAR: {
-        return setHint({
+        return setHintBuilding({
           variant: BuildingVariant.RADAR,
           label: 'TUTORIAL_BUILD_RADAR',
         });
       }
       case TutorialStep.BUILD_TOWER_FIRE: {
-        return setHint({
+        return setHintBuilding({
           variant: BuildingVariant.TOWER_FIRE,
           label: 'TUTORIAL_BUILD_TOWER_FIRE',
         });
       }
       case TutorialStep.BUILD_AMMUNITION: {
-        return setHint({
+        return setHintBuilding({
           variant: BuildingVariant.AMMUNITION,
           label: 'TUTORIAL_BUILD_AMMUNITION',
         });
+      }
+      case TutorialStep.STOP_BUILD: {
+        return setHintStopBuild(getSupposedPosition());
       }
     }
   };
@@ -74,7 +98,10 @@ export const Builder: React.FC = () => {
       case TutorialStep.BUILD_RADAR:
       case TutorialStep.BUILD_TOWER_FIRE:
       case TutorialStep.BUILD_AMMUNITION: {
-        return setHint(null);
+        return setHintBuilding(null);
+      }
+      case TutorialStep.STOP_BUILD: {
+        return setHintStopBuild(null);
       }
     }
   };
@@ -83,6 +110,18 @@ export const Builder: React.FC = () => {
     beg: showHint,
     end: hideHint,
   }), []);
+
+  useSceneUpdate(world, () => {
+    if (!hintStopBuild) {
+      return;
+    }
+
+    const position = getSupposedPosition();
+
+    if (position && !isPositionsEqual(hintStopBuild, position)) {
+      setHintStopBuild(position);
+    }
+  }, [hintStopBuild]);
 
   return (
     <Wrapper>
@@ -95,12 +134,22 @@ export const Builder: React.FC = () => {
                 key={building.variant}
                 variant={building.variant}
                 number={building.number}
-                hint={hint?.variant === building.variant ? hint.label : undefined}
+                hint={hintBuilding?.variant === building.variant ? hintBuilding.label : undefined}
               />
             ))}
           </Variants>
         </Category>
       ))}
+
+      {hintStopBuild && (
+        <HintTranslator>
+          <RelativePosition x={hintStopBuild.x} y={hintStopBuild.y} camera={world.cameras.main}>
+            <RelativeScale {...INTERFACE_SCALE}>
+              <Hint label='TUTORIAL_STOP_BUILD' side="top" align="center" />
+            </RelativeScale>
+          </RelativePosition>
+        </HintTranslator>
+      )}
     </Wrapper>
   );
 };
