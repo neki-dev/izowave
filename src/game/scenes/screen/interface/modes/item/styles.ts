@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Placeholder = styled.div`
@@ -8,22 +9,36 @@ export const Placeholder = styled.div`
   position: absolute;
   pointer-events: none;
   letter-spacing: 1px;
-  left: 100%;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
   font-size: 10px;
   line-height: 10px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
-  border-radius: 0 5px 5px 0;
-  padding: 8px 12px 8px 9px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  border-radius: 5px;
+  padding: 9px 12px 8px 12px;
   height: 36px;
+  margin-top: 20px;
   white-space: pre;
   display: none;
   align-items: center;
+  &::after {
+    position: absolute;
+    content: '';
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  }
 `;
 
 export const Icon = styled.img`
   width: 16px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 12px;
+  }
 `;
 
 export const Container = styled.div<{
@@ -38,17 +53,21 @@ export const Container = styled.div<{
   border-radius: 5px;
   pointer-events: all;
   ${(props) => (props.$active ? css`
-    outline: 3px solid ${InterfaceBackgroundColor.WARN};
-    background: ${InterfaceBackgroundColor.BLACK};
+    background: ${InterfaceBackgroundColor.SUCCESS};
   ` : css`
-    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+    background: ${InterfaceBackgroundColor.BLACK};
   `)};
   &:hover {
-    border-radius: 5px 0 0 5px;
-    background: ${InterfaceBackgroundColor.BLACK};
+    ${(props) => (!props.$active && css`
+      background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+    `)};
     cursor: pointer;
     ${Placeholder} {
       display: flex;
     }
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 32px;
+    height: 32px;
   }
 `;

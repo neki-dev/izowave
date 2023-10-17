@@ -24,15 +24,15 @@ export const ScreenUI: React.FC = () => {
 
       <Grid>
         <Column $side="left">
-          <Section direction='vertical' gap={32}>
-            <PlayerHUD />
-            <Modes />
-          </Section>
+          <PlayerHUD />
           <Debug />
         </Column>
 
         <Column $side="center">
-          <Wave />
+          <Section direction='horizontal'>
+            <Wave />
+            <Modes />
+          </Section>
           <GeneralHints />
           <Superskills />
         </Column>
