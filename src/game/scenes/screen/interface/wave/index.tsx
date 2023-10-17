@@ -1,5 +1,5 @@
-import { useScene, useSceneUpdate } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import { useClick, useScene, useSceneUpdate } from 'phaser-react-ui';
+import React, { useRef, useState } from 'react';
 
 import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { phrase } from '~lib/lang';
@@ -14,10 +14,13 @@ import {
   Wrapper,
   Label,
   Value,
+  Placeholder,
 } from './styles';
 
 export const Wave: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
+
+  const refWaveNumber = useRef<HTMLDivElement>(null);
 
   const [currentNumber, setCurrentNumber] = useState(1);
   const [value, setValue] = useState<Nullable<number | string>>(null);
@@ -25,6 +28,12 @@ export const Wave: React.FC = () => {
   const [isAlarm, setAlarm] = useState(false);
   const [isDisabled, setDisabled] = useState(true);
   const [isPaused, setPaused] = useState(true);
+
+  useClick(refWaveNumber, 'down', () => {
+    if (!world.wave.isGoing) {
+      world.wave.skipTimeleft();
+    }
+  }, [isDisabled]);
 
   useSceneUpdate(world, () => {
     setDisabled(world.wave.isPeaceMode);
@@ -59,7 +68,12 @@ export const Wave: React.FC = () => {
   ) : (
     <Wrapper>
       <Container>
-        <CurrentNumber $paused={isPaused} $going={isGoing}>{isPaused ? '||' : currentNumber}</CurrentNumber>
+        <CurrentNumber ref={refWaveNumber} $paused={isPaused} $going={isGoing}>
+          {isPaused ? '||' : currentNumber}
+          {(!isGoing && !isPaused) && (
+            <Placeholder>{phrase('SKIP_WAVE_TIMELEFT')}</Placeholder>
+          )}
+        </CurrentNumber>
         <State>
           <Label>{phrase(isGoing ? 'WAVE_ENEMIES' : 'WAVE_TIMELEFT')}</Label>
           <Value $attention={isAlarm}>{value}</Value>

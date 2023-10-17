@@ -6,6 +6,7 @@ export const RU = {
   WAVE_TIMELEFT: 'Волна через',
   WAVE_COMPLETED: 'Волна %1 завершена',
   WAVE: 'Волна',
+  SKIP_WAVE_TIMELEFT: 'Начать волну\nпреждевременно',
 
   /**
    * Buildings
@@ -190,7 +191,6 @@ export const RU = {
   REPAIR_BUILDING: 'Починить здание',
   DESTROY_BUILDING: 'Уничтожить здание',
   BUY_AMMO: 'Купить патроны',
-  SKIP_WAVE_TIMELEFT: 'Начать волну',
 
   /**
    * Game over

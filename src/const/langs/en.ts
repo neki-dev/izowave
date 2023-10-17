@@ -6,6 +6,7 @@ export const EN = {
   WAVE_TIMELEFT: 'Timeleft',
   WAVE_COMPLETED: 'Wave %1 completed',
   WAVE: 'Wave',
+  SKIP_WAVE_TIMELEFT: 'Start wave\nprematurely',
 
   /**
    * Buildings
@@ -190,7 +191,6 @@ export const EN = {
   REPAIR_BUILDING: 'Repair building',
   DESTROY_BUILDING: 'Destroy building',
   BUY_AMMO: 'Buy ammo',
-  SKIP_WAVE_TIMELEFT: 'Skip wave timeleft',
 
   /**
    * Game over

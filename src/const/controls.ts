@@ -7,8 +7,6 @@ export const CONTROL_KEY = {
   BUILDING_REPEAR: 'keyup-R',
   BUILDING_BUY_AMMO: 'keyup-F',
   BUILDING_UPGRADE: 'keyup-E',
-
-  SKIP_WAVE_TIMELEFT: 'keyup-N',
 };
 
 export const CONTROLS: ControlItem[] = [
@@ -19,5 +17,4 @@ export const CONTROLS: ControlItem[] = [
   { keys: 'R', label: 'REPAIR_BUILDING' },
   { keys: 'F', label: 'BUY_AMMO' },
   { keys: 'BACKSPACE', label: 'DESTROY_BUILDING' },
-  { keys: 'N', label: 'SKIP_WAVE_TIMELEFT' },
 ];
