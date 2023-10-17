@@ -1,5 +1,5 @@
-import { useMobilePlatform } from 'phaser-react-ui';
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useClick, useMobilePlatform } from 'phaser-react-ui';
+import React, { useRef } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
@@ -18,30 +18,12 @@ export const Action: React.FC<Props> = ({ control }) => {
 
   const refContainer = useRef<HTMLDivElement>(null);
 
-  const onClick = useCallback((event: MouseEvent) => {
+  useClick(refContainer, 'down', () => {
     control.onClick();
-    event.stopPropagation();
   }, [control.onClick]);
 
-  useEffect(() => {
-    const el = refContainer.current;
-
-    if (!el) {
-      return;
-    }
-
-    el.addEventListener('mousedown', onClick);
-
-    return () => {
-      el.removeEventListener('mousedown', onClick);
-    };
-  }, [onClick]);
-
   return (
-    <Container
-      ref={refContainer}
-      $disabled={control.disabled}
-    >
+    <Container ref={refContainer} $disabled={control.disabled}>
       <Main>
         {!isMobile && (
           <Key>{control.hotkey}</Key>

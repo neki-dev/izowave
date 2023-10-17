@@ -18,6 +18,11 @@ export interface IBuilder extends EventEmitter {
   readonly variant: Nullable<BuildingVariant>
 
   /**
+   * Current position to build.
+   */
+  readonly supposedPosition: Nullable<Vector2D>
+
+  /**
    * Current active building.
    */
   selectedBuilding: Nullable<IBuilding>
@@ -76,6 +81,12 @@ export interface IBuilder extends EventEmitter {
    * @param variant - Building variant
    */
   isBuildingAllowByWave(variant: BuildingVariant): boolean
+
+  /**
+   * Check is tutorial allow building variant.
+   * @param variant - Building variant
+   */
+  isBuildingAllowByTutorial(variant: BuildingVariant): boolean
 
   /**
    * Get list of buildings with a specific variant.

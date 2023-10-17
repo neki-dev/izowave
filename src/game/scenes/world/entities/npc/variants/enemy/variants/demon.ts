@@ -11,7 +11,7 @@ export class EnemyDemon extends Enemy {
       ...data,
       texture: EnemyTexture.DEMON,
       multipliers: {
-        health: 0.4,
+        health: 0.6,
         damage: 0.3,
         speed: 0.8,
       },

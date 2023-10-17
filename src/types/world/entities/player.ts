@@ -37,7 +37,7 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   /**
    * Active superskills.
    */
-  readonly activeSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+  readonly activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>>
 
   /**
    * Upgrade player skill.
@@ -164,11 +164,6 @@ export enum PlayerSuperskill {
   RAGE = 'RAGE',
   FIRE = 'FIRE',
 }
-
-export type PlayerSuperskillData = {
-  cost: number
-  duration: number
-};
 
 export type PlayerSavePayload = {
   position: Vector2D

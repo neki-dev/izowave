@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 
 import Phaser from 'phaser';
 
-import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
@@ -63,7 +62,6 @@ export class Wave extends EventEmitter implements IWave {
     this.scene = scene;
 
     this.setMaxListeners(0);
-    this.handleKeyboard();
     this.runTimeleft();
   }
 
@@ -254,12 +252,6 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     return this.lastSpawnedEnemyVariant;
-  }
-
-  private handleKeyboard() {
-    this.scene.input.keyboard?.on(CONTROL_KEY.SKIP_WAVE_TIMELEFT, () => {
-      this.skipTimeleft();
-    });
   }
 
   public getSavePayload(): WaveSavePayload {

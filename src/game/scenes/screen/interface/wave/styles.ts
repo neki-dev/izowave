@@ -31,21 +31,65 @@ export const Container = styled.div`
   }
 `;
 
+export const Placeholder = styled.div`
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  color: #fff;
+  position: absolute;
+  pointer-events: none;
+  letter-spacing: 1px;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  line-height: 12px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  border-radius: 5px;
+  padding: 9px 12px;
+  margin-top: 18px;
+  white-space: pre;
+  display: none;
+  text-align: left;
+  &::after {
+    position: absolute;
+    content: '';
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  }
+`;
+
 export const CurrentNumber = styled.div<{
   $paused?: boolean
   $going?: boolean
 }>`
+  pointer-events: all;
+  position: relative;
   text-align: center;
   border-radius: 3px;
-  background: ${(props) => {
+  ${(props) => {
     if (props.$paused) {
-      return InterfaceBackgroundColor.WARN;
+      return css`
+        background: ${InterfaceBackgroundColor.WARN};
+      `;
     }
     if (props.$going) {
-      return InterfaceBackgroundColor.ERROR;
+      return css`
+        background: ${InterfaceBackgroundColor.ERROR};
+      `;
     }
 
-    return InterfaceBackgroundColor.SUCCESS;
+    return css`
+      background: ${InterfaceBackgroundColor.SUCCESS};
+      &:hover {
+        cursor: pointer;
+        ${Placeholder} {
+          display: block;
+        }
+      }
+    `;
   }};
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     font-size: 24px;
@@ -71,6 +115,7 @@ export const Label = styled.div`
   line-height: 11px;
   opacity: 0.5;
   margin-top: -2px;
+  min-width: 80px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 8px;
     line-height: 8px;

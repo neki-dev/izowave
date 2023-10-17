@@ -13,15 +13,13 @@ export const Placeholder = styled.div`
   top: 100%;
   transform: translateX(-50%);
   font-size: 10px;
-  line-height: 10px;
+  line-height: 12px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
-  padding: 9px 12px 8px 12px;
-  height: 36px;
+  padding: 9px 12px;
   margin-top: 20px;
   white-space: pre;
   display: none;
-  align-items: center;
   &::after {
     position: absolute;
     content: '';
@@ -63,7 +61,7 @@ export const Container = styled.div<{
     `)};
     cursor: pointer;
     ${Placeholder} {
-      display: flex;
+      display: block;
     }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {

@@ -43,7 +43,11 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
 
-  private supposedPosition: Nullable<Vector2D> = null;
+  private _supposedPosition: Nullable<Vector2D> = null;
+
+  public get supposedPosition() { return this._supposedPosition; }
+
+  private set supposedPosition(v) { this._supposedPosition = v; }
 
   private _variant: Nullable<BuildingVariant> = null;
 
@@ -86,7 +90,7 @@ export class Builder extends EventEmitter implements IBuilder {
   public setBuildingVariant(variant: BuildingVariant) {
     if (
       this.variant === variant
-      || !Builder.IsBuildingAllowByTutorial(variant)
+      || !this.isBuildingAllowByTutorial(variant)
     ) {
       return;
     }
@@ -130,6 +134,10 @@ export class Builder extends EventEmitter implements IBuilder {
     this.scene.sound.play(BuildingAudio.UNSELECT);
 
     this.clearBuildingVariant();
+
+    if (Tutorial.IsInProgress(TutorialStep.STOP_BUILD)) {
+      Tutorial.Complete(TutorialStep.STOP_BUILD);
+    }
   }
 
   public addFoundation(position: Vector2D) {
@@ -533,6 +541,29 @@ export class Builder extends EventEmitter implements IBuilder {
     this.supposedPosition = Level.ToMatrixPosition(position);
   }
 
+  public isBuildingAllowByTutorial(variant: BuildingVariant) {
+    if (!Tutorial.IsEnabled) {
+      return true;
+    }
+
+    const restrictions: {
+      step: TutorialStep
+      variant: BuildingVariant
+    }[] = [
+      { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
+      { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
+      { step: TutorialStep.BUILD_GENERATOR_SECOND, variant: BuildingVariant.GENERATOR },
+      { step: TutorialStep.BUILD_AMMUNITION, variant: BuildingVariant.AMMUNITION },
+      { step: TutorialStep.BUILD_RADAR, variant: BuildingVariant.RADAR },
+    ];
+
+    const restriction = restrictions.find((item) => Tutorial.IsInProgress(item.step));
+
+    return restriction
+      ? (restriction.variant === variant)
+      : (this.scene.wave.number > 1);
+  }
+
   private handleKeyboard() {
     if (!this.scene.game.isDesktop()) {
       return;
@@ -559,10 +590,6 @@ export class Builder extends EventEmitter implements IBuilder {
         this.build();
       } else if (pointer.button === 2) {
         this.unsetBuildingVariant();
-
-        if (this.scene.game.isDesktop()) {
-          Tutorial.Complete(TutorialStep.STOP_BUILD);
-        }
       }
     });
   }
@@ -586,24 +613,5 @@ export class Builder extends EventEmitter implements IBuilder {
         this.scene.setTimePause(false);
       },
     });
-  }
-
-  public static IsBuildingAllowByTutorial(variant: BuildingVariant) {
-    if (!Tutorial.IsEnabled) {
-      return true;
-    }
-
-    const links: {
-      step: TutorialStep
-      variant: BuildingVariant
-    }[] = [
-      { step: TutorialStep.BUILD_TOWER_FIRE, variant: BuildingVariant.TOWER_FIRE },
-      { step: TutorialStep.BUILD_GENERATOR, variant: BuildingVariant.GENERATOR },
-      { step: TutorialStep.BUILD_GENERATOR_SECOND, variant: BuildingVariant.GENERATOR },
-    ];
-
-    const current = links.find((link) => Tutorial.IsInProgress(link.step));
-
-    return (!current || current.variant === variant);
   }
 }

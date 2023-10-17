@@ -11,7 +11,7 @@ export class EnemySpike extends Enemy {
       ...data,
       texture: EnemyTexture.SPIKE,
       multipliers: {
-        health: 0.7,
+        health: 1.0,
         damage: 0.4,
         speed: 0.8,
       },

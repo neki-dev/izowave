@@ -13,7 +13,7 @@ export class EnemyTank extends Enemy {
       ...data,
       texture: EnemyTexture.TANK,
       multipliers: {
-        health: 1.2,
+        health: 1.8,
         damage: 0.6,
         speed: 0.7,
       },

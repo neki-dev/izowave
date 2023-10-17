@@ -1,11 +1,10 @@
 import {
-  Texture, useMobilePlatform, useScene, useSceneUpdate,
+  Texture, useClick, useMobilePlatform, useScene, useSceneUpdate,
 } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { Cost } from '~scene/system/interface/cost';
-import { Builder } from '~scene/world/builder';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -25,6 +24,8 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
 
   const isMobile = useMobilePlatform();
 
+  const refContainer = useRef<HTMLDivElement>(null);
+
   const [isAllow, setAllow] = useState(false);
   const [isActive, setActive] = useState(false);
   const [isUsed, setUsed] = useState(false);
@@ -32,25 +33,25 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
 
   const isNewest = !isUsed && isAllow && !world.game.usedSave;
 
-  const onClick = () => {
+  const onMouseEnter = () => {
+    if (isAllow && !isMobile) {
+      setUsed(true);
+    }
+  };
+
+  useClick(refContainer, 'down', () => {
     if (world.builder.variant === variant) {
       world.builder.unsetBuildingVariant();
     } else {
       world.builder.setBuildingVariant(variant);
     }
-  };
-
-  const onMouseEnter = () => {
-    if (isAllow) {
-      setUsed(true);
-    }
-  };
+  }, [variant]);
 
   useSceneUpdate(world, () => {
     const currentIsActive = world.builder.variant === variant;
     const currentIsAllow = (
       world.builder.isBuildingAllowByWave(variant)
-      && Builder.IsBuildingAllowByTutorial(variant)
+      && world.builder.isBuildingAllowByTutorial(variant)
     );
     const currentIsUsable = (
       world.player.resources >= BUILDINGS[variant].Cost
@@ -67,12 +68,8 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
 
   return (
     <Container
-      {...isMobile ? {
-        onTouchEnd: onClick,
-      } : {
-        onClick,
-        onMouseEnter,
-      }}
+      ref={refContainer}
+      onMouseEnter={onMouseEnter}
       $allow={isAllow}
       $glow={isGlowing}
       $active={isActive}

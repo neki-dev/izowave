@@ -80,7 +80,7 @@ export class NPC extends Sprite implements INPC {
     }
   }
 
-  public freeze(duration: number, effects = false) {
+  public freeze(duration: number, effects: boolean = false) {
     this.freezeTimestamp = this.scene.getTime() + duration;
 
     if (!effects) {

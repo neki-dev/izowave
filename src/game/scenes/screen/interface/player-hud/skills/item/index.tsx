@@ -1,10 +1,10 @@
 import {
   ifModifiedObject,
-  useMobilePlatform,
+  useClick,
   useScene,
   useSceneUpdate,
 } from 'phaser-react-ui';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 
 import { PLAYER_MAX_SKILL_LEVEL, PLAYER_SKILLS } from '~const/world/entities/player';
 import { phrase } from '~lib/lang';
@@ -24,7 +24,7 @@ type Props = {
 export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const isMobile = useMobilePlatform();
+  const refAction = useRef<HTMLDivElement>(null);
 
   const getData = (): PlayerSkillData => ({
     type,
@@ -39,9 +39,9 @@ export const Item: React.FC<Props> = ({ type }) => {
     length: PLAYER_MAX_SKILL_LEVEL,
   }), []);
 
-  const onClick = () => {
+  useClick(refAction, 'down', () => {
     world.player.upgrade(type);
-  };
+  }, [type]);
 
   useSceneUpdate(world, () => {
     setData(ifModifiedObject(getData()));
@@ -67,12 +67,7 @@ export const Item: React.FC<Props> = ({ type }) => {
           </Limit>
         </Action>
       ) : (
-        <Action
-          $active={true}
-          {...{
-            [isMobile ? 'onTouchEnd' : 'onClick']: onClick,
-          }}
-        >
+        <Action ref={refAction} $active={true}>
           <Button>{phrase('SKILL_UPGRADE')}</Button>
           <Cost type="experience" value={data.experience} />
         </Action>

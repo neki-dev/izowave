@@ -1,5 +1,5 @@
-import { useScene } from 'phaser-react-ui';
-import React, { useState } from 'react';
+import { useClick, useScene } from 'phaser-react-ui';
+import React, { useRef, useState } from 'react';
 
 import { phrase } from '~lib/lang';
 import { GameScene } from '~type/game';
@@ -14,17 +14,19 @@ type Props = {
 export const Item: React.FC<Props> = ({ mode }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
+  const refContainer = useRef<HTMLDivElement>(null);
+
   const [isActive, setActive] = useState(() => (
     world.isModeActive(mode)
   ));
 
-  const onClick = () => {
+  useClick(refContainer, 'down', () => {
     world.setModeActive(mode, !isActive);
     setActive(!isActive);
-  };
+  }, [isActive]);
 
   return (
-    <Container $active={isActive} onClick={onClick}>
+    <Container ref={refContainer} $active={isActive}>
       <Icon src={`assets/sprites/modes/${mode.toLowerCase()}.png`} />
       <Placeholder>{phrase(mode)}</Placeholder>
     </Container>

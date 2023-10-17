@@ -1,4 +1,4 @@
-import { useMatchMedia, useOutsideClick } from 'phaser-react-ui';
+import { useMatchMedia, useClickOutside } from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -41,24 +41,17 @@ export const Skills: React.FC = () => {
     setOpened(!isOpened);
   };
 
-  const onClose = () => {
-    setOpened(false);
-  };
-
   const onKeyPress = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
-      onClose();
+      setOpened(false);
       event.stopPropagation();
+      event.preventDefault();
     }
   };
 
-  useOutsideClick(
-    refContainer,
-    () => {
-      onClose();
-    },
-    [],
-  );
+  useClickOutside(refContainer, () => {
+    setOpened(false);
+  }, []);
 
   useEffect(() => {
     if (!isOpened) {

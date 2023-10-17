@@ -6,6 +6,7 @@ export const FR = {
   WAVE_TIMELEFT: 'Temps restant',
   WAVE_COMPLETED: 'Vague %1 est termine',
   WAVE: 'Vague',
+  SKIP_WAVE_TIMELEFT: 'Demarrer la vague\nprematurement',
 
   /**
    * Buildings
@@ -190,7 +191,6 @@ export const FR = {
   REPAIR_BUILDING: 'Reparer batiment',
   DESTROY_BUILDING: 'Detruire batiment',
   BUY_AMMO: 'Acheter des balles',
-  SKIP_WAVE_TIMELEFT: 'Commencer le vague',
 
   /**
    * Game over

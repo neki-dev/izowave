@@ -3,8 +3,6 @@ import {
   PlayerSkill,
   PlayerSkillInfo,
   PlayerSkillTarget,
-  PlayerSuperskill,
-  PlayerSuperskillData,
 } from '~type/world/entities/player';
 
 import { DIFFICULTY } from '../difficulty';
@@ -41,25 +39,6 @@ export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
   [PlayerSkill.ATTACK_SPEED]: {
     experience: DIFFICULTY.ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.ASSISTANT,
-  },
-};
-
-export const PLAYER_SUPERSKILLS: Record<PlayerSuperskill, PlayerSuperskillData> = {
-  [PlayerSuperskill.FROST]: {
-    cost: DIFFICULTY.SUPERSKILL_FROST_COST,
-    duration: DIFFICULTY.SUPERSKILL_FROST_DURATION,
-  },
-  [PlayerSuperskill.SHIELD]: {
-    cost: DIFFICULTY.SUPERSKILL_SHIELD_COST,
-    duration: DIFFICULTY.SUPERSKILL_SHIELD_DURATION,
-  },
-  [PlayerSuperskill.RAGE]: {
-    cost: DIFFICULTY.SUPERSKILL_RAGE_COST,
-    duration: DIFFICULTY.SUPERSKILL_RAGE_DURATION,
-  },
-  [PlayerSuperskill.FIRE]: {
-    cost: DIFFICULTY.SUPERSKILL_FIRE_COST,
-    duration: DIFFICULTY.SUPERSKILL_FIRE_DURATION,
   },
 };
 

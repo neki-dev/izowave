@@ -795,13 +795,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public bindHotKey(key: string, callback: () => void) {
-    const handler = (event: KeyboardEvent) => {
+    if (!this.scene.game.isDesktop()) {
+      return;
+    }
+
+    const handler = () => {
       if (
         this.isSelected
         || (this.isFocused && this.scene.builder.selectedBuilding === null)
       ) {
         callback();
-        event.preventDefault();
       }
     };
 

@@ -20,7 +20,7 @@ export class EnemyExplosive extends Enemy {
       ...data,
       texture: EnemyTexture.EXPLOSIVE,
       multipliers: {
-        health: 0.8,
+        health: 1.2,
         damage: 0.4,
         speed: 0.5,
       },

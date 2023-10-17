@@ -5,7 +5,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import {
   PLAYER_TILE_SIZE,
   PLAYER_SKILLS,
-  PLAYER_SUPERSKILLS,
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
@@ -89,7 +88,7 @@ export class Player extends Sprite implements IPlayer {
 
   private dustEffect: Nullable<IParticles> = null;
 
-  private _activeSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
+  private _activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>> = {};
 
   public get activeSuperskills() { return this._activeSuperskills; }
 
@@ -217,9 +216,10 @@ export class Player extends Sprite implements IPlayer {
 
   public getSuperskillCost(type: PlayerSuperskill) {
     return progressionLinear({
-      defaultValue: PLAYER_SUPERSKILLS[type].cost,
+      defaultValue: DIFFICULTY[`SUPERSKILL_${type}_COST`],
       scale: DIFFICULTY.SUPERSKILL_COST_GROWTH,
       level: this.scene.wave.number,
+      roundTo: 5,
     });
   }
 
@@ -235,8 +235,6 @@ export class Player extends Sprite implements IPlayer {
 
       return;
     }
-
-    this.activeSuperskills[type] = true;
 
     this.takeResources(cost);
 
@@ -258,14 +256,14 @@ export class Player extends Sprite implements IPlayer {
       });
     }
 
-    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
-
-    this.scene.time.addEvent({
-      delay: PLAYER_SUPERSKILLS[type].duration,
+    this.activeSuperskills[type] = this.scene.time.addEvent({
+      delay: DIFFICULTY[`SUPERSKILL_${type}_DURATION`],
       callback: () => {
         delete this.activeSuperskills[type];
       },
     });
+
+    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {
