@@ -27,9 +27,9 @@ export class Camera implements ICamera {
     camera.startFollow(object);
     camera.followOffset.set(0, object.displayHeight);
 
-    if (this.scene.game.isDesktop()) {
-      camera.setZoom(CAMERA_MAX_ZOOM);
-      camera.zoomTo(CAMERA_MIN_ZOOM, 200);
+    if (this.scene.sys.canvas.height >= 800) {
+      camera.setZoom(CAMERA_MAX_ZOOM * 2);
+      camera.zoomTo(CAMERA_MAX_ZOOM, 200);
     } else {
       camera.setZoom(CAMERA_MIN_ZOOM);
     }
