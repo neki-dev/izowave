@@ -546,7 +546,7 @@ export class Builder extends EventEmitter implements IBuilder {
       return true;
     }
 
-    const links: {
+    const restrictions: {
       step: TutorialStep
       variant: BuildingVariant
     }[] = [
@@ -557,13 +557,11 @@ export class Builder extends EventEmitter implements IBuilder {
       { step: TutorialStep.BUILD_RADAR, variant: BuildingVariant.RADAR },
     ];
 
-    const current = links.find((link) => Tutorial.IsInProgress(link.step));
+    const restriction = restrictions.find((item) => Tutorial.IsInProgress(item.step));
 
-    if (!current && this.scene.wave.number === 1) {
-      return false;
-    }
-
-    return (!current || current.variant === variant);
+    return restriction
+      ? (restriction.variant === variant)
+      : (this.scene.wave.number > 1);
   }
 
   private handleKeyboard() {
