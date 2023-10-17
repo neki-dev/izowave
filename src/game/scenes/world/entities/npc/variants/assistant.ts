@@ -3,8 +3,8 @@ import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/ent
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { Assets } from '~lib/assets';
-import { progressionQuadratic } from '~lib/progression';
 import { getClosest, getIsometricDistance } from '~lib/dimension';
+import { progressionQuadratic } from '~lib/progression';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {

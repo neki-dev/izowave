@@ -89,7 +89,7 @@ export class Player extends Sprite implements IPlayer {
 
   private dustEffect: Nullable<IParticles> = null;
 
-  private _activeSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
+  private _activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>> = {};
 
   public get activeSuperskills() { return this._activeSuperskills; }
 
@@ -236,8 +236,6 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.activeSuperskills[type] = true;
-
     this.takeResources(cost);
 
     this.scene.sound.play(PlayerAudio.SUPERSKILL);
@@ -258,14 +256,14 @@ export class Player extends Sprite implements IPlayer {
       });
     }
 
-    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
-
-    this.scene.time.addEvent({
+    this.activeSuperskills[type] = this.scene.time.addEvent({
       delay: PLAYER_SUPERSKILLS[type].duration,
       callback: () => {
         delete this.activeSuperskills[type];
       },
     });
+
+    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {

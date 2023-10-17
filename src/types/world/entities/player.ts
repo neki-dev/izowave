@@ -37,7 +37,7 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   /**
    * Active superskills.
    */
-  readonly activeSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+  readonly activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>>
 
   /**
    * Upgrade player skill.

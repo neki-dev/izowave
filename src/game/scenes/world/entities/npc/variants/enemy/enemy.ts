@@ -6,7 +6,6 @@ import {
   ENEMY_PATH_BREAKPOINT,
   ENEMY_TEXTURE_META,
 } from '~const/world/entities/enemy';
-import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
@@ -144,6 +143,12 @@ export class Enemy extends NPC implements IEnemy {
 
     if (this.spawnEffect) {
       this.addSpawnEffect();
+    }
+
+    const frost = this.scene.player.activeSuperskills[PlayerSuperskill.FROST];
+
+    if (frost) {
+      this.freeze(frost.getRemaining(), true);
     }
   }
 
@@ -357,7 +362,13 @@ export class Enemy extends NPC implements IEnemy {
 
   private handlePlayerSuperskill() {
     const handler = (type: PlayerSuperskill) => {
-      const { duration } = PLAYER_SUPERSKILLS[type];
+      const superskill = this.scene.player.activeSuperskills[type];
+
+      if (!superskill) {
+        return;
+      }
+
+      const duration = superskill.getRemaining();
 
       switch (type) {
         case PlayerSuperskill.FROST: {
