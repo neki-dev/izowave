@@ -5,7 +5,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import {
   PLAYER_TILE_SIZE,
   PLAYER_SKILLS,
-  PLAYER_SUPERSKILLS,
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
@@ -217,9 +216,10 @@ export class Player extends Sprite implements IPlayer {
 
   public getSuperskillCost(type: PlayerSuperskill) {
     return progressionLinear({
-      defaultValue: PLAYER_SUPERSKILLS[type].cost,
+      defaultValue: DIFFICULTY[`SUPERSKILL_${type}_COST`],
       scale: DIFFICULTY.SUPERSKILL_COST_GROWTH,
       level: this.scene.wave.number,
+      roundTo: 5,
     });
   }
 
@@ -257,7 +257,7 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.activeSuperskills[type] = this.scene.time.addEvent({
-      delay: PLAYER_SUPERSKILLS[type].duration,
+      delay: DIFFICULTY[`SUPERSKILL_${type}_DURATION`],
       callback: () => {
         delete this.activeSuperskills[type];
       },

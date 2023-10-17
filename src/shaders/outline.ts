@@ -36,9 +36,9 @@ export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipelin
             float maxAlpha = front.a;
             vec2 offset;
             for (float angle = 0.; angle < DOUBLE_PI; angle += 0.6283185) {
-                offset = vec2(mag.x * cos(angle), mag.y * sin(angle));        
-                curColor = texture2D(uMainSampler, outTexCoord + offset);
-                maxAlpha = max(maxAlpha, curColor.a);
+              offset = vec2(mag.x * cos(angle), mag.y * sin(angle));
+              curColor = texture2D(uMainSampler, outTexCoord + offset);
+              maxAlpha = max(maxAlpha, curColor.a);
             }
             vec3 resultColor = front.rgb + (outlineColor.rgb * (1. - front.a)) * maxAlpha;
             gl_FragColor = vec4(resultColor, maxAlpha);

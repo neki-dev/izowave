@@ -100,8 +100,8 @@ export const DIFFICULTY = {
    * Builder
    */
 
-  BUILDER_BUILD_DURATION: 2000, // Duration of build process
-  BUILDER_BUILD_DURATION_GROWTH: -0.115, // Experience growth by level (Linear)
+  BUILDER_BUILD_DURATION: 2500, // Duration of build process
+  BUILDER_BUILD_DURATION_GROWTH: -0.112, // Experience growth by level (Linear)
   BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade speed
 
   /**

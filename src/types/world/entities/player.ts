@@ -165,11 +165,6 @@ export enum PlayerSuperskill {
   FIRE = 'FIRE',
 }
 
-export type PlayerSuperskillData = {
-  cost: number
-  duration: number
-};
-
 export type PlayerSavePayload = {
   position: Vector2D
   score: number

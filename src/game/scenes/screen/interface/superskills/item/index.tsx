@@ -8,7 +8,7 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
-import { PLAYER_SUPERSKILLS } from '~const/world/entities/player';
+import { DIFFICULTY } from '~const/world/difficulty';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene, GameState, IGame } from '~type/game';
@@ -87,7 +87,7 @@ export const Item: React.FC<Props> = ({ type }) => {
       {isActive && (
         <Timeout
           style={{
-            animationDuration: `${PLAYER_SUPERSKILLS[type].duration}ms`,
+            animationDuration: `${DIFFICULTY[`SUPERSKILL_${type}_DURATION`]}ms`,
             animationPlayState: isPaused ? 'paused' : 'running',
           }}
         />
