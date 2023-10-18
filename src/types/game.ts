@@ -67,6 +67,11 @@ export interface IGame extends Phaser.Game {
   stopGame(): void
 
   /**
+   * Restart game.
+   */
+  restartGame(): void
+
+  /**
    * Finish game.
    */
   finishGame(): void

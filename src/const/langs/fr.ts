@@ -127,13 +127,15 @@ export const FR = {
   NEW_GAME: 'Nouveau jeu',
   LOAD_GAME: 'Telecharger',
   SAVE_GAME: 'Sauvegarder',
-  CONTINUE: 'Continuez',
+  CONTINUE_GAME: 'Continuez',
+  RESTART_GAME: 'Redemarrer',
   MAIN_MENU: 'Aller au menu',
   SETTINGS: 'Parametres',
   ABOUT_GAME: 'A propos de ce jeu',
   CONTROLS: 'Gestion',
   MENU: 'Menu',
   CONFIRM_STOP_GAME: 'Arreter le jeu?',
+  CONFIRM_RESTART_GAME: 'Redemarrer le jeu?',
 
   /**
    * Game params

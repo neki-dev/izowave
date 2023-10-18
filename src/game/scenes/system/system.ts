@@ -59,7 +59,7 @@ export class System extends Scene {
 
       switch (this.game.state) {
         case GameState.FINISHED: {
-          this.game.stopGame();
+          this.game.restartGame();
           break;
         }
         case GameState.PAUSED: {

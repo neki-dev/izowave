@@ -127,13 +127,15 @@ export const EN = {
   NEW_GAME: 'New game',
   LOAD_GAME: 'Load game',
   SAVE_GAME: 'Save game',
-  CONTINUE: 'Continue',
+  CONTINUE_GAME: 'Continue',
+  RESTART_GAME: 'Restart',
   MAIN_MENU: 'Exit to menu',
   SETTINGS: 'Settings',
   ABOUT_GAME: 'About game',
   CONTROLS: 'Controls',
   MENU: 'Menu',
   CONFIRM_STOP_GAME: 'Do you confirm stop game?',
+  CONFIRM_RESTART_GAME: 'Do you confirm restart game?',
 
   /**
    * Game params

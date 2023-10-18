@@ -21,15 +21,18 @@ export const Item = styled.div`
 `;
 
 export const Value = styled.div`
-  margin-top: -3px;
-  font-size: 26px;
-  line-height: 26px;
+  font-size: 20px;
+  line-height: 20px;
+  padding: 4px 8px 7px 8px;
+  border-radius: 3px;
+  border: 1px solid #fff;
 `;
 
 export const Label = styled.div`
   margin-left: 10px;
   font-size: 16px;
   line-height: 16px;
+  white-space: pre;
 `;
 
 export const Record = styled.div`

@@ -22,7 +22,7 @@ export const Result: React.FC<Props> = ({ stat, record }) => {
     { key: 'score', label: 'TOTAL_SCORE', value: stat.score },
     { key: 'waves', label: 'WAVES_COMPLETED', value: stat.waves },
     { key: 'kills', label: 'ENEMIES_KILLED', value: stat.kills },
-    { key: 'lived', label: 'MINUTES_LIVED', value: stat.lived.toFixed(1) },
+    { key: 'lived', label: 'MINUTES_LIVED', value: Math.floor(stat.lived) },
   ], []);
 
   return (

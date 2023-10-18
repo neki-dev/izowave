@@ -70,6 +70,10 @@ export class SDK {
   public static ToggleLoadState(state: boolean) {
     try {
       switch (Environment.Platform) {
+        case GamePlatform.DEVELOPMENT: {
+          // console.log('Toggle load state to', state);
+          break;
+        }
         case GamePlatform.CRAZY_GAMES: {
           if (state) {
             window.CrazyGames?.SDK.game.sdkGameLoadingStart();
@@ -93,6 +97,10 @@ export class SDK {
   public static TogglePlayState(state: boolean) {
     try {
       switch (Environment.Platform) {
+        case GamePlatform.DEVELOPMENT: {
+          // console.log('Toggle play state to', state);
+          break;
+        }
         case GamePlatform.CRAZY_GAMES: {
           if (state) {
             window.CrazyGames?.SDK.game.gameplayStart();
