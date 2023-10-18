@@ -4,7 +4,6 @@ import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } 
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
-import { Level } from '~scene/world/level';
 import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
@@ -84,9 +83,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       return;
     }
 
-    const depth = Level.GetDepth(this.y, 1);
-
-    this.setDepth(depth);
+    this.setDepth(this.y);
   }
 
   public shoot(target: IEnemy) {
@@ -149,11 +146,11 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         return;
       }
 
-      const position = target.getPositionOnGround();
+      const position = target.getBottomFace();
 
       this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
         if (enemy !== target) {
-          const distance = getIsometricDistance(position, enemy.getPositionOnGround());
+          const distance = getIsometricDistance(position, enemy.getBottomFace());
 
           if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
             const damageByDistance = damage

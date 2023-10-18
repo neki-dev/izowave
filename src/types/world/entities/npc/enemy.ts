@@ -28,7 +28,7 @@ export interface IEnemyFactory {
 
 export interface IEnemyTarget {
   readonly live: ILive
-  getPositionOnGround(): Vector2D
+  getBottomFace(): Vector2D
 }
 
 export enum EnemyAudio {

@@ -108,8 +108,8 @@ export class Assistant extends NPC implements IAssistant {
         return false;
       }
 
-      const positionFrom = this.getPositionOnGround();
-      const positionTo = enemy.getPositionOnGround();
+      const positionFrom = this.getBottomFace();
+      const positionTo = enemy.getBottomFace();
 
       return (
         getIsometricDistance(positionFrom, positionTo) <= maxDistance

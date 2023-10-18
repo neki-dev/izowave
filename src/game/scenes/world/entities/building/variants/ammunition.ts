@@ -108,6 +108,14 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     return super.getControls().concat(actions);
   }
 
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y += (this.upgradeLevel === 1) ? 6 : -4;
+
+    return position;
+  }
+
   public use(amount: number) {
     const totalAmount = (this.ammo < amount) ? this.ammo : amount;
 

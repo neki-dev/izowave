@@ -63,6 +63,14 @@ export class BuildingBooster extends Building implements IBuildingBooster {
     return super.getInfo().concat(info);
   }
 
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y -= 6;
+
+    return position;
+  }
+
   private onUpgrade() {
     this.power = progressionLinear({
       defaultValue: DIFFICULTY.BUILDING_BOOSTER_POWER,

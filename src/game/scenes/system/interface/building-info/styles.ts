@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     width: 250px;
     position: absolute;
     transform: translate(-50%, -100%);
-    margin-top: -32px;
+    margin-top: -15px;
     &::after {
       position: absolute;
       content: "";

@@ -95,15 +95,14 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public update() {
-    const positionOnGround = this.getPositionOnGround();
-    const depth = Level.GetDepth(positionOnGround.y, 1);
+    const positionOnGround = this.getBottomFace();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
 
-    this.setDepth(depth);
+    this.setDepth(positionOnGround.y);
 
-    this.container.setDepth(depth + 19);
+    this.container.setDepth(positionOnGround.y);
     this.container.setPosition(this.body.center.x, this.body.center.y);
     this.container.setAlpha(this.alpha);
     this.container.setVisible(this.visible);
@@ -178,7 +177,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check ground collision
     if (this.collisionGround) {
-      const currentPositionAtWorld = this.getPositionOnGround();
+      const currentPositionAtWorld = this.getBottomFace();
       const positionAtMatrix = Level.ToMatrixPosition({
         x: currentPositionAtWorld.x + offset.x,
         y: currentPositionAtWorld.y + offset.y,
@@ -210,7 +209,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return false;
   }
 
-  public getPositionOnGround(): Vector2D {
+  public getBottomFace(): Vector2D {
     return {
       x: this.x,
       y: this.y - this.getGamutOffset(),
@@ -233,7 +232,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     const rX = this.displayWidth * 0.4;
     const rY = this.getGamutOffset();
     const l = Phaser.Math.PI2 / count;
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
     const points: Vector2D[] = [];
 
     for (let u = 0; u < count; u++) {
@@ -301,7 +300,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.lineStyle(1, 0xff0000);
     this.positionDebug.beginPath();
 
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
 
     this.positionDebug.moveTo(position.x, position.y);
     this.positionDebug.lineTo(position.x + 10, position.y);

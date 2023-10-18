@@ -6,7 +6,6 @@ import {
   ENEMY_PATH_BREAKPOINT,
   ENEMY_TEXTURE_META,
 } from '~const/world/entities/enemy';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { Assets } from '~lib/assets';
@@ -132,7 +131,7 @@ export class Enemy extends NPC implements IEnemy {
     if (this.isOverlapTarget) {
       this.setVelocity(0, 0);
     } else if (this.isPathPassed) {
-      this.moveTo(this.scene.player.getPositionOnGround());
+      this.moveTo(this.scene.player.getBottomFace());
     }
 
     this.isOverlapTarget = false;
@@ -317,12 +316,12 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
     const effect = new Effect(this.scene, {
       texture: EffectTexture.BLOOD,
       position,
       staticFrame: Phaser.Math.Between(0, 3),
-      depth: Level.GetDepth(position.y, 0, LEVEL_TILE_SIZE.height * 0.5),
+      depth: position.y,
     });
 
     this.scene.level.effectsOnGround.push(effect);

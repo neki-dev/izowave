@@ -463,7 +463,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     const tilePosition = { ...this.supposedPosition, z: 1 };
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
-    const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z) + 1;
+    const depth = positionAtWorld.y + 1;
     const isAllow = this.isAllowBuild();
 
     if (this.buildPreview) {

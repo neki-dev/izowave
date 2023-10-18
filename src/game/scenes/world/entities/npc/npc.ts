@@ -179,13 +179,13 @@ export class NPC extends Sprite implements INPC {
 
   public getDistanceToTarget() {
     return getIsometricDistance(
-      this.getPositionOnGround(),
-      this.scene.player.getPositionOnGround(),
+      this.getBottomFace(),
+      this.scene.player.getBottomFace(),
     );
   }
 
   public moveTo(position: Vector2D) {
-    const rotation = getIsometricAngle(this.getPositionOnGround(), position);
+    const rotation = getIsometricAngle(this.getBottomFace(), position);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
 
@@ -206,7 +206,7 @@ export class NPC extends Sprite implements INPC {
   private nextPathTile() {
     const firstNode = this.pathToTarget[0];
     const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 0 });
-    const currentPosition = this.getPositionOnGround();
+    const currentPosition = this.getBottomFace();
     const signX = Math.sign(this.body.velocity.x);
     const signY = Math.sign(this.body.velocity.y);
 

@@ -61,7 +61,7 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   /**
    * Get position with gamut offset.
    */
-  getPositionOnGround(): Vector2D
+  getBottomFace(): Vector2D
 
   /**
    * Get body offset by position.

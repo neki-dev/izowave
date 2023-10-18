@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
 export const HintTranslator = styled.div`
   position: fixed;
   left: 0;
-  top: 64px;
+  top: 32px;
 `;
 
 export const Category = styled.div`

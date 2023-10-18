@@ -111,9 +111,14 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   getUpgradeCost(level?: number): number
 
   /**
-   * Get position with height offset.
+   * Get top face center position.
    */
-  getPositionOnGround(): Vector2D
+  getTopFace(): Vector2D
+
+  /**
+   * Get bottom face center position.
+   */
+  getBottomFace(): Vector2D
 
   /**
    * Set building active state.

@@ -186,7 +186,7 @@ export class Level extends TileMatrix implements ILevel {
       'ground',
       tileset,
       -LEVEL_TILE_SIZE.width * 0.5,
-      -LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
+      -LEVEL_TILE_SIZE.height * 0.25,
     );
 
     if (!layer) {
@@ -206,7 +206,7 @@ export class Level extends TileMatrix implements ILevel {
       'falloff',
       tileset,
       position.x - LEVEL_TILE_SIZE.width * 0.5,
-      position.y - LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
+      position.y - LEVEL_TILE_SIZE.height * 0.25,
       sizeInTiles,
       sizeInTiles,
     );
@@ -281,7 +281,7 @@ export class Level extends TileMatrix implements ILevel {
 
     tile.tileType = TileType.MAP;
 
-    tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    tile.setDepth(positionAtWorld.y);
     tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.putTile(tile, tilePosition, false);
   }
@@ -308,7 +308,7 @@ export class Level extends TileMatrix implements ILevel {
         tile.tileType = TileType.SCENERY;
         tile.clearable = true;
 
-        tile.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+        tile.setDepth(positionAtWorld.y);
         tile.setOrigin(0.5, LEVEL_SCENERY_TILE_SIZE.origin);
         this.putTile(tile, tilePosition);
         this.sceneryTiles.add(tile);
@@ -324,10 +324,10 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static ToMatrixPosition(positionAtWorld: Vector2D) {
-    const { width, height, origin } = LEVEL_TILE_SIZE;
+    const { width, height } = LEVEL_TILE_SIZE;
     const n = {
       x: (positionAtWorld.x / (width * 0.5)),
-      y: (positionAtWorld.y / (height * origin)),
+      y: (positionAtWorld.y / (height * 0.25)),
     };
     const positionAtMatrix: Vector2D = {
       x: Math.round((n.x + n.y) / 2),
@@ -338,20 +338,12 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static ToWorldPosition(tilePosition: Vector3D) {
-    const { width, height, origin } = LEVEL_TILE_SIZE;
+    const { width, height } = LEVEL_TILE_SIZE;
     const positionAtWorld: Vector2D = {
       x: (tilePosition.x - tilePosition.y) * (width * 0.5),
-      y: (tilePosition.x + tilePosition.y) * (height * origin) - (tilePosition.z * (height * 0.5)),
+      y: (tilePosition.x + tilePosition.y) * (height * 0.25),
     };
 
     return positionAtWorld;
-  }
-
-  static GetDepth(YAtWorld: number, tileZ: number, offset: number = 0) {
-    return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + offset;
-  }
-
-  static GetTileDepth(YAtWorld: number, tileZ: number) {
-    return YAtWorld + (tileZ * LEVEL_TILE_SIZE.height) + LEVEL_TILE_SIZE.height * 0.5;
   }
 }
