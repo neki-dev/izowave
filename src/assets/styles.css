@@ -24,7 +24,6 @@ img {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  display: flex;
   padding: 10vh;
   font: 14px 'Verdana';
   font-weight: bold;
@@ -35,11 +34,24 @@ img {
   z-index: 999;
 }
 
-.loading-animation {
-  width: 49px;
-  height: 90px;
-  background: url('./loading.gif') center top no-repeat;
-  background-size: 100%;
-  margin-bottom: 5vh;
-  position: relative;
+#loading {
+  background: #0e0c14 url('./intro.png') center center no-repeat;
+  background-size: auto 100%;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+}
+
+#loading #loading-status {
+  font: 14px 'Verdana';
+  font-weight: bold;
+  font-size: 2vh;
+  line-height: 3vh;
+  letter-spacing: 1px;
+  position: fixed;
+  text-align: center;
+  color: #fff;
+  left: 50%;
+  top: 75%;
+  transform: translate(-50%, -50%);
 }
