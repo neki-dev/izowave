@@ -123,8 +123,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.handlePointer();
     this.handleToggleModes();
 
-    this.scene.builder.addFoundation(positionAtMatrix);
-
     if (buildDuration && buildDuration > 0) {
       this.startBuildProcess(buildDuration);
     } else {

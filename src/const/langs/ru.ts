@@ -127,13 +127,15 @@ export const RU = {
   NEW_GAME: 'Новая игра',
   LOAD_GAME: 'Загрузить',
   SAVE_GAME: 'Сохранить',
-  CONTINUE: 'Продолжить',
+  CONTINUE_GAME: 'Продолжить',
+  RESTART_GAME: 'Начать заного',
   MAIN_MENU: 'Выйти в меню',
   SETTINGS: 'Настройки',
   ABOUT_GAME: 'Об игре',
   CONTROLS: 'Управление',
   MENU: 'Меню',
   CONFIRM_STOP_GAME: 'Остановить игру?',
+  CONFIRM_RESTART_GAME: 'Перезапустить игру?',
 
   /**
    * Game params

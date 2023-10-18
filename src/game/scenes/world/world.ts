@@ -103,12 +103,6 @@ export class World extends Scene implements IWorld {
   public create(data: LevelData) {
     this.input.setPollAlways();
 
-    this.lifecyle = this.time.addEvent({
-      delay: Number.MAX_SAFE_INTEGER,
-      loop: true,
-      paused: true,
-    });
-
     this.level = new Level(this, data);
     this.camera = new Camera(this);
 
@@ -119,19 +113,18 @@ export class World extends Scene implements IWorld {
     };
 
     this.generateEnemySpawnPositions();
+    this.addEntityGroups();
   }
 
   public start() {
     new Interface(this, WorldUI);
 
-    this.camera.addZoomControl();
+    this.addLifecycle();
 
-    this.resetTime();
+    this.camera.addZoomControl();
 
     this.addWaveManager();
     this.addBuilder();
-
-    this.addEntityGroups();
     this.addPlayer();
     this.addAssistant();
     this.addCrystals();
@@ -176,11 +169,6 @@ export class World extends Scene implements IWorld {
 
   public setTimePause(state: boolean) {
     this.lifecyle.paused = state;
-  }
-
-  private resetTime() {
-    this.setTimePause(false);
-    this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
   }
 
   public setModeActive(mode: WorldMode, state: boolean) {
@@ -316,12 +304,23 @@ export class World extends Scene implements IWorld {
     };
   }
 
+  private addLifecycle() {
+    this.lifecyle = this.time.addEvent({
+      delay: Number.MAX_SAFE_INTEGER,
+      loop: true,
+    });
+
+    this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
+  }
+
   private addWaveManager() {
     this.wave = new Wave(this);
 
     if (this.game.usedSave?.payload.wave) {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
     }
+
+    this.wave.runTimeleft();
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.wave.destroy();
@@ -331,12 +330,12 @@ export class World extends Scene implements IWorld {
   private addBuilder() {
     this.builder = new Builder(this);
 
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.builder.destroy();
-    });
-
     this.game.events.once(GameEvents.FINISH, () => {
       this.builder.close();
+    });
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.builder.destroy();
     });
   }
 

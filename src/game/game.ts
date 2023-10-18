@@ -74,6 +74,8 @@ export class Game extends Phaser.Game implements IGame {
 
   private set usedSave(v) { this._usedSave = v; }
 
+  private triedFullscreen: boolean = false;
+
   constructor() {
     super({
       scene: [System, World, Screen, Menu, Gameover],
@@ -100,6 +102,10 @@ export class Game extends Phaser.Game implements IGame {
     SDK.ToggleLoadState(true);
 
     this.readSettings();
+
+    if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
+      Tutorial.Disable();
+    }
 
     this.events.on(Phaser.Core.Events.READY, () => {
       this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
@@ -216,25 +222,11 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    if (
-      !this.scale.isFullscreen
-      && !this.isDesktop()
-      && Environment.Platform !== 'development'
-    ) {
-      try {
-        this.scale.startFullscreen();
-      } catch (error) {
-        //
-      }
-    }
+    this.triggerFullscreen();
 
     this.state = GameState.STARTED;
 
     SDK.TogglePlayState(true);
-
-    if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
-      Tutorial.Disable();
-    }
 
     this.scene.systemScene.scene.stop(GameScene.MENU);
     this.scene.systemScene.scene.launch(GameScene.SCREEN);
@@ -242,15 +234,15 @@ export class Game extends Phaser.Game implements IGame {
     this.world.start();
   }
 
-  public stopGame() {
+  public stopGame(menu: boolean = true) {
     if (this.state === GameState.IDLE) {
       return;
     }
 
     if (this.state === GameState.FINISHED) {
-      this.showAds(SDKAdsType.MIDGAME);
-
       this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
+    } else if (this.state === GameState.STARTED) {
+      SDK.TogglePlayState(false);
     }
 
     this.state = GameState.IDLE;
@@ -260,8 +252,24 @@ export class Game extends Phaser.Game implements IGame {
     Tutorial.Reset();
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
-    this.scene.systemScene.scene.launch(GameScene.MENU, {
-      defaultPage: MenuPage.NEW_GAME,
+    if (menu) {
+      this.scene.systemScene.scene.launch(GameScene.MENU, {
+        defaultPage: MenuPage.NEW_GAME,
+      });
+    }
+  }
+
+  public restartGame() {
+    if (this.state === GameState.IDLE) {
+      return;
+    }
+
+    this.showAds(SDKAdsType.MIDGAME);
+
+    this.stopGame(false);
+
+    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
+      this.startGame();
     });
   }
 
@@ -325,6 +333,24 @@ export class Game extends Phaser.Game implements IGame {
         this.settings[key] = userValue === 'on';
       }
     });
+  }
+
+  private triggerFullscreen() {
+    if (
+      this.triedFullscreen
+      || this.scale.isFullscreen
+      || this.isDesktop()
+      || Environment.Platform === 'development'
+    ) {
+      return;
+    }
+
+    try {
+      this.triedFullscreen = true;
+      this.scale.startFullscreen();
+    } catch (error) {
+      //
+    }
   }
 
   public showAds(type: SDKAdsType, callback?: () => void) {

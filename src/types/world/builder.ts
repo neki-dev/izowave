@@ -59,12 +59,6 @@ export interface IBuilder extends EventEmitter {
   unsetBuildingVariant(): void
 
   /**
-   * Add rubble foundation on position.
-   * @param position - Position at matrix
-   */
-  addFoundation(position: Vector2D): void
-
-  /**
    * Get building limit on current wave.
    * @param variant - Building variant
    */

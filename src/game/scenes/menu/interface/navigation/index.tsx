@@ -29,7 +29,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
       });
     } else {
       items.push({
-        label: 'CONTINUE',
+        label: 'CONTINUE_GAME',
         onClick: () => game.resumeGame(),
       }, {
         label: 'SAVE_GAME',
@@ -38,6 +38,13 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
           game.world.wave.isGoing
           || (game.world.wave.number === 1 && Tutorial.IsEnabled)
         ),
+      }, {
+        label: 'RESTART_GAME',
+        onClick: () => {
+          if (window.confirm(phrase('CONFIRM_RESTART_GAME'))) {
+            game.restartGame();
+          }
+        },
       }, {
         label: 'MAIN_MENU',
         onClick: () => {
