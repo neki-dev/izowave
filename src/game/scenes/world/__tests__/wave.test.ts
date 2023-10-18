@@ -25,6 +25,7 @@ describe('wave.ts', () => {
   beforeEach(() => {
     world.getTime = jest.fn(() => 0);
     wave = new Wave(world as unknown as IWorld);
+    wave.runTimeleft();
     helper = registerHelper(wave);
   });
 
@@ -41,7 +42,6 @@ describe('wave.ts', () => {
   });
 
   it('should return timeleft to wave start after skip', () => {
-    // @ts-ignore
     wave.skipTimeleft();
 
     expect(wave.getTimeleft()).toEqual(0);
