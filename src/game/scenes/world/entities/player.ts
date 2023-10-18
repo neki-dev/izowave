@@ -547,7 +547,7 @@ export class Player extends Sprite implements IPlayer {
         scale: 0.6,
         speed: 10,
         frequency: 150,
-        alpha: { start: 0.75, end: 0.0 },
+        alpha: { start: 1.0, end: 0.0 },
         emitting: false,
       },
     });
