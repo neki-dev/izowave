@@ -32,6 +32,11 @@ export interface IWave extends EventEmitter {
   update(): void
 
   /**
+   * Set timeleft by current wave number.
+   */
+  runTimeleft(): void
+
+  /**
    * Get timeleft to next wave.
    */
   getTimeleft(): number

@@ -62,7 +62,6 @@ export class Wave extends EventEmitter implements IWave {
     this.scene = scene;
 
     this.setMaxListeners(0);
-    this.runTimeleft();
   }
 
   public destroy() {
@@ -130,7 +129,7 @@ export class Wave extends EventEmitter implements IWave {
     this.nextWaveTimestamp = now;
   }
 
-  private runTimeleft() {
+  public runTimeleft() {
     const pause = (this.number === 1 && Tutorial.IsEnabled)
       ? WAVE_TIMELEFT_ALARM
       : progressionLinear({

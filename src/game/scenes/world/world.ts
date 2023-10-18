@@ -323,6 +323,8 @@ export class World extends Scene implements IWorld {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
     }
 
+    this.wave.runTimeleft();
+
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.wave.destroy();
     });
