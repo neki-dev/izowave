@@ -48,6 +48,8 @@ export class BuildingTower extends Building implements IBuildingTower {
     this.handleBuildingRelease();
 
     this.calculatePower();
+
+    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public update() {
@@ -261,6 +263,15 @@ export class BuildingTower extends Building implements IBuildingTower {
     const booster = this.getBooster();
 
     this.power = 1.0 + (booster ? (booster.power / 100) : 0);
+  }
+
+  private onUpgrade() {
+    this.ammo = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+
+    if (this.needReload) {
+      this.removeAlertIcon();
+      this.needReload = false;
+    }
   }
 
   private handleBuildingRelease() {
