@@ -401,9 +401,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private updateIndicatorsPosition() {
+    const position = this.getTopFace();
+
     this.indicators.setPosition(
-      this.x - (LEVEL_TILE_SIZE.width / 4),
-      this.getTopFace().y - 3,
+      position.x - (LEVEL_TILE_SIZE.width / 4),
+      position.y - 3,
     );
   }
 
@@ -536,7 +538,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.alertIcon = this.scene.add.image(this.x, this.getTopFace().y, BuildingIcon.ALERT);
+    const position = this.getTopFace();
+
+    this.alertIcon = this.scene.add.image(position.x, position.y, BuildingIcon.ALERT);
     this.alertIcon.setDepth(this.depth + 1);
 
     this.alertTween = this.scene.tweens.add({
@@ -679,7 +683,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.actionsArea = this.scene.add.ellipse(this.x, this.y);
+    const position = this.getBottomFace();
+
+    this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
     this.actionsArea.setFillStyle(0xffffff, 0.3);
     this.actionsArea.setVisible(false);
@@ -790,9 +796,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       color: 0xffffff,
     });
 
+    const position = this.getTopFace();
+
     this.buildBar.setPosition(
-      this.x - this.buildBar.width / 2,
-      this.getTopFace().y - 3,
+      position.x - this.buildBar.width / 2,
+      position.y - 3,
     );
   }
 

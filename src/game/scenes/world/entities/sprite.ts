@@ -26,7 +26,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   readonly live: ILive;
 
-  readonly container: Phaser.GameObjects.Container;
+  private _container: Phaser.GameObjects.Container;
+
+  public get container() { return this._container; }
+
+  private set container(v) { this._container = v; }
 
   public gamut: number = 0;
 
@@ -78,10 +82,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.positionAtMatrix = position.matrix;
     this.live = new Live({ health: health ?? 1 });
-    this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
 
     this.configureBody(body);
+    this.addContainer();
     this.addIndicatorsContainer();
     this.addDebugPosition();
 
@@ -102,14 +106,22 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.setDepth(positionOnGround.y);
 
-    this.container.setDepth(positionOnGround.y);
-    this.container.setPosition(this.body.center.x, this.body.center.y);
-    this.container.setAlpha(this.alpha);
-    this.container.setVisible(this.visible);
-
+    this.updateContainer();
     this.updateIndicators();
 
     this.drawDebugGroundPosition();
+  }
+
+  private addContainer() {
+    this.container = this.scene.add.container();
+    this.updateContainer();
+  }
+
+  private updateContainer() {
+    this.container.setDepth(this.depth);
+    this.container.setPosition(this.body.center.x, this.body.center.y);
+    this.container.setAlpha(this.alpha);
+    this.container.setVisible(this.visible);
   }
 
   private configureBody(body: SpriteBodyData) {
