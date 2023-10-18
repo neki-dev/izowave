@@ -33,7 +33,7 @@ export const Wave: React.FC = () => {
     if (!world.wave.isGoing) {
       world.wave.skipTimeleft();
     }
-  }, [isDisabled]);
+  }, []);
 
   useSceneUpdate(world, () => {
     setDisabled(world.wave.isPeaceMode);
