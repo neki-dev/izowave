@@ -41,7 +41,7 @@ export const DIFFICULTY = {
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
   SUPERSKILL_FIRE_COST: 60, // Cost of use
   SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
-  SUPERSKILL_FIRE_DAMAGE: 40, // Fire damage
+  SUPERSKILL_FIRE_DAMAGE: 50, // Fire damage
   SUPERSKILL_FIRE_DAMAGE_GROWTH: 0.35, // Growth damage by wave number (Quadratic)
   SUPERSKILL_FIRE_DAMAGE_GROWTH_RETARDATION_LEVEL: 12, // Level for damage growth retardation
   SUPERSKILL_COST_GROWTH: 0.15, // Growth cost by wave number (Linear)
@@ -64,8 +64,8 @@ export const DIFFICULTY = {
    * Ads reward
    */
 
-  ADS_REWARD_EXPERIENCE: 400, // Gained experience per show ads
-  ADS_REWARD_RESOURCES: 20, // Gained resources per show ads
+  ADS_REWARD_EXPERIENCE: 400, // Gained experience by show ads (per wave number)
+  ADS_REWARD_RESOURCES: 20, // Gained resources by show ads (per wave number)
   ADS_REWARD_FREQUENCY: 3, // Show per wave number
 
   /**
