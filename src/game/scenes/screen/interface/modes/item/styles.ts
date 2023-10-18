@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Placeholder = styled.div`
@@ -19,7 +19,6 @@ export const Placeholder = styled.div`
   padding: 9px 12px;
   margin-top: 20px;
   white-space: pre;
-  display: none;
   &::after {
     position: absolute;
     content: '';
@@ -50,18 +49,16 @@ export const Container = styled.div<{
   height: 36px;
   border-radius: 5px;
   pointer-events: all;
-  ${(props) => (props.$active ? css`
-    background: ${InterfaceBackgroundColor.SUCCESS};
-  ` : css`
-    background: ${InterfaceBackgroundColor.BLACK};
-  `)};
-  &:hover {
-    ${(props) => (!props.$active && css`
-      background: ${InterfaceBackgroundColor.SUCCESS_DARK};
-    `)};
-    cursor: pointer;
-    ${Placeholder} {
-      display: block;
+  background: ${(props) => (props.$active
+    ? InterfaceBackgroundColor.SUCCESS
+    : InterfaceBackgroundColor.BLACK
+  )};
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    &:hover {
+      cursor: pointer;
+      ${(props) => (!props.$active && css`
+        background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+      `)};
     }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
