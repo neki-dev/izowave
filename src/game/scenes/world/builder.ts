@@ -140,7 +140,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  public addFoundation(position: Vector2D) {
+  private addFoundation(position: Vector2D) {
     const newBiome = this.scene.level.getBiome(BiomeType.RUBBLE);
 
     if (!newBiome) {
@@ -352,6 +352,8 @@ export class Builder extends EventEmitter implements IBuilder {
       buildDuration: data.buildDuration,
       positionAtMatrix: data.positionAtMatrix,
     });
+
+    this.addFoundation(data.positionAtMatrix);
 
     let list = this.buildings[data.variant];
 
