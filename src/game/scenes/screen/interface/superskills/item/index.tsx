@@ -1,10 +1,5 @@
 import {
-  useGame,
-  useMobilePlatform,
-  useClickOutside,
-  useScene,
-  useSceneUpdate,
-  useClick,
+  useGame, useScene, useSceneUpdate, useInteraction,
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
@@ -28,38 +23,15 @@ export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.SYSTEM);
 
-  const isMobile = useMobilePlatform();
-
   const [isPaused, setPaused] = useState(false);
   const [isActive, setActive] = useState(false);
-  const [isSelected, setSelected] = useState(false);
   const [cost, setCost] = useState(0);
 
   const refContainer = useRef<HTMLDivElement>(null);
 
-  const onMouseEnter = () => {
-    if (!isMobile) {
-      setSelected(true);
-    }
-  };
-
-  const onMouseLeave = () => {
-    if (!isMobile) {
-      setSelected(false);
-    }
-  };
-
-  useClickOutside(refContainer, () => {
-    setSelected(false);
-  }, []);
-
-  useClick(refContainer, 'down', () => {
-    if (isSelected) {
-      world.player.useSuperskill(type);
-    } else {
-      setSelected(true);
-    }
-  }, [isSelected, type]);
+  const isHover = useInteraction(refContainer, () => {
+    world.player.useSuperskill(type);
+  }, [type]);
 
   useSceneUpdate(scene, () => {
     setPaused(game.state === GameState.PAUSED);
@@ -68,22 +40,18 @@ export const Item: React.FC<Props> = ({ type }) => {
   }, []);
 
   return (
-    <Container
-      ref={refContainer}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      $selected={isSelected}
-      $active={isActive}
-    >
-      <Info>
-        <Head>
-          <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
-          <Cost type="resources" value={cost} />
-        </Head>
-        <Body>
-          <Description>{phrase(`SUPERSKILL_DESCRIPTION_${type}`)}</Description>
-        </Body>
-      </Info>
+    <Container ref={refContainer} $active={isActive}>
+      {isHover && (
+        <Info>
+          <Head>
+            <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
+            <Cost type="resources" value={cost} />
+          </Head>
+          <Body>
+            <Description>{phrase(`SUPERSKILL_DESCRIPTION_${type}`)}</Description>
+          </Body>
+        </Info>
+      )}
       {isActive && (
         <Timeout
           style={{

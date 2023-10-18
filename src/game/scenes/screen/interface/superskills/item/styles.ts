@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import {
   InterfaceBackgroundColor,
   InterfaceTextColor,
@@ -29,7 +29,6 @@ export const Icon = styled.img`
 
 export const Info = styled.div`
   position: absolute;
-  display: none;
   transform: translateX(-50%);
   bottom: 100%;
   left: 50%;
@@ -91,7 +90,6 @@ export const Body = styled.div`
 
 export const Container = styled.div<{
   $active?: boolean
-  $selected?: boolean
 }>`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 14px;
@@ -99,20 +97,19 @@ export const Container = styled.div<{
   position: relative;
   border-bottom: 6px solid #000;
   border-radius: 5px;
-  ${(props) => (props.$active
-    ? css`
-      ${Icon} {
-        opacity: 0.5;
-      }
-    `
-    : () => (props.$selected && css`
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  ${(props) => (props.$active && css`
+    ${Icon} {
+      opacity: 0.5;
+    }
+  `)};
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    &:hover {
       cursor: pointer;
-      ${Info} {
-        display: block;
-      }
-    `)
-  )}
+      ${(props) => (!props.$active && css`
+        background: ${InterfaceBackgroundColor.BLACK};
+      `)};
+    }
+  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 10px;
   }

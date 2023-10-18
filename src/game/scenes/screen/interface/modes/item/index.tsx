@@ -1,4 +1,4 @@
-import { useClick, useScene } from 'phaser-react-ui';
+import { useInteraction, useScene } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
 import { phrase } from '~lib/lang';
@@ -20,15 +20,17 @@ export const Item: React.FC<Props> = ({ mode }) => {
     world.isModeActive(mode)
   ));
 
-  useClick(refContainer, 'down', () => {
+  const isHover = useInteraction(refContainer, () => {
     world.setModeActive(mode, !isActive);
     setActive(!isActive);
-  }, [isActive]);
+  }, [mode, isActive]);
 
   return (
     <Container ref={refContainer} $active={isActive}>
       <Icon src={`assets/sprites/modes/${mode.toLowerCase()}.png`} />
-      <Placeholder>{phrase(mode)}</Placeholder>
+      {isHover && (
+        <Placeholder>{phrase(mode)}</Placeholder>
+      )}
     </Container>
   );
 };
