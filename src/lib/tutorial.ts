@@ -42,10 +42,6 @@ export class Tutorial {
 
     this.Progress[step] = TutorialStepState.IN_PROGRESS;
 
-    if (!this.IsEnabled) {
-      return;
-    }
-
     this.Emit(TutorialEvents.BEG, step);
   }
 
@@ -56,10 +52,6 @@ export class Tutorial {
 
     this.Progress[step] = TutorialStepState.PAUSED;
 
-    if (!this.IsEnabled) {
-      return;
-    }
-
     this.Emit(TutorialEvents.END, step);
   }
 
@@ -69,10 +61,6 @@ export class Tutorial {
     }
 
     this.Progress[step] = TutorialStepState.COMPLETED;
-
-    if (!this.IsEnabled) {
-      return;
-    }
 
     this.Emit(TutorialEvents.END, step);
   }
@@ -144,6 +132,10 @@ export class Tutorial {
   }
 
   private static Emit(event: TutorialEvents, step: TutorialStep) {
+    if (!this.IsEnabled) {
+      return;
+    }
+
     const isEmited = this.EventHistory.some((data) => (
       data.event === event
       && data.step === step
