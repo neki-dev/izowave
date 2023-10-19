@@ -87,7 +87,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       }
 
       this.addShader('OutlineShader', {
-        size: 4.0,
+        size: 2.0,
         color: 0xffffff,
       });
     });

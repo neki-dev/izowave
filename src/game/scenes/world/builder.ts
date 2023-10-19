@@ -397,7 +397,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.buildPreview.addShader('OutlineShader', {
-      size: 2.0,
+      size: 3.0,
       color: 0xffffff,
     });
   }

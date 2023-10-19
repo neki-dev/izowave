@@ -16,34 +16,23 @@ export class OutlineShader extends Phaser.Renderer.WebGL.Pipelines.PostFXPipelin
       name: 'OutlineShader',
       renderTarget: true,
       fragShader: `
-        #ifdef GL_FRAGMENT_PRECISION_HIGH
-        #define highmedp highp
-        #else
-        #define highmedp mediump
-        #endif
-        precision highmedp float;
-        uniform sampler2D uMainSampler; 
+        precision mediump float;
+        uniform sampler2D uMainSampler;
         varying vec2 outTexCoord;
         uniform vec2 imageSize;
         uniform float thickness;
         uniform vec3 outlineColor;
-        const float DOUBLE_PI = 3.14159265358979323846264 * 2.;
         void main() {
-          vec4 front = texture2D(uMainSampler, outTexCoord);
-          if (thickness > 0.0) {
-            vec2 mag = vec2(thickness/imageSize.x, thickness/imageSize.y);
-            vec4 curColor;
-            float maxAlpha = front.a;
-            vec2 offset;
-            for (float angle = 0.; angle < DOUBLE_PI; angle += 0.6283185) {
-              offset = vec2(mag.x * cos(angle), mag.y * sin(angle));
-              curColor = texture2D(uMainSampler, outTexCoord + offset);
-              maxAlpha = max(maxAlpha, curColor.a);
-            }
-            vec3 resultColor = front.rgb + (outlineColor.rgb * (1. - front.a)) * maxAlpha;
-            gl_FragColor = vec4(resultColor, maxAlpha);
+          vec4 texture = texture2D(uMainSampler, outTexCoord);
+          vec2 mag = vec2(thickness, thickness) / imageSize;
+          float upAlpha = texture2D(uMainSampler, outTexCoord + vec2(0.0, mag.y)).a;
+          float leftAlpha = texture2D(uMainSampler, outTexCoord + vec2(-mag.x, 0.0)).a;
+          float downAlpha = texture2D(uMainSampler, outTexCoord + vec2(0.0, -mag.y)).a;
+          float rightAlpha = texture2D(uMainSampler, outTexCoord + vec2(mag.x, 0.0)).a;
+          if (texture.a == 0.0 && max(max(upAlpha, downAlpha), max(leftAlpha, rightAlpha)) == 1.0) {
+            gl_FragColor = vec4(outlineColor.rgb, 1.0);
           } else {
-            gl_FragColor = front;
+            gl_FragColor = texture;
           }
         }
       `,

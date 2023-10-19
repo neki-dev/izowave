@@ -652,7 +652,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeShader('OutlineShader');
     } else {
       const params = {
-        [BuildingOutlineState.FOCUSED]: { size: 4.0, color: 0xffffff },
+        [BuildingOutlineState.FOCUSED]: { size: 3.0, color: 0xffffff },
         [BuildingOutlineState.SELECTED]: { size: 4.0, color: 0xd0ff4f },
       }[state];
 
