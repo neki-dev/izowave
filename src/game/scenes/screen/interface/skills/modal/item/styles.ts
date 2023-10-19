@@ -97,7 +97,7 @@ export const Button = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 10px;
   line-height: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 8px;
     line-height: 8px;
@@ -108,7 +108,7 @@ export const Limit = styled.div`
   color: ${InterfaceTextColor.WARN};
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 10px;
-  line-height: 12px;
+  line-height: 14px;
   text-align: center;
   white-space: pre;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
