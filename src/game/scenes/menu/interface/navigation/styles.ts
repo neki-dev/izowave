@@ -24,16 +24,16 @@ export const Item = styled.li<{
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 18px;
   line-height: 18px;
-  padding-right: 26px;
+  padding-right: 16px;
   white-space: nowrap;
   &:after {
     position: absolute;
     content: "";
     right: 0;
     top: 50%;
-    margin-top: -5px;
-    width: 10px;
-    height: 10px;
+    margin-top: -2px;
+    width: 4px;
+    height: 4px;
     background: #fff;
   }
   ${(props) => (props.$active ? css`
@@ -61,7 +61,7 @@ export const Item = styled.li<{
   `)}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     &:after {
-      margin-top: -3px;
+      margin-top: -1px;
     }
   }
 `;

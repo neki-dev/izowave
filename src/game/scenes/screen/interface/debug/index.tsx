@@ -11,7 +11,7 @@ export const Debug: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [frames, setFrames] = useState(0);
-  const [memory, setMemory] = useState<string>();
+  const [memory, setMemory] = useState(0);
 
   useSceneUpdate(world, () => {
     setFrames(Math.round(game.loop.actualFps));
@@ -20,7 +20,7 @@ export const Debug: React.FC = () => {
     const heapSize = performance?.memory?.usedJSHeapSize;
 
     if (heapSize) {
-      setMemory((heapSize / 1024 / 1024).toFixed(2));
+      setMemory(Math.round(heapSize / 1024 / 1024));
     }
   }, []);
 
