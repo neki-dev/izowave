@@ -421,7 +421,8 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildControls() {
-    this.buildControls = this.scene.add.container(0, 0);
+    this.buildControls = this.scene.add.container();
+    this.buildControls.setDepth(WORLD_DEPTH_GRAPHIC);
 
     const confirm = this.scene.add.image(-2, 0, BuildingIcon.CONFIRM);
 
@@ -480,7 +481,6 @@ export class Builder extends EventEmitter implements IBuilder {
       const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
 
       this.buildControls.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height);
-      this.buildControls.setDepth(WORLD_DEPTH_GRAPHIC);
       confirmBtton.setTexture(isAllow ? BuildingIcon.CONFIRM : BuildingIcon.CONFIRM_DISABLED);
     }
   }
