@@ -4,6 +4,7 @@ import { ILive } from '~type/live';
 import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
+import { IIndicator, IndicatorData } from '~type/world/entities/indicator';
 import { LevelBiome, TileType, Vector2D } from '~type/world/level';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
@@ -89,9 +90,16 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
 
   /**
    * Add indicator above sprite.
+   * @param key - Unique key
    * @param data - Indicator parameters
    */
-  addIndicator(data: SpriteIndicatorData): void
+  addIndicator(key: string, data: SpriteIndicatorData): void
+
+  /**
+   * Get indicator by key.
+   * @param key - Unique key
+   */
+  getIndicator(key: string): Nullable<IIndicator>
 }
 
 export type SpriteBodyData = {
@@ -111,7 +119,6 @@ export type SpriteData = {
   body: SpriteBodyData
 };
 
-export type SpriteIndicatorData = {
-  color: number
+export type SpriteIndicatorData = Omit<IndicatorData, 'size'> & {
   value: () => number
 };

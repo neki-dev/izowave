@@ -412,7 +412,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public addIndicator(data: IndicatorData) {
     const indicator = new Indicator(this, data);
 
-    indicator.setPosition(0, this.indicators.length * -6);
+    indicator.setPosition(0, this.indicators.length * -5);
 
     this.indicators.add(indicator);
   }

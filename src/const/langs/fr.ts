@@ -69,6 +69,7 @@ export const FR = {
   SKILL_MAX_LEVEL: 'Max\nniveau',
   SKILL_LABEL_MAX_HEALTH: 'Sante',
   SKILL_LABEL_SPEED: 'Vitesse de mouvement',
+  SKILL_LABEL_STAMINA: 'Endurance',
   SKILL_LABEL_BUILD_AREA: 'Rayon de construction',
   SKILL_LABEL_BUILD_SPEED: 'Vitesse de construction',
   SKILL_LABEL_ATTACK_DAMAGE: 'Dommage',

@@ -69,6 +69,7 @@ export const EN = {
   SKILL_MAX_LEVEL: 'Max\nlevel',
   SKILL_LABEL_MAX_HEALTH: 'Health',
   SKILL_LABEL_SPEED: 'Move speed',
+  SKILL_LABEL_STAMINA: 'Stamina',
   SKILL_LABEL_BUILD_AREA: 'Build area',
   SKILL_LABEL_BUILD_SPEED: 'Build speed',
   SKILL_LABEL_ATTACK_DAMAGE: 'Damage',

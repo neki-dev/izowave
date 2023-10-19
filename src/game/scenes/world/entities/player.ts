@@ -11,6 +11,7 @@ import {
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getClosest, isPositionsEqual } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -72,6 +73,7 @@ export class Player extends Sprite implements IPlayer {
   private _upgradeLevel: Record<PlayerSkill, number> = {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
+    [PlayerSkill.STAMINA]: 1,
     [PlayerSkill.BUILD_SPEED]: 1,
     [PlayerSkill.ATTACK_DAMAGE]: 1,
     [PlayerSkill.ATTACK_DISTANCE]: 1,
@@ -104,6 +106,12 @@ export class Player extends Sprite implements IPlayer {
 
   private currentPathToCrystal: Nullable<Vector2D[]> = null;
 
+  private staminaMax: number = 100;
+
+  private stamina: number = 100;
+
+  private staminaTimestamp: number = 0;
+
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
       ...data,
@@ -129,7 +137,7 @@ export class Player extends Sprite implements IPlayer {
     this.registerAnimations();
 
     this.addDustEffect();
-    this.addIndicator({
+    this.addIndicator('health', {
       color: 0xd0ff4f,
       value: () => this.live.health / this.live.maxHealth,
     });
@@ -168,6 +176,38 @@ export class Player extends Sprite implements IPlayer {
 
       this.updateMovement();
       this.updateVelocity();
+      this.updateStamina();
+    }
+  }
+
+  private updateStamina() {
+    const now = Date.now();
+
+    if (this.movementAngle === null) {
+      if (this.stamina < this.staminaMax && this.staminaTimestamp < now) {
+        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.015));
+        this.staminaTimestamp = now + 25;
+      }
+    } else if (this.stamina > 0.0 && this.staminaTimestamp < now) {
+      this.stamina = Math.max(0.0, this.stamina - 0.4);
+      this.staminaTimestamp = now + 25;
+
+      if (this.stamina === 0.0) {
+        this.updateMovementAnimation();
+        this.scene.sound.stopByKey(PlayerAudio.WALK);
+        this.scene.game.sound.play(PlayerAudio.WALK, {
+          loop: true,
+          rate: 1.2,
+        });
+      }
+
+      if (this.stamina < this.staminaMax && !this.getIndicator('stamina')) {
+        this.addIndicator('stamina', {
+          color: 0xb977ff,
+          value: () => this.stamina / this.staminaMax,
+          destroyIf: (value: number) => value >= 1.0,
+        });
+      }
     }
   }
 
@@ -294,6 +334,13 @@ export class Player extends Sprite implements IPlayer {
           level: nextLevel,
         });
       }
+      case PlayerSkill.STAMINA: {
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.PLAYER_STAMINA,
+          scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
+          level: nextLevel,
+        });
+      }
       default: {
         return nextLevel;
       }
@@ -338,6 +385,11 @@ export class Player extends Sprite implements IPlayer {
         if (this.scene.assistant) {
           this.scene.assistant.speed = nextValue;
         }
+        break;
+      }
+      case PlayerSkill.STAMINA: {
+        this.staminaMax = nextValue;
+        this.stamina = this.staminaMax;
         break;
       }
     }
@@ -454,7 +506,8 @@ export class Player extends Sprite implements IPlayer {
         this.setVelocity(0, 0);
       } else {
         const friction = this.currentBiome?.friction ?? 1;
-        const speed = this.speed / friction;
+        const stamina = (this.stamina === 0) ? 2 : 1;
+        const speed = (this.speed / friction) / stamina;
         const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
 
         this.setVelocity(
@@ -503,10 +556,28 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.movementAngle = this.movementTarget * 45;
+
+    this.updateMovementAnimation(true);
+  }
+
+  private updateMovementAnimation(restart: boolean = false) {
+    if (this.movementTarget === null) {
+      return;
+    }
+
+    // Error on Phaser animation play
+    // ISSUE: [https://github.com/neki-dev/izowave/issues/81]
+    try {
     this.anims.play({
       key: `dir_${this.movementTarget}`,
-      startFrame: 1,
+        startFrame: (restart || !this.anims.currentFrame)
+          ? 1
+          : this.anims.currentFrame.index,
+      frameRate: (this.stamina) === 0.0 ? 4 : 8,
     });
+    } catch (error) {
+      Analytics.TrackWarn((error as TypeError).message);
+    }
   }
 
   private stopMovement() {

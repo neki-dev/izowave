@@ -126,6 +126,7 @@ export enum PlayerAudio {
 export enum PlayerSkill {
   MAX_HEALTH = 'MAX_HEALTH',
   SPEED = 'SPEED',
+  STAMINA = 'STAMINA',
   BUILD_SPEED = 'BUILD_SPEED',
   ATTACK_DAMAGE = 'ATTACK_DAMAGE',
   ATTACK_DISTANCE = 'ATTACK_DISTANCE',

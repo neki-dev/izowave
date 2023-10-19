@@ -98,7 +98,7 @@ export class Enemy extends NPC implements IEnemy {
     ) / 3;
 
     this.addDamageLabel();
-    this.addIndicator({
+    this.addIndicator('health', {
       color: 0xdb2323,
       value: () => this.live.health / this.live.maxHealth,
     });
