@@ -23,5 +23,9 @@
         "group": "sibling"
       }]
     }]
-  }
+  },
+  "ignorePatterns": [
+    "**/__tests__/**",
+    "**/__mocks__/**"
+  ]
 }
