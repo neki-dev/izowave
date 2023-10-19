@@ -169,7 +169,7 @@ export class Enemy extends NPC implements IEnemy {
     excludePosition(this.scene.enemySpawnPositions, originPosition);
 
     const positionAtMatrix = this.scene.getEnemySpawnPosition();
-    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 0 });
+    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 1 });
 
     this.setPosition(position.x, position.y);
   }
@@ -321,7 +321,6 @@ export class Enemy extends NPC implements IEnemy {
       texture: EffectTexture.BLOOD,
       position,
       staticFrame: Phaser.Math.Between(0, 3),
-      depth: position.y,
     });
 
     this.scene.level.effectsOnGround.push(effect);

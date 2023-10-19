@@ -26,7 +26,6 @@ export const Wave: React.FC = () => {
   const [value, setValue] = useState<Nullable<number | string>>(null);
   const [isGoing, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
-  const [isDisabled, setDisabled] = useState(true);
   const [isPaused, setPaused] = useState(true);
 
   useClick(refWaveNumber, 'down', () => {
@@ -36,12 +35,6 @@ export const Wave: React.FC = () => {
   }, []);
 
   useSceneUpdate(world, () => {
-    setDisabled(world.wave.isPeaceMode);
-
-    if (world.wave.isPeaceMode) {
-      return;
-    }
-
     setPaused(world.isTimePaused());
     setCurrentNumber(world.wave.number);
     setGoing(world.wave.isGoing);
@@ -55,17 +48,16 @@ export const Wave: React.FC = () => {
       const timeleft = world.wave.getTimeleft();
       const currentIsAlarm = (
         timeleft <= WAVE_TIMELEFT_ALARM
+        && !world.wave.isPeaceMode
         && !world.isTimePaused()
       );
 
-      setValue(formatTime(timeleft));
+      setValue(world.wave.isPeaceMode ? '-' : formatTime(timeleft));
       setAlarm(currentIsAlarm);
     }
   }, []);
 
-  return isDisabled ? (
-    <div />
-  ) : (
+  return (
     <Wrapper>
       <Container>
         <CurrentNumber ref={refWaveNumber} $paused={isPaused} $going={isGoing}>

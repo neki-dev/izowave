@@ -205,7 +205,7 @@ export class NPC extends Sprite implements INPC {
 
   private nextPathTile() {
     const firstNode = this.pathToTarget[0];
-    const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 0 });
+    const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 1 });
     const currentPosition = this.getBottomFace();
     const signX = Math.sign(this.body.velocity.x);
     const signY = Math.sign(this.body.velocity.y);
@@ -238,7 +238,7 @@ export class NPC extends Sprite implements INPC {
     const target = this.pathToTarget[0];
 
     if (target) {
-      const positionAtWorld = Level.ToWorldPosition({ ...target, z: 0 });
+      const positionAtWorld = Level.ToWorldPosition({ ...target, z: 1 });
 
       this.moveTo(positionAtWorld);
     }
@@ -279,8 +279,8 @@ export class NPC extends Sprite implements INPC {
     ];
 
     for (let i = 1; i < points.length; i++) {
-      const prev = Level.ToWorldPosition({ ...points[i - 1], z: 0 });
-      const next = Level.ToWorldPosition({ ...points[i], z: 0 });
+      const prev = Level.ToWorldPosition({ ...points[i - 1], z: 1 });
+      const next = Level.ToWorldPosition({ ...points[i], z: 1 });
 
       this.pathDebug.moveTo(prev.x, prev.y);
       this.pathDebug.lineTo(next.x, next.y);

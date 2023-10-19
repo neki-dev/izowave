@@ -206,7 +206,7 @@ export class Level extends TileMatrix implements ILevel {
       'falloff',
       tileset,
       position.x - LEVEL_TILE_SIZE.width * 0.5,
-      position.y - LEVEL_TILE_SIZE.height * 0.25,
+      position.y - LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
       sizeInTiles,
       sizeInTiles,
     );
@@ -272,6 +272,7 @@ export class Level extends TileMatrix implements ILevel {
 
   private addMountTile(index: number, tilePosition: Vector3D) {
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const depth = positionAtWorld.y + ((tilePosition.z - 1) * LEVEL_TILE_SIZE.height);
     const tile = this.scene.add.image(
       positionAtWorld.x,
       positionAtWorld.y,
@@ -281,7 +282,7 @@ export class Level extends TileMatrix implements ILevel {
 
     tile.tileType = TileType.MAP;
 
-    tile.setDepth(positionAtWorld.y);
+    tile.setDepth(depth);
     tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.putTile(tile, tilePosition, false);
   }
@@ -341,7 +342,7 @@ export class Level extends TileMatrix implements ILevel {
     const { width, height } = LEVEL_TILE_SIZE;
     const positionAtWorld: Vector2D = {
       x: (tilePosition.x - tilePosition.y) * (width * 0.5),
-      y: (tilePosition.x + tilePosition.y) * (height * 0.25),
+      y: (tilePosition.x + tilePosition.y) * (height * 0.25) - ((tilePosition.z - 1) * (height * 0.5)),
     };
 
     return positionAtWorld;

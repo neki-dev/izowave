@@ -461,8 +461,7 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    const tilePosition = { ...this.supposedPosition, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const positionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 1 });
     const depth = positionAtWorld.y + 1;
     const isAllow = this.isAllowBuild();
 
@@ -473,9 +472,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.buildActionRadius) {
-      const groundPositionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 0 });
-
-      this.buildActionRadius.setPosition(groundPositionAtWorld.x, groundPositionAtWorld.y);
+      this.buildActionRadius.setPosition(positionAtWorld.x, positionAtWorld.y);
       this.buildActionRadius.setVisible(isAllow);
     }
 

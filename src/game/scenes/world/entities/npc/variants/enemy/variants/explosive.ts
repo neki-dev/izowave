@@ -69,7 +69,7 @@ export class EnemyExplosive extends Enemy {
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
-        position,
+        position: this.body.center,
         depth: this.depth + 1,
       });
     }

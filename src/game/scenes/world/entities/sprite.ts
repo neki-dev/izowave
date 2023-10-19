@@ -69,7 +69,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
       };
     } else if (positionAtMatrix) {
       position = {
-        world: Level.ToWorldPosition({ ...positionAtMatrix, z: 0 }),
+        world: Level.ToWorldPosition({ ...positionAtMatrix, z: 1 }),
         matrix: positionAtMatrix,
       };
     } else {
