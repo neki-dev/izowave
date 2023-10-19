@@ -22,15 +22,15 @@ export const DIFFICULTY = {
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.55, // Damage growth by upgrade level (Quadratic)
-  ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade attack damage
+  ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade attack damage
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
   ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.15, // Attack distance growth by upgrade level (Quadratic)
-  ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade attack distance
+  ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE: 40, // Experience need to upgrade attack distance
   ASSISTANT_ATTACK_PAUSE: 1000, // Attack pause
   ASSISTANT_ATTACK_PAUSE_GROWTH: -0.15, // Attack pause growth by upgrade level (Quadratic)
-  ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade attack speed
+  ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE: 40, // Experience need to upgrade attack speed
 
   /**
    * Superskills
@@ -105,7 +105,7 @@ export const DIFFICULTY = {
 
   BUILDER_BUILD_DURATION: 2500, // Duration of build process
   BUILDER_BUILD_DURATION_GROWTH: -0.112, // Experience growth by level (Linear)
-  BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 50, // Experience need to upgrade speed
+  BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE: 40, // Experience need to upgrade speed
 
   /**
    * Buildings
