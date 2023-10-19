@@ -9,22 +9,23 @@ const animationBlink = keyframes`
   100% { background: ${InterfaceBackgroundColor.SUCCESS}; }
 `;
 
+export const Backdrop = styled.div`
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+`;
+
 export const Container = styled.div<{
   $allow?: boolean
   $active?: boolean
   $usable?: boolean
   $glow?: boolean
 }>`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   position: relative;
-  ${(props) => (props.$allow ? css`
-    ${() => (!props.$usable && css`
-      background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
-    `)}
-  ` : css`
-      opacity: 0.5;
-      filter: grayscale(100%);
+  ${(props) => (!props.$allow && css`
+    opacity: 0.5;
+    filter: grayscale(100%);
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
@@ -45,6 +46,8 @@ export const Container = styled.div<{
 `;
 
 export const Image = styled.div`
+  position: relative;
+  z-index: 2;
   padding: 10px 10px 7px 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 8px 10px 5px 10px;

@@ -28,6 +28,7 @@ export const Button: React.FC<Props> = ({
       $size={size}
       $view={view}
       $disabled={disabled}
+      role='button'
     >
       {children}
     </Container>

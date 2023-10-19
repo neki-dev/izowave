@@ -46,7 +46,7 @@ export const Notices: React.FC = () => {
     };
   }, []);
 
-  useSceneUpdate(screen, () => {
+  useSceneUpdate(screen, () => { // TODO
     const now = Date.now();
 
     setNotices((currentNotices) => {

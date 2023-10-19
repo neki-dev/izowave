@@ -10,6 +10,7 @@ import { Debug } from './debug';
 import { Modes } from './modes';
 import { Notices } from './notices';
 import { PlayerHUD } from './player-hud';
+import { Skills } from './skills';
 import { Column, Grid, Wrapper } from './styles';
 import { Superskills } from './superskills';
 import { Wave } from './wave';
@@ -28,9 +29,10 @@ export const ScreenUI: React.FC = () => {
         </Column>
 
         <Column $side="center">
-          <Section direction='horizontal'>
+          <Section direction='horizontal' gap={1}>
             <Wave />
             <Modes />
+            <Skills />
           </Section>
           <Superskills />
         </Column>

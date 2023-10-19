@@ -10,7 +10,7 @@ import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Container, Number, Image, Newest, Info, Frame,
+  Container, Number, Image, Newest, Info, Frame, Backdrop,
 } from './styles';
 
 type Props = {
@@ -67,28 +67,30 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
   }, []);
 
   return (
-    <Container
-      ref={refContainer}
-      onMouseEnter={onMouseEnter}
-      $allow={isAllow}
-      $glow={isGlowing}
-      $active={isActive}
-      $usable={isUsable}
-    >
-      {isNewest && (
-        <Newest>new</Newest>
-      )}
-      {!isMobile && (
-        <Number>{number}</Number>
-      )}
-      <Image>
-        <Frame>
-          <Texture name={BUILDINGS[variant].Texture} />
-        </Frame>
-      </Image>
-      <Info>
-        <Cost type="resources" value={BUILDINGS[variant].Cost} check={isAllow} />
-      </Info>
-    </Container>
+    <Backdrop>
+      <Container
+        ref={refContainer}
+        onMouseEnter={onMouseEnter}
+        $allow={isAllow}
+        $glow={isGlowing}
+        $active={isActive}
+        $usable={isUsable}
+      >
+        {isNewest && (
+          <Newest>new</Newest>
+        )}
+        {!isMobile && (
+          <Number>{number}</Number>
+        )}
+        <Image>
+          <Frame>
+            <Texture name={BUILDINGS[variant].Texture} />
+          </Frame>
+        </Image>
+        <Info>
+          <Cost type="RESOURCES" value={BUILDINGS[variant].Cost} check={isAllow} />
+        </Info>
+      </Container>
+  </Backdrop>
   );
 };

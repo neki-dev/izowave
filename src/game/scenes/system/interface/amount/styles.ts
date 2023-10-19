@@ -7,30 +7,44 @@ export const Placeholder = styled.div`
   position: absolute;
   pointer-events: none;
   display: none;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: #fff;
+  font-size: 11px;
+  line-height: 11px;
   left: 100%;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: 10px;
-  font-size: 12px;
-  line-height: 32px;
+  align-items: center;
   height: 32px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
-  border-radius: 5px;
+  border-radius: 0 5px 5px 0;
   padding: 0 12px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 9px;
+    line-height: 9px;
+    height: 28px;
+    padding: 0 8px;
+  }
 `;
 
 export const Wrapper = styled.div`
   position: relative;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
-  font-family: ${InterfaceFont.PIXEL_LABEL};
-  display: flex;
-  color: #fff;
-  border-radius: 5px;
   pointer-events: all;
+  &:hover ${Placeholder} {
+    display: flex;
+  }
+`;
+
+export const Container = styled.div`
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  display: flex;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 5px;
   &:hover {
-    ${Placeholder} {
-      display: block;
-    }
+    border-radius: 5px 0 0 5px;
   }
 `;
 
@@ -58,6 +72,8 @@ export const Icon = styled.img`
 
 export const Value = styled.div`
   pointer-events: none;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: #fff;
   font-size: 16px;
   line-height: 16px;
   height: 32px;

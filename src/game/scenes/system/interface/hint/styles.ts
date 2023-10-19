@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor, InterfaceLayer } from '~type/interface';
 
 const align = {
   'top-left': { transform: 'translate(0, 0)', left: '39px', right: 'auto' },
@@ -38,7 +38,7 @@ const animationKickBottom = keyframes`
 export const Wrapper = styled.div`
   position: relative;
   pointer-events: none;
-  z-index: 2;
+  z-index: ${InterfaceLayer.HINT};
 `;
 
 export const Key = styled.span`

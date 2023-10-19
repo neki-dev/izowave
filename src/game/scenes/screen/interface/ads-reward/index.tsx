@@ -1,19 +1,13 @@
 import { useGame, useScene } from 'phaser-react-ui';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Environment } from '~lib/environment';
-import { phrase } from '~lib/lang';
-import { Amount } from '~scene/system/interface/amount';
-import { Button } from '~scene/system/interface/button';
 import { IGame, GameScene, GameFlag } from '~type/game';
-import { SDKAdsType } from '~type/sdk';
 import { IWorld } from '~type/world';
 import { WaveEvents } from '~type/world/wave';
 
-import {
-  Amounts, Backdrop, Buttons, Container, Text,
-} from './styles';
+import { Modal } from './modal';
 
 export const AdsReward: React.FC = () => {
   const game = useGame<IGame>();
@@ -25,19 +19,9 @@ export const AdsReward: React.FC = () => {
     resources: 0,
   });
 
-  const onConfirmAds = () => {
-    game.resume();
-    game.showAds(SDKAdsType.REWARDED, () => {
-      world.player.giveExperience(adsReward.experience);
-      world.player.giveResources(adsReward.resources);
-    });
+  const onClose = useCallback(() => {
     setAdsOfferOpen(false);
-  };
-
-  const onDeclineAds = () => {
-    game.resume();
-    setAdsOfferOpen(false);
-  };
+  }, []);
 
   const onWaveComplete = (number: number) => {
     if (number % DIFFICULTY.ADS_REWARD_FREQUENCY !== 0) {
@@ -65,24 +49,6 @@ export const AdsReward: React.FC = () => {
   }, []);
 
   return (
-    isAdsOfferOpen && (
-      <Backdrop>
-        <Container>
-          <Text>{phrase('ADS_OFFER')}</Text>
-          <Amounts>
-            <Amount type="RESOURCES">+{adsReward.resources}</Amount>
-            <Amount type="EXPERIENCE">+{adsReward.experience}</Amount>
-          </Amounts>
-          <Buttons>
-            <Button view="confirm" size="medium" onClick={onConfirmAds}>
-              {phrase('YES')}
-            </Button>
-            <Button view="decline" size="medium" onClick={onDeclineAds}>
-              {phrase('NO')}
-            </Button>
-          </Buttons>
-        </Container>
-      </Backdrop>
-    )
+    isAdsOfferOpen && <Modal {...adsReward} onClose={onClose} />
   );
 };

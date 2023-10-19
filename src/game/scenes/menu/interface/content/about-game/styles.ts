@@ -13,6 +13,6 @@ export const Wrapper = styled.div`
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 13px;
     line-height: 18px;
-    width: 70%;
+    width: 80%;
   }
 `;

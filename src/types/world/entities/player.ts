@@ -133,6 +133,13 @@ export enum PlayerSkill {
   ATTACK_SPEED = 'ATTACK_SPEED',
 }
 
+export enum PlayerEvents {
+  UPGRADE_SKILL = 'upgrade_skill',
+  UPDATE_EXPERIENCE = 'update_experience',
+  UPDATE_SCORE = 'update_score',
+  UPDATE_RESOURCES = 'update_resources',
+}
+
 export enum MovementDirection {
   UP = 'up',
   DOWN = 'down',
@@ -149,7 +156,8 @@ export type PlayerSkillInfo = {
   target: PlayerSkillTarget
 };
 
-export type PlayerSkillData = PlayerSkillInfo & {
+export type PlayerSkillData = {
+  experience: number
   type: PlayerSkill
   currentLevel: number
 };

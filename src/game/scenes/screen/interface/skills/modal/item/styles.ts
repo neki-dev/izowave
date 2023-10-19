@@ -11,24 +11,32 @@ export const Container = styled.div`
   color: #fff;
   display: flex;
   justify-content: space-between;
-  border-radius: 5px;
-  overflow: hidden;
+  padding: 8px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  &:first-child {
+    border-radius: 5px 5px 0 0;
+  }
+  &:last-child {
+    border-radius: 0 0 5px 5px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 6px;
+  }
 `;
 
 export const Info = styled.div`
-  padding: 10px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  margin: 0 14px 0 8px;
 `;
 
 export const Label = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   color: #fff;
-  font-size: 13px;
-  line-height: 13px;
+  font-size: 12px;
+  line-height: 12px;
   margin-right: 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 11px;
@@ -52,7 +60,7 @@ Level.Progress = styled.div<{
   height: 8px;
   transition: all 0.2s ease-out;
   background: ${InterfaceBackgroundColor.BLACK};
-  box-shadow: 0 4px 0 #222 inset;
+  box-shadow: 0 4px 0 #111 inset;
   ${(props) => props.$active && css`
     background: ${InterfaceBackgroundColor.SUCCESS};
     box-shadow: 0 4px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
@@ -68,16 +76,20 @@ export const Action = styled.div<{
   justify-content: center;
   align-items: center;
   background: rgba(0, 0, 0, 0.35);
+  pointer-events: all;
+  border-radius: 5px;
+  padding: 10px 0;
   ${(props) => props.$active && css`
-    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
     &:hover {
       cursor: pointer;
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+      background: ${InterfaceBackgroundColor.BLACK};
     }
   `}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 10px 0;
-    width: 90px;
+    width: 80px;
+    padding: 9px 0;
+    background: ${InterfaceBackgroundColor.BLACK};
   }
 `;
 

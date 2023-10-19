@@ -1,6 +1,6 @@
-import EventEmmiter from 'events';
+import Phaser from 'phaser';
 
-export interface ILive extends EventEmmiter {
+export interface ILive extends Phaser.Events.EventEmitter {
   /**
    * Health amount.
    */
@@ -81,6 +81,8 @@ export interface ILive extends EventEmmiter {
 export enum LiveEvents {
   DEAD = 'dead',
   DAMAGE = 'damage',
+  UPDATE_MAX_HEALTH = 'update_max_health',
+  UPDATE_HEALTH = 'update_health',
 }
 
 export type LiveData = {

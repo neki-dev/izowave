@@ -61,7 +61,7 @@ export const FR = {
   /**
    * Skills
    */
-  SKILLS: 'Skills', // (too long) Competences
+  SKILLS: 'Competences',
   SKILLS_CLOSE: 'Fermer',
   SKILL_TARGET_CHARACTER: 'Personnage',
   SKILL_TARGET_ASSISTANT: 'Assistant',

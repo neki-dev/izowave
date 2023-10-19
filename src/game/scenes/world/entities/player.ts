@@ -37,6 +37,7 @@ import {
   PlayerSuperskill,
   PlayerSavePayload,
   MovementDirection,
+  PlayerEvents,
 } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -217,6 +218,8 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.score += amount;
+
+    this.emit(PlayerEvents.UPDATE_SCORE, this.score);
   }
 
   public giveExperience(amount: number) {
@@ -225,6 +228,14 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.experience += Math.round(amount / this.scene.game.getDifficultyMultiplier());
+
+    this.emit(PlayerEvents.UPDATE_EXPERIENCE, this.experience);
+  }
+
+  private takeExperience(amount: number) {
+    this.experience -= amount;
+
+    this.emit(PlayerEvents.UPDATE_EXPERIENCE, this.experience);
   }
 
   public giveResources(amount: number) {
@@ -234,6 +245,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.resources += amount;
 
+    this.emit(PlayerEvents.UPDATE_RESOURCES, this.resources);
+
     if (Tutorial.IsInProgress(TutorialStep.RESOURCES)) {
       Tutorial.Complete(TutorialStep.RESOURCES);
     }
@@ -241,6 +254,8 @@ export class Player extends Sprite implements IPlayer {
 
   public takeResources(amount: number) {
     this.resources -= amount;
+
+    this.emit(PlayerEvents.UPDATE_RESOURCES, this.resources);
 
     if (
       this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
@@ -361,12 +376,11 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.setSkillUpgrade(type, this.upgradeLevel[type] + 1);
+    this.takeExperience(experience);
 
-    this.experience -= experience;
+    this.emit(PlayerEvents.UPGRADE_SKILL, type);
 
     this.scene.sound.play(PlayerAudio.UPGRADE);
-
-    Tutorial.Complete(TutorialStep.UPGRADE_SKILL);
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
@@ -568,13 +582,13 @@ export class Player extends Sprite implements IPlayer {
     // Error on Phaser animation play
     // ISSUE: [https://github.com/neki-dev/izowave/issues/81]
     try {
-    this.anims.play({
-      key: `dir_${this.movementTarget}`,
+      this.anims.play({
+        key: `dir_${this.movementTarget}`,
         startFrame: (restart || !this.anims.currentFrame)
           ? 1
           : this.anims.currentFrame.index,
-      frameRate: (this.stamina) === 0.0 ? 4 : 8,
-    });
+        frameRate: (this.stamina) === 0.0 ? 4 : 8,
+      });
     } catch (error) {
       Analytics.TrackWarn((error as TypeError).message);
     }

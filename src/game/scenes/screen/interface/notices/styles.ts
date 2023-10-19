@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  z-index: 2;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     top: 80px;
   }

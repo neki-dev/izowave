@@ -41,7 +41,7 @@ export const Container = styled.div<{
       default: return css`
         background: ${InterfaceBackgroundColor.BLACK};
         &:hover {
-          background: ${InterfaceBackgroundColor.BLUE};
+          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
         }
       `;
     }

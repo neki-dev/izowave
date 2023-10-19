@@ -1,17 +1,12 @@
-import {
-  ifModifiedObject,
-  useClick,
-  useScene,
-  useSceneUpdate,
-} from 'phaser-react-ui';
+import { useClick, useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
-import { PLAYER_MAX_SKILL_LEVEL, PLAYER_SKILLS } from '~const/world/entities/player';
+import { PLAYER_MAX_SKILL_LEVEL } from '~const/world/entities/player';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
-import { PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
+import { PlayerEvents, PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
 
 import {
   Container, Info, Action, Label, Level, Button, Limit,
@@ -28,7 +23,6 @@ export const Item: React.FC<Props> = ({ type }) => {
 
   const getData = (): PlayerSkillData => ({
     type,
-    target: PLAYER_SKILLS[type].target,
     experience: world.player.getExperienceToUpgrade(type),
     currentLevel: world.player.upgradeLevel[type],
   });
@@ -43,8 +37,8 @@ export const Item: React.FC<Props> = ({ type }) => {
     world.player.upgrade(type);
   }, [type]);
 
-  useSceneUpdate(world, () => {
-    setData(ifModifiedObject(getData()));
+  useEvent(world.player, PlayerEvents.UPGRADE_SKILL, () => {
+    setData(getData());
   }, []);
 
   return (
@@ -69,7 +63,7 @@ export const Item: React.FC<Props> = ({ type }) => {
       ) : (
         <Action ref={refAction} $active={true}>
           <Button>{phrase('SKILL_UPGRADE')}</Button>
-          <Cost type="experience" value={data.experience} />
+          <Cost type="EXPERIENCE" value={data.experience} />
         </Action>
       )}
     </Container>

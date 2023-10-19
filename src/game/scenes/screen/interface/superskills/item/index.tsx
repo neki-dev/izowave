@@ -5,6 +5,7 @@ import React, { useRef, useState } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { phrase } from '~lib/lang';
+import { Wrapper } from '~scene/gameover/interface/styles';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene, GameState, IGame } from '~type/game';
 import { IWorld } from '~type/world';
@@ -40,27 +41,29 @@ export const Item: React.FC<Props> = ({ type }) => {
   }, []);
 
   return (
-    <Container ref={refContainer} $active={isActive}>
+    <Wrapper>
       {isHover && (
         <Info>
           <Head>
             <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
-            <Cost type="resources" value={cost} />
+            <Cost type="RESOURCES" value={cost} />
           </Head>
           <Body>
             <Description>{phrase(`SUPERSKILL_DESCRIPTION_${type}`)}</Description>
           </Body>
         </Info>
       )}
-      {isActive && (
-        <Timeout
-          style={{
-            animationDuration: `${DIFFICULTY[`SUPERSKILL_${type}_DURATION`]}ms`,
-            animationPlayState: isPaused ? 'paused' : 'running',
-          }}
-        />
-      )}
-      <Icon src={`assets/sprites/feature/${type.toLowerCase()}.png`} />
-    </Container>
+      <Container ref={refContainer} $active={isActive}>
+        {isActive && (
+          <Timeout
+            style={{
+              animationDuration: `${DIFFICULTY[`SUPERSKILL_${type}_DURATION`]}ms`,
+              animationPlayState: isPaused ? 'paused' : 'running',
+            }}
+          />
+        )}
+        <Icon src={`assets/sprites/feature/${type.toLowerCase()}.png`} />
+      </Container>
+    </Wrapper>
   );
 };
