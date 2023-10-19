@@ -1,3 +1,12 @@
+
+import { EventEmitter } from 'events';
+
+jest.mock('phaser', () => ({
+  Events: {
+    EventEmitter,
+  }
+}));
+
 import { Live } from '../live';
 
 describe('live.ts', () => {
