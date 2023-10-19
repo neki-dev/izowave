@@ -38,7 +38,6 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
     z: 0,
     collide: false,
     solid: true,
-    friction: 1.2,
     spawn: [SpawnTarget.ENEMY, SpawnTarget.CRYSTAL],
   },
 }, {
@@ -49,7 +48,6 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
     z: 0,
     collide: false,
     solid: true,
-    friction: 1.2,
     spawn: [SpawnTarget.ENEMY, SpawnTarget.CRYSTAL],
   },
 }, {
