@@ -245,13 +245,14 @@ export class Game extends Phaser.Game implements IGame {
       SDK.TogglePlayState(false);
     }
 
+    this.scene.systemScene.scene.stop(GameScene.SCREEN);
+
     this.state = GameState.IDLE;
 
     this.world.scene.restart();
 
     Tutorial.Reset();
 
-    this.scene.systemScene.scene.stop(GameScene.SCREEN);
     if (menu) {
       this.scene.systemScene.scene.launch(GameScene.MENU, {
         defaultPage: MenuPage.NEW_GAME,
