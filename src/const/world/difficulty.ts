@@ -12,7 +12,7 @@ export const DIFFICULTY = {
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade speed
   PLAYER_STAMINA: 100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
-  PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 70, //  Experience need to upgrade stamina
+  PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
 
   /**

@@ -188,11 +188,11 @@ export class Player extends Sprite implements IPlayer {
 
     if (this.movementAngle === null) {
       if (this.stamina < this.staminaMax && this.staminaTimestamp < now) {
-        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.015));
+        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.012));
         this.staminaTimestamp = now + 25;
       }
     } else if (this.stamina > 0.0 && this.staminaTimestamp < now) {
-      this.stamina = Math.max(0.0, this.stamina - 0.4);
+      this.stamina = Math.max(0.0, this.stamina - 0.3);
       this.staminaTimestamp = now + 25;
 
       if (this.stamina === 0.0) {
@@ -200,7 +200,7 @@ export class Player extends Sprite implements IPlayer {
         this.scene.sound.stopByKey(PlayerAudio.WALK);
         this.scene.game.sound.play(PlayerAudio.WALK, {
           loop: true,
-          rate: 1.2,
+          rate: 1.4,
         });
       }
 
@@ -522,7 +522,7 @@ export class Player extends Sprite implements IPlayer {
         this.setVelocity(0, 0);
       } else {
         const friction = this.currentBiome?.friction ?? 1;
-        const stamina = (this.stamina === 0) ? 2 : 1;
+        const stamina = (this.stamina === 0) ? 1.5 : 1;
         const speed = (this.speed / friction) / stamina;
         const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
 
@@ -576,20 +576,20 @@ export class Player extends Sprite implements IPlayer {
     this.updateMovementAnimation(true);
   }
 
+  // ISSUE: [https://github.com/neki-dev/izowave/issues/81]
+  // Error on Phaser animation play
   private updateMovementAnimation(restart: boolean = false) {
     if (this.movementTarget === null) {
       return;
     }
 
-    // Error on Phaser animation play
-    // ISSUE: [https://github.com/neki-dev/izowave/issues/81]
     try {
+      const lastFrame = this.anims.currentFrame;
+
       this.anims.play({
         key: `dir_${this.movementTarget}`,
-        startFrame: (restart || !this.anims.currentFrame)
-          ? 1
-          : this.anims.currentFrame.index,
-        frameRate: (this.stamina) === 0.0 ? 4 : 8,
+        startFrame: (restart || !lastFrame) ? 1 : lastFrame.index,
+        frameRate: (this.stamina) === 0.0 ? 6 : 8,
       });
     } catch (error) {
       Analytics.TrackWarn((error as TypeError).message);
