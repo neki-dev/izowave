@@ -28,7 +28,7 @@ export interface INavigator {
    */
   createTask(
     data: NavigatorTaskData,
-    callback: (path: Nullable<Vector2D[]>) => void
+    callback: (path: Nullable<Vector2D[]>, cost: number) => void
   ): string
 
   /**
@@ -68,5 +68,5 @@ export type NavigatorWorkerResult = {
 
 export type NavigatorTaskInfo = {
   id: string
-  callback: (path: Nullable<Vector2D[]>) => void
+  callback: (path: Nullable<Vector2D[]>, cost: number) => void
 };

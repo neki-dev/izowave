@@ -9,17 +9,14 @@ import {
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { Assets } from '~lib/assets';
-import { excludePosition } from '~lib/dimension';
 import { Environment } from '~lib/environment';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Effect, Particles } from '~scene/world/effects';
-import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
 import { InterfaceFont } from '~type/interface';
 import { IWorld, WorldEvents } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
-import { NPCEvent } from '~type/world/entities/npc';
 import {
   IEnemyTarget,
   EnemyData,
@@ -28,7 +25,7 @@ import {
   EnemyAudio,
 } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture]);
@@ -105,6 +102,17 @@ export class Enemy extends NPC implements IEnemy {
 
     this.handlePlayerSuperskill();
 
+    if (this.spawnEffect) {
+      // TODO
+      this.addSpawnEffect();
+    }
+
+    const frost = this.scene.player.activeSuperskills[PlayerSuperskill.FROST];
+
+    if (frost) {
+      this.freeze(frost.getRemaining(), true);
+    }
+
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
         const shield = this.scene.player.activeSuperskills[PlayerSuperskill.SHIELD];
@@ -114,8 +122,6 @@ export class Enemy extends NPC implements IEnemy {
         }
       }
     });
-
-    this.on(NPCEvent.PATH_NOT_FOUND, this.onPathNotFound.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeDamageLabel();
@@ -137,20 +143,6 @@ export class Enemy extends NPC implements IEnemy {
     this.isOverlapTarget = false;
   }
 
-  public activate() {
-    super.activate();
-
-    if (this.spawnEffect) {
-      this.addSpawnEffect();
-    }
-
-    const frost = this.scene.player.activeSuperskills[PlayerSuperskill.FROST];
-
-    if (frost) {
-      this.freeze(frost.getRemaining(), true);
-    }
-  }
-
   public overlapTarget() {
     this.isOverlapTarget = true;
   }
@@ -163,15 +155,6 @@ export class Enemy extends NPC implements IEnemy {
     target.live.damage(this.damage);
 
     this.freeze(1000);
-  }
-
-  private onPathNotFound(originPosition: Vector2D) {
-    excludePosition(this.scene.enemySpawnPositions, originPosition);
-
-    const positionAtMatrix = this.scene.getEnemySpawnPosition();
-    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 1 });
-
-    this.setPosition(position.x, position.y);
   }
 
   private addDamageLabel() {

@@ -112,12 +112,14 @@ export class Level extends TileMatrix implements ILevel {
 
     for (let sX = grid; sX < this.map.width - grid; sX += grid) {
       for (let sY = grid; sY < this.map.height - grid; sY += grid) {
-        const x = sX + Phaser.Math.Between(-rand, rand);
-        const y = sY + Phaser.Math.Between(-rand, rand);
-        const targets = this.map.getAt({ x, y })?.spawn;
+        const position = {
+          x: sX + Phaser.Math.Between(-rand, rand),
+          y: sY + Phaser.Math.Between(-rand, rand),
+        };
+        const targets = this.map.getAt(position)?.spawn;
 
         if (targets && targets.includes(target)) {
-          positions.push({ x, y });
+          positions.push(position);
         }
       }
     }

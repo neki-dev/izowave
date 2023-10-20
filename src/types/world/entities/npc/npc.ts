@@ -34,10 +34,6 @@ export interface INPC extends ISprite {
   moveTo(position: Vector2D): void
 }
 
-export enum NPCEvent {
-  PATH_NOT_FOUND = 'path_not_found',
-}
-
 export type NPCData = {
   positionAtMatrix?: Vector2D
   positionAtWorld?: Vector2D

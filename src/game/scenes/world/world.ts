@@ -4,21 +4,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
-import {
-  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
-} from '~const/world/entities/enemy';
 import { LEVEL_PLANETS } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, sortByMatrixDistance } from '~lib/dimension';
+import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { hashString } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
+import { Spawner } from '~scene/world/spawner';
 import { Wave } from '~scene/world/wave';
 import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
@@ -31,12 +29,13 @@ import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
+import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
   ILevel, LevelData, SpawnTarget, Vector2D,
 } from '~type/world/level';
+import { ISpawner } from '~type/world/spawner';
 import { IWave, WaveEvents } from '~type/world/wave';
 
 export class World extends Scene implements IWorld {
@@ -72,15 +71,17 @@ export class World extends Scene implements IWorld {
 
   private set builder(v) { this._builder = v; }
 
+  private _spawner: ISpawner;
+
+  public get spawner() { return this._spawner; }
+
+  private set spawner(v) { this._spawner = v; }
+
   private _camera: ICamera;
 
   public get camera() { return this._camera; }
 
   private set camera(v) { this._camera = v; }
-
-  public enemySpawnPositions: Vector2D[] = [];
-
-  private enemySpawnPositionsAnalog: Vector2D[] = [];
 
   private lifecyle: Phaser.Time.TimerEvent;
 
@@ -106,6 +107,7 @@ export class World extends Scene implements IWorld {
 
     this.level = new Level(this, data);
     this.camera = new Camera(this);
+    this.spawner = new Spawner(this);
 
     this.modes = {
       [WorldMode.TIME_SCALE]: false,
@@ -114,7 +116,6 @@ export class World extends Scene implements IWorld {
       [WorldMode.PATH_TO_CRYSTAL]: false,
     };
 
-    this.generateEnemySpawnPositions();
     this.addEntityGroups();
   }
 
@@ -213,53 +214,12 @@ export class World extends Scene implements IWorld {
     return this.entityGroups[type].getChildren() as T[];
   }
 
-  public spawnEnemy(variant: EnemyVariant): Nullable<IEnemy> {
+  public spawnEnemy(variant: EnemyVariant) {
     const EnemyInstance = ENEMIES[variant];
-    const positionAtMatrix = this.getEnemySpawnPosition();
-    const enemy: IEnemy = new EnemyInstance(this, { positionAtMatrix });
 
-    return enemy;
-  }
-
-  private generateEnemySpawnPositions() {
-    this.enemySpawnPositions = this.level.readSpawnPositions(
-      SpawnTarget.ENEMY,
-      ENEMY_SPAWN_POSITIONS_GRID,
-    );
-
-    this.enemySpawnPositionsAnalog = [];
-    for (let x = 0; x < this.level.map.width; x++) {
-      for (let y = 0; y < this.level.map.height; y++) {
-        if (
-          x === 0
-          || x === this.level.map.width - 1
-          || y === 0
-          || y === this.level.map.height - 1
-        ) {
-          this.enemySpawnPositionsAnalog.push({ x, y });
-        }
-      }
-    }
-  }
-
-  public getEnemySpawnPosition() {
-    const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
-    let freePositions = this.enemySpawnPositions.filter((position) => (
-      Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
-      && buildings.every((building) => (
-        Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
-      ))
-    ));
-
-    if (freePositions.length === 0) {
-      freePositions = this.enemySpawnPositionsAnalog;
-    }
-
-    const closestPositions = sortByMatrixDistance(freePositions, this.player.positionAtMatrix)
-      .slice(0, ENEMY_SPAWN_POSITIONS);
-    const positionAtMatrix = Phaser.Utils.Array.GetRandom(closestPositions);
-
-    return positionAtMatrix;
+    this.spawner.getSpawnPosition().then((positionAtMatrix) => {
+      new EnemyInstance(this, { positionAtMatrix });
+    });
   }
 
   public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {

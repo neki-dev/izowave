@@ -121,6 +121,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.handlePointer();
     this.handleToggleModes();
 
+    this.scene.spawner.clearCache();
+
     if (buildDuration && buildDuration > 0) {
       this.startBuildProcess(buildDuration);
     } else {
@@ -146,6 +148,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unfocus();
       this.unselect();
 
+      this.scene.spawner.clearCache();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
       this.live.removeAllListeners();
 

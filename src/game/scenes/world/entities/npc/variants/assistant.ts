@@ -53,8 +53,6 @@ export class Assistant extends NPC implements IAssistant {
     this.shotDefaultParams = this.shot.params;
 
     this.owner = owner;
-
-    this.activate();
   }
 
   public update() {

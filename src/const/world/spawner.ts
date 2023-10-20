@@ -1,0 +1,9 @@
+export const SPAWN_CACHE_RESET_DISTANCE = 6;
+
+export const SPAWN_POSITIONS_LIMIT = 16;
+
+export const SPAWN_DISTANCE_FROM_PLAYER = 10;
+
+export const SPAWN_DISTANCE_FROM_BUILDING = 8;
+
+export const SPAWN_POSITIONS_GRID = 4;

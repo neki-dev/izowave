@@ -21,20 +21,17 @@ export class Navigator implements INavigator {
   constructor() {
     this.worker = new NavigatorWorker();
 
-    this.worker.addEventListener(
-      'message',
-      ({ data }: NavigatorWorkerResult) => {
-        const task = this.tasks.find((info) => info.id === data.payload.id);
+    this.worker.addEventListener('message', ({ data }: NavigatorWorkerResult) => {
+      const task = this.tasks.find((info) => info.id === data.payload.id);
 
-        if (task) {
-          switch (data.event) {
-            case NavigatorEvent.COMPLETE_TASK:
-              task.callback(data.payload.path);
-              break;
-          }
+      if (task) {
+        switch (data.event) {
+          case NavigatorEvent.COMPLETE_TASK:
+            task.callback(data.payload.result.path, data.payload.result.cost);
+            break;
         }
-      },
-    );
+      }
+    });
   }
 
   public setPointCost(position: Vector2D, cost: number) {
@@ -78,7 +75,7 @@ export class Navigator implements INavigator {
 
   public createTask(
     data: NavigatorTaskData,
-    callback: (path: Nullable<Vector2D[]>) => void,
+    callback: (path: Nullable<Vector2D[]>, cost: number) => void,
   ) {
     const payload = { ...data };
 

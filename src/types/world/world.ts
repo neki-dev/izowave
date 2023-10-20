@@ -9,10 +9,11 @@ import { EntityType } from '~type/world/entities';
 import { BuildingSavePayload } from '~type/world/entities/building';
 import { CrystalSavePayload } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
+import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, Vector2D } from '~type/world/level';
+import { ISpawner } from '~type/world/spawner';
 import { IWave } from '~type/world/wave';
 
 export interface IWorld extends IScene {
@@ -30,6 +31,11 @@ export interface IWorld extends IScene {
    * Player assistant.
    */
   readonly assistant: IAssistant
+
+  /**
+   * Enemy spawner.
+   */
+  readonly spawner: ISpawner
 
   /**
    * Level.
@@ -50,11 +56,6 @@ export interface IWorld extends IScene {
    * Delta time of frame update.
    */
   readonly deltaTime: number
-
-  /**
-   * List of generated enemy spawn positions
-   */
-  enemySpawnPositions: Vector2D[]
 
   /**
    * Start world.
@@ -115,7 +116,7 @@ export interface IWorld extends IScene {
    * Spawn enemy in random position.
    * @param variant - Enemy variant
    */
-  spawnEnemy(variant: EnemyVariant): Nullable<IEnemy>
+  spawnEnemy(variant: EnemyVariant): void
 
   /**
    * Show hint on world.
@@ -135,11 +136,6 @@ export interface IWorld extends IScene {
    * @param seconds - Time in seconds
    */
   getFuturePosition(sprite: ISprite, seconds: number): Vector2D
-
-  /**
-   * Get random enemy spawn position.
-   */
-  getEnemySpawnPosition(): Vector2D
 
   /**
    * Check is mode active.

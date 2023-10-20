@@ -66,19 +66,22 @@ export class NavigatorTask {
       event: NavigatorEvent.COMPLETE_TASK,
       payload: {
         id: this.id,
-        path: null,
+        result: {
+          path: null,
+          cost: 0,
+        },
       },
     });
   }
 
   public complete(node: PathNode) {
-    const path = node.getPath();
+    const result = node.getResult();
 
     self.postMessage({
       event: NavigatorEvent.COMPLETE_TASK,
       payload: {
         id: this.id,
-        path,
+        result,
       },
     });
   }

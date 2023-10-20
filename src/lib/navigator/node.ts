@@ -57,8 +57,9 @@ export class PathNode {
     this.listOpened = false;
   }
 
-  public getPath() {
+  public getResult() {
     const path: Vector2D[] = [this.position];
+    const cost = this.parent?.cost ?? 0;
 
     let parent = this.getParent();
 
@@ -69,6 +70,6 @@ export class PathNode {
 
     path.reverse();
 
-    return path;
+    return { path, cost };
   }
 }

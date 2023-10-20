@@ -12,7 +12,7 @@ import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
-import { INPC, NPCData, NPCEvent } from '~type/world/entities/npc';
+import { INPC, NPCData } from '~type/world/entities/npc';
 import { Vector2D } from '~type/world/level';
 
 export class NPC extends Sprite implements INPC {
@@ -38,7 +38,6 @@ export class NPC extends Sprite implements INPC {
     super(scene, { ...data, texture });
     scene.addEntityToGroup(this, EntityType.NPC);
 
-    this.setVisible(false);
     this.pathFindTriggerDistance = pathFindTriggerDistance;
 
     this.addDebugPath();
@@ -153,10 +152,6 @@ export class NPC extends Sprite implements INPC {
       }
 
       if (path) {
-        if (!this.visible) {
-          this.activate();
-        }
-
         path.shift();
         this.pathToTarget = path;
         this.pathFindingTask = null;
@@ -168,13 +163,8 @@ export class NPC extends Sprite implements INPC {
         this.drawDebugPath();
       } else {
         this.pathFindingTask = null;
-        this.emit(NPCEvent.PATH_NOT_FOUND, from);
       }
     });
-  }
-
-  public activate() {
-    this.setVisible(true);
   }
 
   public getDistanceToTarget() {
