@@ -6,8 +6,10 @@ const entityGroup = {
 
 const world = {
   getTime: jest.fn(() => 0),
+  isModeActive: jest.fn(() => false),
   isTimePaused: jest.fn(() => false),
   setTimePause: jest.fn(),
+  setTimeScale: jest.fn(),
   spawnEnemy: jest.fn(),
   getResourceExtractionSpeed: jest.fn(() => 1),
   game: {
@@ -43,7 +45,12 @@ const world = {
   input: {
     keyboard: {
       on: jest.fn(),
+      off: jest.fn(),
     },
+  },
+  events: {
+    on: jest.fn(),
+    off: jest.fn(),
   },
   sound: {
     play: jest.fn(),
