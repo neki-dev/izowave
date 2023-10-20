@@ -49,10 +49,10 @@ export const Modal: React.FC<Props> = ({ experience, resources, onClose }) => {
           <Amount type="EXPERIENCE">+{experience}</Amount>
         </Amounts>
         <Buttons>
-          <Button view="confirm" size="medium" onClick={onConfirmAds}>
+          <Button view="confirm" size="small" onClick={onConfirmAds}>
             {phrase('YES')}
           </Button>
-          <Button view="decline" size="medium" onClick={onDeclineAds}>
+          <Button view="decline" size="small" onClick={onDeclineAds}>
             {phrase('NO')}
           </Button>
         </Buttons>
