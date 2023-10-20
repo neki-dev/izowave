@@ -54,6 +54,7 @@ export const FR = {
   /**
    * Modes
    */
+  TIME_SCALE: 'AAugmenter la vitesse du temps\npendant la vague',
   BUILDING_INDICATORS: 'Afficher des vies\net des munitions des batiments',
   AUTO_REPAIR: 'Automatiquement acheter munition\net reparer les batiments',
   PATH_TO_CRYSTAL: 'Afficher le chemin\nvers le cristal le plus proche',

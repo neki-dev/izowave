@@ -184,16 +184,19 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private updateStamina() {
+    // Date.now used instead of world.getTime to
+    // right culculate timestamp on tutorial pause
     const now = Date.now();
+    const nextTimestamp = () => now + (50 / this.scene.getTimeScale());
 
     if (this.movementAngle === null) {
       if (this.stamina < this.staminaMax && this.staminaTimestamp < now) {
-        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.012));
-        this.staminaTimestamp = now + 25;
+        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.024));
+        this.staminaTimestamp = nextTimestamp();
       }
     } else if (this.stamina > 0.0 && this.staminaTimestamp < now) {
-      this.stamina = Math.max(0.0, this.stamina - 0.3);
-      this.staminaTimestamp = now + 25;
+      this.stamina = Math.max(0.0, this.stamina - 0.6);
+      this.staminaTimestamp = nextTimestamp();
 
       if (this.stamina === 0.0) {
         this.updateMovementAnimation();

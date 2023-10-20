@@ -54,6 +54,7 @@ export const EN = {
   /**
    * Modes
    */
+  TIME_SCALE: 'Increase time speed\nduring wave',
   BUILDING_INDICATORS: 'Display buildings\nhealth and ammo',
   AUTO_REPAIR: 'Auto buy ammo\nand repair buildings',
   PATH_TO_CRYSTAL: 'Display path\nto nearest crystal',

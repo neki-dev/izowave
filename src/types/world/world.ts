@@ -79,6 +79,17 @@ export interface IWorld extends IScene {
   setTimePause(state: boolean): void
 
   /**
+   * Get game lifecyle speed.
+   */
+  getTimeScale(): number
+
+  /**
+   * Set game lifecyle speed.
+   * @param scale - Scale value
+   */
+  setTimeScale(scale: number): void
+
+  /**
    * Get count of resources generate per second.
    */
   getResourceExtractionSpeed(): number
@@ -159,6 +170,7 @@ export enum WorldEvents {
 }
 
 export enum WorldMode {
+  TIME_SCALE = 'TIME_SCALE',
   BUILDING_INDICATORS = 'BUILDING_INDICATORS',
   AUTO_REPAIR = 'AUTO_REPAIR',
   PATH_TO_CRYSTAL = 'PATH_TO_CRYSTAL',

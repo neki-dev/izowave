@@ -91,6 +91,7 @@ export class World extends Scene implements IWorld {
   private set deltaTime(v) { this._deltaTime = v; }
 
   private modes: Record<WorldMode, boolean> = {
+    [WorldMode.TIME_SCALE]: false,
     [WorldMode.BUILDING_INDICATORS]: false,
     [WorldMode.AUTO_REPAIR]: false,
     [WorldMode.PATH_TO_CRYSTAL]: false,
@@ -107,6 +108,7 @@ export class World extends Scene implements IWorld {
     this.camera = new Camera(this);
 
     this.modes = {
+      [WorldMode.TIME_SCALE]: false,
       [WorldMode.BUILDING_INDICATORS]: false,
       [WorldMode.AUTO_REPAIR]: false,
       [WorldMode.PATH_TO_CRYSTAL]: false,
@@ -169,6 +171,15 @@ export class World extends Scene implements IWorld {
 
   public setTimePause(state: boolean) {
     this.lifecyle.paused = state;
+  }
+
+  public getTimeScale() {
+    return this.lifecyle.timeScale;
+  }
+
+  public setTimeScale(scale: number) {
+    this.physics.world.timeScale = 1 / scale;
+    this.lifecyle.timeScale = scale;
   }
 
   public setModeActive(mode: WorldMode, state: boolean) {
