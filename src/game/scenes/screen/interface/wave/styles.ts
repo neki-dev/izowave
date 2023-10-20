@@ -116,6 +116,7 @@ export const Label = styled.div`
   opacity: 0.5;
   margin-top: -2px;
   min-width: 80px;
+  white-space: nowrap;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 8px;
     line-height: 8px;

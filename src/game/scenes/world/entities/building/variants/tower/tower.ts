@@ -1,7 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { progressionLinear } from '~lib/progression';
 import { getClosest } from '~lib/dimension';
+import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -41,13 +41,15 @@ export class BuildingTower extends Building implements IBuildingTower {
   constructor(scene: IWorld, data: BuildingData, shot: IShot) {
     super(scene, data);
 
-    shot.setInitiator(this);
+    shot.setInitiator(this, () => this.getTopFace());
     this.shot = shot;
     this.shotDefaultParams = shot.params;
 
     this.handleBuildingRelease();
 
     this.calculatePower();
+
+    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public update() {
@@ -94,6 +96,14 @@ export class BuildingTower extends Building implements IBuildingTower {
     });
 
     return super.getInfo().concat(info);
+  }
+
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y -= 5;
+
+    return position;
   }
 
   private isCanAttack() {
@@ -157,7 +167,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getAmmunition() {
     const ammunitions = this.scene.builder.getBuildingsByVariant<IBuildingAmmunition>(BuildingVariant.AMMUNITION)
-      .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getPositionOnGround())));
+      .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getBottomFace())));
 
     if (ammunitions.length === 0) {
       return null;
@@ -208,11 +218,11 @@ export class BuildingTower extends Building implements IBuildingTower {
         return false;
       }
 
-      const position = enemy.getPositionOnGround();
+      const position = enemy.getBottomFace();
 
       return (
         this.actionsAreaContains(position)
-        && !this.scene.level.hasTilesBetweenPositions(position, this.getPositionOnGround())
+        && !this.scene.level.hasTilesBetweenPositions(position, this.getBottomFace())
       );
     });
 
@@ -236,7 +246,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getBooster() {
     const boosters = this.scene.builder.getBuildingsByVariant<IBuildingBooster>(BuildingVariant.BOOSTER)
-      .filter((building) => building.actionsAreaContains(this.getPositionOnGround()));
+      .filter((building) => building.actionsAreaContains(this.getBottomFace()));
 
     if (boosters.length === 0) {
       return null;
@@ -253,6 +263,15 @@ export class BuildingTower extends Building implements IBuildingTower {
     const booster = this.getBooster();
 
     this.power = 1.0 + (booster ? (booster.power / 100) : 0);
+  }
+
+  private onUpgrade() {
+    this.ammo = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+
+    if (this.needReload) {
+      this.removeAlertIcon();
+      this.needReload = false;
+    }
   }
 
   private handleBuildingRelease() {

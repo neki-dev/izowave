@@ -11,6 +11,7 @@ import {
 import { LEVEL_TILE_SIZE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getClosest, isPositionsEqual } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -36,6 +37,8 @@ import {
   PlayerSuperskill,
   PlayerSavePayload,
   MovementDirection,
+  PlayerEvents,
+  PlayerSkillIcon,
 } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -43,6 +46,7 @@ import { WaveEvents } from '~type/world/wave';
 Assets.RegisterAudio(PlayerAudio);
 Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
 Assets.RegisterImages(PlayerTexture.SUPERSKILL);
+Assets.RegisterImages(PlayerSkillIcon);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
@@ -72,6 +76,7 @@ export class Player extends Sprite implements IPlayer {
   private _upgradeLevel: Record<PlayerSkill, number> = {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
+    [PlayerSkill.STAMINA]: 1,
     [PlayerSkill.BUILD_SPEED]: 1,
     [PlayerSkill.ATTACK_DAMAGE]: 1,
     [PlayerSkill.ATTACK_DISTANCE]: 1,
@@ -104,6 +109,12 @@ export class Player extends Sprite implements IPlayer {
 
   private currentPathToCrystal: Nullable<Vector2D[]> = null;
 
+  private staminaMax: number = 100;
+
+  private stamina: number = 100;
+
+  private staminaTimestamp: number = 0;
+
   constructor(scene: IWorld, data: PlayerData) {
     super(scene, {
       ...data,
@@ -129,8 +140,8 @@ export class Player extends Sprite implements IPlayer {
     this.registerAnimations();
 
     this.addDustEffect();
-    this.addIndicator({
-      color: 0xd0ff4f,
+    this.addIndicator('health', {
+      color: 0x96ff0d,
       value: () => this.live.health / this.live.maxHealth,
     });
 
@@ -168,6 +179,38 @@ export class Player extends Sprite implements IPlayer {
 
       this.updateMovement();
       this.updateVelocity();
+      this.updateStamina();
+    }
+  }
+
+  private updateStamina() {
+    const now = Date.now();
+
+    if (this.movementAngle === null) {
+      if (this.stamina < this.staminaMax && this.staminaTimestamp < now) {
+        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.012));
+        this.staminaTimestamp = now + 25;
+      }
+    } else if (this.stamina > 0.0 && this.staminaTimestamp < now) {
+      this.stamina = Math.max(0.0, this.stamina - 0.3);
+      this.staminaTimestamp = now + 25;
+
+      if (this.stamina === 0.0) {
+        this.updateMovementAnimation();
+        this.scene.sound.stopByKey(PlayerAudio.WALK);
+        this.scene.game.sound.play(PlayerAudio.WALK, {
+          loop: true,
+          rate: 1.4,
+        });
+      }
+
+      if (this.stamina < this.staminaMax && !this.getIndicator('stamina')) {
+        this.addIndicator('stamina', {
+          color: 0xe7e4f5,
+          value: () => this.stamina / this.staminaMax,
+          destroyIf: (value: number) => value >= 1.0,
+        });
+      }
     }
   }
 
@@ -177,6 +220,8 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.score += amount;
+
+    this.emit(PlayerEvents.UPDATE_SCORE, this.score);
   }
 
   public giveExperience(amount: number) {
@@ -185,6 +230,14 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.experience += Math.round(amount / this.scene.game.getDifficultyMultiplier());
+
+    this.emit(PlayerEvents.UPDATE_EXPERIENCE, this.experience);
+  }
+
+  private takeExperience(amount: number) {
+    this.experience -= amount;
+
+    this.emit(PlayerEvents.UPDATE_EXPERIENCE, this.experience);
   }
 
   public giveResources(amount: number) {
@@ -194,6 +247,8 @@ export class Player extends Sprite implements IPlayer {
 
     this.resources += amount;
 
+    this.emit(PlayerEvents.UPDATE_RESOURCES, this.resources);
+
     if (Tutorial.IsInProgress(TutorialStep.RESOURCES)) {
       Tutorial.Complete(TutorialStep.RESOURCES);
     }
@@ -201,6 +256,8 @@ export class Player extends Sprite implements IPlayer {
 
   public takeResources(amount: number) {
     this.resources -= amount;
+
+    this.emit(PlayerEvents.UPDATE_RESOURCES, this.resources);
 
     if (
       this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
@@ -241,7 +298,7 @@ export class Player extends Sprite implements IPlayer {
     this.scene.sound.play(PlayerAudio.SUPERSKILL);
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      const position = this.getPositionOnGround();
+      const position = this.getBottomFace();
       const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
 
       effect.setDepth(WORLD_DEPTH_EFFECT);
@@ -294,6 +351,13 @@ export class Player extends Sprite implements IPlayer {
           level: nextLevel,
         });
       }
+      case PlayerSkill.STAMINA: {
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.PLAYER_STAMINA,
+          scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
+          level: nextLevel,
+        });
+      }
       default: {
         return nextLevel;
       }
@@ -314,12 +378,11 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.setSkillUpgrade(type, this.upgradeLevel[type] + 1);
+    this.takeExperience(experience);
 
-    this.experience -= experience;
+    this.emit(PlayerEvents.UPGRADE_SKILL, type);
 
     this.scene.sound.play(PlayerAudio.UPGRADE);
-
-    Tutorial.Complete(TutorialStep.UPGRADE_SKILL);
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
@@ -338,6 +401,11 @@ export class Player extends Sprite implements IPlayer {
         if (this.scene.assistant) {
           this.scene.assistant.speed = nextValue;
         }
+        break;
+      }
+      case PlayerSkill.STAMINA: {
+        this.staminaMax = nextValue;
+        this.stamina = this.staminaMax;
         break;
       }
     }
@@ -454,7 +522,8 @@ export class Player extends Sprite implements IPlayer {
         this.setVelocity(0, 0);
       } else {
         const friction = this.currentBiome?.friction ?? 1;
-        const speed = this.speed / friction;
+        const stamina = (this.stamina === 0) ? 1.5 : 1;
+        const speed = (this.speed / friction) / stamina;
         const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
 
         this.setVelocity(
@@ -503,10 +572,28 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.movementAngle = this.movementTarget * 45;
-    this.anims.play({
-      key: `dir_${this.movementTarget}`,
-      startFrame: 1,
-    });
+
+    this.updateMovementAnimation(true);
+  }
+
+  // ISSUE: [https://github.com/neki-dev/izowave/issues/81]
+  // Error on Phaser animation play
+  private updateMovementAnimation(restart: boolean = false) {
+    if (this.movementTarget === null) {
+      return;
+    }
+
+    try {
+      const lastFrame = this.anims.currentFrame;
+
+      this.anims.play({
+        key: `dir_${this.movementTarget}`,
+        startFrame: (restart || !lastFrame) ? 1 : lastFrame.index,
+        frameRate: (this.stamina) === 0.0 ? 6 : 8,
+      });
+    } catch (error) {
+      Analytics.TrackWarn((error as TypeError).message);
+    }
   }
 
   private stopMovement() {
@@ -606,8 +693,8 @@ export class Player extends Sprite implements IPlayer {
       const i = this.pathToCrystalEffectIndex + k;
 
       if (i > 1 && i < this.currentPathToCrystal.length) {
-        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1], z: 0 });
-        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i], z: 0 });
+        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1], z: 1 });
+        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i], z: 1 });
         const alpha = 1.0 - Math.min(Math.abs(k / halfVisibleLength), 0.9);
 
         this.pathToCrystal.lineStyle(2, 0xffffff, alpha * 0.75);

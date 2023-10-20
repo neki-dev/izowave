@@ -3,26 +3,27 @@ import styled from 'styled-components';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
-  background: #000;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   position: relative;
   border-radius: 0 0 5px 5px;
   overflow: hidden;
+  padding: 5px;
 `;
 
 export const Progress = styled.div`
   height: 20px;
-  background: ${InterfaceBackgroundColor.SUCCESS};
-  box-shadow: 0 10px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15}inset;
+  background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+  box-shadow: 0 10px 0 ${InterfaceBackgroundColor.SUCCESS} inset;
   transition: width 0.3s ease-out;
+  border-radius: 3px;
 `;
 
 export const Value = styled.div`
   position: absolute;
   font-family: ${InterfaceFont.PIXEL_LABEL};
   color: #fff;
-  font-size: 11px;
-  line-height: 11px;
-  text-shadow: 1px 1px 0 #000;
+  font-size: 10px;
+  line-height: 10px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);

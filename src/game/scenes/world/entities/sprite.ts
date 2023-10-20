@@ -26,7 +26,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   readonly live: ILive;
 
-  readonly container: Phaser.GameObjects.Container;
+  private _container: Phaser.GameObjects.Container;
+
+  public get container() { return this._container; }
+
+  private set container(v) { this._container = v; }
 
   public gamut: number = 0;
 
@@ -65,7 +69,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
       };
     } else if (positionAtMatrix) {
       position = {
-        world: Level.ToWorldPosition({ ...positionAtMatrix, z: 0 }),
+        world: Level.ToWorldPosition({ ...positionAtMatrix, z: 1 }),
         matrix: positionAtMatrix,
       };
     } else {
@@ -78,10 +82,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.positionAtMatrix = position.matrix;
     this.live = new Live({ health: health ?? 1 });
-    this.container = this.scene.add.container(this.x, this.y);
     this.speed = speed;
 
     this.configureBody(body);
+    this.addContainer();
     this.addIndicatorsContainer();
     this.addDebugPosition();
 
@@ -95,22 +99,29 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public update() {
-    const positionOnGround = this.getPositionOnGround();
-    const depth = Level.GetDepth(positionOnGround.y, 1);
+    const positionOnGround = this.getBottomFace();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
 
-    this.setDepth(depth);
+    this.setDepth(positionOnGround.y);
 
-    this.container.setDepth(depth + 19);
-    this.container.setPosition(this.body.center.x, this.body.center.y);
-    this.container.setAlpha(this.alpha);
-    this.container.setVisible(this.visible);
-
+    this.updateContainer();
     this.updateIndicators();
 
     this.drawDebugGroundPosition();
+  }
+
+  private addContainer() {
+    this.container = this.scene.add.container();
+    this.updateContainer();
+  }
+
+  private updateContainer() {
+    this.container.setDepth(this.depth);
+    this.container.setPosition(this.body.center.x, this.body.center.y);
+    this.container.setAlpha(this.alpha);
+    this.container.setVisible(this.visible);
   }
 
   private configureBody(body: SpriteBodyData) {
@@ -178,7 +189,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check ground collision
     if (this.collisionGround) {
-      const currentPositionAtWorld = this.getPositionOnGround();
+      const currentPositionAtWorld = this.getBottomFace();
       const positionAtMatrix = Level.ToMatrixPosition({
         x: currentPositionAtWorld.x + offset.x,
         y: currentPositionAtWorld.y + offset.y,
@@ -210,7 +221,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return false;
   }
 
-  public getPositionOnGround(): Vector2D {
+  public getBottomFace(): Vector2D {
     return {
       x: this.x,
       y: this.y - this.getGamutOffset(),
@@ -233,7 +244,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     const rX = this.displayWidth * 0.4;
     const rY = this.getGamutOffset();
     const l = Phaser.Math.PI2 / count;
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
     const points: Vector2D[] = [];
 
     for (let u = 0; u < count; u++) {
@@ -256,24 +267,25 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.container.add(this.indicators);
   }
 
-  public addIndicator(data: SpriteIndicatorData) {
+  public addIndicator(key: string, data: SpriteIndicatorData) {
     const indicator = new Indicator(this, {
       ...data,
       size: this.displayWidth,
     });
 
-    indicator.setPosition(0, this.indicators.length * -6);
+    indicator.setPosition(0, this.indicators.length * -5);
+    indicator.setName(key);
 
     this.indicators.add(indicator);
   }
 
+  public getIndicator(key: string) {
+    return this.indicators.getByName(key) as IIndicator ?? null;
+  }
+
   private updateIndicators() {
     this.indicators.each((indicator: IIndicator) => {
-      const value = indicator.updateValue();
-
-      if (value <= 0.0) {
-        indicator.destroy();
-      }
+      indicator.updateValue();
     });
   }
 
@@ -301,7 +313,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.lineStyle(1, 0xff0000);
     this.positionDebug.beginPath();
 
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
 
     this.positionDebug.moveTo(position.x, position.y);
     this.positionDebug.lineTo(position.x + 10, position.y);

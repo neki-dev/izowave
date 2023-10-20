@@ -33,4 +33,12 @@ export class BuildingWall extends Building {
       texture: BuildingWall.Texture,
     });
   }
+
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y += (this.upgradeLevel === 1) ? 6 : -2;
+
+    return position;
+  }
 }

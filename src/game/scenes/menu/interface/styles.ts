@@ -7,10 +7,7 @@ export const Wrapper = styled.div`
   width: 100%;
   display: flex;
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  inset: 0;
 `;
 
 export const Sidebar = styled.div`
@@ -25,6 +22,7 @@ export const Sidebar = styled.div`
   flex-grow: 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 13vh 7vw;
+    min-width: 35%;
   }
 `;
 

@@ -8,8 +8,8 @@ import {
 } from '~type/interface';
 
 const animationTimeout = keyframes`
-  0% { right: 0 }
-  100% { right: 100% }
+  0% { top: 0 }
+  100% { top: 100% }
 `;
 
 const animationOpacity = keyframes`
@@ -17,8 +17,14 @@ const animationOpacity = keyframes`
   100% { opacity: 1; margin-bottom: 12px }
 `;
 
+export const Wrapper = styled.div`
+  position: relative;
+`;
+
 export const Icon = styled.img`
   display: block;
+  position: relative;
+  z-index: 2;
   width: 26px;
   height: 26px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
@@ -43,7 +49,7 @@ export const Info = styled.div`
     transform: translate(-50%, 100%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 12px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+    border-top: 12px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   }
 `;
 
@@ -52,7 +58,7 @@ export const Head = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 11px 14px 9px 14px;
-  background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
+  background: ${InterfaceBackgroundColor.BLACK};
   border-radius: 5px 5px 0 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 9px 11px;
@@ -80,11 +86,11 @@ export const Description = styled.div`
 `;
 
 export const Body = styled.div`
-  background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
-  padding: 9px 14px 12px 14px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  padding: 9px 14px 11px 14px;
   border-radius: 0 0 5px 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 7px 11px 11px 11px;
+    padding: 7px 11px;
   }
 `;
 
@@ -94,14 +100,7 @@ export const Container = styled.div<{
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 14px;
   pointer-events: all;
-  position: relative;
-  border-bottom: 6px solid #000;
   border-radius: 5px;
-  ${(props) => (props.$active && css`
-    ${Icon} {
-      opacity: 0.5;
-    }
-  `)};
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     &:hover {
       cursor: pointer;
@@ -117,10 +116,8 @@ export const Container = styled.div<{
 
 export const Timeout = styled.div`
   position: absolute;
-  background: ${InterfaceBackgroundColor.SUCCESS_LIGHT};
-  right: 0;
-  left: 0;
-  bottom: -6px;
-  height: 6px;
+  background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+  inset: 0;
   animation: ${animationTimeout} 1s linear;
+  border-radius: 5px;
 `;

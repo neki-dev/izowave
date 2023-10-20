@@ -1,7 +1,7 @@
 export enum InterfaceTextColor {
   HOVER = '#FF9600',
   SUCCESS = '#A4E24D',
-  WARN = '#ff7629',
+  WARN = '#ffd129',
   ERROR = '#ff6d6d',
 }
 
@@ -22,13 +22,15 @@ export enum InterfaceBackgroundColor {
   BLACK_TRANSPARENT_75 = 'rgba(0, 0, 0, 0.75)',
   BLACK_TRANSPARENT_50 = 'rgba(0, 0, 0, 0.50)',
   BLACK_TRANSPARENT_25 = 'rgba(0, 0, 0, 0.25)',
-  BLUE = '#18324f',
-  BLUE_TRANSPARENT = '#18324fcc',
-  BLUE_DARK = '#0b1621',
-  BLUE_DARK_TRANSPARENT = '#0b1621ee',
 }
 
 export enum InterfaceFont {
   PIXEL_LABEL = 'PixelLabel',
   PIXEL_TEXT = 'PixelText',
+}
+
+export enum InterfaceLayer {
+  HINT = 100,
+  TRANSLATOR = 200,
+  OVERLAY = 300,
 }

@@ -397,7 +397,7 @@ export class Builder extends EventEmitter implements IBuilder {
     this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.buildPreview.addShader('OutlineShader', {
-      size: 2.0,
+      size: 3.0,
       color: 0xffffff,
     });
   }
@@ -421,7 +421,8 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private createBuildControls() {
-    this.buildControls = this.scene.add.container(0, 0);
+    this.buildControls = this.scene.add.container();
+    this.buildControls.setDepth(WORLD_DEPTH_GRAPHIC);
 
     const confirm = this.scene.add.image(-2, 0, BuildingIcon.CONFIRM);
 
@@ -461,9 +462,8 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    const tilePosition = { ...this.supposedPosition, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
-    const depth = Level.GetTileDepth(positionAtWorld.y, tilePosition.z) + 1;
+    const positionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 1 });
+    const depth = positionAtWorld.y + 1;
     const isAllow = this.isAllowBuild();
 
     if (this.buildPreview) {
@@ -473,9 +473,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.buildActionRadius) {
-      const groundPositionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 0 });
-
-      this.buildActionRadius.setPosition(groundPositionAtWorld.x, groundPositionAtWorld.y);
+      this.buildActionRadius.setPosition(positionAtWorld.x, positionAtWorld.y);
       this.buildActionRadius.setVisible(isAllow);
     }
 
@@ -483,7 +481,6 @@ export class Builder extends EventEmitter implements IBuilder {
       const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
 
       this.buildControls.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height);
-      this.buildControls.setDepth(WORLD_DEPTH_GRAPHIC);
       confirmBtton.setTexture(isAllow ? BuildingIcon.CONFIRM : BuildingIcon.CONFIRM_DISABLED);
     }
   }

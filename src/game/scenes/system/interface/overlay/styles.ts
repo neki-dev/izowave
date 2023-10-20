@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceLayer } from '~type/interface';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -10,7 +10,7 @@ export const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  z-index: 4;
+  z-index: ${InterfaceLayer.OVERLAY};
   pointer-events: all;
   > * {
     pointer-events: none;

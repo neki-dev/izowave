@@ -62,7 +62,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     });
 
     this.addIndicator({
-      color: 0xfcb97e,
+      color: 0xffd857,
       size: LEVEL_TILE_SIZE.width / 2,
       value: () => this.ammo / this.maxAmmo,
     });
@@ -88,6 +88,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     const info: BuildingParam[] = [{
       label: 'BUILDING_AMMO',
       icon: BuildingIcon.AMMO,
+      attention: (this.ammo === 0),
       value: `${this.ammo}/${this.maxAmmo}`,
     }];
 
@@ -106,6 +107,14 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     }];
 
     return super.getControls().concat(actions);
+  }
+
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y += (this.upgradeLevel === 1) ? 6 : -4;
+
+    return position;
   }
 
   public use(amount: number) {

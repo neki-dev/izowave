@@ -5,7 +5,7 @@ import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 export const Container = styled.div<{
   $size?: 'fixed' | 'small' | 'medium' | 'large'
-  $view?: 'active' | 'primary' | 'confirm' | 'decline'
+  $view?: 'primary' | 'confirm' | 'decline'
   $disabled?: boolean
 }>`
   color: #fff;
@@ -17,9 +17,6 @@ export const Container = styled.div<{
   align-items: center;
   ${(props) => {
     switch (props.$view) {
-      case 'active': return css`
-        background: ${InterfaceBackgroundColor.BLUE};
-      `;
       case 'primary': return css`
         background: ${InterfaceBackgroundColor.WARN};  
         &:hover {
@@ -41,7 +38,7 @@ export const Container = styled.div<{
       default: return css`
         background: ${InterfaceBackgroundColor.BLACK};
         &:hover {
-          background: ${InterfaceBackgroundColor.BLUE};
+          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
         }
       `;
     }

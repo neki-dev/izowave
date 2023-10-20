@@ -45,32 +45,35 @@ export const Key = styled.div`
 export const Container = styled.div<{
   $disabled?: boolean
 }>`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   pointer-events: all;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 5px;
-  ${(props) => !props.$disabled && css`
-    &:hover {
-      cursor: pointer;
-      background: ${InterfaceBackgroundColor.BLACK};
-    }
-  `}
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     transform: translateX(-50%);
     padding: 6px 9px;
-    ${(props) => props.$disabled && css`
-      opacity: 0.75;
-      ${Label}, ${Addon} {
+    ${(props) => (props.$disabled ? css`
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+      ${Label}, ${Addon}, ${Key} {
         opacity: 0.7;
       }
-    `}
+    ` : css`
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+      &:hover {
+        cursor: pointer;
+        background: ${InterfaceBackgroundColor.BLACK};
+      }
+    `)}
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    background: ${InterfaceBackgroundColor.BLACK};
     padding: 14px 15px;
-    ${(props) => props.$disabled && css`
-      opacity: 0.5;
-    `}
+    ${(props) => (props.$disabled && css`
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+      ${Label}, ${Addon} {
+        opacity: 0.5;
+      }
+    `)}
   }
 `;

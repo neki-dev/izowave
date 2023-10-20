@@ -106,14 +106,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.positionAtMatrix = positionAtMatrix;
     this.live = new Live({ health });
 
-    this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    this.setDepth(positionAtWorld.y);
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
 
     this.addActionArea();
     this.addIndicatorsContainer();
     this.addIndicator({
-      color: 0xd0ff4f,
+      color: 0x96ff0d,
       size: LEVEL_TILE_SIZE.width / 2,
       value: () => this.live.health / this.live.maxHealth,
     });
@@ -318,6 +318,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.addUpgradeIcon();
     this.updateActionArea();
+    this.updateIndicatorsPosition();
     this.upgradeHealth();
     this.setFrame(this.upgradeLevel - 1);
 
@@ -390,17 +391,28 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addIndicatorsContainer() {
-    this.indicators = this.scene.add.container(this.x - (LEVEL_TILE_SIZE.width / 4), this.y - 6);
+    this.indicators = this.scene.add.container();
+
+    this.updateIndicatorsPosition();
 
     this.indicators.setDepth(WORLD_DEPTH_GRAPHIC);
     this.indicators.setActive(false);
     this.indicators.setVisible(false);
   }
 
+  private updateIndicatorsPosition() {
+    const position = this.getTopFace();
+
+    this.indicators.setPosition(
+      position.x - (LEVEL_TILE_SIZE.width / 4),
+      position.y - 3,
+    );
+  }
+
   public addIndicator(data: IndicatorData) {
     const indicator = new Indicator(this, data);
 
-    indicator.setPosition(0, this.indicators.length * -6);
+    indicator.setPosition(0, this.indicators.length * -5);
 
     this.indicators.add(indicator);
   }
@@ -446,7 +458,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
           hintId = this.scene.showHint({
             side: 'top',
             label,
-            position: this.getPositionOnGround(),
+            position: this.getBottomFace(),
             unique: true,
           });
         }
@@ -479,7 +491,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.DAMAGE,
-        position: this.getTopCenterByLevel(),
+        position: this.getTopFace(),
         depth: this.depth + 1,
         rate: 14,
       });
@@ -507,10 +519,17 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.isFocused = false;
   }
 
-  public getPositionOnGround() {
+  public getTopFace() {
     return {
       x: this.x,
-      y: this.y + LEVEL_TILE_SIZE.height * 0.5,
+      y: this.y - LEVEL_TILE_SIZE.height * 0.5,
+    };
+  }
+
+  public getBottomFace() {
+    return {
+      x: this.x,
+      y: this.y,
     };
   }
 
@@ -519,7 +538,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.alertIcon = this.scene.add.image(this.x, this.y, BuildingIcon.ALERT);
+    const position = this.getTopFace();
+
+    this.alertIcon = this.scene.add.image(position.x, position.y, BuildingIcon.ALERT);
     this.alertIcon.setDepth(this.depth + 1);
 
     this.alertTween = this.scene.tweens.add({
@@ -549,12 +570,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeUpgradeIcon();
     }
 
-    this.upgradeIcon = this.scene.add.image(this.x, this.y, BuildingIcon.UPGRADE);
+    const position = this.getTopFace();
+
+    this.upgradeIcon = this.scene.add.image(position.x, position.y, BuildingIcon.UPGRADE);
     this.upgradeIcon.setDepth(this.depth + 1);
 
     this.upgradeTween = this.scene.tweens.add({
       targets: this.upgradeIcon,
-      y: { from: this.y, to: this.y - 32 },
+      y: { from: position.y, to: position.y - 32 },
       alpha: { from: 1.0, to: 0.0 },
       duration: 500,
       ease: 'Linear',
@@ -620,13 +643,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.events.emit(WorldEvents.UNSELECT_BUILDING, this);
   }
 
-  public getTopCenterByLevel() {
-    return {
-      x: this.x,
-      y: this.y - 6,
-    };
-  }
-
   private setOutline(state: BuildingOutlineState) {
     if (this.outlineState === state) {
       return;
@@ -636,7 +652,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeShader('OutlineShader');
     } else {
       const params = {
-        [BuildingOutlineState.FOCUSED]: { size: 4.0, color: 0xffffff },
+        [BuildingOutlineState.FOCUSED]: { size: 3.0, color: 0xffffff },
         [BuildingOutlineState.SELECTED]: { size: 4.0, color: 0xd0ff4f },
       }[state];
 
@@ -667,7 +683,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
 
     this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
@@ -701,7 +717,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.SMOKE,
-        position: this.getPositionOnGround(),
+        position: this.getBottomFace(),
         depth: this.depth + 1,
         rate: 18,
       });
@@ -776,11 +792,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.buildBar = new Indicator(this, {
-      size: 20,
+      size: LEVEL_TILE_SIZE.width / 2,
       color: 0xffffff,
     });
 
-    this.buildBar.setPosition(this.x - this.buildBar.width / 2, this.y + 20);
+    const position = this.getTopFace();
+
+    this.buildBar.setPosition(
+      position.x - this.buildBar.width / 2,
+      position.y - 3,
+    );
   }
 
   private removeBuildBar() {
@@ -890,6 +911,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     if (data.upgradeLevel > 1) {
       this.upgradeLevel = Math.min(data.upgradeLevel, this.getMeta().MaxLevel);
 
+      this.updateIndicatorsPosition();
       this.updateActionArea();
       this.setFrame(this.upgradeLevel - 1);
 

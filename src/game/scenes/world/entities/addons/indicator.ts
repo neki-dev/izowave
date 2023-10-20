@@ -13,13 +13,18 @@ export class Indicator extends Phaser.GameObjects.Container implements IIndicato
 
   private background: Phaser.GameObjects.Rectangle;
 
-  constructor(parent: Phaser.GameObjects.GameObject, { size, color, value }: IndicatorData) {
+  private destroyIf: Nullable<(value: number) => boolean> = null;
+
+  constructor(parent: Phaser.GameObjects.GameObject, {
+    size, color, value, destroyIf,
+  }: IndicatorData) {
     super(parent.scene, 0, 0);
     parent.scene.add.existing(this);
 
     this.value = value;
+    this.destroyIf = destroyIf ?? null;
 
-    this.background = this.scene.add.rectangle(0, 0, size, 5, 0x000000);
+    this.background = this.scene.add.rectangle(0, 0, size, 4, 0x000000, 0.5);
     this.background.setOrigin(0.0, 0.0);
 
     this.bar = this.scene.add.rectangle(1, 1, 0, 0, color);
@@ -35,6 +40,8 @@ export class Indicator extends Phaser.GameObjects.Container implements IIndicato
 
     this.bar.setSize((this.width - 2) * progress, this.height - 2);
 
-    return progress;
+    if (this.destroyIf?.(progress)) {
+      this.destroy();
+    }
   }
 }

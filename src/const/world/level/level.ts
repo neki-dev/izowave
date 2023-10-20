@@ -10,7 +10,7 @@ export const LEVEL_MAP_SIZE = 100;
 export const LEVEL_TILE_SIZE: TileMeta = {
   width: 42,
   height: 48,
-  origin: 0.25,
+  origin: 0.75,
   persperctive: (48 / 2) / 42,
 };
 
@@ -21,7 +21,7 @@ export const LEVEL_SEED_SIZE = 128;
 export const LEVEL_SCENERY_TILE_SIZE = {
   width: 42,
   height: 72,
-  origin: 0.5,
+  origin: 0.85,
 };
 
 export const LEVEL_BIOME_PARAMETERS: WorldLayerParams = {

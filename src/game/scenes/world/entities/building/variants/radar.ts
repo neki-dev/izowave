@@ -43,4 +43,12 @@ export class BuildingRadar extends Building {
 
     Tutorial.Complete(TutorialStep.BUILD_RADAR);
   }
+
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y -= (this.upgradeLevel === 1) ? 2 : 8;
+
+    return position;
+  }
 }

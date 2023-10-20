@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     width: 250px;
     position: absolute;
     transform: translate(-50%, -100%);
-    margin-top: -32px;
+    margin-top: -15px;
     &::after {
       position: absolute;
       content: "";
@@ -21,27 +21,33 @@ export const Wrapper = styled.div`
       transform: translate(-50%, 100%);
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-top: 15px solid ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
+      border-top: 15px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
     }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     pointer-events: all;
-    width: 210px;
+    width: 200px;
     position: fixed;
-    z-index: 3;
     top: 0;
     right: 0;
     bottom: 0;
-    background: ${InterfaceBackgroundColor.BLUE};
+    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: -10px 0 20px rgba(0, 0, 0, 0.35);
   }
 `;
 
 export const Container = styled.div`
   overflow: hidden;
+  /* backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0); */
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     border-radius: 10px;
   }
@@ -52,12 +58,14 @@ export const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 14px 16px;
-  background: ${InterfaceBackgroundColor.BLUE_DARK_TRANSPARENT};
+  background: ${InterfaceBackgroundColor.BLACK};
 `;
 
 export const Body = styled.div`
-  background: ${InterfaceBackgroundColor.BLUE_TRANSPARENT};
   padding: 16px;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  }
 `;
 
 export const Name = styled.div`

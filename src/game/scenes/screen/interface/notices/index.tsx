@@ -1,4 +1,4 @@
-import { useCurrentScene, useSceneUpdate } from 'phaser-react-ui';
+import { useCurrentScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { phrase } from '~lib/lang';
@@ -11,16 +11,26 @@ export const Notices: React.FC = () => {
 
   const [notices, setNotices] = useState<Notice[]>([]);
 
-  const addNotice = (data: Notice) => {
+  const removeNotice = (text: string) => {
+    setNotices((currentNotices) => (
+      currentNotices.filter((currentNotice) => currentNotice.text !== text)
+    ));
+  };
+
+  const addNotice = (notice: Notice) => {
     setNotices((currentNotices) => {
       let isExist = false;
       const newNotices = currentNotices.map((currentNotice) => {
-        if (currentNotice.text === data.text) {
+        if (currentNotice.text === notice.text) {
           isExist = true;
+
+          clearTimeout(currentNotice.timer);
 
           return {
             ...currentNotice,
-            timestamp: Date.now(),
+            timer: setTimeout(() => {
+              removeNotice(currentNotice.text);
+            }, 3000),
           };
         }
 
@@ -29,8 +39,10 @@ export const Notices: React.FC = () => {
 
       if (!isExist) {
         newNotices.push({
-          ...data,
-          timestamp: Date.now(),
+          ...notice,
+          timer: setTimeout(() => {
+            removeNotice(notice.text);
+          }, 3000),
         });
       }
 
@@ -44,20 +56,6 @@ export const Notices: React.FC = () => {
     return () => {
       screen.events.off(ScreenEvents.NOTICE, addNotice);
     };
-  }, []);
-
-  useSceneUpdate(screen, () => {
-    const now = Date.now();
-
-    setNotices((currentNotices) => {
-      const newNotices = currentNotices.filter(
-        (currentNotice) => now - currentNotice.timestamp < 3000,
-      );
-
-      return newNotices.length === currentNotices.length
-        ? currentNotices
-        : newNotices;
-    });
   }, []);
 
   return (

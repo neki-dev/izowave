@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~type/interface';
+import { InterfaceFont, InterfaceLayer } from '~type/interface';
 
-export const Backdrop = styled.div`
+export const Overlay = styled.div`
   position: fixed;
   background: rgba(0, 0, 0, 0.85);
   inset: 0;
-  z-index: 4;
+  z-index: ${InterfaceLayer.OVERLAY};
   pointer-events: all;
 `;
 

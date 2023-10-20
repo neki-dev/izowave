@@ -24,6 +24,10 @@ export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
     experience: DIFFICULTY.PLAYER_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.CHARACTER,
   },
+  [PlayerSkill.STAMINA]: {
+    experience: DIFFICULTY.PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE,
+    target: PlayerSkillTarget.CHARACTER,
+  },
   [PlayerSkill.BUILD_SPEED]: {
     experience: DIFFICULTY.BUILDER_BUILD_SPEED_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.CHARACTER,

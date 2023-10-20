@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { InterfaceBackgroundColor } from '~type/interface';
 
 export const Container = styled.div`
-  width: 80px;
-  height: 80px;
+  width: 78px;
+  height: 78px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px 5px 0 0;
 `;

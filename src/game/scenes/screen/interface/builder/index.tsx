@@ -1,5 +1,5 @@
 import {
-  RelativePosition, RelativeScale, useScene, useSceneUpdate,
+  RelativePosition, RelativeScale, useGame, useScene, useSceneUpdate,
 } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
@@ -11,7 +11,7 @@ import { Tutorial } from '~lib/tutorial';
 import { mapEntries } from '~lib/utils';
 import { Hint } from '~scene/system/interface/hint';
 import { Level } from '~scene/world/level';
-import { GameScene } from '~type/game';
+import { GameScene, IGame } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -24,8 +24,10 @@ import {
 } from './styles';
 
 export const Builder: React.FC = () => {
+  const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
+  const [isHidden, setHidden] = useState(false);
   const [hintStopBuild, setHintStopBuild] = useState<Nullable<Vector2D>>(null);
   const [hintBuilding, setHintBuilding] = useState<Nullable<{
     variant: BuildingVariant
@@ -112,19 +114,22 @@ export const Builder: React.FC = () => {
   }), []);
 
   useSceneUpdate(world, () => {
-    if (!hintStopBuild) {
-      return;
-    }
+    setHidden(
+      Boolean(world.builder.selectedBuilding)
+      && !game.isDesktop(),
+    );
 
-    const position = getSupposedPosition();
+    if (hintStopBuild) {
+      const position = getSupposedPosition();
 
-    if (position && !isPositionsEqual(hintStopBuild, position)) {
-      setHintStopBuild(position);
+      if (position && !isPositionsEqual(hintStopBuild, position)) {
+        setHintStopBuild(position);
+      }
     }
   }, [hintStopBuild]);
 
   return (
-    <Wrapper>
+    <Wrapper $hidden={isHidden}>
       {categories.map((category) => (
         <Category key={category.type}>
           <Label>{phrase(`BUILDING_CATEGORY_${category.type}`)}</Label>

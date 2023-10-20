@@ -1,20 +1,19 @@
 import {
-  ifModifiedObject,
-  useClick,
-  useScene,
-  useSceneUpdate,
+  Texture, useClick, useEvent, useScene,
 } from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
-import { PLAYER_MAX_SKILL_LEVEL, PLAYER_SKILLS } from '~const/world/entities/player';
+import { PLAYER_MAX_SKILL_LEVEL } from '~const/world/entities/player';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
-import { PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
+import {
+  PlayerEvents, PlayerSkill, PlayerSkillData, PlayerSkillIcon,
+} from '~type/world/entities/player';
 
 import {
-  Container, Info, Action, Label, Level, Button, Limit,
+  Container, Info, Action, Label, Level, Button, Limit, Icon, Head,
 } from './styles';
 
 type Props = {
@@ -24,11 +23,10 @@ type Props = {
 export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const refAction = useRef<HTMLDivElement>(null);
+  const refContainer = useRef<HTMLDivElement>(null);
 
   const getData = (): PlayerSkillData => ({
     type,
-    target: PLAYER_SKILLS[type].target,
     experience: world.player.getExperienceToUpgrade(type),
     currentLevel: world.player.upgradeLevel[type],
   });
@@ -39,18 +37,22 @@ export const Item: React.FC<Props> = ({ type }) => {
     length: PLAYER_MAX_SKILL_LEVEL,
   }), []);
 
-  useClick(refAction, 'down', () => {
+  useClick(refContainer, 'down', () => {
     world.player.upgrade(type);
   }, [type]);
 
-  useSceneUpdate(world, () => {
-    setData(ifModifiedObject(getData()));
+  useEvent(world.player, PlayerEvents.UPGRADE_SKILL, () => {
+    setData(getData());
   }, []);
 
   return (
-    <Container>
+    <Container ref={refContainer} $active={data.currentLevel < PLAYER_MAX_SKILL_LEVEL }>
       <Info>
-        <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
+          <Icon>
+            <Texture name={PlayerSkillIcon[data.type]} />
+          </Icon>
+          <Head>
+          <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
         <Level>
           {levels.map((_, level) => (
             <Level.Progress
@@ -59,19 +61,20 @@ export const Item: React.FC<Props> = ({ type }) => {
             />
           ))}
         </Level>
+        </Head>
       </Info>
-      {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (
-        <Action>
+      <Action>
+        {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (
           <Limit>
             {phrase('SKILL_MAX_LEVEL')}
           </Limit>
-        </Action>
-      ) : (
-        <Action ref={refAction} $active={true}>
-          <Button>{phrase('SKILL_UPGRADE')}</Button>
-          <Cost type="experience" value={data.experience} />
-        </Action>
-      )}
+        ) : (
+          <>
+            <Button>{phrase('SKILL_UPGRADE')}</Button>
+            <Cost type="EXPERIENCE" value={data.experience} />
+          </>
+        )}
+      </Action>
     </Container>
   );
 };

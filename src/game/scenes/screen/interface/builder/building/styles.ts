@@ -12,7 +12,7 @@ export const Info = styled.div`
   min-width: 164px;
   height: 100%;
   padding: 12px 14px;
-  background: ${InterfaceBackgroundColor.BLUE_DARK};
+  background: ${InterfaceBackgroundColor.BLACK};
   border-radius: 5px 0 0 5px;
 `;
 

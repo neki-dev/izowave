@@ -18,7 +18,6 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  z-index: 2;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     top: 80px;
   }
@@ -31,14 +30,14 @@ export const Item = styled.div<{
   border-radius: 5px;
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 13px;
+  line-height: 13px;
   letter-spacing: 1px;
   animation: ${animationOpacity} 0.2s ease-in;
   background: ${(props) => InterfaceBackgroundColor[props.$type]};
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 10px;
-    line-height: 10px;
+    font-size: 11px;
+    line-height: 11px;
     padding: 7px 11px 8px 11px;
   }
 `;

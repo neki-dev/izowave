@@ -1,9 +1,11 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{
+  $hidden?: boolean
+}>`
   position: absolute;
   top: 0;
   right: 0;
@@ -11,6 +13,9 @@ export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  ${(props) => props.$hidden && css`
+    display: none;
+  `}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     gap: 13px;
   }
@@ -19,7 +24,7 @@ export const Wrapper = styled.div`
 export const HintTranslator = styled.div`
   position: fixed;
   left: 0;
-  top: 64px;
+  top: 32px;
 `;
 
 export const Category = styled.div`

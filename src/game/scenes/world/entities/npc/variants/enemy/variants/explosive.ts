@@ -33,7 +33,7 @@ export class EnemyExplosive extends Enemy {
   }
 
   private createExplosion(radius: number) {
-    const position = this.getPositionOnGround();
+    const position = this.getBottomFace();
     const area = this.scene.add.ellipse(position.x, position.y, radius * 2, radius * 2 * LEVEL_TILE_SIZE.persperctive);
 
     area.setFillStyle(0xff0000, 0.25);
@@ -54,7 +54,7 @@ export class EnemyExplosive extends Enemy {
 
     targets.forEach((target) => {
       if (target !== this) {
-        const distance = getIsometricDistance(position, target.getPositionOnGround());
+        const distance = getIsometricDistance(position, target.getBottomFace());
 
         if (distance <= radius) {
           const multiplier = Math.min(1.0, 0.5 + (1 - (distance / radius)));
@@ -69,7 +69,7 @@ export class EnemyExplosive extends Enemy {
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Effect(this.scene, {
         texture: EffectTexture.EXPLOSION,
-        position,
+        position: this.body.center,
         depth: this.depth + 1,
       });
     }

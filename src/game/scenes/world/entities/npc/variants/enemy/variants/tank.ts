@@ -29,9 +29,10 @@ export class EnemyTank extends Enemy {
     this.live.setMaxArmour(armour);
     this.live.setArmour(armour);
 
-    this.addIndicator({
+    this.addIndicator('armour', {
       color: 0x00d4ff,
       value: () => this.live.armour / this.live.maxArmour,
+      destroyIf: (value: number) => value === 0,
     });
   }
 }

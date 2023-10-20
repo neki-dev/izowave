@@ -20,7 +20,7 @@ export const Wrapper = styled.div`
 export const Param = styled.div`
   display: flex;
   align-items: center;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   border-radius: 5px;
   overflow: hidden;
 `;
@@ -28,7 +28,7 @@ export const Param = styled.div`
 export const IconContainer = styled.div`
   width: 32px;
   height: 32px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   display: flex;
   align-items: center;
   justify-content: center;

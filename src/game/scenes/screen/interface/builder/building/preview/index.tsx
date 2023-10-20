@@ -87,7 +87,7 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
         </Frame>
       </Image>
       <Info>
-        <Cost type="resources" value={BUILDINGS[variant].Cost} check={isAllow} />
+        <Cost type="RESOURCES" value={BUILDINGS[variant].Cost} check={isAllow} />
       </Info>
     </Container>
   );

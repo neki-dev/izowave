@@ -60,11 +60,12 @@ export class BuildingGenerator extends Building {
     this.pauseActions();
   }
 
-  public getTopCenterByLevel() {
-    return {
-      x: this.x,
-      y: this.y - 6 + (this.upgradeLevel === 1 ? 10 : 0),
-    };
+  public getTopFace() {
+    const position = super.getTopFace();
+
+    position.y += (this.upgradeLevel === 1) ? 5 : -4;
+
+    return position;
   }
 
   private generateResource() {
@@ -74,7 +75,7 @@ export class BuildingGenerator extends Building {
       new Particles(this, {
         key: 'generate',
         texture: ParticlesTexture.BIT,
-        positionAtWorld: this.getTopCenterByLevel(),
+        positionAtWorld: this.getTopFace(),
         params: {
           duration: 300,
           lifespan: { min: 100, max: 200 },

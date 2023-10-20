@@ -5,7 +5,7 @@ import { Container } from './styles';
 
 type Props = {
   size?: 'small' | 'medium' | 'large'
-  view?: 'active' | 'primary' | 'confirm' | 'decline'
+  view?: 'primary' | 'confirm' | 'decline'
   disabled?: boolean
   onClick: (event: MouseEvent | TouchEvent) => void
   children: React.ReactNode
@@ -28,6 +28,7 @@ export const Button: React.FC<Props> = ({
       $size={size}
       $view={view}
       $disabled={disabled}
+      role='button'
     >
       {children}
     </Container>

@@ -43,7 +43,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       this.handlePointer();
     }
 
-    this.setDepth(Level.GetTileDepth(positionAtWorld.y, tilePosition.z));
+    this.setDepth(positionAtWorld.y);
     this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
     this.scene.level.putTile(this, tilePosition);
   }
@@ -87,7 +87,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       }
 
       this.addShader('OutlineShader', {
-        size: 4.0,
+        size: 2.0,
         color: 0xffffff,
       });
     });

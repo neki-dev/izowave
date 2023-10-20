@@ -9,7 +9,6 @@ import { Health } from './health';
 import { MenuButton } from './menu-button';
 import { Resources } from './resources';
 import { Score } from './score';
-import { Skills } from './skills';
 
 export const PlayerHUD: React.FC = () => {
   const isMobile = useMobilePlatform();
@@ -24,7 +23,6 @@ export const PlayerHUD: React.FC = () => {
           <Avatar />
           <Health />
         </Section>
-        <Skills />
       </Section>
       <Section direction='vertical' gap={6}>
         <Score />

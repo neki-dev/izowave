@@ -15,8 +15,8 @@ export const Container = styled.div<{
   $usable?: boolean
   $glow?: boolean
 }>`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   position: relative;
   ${(props) => (props.$allow ? css`
     ${() => (!props.$usable && css`
@@ -28,10 +28,7 @@ export const Container = styled.div<{
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
-    background: ${InterfaceBackgroundColor.BLUE};
-    &:hover {
-      background: ${InterfaceBackgroundColor.BLUE};
-    }
+    background: ${InterfaceBackgroundColor.BLACK};
   `)}
   ${(props) => (props.$glow && css`
     box-shadow: 0 0 50px 20px #fff;
@@ -45,6 +42,8 @@ export const Container = styled.div<{
 `;
 
 export const Image = styled.div`
+  position: relative;
+  z-index: 2;
   padding: 10px 10px 7px 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 8px 10px 5px 10px;

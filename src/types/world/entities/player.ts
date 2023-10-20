@@ -113,6 +113,16 @@ export enum PlayerTexture {
   SUPERSKILL = 'player/superskill',
 }
 
+export enum PlayerSkillIcon {
+  MAX_HEALTH = 'player/skills/max_health',
+  SPEED = 'player/skills/speed',
+  STAMINA = 'player/skills/stamina',
+  BUILD_SPEED = 'player/skills/build_speed',
+  ATTACK_DAMAGE = 'player/skills/attack_damage',
+  ATTACK_DISTANCE = 'player/skills/attack_distance',
+  ATTACK_SPEED = 'player/skills/attack_speed',
+}
+
 export enum PlayerAudio {
   UPGRADE = 'player/upgrade',
   WALK = 'player/walk',
@@ -126,10 +136,18 @@ export enum PlayerAudio {
 export enum PlayerSkill {
   MAX_HEALTH = 'MAX_HEALTH',
   SPEED = 'SPEED',
+  STAMINA = 'STAMINA',
   BUILD_SPEED = 'BUILD_SPEED',
   ATTACK_DAMAGE = 'ATTACK_DAMAGE',
   ATTACK_DISTANCE = 'ATTACK_DISTANCE',
   ATTACK_SPEED = 'ATTACK_SPEED',
+}
+
+export enum PlayerEvents {
+  UPGRADE_SKILL = 'upgrade_skill',
+  UPDATE_EXPERIENCE = 'update_experience',
+  UPDATE_SCORE = 'update_score',
+  UPDATE_RESOURCES = 'update_resources',
 }
 
 export enum MovementDirection {
@@ -148,7 +166,8 @@ export type PlayerSkillInfo = {
   target: PlayerSkillTarget
 };
 
-export type PlayerSkillData = PlayerSkillInfo & {
+export type PlayerSkillData = {
+  experience: number
   type: PlayerSkill
   currentLevel: number
 };

@@ -69,7 +69,7 @@ export const RU = {
   SKILL_MAX_LEVEL: 'Макс\nуровень',
   SKILL_LABEL_MAX_HEALTH: 'Здоровье',
   SKILL_LABEL_SPEED: 'Скорость движения',
-  SKILL_LABEL_BUILD_AREA: 'Зона постройки',
+  SKILL_LABEL_STAMINA: 'Выносливость',
   SKILL_LABEL_BUILD_SPEED: 'Скорость постройки',
   SKILL_LABEL_ATTACK_DAMAGE: 'Урон',
   SKILL_LABEL_ATTACK_DISTANCE: 'Дальность атаки',
