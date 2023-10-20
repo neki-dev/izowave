@@ -149,6 +149,7 @@ export enum GameDifficulty {
 export enum GameFlag {
   NO_BLOOD = 'NO_BLOOD',
   ADS = 'ADS',
+  AUTO_ORIENTATION = 'AUTO_ORIENTATION',
 }
 
 export enum GamePlatform {

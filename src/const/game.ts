@@ -18,6 +18,7 @@ export const ENVIRONMENTS: Record<GamePlatform, GameEnvironment> = {
     flags: {
       [GameFlag.NO_BLOOD]: true,
       [GameFlag.ADS]: true,
+      [GameFlag.AUTO_ORIENTATION]: true,
     },
   },
   [GamePlatform.CRAZY_GAMES]: {
