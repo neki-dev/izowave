@@ -5,14 +5,13 @@ import React, { useRef, useState } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { phrase } from '~lib/lang';
-import { Wrapper } from '~scene/gameover/interface/styles';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene, GameState, IGame } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerSuperskill } from '~type/world/entities/player';
 
 import {
-  Container, Timeout, Info, Icon, Body, Head, Name, Description,
+  Container, Timeout, Info, Icon, Body, Head, Name, Description, Wrapper,
 } from './styles';
 
 type Props = {
