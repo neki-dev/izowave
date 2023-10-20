@@ -26,8 +26,6 @@ export const Container = styled.div`
   padding: 10px 16px 10px 10px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px 0 0 5px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 7px 11px 7px 7px;
   }

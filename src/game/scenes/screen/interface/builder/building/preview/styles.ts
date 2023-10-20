@@ -9,11 +9,6 @@ const animationBlink = keyframes`
   100% { background: ${InterfaceBackgroundColor.SUCCESS}; }
 `;
 
-export const Backdrop = styled.div`
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-`;
-
 export const Container = styled.div<{
   $allow?: boolean
   $active?: boolean
@@ -23,16 +18,17 @@ export const Container = styled.div<{
   border-radius: 5px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   position: relative;
-  ${(props) => (!props.$allow && css`
-    opacity: 0.5;
-    filter: grayscale(100%);
+  ${(props) => (props.$allow ? css`
+    ${() => (!props.$usable && css`
+      background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
+    `)}
+  ` : css`
+      opacity: 0.5;
+      filter: grayscale(100%);
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
-    background: ${InterfaceBackgroundColor.BLUE};
-    &:hover {
-      background: ${InterfaceBackgroundColor.BLUE};
-    }
+    background: ${InterfaceBackgroundColor.BLACK};
   `)}
   ${(props) => (props.$glow && css`
     box-shadow: 0 0 50px 20px #fff;

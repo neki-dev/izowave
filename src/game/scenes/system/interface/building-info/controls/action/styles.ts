@@ -51,17 +51,15 @@ export const Container = styled.div<{
   justify-content: space-between;
   border-radius: 5px;
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
     transform: translateX(-50%);
     padding: 6px 9px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
     ${(props) => (props.$disabled ? css`
       background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
       ${Label}, ${Addon}, ${Key} {
         opacity: 0.7;
       }
     ` : css`
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
       &:hover {
         cursor: pointer;
         background: ${InterfaceBackgroundColor.BLACK};

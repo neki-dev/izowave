@@ -8,8 +8,6 @@ export const Overlay = styled.div`
   inset: 0;
   z-index: ${InterfaceLayer.OVERLAY};
   pointer-events: all;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 `;
 
 export const Container = styled.div`

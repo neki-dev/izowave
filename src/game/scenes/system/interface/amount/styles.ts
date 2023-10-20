@@ -19,8 +19,6 @@ export const Placeholder = styled.div`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   border-radius: 0 5px 5px 0;
   padding: 0 12px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 9px;
     line-height: 9px;
@@ -40,8 +38,6 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   display: flex;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   border-radius: 5px;
   &:hover {
     border-radius: 5px 0 0 5px;

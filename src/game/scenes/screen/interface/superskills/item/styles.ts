@@ -8,8 +8,8 @@ import {
 } from '~type/interface';
 
 const animationTimeout = keyframes`
-  0% { right: 0 }
-  100% { right: 100% }
+  0% { top: 0 }
+  100% { top: 100% }
 `;
 
 const animationOpacity = keyframes`
@@ -23,6 +23,8 @@ export const Wrapper = styled.div`
 
 export const Icon = styled.img`
   display: block;
+  position: relative;
+  z-index: 2;
   width: 26px;
   height: 26px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
@@ -39,8 +41,6 @@ export const Info = styled.div`
   margin-bottom: 12px;
   min-width: 200px;
   animation: ${animationOpacity} 0.1s ease-in;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   &::after {
     position: absolute;
     content: "";
@@ -87,10 +87,10 @@ export const Description = styled.div`
 
 export const Body = styled.div`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
-  padding: 9px 14px 12px 14px;
+  padding: 9px 14px 11px 14px;
   border-radius: 0 0 5px 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 7px 11px 11px 11px;
+    padding: 7px 11px;
   }
 `;
 
@@ -100,20 +100,12 @@ export const Container = styled.div<{
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 14px;
   pointer-events: all;
-  border-bottom: 6px solid #000;
   border-radius: 5px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  ${(props) => (props.$active && css`
-    ${Icon} {
-      opacity: 0.5;
-    }
-  `)};
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     &:hover {
       cursor: pointer;
       ${(props) => (!props.$active && css`
-        background: ${InterfaceBackgroundColor.BLUE_DARK};
+        background: ${InterfaceBackgroundColor.BLACK};
       `)};
     }
   }
@@ -124,10 +116,8 @@ export const Container = styled.div<{
 
 export const Timeout = styled.div`
   position: absolute;
-  background: ${InterfaceBackgroundColor.SUCCESS_LIGHT};
-  right: 0;
-  left: 0;
-  bottom: -6px;
-  height: 6px;
+  background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+  inset: 0;
   animation: ${animationTimeout} 1s linear;
+  border-radius: 5px;
 `;

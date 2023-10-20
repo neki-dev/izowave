@@ -9,8 +9,6 @@ export const Wrapper = styled.div`
   gap: 10px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   padding: 0 13px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     gap: 6px;
     padding: 0 8px;

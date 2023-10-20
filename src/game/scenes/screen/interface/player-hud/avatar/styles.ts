@@ -7,8 +7,6 @@ export const Container = styled.div`
   height: 78px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px 5px 0 0;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 `;
 
 export const Image = styled.img`

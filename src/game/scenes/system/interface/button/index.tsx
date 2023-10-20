@@ -5,7 +5,7 @@ import { Container } from './styles';
 
 type Props = {
   size?: 'small' | 'medium' | 'large'
-  view?: 'active' | 'primary' | 'confirm' | 'decline'
+  view?: 'primary' | 'confirm' | 'decline'
   disabled?: boolean
   onClick: (event: MouseEvent | TouchEvent) => void
   children: React.ReactNode

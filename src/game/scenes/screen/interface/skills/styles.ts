@@ -10,8 +10,6 @@ export const Wrapper = styled.div`
   align-items: center;
   flex-direction: column;
   padding: 0 13px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); 
   border-radius: 0 5px 5px 0;
   > [role=button] {
     padding: 0 14px;

@@ -8,8 +8,6 @@ export const Container = styled.div`
   border-radius: 0 0 5px 5px;
   overflow: hidden;
   padding: 5px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 `;
 
 export const Progress = styled.div`

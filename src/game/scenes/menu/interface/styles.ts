@@ -8,12 +8,6 @@ export const Wrapper = styled.div`
   display: flex;
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-  }
 `;
 
 export const Sidebar = styled.div`

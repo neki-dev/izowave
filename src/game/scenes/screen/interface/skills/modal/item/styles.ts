@@ -7,20 +7,24 @@ import {
   InterfaceBackgroundColor,
 } from '~type/interface';
 
-export const Container = styled.div`
+export const Container = styled.div<{
+  $active?: boolean
+}>`
   color: #fff;
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  overflow: hidden;
+  ${(props) => props.$active && css`
+    &:hover {
+      cursor: pointer;
+      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+    }
+  `}
   &:first-child {
     border-radius: 5px 5px 0 0;
   }
   &:last-child {
     border-radius: 0 0 5px 5px;
-  }
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 6px;
   }
 `;
 
@@ -29,7 +33,11 @@ export const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 14px 0 8px;
+  padding: 12px 15px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 11px 12px;
+  }
 `;
 
 export const Label = styled.div`
@@ -67,40 +75,29 @@ Level.Progress = styled.div<{
   `}
 `;
 
-export const Action = styled.div<{
-  $active?: boolean
-}>`
+export const Action = styled.div`
   width: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.35);
   pointer-events: all;
-  border-radius: 5px;
   padding: 10px 0;
-  ${(props) => props.$active && css`
-    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
-    &:hover {
-      cursor: pointer;
-      background: ${InterfaceBackgroundColor.BLACK};
-    }
-  `}
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    width: 80px;
-    padding: 9px 0;
-    background: ${InterfaceBackgroundColor.BLACK};
+    width: 86px;
   }
 `;
 
 export const Button = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 10px;
-  line-height: 10px;
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 1px;
   margin-bottom: 6px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 8px;
-    line-height: 8px;
+    font-size: 7px;
+    line-height: 7px;
   }
 `;
 

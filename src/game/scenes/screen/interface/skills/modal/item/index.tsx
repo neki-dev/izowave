@@ -19,7 +19,7 @@ type Props = {
 export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const refAction = useRef<HTMLDivElement>(null);
+  const refContainer = useRef<HTMLDivElement>(null);
 
   const getData = (): PlayerSkillData => ({
     type,
@@ -33,7 +33,7 @@ export const Item: React.FC<Props> = ({ type }) => {
     length: PLAYER_MAX_SKILL_LEVEL,
   }), []);
 
-  useClick(refAction, 'down', () => {
+  useClick(refContainer, 'down', () => {
     world.player.upgrade(type);
   }, [type]);
 
@@ -42,7 +42,7 @@ export const Item: React.FC<Props> = ({ type }) => {
   }, []);
 
   return (
-    <Container>
+    <Container ref={refContainer} $active={data.currentLevel < PLAYER_MAX_SKILL_LEVEL }>
       <Info>
         <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
         <Level>
@@ -54,18 +54,18 @@ export const Item: React.FC<Props> = ({ type }) => {
           ))}
         </Level>
       </Info>
-      {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (
-        <Action>
+      <Action>
+        {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (
           <Limit>
             {phrase('SKILL_MAX_LEVEL')}
           </Limit>
-        </Action>
-      ) : (
-        <Action ref={refAction} $active={true}>
-          <Button>{phrase('SKILL_UPGRADE')}</Button>
-          <Cost type="EXPERIENCE" value={data.experience} />
-        </Action>
-      )}
+        ) : (
+          <>
+            <Button>{phrase('SKILL_UPGRADE')}</Button>
+            <Cost type="EXPERIENCE" value={data.experience} />
+          </>
+        )}
+      </Action>
     </Container>
   );
 };

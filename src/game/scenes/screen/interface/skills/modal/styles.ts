@@ -57,6 +57,8 @@ export const Container = styled.div`
   position: relative;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 20px;
   }
