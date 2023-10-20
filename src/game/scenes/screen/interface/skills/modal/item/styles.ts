@@ -31,12 +31,38 @@ export const Container = styled.div<{
 export const Info = styled.div`
   flex: 1;
   display: flex;
+  align-items: center;
+`;
+
+export const Icon = styled.div`
+  width: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  img, div[data-texture-container] {
+    width: 24px;
+    height: 24px;
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 48px;
+    img, div[data-texture-container] {
+      width: 20px;
+      height: 20px;
+    }
+  }
+`;
+
+export const Head = styled.div`
+  flex: 1;
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 12px 15px;
+  padding: 12px 13px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 11px 12px;
+    padding: 10px;
   }
 `;
 
@@ -47,8 +73,8 @@ export const Label = styled.div`
   line-height: 12px;
   margin-right: 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 11px;
-    line-height: 11px;
+    font-size: 10px;
+    line-height: 10px;
   }
 `;
 
@@ -76,16 +102,16 @@ Level.Progress = styled.div<{
 `;
 
 export const Action = styled.div`
-  width: 100px;
+  margin-left: 1px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   pointer-events: all;
-  padding: 10px 0;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  padding: 10px 15px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    width: 86px;
+    padding: 10px 12px;
   }
 `;
 

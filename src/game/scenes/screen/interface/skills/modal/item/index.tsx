@@ -1,4 +1,6 @@
-import { useClick, useEvent, useScene } from 'phaser-react-ui';
+import {
+  Texture, useClick, useEvent, useScene,
+} from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
 import { PLAYER_MAX_SKILL_LEVEL } from '~const/world/entities/player';
@@ -6,10 +8,12 @@ import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
-import { PlayerEvents, PlayerSkill, PlayerSkillData } from '~type/world/entities/player';
+import {
+  PlayerEvents, PlayerSkill, PlayerSkillData, PlayerSkillIcon,
+} from '~type/world/entities/player';
 
 import {
-  Container, Info, Action, Label, Level, Button, Limit,
+  Container, Info, Action, Label, Level, Button, Limit, Icon, Head,
 } from './styles';
 
 type Props = {
@@ -44,7 +48,11 @@ export const Item: React.FC<Props> = ({ type }) => {
   return (
     <Container ref={refContainer} $active={data.currentLevel < PLAYER_MAX_SKILL_LEVEL }>
       <Info>
-        <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
+          <Icon>
+            <Texture name={PlayerSkillIcon[data.type]} />
+          </Icon>
+          <Head>
+          <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
         <Level>
           {levels.map((_, level) => (
             <Level.Progress
@@ -53,6 +61,7 @@ export const Item: React.FC<Props> = ({ type }) => {
             />
           ))}
         </Level>
+        </Head>
       </Info>
       <Action>
         {data.currentLevel >= PLAYER_MAX_SKILL_LEVEL ? (

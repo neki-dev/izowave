@@ -113,6 +113,16 @@ export enum PlayerTexture {
   SUPERSKILL = 'player/superskill',
 }
 
+export enum PlayerSkillIcon {
+  MAX_HEALTH = 'player/skills/max_health',
+  SPEED = 'player/skills/speed',
+  STAMINA = 'player/skills/stamina',
+  BUILD_SPEED = 'player/skills/build_speed',
+  ATTACK_DAMAGE = 'player/skills/attack_damage',
+  ATTACK_DISTANCE = 'player/skills/attack_distance',
+  ATTACK_SPEED = 'player/skills/attack_speed',
+}
+
 export enum PlayerAudio {
   UPGRADE = 'player/upgrade',
   WALK = 'player/walk',

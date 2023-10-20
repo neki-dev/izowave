@@ -38,6 +38,7 @@ import {
   PlayerSavePayload,
   MovementDirection,
   PlayerEvents,
+  PlayerSkillIcon,
 } from '~type/world/entities/player';
 import { TileType, Vector2D } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
@@ -45,6 +46,7 @@ import { WaveEvents } from '~type/world/wave';
 Assets.RegisterAudio(PlayerAudio);
 Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
 Assets.RegisterImages(PlayerTexture.SUPERSKILL);
+Assets.RegisterImages(PlayerSkillIcon);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
