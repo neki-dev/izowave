@@ -4,7 +4,7 @@ import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 export const Container = styled.div<{
-  $size?: 'fixed' | 'small' | 'medium' | 'large'
+  $size?: 'small' | 'medium'
   $view?: 'primary' | 'confirm' | 'decline'
   $disabled?: boolean
 }>`
@@ -45,15 +45,10 @@ export const Container = styled.div<{
   }}
   ${(props) => {
     switch (props.$size) {
-      case 'large': return css`
-        font-size: 22px;
-        line-height: 22px;
-        padding: 13px 20px 14px 20px;
-      `;
       case 'medium': return css`
         font-size: 18px;
         line-height: 18px;
-        padding: 10px 18px 11px 18px;
+        padding: 8px 18px 11px 18px;
       `;
       case 'small': return css`
         font-size: 11px;

@@ -197,7 +197,6 @@ export const RU = {
   /**
    * Game over
    */
-  PLAY_AGAIN: 'Начать заного',
   RECORD: 'Рекорд',
   TOTAL_SCORE: 'Общий счет',
   WAVES_COMPLETED: 'Волн пройдено',

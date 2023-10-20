@@ -197,7 +197,6 @@ export const EN = {
   /**
    * Game over
    */
-  PLAY_AGAIN: 'Play again',
   RECORD: 'Record',
   TOTAL_SCORE: 'Total score',
   WAVES_COMPLETED: 'Waves completed',

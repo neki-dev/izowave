@@ -197,7 +197,6 @@ export const FR = {
   /**
    * Game over
    */
-  PLAY_AGAIN: 'Recommencer',
   RECORD: 'Record',
   TOTAL_SCORE: 'Compte general',
   WAVES_COMPLETED: 'Vagues completes',

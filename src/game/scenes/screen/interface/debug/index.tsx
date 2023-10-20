@@ -27,7 +27,7 @@ export const Debug: React.FC = () => {
   return (
     <Value>
       {frames} FPS
-      {memory && (
+      {Boolean(memory) && (
         <>
           <br />
           {memory} MB
