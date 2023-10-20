@@ -4,8 +4,9 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
+import { BUILDING_TILE } from '~const/world/entities/building';
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { LEVEL_MAP_TILE } from '~const/world/level';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
@@ -395,7 +396,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
-    this.buildPreview.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
+    this.buildPreview.setOrigin(0.5, BUILDING_TILE.origin);
     this.buildPreview.addShader('OutlineShader', {
       size: 3.0,
       color: 0xffffff,
@@ -415,7 +416,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     const d = BuildingInstance.Radius * 2;
 
-    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_TILE_SIZE.persperctive);
+    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_MAP_TILE.persperctive);
     this.buildActionRadius.setFillStyle(0xffffff, 0.2);
     this.buildActionRadius.setDepth(WORLD_DEPTH_GRAPHIC);
   }
@@ -480,7 +481,7 @@ export class Builder extends EventEmitter implements IBuilder {
     if (this.buildControls) {
       const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
 
-      this.buildControls.setPosition(positionAtWorld.x, positionAtWorld.y + LEVEL_TILE_SIZE.height);
+      this.buildControls.setPosition(positionAtWorld.x, positionAtWorld.y + BUILDING_TILE.height);
       confirmBtton.setTexture(isAllow ? BuildingIcon.CONFIRM : BuildingIcon.CONFIRM_DISABLED);
     }
   }
@@ -533,7 +534,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
       position = {
         x: pointer.worldX,
-        y: pointer.worldY - LEVEL_TILE_SIZE.height / this.scene.cameras.main.zoom,
+        y: pointer.worldY - LEVEL_MAP_TILE.height / this.scene.cameras.main.zoom,
       };
     }
 

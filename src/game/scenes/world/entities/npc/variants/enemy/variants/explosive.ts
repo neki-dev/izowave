@@ -1,4 +1,4 @@
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { LEVEL_MAP_TILE } from '~const/world/level';
 import { getIsometricDistance } from '~lib/dimension';
 import { Effect } from '~scene/world/effects';
 import { GameSettings } from '~type/game';
@@ -34,7 +34,7 @@ export class EnemyExplosive extends Enemy {
 
   private createExplosion(radius: number) {
     const position = this.getBottomFace();
-    const area = this.scene.add.ellipse(position.x, position.y, radius * 2, radius * 2 * LEVEL_TILE_SIZE.persperctive);
+    const area = this.scene.add.ellipse(position.x, position.y, radius * 2, radius * 2 * LEVEL_MAP_TILE.persperctive);
 
     area.setFillStyle(0xff0000, 0.25);
 

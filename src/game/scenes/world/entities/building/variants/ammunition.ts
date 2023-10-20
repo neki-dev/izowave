@@ -1,6 +1,6 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { BUILDING_TILE } from '~const/world/entities/building';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { LangPhrase } from '~type/lang';
@@ -63,7 +63,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.addIndicator({
       color: 0xffd857,
-      size: LEVEL_TILE_SIZE.width / 2,
+      size: BUILDING_TILE.width / 2,
       value: () => this.ammo / this.maxAmmo,
     });
 

@@ -87,13 +87,6 @@ export enum TileType {
   SCENERY = 'SCENERY',
 }
 
-export type TileMeta = {
-  origin: number
-  persperctive: number
-  width: number
-  height: number
-};
-
 export enum SpawnTarget {
   ENEMY = 'ENEMY',
   PLAYER = 'PLAYER',
@@ -139,9 +132,9 @@ export enum LevelSceneryTexture {
 }
 
 export enum LevelTilesetTexture {
-  EARTH = 'level/earth/tileset',
-  MOON = 'level/moon/tileset',
-  MARS = 'level/mars/tileset',
+  EARTH = 'level/earth/tiles',
+  MOON = 'level/moon/tiles',
+  MARS = 'level/mars/tiles',
 }
 
 export enum BiomeType {

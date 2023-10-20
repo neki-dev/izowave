@@ -1,4 +1,4 @@
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { LEVEL_MAP_TILE } from '~const/world/level';
 import { Vector2D } from '~type/world/level';
 
 /**
@@ -64,7 +64,7 @@ export function getIsometricDistance(
 ) {
   return Math.sqrt(
     (pointB.x - pointA.x) ** 2
-    + ((pointB.y - pointA.y) / LEVEL_TILE_SIZE.persperctive) ** 2,
+    + ((pointB.y - pointA.y) / LEVEL_MAP_TILE.persperctive) ** 2,
   );
 }
 
@@ -78,7 +78,7 @@ export function getIsometricAngle(
   pointB: Vector2D,
 ) {
   return Math.atan2(
-    (pointB.y - pointA.y) / LEVEL_TILE_SIZE.persperctive,
+    (pointB.y - pointA.y) / LEVEL_MAP_TILE.persperctive,
     pointB.x - pointA.x,
   );
 }

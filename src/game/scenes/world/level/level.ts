@@ -2,8 +2,8 @@ import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  LEVEL_TILE_SIZE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
+  LEVEL_MAP_TILE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
+  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
 } from '~const/world/level';
 import { Assets } from '~lib/assets';
 import { interpolate } from '~lib/dimension';
@@ -20,8 +20,8 @@ import { ITile } from '~type/world/level/tile-matrix';
 
 import { TileMatrix } from './tile-matrix';
 
-Assets.RegisterSprites(LevelTilesetTexture, LEVEL_TILE_SIZE);
-Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE_SIZE);
+Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
+Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);
 
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;
@@ -159,8 +159,8 @@ export class Level extends TileMatrix implements ILevel {
     const data = new Phaser.Tilemaps.MapData({
       width: LEVEL_MAP_SIZE,
       height: LEVEL_MAP_SIZE,
-      tileWidth: LEVEL_TILE_SIZE.width,
-      tileHeight: LEVEL_TILE_SIZE.height * 0.5,
+      tileWidth: LEVEL_MAP_TILE.width,
+      tileHeight: LEVEL_MAP_TILE.height * 0.5,
       orientation: Phaser.Tilemaps.Orientation.ISOMETRIC,
       format: Phaser.Tilemaps.Formats.ARRAY_2D,
     });
@@ -169,8 +169,10 @@ export class Level extends TileMatrix implements ILevel {
     const tileset = tilemap.addTilesetImage(
       LevelTilesetTexture[this.planet],
       undefined,
-      LEVEL_TILE_SIZE.width,
-      LEVEL_TILE_SIZE.height,
+      LEVEL_MAP_TILE.width,
+      LEVEL_MAP_TILE.height,
+      LEVEL_MAP_TILE.margin,
+      LEVEL_MAP_TILE.spacing,
     );
 
     if (!tileset) {
@@ -185,8 +187,8 @@ export class Level extends TileMatrix implements ILevel {
     const layer = tilemap.createBlankLayer(
       'ground',
       tileset,
-      -LEVEL_TILE_SIZE.width * 0.5,
-      -LEVEL_TILE_SIZE.height * 0.25,
+      -LEVEL_MAP_TILE.width * 0.5,
+      -LEVEL_MAP_TILE.height * 0.25,
     );
 
     if (!layer) {
@@ -198,15 +200,15 @@ export class Level extends TileMatrix implements ILevel {
 
   private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
     const sizeInPixel = Math.max(this.scene.sys.canvas.clientWidth, this.scene.sys.canvas.clientHeight) * 0.5;
-    const offset = Math.ceil(sizeInPixel / (LEVEL_TILE_SIZE.height * 0.5));
+    const offset = Math.ceil(sizeInPixel / (LEVEL_MAP_TILE.height * 0.5));
     const sizeInTiles = offset * 2 + LEVEL_MAP_SIZE;
     const position = Level.ToWorldPosition({ x: -offset, y: -offset, z: 0 });
 
     const layer = tilemap.createBlankLayer(
       'falloff',
       tileset,
-      position.x - LEVEL_TILE_SIZE.width * 0.5,
-      position.y - LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
+      position.x - LEVEL_MAP_TILE.width * 0.5,
+      position.y - LEVEL_MAP_TILE.height * LEVEL_MAP_TILE.origin,
       sizeInTiles,
       sizeInTiles,
     );
@@ -272,7 +274,7 @@ export class Level extends TileMatrix implements ILevel {
 
   private addMountTile(index: number, tilePosition: Vector3D) {
     const positionAtWorld = Level.ToWorldPosition(tilePosition);
-    const depth = positionAtWorld.y + ((tilePosition.z - 1) * LEVEL_TILE_SIZE.height);
+    const depth = positionAtWorld.y + ((tilePosition.z - 1) * LEVEL_MAP_TILE.height);
     const tile = this.scene.add.image(
       positionAtWorld.x,
       positionAtWorld.y,
@@ -283,7 +285,7 @@ export class Level extends TileMatrix implements ILevel {
     tile.tileType = TileType.MAP;
 
     tile.setDepth(depth);
-    tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
+    tile.setOrigin(0.5, LEVEL_MAP_TILE.origin);
     this.putTile(tile, tilePosition, false);
   }
 
@@ -310,7 +312,7 @@ export class Level extends TileMatrix implements ILevel {
         tile.clearable = true;
 
         tile.setDepth(positionAtWorld.y);
-        tile.setOrigin(0.5, LEVEL_SCENERY_TILE_SIZE.origin);
+        tile.setOrigin(0.5, LEVEL_SCENERY_TILE.origin);
         this.putTile(tile, tilePosition);
         this.sceneryTiles.add(tile);
       }
@@ -325,7 +327,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static ToMatrixPosition(positionAtWorld: Vector2D) {
-    const { width, height } = LEVEL_TILE_SIZE;
+    const { width, height } = LEVEL_MAP_TILE;
     const n = {
       x: (positionAtWorld.x / (width * 0.5)),
       y: (positionAtWorld.y / (height * 0.25)),
@@ -339,7 +341,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   static ToWorldPosition(tilePosition: Vector3D) {
-    const { width, height } = LEVEL_TILE_SIZE;
+    const { width, height } = LEVEL_MAP_TILE;
     const positionAtWorld: Vector2D = {
       x: (tilePosition.x - tilePosition.y) * (width * 0.5),
       y: (tilePosition.x + tilePosition.y) * (height * 0.25) - ((tilePosition.z - 1) * (height * 0.5)),

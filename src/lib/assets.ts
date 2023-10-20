@@ -29,7 +29,9 @@ export class Assets {
   static RegisterSprites<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
     this.Files = this.Files.concat(
       this.Normalize(files).map((file) => {
-        const { width, height } = (typeof params === 'function') ? params(file) : params;
+        const {
+          width, height, margin, spacing,
+        } = (typeof params === 'function') ? params(file) : params;
 
         return {
           key: file,
@@ -38,6 +40,8 @@ export class Assets {
           frameConfig: {
             frameWidth: width,
             frameHeight: height,
+            margin,
+            spacing,
           },
         };
       }),
