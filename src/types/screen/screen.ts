@@ -40,6 +40,6 @@ export enum NoticeType {
 export type Notice = {
   type: NoticeType
   text: LangPhrase
-  timestamp: number
   format?: any[]
+  timer: NodeJS.Timeout
 };

@@ -60,7 +60,7 @@ export const Skills: React.FC = () => {
     <>
       {isOpened && <Modal onClose={onClose} />}
       <Wrapper>
-        <Button onClick={onClick}>
+        <Button onClick={onClick} view={isOpened ? 'confirm' : undefined}>
           {phrase('SKILLS')}
         </Button>
         {hint && (

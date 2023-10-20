@@ -34,6 +34,8 @@ export const Wrapper = styled.div`
     background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -42,8 +44,10 @@ export const Wrapper = styled.div`
 
 export const Container = styled.div`
   overflow: hidden;
-  backdrop-filter: blur(5px);
+  /* backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0); */
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     border-radius: 10px;
   }

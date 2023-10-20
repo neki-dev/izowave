@@ -24,7 +24,7 @@ export class Indicator extends Phaser.GameObjects.Container implements IIndicato
     this.value = value;
     this.destroyIf = destroyIf ?? null;
 
-    this.background = this.scene.add.rectangle(0, 0, size, 4, 0x000000);
+    this.background = this.scene.add.rectangle(0, 0, size, 4, 0x000000, 0.5);
     this.background.setOrigin(0.0, 0.0);
 
     this.bar = this.scene.add.rectangle(1, 1, 0, 0, color);

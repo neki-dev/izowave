@@ -113,7 +113,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.addActionArea();
     this.addIndicatorsContainer();
     this.addIndicator({
-      color: 0xd0ff4f,
+      color: 0x96ff0d,
       size: LEVEL_TILE_SIZE.width / 2,
       value: () => this.live.health / this.live.maxHealth,
     });

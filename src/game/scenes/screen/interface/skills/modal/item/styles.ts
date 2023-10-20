@@ -41,6 +41,7 @@ export const Icon = styled.div`
   justify-content: center;
   height: 100%;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  margin-right: 1px;
   img, div[data-texture-container] {
     width: 24px;
     height: 24px;
@@ -59,8 +60,8 @@ export const Head = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 12px 13px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  padding: 12px 13px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 10px;
   }
@@ -108,9 +109,11 @@ export const Action = styled.div`
   justify-content: center;
   align-items: center;
   pointer-events: all;
+  width: 95px;
   padding: 10px 15px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 85px;
     padding: 10px 12px;
   }
 `;

@@ -29,7 +29,7 @@ export const Groups = styled.div`
 `;
 
 export const Group = styled.div`
-  min-width: 300px;
+  min-width: 280px;
 `;
 
 export const Target = styled.div`

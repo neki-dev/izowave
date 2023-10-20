@@ -141,7 +141,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.addDustEffect();
     this.addIndicator('health', {
-      color: 0xd0ff4f,
+      color: 0x96ff0d,
       value: () => this.live.health / this.live.maxHealth,
     });
 
@@ -206,7 +206,7 @@ export class Player extends Sprite implements IPlayer {
 
       if (this.stamina < this.staminaMax && !this.getIndicator('stamina')) {
         this.addIndicator('stamina', {
-          color: 0xb977ff,
+          color: 0xe7e4f5,
           value: () => this.stamina / this.staminaMax,
           destroyIf: (value: number) => value >= 1.0,
         });

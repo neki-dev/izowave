@@ -70,8 +70,7 @@ export const FR = {
   SKILL_LABEL_MAX_HEALTH: 'Sante',
   SKILL_LABEL_SPEED: 'Vitesse de mouvement',
   SKILL_LABEL_STAMINA: 'Endurance',
-  SKILL_LABEL_BUILD_AREA: 'Rayon de construction',
-  SKILL_LABEL_BUILD_SPEED: 'Vitesse de construction',
+  SKILL_LABEL_BUILD_SPEED: 'Construction',
   SKILL_LABEL_ATTACK_DAMAGE: 'Dommage',
   SKILL_LABEL_ATTACK_DISTANCE: 'Distance d`attaque',
   SKILL_LABEL_ATTACK_SPEED: 'Vitesse d`attaque',
@@ -86,7 +85,7 @@ export const FR = {
   /**
    * Ads
    */
-  ADS_OFFER: 'Voulez-vous obtenir une recompense\npour regarder la publicité?',
+  ADS_OFFER: 'Voulez-vous obtenir une recompense\npour regarder la publicite?',
 
   /**
    * Modal
