@@ -1,7 +1,7 @@
 export enum InterfaceTextColor {
   HOVER = '#FF9600',
   SUCCESS = '#A4E24D',
-  WARN = '#ff7629',
+  WARN = '#ffd129',
   ERROR = '#ff6d6d',
 }
 
