@@ -48,7 +48,7 @@ export const Button = styled.div`
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     margin-top: 15px;
-    padding: 20px;
+    padding: 18px 20px 20px 20px;
     font-size: 20px;
     line-height: 20px;
   }

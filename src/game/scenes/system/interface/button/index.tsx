@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 import { Container } from './styles';
 
 type Props = {
-  size?: 'small' | 'medium'
+  size?: 'small' | 'large'
   view?: 'primary' | 'confirm' | 'decline'
   disabled?: boolean
   onClick: (event: MouseEvent | TouchEvent) => void

@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
+import { Confirm } from '~scene/system/interface/confirm';
 import { Table } from '~scene/system/interface/table';
 import { IGame } from '~type/game';
+import { LangPhrase } from '~type/lang';
 
 import { Wrapper, Empty } from './styles';
 
@@ -14,24 +16,40 @@ export const LoadGame: React.FC = () => {
 
   const [selectedSave, setSelectedSave] = useState(Storage.Saves[0]);
   const [saves, setSaves] = useState(Storage.Saves);
+  const [confirmation, setConfirmation] = useState<Nullable<{
+    message: LangPhrase
+    onConfirm:() => void
+  }>>(null);
 
   const onClickStart = () => {
     game.continueGame(selectedSave);
   };
 
   const deleteSave = (name: string) => {
-    if (window.confirm(phrase('CONFIRM_DELETE_SAVE'))) {
-      Storage.DeleteSave(name).then(() => {
-        setSaves([...Storage.Saves]);
-        if (selectedSave.name === name) {
-          setSelectedSave(Storage.Saves[0]);
-        }
-      });
-    }
+    setConfirmation({
+      message: 'CONFIRM_DELETE_SAVE',
+      onConfirm: () => {
+        setConfirmation(null);
+        Storage.DeleteSave(name).then(() => {
+          setSaves([...Storage.Saves]);
+          if (selectedSave.name === name) {
+            setSelectedSave(Storage.Saves[0]);
+          }
+        });
+      },
+    });
+  };
+
+  const onConfirmationClose = () => {
+    setConfirmation(null);
   };
 
   return (
     <Wrapper>
+      {confirmation && (
+        <Confirm {...confirmation} onClose={onConfirmationClose} />
+      )}
+
       {saves.length === 0 ? (
         <Empty>{phrase('SAVES_NOT_FOUND')}</Empty>
       ) : (
@@ -73,7 +91,7 @@ export const LoadGame: React.FC = () => {
       )}
       <Button
         view="primary"
-        size="medium"
+        size="large"
         onClick={onClickStart}
         disabled={saves.length === 0}
       >

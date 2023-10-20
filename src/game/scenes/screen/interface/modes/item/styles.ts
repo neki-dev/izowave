@@ -19,6 +19,7 @@ export const Placeholder = styled.div`
   padding: 9px 12px;
   margin-top: 20px;
   white-space: pre;
+  z-index: 2;
   &::after {
     position: absolute;
     content: '';
