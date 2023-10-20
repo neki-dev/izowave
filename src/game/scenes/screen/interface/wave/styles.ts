@@ -121,6 +121,7 @@ export const Label = styled.div`
     font-size: 8px;
     line-height: 8px;
     opacity: 0.75;
+    margin-top: -1px;
   }
 `;
 
@@ -135,6 +136,7 @@ export const Value = styled.div<{
     animation: ${animationPulse} 1s infinite;
   `}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-top: 1px;
     font-size: 18px;
     line-height: 18px;
   }

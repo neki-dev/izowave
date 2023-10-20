@@ -1,5 +1,4 @@
 import { IScreen } from '~type/screen';
-import { SDKAdsType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -98,13 +97,6 @@ export interface IGame extends Phaser.Game {
    * Check platform is desktop.
    */
   isDesktop(): boolean
-
-  /**
-   * Show game ad.
-   * @param type - Ad type
-   * @param callback - Complete callback
-   */
-  showAds(type: SDKAdsType, callback?: () => void): void
 
   /**
    * Get data for saving.

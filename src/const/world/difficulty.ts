@@ -69,7 +69,8 @@ export const DIFFICULTY = {
 
   ADS_REWARD_EXPERIENCE: 400, // Gained experience by show ads (per wave number)
   ADS_REWARD_RESOURCES: 20, // Gained resources by show ads (per wave number)
-  ADS_REWARD_FREQUENCY: 3, // Show per wave number
+  ADS_REWARD_FREQUENCY: 2, // Show per wave number
+  ADS_REWARD_MIN_WAVE: 3, // Min wave number to show
 
   /**
    * Crystals

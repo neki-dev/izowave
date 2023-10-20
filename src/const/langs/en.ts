@@ -86,7 +86,7 @@ export const EN = {
   /**
    * Ads
    */
-  ADS_OFFER: 'Do you want to get reward\nby watching ads?',
+  ADS_SHOW: 'Watch a video and get reward',
 
   /**
    * Modal

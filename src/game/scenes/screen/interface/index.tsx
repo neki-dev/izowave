@@ -20,28 +20,26 @@ export const ScreenUI: React.FC = () => {
 
   return (
     <Wrapper ref={refScale}>
-      <AdsReward />
-
       <Grid>
         <Column $side="left">
           <PlayerHUD />
           <Debug />
         </Column>
-
         <Column $side="center">
-          <Section direction='horizontal' gap={1}>
-            <Wave />
-            <Modes />
-            <Skills />
+          <Section direction='vertical' gap={8}>
+            <Section direction='horizontal' gap={1}>
+              <Wave />
+              <Modes />
+              <Skills />
+            </Section>
+            <AdsReward />
           </Section>
           <Superskills />
         </Column>
-
         <Column $side="right">
           <Builder />
         </Column>
       </Grid>
-
       <Notices />
     </Wrapper>
   );

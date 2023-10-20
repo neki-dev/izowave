@@ -12,7 +12,7 @@ export enum InterfaceBackgroundColor {
   SUCCESS_LIGHT = '#A4E24D',
   SUCCESS = '#64A226',
   SUCCESS_DARK = '#4D8B1B',
-  SUCCESS_GRADIENT = 'linear-gradient(0deg, rgba(66,120,22,1) 0%, rgba(100,162,38,1) 100%)',
+  SUCCESS_GRADIENT = 'linear-gradient(0deg, rgb(66, 120, 22) 0%, rgb(100, 162, 38) 100%)',
   ERROR_LIGHT = '#ff6d6d',
   ERROR = '#db2323',
   ERROR_DARK = '#BC1927',

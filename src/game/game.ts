@@ -192,8 +192,6 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.showAds(SDKAdsType.MIDGAME);
-
     this.usedSave = save;
 
     if (this.usedSave.payload.game) {
@@ -204,6 +202,17 @@ export class Game extends Phaser.Game implements IGame {
 
     this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
       this.startGame();
+
+      SDK.ShowAds(SDKAdsType.MIDGAME, {
+        onStart: () => {
+          SDK.TogglePlayState(false);
+          this.pause();
+        },
+        onFinish: () => {
+          SDK.TogglePlayState(true);
+          this.resume();
+        },
+      });
     });
   }
 
@@ -246,6 +255,7 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
+    this.scene.systemScene.scene.stop(GameScene.MENU);
 
     this.state = GameState.IDLE;
 
@@ -265,12 +275,21 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.showAds(SDKAdsType.MIDGAME);
-
     this.stopGame(false);
 
     this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
       this.startGame();
+
+      SDK.ShowAds(SDKAdsType.MIDGAME, {
+        onStart: () => {
+          SDK.TogglePlayState(false);
+          this.pause();
+        },
+        onFinish: () => {
+          SDK.TogglePlayState(true);
+          this.resume();
+        },
+      });
     });
   }
 
@@ -352,19 +371,6 @@ export class Game extends Phaser.Game implements IGame {
     } catch (error) {
       //
     }
-  }
-
-  public showAds(type: SDKAdsType, callback?: () => void) {
-    SDK.ShowAds(
-      type,
-      () => {
-        this.pause();
-      },
-      () => {
-        this.resume();
-        callback?.();
-      },
-    );
   }
 
   private getRecordStat(): Nullable<GameStat> {
