@@ -3,10 +3,14 @@ import styled from 'styled-components';
 import { InterfaceBackgroundColor } from '~type/interface';
 
 export const Container = styled.div`
-  width: 78px;
-  height: 78px;
+  padding: 5px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  border-radius: 5px 5px 0 0;
+  border-radius: 5px;
+`;
+
+export const Avatar = styled.div`
+  width: 74px;
+  height: 74px;
 `;
 
 export const Image = styled.img`

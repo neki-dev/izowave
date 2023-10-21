@@ -54,7 +54,6 @@ export const SaveGame: React.FC = () => {
       setConfirmation({
         message: 'CONFIRM_REWRITE_SAVE',
         onConfirm: () => {
-          setConfirmation(null);
           rewrite();
         },
       });
@@ -67,7 +66,6 @@ export const SaveGame: React.FC = () => {
     setConfirmation({
       message: 'CONFIRM_DELETE_SAVE',
       onConfirm: () => {
-        setConfirmation(null);
         Storage.DeleteSave(name).then(() => {
           setSaves([...Storage.Saves]);
         });

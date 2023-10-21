@@ -3,9 +3,8 @@ import React from 'react';
 
 import { Section } from '~scene/system/interface/section';
 
-import { Avatar } from './avatar';
+import { Character } from './character';
 import { Experience } from './experience';
-import { Health } from './health';
 import { MenuButton } from './menu-button';
 import { Resources } from './resources';
 import { Score } from './score';
@@ -19,10 +18,7 @@ export const PlayerHUD: React.FC = () => {
         {isMobile && (
           <MenuButton />
         )}
-        <Section direction='vertical'>
-          <Avatar />
-          <Health />
-        </Section>
+        <Character />
       </Section>
       <Section direction='vertical' gap={6}>
         <Score />

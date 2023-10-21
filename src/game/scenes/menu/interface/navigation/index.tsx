@@ -51,7 +51,6 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
           setConfirmation({
             message: 'CONFIRM_RESTART_GAME',
             onConfirm: () => {
-              setConfirmation(null);
               game.restartGame();
             },
           });
@@ -62,7 +61,6 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
           setConfirmation({
             message: 'CONFIRM_STOP_GAME',
             onConfirm: () => {
-              setConfirmation(null);
               game.stopGame();
             },
           });

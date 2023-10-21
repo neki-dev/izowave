@@ -5,7 +5,7 @@ import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
   color: #fff;
-  background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
+  background: rgba(67, 0, 143, 0.75);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@ export const Content = styled.div`
   flex: 1;
   &:hover {
     cursor: pointer;
-    background: ${InterfaceBackgroundColor.BLACK};
+    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 14px 16px;
@@ -34,8 +34,8 @@ export const IconPlay = styled.img`
   width: 40px;
   margin-right: 18px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    width: 32px;
-    margin-right: 16px;
+    width: 28px;
+    margin-right: 12px;
   }
 `;
 
@@ -78,6 +78,7 @@ export const Amounts = styled.div`
   margin-top: 10px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     gap: 10px;
+    margin-top: 6px;
   }
 `;
 

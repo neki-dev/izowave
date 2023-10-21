@@ -29,7 +29,6 @@ export const LoadGame: React.FC = () => {
     setConfirmation({
       message: 'CONFIRM_DELETE_SAVE',
       onConfirm: () => {
-        setConfirmation(null);
         Storage.DeleteSave(name).then(() => {
           setSaves([...Storage.Saves]);
           if (selectedSave.name === name) {

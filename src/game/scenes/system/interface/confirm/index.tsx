@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { phrase } from '~lib/lang';
 import { LangPhrase } from '~type/lang';
@@ -14,18 +14,25 @@ type Props = {
   onClose: () => void
 };
 
-export const Confirm: React.FC<Props> = ({ message, onConfirm, onClose }) => (
-  <Overlay>
-    <Container>
-      <Content>{phrase(message)}</Content>
-      <Buttons>
-        <Button view="confirm" size="small" onClick={onConfirm}>
-          {phrase('YES')}
-        </Button>
-        <Button view="decline" size="small" onClick={onClose}>
-          {phrase('NO')}
-        </Button>
-      </Buttons>
-    </Container>
-  </Overlay>
-);
+export const Confirm: React.FC<Props> = ({ message, onConfirm, onClose }) => {
+  const handleConfirm = useCallback(() => {
+    onClose();
+    onConfirm();
+  }, [onConfirm]);
+
+  return (
+    <Overlay>
+      <Container>
+        <Content>{phrase(message)}</Content>
+        <Buttons>
+          <Button view="confirm" size="small" onClick={handleConfirm}>
+            {phrase('YES')}
+          </Button>
+          <Button view="decline" size="small" onClick={onClose}>
+            {phrase('NO')}
+          </Button>
+        </Buttons>
+      </Container>
+    </Overlay>
+  );
+};
