@@ -20,7 +20,6 @@ import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
@@ -291,7 +290,7 @@ export class Player extends Sprite implements IPlayer {
     const cost = this.getSuperskillCost(type);
 
     if (this.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -375,7 +374,7 @@ export class Player extends Sprite implements IPlayer {
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_EXPERIENCE');
+      this.scene.game.screen.notice('NOT_ENOUGH_EXPERIENCE');
 
       return;
     }

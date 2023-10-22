@@ -4,7 +4,6 @@ export const RU = {
    */
   WAVE_ENEMIES: 'Враги',
   WAVE_TIMELEFT: 'Волна через',
-  WAVE_COMPLETED: 'Волна %1 завершена',
   WAVE: 'Волна',
   SKIP_WAVE_TIMELEFT: 'Начать волну\nпреждевременно',
 

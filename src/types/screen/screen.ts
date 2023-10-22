@@ -20,7 +20,7 @@ export interface IScreen extends IScene {
    * @param text - Phrase key
    * @param format - Values for format
    */
-  notice(type: NoticeType, text: LangPhrase, format?: any[]): void
+  notice(text: LangPhrase, format?: any[]): void
 }
 
 export enum ScreenAudio {
@@ -31,14 +31,7 @@ export enum ScreenEvents {
   NOTICE = 'notice',
 }
 
-export enum NoticeType {
-  INFO = 'INFO',
-  WARN = 'WARN',
-  ERROR = 'ERROR',
-}
-
 export type Notice = {
-  type: NoticeType
   text: LangPhrase
   format?: any[]
   timer: NodeJS.Timeout

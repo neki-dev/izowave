@@ -13,7 +13,6 @@ import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { getStage } from '~lib/utils';
 import { Level } from '~scene/world/level';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
@@ -99,19 +98,19 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[variant];
 
     if (!this.isBuildingAllowByWave(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_WILL_BE_AVAILABLE', [BuildingInstance.AllowByWave]);
+      this.scene.game.screen.notice('BUILDING_WILL_BE_AVAILABLE', [BuildingInstance.AllowByWave]);
 
       return;
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
+      this.scene.game.screen.notice('BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
 
       return;
     }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -308,13 +307,13 @@ export class Builder extends EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
+      this.scene.game.screen.notice('BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
 
       return;
     }
 
     if (this.scene.player.resources < BuildingInstance.Cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
 
       return;
     }

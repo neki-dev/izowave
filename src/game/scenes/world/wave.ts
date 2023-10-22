@@ -12,7 +12,6 @@ import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } fr
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { GameState } from '~type/game';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -179,11 +178,9 @@ export class Wave extends EventEmitter implements IWave {
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
 
-    this.scene.game.screen.notice(NoticeType.INFO, 'WAVE_COMPLETED', [prevNumber]);
     this.scene.sound.play(WaveAudio.COMPLETE);
 
     this.scene.setTimeScale(1.0);
-
     this.scene.level.looseEffects();
 
     switch (this.number) {
@@ -195,7 +192,7 @@ export class Wave extends EventEmitter implements IWave {
         Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
         break;
       }
-      case 4: {
+      case 5: {
         Tutorial.Start(TutorialStep.UPGRADE_SKILL);
         break;
       }

@@ -4,7 +4,6 @@ import { BUILDING_TILE } from '~const/world/entities/building';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { LangPhrase } from '~type/lang';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -157,7 +156,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     if (this.scene.player.resources < cost) {
       if (!auto) {
-        this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+        this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
       }
 
       return;

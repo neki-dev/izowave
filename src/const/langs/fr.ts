@@ -4,7 +4,6 @@ export const FR = {
    */
   WAVE_ENEMIES: 'Ennemies',
   WAVE_TIMELEFT: 'Temps restant',
-  WAVE_COMPLETED: 'Vague %1 est termine',
   WAVE: 'Vague',
   SKIP_WAVE_TIMELEFT: 'Demarrer la vague\nprematurement',
 

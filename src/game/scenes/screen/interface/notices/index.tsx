@@ -61,7 +61,7 @@ export const Notices: React.FC = () => {
   return (
     <Wrapper>
       {notices.map((notice) => (
-        <Item role="notice" key={notice.text} $type={notice.type}>
+        <Item role="notice" key={notice.text}>
           {phrase(notice.text, notice.format)}
         </Item>
       ))}

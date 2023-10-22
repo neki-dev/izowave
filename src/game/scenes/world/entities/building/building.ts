@@ -15,7 +15,6 @@ import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -302,7 +301,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
+      this.scene.game.screen.notice('BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
 
       return;
     }
@@ -310,7 +309,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -350,7 +349,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.scene.player.resources < cost) {
       if (!auto) {
-        this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+        this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
       }
 
       return;
