@@ -47,7 +47,7 @@ export class Spawner implements ISpawner {
     if (
       this.cache.target
       && this.cache.positions.length > 0
-      && getIsometricDistance(this.cache.target, this.scene.player.positionAtMatrix) < SPAWN_CACHE_RESET_DISTANCE
+      && getIsometricDistance(this.cache.target, this.scene.player.lastVisiblePosition) < SPAWN_CACHE_RESET_DISTANCE
     ) {
       return this.cache.positions;
     }
@@ -57,7 +57,7 @@ export class Spawner implements ISpawner {
 
   private cachePositions(positions: PositionAtMatrix[]) {
     this.cache = {
-      target: this.scene.player.positionAtMatrix,
+      target: this.scene.player.lastVisiblePosition,
       positions,
     };
   }
@@ -100,13 +100,13 @@ export class Spawner implements ISpawner {
       this.generateAnalogSpawnPositions();
     }
 
-    return sortByMatrixDistance(this.positionsAnalog, this.scene.player.positionAtMatrix);
+    return sortByMatrixDistance(this.positionsAnalog, this.scene.player.lastVisiblePosition);
   }
 
   private getFreePositionsMeta() {
     const buildings = this.scene.getEntities<IBuilding>(EntityType.BUILDING);
     const positions = this.positions.filter((position) => (
-      Phaser.Math.Distance.BetweenPoints(position, this.scene.player.positionAtMatrix) >= SPAWN_DISTANCE_FROM_PLAYER
+      Phaser.Math.Distance.BetweenPoints(position, this.scene.player.lastVisiblePosition) >= SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building) => (
         Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= SPAWN_DISTANCE_FROM_BUILDING
       ))
@@ -114,7 +114,7 @@ export class Spawner implements ISpawner {
 
     return positions.map((position) => ({
       position,
-      distance: Phaser.Math.Distance.BetweenPoints(position, this.scene.player.positionAtMatrix),
+      distance: Phaser.Math.Distance.BetweenPoints(position, this.scene.player.lastVisiblePosition),
     }))
       .sort((a, b) => (a.distance - b.distance))
       .slice(0, SPAWN_POSITIONS_INPUT_LIMIT);
@@ -132,7 +132,7 @@ export class Spawner implements ISpawner {
       meta.forEach((data) => {
         const task = this.scene.level.navigator.createTask({
           from: data.position,
-          to: this.scene.player.positionAtMatrix,
+          to: this.scene.player.lastVisiblePosition,
           grid: this.scene.level.gridCollide,
         }, (path, cost) => {
           this.completeTask(task);

@@ -32,13 +32,16 @@ export class NPC extends Sprite implements INPC {
 
   private freezeEffectTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
+  private seesInvisibleTarget: boolean = false;
+
   constructor(scene: IWorld, {
-    pathFindTriggerDistance, texture, ...data
+    pathFindTriggerDistance, seesInvisibleTarget, texture, ...data
   }: NPCData) {
     super(scene, { ...data, texture });
     scene.addEntityToGroup(this, EntityType.NPC);
 
     this.pathFindTriggerDistance = pathFindTriggerDistance;
+    this.seesInvisibleTarget = seesInvisibleTarget;
 
     this.addDebugPath();
 
@@ -131,10 +134,14 @@ export class NPC extends Sprite implements INPC {
       return;
     }
 
+    const targetPosition = this.seesInvisibleTarget
+      ? this.scene.player.positionAtMatrix
+      : this.scene.player.lastVisiblePosition;
+
     if (this.pathToTarget.length > 0) {
       const prevPosition = this.pathToTarget[this.pathToTarget.length - 1];
 
-      if (isPositionsEqual(prevPosition, this.scene.player.positionAtMatrix)) {
+      if (isPositionsEqual(prevPosition, targetPosition)) {
         return;
       }
     }
@@ -144,7 +151,7 @@ export class NPC extends Sprite implements INPC {
     this.pathFindTimestamp = now + NPC_PATH_FIND_RATE;
     this.pathFindingTask = this.scene.level.navigator.createTask({
       from,
-      to: this.scene.player.positionAtMatrix,
+      to: targetPosition,
       grid: this.scene.level.gridCollide,
     }, (path: Nullable<PositionAtWorld[]>) => {
       if (!this.active) {

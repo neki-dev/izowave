@@ -154,7 +154,6 @@ export enum WorldEvents {
   UNSELECT_BUILDING = 'unselect_building',
   SHOW_HINT = 'show_hint',
   HIDE_HINT = 'hide_hint',
-  USE_SUPERSKILL = 'use_superskill',
   TOGGLE_MODE = 'toggle_mode',
 }
 

@@ -96,6 +96,8 @@ export const RU = {
   /**
    * Superskills
    */
+  SUPERSKILL_NAME_INVISIBLE: 'Невидимость',
+  SUPERSKILL_DESCRIPTION_INVISIBLE: 'Скрывает персонажа от врагов',
   SUPERSKILL_NAME_FROST: 'Заморозка',
   SUPERSKILL_DESCRIPTION_FROST: 'Замараживает всех врагов',
   SUPERSKILL_NAME_RAGE: 'Ярость',

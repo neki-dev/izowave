@@ -36,5 +36,6 @@ export type NPCData = {
   speed: number
   health?: number
   pathFindTriggerDistance: number
+  seesInvisibleTarget: boolean
   body: SpriteBodyData
 };

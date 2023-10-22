@@ -21,12 +21,15 @@ export const Wrapper = styled.div`
   position: relative;
 `;
 
-export const Icon = styled.img`
+export const IconContainer = styled.div`
   display: block;
   position: relative;
   z-index: 2;
   width: 26px;
   height: 26px;
+  img, div[data-texture-container] {
+    height: 100%;
+  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 22px;
     height: 22px;

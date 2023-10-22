@@ -36,6 +36,8 @@ export const DIFFICULTY = {
    * Superskills
    */
 
+  SUPERSKILL_INVISIBLE_COST: 30, // Cost of use
+  SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 40, // Cost of use
   SUPERSKILL_FROST_DURATION: 6000, // Frost duration
   SUPERSKILL_SHIELD_COST: 40, // Cost of use

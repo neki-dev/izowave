@@ -40,6 +40,11 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>>
 
   /**
+   * Last visible position at matrix.
+   */
+  readonly lastVisiblePosition: PositionAtMatrix
+
+  /**
    * Upgrade player skill.
    */
   upgrade(type: PlayerSkill): void
@@ -123,6 +128,14 @@ export enum PlayerSkillIcon {
   ATTACK_SPEED = 'player/skills/attack_speed',
 }
 
+export enum PlayerSuperskillIcon {
+  INVISIBLE = 'player/superskills/invisible',
+  FROST = 'player/superskills/frost',
+  SHIELD = 'player/superskills/shield',
+  RAGE = 'player/superskills/rage',
+  FIRE = 'player/superskills/fire',
+}
+
 export enum PlayerAudio {
   UPGRADE = 'player/upgrade',
   WALK = 'player/walk',
@@ -131,6 +144,11 @@ export enum PlayerAudio {
   DAMAGE_2 = 'player/damage_2',
   DAMAGE_3 = 'player/damage_3',
   SUPERSKILL = 'player/superskill',
+}
+
+export enum PlayerSkillTarget {
+  CHARACTER = 'CHARACTER',
+  ASSISTANT = 'ASSISTANT',
 }
 
 export enum PlayerSkill {
@@ -143,7 +161,16 @@ export enum PlayerSkill {
   ATTACK_SPEED = 'ATTACK_SPEED',
 }
 
+export enum PlayerSuperskill {
+  INVISIBLE = 'INVISIBLE',
+  FROST = 'FROST',
+  SHIELD = 'SHIELD',
+  RAGE = 'RAGE',
+  FIRE = 'FIRE',
+}
+
 export enum PlayerEvents {
+  USE_SUPERSKILL = 'use_superskill',
   UPGRADE_SKILL = 'upgrade_skill',
   UPDATE_EXPERIENCE = 'update_experience',
   UPDATE_SCORE = 'update_score',
@@ -171,18 +198,6 @@ export type PlayerSkillData = {
   type: PlayerSkill
   currentLevel: number
 };
-
-export enum PlayerSkillTarget {
-  CHARACTER = 'CHARACTER',
-  ASSISTANT = 'ASSISTANT',
-}
-
-export enum PlayerSuperskill {
-  FROST = 'FROST',
-  SHIELD = 'SHIELD',
-  RAGE = 'RAGE',
-  FIRE = 'FIRE',
-}
 
 export type PlayerSavePayload = {
   position: PositionAtMatrix

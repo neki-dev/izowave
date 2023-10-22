@@ -96,6 +96,8 @@ export const EN = {
   /**
    * Superskills
    */
+  SUPERSKILL_NAME_INVISIBLE: 'Invisible',
+  SUPERSKILL_DESCRIPTION_INVISIBLE: 'Hides character from enemies',
   SUPERSKILL_NAME_FROST: 'Frost',
   SUPERSKILL_DESCRIPTION_FROST: 'Freezes all spawned enemies',
   SUPERSKILL_NAME_RAGE: 'Rage',

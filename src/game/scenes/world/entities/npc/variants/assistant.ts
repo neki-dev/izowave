@@ -35,6 +35,7 @@ export class Assistant extends NPC implements IAssistant {
       positionAtMatrix,
       speed,
       pathFindTriggerDistance: ASSISTANT_PATH_BREAKPOINT,
+      seesInvisibleTarget: true,
       body: {
         ...ASSISTANT_TILE_SIZE,
         type: 'circle',

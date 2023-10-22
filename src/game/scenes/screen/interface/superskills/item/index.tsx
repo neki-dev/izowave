@@ -1,5 +1,5 @@
 import {
-  useGame, useScene, useSceneUpdate, useInteraction,
+  useGame, useScene, useSceneUpdate, useInteraction, Texture,
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
@@ -8,10 +8,10 @@ import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene, GameState, IGame } from '~type/game';
 import { IWorld } from '~type/world';
-import { PlayerSuperskill } from '~type/world/entities/player';
+import { PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
 
 import {
-  Container, Timeout, Info, Icon, Body, Head, Name, Description, Wrapper,
+  Container, Timeout, Info, Body, Head, Name, Description, Wrapper, IconContainer,
 } from './styles';
 
 type Props = {
@@ -61,7 +61,9 @@ export const Item: React.FC<Props> = ({ type }) => {
             }}
           />
         )}
-        <Icon src={`assets/sprites/feature/${type.toLowerCase()}.png`} />
+        <IconContainer>
+          <Texture name={PlayerSuperskillIcon[type]} />
+        </IconContainer>
       </Container>
     </Wrapper>
   );

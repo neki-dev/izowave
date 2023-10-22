@@ -14,7 +14,7 @@ import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Effect, Particles } from '~scene/world/effects';
 import { GameFlag, GameSettings } from '~type/game';
 import { InterfaceFont } from '~type/interface';
-import { IWorld, WorldEvents } from '~type/world';
+import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
@@ -24,7 +24,7 @@ import {
   IEnemy,
   EnemyAudio,
 } from '~type/world/entities/npc/enemy';
-import { PlayerSuperskill } from '~type/world/entities/player';
+import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
 import { PositionAtWorld, TileType } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
@@ -58,6 +58,7 @@ export class Enemy extends NPC implements IEnemy {
       ...data,
       texture,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
+      seesInvisibleTarget: false,
       health: progressionQuadratic({
         defaultValue: DIFFICULTY.ENEMY_HEALTH
           * multipliers.health
@@ -379,9 +380,9 @@ export class Enemy extends NPC implements IEnemy {
       }
     };
 
-    this.scene.events.on(WorldEvents.USE_SUPERSKILL, handler);
+    this.scene.events.on(PlayerEvents.USE_SUPERSKILL, handler);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.USE_SUPERSKILL, handler);
+      this.scene.events.off(PlayerEvents.USE_SUPERSKILL, handler);
     });
   }
 }

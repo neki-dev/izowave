@@ -38,14 +38,16 @@ import {
   MovementDirection,
   PlayerEvents,
   PlayerSkillIcon,
+  PlayerSuperskillIcon,
 } from '~type/world/entities/player';
-import { TileType, PositionAtWorld } from '~type/world/level';
+import { TileType, PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 Assets.RegisterAudio(PlayerAudio);
 Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
 Assets.RegisterImages(PlayerTexture.SUPERSKILL);
 Assets.RegisterImages(PlayerSkillIcon);
+Assets.RegisterImages(PlayerSuperskillIcon);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
@@ -71,6 +73,12 @@ export class Player extends Sprite implements IPlayer {
   public get kills() { return this._kills; }
 
   private set kills(v) { this._kills = v; }
+
+  private _lastVisiblePosition: PositionAtMatrix;
+
+  public get lastVisiblePosition() { return this._lastVisiblePosition; }
+
+  private set lastVisiblePosition(v) { this._lastVisiblePosition = v; }
 
   private _upgradeLevel: Record<PlayerSkill, number> = {
     [PlayerSkill.MAX_HEALTH]: 1,
@@ -157,7 +165,9 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
-      enemy.attack(this);
+      if (!this.isInvisible()) {
+        enemy.attack(this);
+      }
     });
 
     this.addCollider(EntityType.ENEMY, 'overlap', (enemy: IEnemy) => {
@@ -178,8 +188,26 @@ export class Player extends Sprite implements IPlayer {
 
       this.updateMovement();
       this.updateVelocity();
+      this.updateVisible();
       this.updateStamina();
     }
+  }
+
+  private updateVisible() {
+    if (this.isInvisible()) {
+      if (this.alpha === 1.0) {
+        this.alpha = 0.5;
+      }
+    } else {
+      this.lastVisiblePosition = this.positionAtMatrix;
+      if (this.alpha !== 1.0) {
+        this.alpha = 1.0;
+      }
+    }
+  }
+
+  private isInvisible() {
+    return this.activeSuperskills[PlayerSuperskill.INVISIBLE];
   }
 
   private updateStamina() {
@@ -322,7 +350,7 @@ export class Player extends Sprite implements IPlayer {
       },
     });
 
-    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
+    this.scene.events.emit(PlayerEvents.USE_SUPERSKILL, type);
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {
