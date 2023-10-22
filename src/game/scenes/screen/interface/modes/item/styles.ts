@@ -32,13 +32,6 @@ export const Placeholder = styled.div`
   }
 `;
 
-export const Icon = styled.img`
-  width: 16px;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    width: 12px;
-  }
-`;
-
 export const Container = styled.div<{
   $active?: boolean
 }>`
@@ -61,9 +54,17 @@ export const Container = styled.div<{
         background: ${InterfaceBackgroundColor.SUCCESS_DARK};
       `)};
     }
+    img, div[data-texture-container] {
+      width: 16px;
+      height: 16px;
+    }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 32px;
     height: 32px;
+    img, div[data-texture-container] {
+      width: 12px;
+      height: 12px;
+    }
   }
 `;

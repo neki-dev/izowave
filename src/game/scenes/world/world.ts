@@ -8,6 +8,7 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
+import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { hashString } from '~lib/utils';
@@ -20,7 +21,7 @@ import { Wave } from '~scene/world/wave';
 import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
 import {
-  IWorld, WorldEvents, WorldHint, WorldMode, WorldSavePayload,
+  IWorld, WorldEvents, WorldHint, WorldMode, WorldModeIcons, WorldSavePayload,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
@@ -35,6 +36,8 @@ import {
 } from '~type/world/level';
 import { ISpawner } from '~type/world/spawner';
 import { IWave, WaveEvents } from '~type/world/wave';
+
+Assets.RegisterImages(WorldModeIcons);
 
 export class World extends Scene implements IWorld {
   private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;

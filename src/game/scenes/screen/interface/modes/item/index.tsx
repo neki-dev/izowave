@@ -1,11 +1,11 @@
-import { useInteraction, useScene } from 'phaser-react-ui';
+import { Texture, useInteraction, useScene } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
 import { phrase } from '~lib/lang';
 import { GameScene } from '~type/game';
-import { IWorld, WorldMode } from '~type/world';
+import { IWorld, WorldMode, WorldModeIcons } from '~type/world';
 
-import { Container, Placeholder, Icon } from './styles';
+import { Container, Placeholder } from './styles';
 
 type Props = {
   mode: WorldMode
@@ -27,7 +27,7 @@ export const Item: React.FC<Props> = ({ mode }) => {
 
   return (
     <Container ref={refContainer} $active={isActive}>
-      <Icon src={`assets/sprites/modes/${mode.toLowerCase()}.png`} />
+      <Texture name={WorldModeIcons[mode]} />
       {isHover && (
         <Placeholder>{phrase(mode)}</Placeholder>
       )}

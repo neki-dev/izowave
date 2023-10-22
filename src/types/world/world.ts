@@ -164,6 +164,13 @@ export enum WorldMode {
   PATH_TO_CRYSTAL = 'PATH_TO_CRYSTAL',
 }
 
+export enum WorldModeIcons {
+  TIME_SCALE = 'world/modes/time_scale',
+  BUILDING_INDICATORS = 'world/modes/building_indicators',
+  AUTO_REPAIR = 'world/modes/auto_repair',
+  PATH_TO_CRYSTAL = 'world/modes/path_to_crystal',
+}
+
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   label: LangPhrase

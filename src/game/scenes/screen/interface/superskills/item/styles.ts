@@ -28,7 +28,7 @@ export const IconContainer = styled.div`
   width: 26px;
   height: 26px;
   img, div[data-texture-container] {
-    height: 100%;
+    width: 100%;
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 22px;
