@@ -118,8 +118,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   private updateContainer() {
-    this.container.setDepth(this.depth);
     this.container.setPosition(this.body.center.x, this.body.center.y);
+    this.container.setDepth(this.depth);
     this.container.setAlpha(this.alpha);
     this.container.setVisible(this.visible);
   }

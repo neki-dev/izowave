@@ -103,7 +103,6 @@ export class Enemy extends NPC implements IEnemy {
     this.handlePlayerSuperskill();
 
     if (this.spawnEffect) {
-      // TODO
       this.addSpawnEffect();
     }
 
@@ -310,35 +309,44 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addSpawnEffect() {
+    this.freeze(750);
+
+    setTimeout(() => {
+      const originAlpha = this.alpha;
+
+      this.container.setAlpha(0.0);
+      this.setAlpha(0.0);
+      this.scene.tweens.add({
+        targets: this,
+        alpha: originAlpha,
+        duration: 750,
+        onComplete: () => {
+          this.container.setAlpha(originAlpha);
+        },
+      });
+    }, 0);
+
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      // Native body.center isn't working at current state
+      const positionAtWorld = {
+        x: this.x,
+        y: this.y - ENEMY_TEXTURE_META[this.texture.key as EnemyTexture].height / 2,
+      };
+
       new Particles(this, {
         key: 'spawn',
         texture: ParticlesTexture.GLOW,
-        positionAtWorld: this.body.center,
+        positionAtWorld,
         params: {
-          duration: 400,
+          duration: 500,
           lifespan: { min: 150, max: 250 },
-          scale: { start: 0.25, end: 0.0 },
+          scale: { start: 0.3, end: 0.0 },
           speed: 100,
           quantity: 2,
-          tint: 0x00000,
+          tint: 0x000000,
         },
       });
     }
-
-    const originalScale = this.scale;
-
-    this.freeze(750);
-    this.container.setAlpha(0.0);
-    this.setScale(0.1);
-    this.scene.tweens.add({
-      targets: this,
-      scale: originalScale,
-      duration: 750,
-      onComplete: () => {
-        this.container.setAlpha(1.0);
-      },
-    });
   }
 
   private handlePlayerSuperskill() {

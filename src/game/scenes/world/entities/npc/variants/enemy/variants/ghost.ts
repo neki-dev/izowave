@@ -17,6 +17,8 @@ export class EnemyGhost extends Enemy {
         speed: 0.8,
       },
     });
+
+    this.setAlpha(0.5);
   }
 
   public update() {
