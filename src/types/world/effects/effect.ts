@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 export interface IEffect extends Phaser.GameObjects.Sprite {
   readonly scene: IWorld
@@ -20,7 +20,7 @@ export enum EffectAudio {
 
 export type EffectData = {
   texture: EffectTexture
-  position: Vector2D
+  position: PositionAtWorld
   depth?: number
   rate?: number
   staticFrame?: number

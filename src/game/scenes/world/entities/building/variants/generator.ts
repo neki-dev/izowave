@@ -75,7 +75,7 @@ export class BuildingGenerator extends Building {
       new Particles(this, {
         key: 'generate',
         texture: ParticlesTexture.BIT,
-        positionAtWorld: this.getTopFace(),
+        position: this.getTopFace(),
         params: {
           duration: 300,
           lifespan: { min: 100, max: 200 },

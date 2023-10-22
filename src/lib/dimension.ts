@@ -1,12 +1,12 @@
 import { LEVEL_MAP_TILE } from '~const/world/level';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 
 /**
  * Check positions is equals.
  * @param a - First position
  * @param b - Second position
  */
-export function isPositionsEqual(a: Vector2D, b: Vector2D) {
+export function isPositionsEqual(a: PositionAtWorld, b: PositionAtWorld) {
   return a.x === b.x && a.y === b.y;
 }
 
@@ -15,7 +15,7 @@ export function isPositionsEqual(a: Vector2D, b: Vector2D) {
  * @param positions - Positions list
  * @param target - Target position
  */
-export function excludePosition(positions: Vector2D[], target: Vector2D) {
+export function excludePosition(positions: PositionAtWorld[], target: PositionAtWorld) {
   const index = positions.findIndex((position) => isPositionsEqual(position, target));
 
   if (index !== -1) {
@@ -28,9 +28,9 @@ export function excludePosition(positions: Vector2D[], target: Vector2D) {
  * @param positions - Positions list
  * @param target - Target position
  */
-export function getClosest<T extends Vector2D>(
+export function getClosest<T extends PositionAtWorld>(
   positions: T[],
-  target: Vector2D,
+  target: PositionAtWorld,
 ): Nullable<T> {
   let closest: {
     distance: number
@@ -59,8 +59,8 @@ export function getClosest<T extends Vector2D>(
  * @param pointB - Second position
  */
 export function getIsometricDistance(
-  pointA: Vector2D,
-  pointB: Vector2D,
+  pointA: PositionAtWorld,
+  pointB: PositionAtWorld,
 ) {
   return Math.sqrt(
     (pointB.x - pointA.x) ** 2
@@ -74,8 +74,8 @@ export function getIsometricDistance(
  * @param pointB - Second position
  */
 export function getIsometricAngle(
-  pointA: Vector2D,
-  pointB: Vector2D,
+  pointA: PositionAtWorld,
+  pointB: PositionAtWorld,
 ) {
   return Math.atan2(
     (pointB.y - pointA.y) / LEVEL_MAP_TILE.persperctive,
@@ -88,9 +88,9 @@ export function getIsometricAngle(
  * @param positions - Positions list
  * @param target - Target position
  */
-export function sortByMatrixDistance<T extends Vector2D>(
+export function sortByMatrixDistance<T extends PositionAtMatrix>(
   positions: T[],
-  target: Vector2D,
+  target: PositionAtMatrix,
 ) {
   return positions
     .map((position) => ({
@@ -105,8 +105,8 @@ export function sortByMatrixDistance<T extends Vector2D>(
  * Get array of positions around source position.
  * @param position - Source position
  */
-export function aroundPosition(position: Vector2D) {
-  const list: Vector2D[] = [];
+export function aroundPosition(position: PositionAtMatrix) {
+  const list: PositionAtMatrix[] = [];
 
   for (let y = position.y - 1; y <= position.y + 1; y++) {
     for (let x = position.x - 1; x <= position.x + 1; x++) {
@@ -124,8 +124,8 @@ export function aroundPosition(position: Vector2D) {
  * @param beg - Start position
  * @param end - End posotion
  */
-export function interpolate(beg: Vector2D, end: Vector2D) {
-  const line: Vector2D[] = [];
+export function interpolate(beg: PositionAtMatrix, end: PositionAtMatrix) {
+  const line: PositionAtMatrix[] = [];
 
   const current = { ...beg };
   const dx = Math.abs(end.x - beg.x);

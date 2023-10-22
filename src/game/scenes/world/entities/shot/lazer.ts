@@ -13,7 +13,7 @@ import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
 } from '~type/world/entities/shot';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 Assets.RegisterAudio(ShotLazerAudio);
 
@@ -24,7 +24,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   private initiator: Nullable<IShotInitiator> = null;
 
-  private positionCallback: Nullable<() => Vector2D> = null;
+  private positionCallback: Nullable<() => PositionAtWorld> = null;
 
   private target: Nullable<IEnemy> = null;
 
@@ -47,7 +47,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.setOrigin(0.0, 0.0);
   }
 
-  public setInitiator(initiator: IShotInitiator, positionCallback: Nullable<() => Vector2D> = null) {
+  public setInitiator(initiator: IShotInitiator, positionCallback: Nullable<() => PositionAtWorld> = null) {
     this.initiator = initiator;
     this.positionCallback = positionCallback;
 

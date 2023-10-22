@@ -31,7 +31,7 @@ import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
-  ILevel, LevelData, SpawnTarget, Vector2D,
+  ILevel, LevelData, SpawnTarget, PositionAtWorld, PositionAtMatrix,
 } from '~type/world/level';
 import { ISpawner } from '~type/world/spawner';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -212,7 +212,7 @@ export class World extends Scene implements IWorld {
     return this.entityGroups[type].getChildren() as T[];
   }
 
-  public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {
+  public getFuturePosition(sprite: ISprite, seconds: number): PositionAtWorld {
     const fps = this.game.loop.actualFps;
     const drag = 0.3 ** (1 / fps);
     const per = 1 - drag ** (seconds * fps);
@@ -302,7 +302,10 @@ export class World extends Scene implements IWorld {
 
   private addPlayer() {
     const positionAtMatrix = this.game.usedSave?.payload.player
-      ? this.game.usedSave.payload.player.position
+      ? {
+        ...this.game.usedSave.payload.player.position,
+        z: 1, // PATCH: For saves with old version
+      }
       : Phaser.Utils.Array.GetRandom(
         this.level.readSpawnPositions(SpawnTarget.PLAYER),
       );
@@ -344,7 +347,7 @@ export class World extends Scene implements IWorld {
       return Phaser.Utils.Array.GetRandom(freePositions);
     };
 
-    const create = (position: Vector2D) => {
+    const create = (position: PositionAtMatrix) => {
       const variants = LEVEL_PLANETS[this.level.planet].CRYSTAL_VARIANTS;
 
       new Crystal(this, {

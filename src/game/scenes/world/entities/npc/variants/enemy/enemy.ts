@@ -25,7 +25,7 @@ import {
   EnemyAudio,
 } from '~type/world/entities/npc/enemy';
 import { PlayerSuperskill } from '~type/world/entities/player';
-import { TileType } from '~type/world/level';
+import { PositionAtWorld, TileType } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture]);
@@ -328,7 +328,7 @@ export class Enemy extends NPC implements IEnemy {
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       // Native body.center isn't working at current state
-      const positionAtWorld = {
+      const position: PositionAtWorld = {
         x: this.x,
         y: this.y - ENEMY_TEXTURE_META[this.texture.key as EnemyTexture].height / 2,
       };
@@ -336,7 +336,7 @@ export class Enemy extends NPC implements IEnemy {
       new Particles(this, {
         key: 'spawn',
         texture: ParticlesTexture.GLOW,
-        positionAtWorld,
+        position,
         params: {
           duration: 500,
           lifespan: { min: 150, max: 250 },

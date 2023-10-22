@@ -1,16 +1,18 @@
 /* eslint-disable no-restricted-globals */
 import Heap from 'heap';
 
-import { NavigatorTaskData, NavigatorEvent, NavigatorPayloadCompleteTask } from '~type/navigator';
-import { Vector2D } from '~type/world/level';
+import {
+  NavigatorTaskData, NavigatorEvent, NavigatorPayloadCompleteTask,
+} from '~type/navigator';
+import { PositionAtMatrix } from '~type/world/level';
 
 import { PathNode } from './node';
 import { getCost, getDistance } from './tools';
 
 export class NavigatorTask {
-  readonly from: Vector2D;
+  readonly from: PositionAtMatrix;
 
-  readonly to: Vector2D;
+  readonly to: PositionAtMatrix;
 
   readonly grid: boolean[][];
 
@@ -53,7 +55,7 @@ export class NavigatorTask {
     this.tree[node.position.y][node.position.x] = node;
   }
 
-  public pickNode(position: Vector2D) {
+  public pickNode(position: PositionAtMatrix) {
     return this.tree[position.y]?.[position.x];
   }
 
@@ -90,10 +92,10 @@ export class NavigatorTask {
 
   public checkAdjacentNode(
     currentNode: PathNode,
-    shift: Vector2D,
+    shift: PositionAtMatrix,
     points: number[][],
   ) {
-    const position: Vector2D = {
+    const position: PositionAtMatrix = {
       x: currentNode.position.x + shift.x,
       y: currentNode.position.y + shift.y,
     };

@@ -39,7 +39,7 @@ import {
   PlayerEvents,
   PlayerSkillIcon,
 } from '~type/world/entities/player';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType, PositionAtWorld } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 Assets.RegisterAudio(PlayerAudio);
@@ -106,7 +106,7 @@ export class Player extends Sprite implements IPlayer {
 
   private pathToCrystalEffectTimestamp: number = 1;
 
-  private currentPathToCrystal: Nullable<Vector2D[]> = null;
+  private currentPathToCrystal: Nullable<PositionAtWorld[]> = null;
 
   private staminaMax: number = 100;
 
@@ -695,8 +695,8 @@ export class Player extends Sprite implements IPlayer {
       const i = this.pathToCrystalEffectIndex + k;
 
       if (i > 1 && i < this.currentPathToCrystal.length) {
-        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1], z: 1 });
-        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i], z: 1 });
+        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1] });
+        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i] });
         const alpha = 1.0 - Math.min(Math.abs(k / halfVisibleLength), 0.9);
 
         this.pathToCrystal.lineStyle(2, 0xffffff, alpha * 0.75);
@@ -728,7 +728,7 @@ export class Player extends Sprite implements IPlayer {
       from: this.scene.player.positionAtMatrix,
       to: crystal.positionAtMatrix,
       grid: this.scene.level.gridSolid,
-    }, (path: Nullable<Vector2D[]>) => {
+    }, (path: Nullable<PositionAtWorld[]>) => {
       this.currentPathToCrystal = (path && path.length > 2) ? path : null;
       this.pathToCrystalFindingTask = null;
     });

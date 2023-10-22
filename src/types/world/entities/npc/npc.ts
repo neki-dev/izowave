@@ -1,7 +1,7 @@
 import { AssistantTexture } from '~type/world/entities/npc/assistant';
 import { EnemyTexture } from '~type/world/entities/npc/enemy';
 import { ISprite, SpriteBodyData } from '~type/world/entities/sprite';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix, PositionAtWorld } from '~type/world/level';
 
 export interface INPC extends ISprite {
   /**
@@ -23,20 +23,15 @@ export interface INPC extends ISprite {
   isFreezed(withEffects?: boolean): boolean
 
   /**
-   * Get distance to target.
-   */
-  getDistanceToTarget(): number
-
-  /**
    * Move NPC to position.
    * @param position - Position at world
    */
-  moveTo(position: Vector2D): void
+  moveTo(position: PositionAtWorld): void
 }
 
 export type NPCData = {
-  positionAtMatrix?: Vector2D
-  positionAtWorld?: Vector2D
+  positionAtMatrix?: PositionAtMatrix
+  positionAtWorld?: PositionAtWorld
   texture: EnemyTexture | AssistantTexture
   speed: number
   health?: number

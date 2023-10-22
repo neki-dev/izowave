@@ -1,9 +1,9 @@
 import { eachEntries } from '~lib/utils';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 import { PathNode } from './node';
 
-export function getDistance(point1: Vector2D, point2: Vector2D) {
+export function getDistance(point1: PositionAtMatrix, point2: PositionAtMatrix) {
   const a = point2.x - point1.x;
   const b = point2.y - point1.y;
   const distance = Math.sqrt(a * a + b * b);
@@ -13,10 +13,10 @@ export function getDistance(point1: Vector2D, point2: Vector2D) {
 
 export function getCost(
   currentNode: PathNode,
-  shift: Vector2D,
+  shift: PositionAtMatrix,
   points: number[][],
 ) {
-  const position: Vector2D = {
+  const position: PositionAtMatrix = {
     x: currentNode.position.x + shift.x,
     y: currentNode.position.y + shift.y,
   };
@@ -36,20 +36,20 @@ export function getCost(
 
 export function getDirections(grid: boolean[][], currentNode: PathNode) {
   const straightFlags: Record<string, boolean> = {};
-  const straightDirs: Record<string, Vector2D> = {
+  const straightDirs: Record<string, PositionAtMatrix> = {
     R: { x: 1, y: 0 }, // →
     L: { x: -1, y: 0 }, // ←
     D: { x: 0, y: 1 }, // ↓
     U: { x: 0, y: -1 }, // ↑
   };
-  const diagonalDirs: Record<string, Vector2D> = {
+  const diagonalDirs: Record<string, PositionAtMatrix> = {
     RD: { x: 1, y: 1 }, // ↘
     RU: { x: 1, y: -1 }, // ↗
     LU: { x: -1, y: -1 }, // ↖
     LD: { x: -1, y: 1 }, // ↙
   };
 
-  const allowedDirs: Vector2D[] = [];
+  const allowedDirs: PositionAtMatrix[] = [];
 
   eachEntries(straightDirs, (key, dir) => {
     const x = currentNode.position.x + dir.x;

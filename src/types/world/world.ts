@@ -11,7 +11,7 @@ import { CrystalSavePayload } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
-import { ILevel, Vector2D } from '~type/world/level';
+import { ILevel, PositionAtWorld } from '~type/world/level';
 import { ISpawner } from '~type/world/spawner';
 import { IWave } from '~type/world/wave';
 
@@ -128,7 +128,7 @@ export interface IWorld extends IScene {
    * @param sprite - Sprite
    * @param seconds - Time in seconds
    */
-  getFuturePosition(sprite: ISprite, seconds: number): Vector2D
+  getFuturePosition(sprite: ISprite, seconds: number): PositionAtWorld
 
   /**
    * Check is mode active.
@@ -168,7 +168,7 @@ export enum WorldMode {
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   label: LangPhrase
-  position: Vector2D
+  position: PositionAtWorld
   unique?: boolean
 };
 

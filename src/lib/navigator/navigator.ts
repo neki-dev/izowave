@@ -12,7 +12,7 @@ import {
   NavigatorPayloadCompleteTask,
   NavigatorTaskCallback,
 } from '~type/navigator';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 import NavigatorWorker from './worker.ts?worker';
 
@@ -44,7 +44,7 @@ export class Navigator implements INavigator {
     });
   }
 
-  public setPointCost(position: Vector2D, cost: number) {
+  public setPointCost(position: PositionAtMatrix, cost: number) {
     if (this.getPointCost(position) === cost) {
       return;
     }
@@ -65,11 +65,11 @@ export class Navigator implements INavigator {
     });
   }
 
-  public getPointCost(position: Vector2D) {
+  public getPointCost(position: PositionAtMatrix) {
     return this.pointsCost[position.y]?.[position.x] ?? 1.0;
   }
 
-  public resetPointCost(position: Vector2D) {
+  public resetPointCost(position: PositionAtMatrix) {
     if (!this.pointsCost[position.y]) {
       return;
     }

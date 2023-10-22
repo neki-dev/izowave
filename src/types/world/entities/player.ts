@@ -1,7 +1,7 @@
 import { ILive } from '~type/live';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { ISprite } from '~type/world/entities/sprite';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 export interface IPlayer extends ISprite, IEnemyTarget {
   /**
@@ -158,7 +158,7 @@ export enum MovementDirection {
 }
 
 export type PlayerData = {
-  positionAtMatrix: Vector2D
+  positionAtMatrix: PositionAtMatrix
 };
 
 export type PlayerSkillInfo = {
@@ -185,7 +185,7 @@ export enum PlayerSuperskill {
 }
 
 export type PlayerSavePayload = {
-  position: Vector2D
+  position: PositionAtMatrix
   score: number
   experience: number
   resources: number

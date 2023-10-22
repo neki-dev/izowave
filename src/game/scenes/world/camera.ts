@@ -38,8 +38,8 @@ export class Camera implements ICamera {
   public focusOnLevel() {
     const camera = this.scene.cameras.main;
     const size = this.scene.level.size - 1;
-    const beg = Level.ToWorldPosition({ x: 0, y: size, z: 0 });
-    const end = Level.ToWorldPosition({ x: size, y: 0, z: 0 });
+    const beg = Level.ToWorldPosition({ x: 0, y: size }, 0);
+    const end = Level.ToWorldPosition({ x: size, y: 0 }, 0);
 
     camera.setZoom(CAMERA_MAX_ZOOM);
     camera.pan(beg.x + (this.scene.sys.canvas.width / 2), beg.y, 0);

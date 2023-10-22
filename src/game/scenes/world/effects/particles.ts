@@ -22,7 +22,7 @@ export class Particles implements IParticles {
   constructor(
     parent: IParticlesParent,
     {
-      key, positionAtWorld, texture, params,
+      key, position, texture, params,
     }: ParticlesData,
   ) {
     this.scene = parent.scene;
@@ -30,8 +30,8 @@ export class Particles implements IParticles {
     this.key = key;
 
     this.emitter = this.scene.add.particles(
-      positionAtWorld?.x ?? 0,
-      positionAtWorld?.y ?? 0,
+      position?.x ?? 0,
+      position?.y ?? 0,
       texture,
       params,
     );

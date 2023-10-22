@@ -1,4 +1,4 @@
-import { Vector2D } from './level';
+import { PositionAtMatrix } from './level';
 
 export interface ISpawner {
   /**
@@ -9,20 +9,20 @@ export interface ISpawner {
   /**
    * Get position for enemy spawn.
    */
-  getSpawnPosition(): Promise<Vector2D>
+  getSpawnPosition(): Promise<PositionAtMatrix>
 }
 
 export type SpawnCache = {
-  targetPosition: Nullable<Vector2D>
-  positions: Vector2D[]
+  target: Nullable<PositionAtMatrix>
+  positions: PositionAtMatrix[]
 };
 
 export type SpawnPositionMeta = {
   distance: number
-  position: Vector2D
+  position: PositionAtMatrix
 };
 
 export type SpawnPositionResolve = {
   cost: number
-  position: Vector2D
+  position: PositionAtMatrix
 };

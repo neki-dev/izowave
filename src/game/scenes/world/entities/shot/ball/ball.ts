@@ -12,7 +12,7 @@ import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
   ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShotBall,
 } from '~type/world/entities/shot';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 Assets.RegisterAudio(ShotBallAudio);
 Assets.RegisterImages(ShotBallTexture);
@@ -26,13 +26,13 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private initiator: Nullable<IShotInitiator> = null;
 
-  private positionCallback: Nullable<() => Vector2D> = null;
+  private positionCallback: Nullable<() => PositionAtWorld> = null;
 
   private audio: ShotBallAudio;
 
   private effect: Nullable<Particles> = null;
 
-  private startPosition: Nullable<Vector2D> = null;
+  private startPosition: Nullable<PositionAtWorld> = null;
 
   private glowColor: Nullable<number> = null;
 
@@ -60,7 +60,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     );
   }
 
-  public setInitiator(initiator: IShotInitiator, positionCallback: Nullable<() => Vector2D> = null) {
+  public setInitiator(
+    initiator: IShotInitiator,
+    positionCallback: Nullable<() => PositionAtWorld> = null,
+  ) {
     this.initiator = initiator;
     this.positionCallback = positionCallback;
 

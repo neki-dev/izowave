@@ -13,12 +13,12 @@ import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { INPC, NPCData } from '~type/world/entities/npc';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 export class NPC extends Sprite implements INPC {
   public isPathPassed: boolean = false;
 
-  private pathToTarget: Vector2D[] = [];
+  private pathToTarget: PositionAtWorld[] = [];
 
   private pathFindingTask: Nullable<string> = null;
 
@@ -146,7 +146,7 @@ export class NPC extends Sprite implements INPC {
       from,
       to: this.scene.player.positionAtMatrix,
       grid: this.scene.level.gridCollide,
-    }, (path: Nullable<Vector2D[]>) => {
+    }, (path: Nullable<PositionAtWorld[]>) => {
       if (!this.active) {
         return;
       }
@@ -167,14 +167,14 @@ export class NPC extends Sprite implements INPC {
     });
   }
 
-  public getDistanceToTarget() {
+  private getDistanceToTarget() {
     return getIsometricDistance(
       this.getBottomFace(),
       this.scene.player.getBottomFace(),
     );
   }
 
-  public moveTo(position: Vector2D) {
+  public moveTo(position: PositionAtWorld) {
     const rotation = getIsometricAngle(this.getBottomFace(), position);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
@@ -194,8 +194,7 @@ export class NPC extends Sprite implements INPC {
   }
 
   private nextPathTile() {
-    const firstNode = this.pathToTarget[0];
-    const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 1 });
+    const tilePosition = Level.ToWorldPosition(this.pathToTarget[0]);
     const currentPosition = this.getBottomFace();
     const signX = Math.sign(this.body.velocity.x);
     const signY = Math.sign(this.body.velocity.y);
@@ -228,7 +227,7 @@ export class NPC extends Sprite implements INPC {
     const target = this.pathToTarget[0];
 
     if (target) {
-      const positionAtWorld = Level.ToWorldPosition({ ...target, z: 1 });
+      const positionAtWorld = Level.ToWorldPosition(target);
 
       this.moveTo(positionAtWorld);
     }
@@ -269,8 +268,8 @@ export class NPC extends Sprite implements INPC {
     ];
 
     for (let i = 1; i < points.length; i++) {
-      const prev = Level.ToWorldPosition({ ...points[i - 1], z: 1 });
-      const next = Level.ToWorldPosition({ ...points[i], z: 1 });
+      const prev = Level.ToWorldPosition({ ...points[i - 1] });
+      const next = Level.ToWorldPosition({ ...points[i] });
 
       this.pathDebug.moveTo(prev.x, prev.y);
       this.pathDebug.lineTo(next.x, next.y);

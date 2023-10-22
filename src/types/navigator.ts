@@ -1,5 +1,5 @@
 import { PathNode } from '~lib/navigator/node';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 export interface INavigator {
   /**
@@ -7,19 +7,19 @@ export interface INavigator {
    * @param position - Position at matrix
    * @param cost - Cost
    */
-  setPointCost(position: Vector2D, cost: number): void
+  setPointCost(position: PositionAtMatrix, cost: number): void
 
   /**
    * Get point cost.
    * @param position - Position at matrix
    */
-  getPointCost(position: Vector2D): number
+  getPointCost(position: PositionAtMatrix): number
 
   /**
    * Reset point cost.
    * @param position - Position at matrix
    */
-  resetPointCost(position: Vector2D): void
+  resetPointCost(position: PositionAtMatrix): void
 
   /**
    * Create navigation task.
@@ -44,13 +44,13 @@ export enum NavigatorEvent {
 
 export type NavigatorTaskData = {
   id?: string
-  from: Vector2D
-  to: Vector2D
+  from: PositionAtMatrix
+  to: PositionAtMatrix
   grid: boolean[][]
 };
 
 export type NavigatorPathNodeData = {
-  position: Vector2D
+  position: PositionAtMatrix
   parent?: Nullable<PathNode>
   cost?: number
   distance: number
@@ -75,7 +75,7 @@ export type NavigatorPayloadCreateTask = NavigatorTaskData & {
 export type NavigatorPayloadCompleteTask = {
   id: string
   result: {
-    path: Nullable<Vector2D[]>
+    path: Nullable<PositionAtMatrix[]>
     cost: number
   }
 };
@@ -85,8 +85,8 @@ export type NavigatorPayloadCancelTask = {
 };
 
 export type NavigatorPayloadUpdatePointCost = {
-  position: Vector2D
+  position: PositionAtMatrix
   cost: Nullable<number>
 };
 
-export type NavigatorTaskCallback = (path: Nullable<Vector2D[]>, cost: number) => void;
+export type NavigatorTaskCallback = (path: Nullable<PositionAtMatrix[]>, cost: number) => void;

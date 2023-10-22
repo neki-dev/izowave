@@ -22,7 +22,9 @@ import {
 } from '~type/world/entities/building';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import { PlayerSkill } from '~type/world/entities/player';
-import { BiomeType, TileType, Vector2D } from '~type/world/level';
+import {
+  BiomeType, TileType, PositionAtWorld, PositionAtMatrix,
+} from '~type/world/level';
 
 export class Builder extends EventEmitter implements IBuilder {
   readonly scene: IWorld;
@@ -43,7 +45,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
   private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
 
-  private _supposedPosition: Nullable<Vector2D> = null;
+  private _supposedPosition: Nullable<PositionAtMatrix> = null;
 
   public get supposedPosition() { return this._supposedPosition; }
 
@@ -140,7 +142,7 @@ export class Builder extends EventEmitter implements IBuilder {
     }
   }
 
-  private addFoundation(position: Vector2D) {
+  private addFoundation(position: PositionAtMatrix) {
     const newBiome = this.scene.level.getBiome(BiomeType.RUBBLE);
 
     if (!newBiome) {
@@ -213,10 +215,8 @@ export class Builder extends EventEmitter implements IBuilder {
     this.isBuild = true;
 
     if (!this.scene.game.isDesktop()) {
-      this.supposedPosition = this.scene.level.getFreeAdjacentTiles({
-        ...this.scene.player.positionAtMatrix,
-        z: 1,
-      })[0] ?? this.scene.player.positionAtMatrix;
+      this.supposedPosition = this.scene.level.getFreeAdjacentTiles(this.scene.player.positionAtMatrix)[0]
+        ?? this.scene.player.positionAtMatrix;
     }
 
     this.createBuildInstance();
@@ -462,7 +462,7 @@ export class Builder extends EventEmitter implements IBuilder {
       return;
     }
 
-    const positionAtWorld = Level.ToWorldPosition({ ...this.supposedPosition, z: 1 });
+    const positionAtWorld = Level.ToWorldPosition(this.supposedPosition);
     const depth = positionAtWorld.y + 1;
     const isAllow = this.isAllowBuild();
 
@@ -511,7 +511,7 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private updateSupposedPosition() {
-    let position: Vector2D;
+    let position: PositionAtWorld;
 
     if (this.scene.game.isDesktop()) {
       position = {

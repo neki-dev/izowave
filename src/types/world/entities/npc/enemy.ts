@@ -1,7 +1,7 @@
 import { ILive } from '~type/live';
 import { IWorld } from '~type/world';
 import { INPC } from '~type/world/entities/npc';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix, PositionAtWorld } from '~type/world/level';
 
 export interface IEnemy extends INPC {
   /**
@@ -28,7 +28,7 @@ export interface IEnemyFactory {
 
 export interface IEnemyTarget {
   readonly live: ILive
-  getBottomFace(): Vector2D
+  getBottomFace(): PositionAtWorld
 }
 
 export enum EnemyAudio {
@@ -71,8 +71,8 @@ export type EnemyTexturesMeta = Record<EnemyTexture, {
 
 export type EnemyVariantData = {
   spawnEffect?: boolean
-  positionAtMatrix?: Vector2D
-  positionAtWorld?: Vector2D
+  positionAtMatrix?: PositionAtMatrix
+  positionAtWorld?: PositionAtWorld
 };
 
 export type EnemyData = EnemyVariantData & {

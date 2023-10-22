@@ -26,7 +26,7 @@ import {
   BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon, BuildingGrowthValue, BuildingSavePayload,
 } from '~type/world/entities/building';
 import { IIndicator, IndicatorData } from '~type/world/entities/indicator';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType, PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 Assets.RegisterAudio(BuildingAudio);
@@ -40,7 +40,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   readonly variant: BuildingVariant;
 
-  readonly positionAtMatrix: Vector2D;
+  readonly positionAtMatrix: PositionAtMatrix;
 
   readonly tileType: TileType = TileType.BUILDING;
 
@@ -89,8 +89,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   constructor(scene: IWorld, {
     positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
   }: BuildingData) {
-    const tilePosition = { ...positionAtMatrix, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const positionAtWorld = Level.ToWorldPosition(positionAtMatrix);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.add.existing(this);
@@ -105,7 +104,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.setDepth(positionAtWorld.y);
     this.setOrigin(0.5, BUILDING_TILE.origin);
-    this.scene.level.putTile(this, tilePosition);
+    this.scene.level.putTile(this, { ...positionAtMatrix, z: 1 });
 
     this.addActionArea();
     this.addIndicatorsContainer();
@@ -166,12 +165,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
   }
 
-  public actionsAreaContains(position: Vector2D) {
+  public actionsAreaContains(position: PositionAtWorld) {
     if (!this.active || !this.actionsArea) {
       return false;
     }
 
-    const offset = this.actionsArea.getTopLeft() as Vector2D;
+    const offset = this.actionsArea.getTopLeft() as PositionAtWorld;
     const contains: boolean = this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
 
     return contains;

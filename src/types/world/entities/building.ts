@@ -8,7 +8,7 @@ import { IParticlesParent } from '~type/world/effects';
 import { IndicatorData } from '~type/world/entities/indicator';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { IShotInitiator } from '~type/world/entities/shot';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix, PositionAtWorld } from '~type/world/level';
 
 export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IParticlesParent, IShotInitiator {
   readonly scene: IWorld
@@ -26,7 +26,7 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Position at matrix.
    */
-  readonly positionAtMatrix: Vector2D
+  readonly positionAtMatrix: PositionAtMatrix
 
   /**
    * Variant name.
@@ -42,7 +42,7 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Check is position inside action area.
    * @param position - Position at world
    */
-  actionsAreaContains(position: Vector2D): boolean
+  actionsAreaContains(position: PositionAtWorld): boolean
 
   /**
    * Pause actions.
@@ -113,12 +113,12 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Get top face center position.
    */
-  getTopFace(): Vector2D
+  getTopFace(): PositionAtWorld
 
   /**
    * Get bottom face center position.
    */
-  getBottomFace(): Vector2D
+  getBottomFace(): PositionAtWorld
 
   /**
    * Set building active state.
@@ -283,7 +283,7 @@ export type BuildingControl = {
 
 export type BuildingVariantData = {
   buildDuration?: number
-  positionAtMatrix: Vector2D
+  positionAtMatrix: PositionAtMatrix
 };
 
 export type BuildingBuildData = BuildingVariantData & {
@@ -300,7 +300,7 @@ export type BuildingData = BuildingVariantData & {
 
 export type BuildingSavePayload = {
   variant: BuildingVariant
-  position: Vector2D
+  position: PositionAtMatrix
   health: number
   upgradeLevel: number
   ammo?: number

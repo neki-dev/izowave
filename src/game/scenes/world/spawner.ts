@@ -11,7 +11,7 @@ import { excludePosition, getIsometricDistance, sortByMatrixDistance } from '~li
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { IBuilding } from '~type/world/entities/building';
-import { SpawnTarget, Vector2D } from '~type/world/level';
+import { SpawnTarget, PositionAtMatrix } from '~type/world/level';
 import {
   ISpawner, SpawnCache, SpawnPositionResolve, SpawnPositionMeta,
 } from '~type/world/spawner';
@@ -19,9 +19,9 @@ import {
 export class Spawner implements ISpawner {
   private scene: IWorld;
 
-  private positions: Vector2D[] = [];
+  private positions: PositionAtMatrix[] = [];
 
-  private positionsAnalog: Vector2D[] = [];
+  private positionsAnalog: PositionAtMatrix[] = [];
 
   private cache: SpawnCache;
 
@@ -38,16 +38,16 @@ export class Spawner implements ISpawner {
 
   public clearCache() {
     this.cache = {
-      targetPosition: null,
+      target: null,
       positions: [],
     };
   }
 
   private getCachedPositions() {
     if (
-      this.cache.targetPosition
+      this.cache.target
       && this.cache.positions.length > 0
-      && getIsometricDistance(this.cache.targetPosition, this.scene.player.positionAtMatrix) < SPAWN_CACHE_RESET_DISTANCE
+      && getIsometricDistance(this.cache.target, this.scene.player.positionAtMatrix) < SPAWN_CACHE_RESET_DISTANCE
     ) {
       return this.cache.positions;
     }
@@ -55,9 +55,9 @@ export class Spawner implements ISpawner {
     return null;
   }
 
-  private cachePositions(positions: Vector2D[]) {
+  private cachePositions(positions: PositionAtMatrix[]) {
     this.cache = {
-      targetPosition: this.scene.player.positionAtMatrix,
+      target: this.scene.player.positionAtMatrix,
       positions,
     };
   }

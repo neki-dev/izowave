@@ -5,7 +5,9 @@ import { IWorld } from '~type/world';
 import { IParticlesParent } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IIndicator, IndicatorData } from '~type/world/entities/indicator';
-import { LevelBiome, TileType, Vector2D } from '~type/world/level';
+import {
+  LevelBiome, TileType, PositionAtWorld, PositionAtMatrix,
+} from '~type/world/level';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
   readonly scene: IWorld
@@ -19,7 +21,7 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   /**
    * Current position at matrix.
    */
-  readonly positionAtMatrix: Vector2D
+  readonly positionAtMatrix: PositionAtMatrix
 
   /**
    * Sprite wrapper.
@@ -57,17 +59,17 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   /**
    * Get all occupied positions by body.
    */
-  getAllPositionsAtMatrix(): Vector2D[]
+  getAllPositionsAtMatrix(): PositionAtMatrix[]
 
   /**
    * Get position with gamut offset.
    */
-  getBottomFace(): Vector2D
+  getBottomFace(): PositionAtWorld
 
   /**
    * Get body offset by position.
    */
-  getBodyOffset(): Vector2D
+  getBodyOffset(): PositionAtWorld
 
   /**
    * Set collision for tiles.
@@ -111,8 +113,8 @@ export type SpriteBodyData = {
 
 export type SpriteData = {
   texture: string
-  positionAtMatrix?: Vector2D
-  positionAtWorld?: Vector2D
+  positionAtMatrix?: PositionAtMatrix
+  positionAtWorld?: PositionAtWorld
   frame?: number
   health?: number
   speed: number

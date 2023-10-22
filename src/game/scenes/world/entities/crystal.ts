@@ -10,7 +10,7 @@ import { EntityType } from '~type/world/entities';
 import {
   CrystalTexture, CrystalData, CrystalAudio, ICrystal, CrystalSavePayload, CrystalEvents,
 } from '~type/world/entities/crystal';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType, PositionAtMatrix } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 Assets.RegisterAudio(CrystalAudio);
@@ -21,13 +21,12 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
   readonly tileType: TileType = TileType.CRYSTAL;
 
-  readonly positionAtMatrix: Vector2D;
+  readonly positionAtMatrix: PositionAtMatrix;
 
   constructor(scene: IWorld, {
     positionAtMatrix, variant = 0,
   }: CrystalData) {
-    const tilePosition = { ...positionAtMatrix, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const positionAtWorld = Level.ToWorldPosition(positionAtMatrix);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
     scene.add.existing(this);
@@ -45,7 +44,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
 
     this.setDepth(positionAtWorld.y);
     this.setOrigin(0.5, CRYSTAL_TILE.origin);
-    this.scene.level.putTile(this, tilePosition);
+    this.scene.level.putTile(this, { ...positionAtMatrix, z: 1 });
   }
 
   public pickup() {

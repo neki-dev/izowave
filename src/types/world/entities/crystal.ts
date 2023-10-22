@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix, PositionAtWorld } from '~type/world/level';
 
 export interface ICrystal extends Phaser.GameObjects.Image {
   readonly scene: IWorld
@@ -9,7 +9,7 @@ export interface ICrystal extends Phaser.GameObjects.Image {
   /**
    * Position at matrix.
    */
-  readonly positionAtMatrix: Vector2D
+  readonly positionAtMatrix: PositionAtMatrix
 
   /**
    * Take resources from crystal and destroy him.
@@ -35,15 +35,15 @@ export enum CrystalEvents {
 }
 
 export type CrystalData = {
-  positionAtMatrix: Vector2D
+  positionAtMatrix: PositionAtMatrix
   variant?: number
 };
 
 export type CrystalAmount = {
-  position: Vector2D
+  position: PositionAtWorld
   value: number
 };
 
 export type CrystalSavePayload = {
-  position: Vector2D
+  position: PositionAtMatrix
 };
