@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-globals */
 import Heap from 'heap';
 
-import { NavigatorTaskData, NavigatorEvent } from '~type/navigator';
+import { NavigatorTaskData, NavigatorEvent, NavigatorPayloadCompleteTask } from '~type/navigator';
 import { Vector2D } from '~type/world/level';
 
 import { PathNode } from './node';
@@ -62,27 +62,29 @@ export class NavigatorTask {
   }
 
   public failure() {
+    const payload: NavigatorPayloadCompleteTask = {
+      id: this.id,
+      result: {
+        path: null,
+        cost: -1,
+      },
+    };
+
     self.postMessage({
       event: NavigatorEvent.COMPLETE_TASK,
-      payload: {
-        id: this.id,
-        result: {
-          path: null,
-          cost: 0,
-        },
-      },
+      payload,
     });
   }
 
   public complete(node: PathNode) {
-    const result = node.getResult();
+    const payload: NavigatorPayloadCompleteTask = {
+      id: this.id,
+      result: node.getResult(),
+    };
 
     self.postMessage({
       event: NavigatorEvent.COMPLETE_TASK,
-      payload: {
-        id: this.id,
-        result,
-      },
+      payload,
     });
   }
 

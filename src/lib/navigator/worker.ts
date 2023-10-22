@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-case-declarations */
-import { NavigatorEvent } from '~type/navigator';
+import {
+  NavigatorEvent, NavigatorPayloadCancelTask, NavigatorPayloadCreateTask, NavigatorPayloadUpdatePointCost,
+} from '~type/navigator';
 
 import { NavigatorProcess } from './process';
 import { NavigatorTask } from './task';
@@ -13,18 +15,24 @@ setInterval(() => {
 
 self.onmessage = ({ data }) => {
   switch (data.event) {
-    case NavigatorEvent.CREATE_TASK:
-      const task = new NavigatorTask(data.payload);
+    case NavigatorEvent.CREATE_TASK: {
+      const payload = data.payload as NavigatorPayloadCreateTask;
+      const task = new NavigatorTask(payload);
 
       navigatorProcess.createTask(task);
       break;
+    }
+    case NavigatorEvent.CANCEL_TASK: {
+      const payload = data.payload as NavigatorPayloadCancelTask;
 
-    case NavigatorEvent.CANCEL_TASK:
-      navigatorProcess.cancelTask(data.payload.id);
+      navigatorProcess.cancelTask(payload.id);
       break;
+    }
+    case NavigatorEvent.UPDATE_POINT_COST: {
+      const payload = data.payload as NavigatorPayloadUpdatePointCost;
 
-    case NavigatorEvent.UPDATE_POINT_COST:
-      navigatorProcess.setPointCost(data.payload.position, data.payload.cost);
+      navigatorProcess.setPointCost(payload.position, payload.cost);
       break;
+    }
   }
 };

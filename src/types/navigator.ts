@@ -26,10 +26,7 @@ export interface INavigator {
    * @param data - Task data
    * @param callback - Complete callback
    */
-  createTask(
-    data: NavigatorTaskData,
-    callback: (path: Nullable<Vector2D[]>, cost: number) => void
-  ): string
+  createTask(data: NavigatorTaskData, callback: NavigatorTaskCallback): string
 
   /**
    * Cancel navigation task.
@@ -62,11 +59,34 @@ export type NavigatorPathNodeData = {
 export type NavigatorWorkerResult = {
   data: {
     event: string
-    payload: Record<string, any>
+    payload: any
   }
 };
 
 export type NavigatorTaskInfo = {
   id: string
-  callback: (path: Nullable<Vector2D[]>, cost: number) => void
+  callback: NavigatorTaskCallback
 };
+
+export type NavigatorPayloadCreateTask = NavigatorTaskData & {
+  id: string
+};
+
+export type NavigatorPayloadCompleteTask = {
+  id: string
+  result: {
+    path: Nullable<Vector2D[]>
+    cost: number
+  }
+};
+
+export type NavigatorPayloadCancelTask = {
+  id: string
+};
+
+export type NavigatorPayloadUpdatePointCost = {
+  position: Vector2D
+  cost: Nullable<number>
+};
+
+export type NavigatorTaskCallback = (path: Nullable<Vector2D[]>, cost: number) => void;
