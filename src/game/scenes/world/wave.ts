@@ -215,7 +215,11 @@ export class Wave extends EventEmitter implements IWave {
       return;
     }
 
-    this.scene.spawnEnemy(variant);
+    const EnemyInstance = ENEMIES[variant];
+
+    this.scene.spawner.getSpawnPosition().then((positionAtMatrix) => {
+      new EnemyInstance(this.scene, { positionAtMatrix });
+    });
 
     const pause = progressionQuadratic({
       defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,

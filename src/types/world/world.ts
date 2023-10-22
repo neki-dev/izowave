@@ -9,7 +9,6 @@ import { EntityType } from '~type/world/entities';
 import { BuildingSavePayload } from '~type/world/entities/building';
 import { CrystalSavePayload } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { ILevel, Vector2D } from '~type/world/level';
@@ -111,12 +110,6 @@ export interface IWorld extends IScene {
    * Get entities list from group.
    */
   getEntities<T>(type: EntityType): T[]
-
-  /**
-   * Spawn enemy in random position.
-   * @param variant - Enemy variant
-   */
-  spawnEnemy(variant: EnemyVariant): void
 
   /**
    * Show hint on world.

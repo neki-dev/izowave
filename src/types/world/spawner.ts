@@ -16,3 +16,13 @@ export type SpawnCache = {
   targetPosition: Nullable<Vector2D>
   positions: Vector2D[]
 };
+
+export type SpawnPositionMeta = {
+  distance: number
+  position: Vector2D
+};
+
+export type SpawnPositionResolve = {
+  cost: number
+  position: Vector2D
+};

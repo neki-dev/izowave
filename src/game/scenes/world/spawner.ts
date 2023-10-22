@@ -3,14 +3,18 @@ import {
   SPAWN_DISTANCE_FROM_BUILDING,
   SPAWN_DISTANCE_FROM_PLAYER,
   SPAWN_POSITIONS_GRID,
-  SPAWN_POSITIONS_LIMIT,
+  SPAWN_POSITIONS_INPUT_LIMIT,
+  SPAWN_POSITIONS_OUTPUT_LIMIT,
+  SPAWN_COST_FACTOR,
 } from '~const/world/spawner';
 import { excludePosition, getIsometricDistance, sortByMatrixDistance } from '~lib/dimension';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { IBuilding } from '~type/world/entities/building';
 import { SpawnTarget, Vector2D } from '~type/world/level';
-import { ISpawner, SpawnCache } from '~type/world/spawner';
+import {
+  ISpawner, SpawnCache, SpawnPositionResolve, SpawnPositionMeta,
+} from '~type/world/spawner';
 
 export class Spawner implements ISpawner {
   private scene: IWorld;
@@ -21,10 +25,12 @@ export class Spawner implements ISpawner {
 
   private cache: SpawnCache;
 
+  private tasks: string[] = [];
+
   constructor(scene: IWorld) {
     this.scene = scene;
-
     this.positionsAnalog = [];
+    this.tasks = [];
 
     this.clearCache();
     this.generatePositions();
@@ -59,7 +65,7 @@ export class Spawner implements ISpawner {
   public async getSpawnPosition() {
     const positions = await this.getSpawnPositions();
 
-    return this.selectRandomPosition(positions);
+    return Phaser.Utils.Array.GetRandom(positions);
   }
 
   private async getSpawnPositions() {
@@ -69,26 +75,24 @@ export class Spawner implements ISpawner {
       return cachedPositions;
     }
 
-    const freePositions = this.getFreePositions();
+    const positionsMeta = this.getFreePositionsMeta();
+    const limit = this.getPositionsLimit();
 
-    if (freePositions.length === 0) {
-      return this.getAnalogPositions();
+    if (positionsMeta.length === 0) {
+      return this.getAnalogPositions()
+        .slice(0, limit);
     }
 
-    // TODO: Exclude potentially unnecessary positions
-    const pathsResolves = await this.getPathsResolvesToPositions(freePositions);
+    const positions = await this.getPositionsWithOptimalCost(positionsMeta, limit);
 
-    if (pathsResolves.length === 0) {
-      return this.getAnalogPositions();
+    if (positions.length === 0) {
+      return this.getAnalogPositions()
+        .slice(0, limit);
     }
 
-    const sortedPositions = pathsResolves
-      .sort((a, b) => (a.cost - b.cost))
-      .map(({ position }) => position);
+    this.cachePositions(positions);
 
-    this.cachePositions(sortedPositions);
-
-    return sortedPositions;
+    return positions;
   }
 
   private getAnalogPositions() {
@@ -99,55 +103,72 @@ export class Spawner implements ISpawner {
     return sortByMatrixDistance(this.positionsAnalog, this.scene.player.positionAtMatrix);
   }
 
-  private getFreePositions() {
+  private getFreePositionsMeta() {
     const buildings = this.scene.getEntities<IBuilding>(EntityType.BUILDING);
-
-    return this.positions.filter((position) => (
+    const positions = this.positions.filter((position) => (
       Phaser.Math.Distance.BetweenPoints(position, this.scene.player.positionAtMatrix) >= SPAWN_DISTANCE_FROM_PLAYER
       && buildings.every((building) => (
         Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= SPAWN_DISTANCE_FROM_BUILDING
       ))
     ));
+
+    return positions.map((position) => ({
+      position,
+      distance: Phaser.Math.Distance.BetweenPoints(position, this.scene.player.positionAtMatrix),
+    }))
+      .sort((a, b) => (a.distance - b.distance))
+      .slice(0, SPAWN_POSITIONS_INPUT_LIMIT);
   }
 
-  private selectRandomPosition(positions: Vector2D[]) {
-    const positionsLimit = Math.min(SPAWN_POSITIONS_LIMIT, 4 + this.scene.wave.number);
-    const positionAtMatrix = Phaser.Utils.Array.GetRandom(
-      positions.slice(0, positionsLimit),
-    );
-
-    return positionAtMatrix;
+  private getPositionsLimit() {
+    return Math.min(SPAWN_POSITIONS_OUTPUT_LIMIT, 3 + this.scene.wave.number);
   }
 
-  private getPathsResolvesToPositions(positions: Vector2D[]) {
-    type PathResolve = {
-      cost: number
-      position: Vector2D
-    };
+  private async getPositionsWithOptimalCost(meta: SpawnPositionMeta[], limit: number) {
+    let positions = await new Promise<SpawnPositionResolve[]>((resolve) => {
+      let allowables = 0;
+      const result: SpawnPositionResolve[] = [];
 
-    return new Promise<PathResolve[]>((resolve) => {
-      let completed = 0;
-      const result: PathResolve[] = [];
-
-      positions.forEach((position) => {
-        this.scene.level.navigator.createTask({
-          from: position,
+      meta.forEach((data) => {
+        const task = this.scene.level.navigator.createTask({
+          from: data.position,
           to: this.scene.player.positionAtMatrix,
           grid: this.scene.level.gridCollide,
         }, (path, cost) => {
+          this.completeTask(task);
+
           if (path) {
-            result.push({ cost, position });
+            result.push({
+              position: data.position,
+              cost,
+            });
+
+            if ((cost / data.distance) <= SPAWN_COST_FACTOR) {
+              allowables++;
+              if (allowables === limit) {
+                this.cancelTasks();
+              }
+            }
           } else {
-            excludePosition(this.positions, position);
+            excludePosition(this.positions, data.position);
           }
 
-          completed++;
-          if (completed === positions.length) {
+          if (this.tasks.length === 0) {
             resolve(result);
           }
         });
+
+        this.tasks.push(task);
       });
     });
+
+    if (positions.length > limit) {
+      positions = positions
+        .sort((a, b) => (a.cost - b.cost))
+        .slice(0, limit);
+    }
+
+    return positions.map((data) => data.position);
   }
 
   private generatePositions() {
@@ -171,5 +192,20 @@ export class Spawner implements ISpawner {
         }
       }
     }
+  }
+
+  private completeTask(task: string) {
+    const index = this.tasks.indexOf(task);
+
+    if (index !== -1) {
+      this.tasks.splice(index, 1);
+    }
+  }
+
+  private cancelTasks() {
+    this.tasks.forEach((task) => {
+      this.scene.level.navigator.cancelTask(task);
+    });
+    this.tasks = [];
   }
 }

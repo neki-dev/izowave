@@ -108,13 +108,12 @@ export class Level extends TileMatrix implements ILevel {
 
   public readSpawnPositions(target: SpawnTarget, grid: number = 2) {
     const positions: Vector2D[] = [];
-    const rand = Math.floor(grid / 2);
 
     for (let sX = grid; sX < this.map.width - grid; sX += grid) {
       for (let sY = grid; sY < this.map.height - grid; sY += grid) {
         const position = {
-          x: sX + Phaser.Math.Between(-rand, rand),
-          y: sY + Phaser.Math.Between(-rand, rand),
+          x: sX + Phaser.Math.Between(-1, 1),
+          y: sY + Phaser.Math.Between(-1, 1),
         };
         const targets = this.map.getAt(position)?.spawn;
 

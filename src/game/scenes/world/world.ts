@@ -3,7 +3,6 @@ import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ENEMIES } from '~const/world/entities/enemies';
 import { LEVEL_PLANETS } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
@@ -29,7 +28,6 @@ import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { EnemyVariant } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
@@ -212,14 +210,6 @@ export class World extends Scene implements IWorld {
 
   public getEntities<T = Phaser.GameObjects.GameObject>(type: EntityType) {
     return this.entityGroups[type].getChildren() as T[];
-  }
-
-  public spawnEnemy(variant: EnemyVariant) {
-    const EnemyInstance = ENEMIES[variant];
-
-    this.spawner.getSpawnPosition().then((positionAtMatrix) => {
-      new EnemyInstance(this, { positionAtMatrix });
-    });
   }
 
   public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {

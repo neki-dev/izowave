@@ -1,6 +1,10 @@
 export const SPAWN_CACHE_RESET_DISTANCE = 6;
 
-export const SPAWN_POSITIONS_LIMIT = 16;
+export const SPAWN_COST_FACTOR = 1.3;
+
+export const SPAWN_POSITIONS_INPUT_LIMIT = 64;
+
+export const SPAWN_POSITIONS_OUTPUT_LIMIT = 12;
 
 export const SPAWN_DISTANCE_FROM_PLAYER = 10;
 
