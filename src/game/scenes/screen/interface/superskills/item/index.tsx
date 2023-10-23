@@ -1,7 +1,7 @@
 import {
   useGame, useScene, useSceneUpdate, useInteraction, Texture,
 } from 'phaser-react-ui';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { phrase } from '~lib/lang';
@@ -11,7 +11,7 @@ import { IWorld } from '~type/world';
 import { PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
 
 import {
-  Container, Timeout, Info, Body, Head, Name, Description, Wrapper, IconContainer,
+  Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock, Newest,
 } from './styles';
 
 type Props = {
@@ -23,6 +23,8 @@ export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.SYSTEM);
 
+  const [isAllow, setAllow] = useState(false);
+  const [isNewest, setNewest] = useState(false);
   const [isPaused, setPaused] = useState(false);
   const [isActive, setActive] = useState(false);
   const [cost, setCost] = useState(0);
@@ -30,18 +32,33 @@ export const Item: React.FC<Props> = ({ type }) => {
   const refContainer = useRef<HTMLDivElement>(null);
 
   const isHover = useInteraction(refContainer, () => {
-    world.player.useSuperskill(type);
-  }, [type]);
+    if (isAllow) {
+      world.player.useSuperskill(type);
+    }
+  }, [type, isAllow]);
+
+  useEffect(() => {
+    if (isAllow && !world.game.usedSave) {
+      setNewest(true);
+    }
+  }, [isAllow]);
+
+  useEffect(() => {
+    if (isHover) {
+      setNewest(false);
+    }
+  }, [isHover]);
 
   useSceneUpdate(scene, () => {
     setPaused(game.state === GameState.PAUSED);
     setActive(Boolean(world.player.activeSuperskills[type]));
     setCost(world.player.getSuperskillCost(type));
+    setAllow(world.wave.number >= DIFFICULTY[`SUPERSKILL_${type}_MIN_WAVE`]);
   }, []);
 
   return (
     <Wrapper>
-      {isHover && (
+      {(isHover && isAllow) && (
         <Info>
           <Head>
             <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
@@ -52,7 +69,7 @@ export const Item: React.FC<Props> = ({ type }) => {
           </Body>
         </Info>
       )}
-      <Container ref={refContainer} $active={isActive}>
+      <Container ref={refContainer} $active={isActive} $allow={isAllow}>
         {isActive && (
           <Timeout
             style={{
@@ -61,7 +78,16 @@ export const Item: React.FC<Props> = ({ type }) => {
             }}
           />
         )}
-        <IconContainer>
+        {isAllow ? (
+          isNewest && (
+            <Newest />
+          )
+        ) : (
+          <Lock>
+            <IconLock src='assets/sprites/hud/lock.png' />
+          </Lock>
+        )}
+        <IconContainer $allow={isAllow}>
           <Texture name={PlayerSuperskillIcon[type]} />
         </IconContainer>
       </Container>

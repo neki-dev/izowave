@@ -311,7 +311,11 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public useSuperskill(type: PlayerSuperskill) {
-    if (this.activeSuperskills[type] || !this.scene.wave.isGoing) {
+    if (
+      this.activeSuperskills[type]
+      || !this.scene.wave.isGoing
+      || this.scene.wave.number < DIFFICULTY[`SUPERSKILL_${type}_MIN_WAVE`]
+    ) {
       return;
     }
 
