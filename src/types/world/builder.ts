@@ -73,8 +73,9 @@ export interface IBuilder extends EventEmitter {
   /**
    * Check is current wave allow building variant.
    * @param variant - Building variant
+   * @param number - Wave number
    */
-  isBuildingAllowByWave(variant: BuildingVariant): boolean
+  isBuildingAllowByWave(variant: BuildingVariant, number?: number): boolean
 
   /**
    * Check is tutorial allow building variant.

@@ -38,23 +38,19 @@ export const DIFFICULTY = {
 
   SUPERSKILL_INVISIBLE_COST: 30, // Cost of use
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
-  SUPERSKILL_INVISIBLE_MIN_WAVE: 2, // Wave for unlock
   SUPERSKILL_FROST_COST: 40, // Cost of use
   SUPERSKILL_FROST_DURATION: 6000, // Frost duration
-  SUPERSKILL_FROST_MIN_WAVE: 5, // Wave for unlock
   SUPERSKILL_SHIELD_COST: 40, // Cost of use
   SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
-  SUPERSKILL_SHIELD_MIN_WAVE: 8, // Wave for unlock
   SUPERSKILL_RAGE_COST: 60, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
-  SUPERSKILL_RAGE_MIN_WAVE: 10, // Wave for unlock
   SUPERSKILL_FIRE_COST: 60, // Cost of use
   SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
-  SUPERSKILL_FIRE_MIN_WAVE: 15, // Wave for unlock
   SUPERSKILL_FIRE_DAMAGE: 50, // Fire damage
   SUPERSKILL_FIRE_DAMAGE_GROWTH: 0.35, // Growth damage by wave number (Quadratic)
   SUPERSKILL_FIRE_DAMAGE_GROWTH_RETARDATION_LEVEL: 12, // Level for damage growth retardation
   SUPERSKILL_COST_GROWTH: 0.15, // Growth cost by wave number (Linear)
+  SUPERSKILL_UNLOCK_PER_WAVE: 3, //
 
   /**
    * Wave

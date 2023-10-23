@@ -93,7 +93,7 @@ export const IconContainer = styled.div<{
   ${(props) => !props.$allow && css`
     opacity: 0.5;
   `}
-  img, div[data-texture-container] {
+  [role=texture] {
     width: 100%;
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {

@@ -54,7 +54,7 @@ export const Container = styled.div<{
         background: ${InterfaceBackgroundColor.SUCCESS_DARK};
       `)};
     }
-    img, div[data-texture-container] {
+    [role=texture] {
       width: 16px;
       height: 16px;
     }
@@ -62,7 +62,7 @@ export const Container = styled.div<{
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 32px;
     height: 32px;
-    img, div[data-texture-container] {
+    [role=texture] {
       width: 12px;
       height: 12px;
     }

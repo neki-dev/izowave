@@ -10,6 +10,7 @@ export const EN = {
   /**
    * Buildings
    */
+  BUILDING: 'Building',
   BUILDING_NAME_WALL: 'Wall',
   BUILDING_DESCRIPTION_WALL: 'Defends other buildings',
   BUILDING_NAME_TOWER_FIRE: 'Fire tower',
@@ -86,6 +87,12 @@ export const EN = {
    * Ads
    */
   ADS_SHOW: 'Watch a video and get reward',
+  ADS_UNLOCK: 'Unlock extra superskill by watch video',
+
+  /**
+   * Unlocks
+   */
+  FEATURES_UNLOCKED: 'Unlocked\nnew features!',
 
   /**
    * Modal
@@ -96,6 +103,7 @@ export const EN = {
   /**
    * Superskills
    */
+  SUPERSKILL: 'Superskill',
   SUPERSKILL_NAME_INVISIBLE: 'Invisible',
   SUPERSKILL_DESCRIPTION_INVISIBLE: 'Hides character from enemies',
   SUPERSKILL_NAME_FROST: 'Frost',

@@ -10,6 +10,7 @@ export const FR = {
   /**
    * Buildings
    */
+  BUILDING: 'Batiment',
   BUILDING_NAME_WALL: 'Mur',
   BUILDING_DESCRIPTION_WALL: 'Protection des batiments contre la destruction',
   BUILDING_NAME_TOWER_FIRE: 'Tour du feu',
@@ -86,6 +87,12 @@ export const FR = {
    * Ads
    */
   ADS_SHOW: 'Regardez video et obtenez recompense',
+  ADS_UNLOCK: 'Debloquez des super competences supplementaires',
+
+  /**
+   * Unlocks
+   */
+  FEATURES_UNLOCKED: 'Nouvelles\nfonctionnalites debloquees!',
 
   /**
    * Modal
@@ -96,6 +103,7 @@ export const FR = {
   /**
    * Superskills
    */
+  SUPERSKILL: 'Supercompetence',
   SUPERSKILL_NAME_INVISIBLE: 'Invisible',
   SUPERSKILL_DESCRIPTION_INVISIBLE: 'Cache le personnage des ennemis',
   SUPERSKILL_NAME_FROST: 'Congelation',

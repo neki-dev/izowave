@@ -10,6 +10,7 @@ export const RU = {
   /**
    * Buildings
    */
+  BUILDING: 'Здание',
   BUILDING_NAME_WALL: 'Стена',
   BUILDING_DESCRIPTION_WALL: 'Защита построек от разрушения',
   BUILDING_NAME_TOWER_FIRE: 'Огненная башня',
@@ -86,6 +87,12 @@ export const RU = {
    * Ads
    */
   ADS_SHOW: 'Посмотреть видео и получить награду',
+  ADS_UNLOCK: 'Разблокировать дополнительныую суперспособность',
+
+  /**
+   * Unlocks
+   */
+  FEATURES_UNLOCKED: 'Доступны\nновые возможности!',
 
   /**
    * Modal
@@ -96,6 +103,7 @@ export const RU = {
   /**
    * Superskills
    */
+  SUPERSKILL: 'Суперспособность',
   SUPERSKILL_NAME_INVISIBLE: 'Невидимость',
   SUPERSKILL_DESCRIPTION_INVISIBLE: 'Скрывает персонажа от врагов',
   SUPERSKILL_NAME_FROST: 'Заморозка',

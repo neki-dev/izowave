@@ -13,6 +13,7 @@ import { PlayerHUD } from './player-hud';
 import { Skills } from './skills';
 import { Column, Grid, Wrapper } from './styles';
 import { Superskills } from './superskills';
+import { Unlocks } from './unlocks';
 import { Wave } from './wave';
 
 export const ScreenUI: React.FC = () => {
@@ -40,6 +41,7 @@ export const ScreenUI: React.FC = () => {
           <Builder />
         </Column>
       </Grid>
+      <Unlocks />
       <Notices />
     </Wrapper>
   );

@@ -1,5 +1,3 @@
-import EventEmitter from 'events';
-
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
@@ -22,7 +20,7 @@ import {
 
 Assets.RegisterAudio(WaveAudio);
 
-export class Wave extends EventEmitter implements IWave {
+export class Wave extends Phaser.Events.EventEmitter implements IWave {
   readonly scene: IWorld;
 
   private _isGoing: boolean = false;
@@ -59,8 +57,6 @@ export class Wave extends EventEmitter implements IWave {
     super();
 
     this.scene = scene;
-
-    this.setMaxListeners(0);
 
     this.handleToggleTimeScale();
   }
@@ -174,14 +170,14 @@ export class Wave extends EventEmitter implements IWave {
     this.isGoing = false;
     this.number++;
 
+    this.scene.setTimeScale(1.0);
+    this.scene.level.looseEffects();
+
     this.runTimeleft();
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
 
     this.scene.sound.play(WaveAudio.COMPLETE);
-
-    this.scene.setTimeScale(1.0);
-    this.scene.level.looseEffects();
 
     switch (this.number) {
       case 2: {

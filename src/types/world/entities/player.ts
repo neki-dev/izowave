@@ -35,6 +35,11 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly upgradeLevel: Record<PlayerSkill, number>
 
   /**
+   * Unlocked superskills.
+   */
+  readonly unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+
+  /**
    * Active superskills.
    */
   readonly activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>>
@@ -88,6 +93,11 @@ export interface IPlayer extends ISprite, IEnemyTarget {
    * @param type - Superskill
    */
   useSuperskill(type: PlayerSuperskill): void
+
+  /**
+   * Unlock next superskill.
+   */
+  unlockSuperskill(): void
 
   /**
    * Get current cost of superskill.
@@ -171,6 +181,7 @@ export enum PlayerSuperskill {
 
 export enum PlayerEvents {
   USE_SUPERSKILL = 'use_superskill',
+  UNLOCK_SUPERSKILL = 'unlock_superskill',
   UPGRADE_SKILL = 'upgrade_skill',
   UPDATE_EXPERIENCE = 'update_experience',
   UPDATE_SCORE = 'update_score',
@@ -206,5 +217,6 @@ export type PlayerSavePayload = {
   resources: number
   kills: number
   health: number
+  unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>>
   upgradeLevel: Record<PlayerSkill, number>
 };

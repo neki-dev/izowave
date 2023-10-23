@@ -1,5 +1,5 @@
 import { useClick } from 'phaser-react-ui';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { PLAYER_SKILLS } from '~const/world/entities/player';
 import { phrase } from '~lib/lang';
@@ -20,9 +20,25 @@ export const Modal: React.FC<Props> = ({ onClose }) => {
   const refContainer = useRef<HTMLDivElement>(null);
   const refClose = useRef<HTMLDivElement>(null);
 
+  const onKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  };
+
   useClick(refContainer, 'down', () => {}, []);
   useClick(refClose, 'down', onClose, []);
   useClick(refOverlay, 'down', onClose, []);
+
+  useEffect(() => {
+    document.addEventListener('keyup', onKeyPress);
+
+    return () => {
+      document.removeEventListener('keyup', onKeyPress);
+    };
+  }, []);
 
   return (
     <>

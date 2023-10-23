@@ -1,5 +1,5 @@
 import { useClick, useGame } from 'phaser-react-ui';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Overlay } from '~scene/system/interface/overlay';
@@ -22,6 +22,14 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
 
   useClick(refButton, 'down', () => {
     game.restartGame();
+  }, []);
+
+  useEffect(() => {
+    game.toggleAllHints(false);
+
+    return () => {
+      game.toggleAllHints(true);
+    };
   }, []);
 
   return (

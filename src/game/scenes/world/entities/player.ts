@@ -100,6 +100,12 @@ export class Player extends Sprite implements IPlayer {
 
   private dustEffect: Nullable<IParticles> = null;
 
+  private _unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
+
+  public get unlockedSuperskills() { return this._unlockedSuperskills; }
+
+  private set unlockedSuperskills(v) { this._unlockedSuperskills = v; }
+
   private _activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>> = {};
 
   public get activeSuperskills() { return this._activeSuperskills; }
@@ -301,6 +307,17 @@ export class Player extends Sprite implements IPlayer {
     this.kills++;
   }
 
+  public unlockSuperskill() {
+    const superskill = Object.values(PlayerSuperskill)
+      .find((type) => !this.unlockedSuperskills[type]);
+
+    if (superskill) {
+      this.unlockedSuperskills[superskill] = true;
+
+      this.emit(PlayerEvents.UNLOCK_SUPERSKILL, superskill);
+    }
+  }
+
   public getSuperskillCost(type: PlayerSuperskill) {
     return progressionLinear({
       defaultValue: DIFFICULTY[`SUPERSKILL_${type}_COST`],
@@ -314,7 +331,7 @@ export class Player extends Sprite implements IPlayer {
     if (
       this.activeSuperskills[type]
       || !this.scene.wave.isGoing
-      || this.scene.wave.number < DIFFICULTY[`SUPERSKILL_${type}_MIN_WAVE`]
+      || !this.unlockedSuperskills[type]
     ) {
       return;
     }
@@ -486,6 +503,13 @@ export class Player extends Sprite implements IPlayer {
     this.giveExperience(experience);
     this.giveScore(number * 10);
     this.live.heal();
+
+    if (
+      number >= 1
+      && (number - 1) % DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE === 0
+    ) {
+      this.unlockSuperskill();
+    }
   }
 
   private handleMovementByKeyboard() {
@@ -825,6 +849,7 @@ export class Player extends Sprite implements IPlayer {
       resources: this.resources,
       kills: this.kills,
       health: this.live.health,
+      unlockedSuperskills: this.unlockedSuperskills,
       upgradeLevel: this.upgradeLevel,
     };
   }
@@ -834,6 +859,17 @@ export class Player extends Sprite implements IPlayer {
     this.experience = data.experience;
     this.resources = data.resources;
     this.kills = data.kills;
+
+    if (data.unlockedSuperskills) {
+      this.unlockedSuperskills = data.unlockedSuperskills;
+    } else {
+      // PATCH: For saves with old version
+      const refund = Math.floor((this.scene.wave.number - 2) / DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE) + 1;
+
+      for (let i = 0; i < refund; i++) {
+        this.unlockSuperskill();
+      }
+    }
 
     eachEntries(data.upgradeLevel, (type, level) => {
       if (level > 1) {

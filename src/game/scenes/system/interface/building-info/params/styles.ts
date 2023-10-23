@@ -34,7 +34,7 @@ export const IconContainer = styled.div`
   justify-content: center;
   border-radius: 5px;
   flex-shrink: 0;
-  img, div[data-texture-container] {
+  [role=texture] {
     width: 15px;
     height: 15px;
   }

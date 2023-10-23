@@ -13,7 +13,6 @@ export const Container = styled.div<{
   $allow?: boolean
   $active?: boolean
   $usable?: boolean
-  $glow?: boolean
 }>`
   border-radius: 5px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
@@ -30,9 +29,9 @@ export const Container = styled.div<{
     opacity: 1.0;
     background: ${InterfaceBackgroundColor.BLACK};
   `)}
-  ${(props) => (props.$glow && css`
+  [role=hint] + &{
     box-shadow: 0 0 50px 20px #fff;
-  `)}
+  }
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     &:hover {
       border-radius: 0 5px 5px 0;
@@ -54,7 +53,7 @@ export const Frame = styled.div`
   overflow: hidden;
   width: 34px;
   height: 40px;
-  img, div[data-texture-container] {
+  [role=texture] {
     height: 100%;
   }
 `;

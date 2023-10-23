@@ -19,7 +19,7 @@ type Props = {
   isGlowing?: boolean
 };
 
-export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
+export const Preview: React.FC<Props> = ({ number, variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();
@@ -71,7 +71,6 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
       ref={refContainer}
       onMouseEnter={onMouseEnter}
       $allow={isAllow}
-      $glow={isGlowing}
       $active={isActive}
       $usable={isUsable}
     >

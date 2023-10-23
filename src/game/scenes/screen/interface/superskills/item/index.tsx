@@ -1,5 +1,5 @@
 import {
-  useGame, useScene, useSceneUpdate, useInteraction, Texture,
+  useGame, useScene, useSceneUpdate, useInteraction, Texture, useEvent,
 } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -8,7 +8,7 @@ import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene, GameState, IGame } from '~type/game';
 import { IWorld } from '~type/world';
-import { PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
+import { PlayerEvents, PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
 
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock, Newest,
@@ -23,7 +23,7 @@ export const Item: React.FC<Props> = ({ type }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
   const scene = useScene(GameScene.SYSTEM);
 
-  const [isAllow, setAllow] = useState(false);
+  const [isAllow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
   const [isNewest, setNewest] = useState(false);
   const [isPaused, setPaused] = useState(false);
   const [isActive, setActive] = useState(false);
@@ -49,11 +49,16 @@ export const Item: React.FC<Props> = ({ type }) => {
     }
   }, [isHover]);
 
+  useEvent(world.player, PlayerEvents.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
+    if (superskill === type) {
+      setAllow(true);
+    }
+  }, []);
+
   useSceneUpdate(scene, () => {
     setPaused(game.state === GameState.PAUSED);
-    setActive(Boolean(world.player.activeSuperskills[type]));
     setCost(world.player.getSuperskillCost(type));
-    setAllow(world.wave.number >= DIFFICULTY[`SUPERSKILL_${type}_MIN_WAVE`]);
+    setActive(Boolean(world.player.activeSuperskills[type]));
   }, []);
 
   return (
