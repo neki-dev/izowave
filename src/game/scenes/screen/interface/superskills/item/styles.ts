@@ -150,10 +150,10 @@ export const Body = styled.div`
   font-family: ${InterfaceFont.PIXEL_TEXT};
   letter-spacing: 1px;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  padding: 9px 14px 11px 14px;
+  padding: 9px 14px 12px 14px;
   border-radius: 0 0 5px 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 7px 11px;
+    padding: 7px 11px 11px 11px;
   }
 `;
 

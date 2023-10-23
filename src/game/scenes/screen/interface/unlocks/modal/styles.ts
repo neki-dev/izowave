@@ -20,6 +20,9 @@ export const Overlay = styled.div`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   z-index: ${InterfaceLayer.OVERLAY};
   animation: ${animationOpacity} 0.2s ease-in;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    background: rgba(0, 0, 0, 0.85);
+  }
 `;
 
 export const Container = styled.div`
@@ -28,20 +31,20 @@ export const Container = styled.div`
   align-items: center;
   gap: 40px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    gap: 20px;
+    gap: 30px;
   }
 `;
 
 export const Label = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 26px;
-  line-height: 32px;
+  font-size: 24px;
+  line-height: 28px;
   white-space: pre;
   text-align: center;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 20px;
   }
 `;
 

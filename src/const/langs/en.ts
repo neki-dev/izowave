@@ -26,7 +26,7 @@ export const EN = {
   BUILDING_NAME_RADAR: 'Radar',
   BUILDING_DESCRIPTION_RADAR: 'Uncovers enemies within building radius',
   BUILDING_NAME_BOOSTER: 'Booster',
-  BUILDING_DESCRIPTION_BOOSTER: 'Increases towers damage',
+  BUILDING_DESCRIPTION_BOOSTER: 'Increases towers efficiency',
   BUILDING_CATEGORY_DEFENSE: 'Defense',
   BUILDING_CATEGORY_ATTACK: 'Attack',
   BUILDING_CATEGORY_RESOURCES: 'Resources',

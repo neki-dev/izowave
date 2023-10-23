@@ -26,7 +26,7 @@ export const RU = {
   BUILDING_NAME_RADAR: 'Радар',
   BUILDING_DESCRIPTION_RADAR: 'Раскрывает врагов в радиусе действия',
   BUILDING_NAME_BOOSTER: 'Бустер',
-  BUILDING_DESCRIPTION_BOOSTER: 'Увеличивает мощность башен',
+  BUILDING_DESCRIPTION_BOOSTER: 'Увеличивает эффективность башен',
   BUILDING_CATEGORY_DEFENSE: 'Защита',
   BUILDING_CATEGORY_ATTACK: 'Атака',
   BUILDING_CATEGORY_RESOURCES: 'Ресурсы',

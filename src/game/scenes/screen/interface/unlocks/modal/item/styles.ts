@@ -75,11 +75,11 @@ export const IconContainer = styled.div<{
   `)}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     ${(props) => (props.$type === 'BUILDING' ? css`
-      width: 40px;
-      height: 47px;
+      width: 46px;
+      height: 54px;
     ` : css`
-      width: 40px;
-      height: 40px;
+      width: 46px;
+      height: 46px;
     `)}
   }
 `;
