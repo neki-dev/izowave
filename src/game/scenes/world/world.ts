@@ -21,7 +21,7 @@ import { Wave } from '~scene/world/wave';
 import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
 import {
-  IWorld, WorldEvents, WorldHint, WorldMode, WorldModeIcons, WorldSavePayload,
+  IWorld, WorldEvents, WorldHint, WorldMode, WorldModeIcons, WorldSavePayload, WorldTimerParams,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
@@ -92,6 +92,8 @@ export class World extends Scene implements IWorld {
 
   private set deltaTime(v) { this._deltaTime = v; }
 
+  private timers: Phaser.Time.TimerEvent[] = [];
+
   private modes: Record<WorldMode, boolean> = {
     [WorldMode.TIME_SCALE]: false,
     [WorldMode.BUILDING_INDICATORS]: false,
@@ -110,6 +112,7 @@ export class World extends Scene implements IWorld {
     this.camera = new Camera(this);
     this.spawner = new Spawner(this);
 
+    this.timers = [];
     this.modes = {
       [WorldMode.TIME_SCALE]: false,
       [WorldMode.BUILDING_INDICATORS]: false,
@@ -181,7 +184,46 @@ export class World extends Scene implements IWorld {
 
   public setTimeScale(scale: number) {
     this.physics.world.timeScale = 1 / scale;
-    this.lifecyle.timeScale = scale;
+
+    this.timers.forEach((timer) => {
+      // eslint-disable-next-line no-param-reassign
+      timer.timeScale = scale;
+    });
+  }
+
+  public addTimer(params: WorldTimerParams) {
+    const delay = params.frequence ?? 50;
+    const repeat = params.duration / delay;
+
+    const timer = this.time.addEvent({
+      timeScale: this.getTimeScale(),
+      delay,
+      repeat,
+      callback: () => {
+        const left = timer.getRepeatCount();
+
+        if (params.onProgress) {
+          params.onProgress?.(left, repeat);
+        }
+        if (left === 0) {
+          params.onComplete();
+          this.removeTimer(timer);
+        }
+      },
+    });
+
+    this.timers.push(timer);
+
+    return timer;
+  }
+
+  public removeTimer(timer: Phaser.Time.TimerEvent): void {
+    const index = this.timers.indexOf(timer);
+
+    if (index !== -1) {
+      timer.destroy();
+      this.timers.splice(index, 1);
+    }
   }
 
   public setModeActive(mode: WorldMode, state: boolean) {
@@ -272,9 +314,10 @@ export class World extends Scene implements IWorld {
     this.lifecyle = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
       loop: true,
+      startAt: this.game.usedSave?.payload.world.time ?? 0,
     });
 
-    this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
+    this.timers.push(this.lifecyle);
   }
 
   private addWaveManager() {

@@ -366,9 +366,12 @@ export class Player extends Sprite implements IPlayer {
       });
     }
 
-    this.activeSuperskills[type] = this.scene.time.addEvent({
-      delay: DIFFICULTY[`SUPERSKILL_${type}_DURATION`] / this.scene.getTimeScale(),
-      callback: () => {
+    const duration = DIFFICULTY[`SUPERSKILL_${type}_DURATION`];
+
+    this.activeSuperskills[type] = this.scene.addTimer({
+      duration,
+      frequence: duration,
+      onComplete: () => {
         delete this.activeSuperskills[type];
       },
     });

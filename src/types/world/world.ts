@@ -144,6 +144,18 @@ export interface IWorld extends IScene {
   setModeActive(mode: WorldMode, state: boolean): void
 
   /**
+   * Add timer event.
+   * @param params - Timer params
+   */
+  addTimer(params: WorldTimerParams): Phaser.Time.TimerEvent
+
+  /**
+   * Remove timer event.
+   * @param timer - Timer
+   */
+  removeTimer(timer: Phaser.Time.TimerEvent): void
+
+  /**
    * Get data for saving.
    */
   getSavePayload(): WorldSavePayload
@@ -176,6 +188,13 @@ export type WorldHint = {
   label: LangPhrase
   position: PositionAtWorld
   unique?: boolean
+};
+
+export type WorldTimerParams = {
+  frequence?: number
+  duration: number
+  onProgress?: (left: number, total: number) => void
+  onComplete: () => void
 };
 
 export type WorldSavePayload = {
