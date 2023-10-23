@@ -288,7 +288,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private addMountTile(index: number, position: PositionAtMatrix, z: number) {
-    const positionAtWorld = Level.ToWorldPosition(position);
+    const positionAtWorld = Level.ToWorldPosition(position, z);
     const depth = positionAtWorld.y + ((z - 1) * LEVEL_MAP_TILE.height);
     const tile = this.scene.add.image(
       positionAtWorld.x,
