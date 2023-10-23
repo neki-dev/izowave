@@ -3,7 +3,7 @@ export const DIFFICULTY = {
    * Player
    */
 
-  PLAYER_START_RESOURCES: 70, // Resources on game start
+  PLAYER_START_RESOURCES: 80, // Resources on game start
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade health
@@ -13,7 +13,7 @@ export const DIFFICULTY = {
   PLAYER_STAMINA: 100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
   PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.75, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -36,15 +36,15 @@ export const DIFFICULTY = {
    * Superskills
    */
 
-  SUPERSKILL_INVISIBLE_COST: 30, // Cost of use
+  SUPERSKILL_INVISIBLE_COST: 25, // Cost of use
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
-  SUPERSKILL_FROST_COST: 40, // Cost of use
+  SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 6000, // Frost duration
-  SUPERSKILL_SHIELD_COST: 40, // Cost of use
+  SUPERSKILL_SHIELD_COST: 30, // Cost of use
   SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
-  SUPERSKILL_RAGE_COST: 60, // Cost of use
+  SUPERSKILL_RAGE_COST: 50, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
-  SUPERSKILL_FIRE_COST: 60, // Cost of use
+  SUPERSKILL_FIRE_COST: 50, // Cost of use
   SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
   SUPERSKILL_FIRE_DAMAGE: 50, // Fire damage
   SUPERSKILL_FIRE_DAMAGE_GROWTH: 0.35, // Growth damage by wave number (Quadratic)
@@ -72,8 +72,7 @@ export const DIFFICULTY = {
 
   ADS_REWARD_EXPERIENCE: 400, // Gained experience by show ads (per wave number)
   ADS_REWARD_RESOURCES: 20, // Gained resources by show ads (per wave number)
-  ADS_REWARD_FREQUENCY: 2, // Show per wave number
-  ADS_REWARD_MIN_WAVE: 3, // Min wave number to show
+  ADS_REWARD_FREQUENCY: 3, // Show per wave number
 
   /**
    * Crystals
@@ -185,8 +184,8 @@ export const DIFFICULTY = {
 
   BUILDING_GENERATOR_COST: 20, // Building cost
   BUILDING_GENERATOR_HEALTH: 200, // Health
-  BUILDING_GENERATOR_DELAY: 1300, // Pause between resource generations
-  BUILDING_GENERATOR_DELAY_GROWTH: -0.153, // Pause growth by level (Linear)
+  BUILDING_GENERATOR_DELAY: 1200, // Pause between resource generations
+  BUILDING_GENERATOR_DELAY_GROWTH: -0.138, // Pause growth by level (Linear)
 
   /**
    * Building: Ammunition

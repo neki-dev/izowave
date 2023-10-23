@@ -23,10 +23,7 @@ export const AdsReward: React.FC = () => {
   }, []);
 
   const onWaveComplete = (number: number) => {
-    if (
-      number >= DIFFICULTY.ADS_REWARD_MIN_WAVE
-      && (number - DIFFICULTY.ADS_REWARD_MIN_WAVE) % DIFFICULTY.ADS_REWARD_FREQUENCY === 0
-    ) {
+    if (number % DIFFICULTY.ADS_REWARD_FREQUENCY === 0) {
       setAdsOfferOpen(true);
       setAdsReward({
         experience: DIFFICULTY.ADS_REWARD_EXPERIENCE * number,
