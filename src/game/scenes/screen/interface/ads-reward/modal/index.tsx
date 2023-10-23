@@ -44,7 +44,7 @@ export const Modal: React.FC<Props> = ({ experience, resources, onClose }) => {
   return (
     <Container>
       <Content ref={refContent}>
-        <IconPlay src="assets/sprites/ads/play.png" />
+        <IconPlay src="assets/sprites/hud/ads.png" />
         <Group>
           <Label>
             {phrase('ADS_SHOW')}

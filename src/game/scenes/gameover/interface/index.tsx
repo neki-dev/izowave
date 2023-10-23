@@ -31,7 +31,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
           <Label>GAME OVER</Label>
         <Result stat={stat} record={record} />
           <Button ref={refButton}>
-            <IconRestart src='assets/sprites/gameover/restart.png' />
+            <IconRestart src='assets/sprites/hud/restart.png' />
             {phrase('RESTART_GAME')}
           </Button>
         </Head>

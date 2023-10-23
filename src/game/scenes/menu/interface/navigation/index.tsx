@@ -45,7 +45,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
           game.world.wave.isGoing
           || (game.world.wave.number === 1 && Tutorial.IsEnabled)
         ),
-      }, {
+      }, null, {
         label: 'RESTART_GAME',
         onClick: () => {
           setConfirmation({
