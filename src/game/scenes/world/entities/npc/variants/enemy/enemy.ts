@@ -242,12 +242,13 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addOngoingDamage(damage: number, duration: number) {
-    const delay = 100;
-    const momentDamage = damage / (duration / delay);
+    const delay = 50;
+    const repeat = (duration / this.scene.getTimeScale()) / delay;
+    const momentDamage = damage / repeat;
 
     this.damageTimer = this.scene.time.addEvent({
       delay,
-      repeat: duration / delay,
+      repeat,
       callback: () => {
         this.live.damage(momentDamage);
 

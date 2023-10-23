@@ -760,21 +760,21 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addBuildTimer(duration: number) {
-    const target = duration / 50;
-    let progress = 0;
+    const delay = 50;
+    const repeat = (duration / this.scene.getTimeScale()) / delay;
 
     this.buildTimer = this.scene.time.addEvent({
-      delay: 50,
-      repeat: target,
+      delay,
+      repeat,
       callback: () => {
-        progress++;
+        const progress = 1 - ((this.buildTimer?.repeatCount ?? 0) / repeat);
 
-        this.setAlpha(this.alpha + (0.5 / target));
+        this.setAlpha(0.5 + (progress / 2));
 
-        if (progress >= target) {
+        if (progress >= 1) {
           this.completeBuildProcess();
         } else {
-          this.buildBar?.updateValue(progress / target);
+          this.buildBar?.updateValue(progress);
         }
       },
     });

@@ -367,7 +367,7 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.activeSuperskills[type] = this.scene.time.addEvent({
-      delay: DIFFICULTY[`SUPERSKILL_${type}_DURATION`],
+      delay: DIFFICULTY[`SUPERSKILL_${type}_DURATION`] / this.scene.getTimeScale(),
       callback: () => {
         delete this.activeSuperskills[type];
       },
