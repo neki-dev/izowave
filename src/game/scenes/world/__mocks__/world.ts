@@ -12,6 +12,9 @@ const world = {
   setTimeScale: jest.fn(),
   spawnEnemy: jest.fn(),
   getResourceExtractionSpeed: jest.fn(() => 1),
+  spawner: {
+    getSpawnPosition: jest.fn(() => Promise.resolve({ x: 0, y: 0 })),
+  },
   game: {
     difficulty: 1,
     tutorial: {
