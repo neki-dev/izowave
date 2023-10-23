@@ -126,7 +126,7 @@ export class Enemy extends NPC implements IEnemy {
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeDamageLabel();
       if (this.damageTimer) {
-        this.scene.removeTimer(this.damageTimer);
+        this.scene.removeProgression(this.damageTimer);
       }
     });
   }
@@ -242,7 +242,7 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addOngoingDamage(damage: number, duration: number) {
-    this.damageTimer = this.scene.addTimer({
+    this.damageTimer = this.scene.addProgression({
       duration,
       onProgress: (left: number, total: number) => {
         this.live.damage(damage / total);

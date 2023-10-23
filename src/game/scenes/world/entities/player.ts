@@ -368,7 +368,7 @@ export class Player extends Sprite implements IPlayer {
 
     const duration = DIFFICULTY[`SUPERSKILL_${type}_DURATION`];
 
-    this.activeSuperskills[type] = this.scene.addTimer({
+    this.activeSuperskills[type] = this.scene.addProgression({
       duration,
       frequence: duration,
       onComplete: () => {

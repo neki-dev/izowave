@@ -147,13 +147,13 @@ export interface IWorld extends IScene {
    * Add timer event.
    * @param params - Timer params
    */
-  addTimer(params: WorldTimerParams): Phaser.Time.TimerEvent
+  addProgression(params: WorldTimerParams): Phaser.Time.TimerEvent
 
   /**
    * Remove timer event.
    * @param timer - Timer
    */
-  removeTimer(timer: Phaser.Time.TimerEvent): void
+  removeProgression(timer: Phaser.Time.TimerEvent): void
 
   /**
    * Get data for saving.

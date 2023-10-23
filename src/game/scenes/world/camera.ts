@@ -27,7 +27,7 @@ export class Camera implements ICamera {
     camera.startFollow(object);
     camera.followOffset.set(0, object.displayHeight);
 
-    if (this.scene.sys.canvas.height >= 700) {
+    if (this.scene.game.canvas.height >= 700) {
       camera.setZoom(CAMERA_MAX_ZOOM * 2);
       camera.zoomTo(CAMERA_MAX_ZOOM, 200);
     } else {
@@ -42,9 +42,9 @@ export class Camera implements ICamera {
     const end = Level.ToWorldPosition({ x: size, y: 0 }, 0);
 
     camera.setZoom(CAMERA_MAX_ZOOM);
-    camera.pan(beg.x + (this.scene.sys.canvas.width / 2), beg.y, 0);
+    camera.pan(beg.x + (this.scene.game.canvas.width / 2), beg.y, 0);
     setTimeout(() => {
-      camera.pan(end.x - (this.scene.sys.canvas.width / 2), end.y, 2 * 60 * 1000);
+      camera.pan(end.x - (this.scene.game.canvas.width / 2), end.y, 2 * 60 * 1000);
     }, 0);
   }
 

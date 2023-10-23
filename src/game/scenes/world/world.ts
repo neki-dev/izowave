@@ -191,7 +191,7 @@ export class World extends Scene implements IWorld {
     });
   }
 
-  public addTimer(params: WorldTimerParams) {
+  public addProgression(params: WorldTimerParams) {
     const delay = params.frequence ?? 50;
     const repeat = params.duration / delay;
 
@@ -207,7 +207,7 @@ export class World extends Scene implements IWorld {
         }
         if (left === 0) {
           params.onComplete();
-          this.removeTimer(timer);
+          this.removeProgression(timer);
         }
       },
     });
@@ -217,7 +217,7 @@ export class World extends Scene implements IWorld {
     return timer;
   }
 
-  public removeTimer(timer: Phaser.Time.TimerEvent): void {
+  public removeProgression(timer: Phaser.Time.TimerEvent): void {
     const index = this.timers.indexOf(timer);
 
     if (index !== -1) {

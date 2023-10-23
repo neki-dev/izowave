@@ -525,7 +525,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
       const pointer = this.getCurrentPointer();
 
-      if (!pointer.active || pointer.event.target !== this.scene.sys.canvas) {
+      if (!pointer.active || pointer.event.target !== this.scene.game.canvas) {
         return;
       }
 

@@ -760,7 +760,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addBuildTimer(duration: number) {
-    this.buildTimer = this.scene.addTimer({
+    this.buildTimer = this.scene.addProgression({
       duration,
       onProgress: (left: number, total: number) => {
         const progress = 1 - (left / total);
@@ -779,7 +779,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.scene.removeTimer(this.buildTimer);
+    this.scene.removeProgression(this.buildTimer);
     this.buildTimer = null;
   }
 

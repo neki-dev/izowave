@@ -214,7 +214,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
-    const sizeInPixel = Math.max(this.scene.sys.canvas.clientWidth, this.scene.sys.canvas.clientHeight) * 0.5;
+    const sizeInPixel = Math.max(this.scene.game.canvas.clientWidth, this.scene.game.canvas.clientHeight) * 0.5;
     const offset = Math.ceil(sizeInPixel / (LEVEL_MAP_TILE.height * 0.5));
     const sizeInTiles = offset * 2 + LEVEL_MAP_SIZE;
     const position = Level.ToWorldPosition({ x: -offset, y: -offset }, 0);
