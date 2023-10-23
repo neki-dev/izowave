@@ -151,6 +151,10 @@ export class Game extends Phaser.Game implements IGame {
     };
   }
 
+  public toggleAllHints(state: boolean) {
+    this.canvas.parentElement?.classList.toggle('no-hints', !state);
+  }
+
   public pauseGame() {
     if (this.state !== GameState.STARTED) {
       return;

@@ -99,6 +99,12 @@ export interface IGame extends Phaser.Game {
   isDesktop(): boolean
 
   /**
+   * Toggle hints visible.
+   * @param state - Visible state
+   */
+  toggleAllHints(state: boolean): void
+
+  /**
    * Get data for saving.
    */
   getSavePayload(): GameSavePayload
