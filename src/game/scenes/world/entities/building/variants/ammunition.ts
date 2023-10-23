@@ -149,6 +149,10 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   private buyAmmo(auto?: boolean) {
     if (this.ammo >= this.maxAmmo) {
+      if (!auto) {
+        this.scene.game.screen.failure();
+      }
+
       return;
     }
 
@@ -156,7 +160,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     if (this.scene.player.resources < cost) {
       if (!auto) {
-        this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
+        this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
       }
 
       return;

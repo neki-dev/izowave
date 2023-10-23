@@ -300,7 +300,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice('BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
+      this.scene.game.screen.failure('BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
 
       return;
     }
@@ -308,7 +308,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -341,6 +341,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   private repair(auto?: boolean) {
     if (this.live.isMaxHealth()) {
+      if (!auto) {
+        this.scene.game.screen.failure();
+      }
+
       return;
     }
 
@@ -348,7 +352,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.scene.player.resources < cost) {
       if (!auto) {
-        this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
+        this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
       }
 
       return;

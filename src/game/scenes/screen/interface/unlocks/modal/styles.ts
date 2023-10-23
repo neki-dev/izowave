@@ -35,8 +35,8 @@ export const Container = styled.div`
 export const Label = styled.div`
   color: #fff;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 28px;
-  line-height: 34px;
+  font-size: 26px;
+  line-height: 32px;
   white-space: pre;
   text-align: center;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {

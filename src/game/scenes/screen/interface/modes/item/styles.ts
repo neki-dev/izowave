@@ -51,7 +51,7 @@ export const Container = styled.div<{
     &:hover {
       cursor: pointer;
       ${(props) => (!props.$active && css`
-        background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+        background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};
       `)};
     }
     [role=texture] {

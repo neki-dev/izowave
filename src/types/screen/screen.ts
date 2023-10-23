@@ -15,12 +15,11 @@ export interface IScreen extends IScene {
   isJoystickUsing(): boolean
 
   /**
-   * Send notice message.
-   * @param type - Notice type
+   * Send failure message.
    * @param text - Phrase key
    * @param format - Values for format
    */
-  notice(text: LangPhrase, format?: any[]): void
+  failure(text?: LangPhrase, format?: any[]): void
 }
 
 export enum ScreenAudio {

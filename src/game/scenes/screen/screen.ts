@@ -37,9 +37,11 @@ export class Screen extends Scene implements IScreen {
     this.handleJoystick();
   }
 
-  public notice(text: LangPhrase, format?: any[]) {
-    this.events.emit(ScreenEvents.NOTICE, { text, format });
+  public failure(text?: LangPhrase, format?: any[]) {
     this.game.sound.play(ScreenAudio.ERROR);
+    if (text) {
+      this.events.emit(ScreenEvents.NOTICE, { text, format });
+    }
   }
 
   private createJoystick() {

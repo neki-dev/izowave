@@ -13,7 +13,10 @@ export const Wrapper = styled.ul`
 `;
 
 export const Space = styled.div`
-  height: 20px;
+  height: 12px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    height: 6px;
+  }
 `;
 
 export const Item = styled.li<{

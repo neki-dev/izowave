@@ -18,27 +18,27 @@ export const Container = styled.div<{
   ${(props) => {
     switch (props.$view) {
       case 'primary': return css`
-        background: ${InterfaceBackgroundColor.WARN};  
+        background: ${InterfaceBackgroundColor.WARN_GRADIENT};  
         &:hover {
-          background: ${InterfaceBackgroundColor.WARN_DARK};
+          background: ${InterfaceBackgroundColor.WARN};
         }
       `;
       case 'confirm': return css`
-        background: ${InterfaceBackgroundColor.SUCCESS};  
+        background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};  
         &:hover {
-          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+          background: ${InterfaceBackgroundColor.SUCCESS};
         }
       `;
       case 'decline': return css`
-        background: ${InterfaceBackgroundColor.ERROR};
+        background: ${InterfaceBackgroundColor.ERROR_GRADIENT};
         &:hover {
-          background: ${InterfaceBackgroundColor.ERROR_DARK};
+          background: ${InterfaceBackgroundColor.ERROR};
         }
       `;
       default: return css`
         background: ${InterfaceBackgroundColor.BLACK};
         &:hover {
-          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+          background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};
         }
       `;
     }
@@ -46,9 +46,9 @@ export const Container = styled.div<{
   ${(props) => {
     switch (props.$size) {
       case 'large': return css`
-        font-size: 18px;
-        line-height: 18px;
-        padding: 8px 18px 11px 18px;
+        font-size: 17px;
+        line-height: 17px;
+        padding: 11px 18px 14px 18px;
       `;
       case 'small': return css`
         font-size: 13px;

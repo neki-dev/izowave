@@ -3,7 +3,6 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { DIFFICULTY } from '~const/world/difficulty';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { GameScene, GameState, IGame } from '~type/game';
@@ -26,7 +25,7 @@ export const Item: React.FC<Props> = ({ type }) => {
   const [isAllow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
   const [isNewest, setNewest] = useState(false);
   const [isPaused, setPaused] = useState(false);
-  const [isActive, setActive] = useState(false);
+  const [progress, setProgress] = useState<Nullable<Phaser.Time.TimerEvent>>(null);
   const [cost, setCost] = useState(0);
 
   const refContainer = useRef<HTMLDivElement>(null);
@@ -58,7 +57,7 @@ export const Item: React.FC<Props> = ({ type }) => {
   useSceneUpdate(scene, () => {
     setPaused(game.state === GameState.PAUSED);
     setCost(world.player.getSuperskillCost(type));
-    setActive(Boolean(world.player.activeSuperskills[type]));
+    setProgress(world.player.activeSuperskills[type] ?? null);
   }, []);
 
   return (
@@ -74,11 +73,11 @@ export const Item: React.FC<Props> = ({ type }) => {
           </Body>
         </Info>
       )}
-      <Container ref={refContainer} $active={isActive} $allow={isAllow}>
-        {isActive && (
+      <Container ref={refContainer} $active={Boolean(progress)} $allow={isAllow}>
+        {progress && (
           <Timeout
             style={{
-              animationDuration: `${DIFFICULTY[`SUPERSKILL_${type}_DURATION`]}ms`,
+              animationDuration: `${progress.delay}ms`,
               animationPlayState: isPaused ? 'paused' : 'running',
             }}
           />

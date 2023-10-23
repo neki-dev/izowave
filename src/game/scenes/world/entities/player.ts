@@ -328,18 +328,20 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public useSuperskill(type: PlayerSuperskill) {
-    if (
-      this.activeSuperskills[type]
-      || !this.scene.wave.isGoing
-      || !this.unlockedSuperskills[type]
-    ) {
+    if (this.activeSuperskills[type] || !this.unlockedSuperskills[type]) {
+      return;
+    }
+
+    if (!this.scene.wave.isGoing) {
+      this.scene.game.screen.failure();
+
       return;
     }
 
     const cost = this.getSuperskillCost(type);
 
     if (this.resources < cost) {
-      this.scene.game.screen.notice('NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -423,7 +425,7 @@ export class Player extends Sprite implements IPlayer {
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
-      this.scene.game.screen.notice('NOT_ENOUGH_EXPERIENCE');
+      this.scene.game.screen.failure('NOT_ENOUGH_EXPERIENCE');
 
       return;
     }
