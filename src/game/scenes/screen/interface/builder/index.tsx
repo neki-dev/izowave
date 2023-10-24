@@ -1,26 +1,19 @@
-import {
-  RelativePosition, RelativeScale, useGame, useScene, useSceneUpdate,
-} from 'phaser-react-ui';
+import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { INTERFACE_SCALE } from '~const/interface';
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { mapEntries } from '~lib/utils';
-import { Hint } from '~scene/system/interface/hint';
-import { Level } from '~scene/world/level';
 import { GameScene, IGame } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuildingCategory, BuildingVariant } from '~type/world/entities/building';
-import { PositionAtWorld } from '~type/world/level';
 
 import { Building } from './building';
 import {
-  Category, Label, HintTranslator, Variants, Wrapper,
+  Category, Label, Variants, Wrapper,
 } from './styles';
 
 export const Builder: React.FC = () => {
@@ -28,7 +21,6 @@ export const Builder: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [isHidden, setHidden] = useState(false);
-  const [hintStopBuild, setHintStopBuild] = useState<Nullable<PositionAtWorld>>(null);
   const [hintBuilding, setHintBuilding] = useState<Nullable<{
     variant: BuildingVariant
     label: LangPhrase
@@ -46,14 +38,6 @@ export const Builder: React.FC = () => {
       buildings: buildings.filter((building) => building.category === type),
     }));
   }, []);
-
-  const getSupposedPosition = () => {
-    if (world.builder.supposedPosition) {
-      return Level.ToWorldPosition(world.builder.supposedPosition);
-    }
-
-    return null;
-  };
 
   const showHint = (step: TutorialStep) => {
     switch (step) {
@@ -87,9 +71,6 @@ export const Builder: React.FC = () => {
           label: 'TUTORIAL_BUILD_AMMUNITION',
         });
       }
-      case TutorialStep.STOP_BUILD: {
-        return setHintStopBuild(getSupposedPosition());
-      }
     }
   };
 
@@ -101,9 +82,6 @@ export const Builder: React.FC = () => {
       case TutorialStep.BUILD_TOWER_FIRE:
       case TutorialStep.BUILD_AMMUNITION: {
         return setHintBuilding(null);
-      }
-      case TutorialStep.STOP_BUILD: {
-        return setHintStopBuild(null);
       }
     }
   };
@@ -118,15 +96,7 @@ export const Builder: React.FC = () => {
       Boolean(world.builder.selectedBuilding)
       && !game.isDesktop(),
     );
-
-    if (hintStopBuild) {
-      const position = getSupposedPosition();
-
-      if (position && !isPositionsEqual(hintStopBuild, position)) {
-        setHintStopBuild(position);
-      }
-    }
-  }, [hintStopBuild]);
+  }, []);
 
   return (
     <Wrapper $hidden={isHidden}>
@@ -145,16 +115,6 @@ export const Builder: React.FC = () => {
           </Variants>
         </Category>
       ))}
-
-      {hintStopBuild && (
-        <HintTranslator>
-          <RelativePosition x={hintStopBuild.x} y={hintStopBuild.y} camera={world.cameras.main}>
-            <RelativeScale {...INTERFACE_SCALE}>
-              <Hint label='TUTORIAL_STOP_BUILD' side="top" align="center" />
-            </RelativeScale>
-          </RelativePosition>
-        </HintTranslator>
-      )}
     </Wrapper>
   );
 };

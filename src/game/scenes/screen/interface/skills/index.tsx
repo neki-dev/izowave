@@ -20,12 +20,12 @@ export const Skills: React.FC = () => {
   const onClick = () => {
     Tutorial.Complete(TutorialStep.UPGRADE_SKILL);
     setOpened(true);
-    game.pause();
+    game.toggleSystemPause(true);
   };
 
   const onClose = () => {
     setOpened(false);
-    game.resume();
+    game.toggleSystemPause(false);
   };
 
   useEffect(() => (

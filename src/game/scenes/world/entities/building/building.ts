@@ -339,7 +339,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (Tutorial.IsInProgress(TutorialStep.UPGRADE_BUILDING)) {
       Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
-      Tutorial.Start(TutorialStep.SKIP_TIMELEFT);
+      if (!this.scene.wave.isGoing) {
+        Tutorial.Start(TutorialStep.SKIP_TIMELEFT);
+      }
     }
   }
 

@@ -3,6 +3,8 @@ import { GamePlatform } from '~type/game';
 import { SDKAdsCallbacks, SDKAdsType } from '~type/sdk';
 
 export class SDK {
+  private static IsPlaying: boolean = false;
+
   public static async Register() {
     const sdk = Environment.GetSDK();
 
@@ -105,7 +107,15 @@ export class SDK {
   }
 
   public static TogglePlayState(state: boolean) {
+    if (this.IsPlaying === state) {
+      console.warn('Unnecessary changing play state to', state);
+
+      return;
+    }
+
     try {
+      this.IsPlaying = state;
+
       switch (Environment.Platform) {
         case GamePlatform.DEVELOPMENT: {
           // console.log('Toggle play state to', state);
