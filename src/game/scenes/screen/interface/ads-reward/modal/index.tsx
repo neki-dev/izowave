@@ -27,12 +27,10 @@ export const Modal: React.FC<Props> = ({ experience, resources, onClose }) => {
     onClose();
     SDK.ShowAds(SDKAdsType.REWARDED, {
       onStart: () => {
-        game.pause();
-        SDK.TogglePlayState(false);
+        game.toggleSystemPause(true);
       },
       onFinish: () => {
-        game.resume();
-        SDK.TogglePlayState(true);
+        game.toggleSystemPause(false);
       },
       onReward: () => {
         world.player.giveExperience(experience);

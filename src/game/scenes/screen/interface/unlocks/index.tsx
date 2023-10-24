@@ -1,7 +1,6 @@
 import { useEvent, useGame, useScene } from 'phaser-react-ui';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { SDK } from '~lib/sdk';
 import { GameScene, IGame } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
@@ -58,13 +57,11 @@ export const Unlocks: React.FC = () => {
     }
 
     setTimeout(() => {
-      game.pause();
-      SDK.TogglePlayState(false);
+      game.toggleSystemPause(true);
     }, 200);
 
     return () => {
-      game.resume();
-      SDK.TogglePlayState(true);
+      game.toggleSystemPause(false);
     };
   }, [isListEmpty]);
 

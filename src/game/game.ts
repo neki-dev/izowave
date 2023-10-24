@@ -281,12 +281,10 @@ export class Game extends Phaser.Game implements IGame {
 
       SDK.ShowAds(SDKAdsType.MIDGAME, {
         onStart: () => {
-          SDK.TogglePlayState(false);
-          this.pause();
+          this.toggleSystemPause(true);
         },
         onFinish: () => {
-          SDK.TogglePlayState(true);
-          this.resume();
+          this.toggleSystemPause(false);
         },
       });
     });
@@ -315,6 +313,15 @@ export class Game extends Phaser.Game implements IGame {
       world: this.world,
       success: false,
     });
+  }
+
+  public toggleSystemPause(state: boolean) {
+    SDK.TogglePlayState(!state);
+    if (state) {
+      this.pause();
+    } else {
+      this.resume();
+    }
   }
 
   public isDesktop() {
