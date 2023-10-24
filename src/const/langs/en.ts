@@ -118,6 +118,7 @@ export const EN = {
   /**
    * Tutorial
    */
+  TUTORIAL_SKIP_TIMELEFT: 'Click to start\nwave prematurely',
   TUTORIAL_CLICK_TO_UPGRADE: 'Click to upgrade',
   TUTORIAL_HOVER_TO_UPGRADE: 'Hover and press [E]\nto upgrade',
   TUTORIAL_RESOURCES: 'If resources not enough\nyou can find crystals on map',

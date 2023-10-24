@@ -9,6 +9,7 @@ export type TutorialBindAllCallbacks = {
 };
 
 export enum TutorialStep {
+  SKIP_TIMELEFT = 'SKIP_TIMELEFT',
   STOP_BUILD = 'STOP_BUILD',
   BUILD_TOWER_FIRE = 'BUILD_TOWER_FIRE',
   BUILD_AMMUNITION = 'BUILD_AMMUNITION',

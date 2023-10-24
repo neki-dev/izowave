@@ -125,6 +125,8 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.scene.player.giveResources(resources);
 
     this.nextWaveTimestamp = now;
+
+    Tutorial.Complete(TutorialStep.SKIP_TIMELEFT);
   }
 
   public runTimeleft() {
@@ -163,6 +165,10 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.emit(WaveEvents.START, this.number);
 
     this.scene.sound.play(WaveAudio.START);
+
+    if (Tutorial.IsInProgress(TutorialStep.SKIP_TIMELEFT)) {
+      Tutorial.Complete(TutorialStep.SKIP_TIMELEFT);
+    }
   }
 
   private complete() {
@@ -187,10 +193,6 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       }
       case 3: {
         Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
-        break;
-      }
-      case 5: {
-        Tutorial.Start(TutorialStep.UPGRADE_SKILL);
         break;
       }
       case 8: {

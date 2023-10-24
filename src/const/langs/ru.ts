@@ -118,6 +118,7 @@ export const RU = {
   /**
    * Tutorial
    */
+  TUTORIAL_SKIP_TIMELEFT: 'Нажмите чтобы начать\nволну преждевременно',
   TUTORIAL_CLICK_TO_UPGRADE: 'Нажмите чтобы улучшить',
   TUTORIAL_HOVER_TO_UPGRADE: 'Наведите и нажмите [E]\nчтобы улучшить',
   TUTORIAL_RESOURCES: 'Если ресурсов недостаточно,\nто Вы можете найти кристалы на карте',

@@ -139,6 +139,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     if (Tutorial.IsInProgress(TutorialStep.STOP_BUILD)) {
       Tutorial.Complete(TutorialStep.STOP_BUILD);
+      Tutorial.Start(TutorialStep.UPGRADE_SKILL);
     }
   }
 
@@ -560,7 +561,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     return restriction
       ? (restriction.variant === variant)
-      : (this.scene.wave.number > 1);
+      : (this.scene.wave.number > 2);
   }
 
   private handleKeyboard() {

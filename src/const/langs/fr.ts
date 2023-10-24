@@ -118,6 +118,7 @@ export const FR = {
   /**
    * Tutorial
    */
+  TUTORIAL_SKIP_TIMELEFT: 'Cliquez pour demarrer\nla vague prematurement',
   TUTORIAL_CLICK_TO_UPGRADE: 'Taper pour ameliorer',
   TUTORIAL_HOVER_TO_UPGRADE: 'Pointez et tapez [E]\npour ameliorer',
   TUTORIAL_RESOURCES: 'En cas de manque de ressource,\nvous pouvez trouvez des cristaux',
