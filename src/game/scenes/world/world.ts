@@ -193,7 +193,7 @@ export class World extends Scene implements IWorld {
 
   public addProgression(params: WorldTimerParams) {
     const delay = params.frequence ?? 50;
-    const repeat = params.duration / delay;
+    const repeat = Math.ceil(params.duration / delay);
 
     const timer = this.time.addEvent({
       timeScale: this.getTimeScale(),
@@ -205,7 +205,7 @@ export class World extends Scene implements IWorld {
         if (params.onProgress) {
           params.onProgress?.(left, repeat);
         }
-        if (left === 0) {
+        if (left <= 0) {
           params.onComplete();
           this.removeProgression(timer);
         }
