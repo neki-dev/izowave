@@ -200,7 +200,7 @@ export class World extends Scene implements IWorld {
       delay,
       repeat,
       callback: () => {
-        const left = timer.getRepeatCount();
+        const left = timer.getRepeatCount() - 1;
 
         if (params.onProgress) {
           params.onProgress?.(left, repeat);
