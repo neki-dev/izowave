@@ -361,11 +361,11 @@ export class Enemy extends NPC implements IEnemy {
         }
         case PlayerSuperskill.FIRE: {
           const damage = progressionQuadratic({
-            defaultValue: DIFFICULTY.SUPERSKILL_FIRE_DAMAGE,
-            scale: DIFFICULTY.SUPERSKILL_FIRE_DAMAGE_GROWTH,
+            defaultValue: DIFFICULTY.ENEMY_HEALTH,
+            scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
             level: this.scene.wave.number,
-            retardationLevel: DIFFICULTY.SUPERSKILL_FIRE_DAMAGE_GROWTH_RETARDATION_LEVEL,
-          });
+            retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+          }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
 
           this.addFireEffect(duration);
           this.addOngoingDamage(damage, duration);

@@ -175,8 +175,8 @@ export enum PlayerSuperskill {
   INVISIBLE = 'INVISIBLE',
   FROST = 'FROST',
   SHIELD = 'SHIELD',
-  RAGE = 'RAGE',
   FIRE = 'FIRE',
+  RAGE = 'RAGE',
 }
 
 export enum PlayerEvents {

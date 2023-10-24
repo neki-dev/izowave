@@ -6,7 +6,7 @@ import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/progression';
+import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { GameState } from '~type/game';
@@ -212,7 +212,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       return;
     }
 
-    const pause = progressionQuadratic({
+    const pause = progressionLinear({
       defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       scale: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       level: this.number,
