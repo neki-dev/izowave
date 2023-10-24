@@ -47,6 +47,7 @@ export type NavigatorTaskData = {
   from: PositionAtMatrix
   to: PositionAtMatrix
   grid: boolean[][]
+  ignoreCosts?: boolean
 };
 
 export type NavigatorPathNodeData = {

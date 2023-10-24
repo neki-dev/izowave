@@ -134,6 +134,7 @@ export class Spawner implements ISpawner {
           from: data.position,
           to: this.scene.player.lastVisiblePosition,
           grid: this.scene.level.gridCollide,
+          ignoreCosts: true,
         }, (path, cost) => {
           this.completeTask(task);
 

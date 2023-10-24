@@ -7,7 +7,7 @@ import {
 import { PositionAtMatrix } from '~type/world/level';
 
 import { PathNode } from './node';
-import { getCost, getDistance } from './tools';
+import { getCost, getDistance, getSimpleCost } from './tools';
 
 export class NavigatorTask {
   readonly from: PositionAtMatrix;
@@ -22,13 +22,16 @@ export class NavigatorTask {
 
   private nodes: Heap<PathNode>;
 
+  private ignoreCosts: boolean = false;
+
   constructor({
-    id, from, to, grid,
+    id, from, to, grid, ignoreCosts = false,
   }: NavigatorTaskData) {
     this.id = id ?? 'noid';
     this.from = from;
     this.to = to;
     this.grid = grid;
+    this.ignoreCosts = ignoreCosts;
 
     this.nodes = new Heap<PathNode>(
       (nodeA, nodeB) => nodeA.bestGuessDistance() - nodeB.bestGuessDistance(),
@@ -99,7 +102,10 @@ export class NavigatorTask {
       x: currentNode.position.x + shift.x,
       y: currentNode.position.y + shift.y,
     };
-    const cost = currentNode.getCost() + getCost(currentNode, shift, points);
+    const nextCost = this.ignoreCosts
+      ? getSimpleCost(shift)
+      : getCost(currentNode, shift, points);
+    const cost = currentNode.getCost() + nextCost;
     const existNode = this.pickNode(position);
 
     if (existNode) {

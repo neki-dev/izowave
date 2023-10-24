@@ -11,6 +11,10 @@ export function getDistance(point1: PositionAtMatrix, point2: PositionAtMatrix) 
   return distance;
 }
 
+export function isDiagonalShift(shift: PositionAtMatrix) {
+  return Math.abs(shift.x) + Math.abs(shift.y) !== 1;
+}
+
 export function getCost(
   currentNode: PathNode,
   shift: PositionAtMatrix,
@@ -21,9 +25,8 @@ export function getCost(
     y: currentNode.position.y + shift.y,
   };
   const cost = points[position.y]?.[position.x] ?? 1.0;
-  const isDiagonal = Math.abs(shift.x) + Math.abs(shift.y) !== 1;
 
-  if (isDiagonal) {
+  if (isDiagonalShift(shift)) {
     return (
       cost * Math.SQRT2
       + (points[currentNode.position.y]?.[position.x] ?? 0.0)
@@ -32,6 +35,10 @@ export function getCost(
   }
 
   return cost;
+}
+
+export function getSimpleCost(shift: PositionAtMatrix) {
+  return isDiagonalShift(shift) ? Math.SQRT2 : 1.0;
 }
 
 export function getDirections(grid: boolean[][], currentNode: PathNode) {
