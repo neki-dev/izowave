@@ -186,7 +186,7 @@ export enum WorldModeIcons {
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   label: LangPhrase
-  position: PositionAtWorld
+  position: PositionAtWorld | (() => PositionAtWorld)
   unique?: boolean
 };
 

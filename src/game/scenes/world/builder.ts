@@ -595,6 +595,31 @@ export class Builder extends EventEmitter implements IBuilder {
   }
 
   private handleTutorial() {
+    let hintId: Nullable<string> = null;
+
+    Tutorial.Bind(TutorialStep.STOP_BUILD, {
+      beg: () => {
+        hintId = this.scene.showHint({
+          side: 'top',
+          label: 'TUTORIAL_STOP_BUILD',
+          position: () => (
+            this.supposedPosition
+              ? Level.ToWorldPosition({
+                x: this.supposedPosition.x + 1,
+                y: this.supposedPosition.y + 1,
+              })
+              : { x: 0, y: 0 }
+          ),
+        });
+      },
+      end: () => {
+        if (hintId) {
+          this.scene.hideHint(hintId);
+          hintId = null;
+        }
+      },
+    });
+
     Tutorial.Bind(TutorialStep.BUILD_TOWER_FIRE, {
       beg: () => {
         this.scene.setTimePause(true);
