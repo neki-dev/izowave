@@ -172,9 +172,9 @@ export enum PlayerSkill {
 }
 
 export enum PlayerSuperskill {
+  SHIELD = 'SHIELD',
   INVISIBLE = 'INVISIBLE',
   FROST = 'FROST',
-  SHIELD = 'SHIELD',
   FIRE = 'FIRE',
   RAGE = 'RAGE',
 }

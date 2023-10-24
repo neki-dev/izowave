@@ -36,12 +36,12 @@ export const DIFFICULTY = {
    * Superskills
    */
 
-  SUPERSKILL_INVISIBLE_COST: 20, // Cost of use
+  SUPERSKILL_SHIELD_COST: 20, // Cost of use
+  SUPERSKILL_SHIELD_DURATION: 8000, // Shield duration
+  SUPERSKILL_INVISIBLE_COST: 25, // Cost of use
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
-  SUPERSKILL_FROST_COST: 25, // Cost of use
+  SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 6000, // Frost duration
-  SUPERSKILL_SHIELD_COST: 25, // Cost of use
-  SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
   SUPERSKILL_FIRE_COST: 30, // Cost of use
   SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
@@ -124,7 +124,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_WALL_COST: 10, // Building cost
-  BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
+  BUILDING_WALL_ALLOW_BY_WAVE: 4, // Minimal wave for allow build
   BUILDING_WALL_HEALTH: 2000, // Health
 
   /**
@@ -155,7 +155,7 @@ export const DIFFICULTY = {
 
   BUILDING_TOWER_FROZEN_COST: 40, // Building cost
   BUILDING_TOWER_FROZEN_HEALTH: 400, // Health
-  BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
+  BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 4, // Minimal wave for allow build
   BUILDING_TOWER_FROZEN_RADIUS: 130, // Freeze radius
   BUILDING_TOWER_FROZEN_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_FROZEN_DELAY: 1400, // Pause between freezes
@@ -212,7 +212,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_BOOSTER_COST: 80, // Building cost
-  BUILDING_BOOSTER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
+  BUILDING_BOOSTER_ALLOW_BY_WAVE: 9, // Minimal wave for allow build
   BUILDING_BOOSTER_HEALTH: 600, // Health
   BUILDING_BOOSTER_RADIUS: 80, // Increase radius
   BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)

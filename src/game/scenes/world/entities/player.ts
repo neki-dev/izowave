@@ -509,10 +509,7 @@ export class Player extends Sprite implements IPlayer {
     this.giveScore(number * 10);
     this.live.heal();
 
-    if (
-      number >= 1
-      && (number - 1) % DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE === 0
-    ) {
+    if ((number + 1) % DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE === 0) {
       this.unlockSuperskill();
     }
   }
