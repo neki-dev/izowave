@@ -28,9 +28,9 @@ export const Item = styled.div`
   display: flex;
   align-items: center;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 11px;
-    line-height: 11px;
-    padding: 7px 11px 8px 11px;
+    font-size: 10px;
+    line-height: 9px;
+    padding: 8px 11px;
   }
 `;
 
