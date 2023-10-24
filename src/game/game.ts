@@ -410,7 +410,7 @@ export class Game extends Phaser.Game implements IGame {
 
   private loadSavePayload(data: GameSavePayload) {
     this.difficulty = data.difficulty;
-    Tutorial.Progress = data.tutorial;
+    Tutorial.Load(data.tutorial);
   }
 
   private registerShaders() {

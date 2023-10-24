@@ -7,7 +7,11 @@ import {
 } from '~type/tutorial';
 
 export class Tutorial {
-  public static Progress: Partial<Record<TutorialStep, TutorialStepState>> = {};
+  private static _Progress: Partial<Record<TutorialStep, TutorialStepState>> = {};
+
+  public static get Progress() { return this._Progress; }
+
+  private static set Progress(v) { this._Progress = v; }
 
   private static _IsEnabled: boolean = true;
 
@@ -30,6 +34,11 @@ export class Tutorial {
     this.Progress = {};
     this.EventListeners = [];
     this.EventHistory = [];
+  }
+
+  public static Load(progress: Partial<Record<TutorialStep, TutorialStepState>>) {
+    this.Progress = progress;
+    this.RecallEmit();
   }
 
   public static Start(step: TutorialStep) {
@@ -114,18 +123,19 @@ export class Tutorial {
   }
 
   public static Enable() {
+    if (this.IsEnabled) {
+      return;
+    }
+
     this.IsEnabled = true;
-
-    const states = Object.keys(this.Progress) as TutorialStep[];
-
-    states.forEach((step) => {
-      if (this.IsInProgress(step)) {
-        this.Emit(TutorialEvents.BEG, step);
-      }
-    });
+    this.RecallEmit();
   }
 
   public static Disable() {
+    if (!this.IsEnabled) {
+      return;
+    }
+
     this.EventHistory = [];
 
     const states = Object.keys(this.Progress) as TutorialStep[];
@@ -137,6 +147,20 @@ export class Tutorial {
     });
 
     this.IsEnabled = false;
+  }
+
+  private static RecallEmit() {
+    if (!this.IsEnabled) {
+      return;
+    }
+
+    const states = Object.keys(this.Progress) as TutorialStep[];
+
+    states.forEach((step) => {
+      if (this.IsInProgress(step)) {
+        this.Emit(TutorialEvents.BEG, step);
+      }
+    });
   }
 
   private static Emit(event: TutorialEvents, step: TutorialStep) {
