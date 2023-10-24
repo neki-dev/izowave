@@ -34,6 +34,7 @@ export const ScreenUI: React.FC = () => {
               <Skills />
             </Section>
             <AdsReward />
+            <Notices />
           </Section>
           <Superskills />
         </Column>
@@ -42,7 +43,6 @@ export const ScreenUI: React.FC = () => {
         </Column>
       </Grid>
       <Unlocks />
-      <Notices />
     </Wrapper>
   );
 };

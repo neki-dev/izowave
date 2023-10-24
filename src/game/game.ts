@@ -81,7 +81,6 @@ export class Game extends Phaser.Game implements IGame {
       scene: [System, World, Screen, Menu, Gameover],
       pixelArt: true,
       autoRound: true,
-      disableContextMenu: true,
       parent: CONTAINER_ID,
       transparent: true,
       scale: {
@@ -129,7 +128,7 @@ export class Game extends Phaser.Game implements IGame {
       }
     });
 
-    window.onbeforeunload = () => {
+    window.addEventListener('beforeunload', () => {
       const needConfirm = Environment.Platform !== 'development' && (
         (this.state === GameState.PAUSED && !this.isSaved)
         || this.state === GameState.STARTED
@@ -138,17 +137,17 @@ export class Game extends Phaser.Game implements IGame {
       return needConfirm
         ? 'Do you confirm leave game without save?'
         : undefined;
-    };
+    });
 
-    window.onerror = (message, path, line, column, error) => {
-      if (error) {
-        Analytics.TrackError(error);
-      } else if (typeof message === 'string') {
-        Analytics.TrackError(new Error(message));
-      }
+    window.addEventListener('contextmenu', (event: Event) => {
+      event.preventDefault();
+    });
 
-      return false;
-    };
+    window.addEventListener('error', (event: ErrorEvent) => {
+      Analytics.TrackError(
+        event.error ?? new Error(event.message ?? 'Undefined error'),
+      );
+    });
   }
 
   public pauseGame() {

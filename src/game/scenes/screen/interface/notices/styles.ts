@@ -4,37 +4,37 @@ import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 const animationOpacity = keyframes`
-  0% { opacity: 0; margin-top: -32px }
-  100% { opacity: 1; margin-top: 0 }
+  0% { opacity: 0 }
+  100% { opacity: 1 }
 `;
 
 export const Wrapper = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 128px;
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 8px;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    top: 80px;
-  }
 `;
 
 export const Item = styled.div`
-  padding: 8px 13px 9px 13px;
+  padding: 10px 13px;
   border-radius: 5px;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 13px;
-  line-height: 13px;
-  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-size: 12px;
+  line-height: 12px;
+  letter-spacing: 2px;
   animation: ${animationOpacity} 0.2s ease-in;
-  background: ${InterfaceBackgroundColor.ERROR};
+  background: ${InterfaceBackgroundColor.ERROR_TRANSPARENT_75};
+  display: flex;
+  align-items: center;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 11px;
     line-height: 11px;
     padding: 7px 11px 8px 11px;
   }
+`;
+
+export const Icon = styled.img`
+  width: 16px;
+  margin-right: 10px;
 `;

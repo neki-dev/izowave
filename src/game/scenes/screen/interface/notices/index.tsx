@@ -1,10 +1,11 @@
 import { useCurrentScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
+import { NOTICE_DURATION } from '~const/screen';
 import { phrase } from '~lib/lang';
 import { IScreen, Notice, ScreenEvents } from '~type/screen';
 
-import { Item, Wrapper } from './styles';
+import { Icon, Item, Wrapper } from './styles';
 
 export const Notices: React.FC = () => {
   const screen = useCurrentScene<IScreen>();
@@ -30,7 +31,7 @@ export const Notices: React.FC = () => {
             ...currentNotice,
             timer: setTimeout(() => {
               removeNotice(currentNotice.text);
-            }, 3000),
+            }, NOTICE_DURATION),
           };
         }
 
@@ -42,7 +43,7 @@ export const Notices: React.FC = () => {
           ...notice,
           timer: setTimeout(() => {
             removeNotice(notice.text);
-          }, 3000),
+          }, NOTICE_DURATION),
         });
       }
 
@@ -62,6 +63,7 @@ export const Notices: React.FC = () => {
     <Wrapper>
       {notices.map((notice) => (
         <Item role="notice" key={notice.text}>
+          <Icon src='assets/sprites/hud/failure.png' />
           {phrase(notice.text, notice.format)}
         </Item>
       ))}
