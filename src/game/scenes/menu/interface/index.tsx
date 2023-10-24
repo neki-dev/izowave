@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
 import { MenuPage } from '~type/menu';
 
@@ -16,6 +17,14 @@ type Props = {
 
 export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
   const [page, setPage] = useState(defaultPage);
+
+  useEffect(() => {
+    Tutorial.ToggleHintsVisible(false);
+
+    return () => {
+      Tutorial.ToggleHintsVisible(true);
+    };
+  }, []);
 
   return (
     <Overlay>

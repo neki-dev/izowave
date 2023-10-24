@@ -4,13 +4,13 @@ export const RU = {
    */
   WAVE_ENEMIES: 'Враги',
   WAVE_TIMELEFT: 'Волна через',
-  WAVE_COMPLETED: 'Волна %1 завершена',
   WAVE: 'Волна',
   SKIP_WAVE_TIMELEFT: 'Начать волну\nпреждевременно',
 
   /**
    * Buildings
    */
+  BUILDING: 'Здание',
   BUILDING_NAME_WALL: 'Стена',
   BUILDING_DESCRIPTION_WALL: 'Защита построек от разрушения',
   BUILDING_NAME_TOWER_FIRE: 'Огненная башня',
@@ -26,7 +26,7 @@ export const RU = {
   BUILDING_NAME_RADAR: 'Радар',
   BUILDING_DESCRIPTION_RADAR: 'Раскрывает врагов в радиусе действия',
   BUILDING_NAME_BOOSTER: 'Бустер',
-  BUILDING_DESCRIPTION_BOOSTER: 'Увеличивает мощность башен',
+  BUILDING_DESCRIPTION_BOOSTER: 'Увеличивает эффективность башен',
   BUILDING_CATEGORY_DEFENSE: 'Защита',
   BUILDING_CATEGORY_ATTACK: 'Атака',
   BUILDING_CATEGORY_RESOURCES: 'Ресурсы',
@@ -54,6 +54,7 @@ export const RU = {
   /**
    * Modes
    */
+  TIME_SCALE: 'Увеличение скорости\nво время волны',
   BUILDING_INDICATORS: 'Отображение жизней\nи патронов построек',
   AUTO_REPAIR: 'Автоматическая перезарядка\nи ремонт построек',
   PATH_TO_CRYSTAL: 'Отображение пути\nдо ближайшего кристалла',
@@ -85,7 +86,13 @@ export const RU = {
   /**
    * Ads
    */
-  ADS_OFFER: 'Хотите получить награду\nза просмотр рекламы?',
+  ADS_SHOW: 'Посмотреть видео и получить награду',
+  ADS_UNLOCK: 'Разблокировать дополнительную суперспособность',
+
+  /**
+   * Unlocks
+   */
+  FEATURES_UNLOCKED: 'Доступны\nновые возможности!',
 
   /**
    * Modal
@@ -96,6 +103,9 @@ export const RU = {
   /**
    * Superskills
    */
+  SUPERSKILL: 'Суперспособность',
+  SUPERSKILL_NAME_INVISIBLE: 'Невидимость',
+  SUPERSKILL_DESCRIPTION_INVISIBLE: 'Скрывает персонажа от врагов',
   SUPERSKILL_NAME_FROST: 'Заморозка',
   SUPERSKILL_DESCRIPTION_FROST: 'Замараживает всех врагов',
   SUPERSKILL_NAME_RAGE: 'Ярость',
@@ -108,6 +118,7 @@ export const RU = {
   /**
    * Tutorial
    */
+  TUTORIAL_SKIP_TIMELEFT: 'Нажмите чтобы начать\nволну преждевременно',
   TUTORIAL_CLICK_TO_UPGRADE: 'Нажмите чтобы улучшить',
   TUTORIAL_HOVER_TO_UPGRADE: 'Наведите и нажмите [E]\nчтобы улучшить',
   TUTORIAL_RESOURCES: 'Если ресурсов недостаточно,\nто Вы можете найти кристалы на карте',
@@ -197,7 +208,6 @@ export const RU = {
   /**
    * Game over
    */
-  PLAY_AGAIN: 'Начать заного',
   RECORD: 'Рекорд',
   TOTAL_SCORE: 'Общий счет',
   WAVES_COMPLETED: 'Волн пройдено',

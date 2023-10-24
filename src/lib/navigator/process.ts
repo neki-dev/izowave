@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 import { isPositionsEqual } from '~lib/dimension';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 import { NavigatorTask } from './task';
 import { getDirections } from './tools';
@@ -22,7 +22,7 @@ export class NavigatorProcess {
     }
   }
 
-  public setPointCost(position: Vector2D, cost: Nullable<number>) {
+  public setPointCost(position: PositionAtMatrix, cost: Nullable<number>) {
     if (cost === null) {
       if (!this.pointsCost[position.y]) {
         return;

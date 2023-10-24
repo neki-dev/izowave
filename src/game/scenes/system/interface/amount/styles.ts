@@ -70,15 +70,14 @@ export const Value = styled.div`
   pointer-events: none;
   font-family: ${InterfaceFont.PIXEL_LABEL};
   color: #fff;
+  margin-top: -1px;
   font-size: 16px;
   line-height: 16px;
-  height: 32px;
   padding: 0 13px 0 9px;
   display: flex;
   align-items: center;
   flex: 1;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    height: 28px;
     font-size: 15px;
     line-height: 15px;
     padding: 0 9px 0 6px;

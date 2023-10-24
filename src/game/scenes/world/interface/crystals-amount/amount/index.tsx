@@ -3,12 +3,12 @@ import React, { useEffect, useRef } from 'react';
 
 import { INTERFACE_SCALE } from '~const/interface';
 import { Cost } from '~scene/system/interface/cost';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 import { Container } from './styles';
 
 type Props = {
-  position: Vector2D
+  position: PositionAtWorld
   value: number
   onHide: () => void
 };

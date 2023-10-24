@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { CRYSTAL_TILE } from '~const/world/entities/crystal';
 import { Assets } from '~lib/assets';
 import { progressionLinear } from '~lib/progression';
 import { Level } from '~scene/world/level';
@@ -10,24 +10,23 @@ import { EntityType } from '~type/world/entities';
 import {
   CrystalTexture, CrystalData, CrystalAudio, ICrystal, CrystalSavePayload, CrystalEvents,
 } from '~type/world/entities/crystal';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType, PositionAtMatrix } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 Assets.RegisterAudio(CrystalAudio);
-Assets.RegisterSprites(CrystalTexture, LEVEL_TILE_SIZE);
+Assets.RegisterSprites(CrystalTexture, CRYSTAL_TILE);
 
 export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile {
   readonly scene: IWorld;
 
   readonly tileType: TileType = TileType.CRYSTAL;
 
-  readonly positionAtMatrix: Vector2D;
+  readonly positionAtMatrix: PositionAtMatrix;
 
   constructor(scene: IWorld, {
     positionAtMatrix, variant = 0,
   }: CrystalData) {
-    const tilePosition = { ...positionAtMatrix, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const positionAtWorld = Level.ToWorldPosition(positionAtMatrix);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, CrystalTexture.CRYSTAL, variant);
     scene.add.existing(this);
@@ -44,8 +43,8 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     }
 
     this.setDepth(positionAtWorld.y);
-    this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-    this.scene.level.putTile(this, tilePosition);
+    this.setOrigin(0.5, CRYSTAL_TILE.origin);
+    this.scene.level.putTile(this, { ...positionAtMatrix, z: 1 });
   }
 
   public pickup() {

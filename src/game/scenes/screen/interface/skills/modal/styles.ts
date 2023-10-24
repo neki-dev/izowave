@@ -7,7 +7,7 @@ export const Backdrop = styled.div`
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
 `;
 
 export const Overlay = styled.div`

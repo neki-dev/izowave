@@ -3,7 +3,7 @@ export const DIFFICULTY = {
    * Player
    */
 
-  PLAYER_START_RESOURCES: 70, // Resources on game start
+  PLAYER_START_RESOURCES: 80, // Resources on game start
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade health
@@ -13,7 +13,7 @@ export const DIFFICULTY = {
   PLAYER_STAMINA: 100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
   PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.6, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.75, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -36,18 +36,19 @@ export const DIFFICULTY = {
    * Superskills
    */
 
-  SUPERSKILL_FROST_COST: 40, // Cost of use
+  SUPERSKILL_SHIELD_COST: 20, // Cost of use
+  SUPERSKILL_SHIELD_DURATION: 8000, // Shield duration
+  SUPERSKILL_INVISIBLE_COST: 25, // Cost of use
+  SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
+  SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 6000, // Frost duration
-  SUPERSKILL_SHIELD_COST: 40, // Cost of use
-  SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
-  SUPERSKILL_RAGE_COST: 60, // Cost of use
-  SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
-  SUPERSKILL_FIRE_COST: 60, // Cost of use
+  SUPERSKILL_FIRE_COST: 30, // Cost of use
   SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
-  SUPERSKILL_FIRE_DAMAGE: 50, // Fire damage
-  SUPERSKILL_FIRE_DAMAGE_GROWTH: 0.35, // Growth damage by wave number (Quadratic)
-  SUPERSKILL_FIRE_DAMAGE_GROWTH_RETARDATION_LEVEL: 12, // Level for damage growth retardation
+  SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
+  SUPERSKILL_RAGE_COST: 40, // Cost of use
+  SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
   SUPERSKILL_COST_GROWTH: 0.15, // Growth cost by wave number (Linear)
+  SUPERSKILL_UNLOCK_PER_WAVE: 3, // Period of superskill unlocking
 
   /**
    * Wave
@@ -57,9 +58,9 @@ export const DIFFICULTY = {
   WAVE_TIMELEFT_GROWTH: 0.5, // Pause growth by wave number (Linear)
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
-  WAVE_ENEMIES_SPAWN_PAUSE: 2200, // Pause between enemies spawn
-  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.038, // Enemies spawn pause growth by wave number (Quadratic)
-  WAVE_ENEMIES_SPAWN_PAUSE_LEVEL: 20, // Level for limit spawn pause growth
+  WAVE_ENEMIES_SPAWN_PAUSE: 2000, // Pause between enemies spawn
+  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.05, // Enemies spawn pause growth by wave number (Linear)
+  WAVE_ENEMIES_SPAWN_PAUSE_LEVEL: 11, // Level for limit spawn pause growth
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
 
@@ -85,11 +86,11 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 60, // Health
+  ENEMY_HEALTH: 65, // Health
   ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
-  ENEMY_ARMOUR_GROWTH: 0.4, // Armour growth by wave number (Quadratic)
+  ENEMY_ARMOUR_GROWTH: 0.35, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 12, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
   ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Linear)
@@ -123,7 +124,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_WALL_COST: 10, // Building cost
-  BUILDING_WALL_ALLOW_BY_WAVE: 2, // Minimal wave for allow build
+  BUILDING_WALL_ALLOW_BY_WAVE: 4, // Minimal wave for allow build
   BUILDING_WALL_HEALTH: 2000, // Health
 
   /**
@@ -131,7 +132,7 @@ export const DIFFICULTY = {
    */
 
   BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.85, // Shot damage growth by level (Linear)
-  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.5, // Frozen duration growth by level (Lienear)
+  BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.375, // Frozen duration growth by level (Lienear)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.2, // Shot speed growth by level (Linear)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
 
@@ -141,8 +142,8 @@ export const DIFFICULTY = {
 
   BUILDING_TOWER_FIRE_COST: 30, // Building cost
   BUILDING_TOWER_FIRE_HEALTH: 300, // Health
-  BUILDING_TOWER_FIRE_RADIUS: 160, // Attack radius
-  BUILDING_TOWER_FIRE_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
+  BUILDING_TOWER_FIRE_RADIUS: 150, // Attack radius
+  BUILDING_TOWER_FIRE_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_FIRE_DELAY: 1400, // Pause between attacks
   BUILDING_TOWER_FIRE_DELAY_GROWTH: -0.12, // Pause growth by level (Linear)
   BUILDING_TOWER_FIRE_DAMAGE: 40, // Attack damage
@@ -154,9 +155,9 @@ export const DIFFICULTY = {
 
   BUILDING_TOWER_FROZEN_COST: 40, // Building cost
   BUILDING_TOWER_FROZEN_HEALTH: 400, // Health
-  BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
-  BUILDING_TOWER_FROZEN_RADIUS: 150, // Freeze radius
-  BUILDING_TOWER_FROZEN_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
+  BUILDING_TOWER_FROZEN_ALLOW_BY_WAVE: 4, // Minimal wave for allow build
+  BUILDING_TOWER_FROZEN_RADIUS: 130, // Freeze radius
+  BUILDING_TOWER_FROZEN_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_FROZEN_DELAY: 1400, // Pause between freezes
   BUILDING_TOWER_FROZEN_DELAY_GROWTH: -0.12, // Pause growth by level (Linear)
   BUILDING_TOWER_FROZEN_FREEZE_DURATION: 800, // Freeze duration
@@ -170,7 +171,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_HEALTH: 200, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_RADIUS: 140, // Attack radius
-  BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
+  BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_LAZER_DELAY: 1300, // Pause between attacks
   BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.14, // Pause growth by level (Linear)
   BUILDING_TOWER_LAZER_DAMAGE: 65, // Attack damage
@@ -181,8 +182,8 @@ export const DIFFICULTY = {
 
   BUILDING_GENERATOR_COST: 20, // Building cost
   BUILDING_GENERATOR_HEALTH: 200, // Health
-  BUILDING_GENERATOR_DELAY: 1300, // Pause between resource generations
-  BUILDING_GENERATOR_DELAY_GROWTH: -0.153, // Pause growth by level (Linear)
+  BUILDING_GENERATOR_DELAY: 1200, // Pause between resource generations
+  BUILDING_GENERATOR_DELAY_GROWTH: -0.138, // Pause growth by level (Linear)
 
   /**
    * Building: Ammunition
@@ -191,8 +192,8 @@ export const DIFFICULTY = {
   BUILDING_AMMUNITION_COST: 40, // Building cost
   BUILDING_AMMUNITION_HEALTH: 600, // Health
   BUILDING_AMMUNITION_ALLOW_BY_WAVE: 3, // Minimal wave for allow build
-  BUILDING_AMMUNITION_RADIUS: 120, // Heal radius
-  BUILDING_AMMUNITION_RADIUS_GROWTH: 0.33, // Radius growth by level (Linear)
+  BUILDING_AMMUNITION_RADIUS: 105, // Reload radius
+  BUILDING_AMMUNITION_RADIUS_GROWTH: 0.3, // Radius growth by level (Linear)
   BUILDING_AMMUNITION_AMMO: 120, // Ammo amount
   BUILDING_AMMUNITION_AMMO_GROWTH: 1.0, // Ammo amount growth by level (Quadratic)
 
@@ -211,7 +212,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_BOOSTER_COST: 80, // Building cost
-  BUILDING_BOOSTER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
+  BUILDING_BOOSTER_ALLOW_BY_WAVE: 9, // Minimal wave for allow build
   BUILDING_BOOSTER_HEALTH: 600, // Health
   BUILDING_BOOSTER_RADIUS: 80, // Increase radius
   BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)

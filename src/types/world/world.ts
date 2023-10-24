@@ -9,10 +9,10 @@ import { EntityType } from '~type/world/entities';
 import { BuildingSavePayload } from '~type/world/entities/building';
 import { CrystalSavePayload } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
-import { ILevel, Vector2D } from '~type/world/level';
+import { ILevel, PositionAtWorld } from '~type/world/level';
+import { ISpawner } from '~type/world/spawner';
 import { IWave } from '~type/world/wave';
 
 export interface IWorld extends IScene {
@@ -30,6 +30,11 @@ export interface IWorld extends IScene {
    * Player assistant.
    */
   readonly assistant: IAssistant
+
+  /**
+   * Enemy spawner.
+   */
+  readonly spawner: ISpawner
 
   /**
    * Level.
@@ -50,11 +55,6 @@ export interface IWorld extends IScene {
    * Delta time of frame update.
    */
   readonly deltaTime: number
-
-  /**
-   * List of generated enemy spawn positions
-   */
-  enemySpawnPositions: Vector2D[]
 
   /**
    * Start world.
@@ -79,6 +79,17 @@ export interface IWorld extends IScene {
   setTimePause(state: boolean): void
 
   /**
+   * Get game lifecyle speed.
+   */
+  getTimeScale(): number
+
+  /**
+   * Set game lifecyle speed.
+   * @param scale - Scale value
+   */
+  setTimeScale(scale: number): void
+
+  /**
    * Get count of resources generate per second.
    */
   getResourceExtractionSpeed(): number
@@ -101,12 +112,6 @@ export interface IWorld extends IScene {
   getEntities<T>(type: EntityType): T[]
 
   /**
-   * Spawn enemy in random position.
-   * @param variant - Enemy variant
-   */
-  spawnEnemy(variant: EnemyVariant): Nullable<IEnemy>
-
-  /**
    * Show hint on world.
    * @param hint - Hint data
    */
@@ -123,12 +128,7 @@ export interface IWorld extends IScene {
    * @param sprite - Sprite
    * @param seconds - Time in seconds
    */
-  getFuturePosition(sprite: ISprite, seconds: number): Vector2D
-
-  /**
-   * Get random enemy spawn position.
-   */
-  getEnemySpawnPosition(): Vector2D
+  getFuturePosition(sprite: ISprite, seconds: number): PositionAtWorld
 
   /**
    * Check is mode active.
@@ -144,6 +144,18 @@ export interface IWorld extends IScene {
   setModeActive(mode: WorldMode, state: boolean): void
 
   /**
+   * Add timer event.
+   * @param params - Timer params
+   */
+  addProgression(params: WorldTimerParams): Phaser.Time.TimerEvent
+
+  /**
+   * Remove timer event.
+   * @param timer - Timer
+   */
+  removeProgression(timer: Phaser.Time.TimerEvent): void
+
+  /**
    * Get data for saving.
    */
   getSavePayload(): WorldSavePayload
@@ -154,21 +166,35 @@ export enum WorldEvents {
   UNSELECT_BUILDING = 'unselect_building',
   SHOW_HINT = 'show_hint',
   HIDE_HINT = 'hide_hint',
-  USE_SUPERSKILL = 'use_superskill',
   TOGGLE_MODE = 'toggle_mode',
 }
 
 export enum WorldMode {
+  TIME_SCALE = 'TIME_SCALE',
   BUILDING_INDICATORS = 'BUILDING_INDICATORS',
   AUTO_REPAIR = 'AUTO_REPAIR',
   PATH_TO_CRYSTAL = 'PATH_TO_CRYSTAL',
 }
 
+export enum WorldModeIcons {
+  TIME_SCALE = 'world/modes/time_scale',
+  BUILDING_INDICATORS = 'world/modes/building_indicators',
+  AUTO_REPAIR = 'world/modes/auto_repair',
+  PATH_TO_CRYSTAL = 'world/modes/path_to_crystal',
+}
+
 export type WorldHint = {
   side: 'left' | 'right' | 'top' | 'bottom'
   label: LangPhrase
-  position: Vector2D
+  position: PositionAtWorld
   unique?: boolean
+};
+
+export type WorldTimerParams = {
+  frequence?: number
+  duration: number
+  onProgress?: (left: number, total: number) => void
+  onComplete: () => void
 };
 
 export type WorldSavePayload = {

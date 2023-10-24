@@ -1,29 +1,27 @@
-import EventEmitter from 'events';
-
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
-import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
+import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from '~const/world/wave';
 import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
-import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~lib/progression';
+import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { GameState } from '~type/game';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
+import { PositionAtMatrix } from '~type/world/level';
 import {
   IWave, WaveAudio, WaveEvents, WaveSavePayload,
 } from '~type/world/wave';
 
 Assets.RegisterAudio(WaveAudio);
 
-export class Wave extends EventEmitter implements IWave {
+export class Wave extends Phaser.Events.EventEmitter implements IWave {
   readonly scene: IWorld;
 
   private _isGoing: boolean = false;
@@ -61,7 +59,7 @@ export class Wave extends EventEmitter implements IWave {
 
     this.scene = scene;
 
-    this.setMaxListeners(0);
+    this.handleToggleTimeScale();
   }
 
   public destroy() {
@@ -127,6 +125,8 @@ export class Wave extends EventEmitter implements IWave {
     this.scene.player.giveResources(resources);
 
     this.nextWaveTimestamp = now;
+
+    Tutorial.Complete(TutorialStep.SKIP_TIMELEFT);
   }
 
   public runTimeleft() {
@@ -158,9 +158,17 @@ export class Wave extends EventEmitter implements IWave {
       this.alarmInterval = null;
     }
 
+    if (this.scene.isModeActive(WorldMode.TIME_SCALE)) {
+      this.scene.setTimeScale(WAVE_INCREASED_TIME_SCALE);
+    }
+
     this.emit(WaveEvents.START, this.number);
 
     this.scene.sound.play(WaveAudio.START);
+
+    if (Tutorial.IsInProgress(TutorialStep.SKIP_TIMELEFT)) {
+      Tutorial.Complete(TutorialStep.SKIP_TIMELEFT);
+    }
   }
 
   private complete() {
@@ -169,14 +177,14 @@ export class Wave extends EventEmitter implements IWave {
     this.isGoing = false;
     this.number++;
 
+    this.scene.setTimeScale(1.0);
+    this.scene.level.looseEffects();
+
     this.runTimeleft();
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
 
-    this.scene.game.screen.notice(NoticeType.INFO, 'WAVE_COMPLETED', [prevNumber]);
     this.scene.sound.play(WaveAudio.COMPLETE);
-
-    this.scene.level.looseEffects();
 
     switch (this.number) {
       case 2: {
@@ -185,10 +193,6 @@ export class Wave extends EventEmitter implements IWave {
       }
       case 3: {
         Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
-        break;
-      }
-      case 4: {
-        Tutorial.Start(TutorialStep.UPGRADE_SKILL);
         break;
       }
       case 8: {
@@ -210,9 +214,7 @@ export class Wave extends EventEmitter implements IWave {
       return;
     }
 
-    this.scene.spawnEnemy(variant);
-
-    const pause = progressionQuadratic({
+    const pause = progressionLinear({
       defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       scale: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       level: this.number,
@@ -221,6 +223,17 @@ export class Wave extends EventEmitter implements IWave {
 
     this.nextSpawnTimestamp = this.scene.getTime() + pause;
     this.spawnedEnemiesCount++;
+
+    this.scene.spawner.getSpawnPosition()
+      .then((positionAtMatrix) => {
+        this.createEnemy(variant, positionAtMatrix);
+      });
+  }
+
+  private createEnemy(variant: EnemyVariant, positionAtMatrix: PositionAtMatrix) {
+    const EnemyInstance = ENEMIES[variant];
+
+    new EnemyInstance(this.scene, { positionAtMatrix });
   }
 
   private getEnemyVariant() {
@@ -251,6 +264,20 @@ export class Wave extends EventEmitter implements IWave {
     }
 
     return this.lastSpawnedEnemyVariant;
+  }
+
+  private handleToggleTimeScale() {
+    const handler = (mode: WorldMode, state: boolean) => {
+      if (mode === WorldMode.TIME_SCALE && this.isGoing) {
+        this.scene.setTimeScale(state ? WAVE_INCREASED_TIME_SCALE : 1.0);
+      }
+    };
+
+    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+
+    this.scene.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
+    });
   }
 
   public getSavePayload(): WaveSavePayload {

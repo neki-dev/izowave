@@ -3,6 +3,12 @@ export enum SDKAdsType {
   REWARDED = 'rewarded',
 }
 
+export type SDKAdsCallbacks = {
+  onStart?: () => void
+  onFinish?: () => void
+  onReward?: () => void
+};
+
 declare global {
   interface Window {
     PokiSDK?: any

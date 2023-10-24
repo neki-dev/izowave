@@ -1,9 +1,11 @@
 import { useGame } from 'phaser-react-ui';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
+import { Confirm } from '~scene/system/interface/confirm';
 import { GameState, IGame } from '~type/game';
+import { LangPhrase } from '~type/lang';
 import { MenuItem, MenuPage } from '~type/menu';
 
 import { Wrapper, Item, Space } from './styles';
@@ -15,6 +17,11 @@ type Props = {
 
 export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
   const game = useGame<IGame>();
+
+  const [confirmation, setConfirmation] = useState<Nullable<{
+    message: LangPhrase
+    onConfirm:() => void
+  }>>(null);
 
   const menuItems = useMemo(() => {
     const items: (MenuItem | null)[] = [];
@@ -38,19 +45,25 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
           game.world.wave.isGoing
           || (game.world.wave.number === 1 && Tutorial.IsEnabled)
         ),
-      }, {
+      }, null, {
         label: 'RESTART_GAME',
         onClick: () => {
-          if (window.confirm(phrase('CONFIRM_RESTART_GAME'))) {
-            game.restartGame();
-          }
+          setConfirmation({
+            message: 'CONFIRM_RESTART_GAME',
+            onConfirm: () => {
+              game.restartGame();
+            },
+          });
         },
       }, {
         label: 'MAIN_MENU',
         onClick: () => {
-          if (window.confirm(phrase('CONFIRM_STOP_GAME'))) {
-            game.stopGame();
-          }
+          setConfirmation({
+            message: 'CONFIRM_STOP_GAME',
+            onConfirm: () => {
+              game.stopGame();
+            },
+          });
         },
       });
     }
@@ -73,8 +86,15 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
     return items;
   }, []);
 
+  const onConfirmationClose = () => {
+    setConfirmation(null);
+  };
+
   return (
     <Wrapper>
+      {confirmation && (
+        <Confirm {...confirmation} onClose={onConfirmationClose} />
+      )}
       {menuItems.map((item, index) => (item ? (
         <Item
           key={item.label}

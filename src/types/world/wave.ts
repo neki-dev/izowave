@@ -1,8 +1,8 @@
-import EventEmitter from 'events';
+import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
 
-export interface IWave extends EventEmitter {
+export interface IWave extends Phaser.Events.EventEmitter {
   readonly scene: IWorld
 
   /**

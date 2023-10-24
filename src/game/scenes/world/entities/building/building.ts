@@ -3,7 +3,8 @@ import Phaser from 'phaser';
 import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { BUILDING_TILE } from '~const/world/entities/building';
+import { LEVEL_MAP_TILE } from '~const/world/level';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
 import { Assets } from '~lib/assets';
@@ -14,7 +15,6 @@ import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -26,15 +26,12 @@ import {
   BuildingOutlineState, IBuildingFactory, IBuilding, BuildingIcon, BuildingGrowthValue, BuildingSavePayload,
 } from '~type/world/entities/building';
 import { IIndicator, IndicatorData } from '~type/world/entities/indicator';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType, PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 Assets.RegisterAudio(BuildingAudio);
 Assets.RegisterImages(BuildingIcon);
-Assets.RegisterSprites(BuildingTexture, {
-  width: LEVEL_TILE_SIZE.width,
-  height: LEVEL_TILE_SIZE.height,
-});
+Assets.RegisterSprites(BuildingTexture, BUILDING_TILE);
 
 export class Building extends Phaser.GameObjects.Image implements IBuilding, ITile {
   readonly scene: IWorld;
@@ -43,7 +40,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   readonly variant: BuildingVariant;
 
-  readonly positionAtMatrix: Vector2D;
+  readonly positionAtMatrix: PositionAtMatrix;
 
   readonly tileType: TileType = TileType.BUILDING;
 
@@ -92,8 +89,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   constructor(scene: IWorld, {
     positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
   }: BuildingData) {
-    const tilePosition = { ...positionAtMatrix, z: 1 };
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
+    const positionAtWorld = Level.ToWorldPosition(positionAtMatrix);
 
     super(scene, positionAtWorld.x, positionAtWorld.y, texture);
     scene.add.existing(this);
@@ -107,14 +103,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live = new Live({ health });
 
     this.setDepth(positionAtWorld.y);
-    this.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-    this.scene.level.putTile(this, tilePosition);
+    this.setOrigin(0.5, BUILDING_TILE.origin);
+    this.scene.level.putTile(this, { ...positionAtMatrix, z: 1 });
 
     this.addActionArea();
     this.addIndicatorsContainer();
     this.addIndicator({
       color: 0x96ff0d,
-      size: LEVEL_TILE_SIZE.width / 2,
+      size: BUILDING_TILE.width / 2,
       value: () => this.live.health / this.live.maxHealth,
     });
 
@@ -122,6 +118,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.handlePointer();
     this.handleToggleModes();
+
+    this.scene.spawner.clearCache();
 
     if (buildDuration && buildDuration > 0) {
       this.startBuildProcess(buildDuration);
@@ -148,6 +146,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unfocus();
       this.unselect();
 
+      this.scene.spawner.clearCache();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
       this.live.removeAllListeners();
 
@@ -166,12 +165,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
   }
 
-  public actionsAreaContains(position: Vector2D) {
+  public actionsAreaContains(position: PositionAtWorld) {
     if (!this.active || !this.actionsArea) {
       return false;
     }
 
-    const offset = this.actionsArea.getTopLeft() as Vector2D;
+    const offset = this.actionsArea.getTopLeft() as PositionAtWorld;
     const contains: boolean = this.actionsArea.geom.contains(position.x - offset.x, position.y - offset.y);
 
     return contains;
@@ -301,7 +300,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const waveNumber = this.getUpgradeAllowedByWave();
 
     if (waveNumber > this.scene.wave.number) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
+      this.scene.game.screen.failure('BUILDING_WILL_BE_AVAILABLE', [waveNumber]);
 
       return;
     }
@@ -309,7 +308,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const cost = this.getUpgradeCost();
 
     if (this.scene.player.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -336,12 +335,20 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
     this.scene.game.sound.play(BuildingAudio.UPGRADE);
+
+    if (Tutorial.IsInProgress(TutorialStep.UPGRADE_BUILDING)) {
+      Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
+      Tutorial.Start(TutorialStep.SKIP_TIMELEFT);
+    }
   }
 
   private repair(auto?: boolean) {
     if (this.live.isMaxHealth()) {
+      if (!auto) {
+        this.scene.game.screen.failure();
+      }
+
       return;
     }
 
@@ -349,7 +356,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     if (this.scene.player.resources < cost) {
       if (!auto) {
-        this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+        this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
       }
 
       return;
@@ -404,7 +411,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const position = this.getTopFace();
 
     this.indicators.setPosition(
-      position.x - (LEVEL_TILE_SIZE.width / 4),
+      position.x - (BUILDING_TILE.width / 4),
       position.y - 3,
     );
   }
@@ -522,7 +529,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   public getTopFace() {
     return {
       x: this.x,
-      y: this.y - LEVEL_TILE_SIZE.height * 0.5,
+      y: this.y - BUILDING_TILE.height * 0.5,
     };
   }
 
@@ -707,7 +714,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     const d = this.getActionsRadius() * 2;
 
-    this.actionsArea.setSize(d, d * LEVEL_TILE_SIZE.persperctive);
+    this.actionsArea.setSize(d, d * LEVEL_MAP_TILE.persperctive);
     this.actionsArea.updateDisplayOrigin();
   }
 
@@ -757,22 +764,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private addBuildTimer(duration: number) {
-    const target = duration / 50;
-    let progress = 0;
+    this.buildTimer = this.scene.addProgression({
+      duration,
+      onProgress: (left: number, total: number) => {
+        const progress = 1 - (left / total);
 
-    this.buildTimer = this.scene.time.addEvent({
-      delay: 50,
-      repeat: target,
-      callback: () => {
-        progress++;
-
-        this.setAlpha(this.alpha + (0.5 / target));
-
-        if (progress >= target) {
-          this.completeBuildProcess();
-        } else {
-          this.buildBar?.updateValue(progress / target);
-        }
+        this.setAlpha(0.5 + (progress / 2));
+        this.buildBar?.updateValue(progress);
+      },
+      onComplete: () => {
+        this.completeBuildProcess();
       },
     });
   }
@@ -782,7 +783,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    this.buildTimer.destroy();
+    this.scene.removeProgression(this.buildTimer);
     this.buildTimer = null;
   }
 
@@ -792,7 +793,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.buildBar = new Indicator(this, {
-      size: LEVEL_TILE_SIZE.width / 2,
+      size: BUILDING_TILE.width / 2,
       color: 0xffffff,
     });
 

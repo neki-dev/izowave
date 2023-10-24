@@ -3,22 +3,24 @@ import { WorldLayerParams } from 'gen-biome';
 import { LEVEL_BIOMES_EARTH } from '~const/world/level/planets/earth';
 import { LEVEL_BIOMES_MARS } from '~const/world/level/planets/mars';
 import { LEVEL_BIOMES_MOON } from '~const/world/level/planets/moon';
-import { TileMeta, LevelBiomes, LevelPlanet } from '~type/world/level';
+import { LevelBiomes, LevelPlanet } from '~type/world/level';
 
 export const LEVEL_MAP_SIZE = 100;
 
-export const LEVEL_TILE_SIZE: TileMeta = {
+export const LEVEL_MAP_TILE = {
   width: 42,
   height: 48,
   origin: 0.75,
   persperctive: (48 / 2) / 42,
+  margin: 1,
+  spacing: 2,
 };
 
 export const LEVEL_MAP_MAX_HEIGHT = 4;
 
 export const LEVEL_SEED_SIZE = 128;
 
-export const LEVEL_SCENERY_TILE_SIZE = {
+export const LEVEL_SCENERY_TILE = {
   width: 42,
   height: 72,
   origin: 0.85,

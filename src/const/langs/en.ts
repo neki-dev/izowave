@@ -4,13 +4,13 @@ export const EN = {
    */
   WAVE_ENEMIES: 'Enemies',
   WAVE_TIMELEFT: 'Timeleft',
-  WAVE_COMPLETED: 'Wave %1 completed',
   WAVE: 'Wave',
   SKIP_WAVE_TIMELEFT: 'Start wave\nprematurely',
 
   /**
    * Buildings
    */
+  BUILDING: 'Building',
   BUILDING_NAME_WALL: 'Wall',
   BUILDING_DESCRIPTION_WALL: 'Defends other buildings',
   BUILDING_NAME_TOWER_FIRE: 'Fire tower',
@@ -26,7 +26,7 @@ export const EN = {
   BUILDING_NAME_RADAR: 'Radar',
   BUILDING_DESCRIPTION_RADAR: 'Uncovers enemies within building radius',
   BUILDING_NAME_BOOSTER: 'Booster',
-  BUILDING_DESCRIPTION_BOOSTER: 'Increases towers damage',
+  BUILDING_DESCRIPTION_BOOSTER: 'Increases towers efficiency',
   BUILDING_CATEGORY_DEFENSE: 'Defense',
   BUILDING_CATEGORY_ATTACK: 'Attack',
   BUILDING_CATEGORY_RESOURCES: 'Resources',
@@ -54,6 +54,7 @@ export const EN = {
   /**
    * Modes
    */
+  TIME_SCALE: 'Increase time speed\nduring wave',
   BUILDING_INDICATORS: 'Display buildings\nhealth and ammo',
   AUTO_REPAIR: 'Auto buy ammo\nand repair buildings',
   PATH_TO_CRYSTAL: 'Display path\nto nearest crystal',
@@ -85,7 +86,13 @@ export const EN = {
   /**
    * Ads
    */
-  ADS_OFFER: 'Do you want to get reward\nby watching ads?',
+  ADS_SHOW: 'Watch a video and get reward',
+  ADS_UNLOCK: 'Unlock extra superskill by watch video',
+
+  /**
+   * Unlocks
+   */
+  FEATURES_UNLOCKED: 'Unlocked\nnew features!',
 
   /**
    * Modal
@@ -96,6 +103,9 @@ export const EN = {
   /**
    * Superskills
    */
+  SUPERSKILL: 'Superskill',
+  SUPERSKILL_NAME_INVISIBLE: 'Invisible',
+  SUPERSKILL_DESCRIPTION_INVISIBLE: 'Hides character from enemies',
   SUPERSKILL_NAME_FROST: 'Frost',
   SUPERSKILL_DESCRIPTION_FROST: 'Freezes all spawned enemies',
   SUPERSKILL_NAME_RAGE: 'Rage',
@@ -108,6 +118,7 @@ export const EN = {
   /**
    * Tutorial
    */
+  TUTORIAL_SKIP_TIMELEFT: 'Click to start\nwave prematurely',
   TUTORIAL_CLICK_TO_UPGRADE: 'Click to upgrade',
   TUTORIAL_HOVER_TO_UPGRADE: 'Hover and press [E]\nto upgrade',
   TUTORIAL_RESOURCES: 'If resources not enough\nyou can find crystals on map',
@@ -197,7 +208,6 @@ export const EN = {
   /**
    * Game over
    */
-  PLAY_AGAIN: 'Play again',
   RECORD: 'Record',
   TOTAL_SCORE: 'Total score',
   WAVES_COMPLETED: 'Waves completed',

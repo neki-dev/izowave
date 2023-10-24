@@ -2,8 +2,13 @@ import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import {
-  LEVEL_TILE_SIZE, LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT,
-  LEVEL_BIOME_PARAMETERS, LEVEL_SCENERY_TILE_SIZE, LEVEL_PLANETS, LEVEL_SEED_SIZE,
+  LEVEL_MAP_TILE,
+  LEVEL_MAP_SIZE,
+  LEVEL_MAP_MAX_HEIGHT,
+  LEVEL_BIOME_PARAMETERS,
+  LEVEL_SCENERY_TILE,
+  LEVEL_PLANETS,
+  LEVEL_SEED_SIZE,
 } from '~const/world/level';
 import { Assets } from '~lib/assets';
 import { interpolate } from '~lib/dimension';
@@ -13,15 +18,26 @@ import { GameEvents, GameSettings } from '~type/game';
 import { INavigator } from '~type/navigator';
 import { IWorld } from '~type/world';
 import {
-  BiomeType, LevelBiome, SpawnTarget, LevelSceneryTexture, TileType,
-  Vector2D, Vector3D, ILevel, LevelTilesetTexture, LevelPlanet, LevelSavePayload, LevelData,
+  BiomeType,
+  LevelBiome,
+  SpawnTarget,
+  LevelSceneryTexture,
+  TileType,
+  PositionAtWorld,
+  PositionAtMatrix,
+  ILevel,
+  LevelTilesetTexture,
+  LevelPlanet,
+  LevelSavePayload,
+  LevelData,
+  TilePosition,
 } from '~type/world/level';
 import { ITile } from '~type/world/level/tile-matrix';
 
 import { TileMatrix } from './tile-matrix';
 
-Assets.RegisterSprites(LevelTilesetTexture, LEVEL_TILE_SIZE);
-Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE_SIZE);
+Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
+Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);
 
 export class Level extends TileMatrix implements ILevel {
   readonly scene: IWorld;
@@ -107,17 +123,19 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   public readSpawnPositions(target: SpawnTarget, grid: number = 2) {
-    const positions: Vector2D[] = [];
-    const rand = Math.floor(grid / 2);
+    const positions: PositionAtMatrix[] = [];
 
     for (let sX = grid; sX < this.map.width - grid; sX += grid) {
       for (let sY = grid; sY < this.map.height - grid; sY += grid) {
-        const x = sX + Phaser.Math.Between(-rand, rand);
-        const y = sY + Phaser.Math.Between(-rand, rand);
-        const targets = this.map.getAt({ x, y })?.spawn;
+        const position = {
+          x: sX + Phaser.Math.Between(-1, 1),
+          y: sY + Phaser.Math.Between(-1, 1),
+          z: 1,
+        };
+        const targets = this.map.getAt(position)?.spawn;
 
         if (targets && targets.includes(target)) {
-          positions.push({ x, y });
+          positions.push(position);
         }
       }
     }
@@ -125,7 +143,7 @@ export class Level extends TileMatrix implements ILevel {
     return positions;
   }
 
-  public hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D) {
+  public hasTilesBetweenPositions(positionA: PositionAtWorld, positionB: PositionAtWorld) {
     const positionAtMatrixA = Level.ToMatrixPosition(positionA);
     const positionAtMatrixB = Level.ToMatrixPosition(positionB);
     const line = interpolate(positionAtMatrixA, positionAtMatrixB);
@@ -137,8 +155,8 @@ export class Level extends TileMatrix implements ILevel {
     return LEVEL_PLANETS[this.planet].BIOMES.find((biome) => (biome.data.type === type))?.data ?? null;
   }
 
-  public getFreeAdjacentTiles(position: Vector3D) {
-    const positions: Vector2D[] = [
+  public getFreeAdjacentTiles(position: PositionAtMatrix) {
+    const positions: PositionAtMatrix[] = [
       { x: position.x + 1, y: position.y },
       { x: position.x, y: position.y + 1 },
       { x: position.x - 1, y: position.y },
@@ -149,18 +167,15 @@ export class Level extends TileMatrix implements ILevel {
       { x: position.x - 1, y: position.y - 1 },
     ];
 
-    return positions.filter((p) => this.isFreePoint({
-      ...p,
-      z: position.z,
-    }));
+    return positions.filter((point) => this.isFreePoint({ ...point, z: 1 }));
   }
 
   private addTilemap() {
     const data = new Phaser.Tilemaps.MapData({
       width: LEVEL_MAP_SIZE,
       height: LEVEL_MAP_SIZE,
-      tileWidth: LEVEL_TILE_SIZE.width,
-      tileHeight: LEVEL_TILE_SIZE.height * 0.5,
+      tileWidth: LEVEL_MAP_TILE.width,
+      tileHeight: LEVEL_MAP_TILE.height * 0.5,
       orientation: Phaser.Tilemaps.Orientation.ISOMETRIC,
       format: Phaser.Tilemaps.Formats.ARRAY_2D,
     });
@@ -169,8 +184,10 @@ export class Level extends TileMatrix implements ILevel {
     const tileset = tilemap.addTilesetImage(
       LevelTilesetTexture[this.planet],
       undefined,
-      LEVEL_TILE_SIZE.width,
-      LEVEL_TILE_SIZE.height,
+      LEVEL_MAP_TILE.width,
+      LEVEL_MAP_TILE.height,
+      LEVEL_MAP_TILE.margin,
+      LEVEL_MAP_TILE.spacing,
     );
 
     if (!tileset) {
@@ -185,8 +202,8 @@ export class Level extends TileMatrix implements ILevel {
     const layer = tilemap.createBlankLayer(
       'ground',
       tileset,
-      -LEVEL_TILE_SIZE.width * 0.5,
-      -LEVEL_TILE_SIZE.height * 0.25,
+      -LEVEL_MAP_TILE.width * 0.5,
+      -LEVEL_MAP_TILE.height * 0.25,
     );
 
     if (!layer) {
@@ -197,16 +214,16 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
-    const sizeInPixel = Math.max(this.scene.sys.canvas.clientWidth, this.scene.sys.canvas.clientHeight) * 0.5;
-    const offset = Math.ceil(sizeInPixel / (LEVEL_TILE_SIZE.height * 0.5));
+    const sizeInPixel = Math.max(this.scene.game.canvas.clientWidth, this.scene.game.canvas.clientHeight) * 0.5;
+    const offset = Math.ceil(sizeInPixel / (LEVEL_MAP_TILE.height * 0.5));
     const sizeInTiles = offset * 2 + LEVEL_MAP_SIZE;
-    const position = Level.ToWorldPosition({ x: -offset, y: -offset, z: 0 });
+    const position = Level.ToWorldPosition({ x: -offset, y: -offset }, 0);
 
     const layer = tilemap.createBlankLayer(
       'falloff',
       tileset,
-      position.x - LEVEL_TILE_SIZE.width * 0.5,
-      position.y - LEVEL_TILE_SIZE.height * LEVEL_TILE_SIZE.origin,
+      position.x - LEVEL_MAP_TILE.width * 0.5,
+      position.y - LEVEL_MAP_TILE.height * LEVEL_MAP_TILE.origin,
       sizeInTiles,
       sizeInTiles,
     );
@@ -235,7 +252,7 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private addMapTiles() {
-    const addTile = (position: Vector2D, biome: LevelBiome) => {
+    const addTile = (position: PositionAtMatrix, biome: LevelBiome) => {
       const index = Array.isArray(biome.tileIndex)
         ? Phaser.Math.Between(...biome.tileIndex)
         : biome.tileIndex;
@@ -246,7 +263,7 @@ export class Level extends TileMatrix implements ILevel {
       } else {
         // Add tile as image
         // Need for correct calculate depth
-        this.addMountTile(index, { ...position, z: biome.z });
+        this.addMountTile(index, position, biome.z);
       }
     };
 
@@ -270,9 +287,9 @@ export class Level extends TileMatrix implements ILevel {
     });
   }
 
-  private addMountTile(index: number, tilePosition: Vector3D) {
-    const positionAtWorld = Level.ToWorldPosition(tilePosition);
-    const depth = positionAtWorld.y + ((tilePosition.z - 1) * LEVEL_TILE_SIZE.height);
+  private addMountTile(index: number, position: PositionAtMatrix, z: number) {
+    const positionAtWorld = Level.ToWorldPosition(position, z);
+    const depth = positionAtWorld.y + ((z - 1) * LEVEL_MAP_TILE.height);
     const tile = this.scene.add.image(
       positionAtWorld.x,
       positionAtWorld.y,
@@ -283,8 +300,8 @@ export class Level extends TileMatrix implements ILevel {
     tile.tileType = TileType.MAP;
 
     tile.setDepth(depth);
-    tile.setOrigin(0.5, LEVEL_TILE_SIZE.origin);
-    this.putTile(tile, tilePosition, false);
+    tile.setOrigin(0.5, LEVEL_MAP_TILE.origin);
+    this.putTile(tile, { ...position, z }, false);
   }
 
   private addScenery() {
@@ -294,11 +311,14 @@ export class Level extends TileMatrix implements ILevel {
     const count = Math.ceil(LEVEL_MAP_SIZE * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
 
     for (let i = 0; i < count; i++) {
-      const positionAtMatrix: Vector2D = Phaser.Utils.Array.GetRandom(positions);
-      const tilePosition: Vector3D = { ...positionAtMatrix, z: 1 };
+      const positionAtMatrix: PositionAtMatrix = {
+        ...Phaser.Utils.Array.GetRandom(positions),
+        z: 1,
+      };
+      const tilePosition: TilePosition = { ...positionAtMatrix, z: 1 };
 
       if (this.isFreePoint(tilePosition)) {
-        const positionAtWorld = Level.ToWorldPosition(tilePosition);
+        const positionAtWorld = Level.ToWorldPosition(positionAtMatrix);
         const tile = this.scene.add.image(
           positionAtWorld.x,
           positionAtWorld.y,
@@ -310,7 +330,7 @@ export class Level extends TileMatrix implements ILevel {
         tile.clearable = true;
 
         tile.setDepth(positionAtWorld.y);
-        tile.setOrigin(0.5, LEVEL_SCENERY_TILE_SIZE.origin);
+        tile.setOrigin(0.5, LEVEL_SCENERY_TILE.origin);
         this.putTile(tile, tilePosition);
         this.sceneryTiles.add(tile);
       }
@@ -324,27 +344,25 @@ export class Level extends TileMatrix implements ILevel {
     };
   }
 
-  static ToMatrixPosition(positionAtWorld: Vector2D) {
-    const { width, height } = LEVEL_TILE_SIZE;
+  static ToMatrixPosition(position: PositionAtWorld): PositionAtMatrix {
+    const { width, height } = LEVEL_MAP_TILE;
     const n = {
-      x: (positionAtWorld.x / (width * 0.5)),
-      y: (positionAtWorld.y / (height * 0.25)),
+      x: (position.x / (width * 0.5)),
+      y: (position.y / (height * 0.25)),
     };
-    const positionAtMatrix: Vector2D = {
+
+    return {
       x: Math.round((n.x + n.y) / 2),
       y: Math.round((n.y - n.x) / 2),
     };
-
-    return positionAtMatrix;
   }
 
-  static ToWorldPosition(tilePosition: Vector3D) {
-    const { width, height } = LEVEL_TILE_SIZE;
-    const positionAtWorld: Vector2D = {
-      x: (tilePosition.x - tilePosition.y) * (width * 0.5),
-      y: (tilePosition.x + tilePosition.y) * (height * 0.25) - ((tilePosition.z - 1) * (height * 0.5)),
-    };
+  static ToWorldPosition(position: PositionAtMatrix, z: number = 1): PositionAtWorld {
+    const { width, height } = LEVEL_MAP_TILE;
 
-    return positionAtWorld;
+    return {
+      x: (position.x - position.y) * (width * 0.5),
+      y: (position.x + position.y) * (height * 0.25) - ((z - 1) * (height * 0.5)),
+    };
   }
 }

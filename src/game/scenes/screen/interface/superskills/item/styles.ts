@@ -21,12 +21,63 @@ export const Wrapper = styled.div`
   position: relative;
 `;
 
-export const Icon = styled.img`
+export const Container = styled.div<{
+  $active?: boolean
+  $allow?: boolean
+}>`
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  padding: 14px;
+  pointer-events: all;
+  border-radius: 5px;
+  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
+    ${(props) => props.$allow && css`
+      &:hover {
+        cursor: pointer;
+        ${() => (!props.$active && css`
+          background: ${InterfaceBackgroundColor.BLACK};
+        `)};
+      }
+    `}
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 10px;
+  }
+`;
+
+export const Lock = styled.div`
+  position: absolute;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 5px 6px 5px;
+  z-index: 3;
+  right: -4px;
+  top: -4px;
+`;
+
+export const IconLock = styled.img`
+  width: 10px;
+  height: 10px;
+`;
+
+export const IconContainer = styled.div<{
+  $allow?: boolean
+}>`
   display: block;
   position: relative;
   z-index: 2;
   width: 26px;
   height: 26px;
+  ${(props) => !props.$allow && css`
+    opacity: 0.5;
+  `}
+  [role=texture] {
+    width: 100%;
+  }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 22px;
     height: 22px;
@@ -49,7 +100,7 @@ export const Info = styled.div`
     transform: translate(-50%, 100%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 12px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+    border-top: 12px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   }
 `;
 
@@ -77,41 +128,21 @@ export const Name = styled.div`
   }
 `;
 
-export const Description = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 11px;
-  line-height: 12px;
-  letter-spacing: 1px;
-  color: #fff;
-`;
-
 export const Body = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
-  padding: 9px 14px 11px 14px;
+  font-family: ${InterfaceFont.PIXEL_TEXT};
+  letter-spacing: 1px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  padding: 9px 14px 12px 14px;
   border-radius: 0 0 5px 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 7px 11px;
+    padding: 7px 11px 11px 11px;
   }
 `;
 
-export const Container = styled.div<{
-  $active?: boolean
-}>`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
-  padding: 14px;
-  pointer-events: all;
-  border-radius: 5px;
-  @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    &:hover {
-      cursor: pointer;
-      ${(props) => (!props.$active && css`
-        background: ${InterfaceBackgroundColor.BLACK};
-      `)};
-    }
-  }
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 10px;
-  }
+export const Description = styled.div`
+  font-size: 11px;
+  line-height: 12px;
+  color: #fff;
 `;
 
 export const Timeout = styled.div`

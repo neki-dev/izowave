@@ -39,6 +39,9 @@ export const Wrapper = styled.div`
   position: relative;
   pointer-events: none;
   z-index: ${InterfaceLayer.HINT};
+  &.hidden {
+    display: none;
+  }
 `;
 
 export const Key = styled.span`

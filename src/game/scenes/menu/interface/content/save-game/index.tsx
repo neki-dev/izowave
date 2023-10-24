@@ -7,8 +7,10 @@ import { MAX_GAME_SAVES } from '~const/game';
 import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
+import { Confirm } from '~scene/system/interface/confirm';
 import { Table } from '~scene/system/interface/table';
 import { IGame } from '~type/game';
+import { LangPhrase } from '~type/lang';
 import { StorageSave } from '~type/storage';
 
 import { Input, Limit, Wrapper } from './styles';
@@ -18,6 +20,10 @@ export const SaveGame: React.FC = () => {
 
   const [saves, setSaves] = useState(Storage.Saves);
   const [saveName, setSaveName] = useState('');
+  const [confirmation, setConfirmation] = useState<Nullable<{
+    message: LangPhrase
+    onConfirm:() => void
+  }>>(null);
 
   const refInput = useRef<HTMLInputElement>();
 
@@ -36,21 +42,39 @@ export const SaveGame: React.FC = () => {
 
     const exist = saves.some((save) => save.name === saveName);
 
-    if (!exist || window.confirm(phrase('CONFIRM_REWRITE_SAVE'))) {
+    const rewrite = () => {
       Storage.AddSave(game, saveName).then(() => {
         setSaveName('');
         setSaves([...Storage.Saves]);
         game.isSaved = true;
       });
+    };
+
+    if (exist) {
+      setConfirmation({
+        message: 'CONFIRM_REWRITE_SAVE',
+        onConfirm: () => {
+          rewrite();
+        },
+      });
+    } else {
+      rewrite();
     }
   };
 
   const deleteSave = (name: string) => {
-    if (window.confirm(phrase('CONFIRM_DELETE_SAVE'))) {
-      Storage.DeleteSave(name).then(() => {
-        setSaves([...Storage.Saves]);
-      });
-    }
+    setConfirmation({
+      message: 'CONFIRM_DELETE_SAVE',
+      onConfirm: () => {
+        Storage.DeleteSave(name).then(() => {
+          setSaves([...Storage.Saves]);
+        });
+      },
+    });
+  };
+
+  const onConfirmationClose = () => {
+    setConfirmation(null);
   };
 
   useEffect(() => {
@@ -61,6 +85,10 @@ export const SaveGame: React.FC = () => {
 
   return (
     <Wrapper>
+      {confirmation && (
+        <Confirm {...confirmation} onClose={onConfirmationClose} />
+      )}
+
       {saves.length > 0 && (
         <Table>
           <Table.Head>
@@ -111,7 +139,7 @@ export const SaveGame: React.FC = () => {
       )}
       <Button
         view="primary"
-        size="medium"
+        size="large"
         disabled={!saveName}
         onClick={onClickSave}
       >

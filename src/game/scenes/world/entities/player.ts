@@ -8,7 +8,7 @@ import {
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { LEVEL_MAP_TILE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Analytics } from '~lib/analytics';
@@ -20,7 +20,6 @@ import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
 import { GameEvents, GameSettings } from '~type/game';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
@@ -39,14 +38,16 @@ import {
   MovementDirection,
   PlayerEvents,
   PlayerSkillIcon,
+  PlayerSuperskillIcon,
 } from '~type/world/entities/player';
-import { TileType, Vector2D } from '~type/world/level';
+import { TileType, PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 import { WaveEvents } from '~type/world/wave';
 
 Assets.RegisterAudio(PlayerAudio);
 Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
 Assets.RegisterImages(PlayerTexture.SUPERSKILL);
 Assets.RegisterImages(PlayerSkillIcon);
+Assets.RegisterImages(PlayerSuperskillIcon);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
@@ -73,6 +74,12 @@ export class Player extends Sprite implements IPlayer {
 
   private set kills(v) { this._kills = v; }
 
+  private _lastVisiblePosition: PositionAtMatrix;
+
+  public get lastVisiblePosition() { return this._lastVisiblePosition; }
+
+  private set lastVisiblePosition(v) { this._lastVisiblePosition = v; }
+
   private _upgradeLevel: Record<PlayerSkill, number> = {
     [PlayerSkill.MAX_HEALTH]: 1,
     [PlayerSkill.SPEED]: 1,
@@ -93,6 +100,12 @@ export class Player extends Sprite implements IPlayer {
 
   private dustEffect: Nullable<IParticles> = null;
 
+  private _unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
+
+  public get unlockedSuperskills() { return this._unlockedSuperskills; }
+
+  private set unlockedSuperskills(v) { this._unlockedSuperskills = v; }
+
   private _activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>> = {};
 
   public get activeSuperskills() { return this._activeSuperskills; }
@@ -107,7 +120,7 @@ export class Player extends Sprite implements IPlayer {
 
   private pathToCrystalEffectTimestamp: number = 1;
 
-  private currentPathToCrystal: Nullable<Vector2D[]> = null;
+  private currentPathToCrystal: Nullable<PositionAtWorld[]> = null;
 
   private staminaMax: number = 100;
 
@@ -158,7 +171,9 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
-      enemy.attack(this);
+      if (!this.isInvisible()) {
+        enemy.attack(this);
+      }
     });
 
     this.addCollider(EntityType.ENEMY, 'overlap', (enemy: IEnemy) => {
@@ -179,21 +194,42 @@ export class Player extends Sprite implements IPlayer {
 
       this.updateMovement();
       this.updateVelocity();
+      this.updateVisible();
       this.updateStamina();
     }
   }
 
+  private updateVisible() {
+    if (this.isInvisible()) {
+      if (this.alpha === 1.0) {
+        this.alpha = 0.5;
+      }
+    } else {
+      this.lastVisiblePosition = this.positionAtMatrix;
+      if (this.alpha !== 1.0) {
+        this.alpha = 1.0;
+      }
+    }
+  }
+
+  private isInvisible() {
+    return this.activeSuperskills[PlayerSuperskill.INVISIBLE];
+  }
+
   private updateStamina() {
+    // Date.now used instead of world.getTime to
+    // right culculate timestamp on tutorial pause
     const now = Date.now();
+    const nextTimestamp = () => now + (50 / this.scene.getTimeScale());
 
     if (this.movementAngle === null) {
       if (this.stamina < this.staminaMax && this.staminaTimestamp < now) {
-        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.012));
-        this.staminaTimestamp = now + 25;
+        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.024));
+        this.staminaTimestamp = nextTimestamp();
       }
     } else if (this.stamina > 0.0 && this.staminaTimestamp < now) {
-      this.stamina = Math.max(0.0, this.stamina - 0.3);
-      this.staminaTimestamp = now + 25;
+      this.stamina = Math.max(0.0, this.stamina - 0.6);
+      this.staminaTimestamp = nextTimestamp();
 
       if (this.stamina === 0.0) {
         this.updateMovementAnimation();
@@ -271,6 +307,17 @@ export class Player extends Sprite implements IPlayer {
     this.kills++;
   }
 
+  public unlockSuperskill() {
+    const superskill = Object.values(PlayerSuperskill)
+      .find((type) => !this.unlockedSuperskills[type]);
+
+    if (superskill) {
+      this.unlockedSuperskills[superskill] = true;
+
+      this.emit(PlayerEvents.UNLOCK_SUPERSKILL, superskill);
+    }
+  }
+
   public getSuperskillCost(type: PlayerSuperskill) {
     return progressionLinear({
       defaultValue: DIFFICULTY[`SUPERSKILL_${type}_COST`],
@@ -281,14 +328,20 @@ export class Player extends Sprite implements IPlayer {
   }
 
   public useSuperskill(type: PlayerSuperskill) {
-    if (this.activeSuperskills[type] || !this.scene.wave.isGoing) {
+    if (this.activeSuperskills[type] || !this.unlockedSuperskills[type]) {
+      return;
+    }
+
+    if (!this.scene.wave.isGoing) {
+      this.scene.game.screen.failure();
+
       return;
     }
 
     const cost = this.getSuperskillCost(type);
 
     if (this.resources < cost) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+      this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
 
       return;
     }
@@ -313,14 +366,17 @@ export class Player extends Sprite implements IPlayer {
       });
     }
 
-    this.activeSuperskills[type] = this.scene.time.addEvent({
-      delay: DIFFICULTY[`SUPERSKILL_${type}_DURATION`],
-      callback: () => {
+    const duration = DIFFICULTY[`SUPERSKILL_${type}_DURATION`];
+
+    this.activeSuperskills[type] = this.scene.addProgression({
+      duration,
+      frequence: duration,
+      onComplete: () => {
         delete this.activeSuperskills[type];
       },
     });
 
-    this.scene.events.emit(WorldEvents.USE_SUPERSKILL, type);
+    this.scene.events.emit(PlayerEvents.USE_SUPERSKILL, type);
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {
@@ -372,7 +428,7 @@ export class Player extends Sprite implements IPlayer {
     const experience = this.getExperienceToUpgrade(type);
 
     if (this.experience < experience) {
-      this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_EXPERIENCE');
+      this.scene.game.screen.failure('NOT_ENOUGH_EXPERIENCE');
 
       return;
     }
@@ -452,6 +508,10 @@ export class Player extends Sprite implements IPlayer {
     this.giveExperience(experience);
     this.giveScore(number * 10);
     this.live.heal();
+
+    if ((number + 1) % DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE === 0) {
+      this.unlockSuperskill();
+    }
   }
 
   private handleMovementByKeyboard() {
@@ -528,7 +588,7 @@ export class Player extends Sprite implements IPlayer {
 
         this.setVelocity(
           velocity.x,
-          velocity.y * LEVEL_TILE_SIZE.persperctive,
+          velocity.y * LEVEL_MAP_TILE.persperctive,
         );
       }
     }
@@ -693,8 +753,8 @@ export class Player extends Sprite implements IPlayer {
       const i = this.pathToCrystalEffectIndex + k;
 
       if (i > 1 && i < this.currentPathToCrystal.length) {
-        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1], z: 1 });
-        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i], z: 1 });
+        const prev = Level.ToWorldPosition({ ...this.currentPathToCrystal[i - 1] });
+        const next = Level.ToWorldPosition({ ...this.currentPathToCrystal[i] });
         const alpha = 1.0 - Math.min(Math.abs(k / halfVisibleLength), 0.9);
 
         this.pathToCrystal.lineStyle(2, 0xffffff, alpha * 0.75);
@@ -726,7 +786,7 @@ export class Player extends Sprite implements IPlayer {
       from: this.scene.player.positionAtMatrix,
       to: crystal.positionAtMatrix,
       grid: this.scene.level.gridSolid,
-    }, (path: Nullable<Vector2D[]>) => {
+    }, (path: Nullable<PositionAtWorld[]>) => {
       this.currentPathToCrystal = (path && path.length > 2) ? path : null;
       this.pathToCrystalFindingTask = null;
     });
@@ -791,6 +851,7 @@ export class Player extends Sprite implements IPlayer {
       resources: this.resources,
       kills: this.kills,
       health: this.live.health,
+      unlockedSuperskills: this.unlockedSuperskills,
       upgradeLevel: this.upgradeLevel,
     };
   }
@@ -800,6 +861,17 @@ export class Player extends Sprite implements IPlayer {
     this.experience = data.experience;
     this.resources = data.resources;
     this.kills = data.kills;
+
+    if (data.unlockedSuperskills) {
+      this.unlockedSuperskills = data.unlockedSuperskills;
+    } else {
+      // PATCH: For saves with old version
+      const refund = Math.floor((this.scene.wave.number - 2) / DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE) + 1;
+
+      for (let i = 0; i < refund; i++) {
+        this.unlockSuperskill();
+      }
+    }
 
     eachEntries(data.upgradeLevel, (type, level) => {
       if (level > 1) {

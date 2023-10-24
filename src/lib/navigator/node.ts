@@ -1,8 +1,8 @@
 import { NavigatorPathNodeData } from '~type/navigator';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 export class PathNode {
-  readonly position: Vector2D;
+  readonly position: PositionAtMatrix;
 
   readonly distance: number;
 
@@ -57,8 +57,9 @@ export class PathNode {
     this.listOpened = false;
   }
 
-  public getPath() {
-    const path: Vector2D[] = [this.position];
+  public getResult() {
+    const path: PositionAtMatrix[] = [this.position];
+    const cost = this.parent?.cost ?? 0;
 
     let parent = this.getParent();
 
@@ -69,6 +70,6 @@ export class PathNode {
 
     path.reverse();
 
-    return path;
+    return { path, cost };
   }
 }

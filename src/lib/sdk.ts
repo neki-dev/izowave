@@ -1,6 +1,6 @@
 import { Environment } from '~lib/environment';
 import { GamePlatform } from '~type/game';
-import { SDKAdsType } from '~type/sdk';
+import { SDKAdsCallbacks, SDKAdsType } from '~type/sdk';
 
 export class SDK {
   public static async Register() {
@@ -31,23 +31,28 @@ export class SDK {
       });
   }
 
-  public static ShowAds(
-    type: SDKAdsType,
-    callbackBeg: () => void,
-    callbackEnd: (success: boolean) => void,
-  ) {
+  public static ShowAds(type: SDKAdsType, callbacks: SDKAdsCallbacks) {
     try {
       switch (Environment.Platform) {
         case GamePlatform.DEVELOPMENT: {
-          callbackBeg();
-          window.alert('Ads was showed');
-          callbackEnd(true);
+          callbacks.onStart?.();
+          callbacks.onFinish?.();
+          if (type === SDKAdsType.REWARDED) {
+            callbacks.onReward?.();
+          }
           break;
         }
         case GamePlatform.CRAZY_GAMES: {
           window.CrazyGames?.SDK.ad.requestAd(type, {
-            adStarted: callbackBeg,
-            adFinished: () => callbackEnd(true),
+            adStarted: () => {
+              callbacks.onStart?.();
+            },
+            adFinished: () => {
+              callbacks.onFinish?.();
+              if (type === SDKAdsType.REWARDED) {
+                callbacks.onReward?.();
+              }
+            },
           });
           break;
         }
@@ -56,8 +61,13 @@ export class SDK {
             ? 'rewardedBreak'
             : 'commercialBreak';
 
-          window.PokiSDK?.[method](callbackBeg).then((success: boolean) => {
-            callbackEnd(success);
+          window.PokiSDK?.[method](() => {
+            callbacks.onStart?.();
+          }).then((success: boolean) => {
+            callbacks.onFinish?.();
+            if (type === SDKAdsType.REWARDED && success) {
+              callbacks.onReward?.();
+            }
           });
           break;
         }

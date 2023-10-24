@@ -42,13 +42,13 @@ export const Icon = styled.div`
   height: 100%;
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
   margin-right: 1px;
-  img, div[data-texture-container] {
+  [role=texture] {
     width: 24px;
     height: 24px;
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 48px;
-    img, div[data-texture-container] {
+    [role=texture] {
       width: 20px;
       height: 20px;
     }

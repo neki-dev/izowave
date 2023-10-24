@@ -6,9 +6,7 @@ import { Scene } from '~game/scenes';
 import { Assets } from '~lib/assets';
 import { GameScene } from '~type/game';
 import { LangPhrase } from '~type/lang';
-import {
-  IScreen, NoticeType, ScreenAudio, ScreenEvents,
-} from '~type/screen';
+import { IScreen, ScreenAudio, ScreenEvents } from '~type/screen';
 
 import { ScreenUI } from './interface';
 
@@ -39,11 +37,10 @@ export class Screen extends Scene implements IScreen {
     this.handleJoystick();
   }
 
-  public notice(type: NoticeType, text: LangPhrase, format?: any[]) {
-    this.events.emit(ScreenEvents.NOTICE, { type, text, format });
-
-    if (type === NoticeType.ERROR) {
-      this.game.sound.play(ScreenAudio.ERROR);
+  public failure(text?: LangPhrase, format?: any[]) {
+    this.game.sound.play(ScreenAudio.ERROR);
+    if (text) {
+      this.events.emit(ScreenEvents.NOTICE, { text, format });
     }
   }
 

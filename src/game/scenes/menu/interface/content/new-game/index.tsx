@@ -52,7 +52,7 @@ export const NewGame: React.FC = () => {
           onChange={onChangeDifficulty}
         />
       </Params>
-      <Button onClick={onClickStart} view='primary' size="medium">
+      <Button onClick={onClickStart} view='primary' size="large">
         {phrase('START')}
       </Button>
     </Wrapper>

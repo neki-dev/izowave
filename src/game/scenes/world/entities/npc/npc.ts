@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { LEVEL_MAP_TILE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
 import { isPositionsEqual, getIsometricAngle, getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
@@ -12,13 +12,13 @@ import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
-import { INPC, NPCData, NPCEvent } from '~type/world/entities/npc';
-import { Vector2D } from '~type/world/level';
+import { INPC, NPCData } from '~type/world/entities/npc';
+import { PositionAtWorld } from '~type/world/level';
 
 export class NPC extends Sprite implements INPC {
   public isPathPassed: boolean = false;
 
-  private pathToTarget: Vector2D[] = [];
+  private pathToTarget: PositionAtWorld[] = [];
 
   private pathFindingTask: Nullable<string> = null;
 
@@ -32,14 +32,16 @@ export class NPC extends Sprite implements INPC {
 
   private freezeEffectTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
+  private seesInvisibleTarget: boolean = false;
+
   constructor(scene: IWorld, {
-    pathFindTriggerDistance, texture, ...data
+    pathFindTriggerDistance, seesInvisibleTarget, texture, ...data
   }: NPCData) {
     super(scene, { ...data, texture });
     scene.addEntityToGroup(this, EntityType.NPC);
 
-    this.setVisible(false);
     this.pathFindTriggerDistance = pathFindTriggerDistance;
+    this.seesInvisibleTarget = seesInvisibleTarget;
 
     this.addDebugPath();
 
@@ -132,10 +134,14 @@ export class NPC extends Sprite implements INPC {
       return;
     }
 
+    const targetPosition = this.seesInvisibleTarget
+      ? this.scene.player.positionAtMatrix
+      : this.scene.player.lastVisiblePosition;
+
     if (this.pathToTarget.length > 0) {
       const prevPosition = this.pathToTarget[this.pathToTarget.length - 1];
 
-      if (isPositionsEqual(prevPosition, this.scene.player.positionAtMatrix)) {
+      if (isPositionsEqual(prevPosition, targetPosition)) {
         return;
       }
     }
@@ -145,18 +151,14 @@ export class NPC extends Sprite implements INPC {
     this.pathFindTimestamp = now + NPC_PATH_FIND_RATE;
     this.pathFindingTask = this.scene.level.navigator.createTask({
       from,
-      to: this.scene.player.positionAtMatrix,
+      to: targetPosition,
       grid: this.scene.level.gridCollide,
-    }, (path: Nullable<Vector2D[]>) => {
+    }, (path: Nullable<PositionAtWorld[]>) => {
       if (!this.active) {
         return;
       }
 
       if (path) {
-        if (!this.visible) {
-          this.activate();
-        }
-
         path.shift();
         this.pathToTarget = path;
         this.pathFindingTask = null;
@@ -168,23 +170,18 @@ export class NPC extends Sprite implements INPC {
         this.drawDebugPath();
       } else {
         this.pathFindingTask = null;
-        this.emit(NPCEvent.PATH_NOT_FOUND, from);
       }
     });
   }
 
-  public activate() {
-    this.setVisible(true);
-  }
-
-  public getDistanceToTarget() {
+  private getDistanceToTarget() {
     return getIsometricDistance(
       this.getBottomFace(),
       this.scene.player.getBottomFace(),
     );
   }
 
-  public moveTo(position: Vector2D) {
+  public moveTo(position: PositionAtWorld) {
     const rotation = getIsometricAngle(this.getBottomFace(), position);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
@@ -198,14 +195,13 @@ export class NPC extends Sprite implements INPC {
       this.flipX = (velocity.x > 0);
       this.setVelocity(
         velocity.x,
-        velocity.y * LEVEL_TILE_SIZE.persperctive,
+        velocity.y * LEVEL_MAP_TILE.persperctive,
       );
     }
   }
 
   private nextPathTile() {
-    const firstNode = this.pathToTarget[0];
-    const tilePosition = Level.ToWorldPosition({ ...firstNode, z: 1 });
+    const tilePosition = Level.ToWorldPosition(this.pathToTarget[0]);
     const currentPosition = this.getBottomFace();
     const signX = Math.sign(this.body.velocity.x);
     const signY = Math.sign(this.body.velocity.y);
@@ -238,7 +234,7 @@ export class NPC extends Sprite implements INPC {
     const target = this.pathToTarget[0];
 
     if (target) {
-      const positionAtWorld = Level.ToWorldPosition({ ...target, z: 1 });
+      const positionAtWorld = Level.ToWorldPosition(target);
 
       this.moveTo(positionAtWorld);
     }
@@ -279,8 +275,8 @@ export class NPC extends Sprite implements INPC {
     ];
 
     for (let i = 1; i < points.length; i++) {
-      const prev = Level.ToWorldPosition({ ...points[i - 1], z: 1 });
-      const next = Level.ToWorldPosition({ ...points[i], z: 1 });
+      const prev = Level.ToWorldPosition({ ...points[i - 1] });
+      const next = Level.ToWorldPosition({ ...points[i] });
 
       this.pathDebug.moveTo(prev.x, prev.y);
       this.pathDebug.lineTo(next.x, next.y);

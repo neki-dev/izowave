@@ -13,7 +13,10 @@ export const Wrapper = styled.ul`
 `;
 
 export const Space = styled.div`
-  height: 20px;
+  height: 12px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    height: 6px;
+  }
 `;
 
 export const Item = styled.li<{
@@ -22,18 +25,18 @@ export const Item = styled.li<{
 }>`
   position: relative;
   font-family: ${InterfaceFont.PIXEL_LABEL};
-  font-size: 18px;
-  line-height: 18px;
-  padding-right: 16px;
+  font-size: 20px;
+  line-height: 20px;
+  padding-right: 12px;
   white-space: nowrap;
   &:after {
     position: absolute;
     content: "";
     right: 0;
     top: 50%;
-    margin-top: -2px;
-    width: 4px;
-    height: 4px;
+    transform: translateY(-7px);
+    width: 2px;
+    height: 16px;
     background: #fff;
   }
   ${(props) => (props.$active ? css`
@@ -60,8 +63,11 @@ export const Item = styled.li<{
     pointer-events: all;
   `)}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 18px;
+    line-height: 18px;
     &:after {
-      margin-top: -1px;
+      transform: translateY(-6px);
+      height: 14px;
     }
   }
 `;

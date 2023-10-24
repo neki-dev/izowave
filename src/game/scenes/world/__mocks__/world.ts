@@ -6,10 +6,15 @@ const entityGroup = {
 
 const world = {
   getTime: jest.fn(() => 0),
+  isModeActive: jest.fn(() => false),
   isTimePaused: jest.fn(() => false),
   setTimePause: jest.fn(),
+  setTimeScale: jest.fn(),
   spawnEnemy: jest.fn(),
   getResourceExtractionSpeed: jest.fn(() => 1),
+  spawner: {
+    getSpawnPosition: jest.fn(() => Promise.resolve({ x: 0, y: 0 })),
+  },
   game: {
     difficulty: 1,
     tutorial: {
@@ -43,7 +48,12 @@ const world = {
   input: {
     keyboard: {
       on: jest.fn(),
+      off: jest.fn(),
     },
+  },
+  events: {
+    on: jest.fn(),
+    off: jest.fn(),
   },
   sound: {
     play: jest.fn(),

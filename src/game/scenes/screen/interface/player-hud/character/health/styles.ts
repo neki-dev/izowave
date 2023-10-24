@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: ${InterfaceBackgroundColor.BLACK};
   position: relative;
-  border-radius: 0 0 5px 5px;
+  border-radius: 3px;
   overflow: hidden;
-  padding: 5px;
+  margin-top: 4px;
 `;
 
 export const Progress = styled.div`
@@ -15,7 +15,6 @@ export const Progress = styled.div`
   background: ${InterfaceBackgroundColor.SUCCESS_DARK};
   box-shadow: 0 10px 0 ${InterfaceBackgroundColor.SUCCESS} inset;
   transition: width 0.3s ease-out;
-  border-radius: 3px;
 `;
 
 export const Value = styled.div`

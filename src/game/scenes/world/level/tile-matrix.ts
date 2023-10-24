@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { TileType, Vector3D } from '~type/world/level';
+import { TileType, TilePosition } from '~type/world/level';
 import { ITileMatrix, ITile } from '~type/world/level/tile-matrix';
 
 export class TileMatrix implements ITileMatrix {
@@ -22,19 +22,19 @@ export class TileMatrix implements ITileMatrix {
     }
   }
 
-  public isFreePoint(position: Vector3D) {
+  public isFreePoint(position: TilePosition) {
     const tile = this.getTile(position);
 
     return !tile || Boolean(tile.clearable);
   }
 
-  public getTile(position: Vector3D): Nullable<ITile> {
+  public getTile(position: TilePosition): Nullable<ITile> {
     const { x, y, z } = position;
 
     return this.tiles[z]?.[y]?.[x] ?? null;
   }
 
-  public getTileWithType(position: Vector3D, type: TileType | TileType[]): Nullable<ITile> {
+  public getTileWithType(position: TilePosition, type: TileType | TileType[]): Nullable<ITile> {
     if (!this.tileIs(position, type)) {
       return null;
     }
@@ -42,7 +42,7 @@ export class TileMatrix implements ITileMatrix {
     return this.getTile(position);
   }
 
-  public tileIs(position: Vector3D, type: TileType | TileType[]) {
+  public tileIs(position: TilePosition, type: TileType | TileType[]) {
     const tile = this.getTile(position);
 
     if (!tile) {
@@ -56,7 +56,7 @@ export class TileMatrix implements ITileMatrix {
     return (type === tile.tileType);
   }
 
-  public putTile(tile: ITile, position: Vector3D, destroyable = true) {
+  public putTile(tile: ITile, position: TilePosition, destroyable = true) {
     const existsTile = this.getTile(position);
 
     if (existsTile) {
@@ -74,7 +74,7 @@ export class TileMatrix implements ITileMatrix {
     }
   }
 
-  public removeTile(position: Vector3D) {
+  public removeTile(position: TilePosition) {
     const tile = this.getTile(position);
 
     if (!tile) {

@@ -101,7 +101,7 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
     spawn: [],
   },
 }, {
-  params: { lowerBound: 0.63, upperBound: 0.70 },
+  params: { lowerBound: 0.63, upperBound: 0.72 },
   data: {
     type: BiomeType.MOUNT,
     tileIndex: 27,
@@ -111,10 +111,10 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
     spawn: [],
   },
 }, {
-  params: { lowerBound: 0.70 },
+  params: { lowerBound: 0.72 },
   data: {
     type: BiomeType.SNOW,
-    tileIndex: 31,
+    tileIndex: 30,
     z: 3,
     collide: true,
     solid: false,

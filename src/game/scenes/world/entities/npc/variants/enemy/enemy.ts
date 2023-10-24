@@ -9,17 +9,14 @@ import {
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { Assets } from '~lib/assets';
-import { excludePosition } from '~lib/dimension';
 import { Environment } from '~lib/environment';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Effect, Particles } from '~scene/world/effects';
-import { Level } from '~scene/world/level';
 import { GameFlag, GameSettings } from '~type/game';
 import { InterfaceFont } from '~type/interface';
-import { IWorld, WorldEvents } from '~type/world';
+import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
-import { NPCEvent } from '~type/world/entities/npc';
 import {
   IEnemyTarget,
   EnemyData,
@@ -27,8 +24,8 @@ import {
   IEnemy,
   EnemyAudio,
 } from '~type/world/entities/npc/enemy';
-import { PlayerSuperskill } from '~type/world/entities/player';
-import { TileType, Vector2D } from '~type/world/level';
+import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
+import { PositionAtWorld, TileType } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture]);
@@ -61,6 +58,7 @@ export class Enemy extends NPC implements IEnemy {
       ...data,
       texture,
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
+      seesInvisibleTarget: false,
       health: progressionQuadratic({
         defaultValue: DIFFICULTY.ENEMY_HEALTH
           * multipliers.health
@@ -105,6 +103,16 @@ export class Enemy extends NPC implements IEnemy {
 
     this.handlePlayerSuperskill();
 
+    if (this.spawnEffect) {
+      this.addSpawnEffect();
+    }
+
+    const frost = this.scene.player.activeSuperskills[PlayerSuperskill.FROST];
+
+    if (frost) {
+      this.freeze(frost.getRemaining(), true);
+    }
+
     this.setTilesCollision([TileType.BUILDING], (tile) => {
       if (tile instanceof Building) {
         const shield = this.scene.player.activeSuperskills[PlayerSuperskill.SHIELD];
@@ -115,12 +123,10 @@ export class Enemy extends NPC implements IEnemy {
       }
     });
 
-    this.on(NPCEvent.PATH_NOT_FOUND, this.onPathNotFound.bind(this));
-
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeDamageLabel();
       if (this.damageTimer) {
-        this.damageTimer.destroy();
+        this.scene.removeProgression(this.damageTimer);
       }
     });
   }
@@ -137,20 +143,6 @@ export class Enemy extends NPC implements IEnemy {
     this.isOverlapTarget = false;
   }
 
-  public activate() {
-    super.activate();
-
-    if (this.spawnEffect) {
-      this.addSpawnEffect();
-    }
-
-    const frost = this.scene.player.activeSuperskills[PlayerSuperskill.FROST];
-
-    if (frost) {
-      this.freeze(frost.getRemaining(), true);
-    }
-  }
-
   public overlapTarget() {
     this.isOverlapTarget = true;
   }
@@ -163,15 +155,6 @@ export class Enemy extends NPC implements IEnemy {
     target.live.damage(this.damage);
 
     this.freeze(1000);
-  }
-
-  private onPathNotFound(originPosition: Vector2D) {
-    excludePosition(this.scene.enemySpawnPositions, originPosition);
-
-    const positionAtMatrix = this.scene.getEnemySpawnPosition();
-    const position = Level.ToWorldPosition({ ...positionAtMatrix, z: 1 });
-
-    this.setPosition(position.x, position.y);
   }
 
   private addDamageLabel() {
@@ -259,19 +242,13 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addOngoingDamage(damage: number, duration: number) {
-    const delay = 100;
-    const momentDamage = damage / (duration / delay);
-
-    this.damageTimer = this.scene.time.addEvent({
-      delay,
-      repeat: duration / delay,
-      callback: () => {
-        this.live.damage(momentDamage);
-
-        if (this.damageTimer?.repeatCount === 0) {
-          this.damageTimer.destroy();
-          this.damageTimer = null;
-        }
+    this.damageTimer = this.scene.addProgression({
+      duration,
+      onProgress: (left: number, total: number) => {
+        this.live.damage(damage / total);
+      },
+      onComplete: () => {
+        this.damageTimer = null;
       },
     });
   }
@@ -327,35 +304,44 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addSpawnEffect() {
+    this.freeze(750);
+
+    setTimeout(() => {
+      const originAlpha = this.alpha;
+
+      this.container.setAlpha(0.0);
+      this.setAlpha(0.0);
+      this.scene.tweens.add({
+        targets: this,
+        alpha: originAlpha,
+        duration: 750,
+        onComplete: () => {
+          this.container.setAlpha(originAlpha);
+        },
+      });
+    }, 0);
+
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      // Native body.center isn't working at current state
+      const position: PositionAtWorld = {
+        x: this.x,
+        y: this.y - ENEMY_TEXTURE_META[this.texture.key as EnemyTexture].height / 2,
+      };
+
       new Particles(this, {
         key: 'spawn',
         texture: ParticlesTexture.GLOW,
-        positionAtWorld: this.body.center,
+        position,
         params: {
-          duration: 400,
+          duration: 500,
           lifespan: { min: 150, max: 250 },
-          scale: { start: 0.25, end: 0.0 },
+          scale: { start: 0.3, end: 0.0 },
           speed: 100,
           quantity: 2,
-          tint: 0x00000,
+          tint: 0x000000,
         },
       });
     }
-
-    const originalScale = this.scale;
-
-    this.freeze(750);
-    this.container.setAlpha(0.0);
-    this.setScale(0.1);
-    this.scene.tweens.add({
-      targets: this,
-      scale: originalScale,
-      duration: 750,
-      onComplete: () => {
-        this.container.setAlpha(1.0);
-      },
-    });
   }
 
   private handlePlayerSuperskill() {
@@ -375,11 +361,11 @@ export class Enemy extends NPC implements IEnemy {
         }
         case PlayerSuperskill.FIRE: {
           const damage = progressionQuadratic({
-            defaultValue: DIFFICULTY.SUPERSKILL_FIRE_DAMAGE,
-            scale: DIFFICULTY.SUPERSKILL_FIRE_DAMAGE_GROWTH,
+            defaultValue: DIFFICULTY.ENEMY_HEALTH,
+            scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
             level: this.scene.wave.number,
-            retardationLevel: DIFFICULTY.SUPERSKILL_FIRE_DAMAGE_GROWTH_RETARDATION_LEVEL,
-          });
+            retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+          }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
 
           this.addFireEffect(duration);
           this.addOngoingDamage(damage, duration);
@@ -388,9 +374,9 @@ export class Enemy extends NPC implements IEnemy {
       }
     };
 
-    this.scene.events.on(WorldEvents.USE_SUPERSKILL, handler);
+    this.scene.events.on(PlayerEvents.USE_SUPERSKILL, handler);
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.USE_SUPERSKILL, handler);
+      this.scene.events.off(PlayerEvents.USE_SUPERSKILL, handler);
     });
   }
 }

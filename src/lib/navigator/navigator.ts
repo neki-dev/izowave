@@ -6,8 +6,13 @@ import {
   NavigatorWorkerResult,
   NavigatorTaskData,
   NavigatorEvent,
+  NavigatorPayloadCancelTask,
+  NavigatorPayloadCreateTask,
+  NavigatorPayloadUpdatePointCost,
+  NavigatorPayloadCompleteTask,
+  NavigatorTaskCallback,
 } from '~type/navigator';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 import NavigatorWorker from './worker.ts?worker';
 
@@ -21,23 +26,25 @@ export class Navigator implements INavigator {
   constructor() {
     this.worker = new NavigatorWorker();
 
-    this.worker.addEventListener(
-      'message',
-      ({ data }: NavigatorWorkerResult) => {
-        const task = this.tasks.find((info) => info.id === data.payload.id);
+    this.worker.addEventListener('message', ({ data }: NavigatorWorkerResult) => {
+      switch (data.event) {
+        case NavigatorEvent.COMPLETE_TASK: {
+          const payload = data.payload as NavigatorPayloadCompleteTask;
+          const task = this.tasks.find((info) => info.id === payload.id);
 
-        if (task) {
-          switch (data.event) {
-            case NavigatorEvent.COMPLETE_TASK:
-              task.callback(data.payload.path);
-              break;
+          if (task) {
+            task.callback(payload.result.path, payload.result.cost);
+          } else {
+            // Events occurs for canceled tasks, since the path calculation occurs sequentially in single process.
+            // Need to figure out how to interrupt the calculation for a canceled task.
           }
+          break;
         }
-      },
-    );
+      }
+    });
   }
 
-  public setPointCost(position: Vector2D, cost: number) {
+  public setPointCost(position: PositionAtMatrix, cost: number) {
     if (this.getPointCost(position) === cost) {
       return;
     }
@@ -47,42 +54,44 @@ export class Navigator implements INavigator {
     }
     this.pointsCost[position.y][position.x] = cost;
 
+    const payload: NavigatorPayloadUpdatePointCost = {
+      position,
+      cost,
+    };
+
     this.worker.postMessage({
       event: NavigatorEvent.UPDATE_POINT_COST,
-      payload: {
-        position,
-        cost,
-      },
+      payload,
     });
   }
 
-  public getPointCost(position: Vector2D) {
+  public getPointCost(position: PositionAtMatrix) {
     return this.pointsCost[position.y]?.[position.x] ?? 1.0;
   }
 
-  public resetPointCost(position: Vector2D) {
+  public resetPointCost(position: PositionAtMatrix) {
     if (!this.pointsCost[position.y]) {
       return;
     }
 
     delete this.pointsCost[position.y][position.x];
 
+    const payload: NavigatorPayloadUpdatePointCost = {
+      position,
+      cost: null,
+    };
+
     this.worker.postMessage({
       event: NavigatorEvent.UPDATE_POINT_COST,
-      payload: {
-        position,
-        cost: null,
-      },
+      payload,
     });
   }
 
-  public createTask(
-    data: NavigatorTaskData,
-    callback: (path: Nullable<Vector2D[]>) => void,
-  ) {
-    const payload = { ...data };
-
-    payload.id = payload.id ?? uuidv4();
+  public createTask(data: NavigatorTaskData, callback: NavigatorTaskCallback) {
+    const payload: NavigatorPayloadCreateTask = {
+      ...data,
+      id: data.id ?? uuidv4(),
+    };
 
     this.worker.postMessage({
       event: NavigatorEvent.CREATE_TASK,
@@ -98,9 +107,11 @@ export class Navigator implements INavigator {
   }
 
   public cancelTask(id: string) {
+    const payload: NavigatorPayloadCancelTask = { id };
+
     this.worker.postMessage({
       event: NavigatorEvent.CANCEL_TASK,
-      payload: { taskId: id },
+      payload,
     });
 
     const taskIndex = this.tasks.findIndex((task) => task.id === id);

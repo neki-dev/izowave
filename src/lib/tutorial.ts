@@ -105,6 +105,14 @@ export class Tutorial {
     };
   }
 
+  public static ToggleHintsVisible(state: boolean) {
+    const hints = document.querySelectorAll('[role=hint]');
+
+    hints.forEach((hint) => {
+      hint.classList.toggle('hidden', !state);
+    });
+  }
+
   public static Enable() {
     this.IsEnabled = true;
 

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 export interface IParticles {
   readonly scene: IWorld
@@ -34,7 +34,7 @@ export enum ParticlesTexture {
 
 export type ParticlesData = {
   key: string
-  positionAtWorld?: Vector2D
+  position?: PositionAtWorld
   texture: ParticlesTexture
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
 };

@@ -1,16 +1,18 @@
 /* eslint-disable no-restricted-globals */
 import Heap from 'heap';
 
-import { NavigatorTaskData, NavigatorEvent } from '~type/navigator';
-import { Vector2D } from '~type/world/level';
+import {
+  NavigatorTaskData, NavigatorEvent, NavigatorPayloadCompleteTask,
+} from '~type/navigator';
+import { PositionAtMatrix } from '~type/world/level';
 
 import { PathNode } from './node';
-import { getCost, getDistance } from './tools';
+import { getCost, getDistance, getSimpleCost } from './tools';
 
 export class NavigatorTask {
-  readonly from: Vector2D;
+  readonly from: PositionAtMatrix;
 
-  readonly to: Vector2D;
+  readonly to: PositionAtMatrix;
 
   readonly grid: boolean[][];
 
@@ -20,13 +22,16 @@ export class NavigatorTask {
 
   private nodes: Heap<PathNode>;
 
+  private ignoreCosts: boolean = false;
+
   constructor({
-    id, from, to, grid,
+    id, from, to, grid, ignoreCosts = false,
   }: NavigatorTaskData) {
     this.id = id ?? 'noid';
     this.from = from;
     this.to = to;
     this.grid = grid;
+    this.ignoreCosts = ignoreCosts;
 
     this.nodes = new Heap<PathNode>(
       (nodeA, nodeB) => nodeA.bestGuessDistance() - nodeB.bestGuessDistance(),
@@ -53,7 +58,7 @@ export class NavigatorTask {
     this.tree[node.position.y][node.position.x] = node;
   }
 
-  public pickNode(position: Vector2D) {
+  public pickNode(position: PositionAtMatrix) {
     return this.tree[position.y]?.[position.x];
   }
 
@@ -62,37 +67,45 @@ export class NavigatorTask {
   }
 
   public failure() {
+    const payload: NavigatorPayloadCompleteTask = {
+      id: this.id,
+      result: {
+        path: null,
+        cost: -1,
+      },
+    };
+
     self.postMessage({
       event: NavigatorEvent.COMPLETE_TASK,
-      payload: {
-        id: this.id,
-        path: null,
-      },
+      payload,
     });
   }
 
   public complete(node: PathNode) {
-    const path = node.getPath();
+    const payload: NavigatorPayloadCompleteTask = {
+      id: this.id,
+      result: node.getResult(),
+    };
 
     self.postMessage({
       event: NavigatorEvent.COMPLETE_TASK,
-      payload: {
-        id: this.id,
-        path,
-      },
+      payload,
     });
   }
 
   public checkAdjacentNode(
     currentNode: PathNode,
-    shift: Vector2D,
+    shift: PositionAtMatrix,
     points: number[][],
   ) {
-    const position: Vector2D = {
+    const position: PositionAtMatrix = {
       x: currentNode.position.x + shift.x,
       y: currentNode.position.y + shift.y,
     };
-    const cost = currentNode.getCost() + getCost(currentNode, shift, points);
+    const nextCost = this.ignoreCosts
+      ? getSimpleCost(shift)
+      : getCost(currentNode, shift, points);
+    const cost = currentNode.getCost() + nextCost;
     const existNode = this.pickNode(position);
 
     if (existNode) {

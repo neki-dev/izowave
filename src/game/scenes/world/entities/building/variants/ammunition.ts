@@ -1,10 +1,9 @@
 import { CONTROL_KEY } from '~const/controls';
 import { DIFFICULTY } from '~const/world/difficulty';
-import { LEVEL_TILE_SIZE } from '~const/world/level';
+import { BUILDING_TILE } from '~const/world/entities/building';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { LangPhrase } from '~type/lang';
-import { NoticeType } from '~type/screen';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -63,7 +62,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.addIndicator({
       color: 0xffd857,
-      size: LEVEL_TILE_SIZE.width / 2,
+      size: BUILDING_TILE.width / 2,
       value: () => this.ammo / this.maxAmmo,
     });
 
@@ -150,6 +149,10 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
   private buyAmmo(auto?: boolean) {
     if (this.ammo >= this.maxAmmo) {
+      if (!auto) {
+        this.scene.game.screen.failure();
+      }
+
       return;
     }
 
@@ -157,7 +160,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     if (this.scene.player.resources < cost) {
       if (!auto) {
-        this.scene.game.screen.notice(NoticeType.ERROR, 'NOT_ENOUGH_RESOURCES');
+        this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
       }
 
       return;

@@ -16,7 +16,7 @@ import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuildingCategory, BuildingVariant } from '~type/world/entities/building';
-import { Vector2D } from '~type/world/level';
+import { PositionAtWorld } from '~type/world/level';
 
 import { Building } from './building';
 import {
@@ -28,7 +28,7 @@ export const Builder: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [isHidden, setHidden] = useState(false);
-  const [hintStopBuild, setHintStopBuild] = useState<Nullable<Vector2D>>(null);
+  const [hintStopBuild, setHintStopBuild] = useState<Nullable<PositionAtWorld>>(null);
   const [hintBuilding, setHintBuilding] = useState<Nullable<{
     variant: BuildingVariant
     label: LangPhrase
@@ -49,7 +49,7 @@ export const Builder: React.FC = () => {
 
   const getSupposedPosition = () => {
     if (world.builder.supposedPosition) {
-      return Level.ToWorldPosition({ ...world.builder.supposedPosition, z: 1 });
+      return Level.ToWorldPosition(world.builder.supposedPosition);
     }
 
     return null;

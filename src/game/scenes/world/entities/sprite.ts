@@ -17,7 +17,9 @@ import { IIndicator } from '~type/world/entities/indicator';
 import {
   ISprite, SpriteBodyData, SpriteData, SpriteIndicatorData,
 } from '~type/world/entities/sprite';
-import { LevelBiome, TileType, Vector2D } from '~type/world/level';
+import {
+  LevelBiome, TileType, PositionAtWorld, PositionAtMatrix,
+} from '~type/world/level';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly scene: IWorld;
@@ -38,7 +40,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   public currentBiome: Nullable<LevelBiome> = null;
 
-  private _positionAtMatrix: Vector2D;
+  private _positionAtMatrix: PositionAtMatrix;
 
   public get positionAtMatrix() { return this._positionAtMatrix; }
 
@@ -58,8 +60,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     texture, positionAtWorld, positionAtMatrix, health, speed, body, frame = 0,
   }: SpriteData) {
     let position: Nullable<{
-      matrix: Vector2D
-      world: Vector2D
+      matrix: PositionAtMatrix
+      world: PositionAtWorld
     }> = null;
 
     if (positionAtWorld) {
@@ -69,7 +71,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
       };
     } else if (positionAtMatrix) {
       position = {
-        world: Level.ToWorldPosition({ ...positionAtMatrix, z: 1 }),
+        world: Level.ToWorldPosition(positionAtMatrix),
         matrix: positionAtMatrix,
       };
     } else {
@@ -118,8 +120,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   private updateContainer() {
-    this.container.setDepth(this.depth);
     this.container.setPosition(this.body.center.x, this.body.center.y);
+    this.container.setDepth(this.depth);
     this.container.setAlpha(this.alpha);
     this.container.setVisible(this.visible);
   }
@@ -143,7 +145,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public getAllPositionsAtMatrix() {
-    return this.getProjectionOnGround().map(Level.ToMatrixPosition);
+    return this.getProjectionOnGround().map((position) => Level.ToMatrixPosition(position));
   }
 
   public addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void) {
@@ -221,14 +223,14 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return false;
   }
 
-  public getBottomFace(): Vector2D {
+  public getBottomFace(): PositionAtWorld {
     return {
       x: this.x,
       y: this.y - this.getGamutOffset(),
     };
   }
 
-  public getBodyOffset(): Vector2D {
+  public getBodyOffset(): PositionAtWorld {
     return {
       x: 0,
       y: this.body ? (this.body.center.y - this.y) : 0,
@@ -245,7 +247,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     const rY = this.getGamutOffset();
     const l = Phaser.Math.PI2 / count;
     const position = this.getBottomFace();
-    const points: Vector2D[] = [];
+    const points: PositionAtWorld[] = [];
 
     for (let u = 0; u < count; u++) {
       points.push({

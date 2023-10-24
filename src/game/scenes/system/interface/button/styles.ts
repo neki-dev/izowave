@@ -4,7 +4,7 @@ import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
 
 export const Container = styled.div<{
-  $size?: 'fixed' | 'small' | 'medium' | 'large'
+  $size?: 'small' | 'large'
   $view?: 'primary' | 'confirm' | 'decline'
   $disabled?: boolean
 }>`
@@ -18,27 +18,27 @@ export const Container = styled.div<{
   ${(props) => {
     switch (props.$view) {
       case 'primary': return css`
-        background: ${InterfaceBackgroundColor.WARN};  
+        background: ${InterfaceBackgroundColor.WARN_GRADIENT};  
         &:hover {
-          background: ${InterfaceBackgroundColor.WARN_DARK};
+          background: ${InterfaceBackgroundColor.WARN};
         }
       `;
       case 'confirm': return css`
-        background: ${InterfaceBackgroundColor.SUCCESS};  
+        background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};  
         &:hover {
-          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+          background: ${InterfaceBackgroundColor.SUCCESS};
         }
       `;
       case 'decline': return css`
-        background: ${InterfaceBackgroundColor.ERROR};
+        background: ${InterfaceBackgroundColor.ERROR_GRADIENT};
         &:hover {
-          background: ${InterfaceBackgroundColor.ERROR_DARK};
+          background: ${InterfaceBackgroundColor.ERROR};
         }
       `;
       default: return css`
         background: ${InterfaceBackgroundColor.BLACK};
         &:hover {
-          background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+          background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};
         }
       `;
     }
@@ -46,19 +46,14 @@ export const Container = styled.div<{
   ${(props) => {
     switch (props.$size) {
       case 'large': return css`
-        font-size: 22px;
-        line-height: 22px;
-        padding: 13px 20px 14px 20px;
-      `;
-      case 'medium': return css`
-        font-size: 18px;
-        line-height: 18px;
-        padding: 10px 18px 11px 18px;
+        font-size: 17px;
+        line-height: 17px;
+        padding: 11px 18px 14px 18px;
       `;
       case 'small': return css`
-        font-size: 11px;
-        line-height: 11px;
-        padding: 7px 10px 8px 10px;
+        font-size: 13px;
+        line-height: 13px;
+        padding: 9px 14px 12px 14px;
       `;
       default: return css`
         font-size: 10px;

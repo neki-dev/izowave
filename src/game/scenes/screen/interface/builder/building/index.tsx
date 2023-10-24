@@ -24,6 +24,6 @@ export const Building: React.FC<Props> = ({ variant, number, hint }) => (
       <Text>{phrase(BUILDINGS[variant].Description)}</Text>
     </Info>
     {hint && <Hint label={hint} side="right" />}
-    <Preview variant={variant} number={number} isGlowing={Boolean(hint)} />
+    <Preview variant={variant} number={number} />
   </Container>
 );

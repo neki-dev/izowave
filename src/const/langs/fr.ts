@@ -4,13 +4,13 @@ export const FR = {
    */
   WAVE_ENEMIES: 'Ennemies',
   WAVE_TIMELEFT: 'Temps restant',
-  WAVE_COMPLETED: 'Vague %1 est termine',
   WAVE: 'Vague',
   SKIP_WAVE_TIMELEFT: 'Demarrer la vague\nprematurement',
 
   /**
    * Buildings
    */
+  BUILDING: 'Batiment',
   BUILDING_NAME_WALL: 'Mur',
   BUILDING_DESCRIPTION_WALL: 'Protection des batiments contre la destruction',
   BUILDING_NAME_TOWER_FIRE: 'Tour du feu',
@@ -26,7 +26,7 @@ export const FR = {
   BUILDING_NAME_RADAR: 'Radar',
   BUILDING_DESCRIPTION_RADAR: 'Divulgation des ennemies dans le rayon d`action',
   BUILDING_NAME_BOOSTER: 'Booster',
-  BUILDING_DESCRIPTION_BOOSTER: 'Augment la puissance des tours',
+  BUILDING_DESCRIPTION_BOOSTER: 'Augmente l`efficacite des tours',
   BUILDING_CATEGORY_DEFENSE: 'Protection',
   BUILDING_CATEGORY_ATTACK: 'Attaque',
   BUILDING_CATEGORY_RESOURCES: 'Ressources',
@@ -54,6 +54,7 @@ export const FR = {
   /**
    * Modes
    */
+  TIME_SCALE: 'AAugmenter la vitesse du temps\npendant la vague',
   BUILDING_INDICATORS: 'Afficher des vies\net des munitions des batiments',
   AUTO_REPAIR: 'Automatiquement acheter munition\net reparer les batiments',
   PATH_TO_CRYSTAL: 'Afficher le chemin\nvers le cristal le plus proche',
@@ -85,7 +86,13 @@ export const FR = {
   /**
    * Ads
    */
-  ADS_OFFER: 'Voulez-vous obtenir une recompense\npour regarder la publicite?',
+  ADS_SHOW: 'Regardez video et obtenez recompense',
+  ADS_UNLOCK: 'Debloquez des super competences supplementaires',
+
+  /**
+   * Unlocks
+   */
+  FEATURES_UNLOCKED: 'Nouvelles\nfonctionnalites debloquees!',
 
   /**
    * Modal
@@ -96,6 +103,9 @@ export const FR = {
   /**
    * Superskills
    */
+  SUPERSKILL: 'Supercompetence',
+  SUPERSKILL_NAME_INVISIBLE: 'Invisible',
+  SUPERSKILL_DESCRIPTION_INVISIBLE: 'Cache le personnage des ennemis',
   SUPERSKILL_NAME_FROST: 'Congelation',
   SUPERSKILL_DESCRIPTION_FROST: 'Congeler les ennemies',
   SUPERSKILL_NAME_RAGE: 'Colere',
@@ -108,6 +118,7 @@ export const FR = {
   /**
    * Tutorial
    */
+  TUTORIAL_SKIP_TIMELEFT: 'Cliquez pour demarrer\nla vague prematurement',
   TUTORIAL_CLICK_TO_UPGRADE: 'Taper pour ameliorer',
   TUTORIAL_HOVER_TO_UPGRADE: 'Pointez et tapez [E]\npour ameliorer',
   TUTORIAL_RESOURCES: 'En cas de manque de ressource,\nvous pouvez trouvez des cristaux',
@@ -197,7 +208,6 @@ export const FR = {
   /**
    * Game over
    */
-  PLAY_AGAIN: 'Recommencer',
   RECORD: 'Record',
   TOTAL_SCORE: 'Compte general',
   WAVES_COMPLETED: 'Vagues completes',

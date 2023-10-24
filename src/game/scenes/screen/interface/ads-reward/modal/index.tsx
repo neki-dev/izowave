@@ -1,15 +1,14 @@
 import { useClick, useGame, useScene } from 'phaser-react-ui';
-import React, { useRef, useCallback } from 'react';
+import React, { useRef } from 'react';
 
 import { phrase } from '~lib/lang';
-import { Amount } from '~scene/system/interface/amount';
-import { Button } from '~scene/system/interface/button';
+import { SDK } from '~lib/sdk';
 import { IGame, GameScene } from '~type/game';
 import { SDKAdsType } from '~type/sdk';
 import { IWorld } from '~type/world';
 
 import {
-  Amounts, Overlay, Buttons, Container, Text,
+  Container, Label, Amounts, Amount, IconPlay, Content, Close, Group,
 } from './styles';
 
 type Props = {
@@ -22,41 +21,47 @@ export const Modal: React.FC<Props> = ({ experience, resources, onClose }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const refOverlay = useRef<HTMLDivElement>(null);
+  const refContent = useRef<HTMLDivElement>(null);
 
-  const onConfirmAds = useCallback(() => {
-    game.resume();
-    game.showAds(SDKAdsType.REWARDED, () => {
-      world.player.giveExperience(experience);
-      world.player.giveResources(resources);
-    });
+  useClick(refContent, 'down', () => {
     onClose();
+    SDK.ShowAds(SDKAdsType.REWARDED, {
+      onStart: () => {
+        game.pause();
+        SDK.TogglePlayState(false);
+      },
+      onFinish: () => {
+        game.resume();
+        SDK.TogglePlayState(true);
+      },
+      onReward: () => {
+        world.player.giveExperience(experience);
+        world.player.giveResources(resources);
+      },
+    });
   }, [onClose, experience, resources]);
 
-  const onDeclineAds = useCallback(() => {
-    game.resume();
-    onClose();
-  }, [onClose]);
-
-  useClick(refOverlay, 'down', () => {}, []);
-
   return (
-    <Overlay ref={refOverlay}>
-      <Container>
-        <Text>{phrase('ADS_OFFER')}</Text>
-        <Amounts>
-          <Amount type="RESOURCES">+{resources}</Amount>
-          <Amount type="EXPERIENCE">+{experience}</Amount>
-        </Amounts>
-        <Buttons>
-          <Button view="confirm" size="medium" onClick={onConfirmAds}>
-            {phrase('YES')}
-          </Button>
-          <Button view="decline" size="medium" onClick={onDeclineAds}>
-            {phrase('NO')}
-          </Button>
-        </Buttons>
-      </Container>
-    </Overlay>
+    <Container>
+      <Content ref={refContent}>
+        <IconPlay src="assets/sprites/hud/ads.png" />
+        <Group>
+          <Label>
+            {phrase('ADS_SHOW')}
+          </Label>
+          <Amounts>
+            <Amount>
+              <Amount.Icon src="assets/sprites/hud/resources.png" />
+              <Amount.Value>{resources}</Amount.Value>
+            </Amount>
+            <Amount>
+              <Amount.Icon src="assets/sprites/hud/experience.png" />
+              <Amount.Value>{experience}</Amount.Value>
+            </Amount>
+          </Amounts>
+        </Group>
+      </Content>
+      <Close onClick={onClose}>X</Close>
+    </Container>
   );
 };

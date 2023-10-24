@@ -18,19 +18,6 @@ export const Wrapper = styled.div`
   align-items: center;
 `;
 
-export const Container = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
-  display: flex;
-  color: #fff;
-  align-items: center;
-  padding: 10px 16px 10px 10px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  border-radius: 5px 0 0 5px;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    padding: 7px 11px 7px 7px;
-  }
-`;
-
 export const Placeholder = styled.div`
   font-family: ${InterfaceFont.PIXEL_TEXT};
   color: #fff;
@@ -45,7 +32,7 @@ export const Placeholder = styled.div`
   background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
   border-radius: 5px;
   padding: 9px 12px;
-  margin-top: 18px;
+  margin-top: 8px;
   white-space: pre;
   display: none;
   text-align: left;
@@ -61,12 +48,36 @@ export const Placeholder = styled.div`
   }
 `;
 
+export const Container = styled.div<{
+  $skippable?: boolean
+}>`
+  position: relative;
+  pointer-events: all;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  display: flex;
+  color: #fff;
+  align-items: center;
+  padding: 10px 16px 10px 10px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  border-radius: 5px 0 0 5px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 7px 11px 7px 7px;
+  }
+  ${(props) => props.$skippable && css`
+    &:hover {
+      background: ${InterfaceBackgroundColor.BLACK};
+      cursor: pointer;
+      ${Placeholder} {
+        display: block;
+      }
+    }
+  `}
+`;
+
 export const CurrentNumber = styled.div<{
   $paused?: boolean
   $going?: boolean
 }>`
-  pointer-events: all;
-  position: relative;
   text-align: center;
   border-radius: 3px;
   ${(props) => {
@@ -83,12 +94,6 @@ export const CurrentNumber = styled.div<{
 
     return css`
       background: ${InterfaceBackgroundColor.SUCCESS};
-      &:hover {
-        cursor: pointer;
-        ${Placeholder} {
-          display: block;
-        }
-      }
     `;
   }};
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
@@ -121,6 +126,7 @@ export const Label = styled.div`
     font-size: 8px;
     line-height: 8px;
     opacity: 0.75;
+    margin-top: -1px;
   }
 `;
 
@@ -135,6 +141,7 @@ export const Value = styled.div<{
     animation: ${animationPulse} 1s infinite;
   `}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-top: 1px;
     font-size: 18px;
     line-height: 18px;
   }

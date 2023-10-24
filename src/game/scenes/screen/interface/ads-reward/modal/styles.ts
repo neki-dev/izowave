@@ -1,41 +1,109 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceLayer } from '~type/interface';
-
-export const Overlay = styled.div`
-  position: fixed;
-  background: rgba(0, 0, 0, 0.85);
-  inset: 0;
-  z-index: ${InterfaceLayer.OVERLAY};
-  pointer-events: all;
-`;
+import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
 
 export const Container = styled.div`
-  position: absolute;
   color: #fff;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-export const Buttons = styled.div`
+  background: rgba(67, 0, 143, 0.75);
+  border-radius: 5px;
   display: flex;
-  margin-top: 25px;
-  gap: 15px;
+  align-items: center;
+  pointer-events: all;
+  overflow: hidden;
 `;
 
-export const Text = styled.div`
-  white-space: pre;
+export const Content = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 16px 18px;
+  flex: 1;
+  &:hover {
+    cursor: pointer;
+    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 14px 16px;
+  }
+`;
+
+export const Group = styled.div`
+`;
+
+export const IconPlay = styled.img`
+  width: 40px;
+  margin-right: 18px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 28px;
+    margin-right: 12px;
+  }
+`;
+
+export const Label = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: 1px;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-size: 10px;
+  line-height: 10px;
+  margin-top: -1px;
+  white-space: nowrap;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 9px;
+    line-height: 9px;
+  }
+`;
+
+export const Close = styled.div`
+  color: #fff;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-size: 13px;
+  line-height: 13px;
+  padding: 0 24px;
+  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  height: 100%;
+  display: flex;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+    background: ${InterfaceBackgroundColor.ERROR_DARK};
+  }
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    padding: 0 20px;
+  }
 `;
 
 export const Amounts = styled.div`
   display: flex;
-  gap: 5px;
-  margin-top: 15px;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    gap: 10px;
+    margin-top: 6px;
+  }
+`;
+
+export const Amount: any = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+Amount.Icon = styled.img`
+  margin-right: 8px;
+  width: 16px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    width: 12px;
+  }
+`;
+
+Amount.Value = styled.div`
+  color: #fff;
+  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-size: 15px;
+  line-height: 15px;
+  margin-top: -2px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    font-size: 14px;
+    line-height: 14px;
+    margin-top: -3px;
+  }
 `;

@@ -3,27 +3,25 @@ import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ENEMIES } from '~const/world/entities/enemies';
-import {
-  ENEMY_SPAWN_DISTANCE_FROM_BUILDING, ENEMY_SPAWN_DISTANCE_FROM_PLAYER, ENEMY_SPAWN_POSITIONS, ENEMY_SPAWN_POSITIONS_GRID,
-} from '~const/world/entities/enemy';
 import { LEVEL_PLANETS } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { aroundPosition, sortByMatrixDistance } from '~lib/dimension';
+import { Assets } from '~lib/assets';
+import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { hashString } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
+import { Spawner } from '~scene/world/spawner';
 import { Wave } from '~scene/world/wave';
 import { GameEvents, GameScene, GameState } from '~type/game';
 import { LiveEvents } from '~type/live';
 import {
-  IWorld, WorldEvents, WorldHint, WorldMode, WorldSavePayload,
+  IWorld, WorldEvents, WorldHint, WorldMode, WorldModeIcons, WorldSavePayload, WorldTimerParams,
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
@@ -31,13 +29,15 @@ import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
 import { IAssistant } from '~type/world/entities/npc/assistant';
-import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import {
-  ILevel, LevelData, SpawnTarget, Vector2D,
+  ILevel, LevelData, SpawnTarget, PositionAtWorld, PositionAtMatrix,
 } from '~type/world/level';
+import { ISpawner } from '~type/world/spawner';
 import { IWave, WaveEvents } from '~type/world/wave';
+
+Assets.RegisterImages(WorldModeIcons);
 
 export class World extends Scene implements IWorld {
   private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;
@@ -72,15 +72,17 @@ export class World extends Scene implements IWorld {
 
   private set builder(v) { this._builder = v; }
 
+  private _spawner: ISpawner;
+
+  public get spawner() { return this._spawner; }
+
+  private set spawner(v) { this._spawner = v; }
+
   private _camera: ICamera;
 
   public get camera() { return this._camera; }
 
   private set camera(v) { this._camera = v; }
-
-  public enemySpawnPositions: Vector2D[] = [];
-
-  private enemySpawnPositionsAnalog: Vector2D[] = [];
 
   private lifecyle: Phaser.Time.TimerEvent;
 
@@ -90,7 +92,10 @@ export class World extends Scene implements IWorld {
 
   private set deltaTime(v) { this._deltaTime = v; }
 
+  private timers: Phaser.Time.TimerEvent[] = [];
+
   private modes: Record<WorldMode, boolean> = {
+    [WorldMode.TIME_SCALE]: false,
     [WorldMode.BUILDING_INDICATORS]: false,
     [WorldMode.AUTO_REPAIR]: false,
     [WorldMode.PATH_TO_CRYSTAL]: false,
@@ -105,14 +110,16 @@ export class World extends Scene implements IWorld {
 
     this.level = new Level(this, data);
     this.camera = new Camera(this);
+    this.spawner = new Spawner(this);
 
+    this.timers = [];
     this.modes = {
+      [WorldMode.TIME_SCALE]: false,
       [WorldMode.BUILDING_INDICATORS]: false,
       [WorldMode.AUTO_REPAIR]: false,
       [WorldMode.PATH_TO_CRYSTAL]: false,
     };
 
-    this.generateEnemySpawnPositions();
     this.addEntityGroups();
   }
 
@@ -171,6 +178,54 @@ export class World extends Scene implements IWorld {
     this.lifecyle.paused = state;
   }
 
+  public getTimeScale() {
+    return this.lifecyle.timeScale;
+  }
+
+  public setTimeScale(scale: number) {
+    this.physics.world.timeScale = 1 / scale;
+
+    this.timers.forEach((timer) => {
+      // eslint-disable-next-line no-param-reassign
+      timer.timeScale = scale;
+    });
+  }
+
+  public addProgression(params: WorldTimerParams) {
+    const delay = params.frequence ?? 50;
+    const repeat = Math.ceil(params.duration / delay);
+
+    const timer = this.time.addEvent({
+      timeScale: this.getTimeScale(),
+      delay,
+      repeat,
+      callback: () => {
+        const left = timer.getRepeatCount() - 1;
+
+        if (params.onProgress) {
+          params.onProgress?.(left, repeat);
+        }
+        if (left <= 0) {
+          params.onComplete();
+          this.removeProgression(timer);
+        }
+      },
+    });
+
+    this.timers.push(timer);
+
+    return timer;
+  }
+
+  public removeProgression(timer: Phaser.Time.TimerEvent): void {
+    const index = this.timers.indexOf(timer);
+
+    if (index !== -1) {
+      timer.destroy();
+      this.timers.splice(index, 1);
+    }
+  }
+
   public setModeActive(mode: WorldMode, state: boolean) {
     this.modes[mode] = state;
 
@@ -202,56 +257,7 @@ export class World extends Scene implements IWorld {
     return this.entityGroups[type].getChildren() as T[];
   }
 
-  public spawnEnemy(variant: EnemyVariant): Nullable<IEnemy> {
-    const EnemyInstance = ENEMIES[variant];
-    const positionAtMatrix = this.getEnemySpawnPosition();
-    const enemy: IEnemy = new EnemyInstance(this, { positionAtMatrix });
-
-    return enemy;
-  }
-
-  private generateEnemySpawnPositions() {
-    this.enemySpawnPositions = this.level.readSpawnPositions(
-      SpawnTarget.ENEMY,
-      ENEMY_SPAWN_POSITIONS_GRID,
-    );
-
-    this.enemySpawnPositionsAnalog = [];
-    for (let x = 0; x < this.level.map.width; x++) {
-      for (let y = 0; y < this.level.map.height; y++) {
-        if (
-          x === 0
-          || x === this.level.map.width - 1
-          || y === 0
-          || y === this.level.map.height - 1
-        ) {
-          this.enemySpawnPositionsAnalog.push({ x, y });
-        }
-      }
-    }
-  }
-
-  public getEnemySpawnPosition() {
-    const buildings = this.getEntities<IBuilding>(EntityType.BUILDING);
-    let freePositions = this.enemySpawnPositions.filter((position) => (
-      Phaser.Math.Distance.BetweenPoints(position, this.player.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_PLAYER
-      && buildings.every((building) => (
-        Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= ENEMY_SPAWN_DISTANCE_FROM_BUILDING
-      ))
-    ));
-
-    if (freePositions.length === 0) {
-      freePositions = this.enemySpawnPositionsAnalog;
-    }
-
-    const closestPositions = sortByMatrixDistance(freePositions, this.player.positionAtMatrix)
-      .slice(0, ENEMY_SPAWN_POSITIONS);
-    const positionAtMatrix = Phaser.Utils.Array.GetRandom(closestPositions);
-
-    return positionAtMatrix;
-  }
-
-  public getFuturePosition(sprite: ISprite, seconds: number): Vector2D {
+  public getFuturePosition(sprite: ISprite, seconds: number): PositionAtWorld {
     const fps = this.game.loop.actualFps;
     const drag = 0.3 ** (1 / fps);
     const per = 1 - drag ** (seconds * fps);
@@ -308,9 +314,10 @@ export class World extends Scene implements IWorld {
     this.lifecyle = this.time.addEvent({
       delay: Number.MAX_SAFE_INTEGER,
       loop: true,
+      startAt: this.game.usedSave?.payload.world.time ?? 0,
     });
 
-    this.lifecyle.elapsed = this.game.usedSave?.payload.world.time ?? 0;
+    this.timers.push(this.lifecyle);
   }
 
   private addWaveManager() {
@@ -341,7 +348,10 @@ export class World extends Scene implements IWorld {
 
   private addPlayer() {
     const positionAtMatrix = this.game.usedSave?.payload.player
-      ? this.game.usedSave.payload.player.position
+      ? {
+        ...this.game.usedSave.payload.player.position,
+        z: 1, // PATCH: For saves with old version
+      }
       : Phaser.Utils.Array.GetRandom(
         this.level.readSpawnPositions(SpawnTarget.PLAYER),
       );
@@ -383,7 +393,7 @@ export class World extends Scene implements IWorld {
       return Phaser.Utils.Array.GetRandom(freePositions);
     };
 
-    const create = (position: Vector2D) => {
+    const create = (position: PositionAtMatrix) => {
       const variants = LEVEL_PLANETS[this.level.planet].CRYSTAL_VARIANTS;
 
       new Crystal(this, {

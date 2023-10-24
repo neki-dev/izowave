@@ -1,7 +1,7 @@
 import { ILive } from '~type/live';
 import { IEnemyTarget } from '~type/world/entities/npc/enemy';
 import { ISprite } from '~type/world/entities/sprite';
-import { Vector2D } from '~type/world/level';
+import { PositionAtMatrix } from '~type/world/level';
 
 export interface IPlayer extends ISprite, IEnemyTarget {
   /**
@@ -35,9 +35,19 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   readonly upgradeLevel: Record<PlayerSkill, number>
 
   /**
+   * Unlocked superskills.
+   */
+  readonly unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+
+  /**
    * Active superskills.
    */
   readonly activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>>
+
+  /**
+   * Last visible position at matrix.
+   */
+  readonly lastVisiblePosition: PositionAtMatrix
 
   /**
    * Upgrade player skill.
@@ -85,6 +95,11 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   useSuperskill(type: PlayerSuperskill): void
 
   /**
+   * Unlock next superskill.
+   */
+  unlockSuperskill(): void
+
+  /**
    * Get current cost of superskill.
    * @param type - Superskill
    */
@@ -123,6 +138,14 @@ export enum PlayerSkillIcon {
   ATTACK_SPEED = 'player/skills/attack_speed',
 }
 
+export enum PlayerSuperskillIcon {
+  INVISIBLE = 'player/superskills/invisible',
+  FROST = 'player/superskills/frost',
+  SHIELD = 'player/superskills/shield',
+  RAGE = 'player/superskills/rage',
+  FIRE = 'player/superskills/fire',
+}
+
 export enum PlayerAudio {
   UPGRADE = 'player/upgrade',
   WALK = 'player/walk',
@@ -131,6 +154,11 @@ export enum PlayerAudio {
   DAMAGE_2 = 'player/damage_2',
   DAMAGE_3 = 'player/damage_3',
   SUPERSKILL = 'player/superskill',
+}
+
+export enum PlayerSkillTarget {
+  CHARACTER = 'CHARACTER',
+  ASSISTANT = 'ASSISTANT',
 }
 
 export enum PlayerSkill {
@@ -143,7 +171,17 @@ export enum PlayerSkill {
   ATTACK_SPEED = 'ATTACK_SPEED',
 }
 
+export enum PlayerSuperskill {
+  SHIELD = 'SHIELD',
+  INVISIBLE = 'INVISIBLE',
+  FROST = 'FROST',
+  FIRE = 'FIRE',
+  RAGE = 'RAGE',
+}
+
 export enum PlayerEvents {
+  USE_SUPERSKILL = 'use_superskill',
+  UNLOCK_SUPERSKILL = 'unlock_superskill',
   UPGRADE_SKILL = 'upgrade_skill',
   UPDATE_EXPERIENCE = 'update_experience',
   UPDATE_SCORE = 'update_score',
@@ -158,7 +196,7 @@ export enum MovementDirection {
 }
 
 export type PlayerData = {
-  positionAtMatrix: Vector2D
+  positionAtMatrix: PositionAtMatrix
 };
 
 export type PlayerSkillInfo = {
@@ -172,24 +210,13 @@ export type PlayerSkillData = {
   currentLevel: number
 };
 
-export enum PlayerSkillTarget {
-  CHARACTER = 'CHARACTER',
-  ASSISTANT = 'ASSISTANT',
-}
-
-export enum PlayerSuperskill {
-  FROST = 'FROST',
-  SHIELD = 'SHIELD',
-  RAGE = 'RAGE',
-  FIRE = 'FIRE',
-}
-
 export type PlayerSavePayload = {
-  position: Vector2D
+  position: PositionAtMatrix
   score: number
   experience: number
   resources: number
   kills: number
   health: number
+  unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>>
   upgradeLevel: Record<PlayerSkill, number>
 };

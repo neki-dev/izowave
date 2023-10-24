@@ -28,33 +28,12 @@ export const Skills: React.FC = () => {
     game.resume();
   };
 
-  const onKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      onClose();
-      event.stopPropagation();
-      event.preventDefault();
-    }
-  };
-
-  useEffect(() => {
-    if (!isOpened) {
-      return;
-    }
-
-    document.addEventListener('keyup', onKeyPress);
-
-    return () => {
-      document.removeEventListener('keyup', onKeyPress);
-    };
-  }, [isOpened]);
-
-  useEffect(
-    () => Tutorial.Bind(TutorialStep.UPGRADE_SKILL, {
+  useEffect(() => (
+    Tutorial.Bind(TutorialStep.UPGRADE_SKILL, {
       beg: () => setHint(true),
       end: () => setHint(false),
-    }),
-    [],
-  );
+    })
+  ), []);
 
   return (
     <>

@@ -11,6 +11,7 @@ export const Wrapper = styled.div`
   align-items: flex-end;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     margin-top: 30px;
+    flex-direction: row;
   }
 `;
 
@@ -36,6 +37,9 @@ export const Link = styled.a`
 
 export const Version = styled.div`
   margin-top: 8px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-top: 5px;
+  }
 `;
 
 export const Discord = styled.a`
@@ -56,6 +60,7 @@ export const Discord = styled.a`
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 3px 6px;
+    margin: 0 0 0 10px;
   }
 `;
 

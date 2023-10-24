@@ -1,8 +1,9 @@
 import { useClick } from 'phaser-react-ui';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { PLAYER_SKILLS } from '~const/world/entities/player';
 import { phrase } from '~lib/lang';
+import { Tutorial } from '~lib/tutorial';
 import { mapEntries } from '~lib/utils';
 import { PlayerSkillTarget } from '~type/world/entities/player';
 
@@ -20,9 +21,27 @@ export const Modal: React.FC<Props> = ({ onClose }) => {
   const refContainer = useRef<HTMLDivElement>(null);
   const refClose = useRef<HTMLDivElement>(null);
 
+  const onKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      onClose();
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  };
+
   useClick(refContainer, 'down', () => {}, []);
   useClick(refClose, 'down', onClose, []);
   useClick(refOverlay, 'down', onClose, []);
+
+  useEffect(() => {
+    Tutorial.ToggleHintsVisible(false);
+    document.addEventListener('keyup', onKeyPress);
+
+    return () => {
+      Tutorial.ToggleHintsVisible(true);
+      document.removeEventListener('keyup', onKeyPress);
+    };
+  }, []);
 
   return (
     <>

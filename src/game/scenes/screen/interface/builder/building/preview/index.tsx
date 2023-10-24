@@ -10,7 +10,7 @@ import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 
 import {
-  Container, Number, Image, Newest, Info, Frame,
+  Container, Number, Image, Info, Frame,
 } from './styles';
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
   isGlowing?: boolean
 };
 
-export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
+export const Preview: React.FC<Props> = ({ number, variant }) => {
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();
@@ -28,16 +28,7 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
 
   const [isAllow, setAllow] = useState(false);
   const [isActive, setActive] = useState(false);
-  const [isUsed, setUsed] = useState(false);
   const [isUsable, setUsable] = useState(false);
-
-  const isNewest = !isUsed && isAllow && !world.game.usedSave;
-
-  const onMouseEnter = () => {
-    if (isAllow && !isMobile) {
-      setUsed(true);
-    }
-  };
 
   useClick(refContainer, 'down', () => {
     if (world.builder.variant === variant) {
@@ -61,23 +52,15 @@ export const Preview: React.FC<Props> = ({ number, variant, isGlowing }) => {
     setActive(currentIsActive);
     setAllow(currentIsAllow);
     setUsable(currentIsUsable);
-    if (currentIsActive) {
-      setUsed(true);
-    }
   }, []);
 
   return (
     <Container
       ref={refContainer}
-      onMouseEnter={onMouseEnter}
       $allow={isAllow}
-      $glow={isGlowing}
       $active={isActive}
       $usable={isUsable}
     >
-      {isNewest && (
-        <Newest>new</Newest>
-      )}
       {!isMobile && (
         <Number>{number}</Number>
       )}

@@ -19,6 +19,7 @@ export const Placeholder = styled.div`
   padding: 9px 12px;
   margin-top: 20px;
   white-space: pre;
+  z-index: 2;
   &::after {
     position: absolute;
     content: '';
@@ -28,13 +29,6 @@ export const Placeholder = styled.div`
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  }
-`;
-
-export const Icon = styled.img`
-  width: 16px;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    width: 12px;
   }
 `;
 
@@ -57,12 +51,20 @@ export const Container = styled.div<{
     &:hover {
       cursor: pointer;
       ${(props) => (!props.$active && css`
-        background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+        background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};
       `)};
+    }
+    [role=texture] {
+      width: 16px;
+      height: 16px;
     }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 32px;
     height: 32px;
+    [role=texture] {
+      width: 12px;
+      height: 12px;
+    }
   }
 `;

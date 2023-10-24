@@ -53,14 +53,14 @@ export interface ILevel extends ITileMatrix {
    * @param target - Spawn target
    * @param grid - Grid size
    */
-  readSpawnPositions(target: SpawnTarget, grid?: number): Vector2D[]
+  readSpawnPositions(target: SpawnTarget, grid?: number): PositionAtMatrix[]
 
   /**
    * Check is presence of tile between world positions.
    * @param positionA - Position at world
    * @param positionB - Position at world
    */
-  hasTilesBetweenPositions(positionA: Vector2D, positionB: Vector2D): boolean
+  hasTilesBetweenPositions(positionA: PositionAtWorld, positionB: PositionAtWorld): boolean
 
   /**
    * Get biome by type.
@@ -72,7 +72,7 @@ export interface ILevel extends ITileMatrix {
    * Get free adjacent tiles around source position.
    * @param position - Source position
    */
-  getFreeAdjacentTiles(position: Vector3D): Vector2D[]
+  getFreeAdjacentTiles(position: PositionAtMatrix): PositionAtMatrix[]
 
   /**
    * Get data for saving.
@@ -86,13 +86,6 @@ export enum TileType {
   CRYSTAL = 'CRYSTAL',
   SCENERY = 'SCENERY',
 }
-
-export type TileMeta = {
-  origin: number
-  persperctive: number
-  width: number
-  height: number
-};
 
 export enum SpawnTarget {
   ENEMY = 'ENEMY',
@@ -139,9 +132,9 @@ export enum LevelSceneryTexture {
 }
 
 export enum LevelTilesetTexture {
-  EARTH = 'level/earth/tileset',
-  MOON = 'level/moon/tileset',
-  MARS = 'level/mars/tileset',
+  EARTH = 'level/earth/tiles',
+  MOON = 'level/moon/tiles',
+  MARS = 'level/mars/tiles',
 }
 
 export enum BiomeType {
@@ -153,12 +146,17 @@ export enum BiomeType {
   SNOW = 'SNOW',
 }
 
-export type Vector2D = {
+export type PositionAtWorld = {
   x: number
   y: number
 };
 
-export type Vector3D = {
+export type PositionAtMatrix = {
+  x: number
+  y: number
+};
+
+export type TilePosition = {
   x: number
   y: number
   z: number

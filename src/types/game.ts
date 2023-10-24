@@ -1,5 +1,4 @@
 import { IScreen } from '~type/screen';
-import { SDKAdsType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { TutorialStep, TutorialStepState } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -100,13 +99,6 @@ export interface IGame extends Phaser.Game {
   isDesktop(): boolean
 
   /**
-   * Show game ad.
-   * @param type - Ad type
-   * @param callback - Complete callback
-   */
-  showAds(type: SDKAdsType, callback?: () => void): void
-
-  /**
    * Get data for saving.
    */
   getSavePayload(): GameSavePayload
@@ -149,6 +141,7 @@ export enum GameDifficulty {
 export enum GameFlag {
   NO_BLOOD = 'NO_BLOOD',
   ADS = 'ADS',
+  AUTO_ORIENTATION = 'AUTO_ORIENTATION',
 }
 
 export enum GamePlatform {
