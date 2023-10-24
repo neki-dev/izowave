@@ -55,7 +55,3 @@ img {
   top: 75%;
   transform: translate(-50%, -50%);
 }
-
-.no-hints [role=hint] {
-  display: none;
-}

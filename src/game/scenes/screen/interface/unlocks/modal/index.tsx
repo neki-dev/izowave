@@ -1,4 +1,4 @@
-import { useClick, useGame, useScene } from 'phaser-react-ui';
+import { useClick, useScene } from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -6,7 +6,8 @@ import React, {
 import { Feature } from '..';
 import { Environment } from '~lib/environment';
 import { phrase } from '~lib/lang';
-import { GameFlag, GameScene, IGame } from '~type/game';
+import { Tutorial } from '~lib/tutorial';
+import { GameFlag, GameScene } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerSuperskill } from '~type/world/entities/player';
 
@@ -22,7 +23,6 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = ({ features, onClose }) => {
-  const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [unlocks, setUnlocks] = useState(features);
@@ -59,11 +59,11 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
   }, [features]);
 
   useEffect(() => {
-    game.toggleAllHints(false);
+    Tutorial.ToggleHintsVisible(false);
     document.addEventListener('keyup', onKeyPress);
 
     return () => {
-      game.toggleAllHints(true);
+      Tutorial.ToggleHintsVisible(true);
       document.removeEventListener('keyup', onKeyPress);
     };
   }, []);

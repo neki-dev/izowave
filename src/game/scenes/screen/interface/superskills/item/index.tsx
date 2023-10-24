@@ -1,7 +1,7 @@
 import {
   useGame, useScene, useSceneUpdate, useInteraction, Texture, useEvent,
 } from 'phaser-react-ui';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
@@ -10,7 +10,7 @@ import { IWorld } from '~type/world';
 import { PlayerEvents, PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
 
 import {
-  Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock, Newest,
+  Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,
 } from './styles';
 
 type Props = {
@@ -23,7 +23,6 @@ export const Item: React.FC<Props> = ({ type }) => {
   const scene = useScene(GameScene.SYSTEM);
 
   const [isAllow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
-  const [isNewest, setNewest] = useState(false);
   const [isPaused, setPaused] = useState(false);
   const [progress, setProgress] = useState<Nullable<Phaser.Time.TimerEvent>>(null);
   const [cost, setCost] = useState(0);
@@ -35,18 +34,6 @@ export const Item: React.FC<Props> = ({ type }) => {
       world.player.useSuperskill(type);
     }
   }, [type, isAllow]);
-
-  useEffect(() => {
-    if (isAllow && !world.game.usedSave) {
-      setNewest(true);
-    }
-  }, [isAllow]);
-
-  useEffect(() => {
-    if (isHover) {
-      setNewest(false);
-    }
-  }, [isHover]);
 
   useEvent(world.player, PlayerEvents.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
     if (superskill === type) {
@@ -82,11 +69,7 @@ export const Item: React.FC<Props> = ({ type }) => {
             }}
           />
         )}
-        {isAllow ? (
-          isNewest && (
-            <Newest />
-          )
-        ) : (
+        {!isAllow && (
           <Lock>
             <IconLock src='assets/sprites/hud/lock.png' />
           </Lock>

@@ -7,12 +7,6 @@ import {
   InterfaceFont,
 } from '~type/interface';
 
-const animationBlink = keyframes`
-  0% { background: ${InterfaceBackgroundColor.SUCCESS}; }
-  50% { background: ${InterfaceBackgroundColor.SUCCESS_LIGHT}; }
-  100% { background: ${InterfaceBackgroundColor.SUCCESS}; }
-`;
-
 const animationTimeout = keyframes`
   0% { top: 0 }
   100% { top: 100% }
@@ -63,18 +57,6 @@ export const Lock = styled.div`
   z-index: 3;
   right: -4px;
   top: -4px;
-`;
-
-export const Newest = styled.div`
-  position: absolute;
-  border-radius: 50%;
-  width: 10px;
-  height: 10px;
-  z-index: 3;
-  right: 2px;
-  top: 2px;
-  background: ${InterfaceBackgroundColor.SUCCESS};
-  animation: ${animationBlink} 1s infinite;
 `;
 
 export const IconLock = styled.img`

@@ -2,6 +2,7 @@ import { useClick, useGame } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
 import { phrase } from '~lib/lang';
+import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
 import { GameStat, IGame } from '~type/game';
 
@@ -25,10 +26,10 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
   }, []);
 
   useEffect(() => {
-    game.toggleAllHints(false);
+    Tutorial.ToggleHintsVisible(false);
 
     return () => {
-      game.toggleAllHints(true);
+      Tutorial.ToggleHintsVisible(true);
     };
   }, []);
 

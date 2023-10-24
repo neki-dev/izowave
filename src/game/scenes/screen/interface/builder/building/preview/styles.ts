@@ -1,13 +1,7 @@
-import styled, { css, keyframes } from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
 import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
-
-const animationBlink = keyframes`
-  0% { background: ${InterfaceBackgroundColor.SUCCESS}; }
-  50% { background: ${InterfaceBackgroundColor.SUCCESS_DARK}; }
-  100% { background: ${InterfaceBackgroundColor.SUCCESS}; }
-`;
 
 export const Container = styled.div<{
   $allow?: boolean
@@ -22,14 +16,14 @@ export const Container = styled.div<{
       background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
     `)}
   ` : css`
-      opacity: 0.5;
+      opacity: 0.35;
       filter: grayscale(100%);
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
     background: ${InterfaceBackgroundColor.BLACK};
   `)}
-  [role=hint] + &{
+  [role=hint]:not(.hidden) + &{
     box-shadow: 0 0 50px 20px #fff;
   }
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
@@ -64,24 +58,6 @@ export const Info = styled.div`
   justify-content: center;
   padding: 5px 0;
   border-radius: 0 0 5px 5px;
-`;
-
-export const Newest = styled.div`
-  position: absolute;
-  color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
-  font-size: 9px;
-  line-height: 9px;
-  left: -3px;
-  top: -3px;
-  border-radius: 5px;
-  background: ${InterfaceBackgroundColor.SUCCESS};
-  padding: 2px 4px 3px 4px;
-  animation: ${animationBlink} 1s infinite;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    font-size: 8px;
-    line-height: 8px;
-  }
 `;
 
 export const Number = styled.div`

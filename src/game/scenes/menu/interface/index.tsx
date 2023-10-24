@@ -1,8 +1,7 @@
-import { useGame } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
+import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
-import { IGame } from '~type/game';
 import { MenuPage } from '~type/menu';
 
 import { Content } from './content';
@@ -17,15 +16,13 @@ type Props = {
 };
 
 export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
-  const game = useGame<IGame>();
-
   const [page, setPage] = useState(defaultPage);
 
   useEffect(() => {
-    game.toggleAllHints(false);
+    Tutorial.ToggleHintsVisible(false);
 
     return () => {
-      game.toggleAllHints(true);
+      Tutorial.ToggleHintsVisible(true);
     };
   }, []);
 
