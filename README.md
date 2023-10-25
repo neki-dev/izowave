@@ -18,6 +18,6 @@ And also upgrade skills of your character and his assistant.
 
 .
 
-![Preview 1](./docs/preview/full.png)
-| ![Preview 2](./docs/preview/snap01.png) | ![Preview 3](./docs/preview/snap02.png) | ![Preview 4](./docs/preview/snap03.png) |
-|---|---|---|
+![Preview 1](./docs/preview/snap01.png)
+| ![Preview 2](./docs/preview/snap02.png) | ![Preview 3](./docs/preview/snap03.png) | ![Preview 4](./docs/preview/snap04.png) | ![Preview 4](./docs/preview/snap05.png) |
+|---|---|---|---|
