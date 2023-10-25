@@ -142,6 +142,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeIndicatorsContainer();
       this.removeAlertIcon();
       this.removeUpgradeIcon();
+      this.removeActionArea();
 
       this.unfocus();
       this.unselect();
@@ -149,9 +150,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.spawner.clearCache();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
       this.live.removeAllListeners();
-
-      this.scene.getEntitiesGroup(EntityType.BUILDING)
-        .emit(BuildingEvents.BREAK, this);
     });
   }
 
@@ -719,6 +717,15 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.actionsArea.updateDisplayOrigin();
   }
 
+  private removeActionArea() {
+    if (!this.actionsArea) {
+      return;
+    }
+
+    this.actionsArea.destroy();
+    this.actionsArea = null;
+  }
+
   public break() {
     this.scene.sound.play(BuildingAudio.DEAD);
 
@@ -731,7 +738,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       });
     }
 
+    const group = this.scene.getEntitiesGroup(EntityType.BUILDING);
+
     this.destroy();
+
+    group.emit(BuildingEvents.BREAK, this);
   }
 
   private startBuildProcess(duration: number) {
