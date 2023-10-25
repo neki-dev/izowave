@@ -47,6 +47,7 @@ export enum EnemyTexture {
   EXPLOSIVE = 'enemy/explosive',
   STRANGER = 'enemy/stranger',
   ADHERENT = 'enemy/adherent',
+  TELEPATH = 'enemy/telepath',
 }
 
 export enum EnemyVariant {
@@ -61,6 +62,7 @@ export enum EnemyVariant {
   EXPLOSIVE = 'EXPLOSIVE',
   STRANGER = 'STRANGER',
   ADHERENT = 'ADHERENT',
+  TELEPATH = 'TELEPATH',
 }
 
 export type EnemyTexturesMeta = Record<EnemyTexture, {

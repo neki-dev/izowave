@@ -217,7 +217,7 @@ export class Enemy extends NPC implements IEnemy {
     }
   }
 
-  public onDamage(amount: number): void {
+  public onDamage(amount: number) {
     if (this.scene.game.isSettingEnabled(GameSettings.SHOW_DAMAGE)) {
       this.updateDamageLabel(amount);
     }

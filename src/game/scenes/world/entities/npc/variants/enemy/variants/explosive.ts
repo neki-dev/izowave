@@ -12,6 +12,8 @@ import {
 
 import { Enemy } from '../enemy';
 
+const EXPLOSION_RADIUS = 70;
+
 export class EnemyExplosive extends Enemy {
   static SpawnWaveRange = [7];
 
@@ -28,13 +30,13 @@ export class EnemyExplosive extends Enemy {
   }
 
   public onDead() {
-    this.createExplosion(70);
+    this.createExplosion();
     super.onDead();
   }
 
-  private createExplosion(radius: number) {
+  private createExplosion() {
     const position = this.getBottomFace();
-    const d = radius * 2;
+    const d = EXPLOSION_RADIUS * 2;
     const area = this.scene.add.ellipse(position.x, position.y, d, d * LEVEL_MAP_PERSPECTIVE);
 
     area.setFillStyle(0xff0000, 0.25);
@@ -57,8 +59,8 @@ export class EnemyExplosive extends Enemy {
       if (target !== this) {
         const distance = getIsometricDistance(position, target.getBottomFace());
 
-        if (distance <= radius) {
-          const multiplier = Math.min(1.0, 0.5 + (1 - (distance / radius)));
+        if (distance <= EXPLOSION_RADIUS) {
+          const multiplier = Math.min(1.0, 0.5 + (1 - (distance / EXPLOSION_RADIUS)));
 
           target.live.damage(this.damage * multiplier);
         }

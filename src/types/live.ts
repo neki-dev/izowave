@@ -38,7 +38,7 @@ export interface ILive extends Phaser.Events.EventEmitter {
   heal(): void
 
   /**
-   * Add current health amount.
+   * Add health amount.
    * @param amount - Health amount
    */
   addHealth(amount: number): void

@@ -45,6 +45,11 @@ export const ENEMY_TEXTURE_META: EnemyTexturesMeta = {
     height: 40,
     gamut: 6,
   },
+  [EnemyTexture.TELEPATH]: {
+    width: 32,
+    height: 40,
+    gamut: 6,
+  },
   [EnemyTexture.STRANGER]: {
     width: 32,
     height: 40,
