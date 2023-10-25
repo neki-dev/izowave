@@ -272,27 +272,6 @@ export class World extends Scene implements IWorld {
     };
   }
 
-  public getSavePayload(): WorldSavePayload {
-    return {
-      time: this.getTime(),
-      crystals: this.getEntities<ICrystal>(EntityType.CRYSTAL)
-        .map((crystal) => crystal.getSavePayload()),
-      buildings: this.getEntities<IBuilding>(EntityType.BUILDING)
-        .map((building) => building.getSavePayload()),
-    };
-  }
-
-  private loadSavePayload(data: WorldSavePayload) {
-    data.buildings.forEach((buildingData) => {
-      const building = this.builder.createBuilding({
-        variant: buildingData.variant,
-        positionAtMatrix: buildingData.position,
-      });
-
-      building.loadSavePayload(buildingData);
-    });
-  }
-
   private addEntityGroups() {
     this.entityGroups = {
       [EntityType.CRYSTAL]: this.add.group(),
@@ -431,6 +410,27 @@ export class World extends Scene implements IWorld {
 
         create(position);
       }
+    });
+  }
+
+  public getSavePayload(): WorldSavePayload {
+    return {
+      time: this.getTime(),
+      crystals: this.getEntities<ICrystal>(EntityType.CRYSTAL)
+        .map((crystal) => crystal.getSavePayload()),
+      buildings: this.getEntities<IBuilding>(EntityType.BUILDING)
+        .map((building) => building.getSavePayload()),
+    };
+  }
+
+  private loadSavePayload(data: WorldSavePayload) {
+    data.buildings.forEach((buildingData) => {
+      const building = this.builder.createBuilding({
+        variant: buildingData.variant,
+        positionAtMatrix: buildingData.position,
+      });
+
+      building.loadSavePayload(buildingData);
     });
   }
 }
