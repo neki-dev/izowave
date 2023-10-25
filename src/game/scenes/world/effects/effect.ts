@@ -21,7 +21,9 @@ export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
     super(scene, position.x, position.y, texture, staticFrame ?? 0);
     scene.add.existing(this);
 
-    this.setDepth(depth ?? position.y);
+    if (depth) {
+      this.setDepth(depth);
+    }
 
     if (staticFrame === undefined) {
       this.anims.create({
