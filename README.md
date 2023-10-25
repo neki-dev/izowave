@@ -14,7 +14,6 @@ And also upgrade skills of your character and his assistant.
 ## 🎮 [PLAY NOW](https://izowave.neki.guru/)
   * *Itch.io* / https://neki-dev.itch.io/izowave
   * *CrazyGames* / https://www.crazygames.com/game/izowave---build-and-defence
-  * *GameJolt* / https://gamejolt.com/games/izowave/822933
 
 .
 
