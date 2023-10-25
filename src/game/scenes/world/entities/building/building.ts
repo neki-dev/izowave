@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTROL_KEY } from '~const/controls';
-import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
+import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
@@ -695,7 +695,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     const position = this.getBottomFace();
 
     this.actionsArea = this.scene.add.ellipse(position.x, position.y);
-    this.actionsArea.setDepth(WORLD_DEPTH_EFFECT);
     this.actionsArea.setFillStyle(0xffffff, 0.3);
     this.actionsArea.setVisible(false);
 

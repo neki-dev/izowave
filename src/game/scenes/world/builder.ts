@@ -418,7 +418,6 @@ export class Builder extends EventEmitter implements IBuilder {
 
     this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_MAP_PERSPECTIVE);
     this.buildActionRadius.setFillStyle(0xffffff, 0.2);
-    this.buildActionRadius.setDepth(WORLD_DEPTH_GRAPHIC);
   }
 
   private createBuildControls() {

@@ -715,7 +715,6 @@ export class Player extends Sprite implements IPlayer {
     }
 
     this.pathToCrystal = this.scene.add.graphics();
-    this.pathToCrystal.setDepth(WORLD_DEPTH_EFFECT);
   }
 
   private removePathToCrystal() {
