@@ -201,7 +201,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const start = BUILDINGS[variant].AllowByWave ?? 1;
     const limit = getStage(start, this.scene.wave.number);
 
-    return limit;
+    return Math.min(limit, DIFFICULTY.BUILDING_LIMITED_BOUND);
   }
 
   public getBuildingsByVariant<T extends IBuilding>(variant: BuildingVariant) {
