@@ -76,6 +76,11 @@ export interface IGame extends Phaser.Game {
   finishGame(): void
 
   /**
+   * Get record stat from storage
+   */
+  getRecordStat(): Nullable<GameStat>
+
+  /**
    * Get difficylty multiplier by settings.
    */
   getDifficultyMultiplier(): number

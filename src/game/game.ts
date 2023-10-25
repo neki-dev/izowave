@@ -379,9 +379,9 @@ export class Game extends Phaser.Game implements IGame {
     }
   }
 
-  private getRecordStat(): Nullable<GameStat> {
+  public getRecordStat(): Nullable<GameStat> {
     try {
-      const recordValue = localStorage.getItem(`BEST_STAT.${this.difficulty}`);
+      const recordValue = localStorage.getItem(this.getStatStorageKey());
 
       return recordValue && JSON.parse(recordValue);
     } catch (error) {
@@ -396,7 +396,7 @@ export class Game extends Phaser.Game implements IGame {
       [param]: Math.max(stat[param], record?.[param] ?? 0),
     }), {});
 
-    localStorage.setItem(`BEST_STAT.${this.difficulty}`, JSON.stringify(betterStat));
+    localStorage.setItem(this.getStatStorageKey(), JSON.stringify(betterStat));
   }
 
   private getCurrentStat(): GameStat {
@@ -406,6 +406,10 @@ export class Game extends Phaser.Game implements IGame {
       kills: this.world.player.kills,
       lived: this.world.getTime() / 1000 / 60,
     };
+  }
+
+  private getStatStorageKey() {
+    return `BEST_STAT.${this.world.level.planet}.${this.difficulty}`;
   }
 
   public getSavePayload(): GameSavePayload {

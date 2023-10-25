@@ -8,7 +8,7 @@ import {
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from '~const/world/entities/player';
-import { LEVEL_MAP_TILE } from '~const/world/level';
+import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Analytics } from '~lib/analytics';
@@ -588,7 +588,7 @@ export class Player extends Sprite implements IPlayer {
 
         this.setVelocity(
           velocity.x,
-          velocity.y * LEVEL_MAP_TILE.persperctive,
+          velocity.y * LEVEL_MAP_PERSPECTIVE,
         );
       }
     }

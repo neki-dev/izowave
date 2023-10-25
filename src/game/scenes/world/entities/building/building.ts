@@ -4,7 +4,7 @@ import { CONTROL_KEY } from '~const/controls';
 import { WORLD_DEPTH_EFFECT, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
-import { LEVEL_MAP_TILE } from '~const/world/level';
+import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
 import { Assets } from '~lib/assets';
@@ -716,7 +716,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     const d = this.getActionsRadius() * 2;
 
-    this.actionsArea.setSize(d, d * LEVEL_MAP_TILE.persperctive);
+    this.actionsArea.setSize(d, d * LEVEL_MAP_PERSPECTIVE);
     this.actionsArea.updateDisplayOrigin();
   }
 

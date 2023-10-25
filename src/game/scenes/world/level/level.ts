@@ -9,6 +9,7 @@ import {
   LEVEL_SCENERY_TILE,
   LEVEL_PLANETS,
   LEVEL_SEED_SIZE,
+  LEVEL_MAP_PERSPECTIVE,
 } from '~const/world/level';
 import { Assets } from '~lib/assets';
 import { interpolate } from '~lib/dimension';
@@ -214,10 +215,11 @@ export class Level extends TileMatrix implements ILevel {
   }
 
   private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
-    const sizeInPixel = Math.max(this.scene.game.canvas.clientWidth, this.scene.game.canvas.clientHeight) * 0.5;
-    const offset = Math.ceil(sizeInPixel / (LEVEL_MAP_TILE.height * 0.5));
-    const sizeInTiles = offset * 2 + LEVEL_MAP_SIZE;
-    const position = Level.ToWorldPosition({ x: -offset, y: -offset }, 0);
+    const tileAngle = Math.atan2(1 / LEVEL_MAP_PERSPECTIVE, 1);
+    const visibleDiagonal = (this.scene.game.canvas.clientWidth / 2) / Math.sin(tileAngle);
+    const edgeSize = Math.ceil(visibleDiagonal / LEVEL_MAP_TILE.edgeLength);
+    const sizeInTiles = (edgeSize * 2) + LEVEL_MAP_SIZE;
+    const position = Level.ToWorldPosition({ x: -edgeSize, y: -edgeSize }, 0);
 
     const layer = tilemap.createBlankLayer(
       'falloff',
@@ -244,7 +246,12 @@ export class Level extends TileMatrix implements ILevel {
 
     for (let y = 0; y < sizeInTiles; y++) {
       for (let x = 0; x < sizeInTiles; x++) {
-        if (x < offset || x >= sizeInTiles - offset || y < offset || y >= sizeInTiles - offset) {
+        if (
+          x < edgeSize
+          || x >= sizeInTiles - edgeSize
+          || y < edgeSize
+          || y >= sizeInTiles - edgeSize
+        ) {
           layer.putTileAt(index, x, y, false);
         }
       }

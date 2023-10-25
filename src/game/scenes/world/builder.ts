@@ -6,7 +6,7 @@ import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
 import { BUILDINGS } from '~const/world/entities/buildings';
-import { LEVEL_MAP_TILE } from '~const/world/level';
+import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '~const/world/level';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
@@ -201,7 +201,7 @@ export class Builder extends EventEmitter implements IBuilder {
     const start = BUILDINGS[variant].AllowByWave ?? 1;
     const limit = getStage(start, this.scene.wave.number);
 
-    return limit;
+    return Math.min(limit, DIFFICULTY.BUILDING_LIMITED_BOUND);
   }
 
   public getBuildingsByVariant<T extends IBuilding>(variant: BuildingVariant) {
@@ -416,7 +416,7 @@ export class Builder extends EventEmitter implements IBuilder {
 
     const d = BuildingInstance.Radius * 2;
 
-    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_MAP_TILE.persperctive);
+    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_MAP_PERSPECTIVE);
     this.buildActionRadius.setFillStyle(0xffffff, 0.2);
     this.buildActionRadius.setDepth(WORLD_DEPTH_GRAPHIC);
   }

@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import { DEBUG_MODS } from '~const/game';
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
-import { LEVEL_MAP_TILE } from '~const/world/level';
+import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
 import { isPositionsEqual, getIsometricAngle, getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
@@ -195,7 +195,7 @@ export class NPC extends Sprite implements INPC {
       this.flipX = (velocity.x > 0);
       this.setVelocity(
         velocity.x,
-        velocity.y * LEVEL_MAP_TILE.persperctive,
+        velocity.y * LEVEL_MAP_PERSPECTIVE,
       );
     }
   }

@@ -7,11 +7,17 @@ import { LevelBiomes, LevelPlanet } from '~type/world/level';
 
 export const LEVEL_MAP_SIZE = 100;
 
-export const LEVEL_MAP_TILE = {
+export const LEVEL_MAP_TILE_SIZE = {
   width: 42,
   height: 48,
+};
+
+export const LEVEL_MAP_PERSPECTIVE = (LEVEL_MAP_TILE_SIZE.height / 2) / LEVEL_MAP_TILE_SIZE.width;
+
+export const LEVEL_MAP_TILE = {
+  ...LEVEL_MAP_TILE_SIZE,
   origin: 0.75,
-  persperctive: (48 / 2) / 42,
+  edgeLength: 24.6,
   margin: 1,
   spacing: 2,
 };
