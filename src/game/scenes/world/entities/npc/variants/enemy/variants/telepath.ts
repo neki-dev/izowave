@@ -7,8 +7,6 @@ import { EnemyVariantData, EnemyTexture, IEnemy } from '~type/world/entities/npc
 import { Enemy } from '../enemy';
 
 const REGENERATION_RADIUS = 110;
-const REGENERATION_HEALTH_MULTIPLIER = 0.015;
-const REGENERATION_DURATION = 1000;
 
 export class EnemyTelepath extends Enemy {
   static SpawnWaveRange = [13];
@@ -22,7 +20,7 @@ export class EnemyTelepath extends Enemy {
       ...data,
       texture: EnemyTexture.TELEPATH,
       multipliers: {
-        health: 1.6,
+        health: 1.5,
         damage: 1.0,
         speed: 0.8,
       },
@@ -49,31 +47,13 @@ export class EnemyTelepath extends Enemy {
   }
 
   public onDamage(amount: number) {
-    this.activateRegeneration();
+    this.healNearbyEnemies(amount);
     super.onDamage(amount);
   }
 
-  private activateRegeneration() {
-    if (this.regenerateTimer) {
-      this.regenerateTimer.elapsed = 0;
-    } else {
-      this.regenerateArea.setVisible(true);
-      this.regenerateTimer = this.scene.addProgression({
-        duration: REGENERATION_DURATION,
-        onProgress: () => {
-          this.healNearbyEnemies();
-        },
-        onComplete: () => {
-          this.regenerateTimer = null;
-          this.regenerateArea.setVisible(false);
-        },
-      });
-    }
-  }
-
-  private healNearbyEnemies() {
+  private healNearbyEnemies(amount: number) {
     const position = this.getBottomFace();
-    const healthAmount = Math.floor(this.live.maxHealth * REGENERATION_HEALTH_MULTIPLIER);
+    const enemies: IEnemy[] = [];
 
     this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
       if (
@@ -83,10 +63,32 @@ export class EnemyTelepath extends Enemy {
         const distance = getIsometricDistance(position, enemy.getBottomFace());
 
         if (distance <= REGENERATION_RADIUS) {
-          enemy.live.addHealth(healthAmount);
+          enemies.push(enemy);
         }
       }
     });
+
+    if (enemies.length > 0) {
+      if (this.regenerateTimer) {
+        this.scene.removeProgression(this.regenerateTimer);
+      } else {
+        this.regenerateArea.setVisible(true);
+      }
+
+      this.regenerateTimer = this.scene.addProgression({
+        duration: 500,
+        onComplete: () => {
+          this.regenerateTimer = null;
+          this.regenerateArea.setVisible(false);
+        },
+      });
+
+      enemies.forEach((enemy) => {
+        const healthAmount = Math.floor(amount / enemies.length);
+
+        enemy.live.addHealth(healthAmount);
+      });
+    }
   }
 
   private addArea() {

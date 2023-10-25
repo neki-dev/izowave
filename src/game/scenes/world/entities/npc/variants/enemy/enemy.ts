@@ -300,6 +300,8 @@ export class Enemy extends NPC implements IEnemy {
       staticFrame: Phaser.Math.Between(0, 3),
     });
 
+    effect.setAlpha(0.8);
+
     this.scene.level.effectsOnGround.push(effect);
   }
 
