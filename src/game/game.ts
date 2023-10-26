@@ -16,7 +16,6 @@ import { World } from '~scene/world';
 import {
   GameDifficulty,
   GameEvents,
-  GameFlag,
   GameSavePayload,
   GameScene,
   GameSettings,
@@ -33,8 +32,6 @@ import { IWorld } from '~type/world';
 import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
-  private flags: GameFlag[];
-
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
   public isSaved: boolean = false;

@@ -14,7 +14,6 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
-import { PositionAtMatrix } from '~type/world/level';
 import {
   IWave, WaveAudio, WaveEvents, WaveSavePayload,
 } from '~type/world/wave';
@@ -224,16 +223,16 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.nextSpawnTimestamp = this.scene.getTime() + pause;
     this.spawnedEnemiesCount++;
 
-    this.scene.spawner.getSpawnPosition()
-      .then((positionAtMatrix) => {
-        this.createEnemy(variant, positionAtMatrix);
-      });
+    this.createEnemy(variant);
   }
 
-  private createEnemy(variant: EnemyVariant, positionAtMatrix: PositionAtMatrix) {
+  private createEnemy(variant: EnemyVariant) {
     const EnemyInstance = ENEMIES[variant];
 
-    new EnemyInstance(this.scene, { positionAtMatrix });
+    this.scene.spawner.getSpawnPosition()
+      .then((positionAtMatrix) => {
+        new EnemyInstance(this.scene, { positionAtMatrix });
+      });
   }
 
   private getEnemyVariant() {
