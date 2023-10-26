@@ -41,7 +41,7 @@ export const DIFFICULTY = {
   SUPERSKILL_INVISIBLE_COST: 25, // Cost of use
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
-  SUPERSKILL_FROST_DURATION: 6000, // Frost duration
+  SUPERSKILL_FROST_DURATION: 10000, // Frost duration
   SUPERSKILL_FIRE_COST: 30, // Cost of use
   SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
@@ -86,7 +86,7 @@ export const DIFFICULTY = {
    * Enemies
    */
 
-  ENEMY_HEALTH: 65, // Health
+  ENEMY_HEALTH: 60, // Health
   ENEMY_HEALTH_GROWTH: 0.35, // Health growth by wave number (Quadratic)
   ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL: 12, // Level for health growth retardation
   ENEMY_ARMOUR: 60, // Armour
@@ -132,7 +132,7 @@ export const DIFFICULTY = {
    * Building: Towers
    */
 
-  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.85, // Shot damage growth by level (Linear)
+  BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.9, // Shot damage growth by level (Linear)
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.375, // Frozen duration growth by level (Lienear)
   BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.2, // Shot speed growth by level (Linear)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
@@ -147,7 +147,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FIRE_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_FIRE_DELAY: 1400, // Pause between attacks
   BUILDING_TOWER_FIRE_DELAY_GROWTH: -0.12, // Pause growth by level (Linear)
-  BUILDING_TOWER_FIRE_DAMAGE: 40, // Attack damage
+  BUILDING_TOWER_FIRE_DAMAGE: 45, // Attack damage
   BUILDING_TOWER_FIRE_SHOT_SPEED: 300, // Shot speed
 
   /**
