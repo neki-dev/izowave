@@ -4,7 +4,8 @@ import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   ENEMY_PATH_BREAKPOINT,
-  ENEMY_TEXTURE_META,
+  ENEMY_SIZE_PARAMS,
+  ENEMY_TEXTURE_SIZE,
 } from '~const/world/entities/enemy';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
@@ -28,7 +29,7 @@ import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
 import { PositionAtWorld, TileType } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
-Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_TEXTURE_META[texture]);
+Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]]);
 
 export class Enemy extends NPC implements IEnemy {
   private _damage: number;
@@ -74,7 +75,7 @@ export class Enemy extends NPC implements IEnemy {
         maxLevel: DIFFICULTY.ENEMY_SPEED_GROWTH_MAX_LEVEL,
       }),
       body: {
-        ...ENEMY_TEXTURE_META[texture],
+        ...ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]],
         type: 'circle',
       },
     });
@@ -325,9 +326,10 @@ export class Enemy extends NPC implements IEnemy {
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       // Native body.center isn't working at current state
+      const size = ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[this.texture.key as EnemyTexture]];
       const position: PositionAtWorld = {
         x: this.x,
-        y: this.y - ENEMY_TEXTURE_META[this.texture.key as EnemyTexture].height / 2,
+        y: this.y - size.height / 2,
       };
 
       new Particles(this, {

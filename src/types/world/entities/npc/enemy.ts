@@ -65,11 +65,17 @@ export enum EnemyVariant {
   TELEPATH = 'TELEPATH',
 }
 
-export type EnemyTexturesMeta = Record<EnemyTexture, {
+export enum EnemySize {
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
+}
+
+export type EnemySizeParams = {
   width: number
   height: number
   gamut: number
-}>;
+};
 
 export type EnemyVariantData = {
   spawnEffect?: boolean
