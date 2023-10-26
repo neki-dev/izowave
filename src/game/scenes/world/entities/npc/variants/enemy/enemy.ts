@@ -3,9 +3,7 @@ import Phaser from 'phaser';
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
-  ENEMY_PATH_BREAKPOINT,
-  ENEMY_SIZE_PARAMS,
-  ENEMY_TEXTURE_SIZE,
+  ENEMY_PATH_BREAKPOINT, ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE,
 } from '~const/world/entities/enemy';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
@@ -19,17 +17,15 @@ import { IWorld } from '~type/world';
 import { EffectTexture, ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
-  IEnemyTarget,
-  EnemyData,
-  EnemyTexture,
-  IEnemy,
-  EnemyAudio,
+  IEnemyTarget, EnemyData, EnemyTexture, IEnemy, EnemyAudio,
 } from '~type/world/entities/npc/enemy';
 import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
 import { PositionAtWorld, TileType } from '~type/world/level';
 
 Assets.RegisterAudio(EnemyAudio);
-Assets.RegisterSprites(EnemyTexture, (texture) => ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]]);
+Assets.RegisterSprites(EnemyTexture, (texture) => (
+  ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]]
+));
 
 export class Enemy extends NPC implements IEnemy {
   private _damage: number;
