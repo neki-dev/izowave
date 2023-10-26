@@ -21,7 +21,7 @@ export const DIFFICULTY = {
 
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.55, // Damage growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.6, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade attack damage
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
@@ -169,7 +169,7 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_LAZER_COST: 80, // Building cost
-  BUILDING_TOWER_LAZER_HEALTH: 200, // Health
+  BUILDING_TOWER_LAZER_HEALTH: 300, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_RADIUS: 140, // Attack radius
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
