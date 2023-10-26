@@ -57,7 +57,7 @@ export class BuildingBooster extends Building implements IBuildingBooster {
     const info: BuildingParam[] = [{
       label: 'BUILDING_POWER',
       icon: BuildingIcon.POWER,
-      value: `+${this.power}%`,
+      value: `+${this.power * 100}%`,
     }];
 
     return super.getInfo().concat(info);
@@ -73,9 +73,9 @@ export class BuildingBooster extends Building implements IBuildingBooster {
 
   private onUpgrade() {
     this.power = progressionLinear({
-      defaultValue: DIFFICULTY.BUILDING_BOOSTER_POWER,
+      defaultValue: DIFFICULTY.BUILDING_BOOSTER_POWER * 100,
       scale: DIFFICULTY.BUILDING_BOOSTER_POWER_GROWTH,
       level: this.upgradeLevel,
-    });
+    }) / 100;
   }
 }

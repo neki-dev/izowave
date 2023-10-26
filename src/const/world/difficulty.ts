@@ -21,7 +21,7 @@ export const DIFFICULTY = {
 
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
-  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.55, // Damage growth by upgrade level (Quadratic)
+  ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.6, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade attack damage
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
@@ -37,13 +37,13 @@ export const DIFFICULTY = {
    */
 
   SUPERSKILL_SHIELD_COST: 20, // Cost of use
-  SUPERSKILL_SHIELD_DURATION: 8000, // Shield duration
+  SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
   SUPERSKILL_INVISIBLE_COST: 25, // Cost of use
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 10000, // Frost duration
   SUPERSKILL_FIRE_COST: 30, // Cost of use
-  SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
+  SUPERSKILL_FIRE_DURATION: 2000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
   SUPERSKILL_RAGE_COST: 40, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
@@ -93,7 +93,7 @@ export const DIFFICULTY = {
   ENEMY_ARMOUR_GROWTH: 0.35, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 12, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Linear)
+  ENEMY_SPEED_GROWTH: 0.06, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.32, // Damage growth by wave number (Linear)
@@ -169,13 +169,13 @@ export const DIFFICULTY = {
    */
 
   BUILDING_TOWER_LAZER_COST: 80, // Building cost
-  BUILDING_TOWER_LAZER_HEALTH: 200, // Health
+  BUILDING_TOWER_LAZER_HEALTH: 300, // Health
   BUILDING_TOWER_LAZER_ALLOW_BY_WAVE: 6, // Minimal wave for allow build
   BUILDING_TOWER_LAZER_RADIUS: 140, // Attack radius
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_LAZER_DELAY: 1300, // Pause between attacks
   BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.14, // Pause growth by level (Linear)
-  BUILDING_TOWER_LAZER_DAMAGE: 65, // Attack damage
+  BUILDING_TOWER_LAZER_DAMAGE: 70, // Attack damage
 
   /**
    * Building: Generator
@@ -202,7 +202,7 @@ export const DIFFICULTY = {
    * Building: Radar
    */
 
-  BUILDING_RADAR_COST: 60, // Building cost
+  BUILDING_RADAR_COST: 50, // Building cost
   BUILDING_RADAR_HEALTH: 400, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_RADAR_RADIUS: 140, // Unhidden radius
@@ -217,6 +217,6 @@ export const DIFFICULTY = {
   BUILDING_BOOSTER_HEALTH: 600, // Health
   BUILDING_BOOSTER_RADIUS: 80, // Increase radius
   BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
-  BUILDING_BOOSTER_POWER: 10, // Power multiplier
+  BUILDING_BOOSTER_POWER: 0.10, // Power multiplier
   BUILDING_BOOSTER_POWER_GROWTH: 1.0, // Multiplier growth by level (Linear)
 };

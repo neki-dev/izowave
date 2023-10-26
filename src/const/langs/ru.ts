@@ -107,7 +107,7 @@ export const RU = {
   SUPERSKILL_NAME_INVISIBLE: 'Невидимость',
   SUPERSKILL_DESCRIPTION_INVISIBLE: 'Скрывает персонажа от врагов',
   SUPERSKILL_NAME_FROST: 'Заморозка',
-  SUPERSKILL_DESCRIPTION_FROST: 'Замараживает всех врагов',
+  SUPERSKILL_DESCRIPTION_FROST: 'Замораживает всех врагов',
   SUPERSKILL_NAME_RAGE: 'Ярость',
   SUPERSKILL_DESCRIPTION_RAGE: 'Удваивает урон всех башен',
   SUPERSKILL_NAME_SHIELD: 'Щит',

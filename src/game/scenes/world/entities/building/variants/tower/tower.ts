@@ -262,7 +262,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   private calculatePower() {
     const booster = this.getBooster();
 
-    this.power = 1.0 + (booster ? (booster.power / 100) : 0);
+    this.power = 1.0 + (booster?.power ?? 0.0);
   }
 
   private onUpgrade() {
