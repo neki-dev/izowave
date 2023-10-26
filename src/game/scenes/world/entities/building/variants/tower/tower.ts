@@ -1,6 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { getClosest } from '~lib/dimension';
+import { getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~type/tutorial';
@@ -226,7 +226,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       );
     });
 
-    return getClosest(enemies, this);
+    return getClosestByIsometricDistance(enemies, this);
   }
 
   private shoot(target: IEnemy) {

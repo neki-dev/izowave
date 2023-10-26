@@ -13,7 +13,7 @@ import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
-import { getClosest, isPositionsEqual } from '~lib/dimension';
+import { getClosestByIsometricDistance, isPositionsEqual } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
@@ -775,7 +775,7 @@ export class Player extends Sprite implements IPlayer {
     }
 
     const crystals = this.scene.getEntities<ICrystal>(EntityType.CRYSTAL);
-    const crystal = getClosest(crystals, this);
+    const crystal = getClosestByIsometricDistance(crystals, this);
 
     if (!crystal) {
       return;
