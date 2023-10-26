@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 
@@ -95,7 +93,7 @@ export function sortByMatrixDistance<T extends PositionAtMatrix>(
   return positions
     .map((position) => ({
       position,
-      distance: Phaser.Math.Distance.BetweenPoints(target, position),
+      distance: Math.hypot(target.x - position.x, target.y - position.y),
     }))
     .sort((a, b) => (a.distance - b.distance))
     .map(({ position }) => position);
