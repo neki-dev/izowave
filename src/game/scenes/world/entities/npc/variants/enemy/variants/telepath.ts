@@ -6,7 +6,7 @@ import { EnemyVariantData, EnemyTexture, IEnemy } from '~type/world/entities/npc
 
 import { Enemy } from '../enemy';
 
-const REGENERATION_RADIUS = 110;
+const REGENERATION_RADIUS = 100;
 
 export class EnemyTelepath extends Enemy {
   static SpawnWaveRange = [13];
