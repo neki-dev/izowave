@@ -93,7 +93,7 @@ export const DIFFICULTY = {
   ENEMY_ARMOUR_GROWTH: 0.35, // Armour growth by wave number (Quadratic)
   ENEMY_ARMOUR_GROWTH_RETARDATION_LEVEL: 12, // Level for armour growth retardation
   ENEMY_SPEED: 60, // Movement speed
-  ENEMY_SPEED_GROWTH: 0.08, // Speed growth by wave number (Linear)
+  ENEMY_SPEED_GROWTH: 0.06, // Speed growth by wave number (Linear)
   ENEMY_SPEED_GROWTH_MAX_LEVEL: 15, // Level for limit speed growth
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.32, // Damage growth by wave number (Linear)
@@ -175,7 +175,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_LAZER_DELAY: 1300, // Pause between attacks
   BUILDING_TOWER_LAZER_DELAY_GROWTH: -0.14, // Pause growth by level (Linear)
-  BUILDING_TOWER_LAZER_DAMAGE: 65, // Attack damage
+  BUILDING_TOWER_LAZER_DAMAGE: 70, // Attack damage
 
   /**
    * Building: Generator
@@ -202,7 +202,7 @@ export const DIFFICULTY = {
    * Building: Radar
    */
 
-  BUILDING_RADAR_COST: 60, // Building cost
+  BUILDING_RADAR_COST: 50, // Building cost
   BUILDING_RADAR_HEALTH: 400, // Health
   BUILDING_RADAR_ALLOW_BY_WAVE: 8, // Minimal wave for allow build
   BUILDING_RADAR_RADIUS: 140, // Unhidden radius
@@ -217,6 +217,6 @@ export const DIFFICULTY = {
   BUILDING_BOOSTER_HEALTH: 600, // Health
   BUILDING_BOOSTER_RADIUS: 80, // Increase radius
   BUILDING_BOOSTER_RADIUS_GROWTH: 0.2, // Radius growth by level (Linear)
-  BUILDING_BOOSTER_POWER: 10, // Power multiplier
+  BUILDING_BOOSTER_POWER: 0.15, // Power multiplier
   BUILDING_BOOSTER_POWER_GROWTH: 1.0, // Multiplier growth by level (Linear)
 };
