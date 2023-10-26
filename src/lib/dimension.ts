@@ -75,7 +75,7 @@ export function getClosestByIsometricDistance<T extends PositionAtWorld>(
   positions.forEach((position) => {
     const distance = getIsometricDistance(target, position);
 
-    if (getIsometricDistance(target, position) < closest.distance) {
+    if (distance < closest.distance) {
       closest = { position, distance };
     }
   });
