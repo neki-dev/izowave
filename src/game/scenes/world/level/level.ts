@@ -234,12 +234,7 @@ export class Level extends TileMatrix implements ILevel {
       return;
     }
 
-    const biome = this.getBiome(BiomeType.WATER);
-
-    if (!biome) {
-      return;
-    }
-
+    const biome = LEVEL_PLANETS[this.planet].BIOMES[0].data;
     const index = Array.isArray(biome.tileIndex)
       ? biome.tileIndex[0]
       : biome.tileIndex;

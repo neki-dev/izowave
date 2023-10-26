@@ -3,7 +3,7 @@ import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/ent
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { Assets } from '~lib/assets';
-import { getClosest, getIsometricDistance } from '~lib/dimension';
+import { getClosestByIsometricDistance, getIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -116,7 +116,7 @@ export class Assistant extends NPC implements IAssistant {
       );
     });
 
-    return getClosest(enemies, this);
+    return getClosestByIsometricDistance(enemies, this);
   }
 
   private getShotCurrentParams() {

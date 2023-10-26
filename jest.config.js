@@ -8,4 +8,5 @@ module.exports = {
     '(.*)\\?worker': './$1',
   },
   testRegex: '\\.test\\.tsx?$',
+  setupFiles: ['jest-canvas-mock'],
 };

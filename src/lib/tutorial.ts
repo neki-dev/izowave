@@ -38,6 +38,9 @@ export class Tutorial {
 
   public static Load(progress: Partial<Record<TutorialStep, TutorialStepState>>) {
     this.Progress = progress;
+    this.EventListeners = [];
+    this.EventHistory = [];
+
     this.RecallEmit();
   }
 

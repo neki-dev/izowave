@@ -27,7 +27,7 @@ export interface IGame extends Phaser.Game {
   /**
    * Used save data.
    */
-  readonly usedSave: Nullable<StorageSave>
+  usedSave: Nullable<StorageSave>
 
   /**
    * Game save state.

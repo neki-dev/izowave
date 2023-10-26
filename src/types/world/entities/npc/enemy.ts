@@ -47,6 +47,7 @@ export enum EnemyTexture {
   EXPLOSIVE = 'enemy/explosive',
   STRANGER = 'enemy/stranger',
   ADHERENT = 'enemy/adherent',
+  TELEPATH = 'enemy/telepath',
 }
 
 export enum EnemyVariant {
@@ -61,13 +62,20 @@ export enum EnemyVariant {
   EXPLOSIVE = 'EXPLOSIVE',
   STRANGER = 'STRANGER',
   ADHERENT = 'ADHERENT',
+  TELEPATH = 'TELEPATH',
 }
 
-export type EnemyTexturesMeta = Record<EnemyTexture, {
+export enum EnemySize {
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
+}
+
+export type EnemySizeParams = {
   width: number
   height: number
   gamut: number
-}>;
+};
 
 export type EnemyVariantData = {
   spawnEffect?: boolean

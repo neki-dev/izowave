@@ -3,11 +3,11 @@ import { PositionAtWorld, PositionAtMatrix } from '~type/world/level';
 
 /**
  * Check positions is equals.
- * @param a - First position
- * @param b - Second position
+ * @param pointA - First position
+ * @param pointB - Second position
  */
-export function isPositionsEqual(a: PositionAtWorld, b: PositionAtWorld) {
-  return a.x === b.x && a.y === b.y;
+export function isPositionsEqual(pointA: PositionAtWorld, pointB: PositionAtWorld) {
+  return pointA.x === pointB.x && pointA.y === pointB.y;
 }
 
 /**
@@ -21,36 +21,6 @@ export function excludePosition(positions: PositionAtWorld[], target: PositionAt
   if (index !== -1) {
     positions.splice(index, 1);
   }
-}
-
-/**
- * Get closest position to target.
- * @param positions - Positions list
- * @param target - Target position
- */
-export function getClosest<T extends PositionAtWorld>(
-  positions: T[],
-  target: PositionAtWorld,
-): Nullable<T> {
-  let closest: {
-    distance: number
-    position: Nullable<T>
-  } = {
-    distance: Infinity,
-    position: null,
-  };
-
-  positions.forEach((position) => {
-    const dx = position.x - target.x;
-    const dy = position.y - target.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance < closest.distance) {
-      closest = { position, distance };
-    }
-  });
-
-  return closest.position;
 }
 
 /**
@@ -84,6 +54,34 @@ export function getIsometricAngle(
 }
 
 /**
+ * Get closest position to target.
+ * @param positions - Positions list
+ * @param target - Target position
+ */
+export function getClosestByIsometricDistance<T extends PositionAtWorld>(
+  positions: T[],
+  target: PositionAtWorld,
+): Nullable<T> {
+  let closest: {
+    distance: number
+    position: Nullable<T>
+  } = {
+    distance: Infinity,
+    position: null,
+  };
+
+  positions.forEach((position) => {
+    const distance = getIsometricDistance(target, position);
+
+    if (distance < closest.distance) {
+      closest = { position, distance };
+    }
+  });
+
+  return closest.position;
+}
+
+/**
  * Sort position by distance to target.
  * @param positions - Positions list
  * @param target - Target position
@@ -95,7 +93,7 @@ export function sortByMatrixDistance<T extends PositionAtMatrix>(
   return positions
     .map((position) => ({
       position,
-      distance: Phaser.Math.Distance.BetweenPoints(target, position),
+      distance: Math.hypot(target.x - position.x, target.y - position.y),
     }))
     .sort((a, b) => (a.distance - b.distance))
     .map(({ position }) => position);

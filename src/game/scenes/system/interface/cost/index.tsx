@@ -1,5 +1,7 @@
 import { useEvent, useScene } from 'phaser-react-ui';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 
 import { GameScene } from '~type/game';
 import { IWorld } from '~type/world';
@@ -18,20 +20,18 @@ export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
 
   const refValue = useRef(value);
 
-  const [isEnough, setEnough] = useState(() => {
-    if (check && typeof refValue.current === 'number') {
-      const field = type.toLowerCase() as 'resources' | 'experience';
+  const [haveAmount, setHaveAmount] = useState(() => {
+    const field = type.toLowerCase() as 'resources' | 'experience';
 
-      return world.player[field] >= refValue.current;
-    }
-
-    return true;
+    return world.player[field];
   });
 
+  const isEnough = useMemo(() => (
+    (!check || typeof value !== 'number' || haveAmount >= value)
+  ), [check, value, haveAmount]);
+
   useEvent(world.player, PlayerEvents[`UPDATE_${type}`], (amount: number) => {
-    if (check && typeof refValue.current === 'number') {
-      setEnough(amount >= refValue.current);
-    }
+    setHaveAmount(amount);
   }, []);
 
   useEffect(() => {

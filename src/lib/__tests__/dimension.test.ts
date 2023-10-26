@@ -2,9 +2,10 @@ import {
   aroundPosition,
   getIsometricDistance,
   isPositionsEqual,
-  getClosest,
+  getClosestByIsometricDistance,
   getIsometricAngle,
   excludePosition,
+  sortByMatrixDistance,
 } from '../dimension';
 
 describe('dimension.ts / isPositionsEqual', () => {
@@ -65,15 +66,33 @@ describe('dimension.ts / getClosest', () => {
       { x: 10, y: 0 },
     ];
 
-    const closest = getClosest(positions, { x: 4, y: 4 });
+    const closest = getClosestByIsometricDistance(positions, { x: 4, y: 4 });
 
     expect(`${closest?.x},${closest?.y}`).toEqual('0,0');
   });
 
   it('should return empty positions', () => {
-    const closest = getClosest([], { x: 4, y: 4 });
+    const closest = getClosestByIsometricDistance([], { x: 4, y: 4 });
 
     expect(closest).toEqual(null);
+  });
+});
+
+describe('dimension.ts / sortByMatrixDistance', () => {
+  it('should return sorted positions', () => {
+    expect(
+      sortByMatrixDistance([
+        { x: 0, y: 100 },
+        { x: 100, y: 50 },
+        { x: 60, y: 100 },
+        { x: 5, y: 5 },
+      ], { x: 0, y: 0 })
+    ).toEqual([
+      { x: 5, y: 5 },
+      { x: 0, y: 100 },
+      { x: 100, y: 50 },
+      { x: 60, y: 100 },
+    ]);
   });
 });
 

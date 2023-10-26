@@ -7,6 +7,7 @@ import { EnemyRisper } from '~entity/npc/variants/enemy/variants/risper';
 import { EnemySpike } from '~entity/npc/variants/enemy/variants/spike';
 import { EnemyStranger } from '~entity/npc/variants/enemy/variants/stranger';
 import { EnemyTank } from '~entity/npc/variants/enemy/variants/tank';
+import { EnemyTelepath } from '~entity/npc/variants/enemy/variants/telepath';
 import { EnemyTermer } from '~entity/npc/variants/enemy/variants/termer';
 import { EnemyUndead } from '~entity/npc/variants/enemy/variants/undead';
 import { EnemyVariant, IEnemyFactory } from '~type/world/entities/npc/enemy';
@@ -23,4 +24,5 @@ export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
   [EnemyVariant.EXPLOSIVE]: EnemyExplosive,
   [EnemyVariant.STRANGER]: EnemyStranger,
   [EnemyVariant.ADHERENT]: EnemyAdherent,
+  [EnemyVariant.TELEPATH]: EnemyTelepath,
 };
