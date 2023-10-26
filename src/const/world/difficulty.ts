@@ -37,13 +37,13 @@ export const DIFFICULTY = {
    */
 
   SUPERSKILL_SHIELD_COST: 20, // Cost of use
-  SUPERSKILL_SHIELD_DURATION: 8000, // Shield duration
+  SUPERSKILL_SHIELD_DURATION: 10000, // Shield duration
   SUPERSKILL_INVISIBLE_COST: 25, // Cost of use
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 10000, // Frost duration
   SUPERSKILL_FIRE_COST: 30, // Cost of use
-  SUPERSKILL_FIRE_DURATION: 1000, // Fire duration
+  SUPERSKILL_FIRE_DURATION: 2000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
   SUPERSKILL_RAGE_COST: 40, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
