@@ -43,10 +43,13 @@ export const SaveGame: React.FC = () => {
     const exist = saves.some((save) => save.name === saveName);
 
     const rewrite = () => {
-      Storage.AddSave(game, saveName).then(() => {
-        setSaveName('');
-        setSaves([...Storage.Saves]);
-        game.isSaved = true;
+      Storage.AddSave(game, saveName).then((save) => {
+        if (save) {
+          setSaveName('');
+          setSaves([...Storage.Saves]);
+          game.isSaved = true;
+          game.usedSave = save;
+        }
       });
     };
 

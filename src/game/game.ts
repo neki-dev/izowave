@@ -65,11 +65,7 @@ export class Game extends Phaser.Game implements IGame {
 
   private set settings(v) { this._settings = v; }
 
-  private _usedSave: Nullable<StorageSave> = null;
-
-  public get usedSave() { return this._usedSave; }
-
-  private set usedSave(v) { this._usedSave = v; }
+  public usedSave: Nullable<StorageSave> = null;
 
   private triedFullscreen: boolean = false;
 
@@ -190,15 +186,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = save;
 
-    if (this.usedSave.payload.game) {
-      this.loadSavePayload(this.usedSave.payload.game);
-    }
-
-    this.world.scene.restart(this.usedSave.payload.level);
-
-    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
-      this.startGame();
-
+    this.startGame(() => {
       SDK.ShowAds(SDKAdsType.MIDGAME, {
         onStart: () => {
           SDK.TogglePlayState(false);
@@ -222,21 +210,33 @@ export class Game extends Phaser.Game implements IGame {
     this.startGame();
   }
 
-  private startGame() {
+  private startGame(callback?: () => void) {
     if (this.state !== GameState.IDLE) {
       return;
     }
 
     this.triggerFullscreen();
 
-    this.state = GameState.STARTED;
+    if (this.usedSave) {
+      this.loadSavePayload(this.usedSave.payload.game);
+      this.world.scene.restart(this.usedSave.payload.level);
+    } else {
+      Tutorial.Reset();
+      this.world.scene.restart();
+    }
 
-    SDK.TogglePlayState(true);
+    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
+      this.state = GameState.STARTED;
 
-    this.scene.systemScene.scene.stop(GameScene.MENU);
-    this.scene.systemScene.scene.launch(GameScene.SCREEN);
+      SDK.TogglePlayState(true);
 
-    this.world.start();
+      this.scene.systemScene.scene.stop(GameScene.MENU);
+      this.scene.systemScene.scene.launch(GameScene.SCREEN);
+
+      this.world.start();
+
+      callback?.();
+    });
   }
 
   public stopGame(menu: boolean = true) {
@@ -255,11 +255,8 @@ export class Game extends Phaser.Game implements IGame {
 
     this.state = GameState.IDLE;
 
-    this.world.scene.restart();
-
-    Tutorial.Reset();
-
     if (menu) {
+      this.world.scene.restart();
       this.scene.systemScene.scene.launch(GameScene.MENU, {
         defaultPage: MenuPage.NEW_GAME,
       });
@@ -272,10 +269,7 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.stopGame(false);
-
-    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
-      this.startGame();
-
+    this.startGame(() => {
       SDK.ShowAds(SDKAdsType.MIDGAME, {
         onStart: () => {
           this.toggleSystemPause(true);
