@@ -105,13 +105,14 @@ export class Spawner implements ISpawner {
 
   private getFreePositionsMeta() {
     const buildings = this.scene.getEntities<IBuilding>(EntityType.BUILDING);
+    const distanceFromPlayer = this.getSpawnDistanceFromPlayer();
     const positions = this.positions
       .map((position) => ({
         position,
         distance: Phaser.Math.Distance.BetweenPoints(position, this.scene.player.lastVisiblePosition),
       }))
       .filter(({ position, distance }) => (
-        distance >= SPAWN_DISTANCE_FROM_PLAYER
+        distance >= distanceFromPlayer
         && buildings.every((building) => (
           Phaser.Math.Distance.BetweenPoints(position, building.positionAtMatrix) >= SPAWN_DISTANCE_FROM_BUILDING
         ))
@@ -123,7 +124,15 @@ export class Spawner implements ISpawner {
   }
 
   private getPositionsLimit() {
-    return Math.min(SPAWN_POSITIONS_OUTPUT_LIMIT, 3 + this.scene.wave.number);
+    const rate = this.scene.wave.number - 1;
+
+    return Math.min(SPAWN_POSITIONS_OUTPUT_LIMIT[0] + rate, SPAWN_POSITIONS_OUTPUT_LIMIT[1]);
+  }
+
+  private getSpawnDistanceFromPlayer() {
+    const rate = (this.scene.wave.number - 1) * 2;
+
+    return Math.min(SPAWN_DISTANCE_FROM_PLAYER[0] + rate, SPAWN_DISTANCE_FROM_PLAYER[1]);
   }
 
   private async getPositionsWithOptimalCost(meta: SpawnPositionMeta[], limit: number) {
