@@ -282,7 +282,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public getIndicator(key: string) {
-    return this.indicators.getByName(key) as IIndicator ?? null;
+    return this.indicators.getByName<IIndicator>(key) ?? null;
   }
 
   private updateIndicators() {

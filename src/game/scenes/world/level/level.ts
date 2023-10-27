@@ -313,10 +313,7 @@ export class Level extends TileMatrix implements ILevel {
     const count = Math.ceil(LEVEL_MAP_SIZE * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
 
     for (let i = 0; i < count; i++) {
-      const positionAtMatrix: PositionAtMatrix = {
-        ...Phaser.Utils.Array.GetRandom(positions),
-        z: 1,
-      };
+      const positionAtMatrix = Phaser.Utils.Array.GetRandom(positions);
       const tilePosition: TilePosition = { ...positionAtMatrix, z: 1 };
 
       if (this.isFreePoint(tilePosition)) {
