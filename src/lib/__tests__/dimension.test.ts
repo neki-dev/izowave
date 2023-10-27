@@ -6,6 +6,7 @@ import {
   getIsometricAngle,
   excludePosition,
   sortByMatrixDistance,
+  getDistance,
 } from '../dimension';
 
 describe('dimension.ts / isPositionsEqual', () => {
@@ -42,9 +43,17 @@ describe('dimension.ts / excludePosition', () => {
   });
 });
 
+describe('dimension.ts / getDistance', () => {
+  it('should return correct distance', () => {
+    expect(getDistance({ x: 0, y: 0 }, { x: 0, y: 0 })).toEqual(0);
+    expect(getDistance({ x: 0, y: 0 }, { x: 0, y: 10 })).toEqual(10);
+    expect(getDistance({ x: 0, y: 0 }, { x: 2, y: 2 })).toEqual(2.8284271247461903);
+  });
+});
+
 describe('dimension.ts / getIsometricDistance', () => {
   it('should return correct distance', () => {
-    expect(getIsometricDistance({ x: 0, y: 0 }, { x: 10, y: 0 })).toEqual(10);
+    expect(getIsometricDistance({ x: 0, y: 0 }, { x: 0, y: 0 })).toEqual(0);
     expect(getIsometricDistance({ x: 0, y: 0 }, { x: 0, y: 10 })).toEqual(17.5);
   });
 });

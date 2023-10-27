@@ -3,14 +3,6 @@ import { PositionAtMatrix } from '~type/world/level';
 
 import { PathNode } from './node';
 
-export function getDistance(point1: PositionAtMatrix, point2: PositionAtMatrix) {
-  const a = point2.x - point1.x;
-  const b = point2.y - point1.y;
-  const distance = Math.sqrt(a * a + b * b);
-
-  return distance;
-}
-
 export function isDiagonalShift(shift: PositionAtMatrix) {
   return Math.abs(shift.x) + Math.abs(shift.y) !== 1;
 }

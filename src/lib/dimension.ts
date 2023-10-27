@@ -24,7 +24,22 @@ export function excludePosition(positions: PositionAtWorld[], target: PositionAt
 }
 
 /**
- * Get distance between points on isometric grid.
+ * Get distance between points on matrix.
+ * @param pointA - First position
+ * @param pointB - Second position
+ */
+export function getDistance(
+  pointA: PositionAtMatrix,
+  pointB: PositionAtMatrix,
+) {
+  return Math.hypot(
+    pointB.x - pointA.x,
+    pointB.y - pointA.y,
+  );
+}
+
+/**
+ * Get distance between points on isometric.
  * @param pointA - First position
  * @param pointB - Second position
  */
@@ -32,14 +47,14 @@ export function getIsometricDistance(
   pointA: PositionAtWorld,
   pointB: PositionAtWorld,
 ) {
-  return Math.sqrt(
-    (pointB.x - pointA.x) ** 2
-    + ((pointB.y - pointA.y) / LEVEL_MAP_PERSPECTIVE) ** 2,
+  return Math.hypot(
+    pointB.x - pointA.x,
+    (pointB.y - pointA.y) / LEVEL_MAP_PERSPECTIVE,
   );
 }
 
 /**
- * Get angle between points on isometric grid.
+ * Get angle between points on isometric.
  * @param pointA - First position
  * @param pointB - Second position
  */
@@ -93,7 +108,7 @@ export function sortByMatrixDistance<T extends PositionAtMatrix>(
   return positions
     .map((position) => ({
       position,
-      distance: Math.hypot(target.x - position.x, target.y - position.y),
+      distance: getDistance(position, target),
     }))
     .sort((a, b) => (a.distance - b.distance))
     .map(({ position }) => position);

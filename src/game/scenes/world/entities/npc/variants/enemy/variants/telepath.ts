@@ -56,10 +56,7 @@ export class EnemyTelepath extends Enemy {
     const enemies: IEnemy[] = [];
 
     this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
-      if (
-        !(enemy instanceof EnemyTelepath)
-        && !enemy.live.isMaxHealth()
-      ) {
+      if (!(enemy instanceof EnemyTelepath) && !enemy.live.isMaxHealth()) {
         const distance = getIsometricDistance(position, enemy.getBottomFace());
 
         if (distance <= REGENERATION_RADIUS) {
