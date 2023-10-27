@@ -4,9 +4,9 @@ export const SPAWN_COST_FACTOR = 1.3;
 
 export const SPAWN_POSITIONS_INPUT_LIMIT = 64;
 
-export const SPAWN_POSITIONS_OUTPUT_LIMIT = 12;
+export const SPAWN_POSITIONS_OUTPUT_LIMIT = [4, 12];
 
-export const SPAWN_DISTANCE_FROM_PLAYER = 10;
+export const SPAWN_DISTANCE_FROM_PLAYER = [8, 32];
 
 export const SPAWN_DISTANCE_FROM_BUILDING = 8;
 
