@@ -224,7 +224,9 @@ export class Player extends Sprite implements IPlayer {
 
     if (this.movementAngle === null) {
       if (this.stamina < this.staminaMax && this.staminaTimestamp < now) {
-        this.stamina = Math.min(this.staminaMax, this.stamina + (this.staminaMax * 0.024));
+        const growth = this.staminaMax * 0.04 * Math.max(0.1, this.stamina / this.staminaMax);
+
+        this.stamina = Math.min(this.staminaMax, this.stamina + growth);
         this.staminaTimestamp = nextTimestamp();
       }
     } else if (this.stamina > 0.0 && this.staminaTimestamp < now) {
