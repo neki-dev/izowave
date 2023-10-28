@@ -1,14 +1,15 @@
 {
   "name": "izowave",
   "description": "Isometric game. Build and defense in open world",
-  "version": "1.16.2",
+  "version": "1.16.3",
   "keywords": [
     "game",
     "isometric",
     "defense",
     "build",
     "open-world",
-    "phaser"
+    "phaser",
+    "strategy"
   ],
   "license": "GNU",
   "author": {
