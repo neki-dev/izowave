@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 
 import { MAX_GAME_SAVES } from '~const/game';
+import { Environment } from '~lib/environment';
 import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
@@ -27,6 +28,11 @@ export const SaveGame: React.FC = () => {
 
   const refInput = useRef<HTMLInputElement>();
 
+  const reachedLimit = (
+    saves.length >= MAX_GAME_SAVES
+    && Environment.Platform !== 'development'
+  );
+
   const onSelectSave = (save: StorageSave) => {
     setSaveName(save.name);
   };
@@ -42,13 +48,11 @@ export const SaveGame: React.FC = () => {
 
     const exist = saves.some((save) => save.name === saveName);
 
-    const rewrite = () => {
-      Storage.AddSave(game, saveName).then((save) => {
+    const addSave = () => {
+      game.saveGame(saveName).then((save) => {
         if (save) {
           setSaveName('');
           setSaves([...Storage.Saves]);
-          game.isSaved = true;
-          game.usedSave = save;
         }
       });
     };
@@ -56,12 +60,10 @@ export const SaveGame: React.FC = () => {
     if (exist) {
       setConfirmation({
         message: 'CONFIRM_REWRITE_SAVE',
-        onConfirm: () => {
-          rewrite();
-        },
+        onConfirm: addSave,
       });
     } else {
-      rewrite();
+      addSave();
     }
   };
 
@@ -129,7 +131,7 @@ export const SaveGame: React.FC = () => {
           </Table.Body>
         </Table>
       )}
-      {saves.length >= MAX_GAME_SAVES ? (
+      {reachedLimit ? (
         <Limit>{phrase('SAVES_LIMIT')}</Limit>
       ) : (
         <Input
