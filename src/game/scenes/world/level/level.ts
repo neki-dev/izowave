@@ -322,7 +322,7 @@ export class Level extends TileMatrix implements ILevel {
           positionAtWorld.x,
           positionAtWorld.y,
           LevelSceneryTexture[this.planet],
-          Phaser.Math.Between(0, LEVEL_PLANETS[this.planet].SCENERY_VARIANTS - 1),
+          Phaser.Math.Between(0, LEVEL_PLANETS[this.planet].SCENERY_VARIANTS_COUNT - 1),
         ) as ITile;
 
         tile.tileType = TileType.SCENERY;

@@ -29,7 +29,7 @@ export const LEVEL_SEED_SIZE = 128;
 export const LEVEL_SCENERY_TILE = {
   width: 42,
   height: 72,
-  origin: 0.85,
+  origin: 61 / 72,
 };
 
 export const LEVEL_BIOME_PARAMETERS: WorldLayerParams = {
@@ -42,25 +42,25 @@ export const LEVEL_BIOME_PARAMETERS: WorldLayerParams = {
 export const LEVEL_PLANETS: Record<LevelPlanet, {
   BIOMES: LevelBiomes
   SCENERY_DENSITY: number
-  SCENERY_VARIANTS: number
+  SCENERY_VARIANTS_COUNT: number
   CRYSTAL_VARIANTS: number[]
 }> = {
   [LevelPlanet.EARTH]: {
     BIOMES: LEVEL_BIOMES_EARTH,
     SCENERY_DENSITY: 2.0,
-    SCENERY_VARIANTS: 4,
+    SCENERY_VARIANTS_COUNT: 4,
     CRYSTAL_VARIANTS: [1],
   },
   [LevelPlanet.MOON]: {
     BIOMES: LEVEL_BIOMES_MOON,
     SCENERY_DENSITY: 1.5,
-    SCENERY_VARIANTS: 8,
+    SCENERY_VARIANTS_COUNT: 8,
     CRYSTAL_VARIANTS: [3],
   },
   [LevelPlanet.MARS]: {
     BIOMES: LEVEL_BIOMES_MARS,
     SCENERY_DENSITY: 1.5,
-    SCENERY_VARIANTS: 8,
+    SCENERY_VARIANTS_COUNT: 8,
     CRYSTAL_VARIANTS: [0, 2],
   },
 };
