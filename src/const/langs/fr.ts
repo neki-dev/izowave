@@ -87,7 +87,7 @@ export const FR = {
    * Ads
    */
   ADS_SHOW: 'Regarder une vidéo et obtenir une récompense',
-  ADS_UNLOCK: 'Débloquer une superskill supplémentaire en regardant une vidéo',
+  ADS_UNLOCK: 'Débloquer une compétence super supplémentaire',
 
   /**
    * Unlocks

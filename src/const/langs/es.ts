@@ -87,7 +87,7 @@ export const ES = {
    * Ads
    */
   ADS_SHOW: 'Mira un video y obtén una recompensa',
-  ADS_UNLOCK: 'Desbloquea una superhabilidad adicional viendo el video',
+  ADS_UNLOCK: 'Desbloquear súperhabilidad adicional viendo el video',
 
   /**
    * Unlocks
