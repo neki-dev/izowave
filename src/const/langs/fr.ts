@@ -27,7 +27,7 @@ export const FR = {
   BUILDING_DESCRIPTION_RADAR: 'Découvre les ennemis dans le rayon du bâtiment',
   BUILDING_NAME_BOOSTER: 'Booster',
   BUILDING_DESCRIPTION_BOOSTER: 'Augmente l`efficacité des tours',
-  BUILDING_CATEGORY_DEFENSE: 'Défense',
+  BUILDING_CATEGORY_DEFENSE: 'Defense',
   BUILDING_CATEGORY_ATTACK: 'Attaque',
   BUILDING_CATEGORY_RESOURCES: 'Ressources',
   BUILDING_CATEGORY_OTHER: 'Autre',
