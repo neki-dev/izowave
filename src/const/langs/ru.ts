@@ -18,7 +18,7 @@ export const RU = {
   BUILDING_NAME_TOWER_FROZEN: 'Ледяная башня',
   BUILDING_DESCRIPTION_TOWER_FROZEN: 'Замедление врагов',
   BUILDING_NAME_TOWER_LAZER: 'Лазерная башня',
-  BUILDING_DESCRIPTION_TOWER_LAZER: 'Моментальаня лазерная атака врагов',
+  BUILDING_DESCRIPTION_TOWER_LAZER: 'Моментальная лазерная атака врагов',
   BUILDING_NAME_GENERATOR: 'Генератор',
   BUILDING_DESCRIPTION_GENERATOR: 'Генерация ресурсов для построек',
   BUILDING_NAME_AMMUNITION: 'Амуниция',
@@ -118,8 +118,8 @@ export const RU = {
   /**
    * Tutorial
    */
-  TUTORIAL_SKIP_TIMELEFT: 'Нажмите чтобы начать\nволну преждевременно',
-  TUTORIAL_CLICK_TO_UPGRADE: 'Нажмите чтобы улучшить',
+  TUTORIAL_SKIP_TIMELEFT: 'Нажмите, чтобы начать\nволну преждевременно',
+  TUTORIAL_CLICK_TO_UPGRADE: 'Нажмите, чтобы улучшить',
   TUTORIAL_HOVER_TO_UPGRADE: 'Наведите и нажмите [E]\nчтобы улучшить',
   TUTORIAL_RESOURCES: 'Если ресурсов недостаточно,\nто Вы можете найти кристалы на карте',
   TUTORIAL_BUILD_GENERATOR: 'Постройте генератор\nдля получения ресурсов',
@@ -127,9 +127,9 @@ export const RU = {
   TUTORIAL_BUILD_TOWER_FIRE: 'Постройте башню\nдля атаки врагов',
   TUTORIAL_BUILD_AMMUNITION: 'Постройте амуницию\nдля получения патронов',
   TUTORIAL_BUILD_RADAR: 'Постройте радар\nчтобы раскрыть врагов',
-  TUTORIAL_STOP_BUILD: 'Используйте [Right click] для\nзавершения строительства',
+  TUTORIAL_STOP_BUILD: 'Используйте [Правый клик] для\nзавершения строительства',
   TUTORIAL_RELOAD_TOWER: 'Постройте поблизости амуницию',
-  TUTORIAL_CLICK_TO_BUY_AMMO: 'Нажмите чтобы купить патроны',
+  TUTORIAL_CLICK_TO_BUY_AMMO: 'Нажмите, чтобы купить патроны',
   TUTORIAL_HOVER_TO_BUY_AMMO: 'Наведите и нажмите [F]\nчтобы купить патроны',
 
   /**
@@ -139,7 +139,7 @@ export const RU = {
   LOAD_GAME: 'Загрузить',
   SAVE_GAME: 'Сохранить',
   CONTINUE_GAME: 'Продолжить',
-  RESTART_GAME: 'Начать заного',
+  RESTART_GAME: 'Начать заново',
   MAIN_MENU: 'Выйти в меню',
   SETTINGS: 'Настройки',
   ABOUT_GAME: 'Об игре',
@@ -222,6 +222,6 @@ export const RU = {
     'С каждой новой волной количество врагов и их характеристики будут расти.\n',
     'Стройте стены для защиты, башни для атаки, склады для хранения патронов',
     'и генераторы для получения ресурсов.\n',
-    'А так же улучшайте способности персонажа и его помощника.',
+    'А также улучшайте способности персонажа и его помощника.',
   ].join('\n'),
 };

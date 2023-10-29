@@ -4,7 +4,7 @@ export const CONTROL_KEY = {
   PAUSE: 'keyup-ESC',
 
   BUILDING_DESTROY: 'keyup-BACKSPACE',
-  BUILDING_REPEAR: 'keyup-R',
+  BUILDING_REPAIR: 'keyup-R',
   BUILDING_BUY_AMMO: 'keyup-F',
   BUILDING_UPGRADE: 'keyup-E',
 };

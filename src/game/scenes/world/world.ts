@@ -326,14 +326,12 @@ export class World extends Scene implements IWorld {
   }
 
   private addPlayer() {
-    const positionAtMatrix = this.game.usedSave?.payload.player
-      ? {
-        ...this.game.usedSave.payload.player.position,
-        z: 1, // PATCH: For saves with old version
-      }
-      : Phaser.Utils.Array.GetRandom(
+    const positionAtMatrix = (
+      this.game.usedSave?.payload.player.position
+      ?? Phaser.Utils.Array.GetRandom(
         this.level.readSpawnPositions(SpawnTarget.PLAYER),
-      );
+      )
+    );
 
     this.player = new Player(this, { positionAtMatrix });
 

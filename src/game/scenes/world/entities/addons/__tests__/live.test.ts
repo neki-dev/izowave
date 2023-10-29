@@ -9,7 +9,7 @@ jest.mock('phaser', () => ({
 
 import { Live } from '../live';
 
-describe('live.ts', () => {
+describe('world / entities / addons / live', () => {
   let live: Live;
 
   beforeEach(() => {

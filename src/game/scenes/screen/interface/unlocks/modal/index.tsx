@@ -1,4 +1,6 @@
-import { useClick, useScene } from 'phaser-react-ui';
+import {
+  useClick, useCurrentScene, useEvent, useScene,
+} from 'phaser-react-ui';
 import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
@@ -23,6 +25,7 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = ({ features, onClose }) => {
+  const scene = useCurrentScene();
   const world = useScene<IWorld>(GameScene.WORLD);
 
   const [unlocks, setUnlocks] = useState(features);
@@ -43,16 +46,10 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
     world.player.unlockSuperskill();
   };
 
-  const onKeyPress = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      onClose();
-      event.stopPropagation();
-      event.preventDefault();
-    }
-  };
-
   useClick(refOverlay, 'down', () => {}, []);
   useClick(refButton, 'down', onClose, [onClose]);
+
+  useEvent(scene.input.keyboard, 'keyup-ESC', onClose, []);
 
   useEffect(() => {
     setUnlocks(features);
@@ -60,11 +57,9 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
 
   useEffect(() => {
     Tutorial.ToggleHintsVisible(false);
-    document.addEventListener('keyup', onKeyPress);
 
     return () => {
       Tutorial.ToggleHintsVisible(true);
-      document.removeEventListener('keyup', onKeyPress);
     };
   }, []);
 

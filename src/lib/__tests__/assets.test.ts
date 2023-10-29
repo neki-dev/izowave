@@ -2,7 +2,7 @@ import { Assets } from '../assets';
 
 import assets from '../__mocks__/assets';
 
-describe('assets.ts', () => {
+describe('lib / assets', () => {
   beforeAll(() => {
     Assets.RegisterAudio(assets.audio);
     Assets.RegisterImages(assets.images);

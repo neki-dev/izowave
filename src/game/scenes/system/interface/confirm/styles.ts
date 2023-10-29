@@ -28,10 +28,10 @@ export const Container = styled.div`
 export const Content = styled.div`
   font-family: ${InterfaceFont.PIXEL_LABEL};
   font-size: 18px;
-  line-height: 18px;
+  line-height: 20px;
   letter-spacing: 1px;
   color: #fff;
-  white-space: nowrap;
+  white-space: pre;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

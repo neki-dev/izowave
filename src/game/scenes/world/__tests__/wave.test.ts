@@ -11,7 +11,7 @@ import { registerHelper } from './helpers/wave';
 import world from '../__mocks__/world';
 import { Wave } from '../wave';
 
-describe('wave.ts', () => {
+describe('world / wave', () => {
   let wave: IWave;
   let helper: any;
 

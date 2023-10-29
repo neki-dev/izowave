@@ -27,17 +27,18 @@ export interface IGame extends Phaser.Game {
   /**
    * Used save data.
    */
-  usedSave: Nullable<StorageSave>
-
-  /**
-   * Game save state.
-   */
-  isSaved: boolean
+  readonly usedSave: Nullable<StorageSave>
 
   /**
    * Game difficulty.
    */
   difficulty: GameDifficulty
+
+  /**
+   * Save game.
+   * @param name - Save name
+   */
+  saveGame(name: string): Promise<Nullable<StorageSave>>
 
   /**
    * Pause game.

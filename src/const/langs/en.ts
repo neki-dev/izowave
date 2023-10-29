@@ -42,7 +42,7 @@ export const EN = {
   BUILDING_UPGRADE: 'Upgrade',
   BUILDING_BUY_AMMO: 'Buy ammo',
   BUILDING_REPAIR: 'Repair',
-  BUILDING_WILL_BE_AVAILABLE: 'Will be availalbe on %1 wave',
+  BUILDING_WILL_BE_AVAILABLE: 'Will be available on %1 wave',
   BUILDING_LIMIT_REACHED: 'You have maximum %1s',
 
   /**
@@ -86,8 +86,8 @@ export const EN = {
   /**
    * Ads
    */
-  ADS_SHOW: 'Watch a video and get reward',
-  ADS_UNLOCK: 'Unlock extra superskill by watch video',
+  ADS_SHOW: 'Watch a video and get a reward',
+  ADS_UNLOCK: 'Unlock extra superskill by watching video',
 
   /**
    * Unlocks
@@ -121,7 +121,7 @@ export const EN = {
   TUTORIAL_SKIP_TIMELEFT: 'Click to start\nwave prematurely',
   TUTORIAL_CLICK_TO_UPGRADE: 'Click to upgrade',
   TUTORIAL_HOVER_TO_UPGRADE: 'Hover and press [E]\nto upgrade',
-  TUTORIAL_RESOURCES: 'If resources not enough\nyou can find crystals on map',
+  TUTORIAL_RESOURCES: 'If resources are not enough,\nyou can find crystals on the map',
   TUTORIAL_BUILD_GENERATOR: 'Build generator\nto get resources',
   TUTORIAL_BUILD_GENERATOR_SECOND: 'Build second generator\nto get more resources',
   TUTORIAL_BUILD_TOWER_FIRE: 'Build tower\nto attack enemies',
@@ -145,8 +145,8 @@ export const EN = {
   ABOUT_GAME: 'About game',
   CONTROLS: 'Controls',
   MENU: 'Menu',
-  CONFIRM_STOP_GAME: 'Do you confirm stop game?',
-  CONFIRM_RESTART_GAME: 'Do you confirm restart game?',
+  CONFIRM_STOP_GAME: 'Do you confirm to stop the game?',
+  CONFIRM_RESTART_GAME: 'Do you confirm to restart the game?',
 
   /**
    * Game params
@@ -159,12 +159,12 @@ export const EN = {
    * Game saves
    */
   SAVES_NOT_FOUND: 'Saves not found',
-  SAVES_LIMIT: 'You have maximum saves. Delete or rewrite exist',
+  SAVES_LIMIT: 'You have maximum saves. Delete or rewrite existing ones',
   SAVE: 'Save',
   SAVE_NAME: 'Name',
   SAVE_DATE: 'Date',
-  CONFIRM_REWRITE_SAVE: 'Do you confirm rewrite this save?',
-  CONFIRM_DELETE_SAVE: 'Do you confirm delete this save?',
+  CONFIRM_REWRITE_SAVE: 'Do you confirm to rewrite this save?',
+  CONFIRM_DELETE_SAVE: 'Do you confirm to delete this save?',
 
   /**
    * Planets
@@ -218,10 +218,10 @@ export const EN = {
    * About game
    */
   GAME_DESCRIPTION: [
-    'Your task is to survive on chosen planet as many waves as possible.',
-    'With each wave count of enemies and their characteristics will grow.\n',
-    'Build walls to defend, towers to attack, ammunitions to reload towers',
-    'and generators to get more resources.\n',
-    'And also upgrade skills of your character and his assistant.',
+    'Your task is to survive on chosen planet for as many waves as possible.',
+    'With each wave, count of enemies and their characteristics will grow.\n',
+    'Build walls for defense, towers for attack, ammunition for reloading towers,',
+    'and generators for getting more resources.\n',
+    'Also, upgrade the skills of your character and his assistant.',
   ].join('\n'),
 };

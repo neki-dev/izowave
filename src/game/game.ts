@@ -6,6 +6,7 @@ import {
 import { Analytics } from '~lib/analytics';
 import { Environment } from '~lib/environment';
 import { SDK } from '~lib/sdk';
+import { Storage } from '~lib/storage';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
@@ -34,7 +35,7 @@ import { shaders } from '../shaders';
 export class Game extends Phaser.Game implements IGame {
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
-  public isSaved: boolean = false;
+  private isSaved: boolean = false;
 
   private _state: GameState = GameState.IDLE;
 
@@ -401,6 +402,22 @@ export class Game extends Phaser.Game implements IGame {
 
   private getStatStorageKey() {
     return `BEST_STAT.${this.world.level.planet}.${this.difficulty}`;
+  }
+
+  public async saveGame(name: string) {
+    const record = this.getRecordStat();
+    const stat = this.getCurrentStat();
+
+    this.writeBestStat(stat, record);
+
+    const save = await Storage.AddSave(this, name);
+
+    if (save) {
+      this.isSaved = true;
+      this.usedSave = save;
+    }
+
+    return save;
   }
 
   public getSavePayload(): GameSavePayload {

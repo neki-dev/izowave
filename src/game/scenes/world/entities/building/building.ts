@@ -129,7 +129,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }, 0);
     }
 
-    this.bindHotKey(CONTROL_KEY.BUILDING_REPEAR, () => this.repair());
+    this.bindHotKey(CONTROL_KEY.BUILDING_REPAIR, () => this.repair());
     this.bindHotKey(CONTROL_KEY.BUILDING_UPGRADE, () => this.upgrade());
     this.bindHotKey(CONTROL_KEY.BUILDING_DESTROY, () => this.break());
 

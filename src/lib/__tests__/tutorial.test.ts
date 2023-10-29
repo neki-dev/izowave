@@ -2,7 +2,7 @@ import { Tutorial } from '../tutorial';
 
 import { TutorialStep}  from '~type/tutorial';
 
-describe('tutorial.ts', () => {
+describe('lib / tutorial', () => {
   beforeEach(() => {
     Tutorial.Reset();
   });

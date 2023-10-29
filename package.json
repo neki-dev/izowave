@@ -1,14 +1,15 @@
 {
   "name": "izowave",
   "description": "Isometric game. Build and defense in open world",
-  "version": "1.16.2",
+  "version": "1.16.3",
   "keywords": [
     "game",
     "isometric",
     "defense",
     "build",
     "open-world",
-    "phaser"
+    "phaser",
+    "strategy"
   ],
   "license": "GNU",
   "author": {
@@ -54,7 +55,7 @@
     "heap": "0.2.7",
     "idb": "7.1.1",
     "phaser": "3.60.0",
-    "phaser-react-ui": "1.14.1",
+    "phaser-react-ui": "1.14.3",
     "phaser3-rex-plugins": "1.60.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
