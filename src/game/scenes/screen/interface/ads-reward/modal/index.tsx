@@ -33,7 +33,7 @@ export const Modal: React.FC<Props> = ({ experience, resources, onClose }) => {
         world.player.giveResources(resources);
       }
     });
-  }, [onClose, experience, resources]);
+  }, [experience, resources]);
 
   return (
     <Container>

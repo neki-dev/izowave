@@ -1,5 +1,5 @@
 import { useScene } from 'phaser-react-ui';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { ADS_REWARD_WAVE_FREQUENCY, ADS_REWARD_EXPERIENCE, ADS_REWARD_RESOURCES } from '~const/ads';
 import { Environment } from '~lib/environment';
@@ -18,9 +18,9 @@ export const AdsReward: React.FC = () => {
     resources: 0,
   });
 
-  const onClose = useCallback(() => {
+  const onClose = () => {
     setAdsOfferOpen(false);
-  }, []);
+  };
 
   const onWaveComplete = (number: number) => {
     if (number % ADS_REWARD_WAVE_FREQUENCY === 0) {
