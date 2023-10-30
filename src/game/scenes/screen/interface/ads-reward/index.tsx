@@ -1,7 +1,7 @@
 import { useScene } from 'phaser-react-ui';
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { DIFFICULTY } from '~const/world/difficulty';
+import { ADS_REWARD_WAVE_FREQUENCY, ADS_REWARD_EXPERIENCE, ADS_REWARD_RESOURCES } from '~const/ads';
 import { Environment } from '~lib/environment';
 import { GameScene, GameFlag } from '~type/game';
 import { IWorld } from '~type/world';
@@ -23,11 +23,11 @@ export const AdsReward: React.FC = () => {
   }, []);
 
   const onWaveComplete = (number: number) => {
-    if (number % DIFFICULTY.ADS_REWARD_FREQUENCY === 0) {
+    if (number % ADS_REWARD_WAVE_FREQUENCY === 0) {
       setAdsOfferOpen(true);
       setAdsReward({
-        experience: DIFFICULTY.ADS_REWARD_EXPERIENCE * number,
-        resources: DIFFICULTY.ADS_REWARD_RESOURCES * number,
+        experience: ADS_REWARD_EXPERIENCE * number,
+        resources: ADS_REWARD_RESOURCES * number,
       });
     }
   };
