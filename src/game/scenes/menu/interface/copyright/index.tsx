@@ -11,14 +11,14 @@ import {
 export const Copyright: React.FC = () => (
   <Wrapper>
     <About>
-      {Environment.GetFlag(GameFlag.COPYRIGHT) && (
-        <Author>
-          Created by{' '}
+      <Author>
+        Created by{' '}
+        {Environment.GetFlag(GameFlag.COPYRIGHT) ? (
           <Link href={pkg.author.url} target="_blank">
             {pkg.author.name}
           </Link>
-        </Author>
-      )}
+        ) : pkg.author.name}
+      </Author>
       Version {pkg.version}
     </About>
     <Discord href='https://discord.gg/cnFAdMsRxn' target="_blank">
