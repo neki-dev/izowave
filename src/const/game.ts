@@ -16,7 +16,6 @@ export const ENVIRONMENTS: Record<GamePlatform, GameEnvironment> = {
   [GamePlatform.POKI]: {
     sdk: 'https://game-cdn.poki.com/scripts/v2/poki-sdk.js',
     flags: {
-      [GameFlag.NO_BLOOD]: true,
       [GameFlag.ADS]: true,
       [GameFlag.AUTO_ORIENTATION]: true,
     },
@@ -24,15 +23,19 @@ export const ENVIRONMENTS: Record<GamePlatform, GameEnvironment> = {
   [GamePlatform.CRAZY_GAMES]: {
     sdk: 'https://sdk.crazygames.com/crazygames-sdk-v2.js',
     flags: {
-      [GameFlag.NO_BLOOD]: true,
       [GameFlag.ADS]: true,
+      [GameFlag.COPYRIGHT]: true,
     },
   },
   [GamePlatform.VANILLA]: {
-    flags: {},
+    flags: {
+      [GameFlag.BLOOD]: true,
+      [GameFlag.COPYRIGHT]: true,
+    },
   },
   [GamePlatform.DEVELOPMENT]: {
     flags: {
+      [GameFlag.BLOOD]: true,
       [GameFlag.ADS]: true,
     },
   },

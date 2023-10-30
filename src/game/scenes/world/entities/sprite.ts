@@ -349,7 +349,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public onDamage(amount: number) {
     if (
       !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      || Environment.GetFlag(GameFlag.NO_BLOOD)
+      || !Environment.GetFlag(GameFlag.BLOOD)
     ) {
       return;
     }

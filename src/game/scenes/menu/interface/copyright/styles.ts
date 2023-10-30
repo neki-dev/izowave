@@ -27,18 +27,18 @@ export const About = styled.div`
   }
 `;
 
+export const Author = styled.div`
+  margin-bottom: 8px;
+  @media ${INTERFACE_MOBILE_BREAKPOINT} {
+    margin-bottom: 5px;
+  }
+`;
+
 export const Link = styled.a`
   color: #fff;
   pointer-events: all;
   &:hover {
     color: ${InterfaceTextColor.HOVER};
-  }
-`;
-
-export const Version = styled.div`
-  margin-top: 8px;
-  @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    margin-top: 5px;
   }
 `;
 

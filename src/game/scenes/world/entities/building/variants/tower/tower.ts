@@ -186,6 +186,8 @@ export class BuildingTower extends Building implements IBuildingTower {
     if (ammunition) {
       this.ammo += ammunition.use(DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT);
 
+      Tutorial.Complete(TutorialStep.RELOAD_TOWER);
+
       if (this.needReload) {
         this.removeAlertIcon();
         this.needReload = false;
@@ -193,8 +195,6 @@ export class BuildingTower extends Building implements IBuildingTower {
         if (this.scene.game.sound.getAll(BuildingAudio.RELOAD).length === 0) {
           this.scene.game.sound.play(BuildingAudio.RELOAD);
         }
-
-        Tutorial.Complete(TutorialStep.RELOAD_TOWER);
       }
     } else if (!this.needReload) {
       this.addAlertIcon();
