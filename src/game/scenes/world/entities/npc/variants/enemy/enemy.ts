@@ -285,7 +285,7 @@ export class Enemy extends NPC implements IEnemy {
     if (
       !this.currentBiome?.solid
       || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      || Environment.GetFlag(GameFlag.NO_BLOOD)
+      || !Environment.GetFlag(GameFlag.BLOOD)
     ) {
       return;
     }
