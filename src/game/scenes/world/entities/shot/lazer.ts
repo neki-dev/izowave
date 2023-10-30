@@ -100,11 +100,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       return;
     }
 
-    const momentDamage = this.params.damage / SHOT_LAZER_REPEAT;
-
-    this.target.live.damage(momentDamage);
-
-    if (this.active && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       new Particles(this.target, {
         key: 'glow',
         texture: ParticlesTexture.GLOW,
@@ -119,6 +115,10 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
         },
       });
     }
+
+    const momentDamage = this.params.damage / SHOT_LAZER_REPEAT;
+
+    this.target.live.damage(momentDamage);
   }
 
   private processing() {

@@ -149,9 +149,9 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    target.live.damage(this.damage);
-
     this.freeze(1000);
+
+    target.live.damage(this.damage);
   }
 
   private addDamageLabel() {
