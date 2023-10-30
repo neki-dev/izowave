@@ -25,19 +25,15 @@ export const Modal: React.FC<Props> = ({ experience, resources, onClose }) => {
 
   useClick(refContent, 'down', () => {
     onClose();
-    SDK.ShowAds(SDKAdsType.REWARDED, {
-      onStart: () => {
-        game.toggleSystemPause(true);
-      },
-      onFinish: () => {
-        game.toggleSystemPause(false);
-      },
-      onReward: () => {
+    game.toggleSystemPause(true);
+    SDK.ShowAds(SDKAdsType.REWARDED).then((reward) => {
+      game.toggleSystemPause(false);
+      if (reward) {
         world.player.giveExperience(experience);
         world.player.giveResources(resources);
-      },
+      }
     });
-  }, [onClose, experience, resources]);
+  }, [experience, resources]);
 
   return (
     <Container>

@@ -1,6 +1,6 @@
 import { Environment } from '~lib/environment';
-import { GamePlatform } from '~type/game';
-import { SDKAdsCallbacks, SDKAdsType } from '~type/sdk';
+import { GameFlag, GamePlatform } from '~type/game';
+import { SDKAdsType } from '~type/sdk';
 
 export class SDK {
   private static IsPlaying: boolean = false;
@@ -33,50 +33,50 @@ export class SDK {
       });
   }
 
-  public static ShowAds(type: SDKAdsType, callbacks: SDKAdsCallbacks) {
-    try {
-      switch (Environment.Platform) {
-        case GamePlatform.DEVELOPMENT: {
-          callbacks.onStart?.();
-          callbacks.onFinish?.();
-          if (type === SDKAdsType.REWARDED) {
-            callbacks.onReward?.();
-          }
-          break;
-        }
-        case GamePlatform.CRAZY_GAMES: {
-          window.CrazyGames?.SDK.ad.requestAd(type, {
-            adStarted: () => {
-              callbacks.onStart?.();
-            },
-            adFinished: () => {
-              callbacks.onFinish?.();
-              if (type === SDKAdsType.REWARDED) {
-                callbacks.onReward?.();
-              }
-            },
-          });
-          break;
-        }
-        case GamePlatform.POKI: {
-          const method = type === SDKAdsType.REWARDED
-            ? 'rewardedBreak'
-            : 'commercialBreak';
-
-          window.PokiSDK?.[method](() => {
-            callbacks.onStart?.();
-          }).then((success: boolean) => {
-            callbacks.onFinish?.();
-            if (type === SDKAdsType.REWARDED && success) {
-              callbacks.onReward?.();
-            }
-          });
-          break;
-        }
-      }
-    } catch (error) {
-      console.error('SDK show adv error:', error);
+  public static ShowAds(type: SDKAdsType) {
+    if (!Environment.GetFlag(GameFlag.ADS)) {
+      return Promise.resolve(false);
     }
+
+    return new Promise<boolean>((resolve) => {
+      try {
+        switch (Environment.Platform) {
+          case GamePlatform.CRAZY_GAMES: {
+            window.CrazyGames.SDK.ad.requestAd(type, {
+              adFinished: () => {
+                const rewarded = (type === SDKAdsType.REWARDED);
+
+                resolve(rewarded);
+              },
+              adError: () => {
+                resolve(false);
+              },
+            });
+            break;
+          }
+          case GamePlatform.POKI: {
+            const method = type === SDKAdsType.REWARDED
+              ? 'rewardedBreak'
+              : 'commercialBreak';
+
+            window.PokiSDK[method]().then((success: boolean) => {
+              const rewarded = (type === SDKAdsType.REWARDED && success);
+
+              resolve(rewarded);
+            });
+            break;
+          }
+          default: {
+            console.error('Undefined ads platform handler');
+            resolve(false);
+            break;
+          }
+        }
+      } catch (error) {
+        console.error('SDK show ads error:', error);
+        resolve(false);
+      }
+    });
   }
 
   public static ToggleLoadState(state: boolean) {

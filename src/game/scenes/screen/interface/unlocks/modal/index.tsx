@@ -6,10 +6,13 @@ import React, {
 } from 'react';
 
 import { Feature } from '..';
+import { ADS_MIDGAMES_WAVES, ADS_UNLOCK_SUPERSKILL_MIN_WAVE } from '~const/ads';
 import { Environment } from '~lib/environment';
 import { phrase } from '~lib/lang';
+import { SDK } from '~lib/sdk';
 import { Tutorial } from '~lib/tutorial';
 import { GameFlag, GameScene } from '~type/game';
+import { SDKAdsType } from '~type/sdk';
 import { IWorld } from '~type/world';
 import { PlayerSuperskill } from '~type/world/entities/player';
 
@@ -32,6 +35,7 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
   const [isAllowAds, setAllowAds] = useState(() => (
     Environment.GetFlag(GameFlag.ADS)
     && Object.keys(world.player.unlockedSuperskills).length < Object.keys(PlayerSuperskill).length
+    && world.wave.number >= ADS_UNLOCK_SUPERSKILL_MIN_WAVE
   ));
 
   const refOverlay = useRef<HTMLDivElement>(null);
@@ -41,15 +45,28 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
     features.some((feature) => feature.type === 'SUPERSKILL')
   ), [features]);
 
-  const onAdsComplete = () => {
+  const handleClose = () => {
+    if (
+      Environment.GetFlag(GameFlag.ADS)
+      && ADS_MIDGAMES_WAVES.includes(world.wave.number)
+    ) {
+      SDK.ShowAds(SDKAdsType.MIDGAME).then(onClose);
+    } else {
+      onClose();
+    }
+  };
+
+  const onAdsComplete = (rewarded: boolean) => {
     setAllowAds(false);
-    world.player.unlockSuperskill();
+    if (rewarded) {
+      world.player.unlockSuperskill();
+    }
   };
 
   useClick(refOverlay, 'down', () => {}, []);
-  useClick(refButton, 'down', onClose, [onClose]);
+  useClick(refButton, 'down', handleClose, []);
 
-  useEvent(scene.input.keyboard, 'keyup-ESC', onClose, []);
+  useEvent(scene.input.keyboard, 'keyup-ESC', handleClose, []);
 
   useEffect(() => {
     setUnlocks(features);

@@ -50,23 +50,6 @@ export class EnemyExplosive extends Enemy {
       },
     });
 
-    let targets: IEnemyTarget[] = [this.scene.player];
-
-    targets = targets.concat(this.scene.getEntities<IEnemy>(EntityType.ENEMY));
-    targets = targets.concat(this.scene.getEntities<IBuilding>(EntityType.BUILDING));
-
-    targets.forEach((target) => {
-      if (target !== this) {
-        const distance = getIsometricDistance(position, target.getBottomFace());
-
-        if (distance <= EXPLOSION_RADIUS) {
-          const multiplier = Math.min(1.0, 0.5 + (1 - (distance / EXPLOSION_RADIUS)));
-
-          target.live.damage(this.damage * multiplier);
-        }
-      }
-    });
-
     this.scene.sound.play(EffectAudio.EXPLOSION);
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
@@ -76,5 +59,22 @@ export class EnemyExplosive extends Enemy {
         depth: this.depth + 1,
       });
     }
+
+    let targets: IEnemyTarget[] = [this.scene.player];
+
+    targets = targets.concat(this.scene.getEntities<IEnemy>(EntityType.ENEMY));
+    targets = targets.concat(this.scene.getEntities<IBuilding>(EntityType.BUILDING));
+
+    targets.forEach((target) => {
+      if (target.active && target !== this) {
+        const distance = getIsometricDistance(position, target.getBottomFace());
+
+        if (distance <= EXPLOSION_RADIUS) {
+          const multiplier = Math.min(1.0, 0.5 + (1 - (distance / EXPLOSION_RADIUS)));
+
+          target.live.damage(this.damage * multiplier);
+        }
+      }
+    });
   }
 }

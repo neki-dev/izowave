@@ -1,5 +1,5 @@
 import { useEvent, useGame, useScene } from 'phaser-react-ui';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { GameScene, IGame } from '~type/game';
 import { IWorld } from '~type/world';
@@ -22,9 +22,9 @@ export const Unlocks: React.FC = () => {
 
   const isListEmpty = features.length === 0;
 
-  const onClose = useCallback(() => {
+  const onClose = () => {
     setFeatures([]);
-  }, []);
+  };
 
   useEvent(world.wave, WaveEvents.COMPLETE, (number: number) => {
     const list: Feature[] = [];

@@ -168,16 +168,18 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.state = GameState.STARTED;
+    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
+      this.state = GameState.STARTED;
 
-    SDK.TogglePlayState(true);
+      SDK.TogglePlayState(true);
 
-    this.scene.systemScene.scene.stop(GameScene.MENU);
+      this.scene.systemScene.scene.stop(GameScene.MENU);
 
-    this.world.scene.resume();
-    this.screen.scene.resume();
+      this.world.scene.resume();
+      this.screen.scene.resume();
 
-    this.isSaved = false;
+      this.isSaved = false;
+    });
   }
 
   public continueGame(save: StorageSave) {
@@ -187,17 +189,8 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = save;
 
-    this.startGame(() => {
-      SDK.ShowAds(SDKAdsType.MIDGAME, {
-        onStart: () => {
-          SDK.TogglePlayState(false);
-          this.pause();
-        },
-        onFinish: () => {
-          SDK.TogglePlayState(true);
-          this.resume();
-        },
-      });
+    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
+      this.startGame();
     });
   }
 
@@ -211,7 +204,7 @@ export class Game extends Phaser.Game implements IGame {
     this.startGame();
   }
 
-  private startGame(callback?: () => void) {
+  private startGame() {
     if (this.state !== GameState.IDLE) {
       return;
     }
@@ -229,14 +222,12 @@ export class Game extends Phaser.Game implements IGame {
     this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
       this.state = GameState.STARTED;
 
-      SDK.TogglePlayState(true);
-
       this.scene.systemScene.scene.stop(GameScene.MENU);
       this.scene.systemScene.scene.launch(GameScene.SCREEN);
 
       this.world.start();
 
-      callback?.();
+      SDK.TogglePlayState(true);
     });
   }
 
@@ -270,15 +261,9 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.stopGame(false);
-    this.startGame(() => {
-      SDK.ShowAds(SDKAdsType.MIDGAME, {
-        onStart: () => {
-          this.toggleSystemPause(true);
-        },
-        onFinish: () => {
-          this.toggleSystemPause(false);
-        },
-      });
+
+    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
+      this.startGame();
     });
   }
 
