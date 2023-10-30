@@ -137,24 +137,21 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   private hit(target: IEnemy) {
+    this.stop();
+
     const { damage, freeze } = this.params;
 
     if (freeze && target.live.armour <= 0) {
-      const duration = freeze / this.scale;
-
-      target.freeze(duration, true);
+      target.freeze(freeze, true);
     }
 
     if (damage) {
-      target.live.damage(damage);
-
-      if (!this.active) {
-        return;
-      }
-
+      const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY);
       const position = target.getBottomFace();
 
-      this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+      target.live.damage(damage);
+
+      enemies.forEach((enemy) => {
         if (enemy !== target) {
           const distance = getIsometricDistance(position, enemy.getBottomFace());
 
@@ -168,8 +165,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         }
       });
     }
-
-    this.stop();
   }
 
   private stop() {
