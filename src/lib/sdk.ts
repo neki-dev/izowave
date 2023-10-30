@@ -42,7 +42,7 @@ export class SDK {
       try {
         switch (Environment.Platform) {
           case GamePlatform.CRAZY_GAMES: {
-            window.CrazyGames?.SDK.ad.requestAd(type, {
+            window.CrazyGames.SDK.ad.requestAd(type, {
               adFinished: () => {
                 const rewarded = (type === SDKAdsType.REWARDED);
 
@@ -59,7 +59,7 @@ export class SDK {
               ? 'rewardedBreak'
               : 'commercialBreak';
 
-            window.PokiSDK?.[method]().then((success: boolean) => {
+            window.PokiSDK[method]().then((success: boolean) => {
               const rewarded = (type === SDKAdsType.REWARDED && success);
 
               resolve(rewarded);

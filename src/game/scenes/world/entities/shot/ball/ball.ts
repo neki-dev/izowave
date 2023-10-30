@@ -146,25 +146,28 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     }
 
     if (damage) {
-      const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY);
-      const position = target.getBottomFace();
+      this.spreadDamage(target, damage * SHOT_BALL_DAMAGE_SPREAD_FACTOR);
 
-      target.live.damage(damage);
-
-      enemies.forEach((enemy) => {
-        if (enemy !== target) {
-          const distance = getIsometricDistance(position, enemy.getBottomFace());
-
-          if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
-            const damageByDistance = damage
-              * SHOT_BALL_DAMAGE_SPREAD_FACTOR
-              * (1 - (distance / SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE));
-
-            enemy.live.damage(damageByDistance);
-          }
-        }
-      });
+      if (target.active) {
+        target.live.damage(damage);
+      }
     }
+  }
+
+  private spreadDamage(target: IEnemy, damage: number) {
+    const position = target.getBottomFace();
+
+    this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+      if (enemy.active && enemy !== target) {
+        const distance = getIsometricDistance(position, enemy.getBottomFace());
+
+        if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
+          const damageByDistance = damage * (1 - (distance / SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE));
+
+          enemy.live.damage(damageByDistance);
+        }
+      }
+    });
   }
 
   private stop() {
