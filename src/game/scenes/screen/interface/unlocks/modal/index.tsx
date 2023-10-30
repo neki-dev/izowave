@@ -41,9 +41,11 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
     features.some((feature) => feature.type === 'SUPERSKILL')
   ), [features]);
 
-  const onAdsComplete = () => {
+  const onAdsComplete = (rewarded: boolean) => {
     setAllowAds(false);
-    world.player.unlockSuperskill();
+    if (rewarded) {
+      world.player.unlockSuperskill();
+    }
   };
 
   useClick(refOverlay, 'down', () => {}, []);

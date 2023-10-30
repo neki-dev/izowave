@@ -10,18 +10,14 @@ import {
 } from './styles';
 
 type Props = {
-  onComplete: () => void
+  onComplete: (rewarded: boolean) => void
 };
 
 export const ItemAds: React.FC<Props> = ({ onComplete }) => {
   const refContainer = useRef<HTMLDivElement>(null);
 
   useClick(refContainer, 'down', () => {
-    SDK.ShowAds(SDKAdsType.REWARDED, {
-      onReward: () => {
-        onComplete();
-      },
-    });
+    SDK.ShowAds(SDKAdsType.REWARDED).then(onComplete);
   }, []);
 
   return (
