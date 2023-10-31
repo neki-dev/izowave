@@ -1,15 +1,11 @@
 import styled, { css, keyframes } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import {
-  InterfaceFont,
-  InterfaceTextColor,
-  InterfaceBackgroundColor,
-} from '~type/interface';
+import { InterfaceFont, InterfaceTextColor, InterfaceBackgroundColor } from '~type/interface';
 
-const animationPulse = keyframes`
-  0% { transform: scale(0.8) }
-  100% { transform: scale(1.0) }
+const animationBlinkColor = keyframes`
+  0% { color: ${InterfaceTextColor.ERROR} }
+  100% { color: #fff }
 `;
 
 export const Wrapper = styled.div`
@@ -80,21 +76,15 @@ export const CurrentNumber = styled.div<{
 }>`
   text-align: center;
   border-radius: 3px;
-  ${(props) => {
+  background: ${(props) => {
     if (props.$paused) {
-      return css`
-        background: ${InterfaceBackgroundColor.WARN};
-      `;
+      return InterfaceBackgroundColor.WARN;
     }
     if (props.$going) {
-      return css`
-        background: ${InterfaceBackgroundColor.ERROR};
-      `;
+      return InterfaceBackgroundColor.ERROR;
     }
 
-    return css`
-      background: ${InterfaceBackgroundColor.SUCCESS};
-    `;
+    return InterfaceBackgroundColor.SUCCESS;
   }};
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     font-size: 24px;
@@ -137,8 +127,7 @@ export const Value = styled.div<{
   font-size: 20px;
   line-height: 20px;
   ${(props) => props.$attention && css`
-    color: ${InterfaceTextColor.ERROR};
-    animation: ${animationPulse} 1s infinite;
+    animation: ${animationBlinkColor} 1s infinite;
   `}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     margin-top: 1px;
