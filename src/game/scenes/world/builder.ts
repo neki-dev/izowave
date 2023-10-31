@@ -216,8 +216,10 @@ export class Builder extends EventEmitter implements IBuilder {
     this.isBuild = true;
 
     if (!this.scene.game.isDesktop()) {
-      this.supposedPosition = this.scene.level.getFreeAdjacentTiles(this.scene.player.positionAtMatrix)[0]
-        ?? this.scene.player.positionAtMatrix;
+      this.supposedPosition = (
+        this.scene.level.getFreeAdjacentTiles(this.scene.player.positionAtMatrix)[0]
+        ?? this.scene.player.positionAtMatrix
+      );
     }
 
     this.createBuildInstance();
@@ -478,10 +480,10 @@ export class Builder extends EventEmitter implements IBuilder {
     }
 
     if (this.buildControls) {
-      const confirmBtton = <Phaser.GameObjects.Image> this.buildControls.getAt(0);
+      const confirmButton = this.buildControls.getAt<Phaser.GameObjects.Image>(0);
 
       this.buildControls.setPosition(positionAtWorld.x, positionAtWorld.y + BUILDING_TILE.height);
-      confirmBtton.setTexture(isAllow ? BuildingIcon.CONFIRM : BuildingIcon.CONFIRM_DISABLED);
+      confirmButton.setTexture(isAllow ? BuildingIcon.CONFIRM : BuildingIcon.CONFIRM_DISABLED);
     }
   }
 

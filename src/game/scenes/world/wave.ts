@@ -9,7 +9,6 @@ import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
-import { GameState } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -51,7 +50,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
   private nextSpawnTimestamp: number = 0;
 
-  private alarmInterval: Nullable<NodeJS.Timeout> = null;
+  private alarmInterval: Nullable<Phaser.Time.TimerEvent> = null;
 
   constructor(scene: IWorld) {
     super();
@@ -63,9 +62,6 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
   public destroy() {
     this.removeAllListeners();
-    if (this.alarmInterval) {
-      clearInterval(this.alarmInterval);
-    }
   }
 
   public getTimeleft() {
@@ -95,14 +91,24 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
         && !this.scene.isTimePaused()
         && !this.alarmInterval
       ) {
-        this.scene.sound.play(WaveAudio.TICK);
-        this.alarmInterval = setInterval(() => {
-          if (this.scene.game.state === GameState.STARTED && !this.isPeaceMode) {
-            this.scene.sound.play(WaveAudio.TICK);
-          }
-        }, 1000);
+        this.runAlarmCountdown();
       }
     }
+  }
+
+  private runAlarmCountdown() {
+    this.scene.sound.play(WaveAudio.TICK);
+
+    this.alarmInterval = this.scene.addProgression({
+      duration: WAVE_TIMELEFT_ALARM,
+      frequence: 1000,
+      onProgress: () => {
+        this.scene.sound.play(WaveAudio.TICK);
+      },
+      onComplete: () => {
+        this.alarmInterval = null;
+      },
+    });
   }
 
   public getEnemiesLeft() {
@@ -153,7 +159,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     });
 
     if (this.alarmInterval) {
-      clearInterval(this.alarmInterval);
+      this.scene.removeProgression(this.alarmInterval);
       this.alarmInterval = null;
     }
 

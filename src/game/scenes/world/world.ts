@@ -304,9 +304,9 @@ export class World extends Scene implements IWorld {
 
     if (this.game.usedSave?.payload.wave) {
       this.wave.loadSavePayload(this.game.usedSave.payload.wave);
+    } else {
+      this.wave.runTimeleft();
     }
-
-    this.wave.runTimeleft();
 
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       this.wave.destroy();

@@ -122,15 +122,18 @@ export class Game extends Phaser.Game implements IGame {
       }
     });
 
-    window.addEventListener('beforeunload', () => {
-      const needConfirm = Environment.Platform !== 'development' && (
-        (this.state === GameState.PAUSED && !this.isSaved)
-        || this.state === GameState.STARTED
+    window.addEventListener('beforeunload', (event: Event) => {
+      const needConfirm = (
+        this.state === GameState.STARTED
+        || (this.state === GameState.PAUSED && !this.isSaved)
       );
 
-      return needConfirm
-        ? 'Do you confirm leave game without save?'
-        : undefined;
+      if (needConfirm && Environment.Platform !== 'development') {
+        event.preventDefault();
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        event.returnValue = 'Do you confirm to leave game?';
+      }
     });
 
     window.addEventListener('contextmenu', (event: Event) => {
@@ -149,9 +152,7 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.state = GameState.PAUSED;
-
-    SDK.TogglePlayState(false);
+    this.setState(GameState.PAUSED);
 
     this.world.scene.pause();
     this.screen.scene.pause();
@@ -169,9 +170,7 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
-      this.state = GameState.STARTED;
-
-      SDK.TogglePlayState(true);
+      this.setState(GameState.STARTED);
 
       this.scene.systemScene.scene.stop(GameScene.MENU);
 
@@ -220,14 +219,12 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
-      this.state = GameState.STARTED;
+      this.setState(GameState.STARTED);
 
       this.scene.systemScene.scene.stop(GameScene.MENU);
       this.scene.systemScene.scene.launch(GameScene.SCREEN);
 
       this.world.start();
-
-      SDK.TogglePlayState(true);
     });
   }
 
@@ -236,16 +233,11 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    if (this.state === GameState.FINISHED) {
-      this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
-    } else if (this.state === GameState.STARTED) {
-      SDK.TogglePlayState(false);
-    }
-
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.stop(GameScene.MENU);
+    this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
 
-    this.state = GameState.IDLE;
+    this.setState(GameState.IDLE);
 
     if (menu) {
       this.world.scene.restart();
@@ -272,9 +264,7 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.state = GameState.FINISHED;
-
-    SDK.TogglePlayState(false);
+    this.setState(GameState.FINISHED);
 
     this.events.emit(GameEvents.FINISH);
 
@@ -294,10 +284,28 @@ export class Game extends Phaser.Game implements IGame {
 
   public toggleSystemPause(state: boolean) {
     SDK.TogglePlayState(!state);
+    this.events.emit(GameEvents.TOGGLE_PAUSE, state);
+
     if (state) {
       this.pause();
     } else {
       this.resume();
+    }
+  }
+
+  private setState(state: GameState) {
+    if (this.state === state) {
+      return;
+    }
+
+    const prevPauseState = this.state !== GameState.STARTED;
+    const nextPauseState = state !== GameState.STARTED;
+
+    this.state = state;
+
+    if (prevPauseState !== nextPauseState) {
+      SDK.TogglePlayState(!nextPauseState);
+      this.events.emit(GameEvents.TOGGLE_PAUSE, nextPauseState);
     }
   }
 
