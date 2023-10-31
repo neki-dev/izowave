@@ -36,7 +36,6 @@ export const ENVIRONMENTS: Record<GamePlatform, GameEnvironment> = {
   [GamePlatform.DEVELOPMENT]: {
     flags: {
       [GameFlag.BLOOD]: true,
-      [GameFlag.ADS]: true,
     },
   },
 };

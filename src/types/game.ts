@@ -128,6 +128,7 @@ export enum GameEvents {
   START = 'start',
   FINISH = 'finish',
   UPDATE_SETTINGS = 'update_settings',
+  TOGGLE_PAUSE = 'toggle_pause',
 }
 
 export enum GameState {

@@ -95,14 +95,23 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
         && !this.scene.isTimePaused()
         && !this.alarmInterval
       ) {
-        this.scene.sound.play(WaveAudio.TICK);
-        this.alarmInterval = setInterval(() => {
-          if (this.scene.game.state === GameState.STARTED && !this.isPeaceMode) {
-            this.scene.sound.play(WaveAudio.TICK);
-          }
-        }, 1000);
+        this.runAlarmCountdown();
       }
     }
+  }
+
+  private runAlarmCountdown() {
+    this.scene.sound.play(WaveAudio.TICK);
+
+    this.alarmInterval = setInterval(() => {
+      if (
+        this.scene.game.state === GameState.STARTED
+        && !this.scene.isTimePaused()
+        && !this.isPeaceMode
+      ) {
+        this.scene.sound.play(WaveAudio.TICK);
+      }
+    }, 1000);
   }
 
   public getEnemiesLeft() {

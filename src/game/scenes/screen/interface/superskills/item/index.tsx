@@ -5,7 +5,7 @@ import React, { useRef, useState } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { GameScene, GameState, IGame } from '~type/game';
+import { GameEvents, GameScene, IGame } from '~type/game';
 import { IWorld } from '~type/world';
 import { PlayerEvents, PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
 
@@ -20,10 +20,9 @@ type Props = {
 export const Item: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
-  const scene = useScene(GameScene.SYSTEM);
 
   const [isAllow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
-  const [isPaused, setPaused] = useState(false);
+  const [isGamePaused, setGamePaused] = useState(false);
   const [progress, setProgress] = useState<Nullable<Phaser.Time.TimerEvent>>(null);
   const [cost, setCost] = useState(0);
 
@@ -41,8 +40,11 @@ export const Item: React.FC<Props> = ({ type }) => {
     }
   }, []);
 
-  useSceneUpdate(scene, () => {
-    setPaused(game.state === GameState.PAUSED);
+  useEvent(game.events, GameEvents.TOGGLE_PAUSE, (paused: boolean) => {
+    setGamePaused(paused);
+  }, []);
+
+  useSceneUpdate(world, () => {
     setCost(world.player.getSuperskillCost(type));
     setProgress(world.player.activeSuperskills[type] ?? null);
   }, []);
@@ -65,7 +67,7 @@ export const Item: React.FC<Props> = ({ type }) => {
           <Timeout
             style={{
               animationDuration: `${progress.delay}ms`,
-              animationPlayState: isPaused ? 'paused' : 'running',
+              animationPlayState: isGamePaused ? 'paused' : 'running',
             }}
           />
         )}
