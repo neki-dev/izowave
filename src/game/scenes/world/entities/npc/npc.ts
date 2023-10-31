@@ -35,7 +35,7 @@ export class NPC extends Sprite implements INPC {
   private seesInvisibleTarget: boolean = false;
 
   constructor(scene: IWorld, {
-    pathFindTriggerDistance, seesInvisibleTarget, texture, ...data
+    pathFindTriggerDistance, seesInvisibleTarget, texture, customAnimation, ...data
   }: NPCData) {
     super(scene, { ...data, texture });
     scene.addEntityToGroup(this, EntityType.NPC);
@@ -45,14 +45,16 @@ export class NPC extends Sprite implements INPC {
 
     this.addDebugPath();
 
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers(texture, {}),
-      frameRate: 4,
-      repeat: -1,
-      delay: Math.random() * 500,
-    });
-    this.anims.play('idle');
+    if (!customAnimation) {
+      this.anims.create({
+        key: 'idle',
+        frames: this.anims.generateFrameNumbers(texture, {}),
+        frameRate: 4,
+        repeat: -1,
+        delay: Math.random() * 500,
+      });
+      this.anims.play('idle');
+    }
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.freezeEffectTimer) {

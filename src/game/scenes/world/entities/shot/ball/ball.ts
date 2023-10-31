@@ -89,8 +89,16 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.setDepth(this.y);
   }
 
-  public shoot(target: IEnemy) {
-    if (!this.initiator || !this.params.speed) {
+  public shoot(target: IEnemy, params?: ShotParams) {
+    if (!this.initiator) {
+      return;
+    }
+
+    if (params) {
+      this.params = params;
+    }
+
+    if (!this.params.speed) {
       return;
     }
 

@@ -57,29 +57,35 @@ export const Description = styled.div`
 `;
 
 export const IconContainer = styled.div<{
-  $type: 'BUILDING' | 'SUPERSKILL'
+  $type: 'BUILDING' | 'SUPERSKILL' | 'ASSISTANT'
 }>`
   overflow: hidden;
-  ${(props) => (props.$type === 'BUILDING' ? css`
-    width: 68px;
-    height: 80px;
-    [role=texture] {
-      height: 100%;
+  ${(props) => {
+    switch (props.$type) {
+      case 'BUILDING': return css`
+        width: 68px;
+        height: 80px;
+        [role=texture] {
+          height: 100%;
+        }
+      `;
+      case 'SUPERSKILL': return css`
+        width: 64px;
+        height: 64px;
+        [role=texture] {
+          width: 100%;
+        }
+      `;
+      case 'ASSISTANT': return css`
+        width: 48px;
+        height: 80px;
+        [role=texture] {
+          height: 96px;
+        }
+      `;
     }
-  ` : css`
-    width: 64px;
-    height: 64px;
-    [role=texture] {
-      width: 100%;
-    }
-  `)}
+  }}
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    ${(props) => (props.$type === 'BUILDING' ? css`
-      width: 46px;
-      height: 54px;
-    ` : css`
-      width: 46px;
-      height: 46px;
-    `)}
+    transform: scale(0.75);
   }
 `;

@@ -38,4 +38,5 @@ export type NPCData = {
   pathFindTriggerDistance: number
   seesInvisibleTarget: boolean
   body: SpriteBodyData
+  customAnimation?: boolean
 };

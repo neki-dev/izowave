@@ -60,6 +60,12 @@ export const EN = {
   PATH_TO_CRYSTAL: 'Display path\nto nearest crystal',
 
   /**
+   * Assistant
+   */
+  ASSISTANT: 'Assistant',
+  ASSISTANT_UNLOCK: 'New assistant with improved weapon',
+
+  /**
    * Skills
    */
   SKILLS: 'Skills',

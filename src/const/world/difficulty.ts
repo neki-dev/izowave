@@ -19,6 +19,7 @@ export const DIFFICULTY = {
    * Assistant
    */
 
+  ASSISTANT_UNLOCK_PER_WAVE: 10, // Count waves between assistant variants unlockings
   ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.5, // Damage growth by upgrade level (Quadratic)

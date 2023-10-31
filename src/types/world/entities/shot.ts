@@ -9,7 +9,7 @@ export interface IShot extends IParticlesParent {
   /**
    * Shot params.
    */
-  params: ShotParams
+  readonly params: ShotParams
 
   /**
    * Set shoots initiator.
@@ -21,8 +21,9 @@ export interface IShot extends IParticlesParent {
   /**
    * Make shoot to target.
    * @param target - Enemy
+   * @param params - Shot params
    */
-  shoot(target: IEnemy): void
+  shoot(target: IEnemy, params?: ShotParams): void
 }
 
 export interface IShotLazer extends Phaser.GameObjects.Line, IShot {
@@ -38,6 +39,10 @@ export interface IShotInitiator extends Phaser.GameObjects.GameObject {
   readonly scene: IWorld
   x: number
   y: number
+}
+
+export interface IShotFactory {
+  new (scene: IWorld, params: ShotParams, ...args: any[]): IShot
 }
 
 export enum ShotLazerAudio {

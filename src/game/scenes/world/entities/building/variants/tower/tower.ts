@@ -230,18 +230,18 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private shoot(target: IEnemy) {
-    this.shot.params = this.getShotCurrentParams();
+    const params = this.getShotCurrentParams();
 
     if (this.power > 1.0) {
-      if (this.shot.params.damage) {
-        this.shot.params.damage *= this.power;
+      if (params.damage) {
+        params.damage *= this.power;
       }
-      if (this.shot.params.freeze) {
-        this.shot.params.freeze *= this.power;
+      if (params.freeze) {
+        params.freeze *= this.power;
       }
     }
 
-    this.shot.shoot(target);
+    this.shot.shoot(target, params);
   }
 
   private getBooster() {

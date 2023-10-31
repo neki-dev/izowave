@@ -61,9 +61,13 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.processing();
   }
 
-  public shoot(target: IEnemy) {
+  public shoot(target: IEnemy, params?: ShotParams) {
     if (!this.initiator) {
       return;
+    }
+
+    if (params) {
+      this.params = params;
     }
 
     this.target = target;
