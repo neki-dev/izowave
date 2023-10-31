@@ -1,8 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE } from '~const/world/entities/assistant';
+import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE, ASSISTANT_WEAPON } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
-import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { ShotLazer } from '~entity/shot/lazer';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, getIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
@@ -148,11 +146,7 @@ export class Assistant extends NPC implements IAssistant {
       this.emit(AssistantEvents.UNLOCK_VARIANT, this.variant);
     }
 
-    const ShotType = this.variant === AssistantVariant.LASERBOT
-      ? ShotLazer
-      : ShotBallFire;
-
-    this.setWeapon(ShotType);
+    this.setWeapon(ASSISTANT_WEAPON[this.variant]);
     this.setTexture(AssistantTexture[this.variant]);
     this.anims.play(`idle.${this.texture.key}`);
   }
@@ -167,7 +161,7 @@ export class Assistant extends NPC implements IAssistant {
       speed: DIFFICULTY.ASSISTANT_ATTACK_SPEED,
       damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
     }, {
-      scale: 0.75,
+      scale: 0.5,
     });
 
     this.shot.setInitiator(this, () => this.body.center);

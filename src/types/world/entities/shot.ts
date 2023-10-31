@@ -49,9 +49,8 @@ export enum ShotLazerAudio {
   LAZER = 'shot/lazer',
 }
 
-export enum ShotBallTexture {
-  FIRE = 'shot/fire',
-  FROZEN = 'shot/frozen',
+export enum ShotTexture {
+  BALL = 'shot/ball',
 }
 
 export enum ShotBallAudio {
@@ -71,7 +70,6 @@ export type ShotData = {
 };
 
 export type ShotBallData = ShotData & {
-  texture: ShotBallTexture
   audio: ShotBallAudio
-  glowColor?: Nullable<number>
+  color: number
 };

@@ -3,12 +3,12 @@ import { ShotBallAudio, ShotData, ShotParams } from '~type/world/entities/shot';
 
 import { ShotBall } from '../ball';
 
-export class ShotBallFire extends ShotBall {
+export class ShotBallSimple extends ShotBall {
   constructor(scene: IWorld, params: ShotParams, data: ShotData = {}) {
     super(scene, params, {
       ...data,
       audio: ShotBallAudio.FIRE,
-      color: 0xff5400,
+      color: 0xfff985,
     });
   }
 }

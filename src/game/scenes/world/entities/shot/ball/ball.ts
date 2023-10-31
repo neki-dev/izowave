@@ -10,12 +10,12 @@ import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
-  ShotParams, ShotBallData, ShotBallAudio, ShotBallTexture, IShotInitiator, IShotBall,
+  ShotParams, ShotBallData, ShotBallAudio, IShotInitiator, IShotBall, ShotTexture,
 } from '~type/world/entities/shot';
 import { PositionAtWorld } from '~type/world/level';
 
 Assets.RegisterAudio(ShotBallAudio);
-Assets.RegisterImages(ShotBallTexture);
+Assets.RegisterImages(ShotTexture);
 
 export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   readonly scene: IWorld;
@@ -34,22 +34,23 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private startPosition: Nullable<PositionAtWorld> = null;
 
-  private glowColor: Nullable<number> = null;
+  private color: number = 0xffffff;
 
   constructor(scene: IWorld, params: ShotParams, {
-    texture, audio, glowColor = null, scale = 1.0,
+    audio, color, scale = 1.0,
   }: ShotBallData) {
-    super(scene, 0, 0, texture);
+    super(scene, 0, 0, ShotTexture.BALL);
     scene.add.existing(this);
     scene.addEntityToGroup(this, EntityType.SHOT);
 
     this.params = params;
     this.audio = audio;
-    this.glowColor = glowColor;
+    this.color = color;
 
     this.setActive(false);
     this.setVisible(false);
     this.setScale(scale);
+    this.setTint(color);
 
     this.scene.physics.add.collider(
       this,
@@ -108,19 +109,17 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.setActive(true);
     this.setVisible(true);
 
-    if (
-      this.glowColor
-      && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
       this.effect = new Particles(this, {
         key: 'glow',
         texture: ParticlesTexture.GLOW,
         params: {
           follow: this,
-          scale: 0.25 * this.scale,
+          scale: 0.2 * this.scale,
           alpha: { start: 1.0, end: 0.0 },
-          lifespan: 100,
-          tint: this.glowColor,
+          lifespan: 20000 / this.params.speed,
+          frequency: 10000 / this.params.speed,
+          tint: this.color,
           blendMode: 'ADD',
         },
       });
