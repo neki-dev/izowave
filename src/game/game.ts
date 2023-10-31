@@ -122,15 +122,18 @@ export class Game extends Phaser.Game implements IGame {
       }
     });
 
-    window.addEventListener('beforeunload', () => {
-      const needConfirm = Environment.Platform !== 'development' && (
-        (this.state === GameState.PAUSED && !this.isSaved)
-        || this.state === GameState.STARTED
+    window.addEventListener('beforeunload', (event: Event) => {
+      const needConfirm = (
+        this.state === GameState.STARTED
+        || (this.state === GameState.PAUSED && !this.isSaved)
       );
 
-      return needConfirm
-        ? 'Do you confirm leave game without save?'
-        : undefined;
+      if (needConfirm && Environment.Platform !== 'development') {
+        event.preventDefault();
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        event.returnValue = 'Do you confirm to leave game?';
+      }
     });
 
     window.addEventListener('contextmenu', (event: Event) => {
