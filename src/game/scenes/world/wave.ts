@@ -223,7 +223,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
       scale: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       level: this.number,
-      maxLevel: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_LEVEL,
+      maxLevel: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL,
     });
 
     this.nextSpawnTimestamp = this.scene.getTime() + pause;

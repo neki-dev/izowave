@@ -43,10 +43,10 @@ export const DIFFICULTY = {
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 10000, // Frost duration
-  SUPERSKILL_FIRE_COST: 30, // Cost of use
+  SUPERSKILL_FIRE_COST: 35, // Cost of use
   SUPERSKILL_FIRE_DURATION: 2000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
-  SUPERSKILL_RAGE_COST: 40, // Cost of use
+  SUPERSKILL_RAGE_COST: 35, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
   SUPERSKILL_COST_GROWTH: 0.15, // Growth cost by wave number (Linear)
   SUPERSKILL_UNLOCK_PER_WAVE: 3, // Period of superskill unlocking
@@ -61,7 +61,7 @@ export const DIFFICULTY = {
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
   WAVE_ENEMIES_SPAWN_PAUSE: 2000, // Pause between enemies spawn
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.05, // Enemies spawn pause growth by wave number (Linear)
-  WAVE_ENEMIES_SPAWN_PAUSE_LEVEL: 11, // Level for limit spawn pause growth
+  WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL: 11, // Level for limit spawn pause growth
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
   WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
 
