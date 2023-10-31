@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE, ASSISTANT_WEAPON } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
+import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, getIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
@@ -89,7 +90,7 @@ export class Assistant extends NPC implements IAssistant {
     }
 
     const params = this.getShotCurrentParams();
-    const instantAttack = this.instantShot && this.variant === AssistantVariant.FIREBOT;
+    const instantAttack = this.instantShot && this.shot instanceof ShotBallFire;
     const now = this.scene.getTime();
     const pause = instantAttack ? 0 : progressionQuadratic({
       defaultValue: DIFFICULTY.ASSISTANT_ATTACK_PAUSE,

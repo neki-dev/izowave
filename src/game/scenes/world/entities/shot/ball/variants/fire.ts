@@ -9,6 +9,7 @@ export class ShotBallFire extends ShotBall {
       ...data,
       audio: ShotBallAudio.FIRE,
       color: 0xff5400,
+      glow: true,
     });
   }
 }

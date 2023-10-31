@@ -8,6 +8,7 @@ export class ShotBallFrozen extends ShotBall {
     super(scene, params, {
       audio: ShotBallAudio.FROZEN,
       color: 0x00a1ff,
+      glow: true,
     });
   }
 }
