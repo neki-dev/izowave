@@ -171,19 +171,13 @@ export class Assistant extends NPC implements IAssistant {
 
   private getShotCurrentParams() {
     const params: ShotParams = {
+      speed: this.shotDefaultParams.speed,
       maxDistance:
         this.shotDefaultParams.maxDistance
         && progressionQuadratic({
           defaultValue: this.shotDefaultParams.maxDistance,
           scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
           level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
-        }),
-      speed:
-        this.shotDefaultParams.speed
-        && progressionQuadratic({
-          defaultValue: this.shotDefaultParams.speed,
-          scale: DIFFICULTY.ASSISTANT_ATTACK_SPEED_GROWTH,
-          level: this.owner.upgradeLevel[PlayerSkill.ATTACK_SPEED],
         }),
       damage:
         this.shotDefaultParams.damage

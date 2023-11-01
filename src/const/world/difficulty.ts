@@ -20,18 +20,16 @@ export const DIFFICULTY = {
    */
 
   ASSISTANT_UNLOCK_PER_WAVE: 10, // Count waves between assistant variants unlockings
-  ASSISTANT_EXPERIENCE_TO_UPGRADE: 100, // Experience need to upgrade
+  ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.5, // Damage growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade attack damage
-  ASSISTANT_ATTACK_SPEED: 500, // Attack speed
-  ASSISTANT_ATTACK_SPEED_GROWTH: 0.1, // Attack speed growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
   ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.15, // Attack distance growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE: 40, // Experience need to upgrade attack distance
   ASSISTANT_ATTACK_PAUSE: 1000, // Attack pause
   ASSISTANT_ATTACK_PAUSE_GROWTH: -0.15, // Attack pause growth by upgrade level (Quadratic)
-  ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE: 40, // Experience need to upgrade attack speed
+  ASSISTANT_ATTACK_PAUSE_EXPERIENCE_TO_UPGRADE: 30, // Experience need to upgrade attack pause
 
   /**
    * Superskills
