@@ -1,5 +1,3 @@
-import EventEmitter from 'events';
-
 import Phaser from 'phaser';
 
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
@@ -26,7 +24,7 @@ import {
   BiomeType, TileType, PositionAtWorld, PositionAtMatrix,
 } from '~type/world/level';
 
-export class Builder extends EventEmitter implements IBuilder {
+export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   readonly scene: IWorld;
 
   private _isBuild: boolean = false;
@@ -61,8 +59,6 @@ export class Builder extends EventEmitter implements IBuilder {
     super();
 
     this.scene = scene;
-
-    this.setMaxListeners(0);
 
     this.handleKeyboard();
     this.handlePointer();
