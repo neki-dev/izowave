@@ -105,15 +105,17 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Particles(this.target, {
-        key: 'glow',
-        texture: ParticlesTexture.GLOW,
+      const lifespan = Math.min(100, this.displayWidth * 2);
+
+      new Particles(this, {
+        key: 'lazer',
+        texture: ParticlesTexture.BIT_SOFT,
         params: {
-          duration: 150,
+          duration: lifespan,
           follow: this.target,
           followOffset: this.target.getBodyOffset(),
-          lifespan: { min: 100, max: 150 },
-          scale: { start: 0.2, end: 0.1 },
+          lifespan: { min: lifespan / 2, max: lifespan },
+          scale: { start: 1.0, end: 0.25 },
           speed: 80,
           tint: 0xb136ff,
         },

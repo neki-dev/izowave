@@ -30,11 +30,13 @@ export enum ParticlesTexture {
   BIT = 'effect/bit',
   BIT_SOFT = 'effect/bit_soft',
   GLOW = 'effect/glow',
+  PLUS = 'effect/plus',
 }
 
 export type ParticlesData = {
-  key: string
+  key?: string
   position?: PositionAtWorld
   texture: ParticlesTexture
+  replay?: boolean
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
 };

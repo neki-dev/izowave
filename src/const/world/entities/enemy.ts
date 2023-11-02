@@ -4,6 +4,18 @@ export const ENEMY_BOSS_SPAWN_WAVE_RATE = 5;
 
 export const ENEMY_PATH_BREAKPOINT = 32;
 
+export const ENEMY_REGENERATION_RADIUS = 100;
+
+export const ENEMY_REGENERATION_EFFECT_COLOR = 0x6fe7e7;
+
+export const ENEMY_REGENERATION_EFFECT_DURATION = 500;
+
+export const ENEMY_EXPLOSION_RADIUS = 70;
+
+export const ENEMY_EXPLOSION_EFFECT_COLOR = 0xff0000;
+
+export const ENEMY_EXPLOSION_EFFECT_DURATION = 1000;
+
 export const ENEMY_SIZE_PARAMS: Record<EnemySize, EnemySizeParams> = {
   [EnemySize.SMALL]: {
     width: 16,

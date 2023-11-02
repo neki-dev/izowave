@@ -94,7 +94,7 @@ export class NPC extends Sprite implements INPC {
     if (this.freezeEffectTimer) {
       this.freezeEffectTimer.elapsed = 0;
     } else {
-      this.setTint(0x00a8ff);
+      this.setTint(0x00f2ff);
       this.freezeEffectTimer = this.scene.time.delayedCall(duration, () => {
         this.clearTint();
         this.freezeEffectTimer = null;
@@ -102,17 +102,20 @@ export class NPC extends Sprite implements INPC {
     }
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      const lifespan = Math.min(400, this.displayWidth * 8);
+
       new Particles(this, {
         key: 'freeze',
-        texture: ParticlesTexture.GLOW,
+        texture: ParticlesTexture.BIT_SOFT,
         params: {
-          duration: 200,
+          duration: lifespan,
           follow: this,
           followOffset: this.getBodyOffset(),
-          lifespan: { min: 100, max: 150 },
-          scale: 0.2,
+          color: [0xffffff, 0x8cf9ff, 0x00f2ff],
+          colorEase: 'quad.out',
+          lifespan: { min: lifespan / 2, max: lifespan },
+          scale: { start: 1.0, end: 0.5 },
           speed: 80,
-          tint: 0x00ddff,
         },
       });
     }

@@ -255,28 +255,27 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
+    const lifespan = this.displayWidth * 25;
+
     new Particles(this, {
       key: 'fire',
-      texture: ParticlesTexture.GLOW,
+      texture: ParticlesTexture.BIT_SOFT,
       params: {
         follow: this,
         followOffset: this.getBodyOffset(),
         duration,
         color: [0xfacc22, 0xf89800, 0xf83600, 0x9f0404],
         colorEase: 'quad.out',
-        lifespan: this.displayWidth * 25,
-        angle: {
-          min: -100,
-          max: -80,
-        },
+        lifespan: { min: lifespan / 2, max: lifespan },
+        alpha: { start: 1.0, end: 0.0 },
+        angle: { min: -100, max: -80 },
         scale: {
-          start: (this.displayWidth * 1.25) / 100,
-          end: 0,
+          start: this.displayWidth / 20,
+          end: 1.0,
           ease: 'sine.out',
         },
-        speed: 80,
-        advance: 200,
-        blendMode: 'ADD',
+        speed: 40,
+        advance: 10,
       },
     });
   }
@@ -327,17 +326,20 @@ export class Enemy extends NPC implements IEnemy {
         x: this.x,
         y: this.y - size.height / 2,
       };
+      const duration = Math.min(700, this.displayHeight * 17);
+      const scale = this.displayWidth / 16;
 
       new Particles(this, {
         key: 'spawn',
-        texture: ParticlesTexture.GLOW,
+        texture: ParticlesTexture.BIT_SOFT,
         position,
         params: {
-          duration: 500,
-          lifespan: { min: 150, max: 250 },
-          scale: { start: 0.3, end: 0.0 },
-          speed: 100,
-          quantity: 2,
+          duration,
+          lifespan: { min: duration / 2, max: duration },
+          scale: { start: scale, end: scale / 2 },
+          alpha: { start: 1.0, end: 0.0 },
+          speed: 40,
+          quantity: 1,
           tint: 0x000000,
         },
       });

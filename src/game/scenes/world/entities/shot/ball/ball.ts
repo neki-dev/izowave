@@ -38,6 +38,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private glow: boolean = false;
 
+  private altitude: number = 0;
+
   constructor(scene: IWorld, params: ShotParams, {
     audio, color, glow = false, scale = 1.0,
   }: ShotBallData) {
@@ -90,7 +92,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       return;
     }
 
-    this.setDepth(this.y);
+    this.setDepth(this.y + this.altitude);
   }
 
   public shoot(target: IEnemy, params?: ShotParams) {
@@ -128,18 +130,18 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       });
     }
 
+    this.altitude = this.initiator.getBottomFace().y - position.y;
     this.startPosition = {
       x: position.x,
       y: position.y,
     };
 
     const distanceToTarget = getIsometricDistance(position, target.body.center);
-    const speed = Math.min(this.params.speed, 1200);
-    const timeToTarget = distanceToTarget / speed;
+    const timeToTarget = distanceToTarget / this.params.speed;
     const targetPosition = this.scene.getFuturePosition(target, timeToTarget);
 
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    this.scene.physics.moveTo(this, targetPosition.x, targetPosition.y, speed);
+    this.scene.physics.moveTo(this, targetPosition.x, targetPosition.y, this.params.speed);
 
     if (this.scene.game.sound.getAll(this.audio).length < 3) {
       this.scene.game.sound.play(this.audio);

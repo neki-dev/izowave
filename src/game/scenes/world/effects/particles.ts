@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { Assets } from '~lib/assets';
 import { IWorld } from '~type/world';
@@ -22,12 +24,24 @@ export class Particles implements IParticles {
   constructor(
     parent: IParticlesParent,
     {
-      key, position, texture, params,
+      key, position, texture, params, replay = true,
     }: ParticlesData,
   ) {
     this.scene = parent.scene;
     this.parent = parent;
-    this.key = key;
+    this.key = key ?? uuidv4();
+
+    if (!this.parent.effects) {
+      this.parent.effects = {};
+    } else if (this.parent.effects[this.key]) {
+      if (replay) {
+        this.parent.effects[this.key].destroy();
+      } else {
+        return;
+      }
+    }
+
+    this.parent.effects[this.key] = this;
 
     this.emitter = this.scene.add.particles(
       position?.x ?? 0,
@@ -36,14 +50,6 @@ export class Particles implements IParticles {
       params,
     );
     this.emitter.setDepth(WORLD_DEPTH_EFFECT);
-
-    if (!this.parent.effects) {
-      this.parent.effects = {};
-    } else if (this.parent.effects[key]) {
-      this.parent.effects[key].destroy();
-    }
-
-    this.parent.effects[key] = this;
 
     this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
