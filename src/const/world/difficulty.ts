@@ -41,12 +41,12 @@ export const DIFFICULTY = {
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 10000, // Frost duration
-  SUPERSKILL_FIRE_COST: 35, // Cost of use
+  SUPERSKILL_FIRE_COST: 40, // Cost of use
   SUPERSKILL_FIRE_DURATION: 2000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
-  SUPERSKILL_RAGE_COST: 35, // Cost of use
+  SUPERSKILL_RAGE_COST: 40, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
-  SUPERSKILL_COST_GROWTH: 0.15, // Growth cost by wave number (Linear)
+  SUPERSKILL_COST_GROWTH: 0.2, // Growth cost by wave number (Linear)
   SUPERSKILL_UNLOCK_PER_WAVE: 3, // Period of superskill unlocking
 
   /**
@@ -110,6 +110,7 @@ export const DIFFICULTY = {
   BUILDING_UPGRADE_COST_MULTIPLIER: 0.5, // Upgrade cost multiplier
   BUILDING_REPAIR_COST_MULTIPLIER: 0.75, // Repair cost multiplier
   BUILDING_LIMITED_BOUND: 8, // Max bound for limited buildngs
+  BUILDING_TILE_COST_MULTIPLIER: 0.0013, // Tile cost multiplier by max health
 
   /**
    * Building: Wall
@@ -125,7 +126,7 @@ export const DIFFICULTY = {
 
   BUIDLING_TOWER_SHOT_DAMAGE_GROWTH: 0.9, // Shot damage growth by level (Linear)
   BUIDLING_TOWER_SHOT_FREEZE_GROWTH: 0.375, // Frozen duration growth by level (Lienear)
-  BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.2, // Shot speed growth by level (Linear)
+  BUIDLING_TOWER_SHOT_SPEED_GROWTH: 0.1, // Shot speed growth by level (Linear)
   BUIDLING_TOWER_AMMO_AMOUNT: 30, // Ammo in clip
 
   /**
