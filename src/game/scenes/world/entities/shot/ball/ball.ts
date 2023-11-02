@@ -40,8 +40,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private altitude: number = 0;
 
+  private spread: boolean = false;
+
   constructor(scene: IWorld, params: ShotParams, {
-    audio, color, glow = false, scale = 1.0,
+    audio, color, spread = false, glow = false, scale = 1.0,
   }: ShotBallData) {
     super(scene, 0, 0, ShotTexture.BALL);
     scene.add.existing(this);
@@ -51,6 +53,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.glow = glow;
     this.params = params;
     this.audio = audio;
+    this.spread = spread;
 
     this.setActive(false);
     this.setVisible(false);
@@ -158,7 +161,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     }
 
     if (damage) {
-      this.spreadDamage(target, damage * SHOT_BALL_DAMAGE_SPREAD_FACTOR);
+      if (this.spread) {
+        this.spreadDamage(target, damage * SHOT_BALL_DAMAGE_SPREAD_FACTOR);
+      }
 
       if (target.active) {
         target.live.damage(damage);
