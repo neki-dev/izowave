@@ -4,10 +4,7 @@ import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
-import { Particles } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
@@ -104,7 +101,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       return;
     }
 
-    this.scene.particles.createLazerEffect(this.target);
+    this.scene.fx.createLazerEffect(this.target);
 
     const momentDamage = this.params.damage / SHOT_LAZER_REPEAT;
 

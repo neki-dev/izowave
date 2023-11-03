@@ -3,10 +3,8 @@ import {
 } from '~const/world/entities/enemy';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { getIsometricDistance } from '~lib/dimension';
-import { Effect } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { EffectAudio, EffectTexture } from '~type/world/effects';
+import { EffectAudio } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IBuilding } from '~type/world/entities/building';
 import {
@@ -52,14 +50,7 @@ export class EnemyExplosive extends Enemy {
     });
 
     this.scene.sound.play(EffectAudio.EXPLOSION);
-
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.EXPLOSION,
-        position: this.body.center,
-        depth: this.depth + 1,
-      });
-    }
+    this.scene.fx.createExplosionEffect(this);
 
     let targets: IEnemyTarget[] = [this.scene.player];
 

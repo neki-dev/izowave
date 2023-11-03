@@ -8,13 +8,10 @@ import {
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
 import { Assets } from '~lib/assets';
-import { Environment } from '~lib/environment';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
-import { Effect } from '~scene/world/effects';
-import { GameFlag, GameSettings } from '~type/game';
+import { GameSettings } from '~type/game';
 import { InterfaceFont } from '~type/interface';
 import { IWorld } from '~type/world';
-import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
   IEnemyTarget, EnemyData, EnemyTexture, IEnemy, EnemyAudio,
@@ -251,24 +248,17 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   private addBloodEffect() {
-    if (
-      !this.currentBiome?.solid
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      || !Environment.GetFlag(GameFlag.BLOOD)
-    ) {
+    if (!this.currentBiome?.solid) {
       return;
     }
 
     const position = this.getBottomFace();
-    const effect = new Effect(this.scene, {
-      texture: EffectTexture.BLOOD,
-      position,
-      staticFrame: Phaser.Math.Between(0, 3),
-    });
+    const effect = this.scene.fx.createBloodStainEffect(position);
 
-    effect.setAlpha(0.8);
-
-    this.scene.level.effectsOnGround.push(effect);
+    if (effect) {
+      effect.setAlpha(0.8);
+      this.scene.level.effectsOnGround.push(effect);
+    }
   }
 
   private addSpawnEffect() {
@@ -289,7 +279,7 @@ export class Enemy extends NPC implements IEnemy {
       });
     }, 0);
 
-    this.scene.particles.createSpawnEffect(this);
+    this.scene.fx.createSpawnEffect(this);
   }
 
   private handlePlayerSuperskill() {
@@ -315,7 +305,7 @@ export class Enemy extends NPC implements IEnemy {
             retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
           }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
 
-          this.scene.particles.createLongFireEffect(this, { duration });
+          this.scene.fx.createLongFireEffect(this, { duration });
           this.addOngoingDamage(damage, duration);
           break;
         }

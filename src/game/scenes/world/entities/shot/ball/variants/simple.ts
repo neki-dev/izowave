@@ -16,7 +16,7 @@ export class ShotBallSimple extends ShotBall {
   public hit(target: IEnemy) {
     super.hit(target);
 
-    this.scene.particles.createBloodEffect(target);
+    this.scene.fx.createBloodEffect(target);
 
     if (this.params.damage) {
       target.live.damage(this.params.damage);

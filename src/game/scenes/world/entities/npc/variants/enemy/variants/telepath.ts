@@ -86,7 +86,7 @@ export class EnemyTelepath extends Enemy {
 
         enemy.live.addHealth(healthAmount);
 
-        this.scene.particles.createHealEffect(enemy, {
+        this.scene.fx.createHealEffect(enemy, {
           duration: ENEMY_REGENERATION_EFFECT_DURATION,
         });
       });

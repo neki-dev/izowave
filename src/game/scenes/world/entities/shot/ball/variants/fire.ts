@@ -20,7 +20,7 @@ export class ShotBallFire extends ShotBall {
   public hit(target: IEnemy) {
     super.hit(target);
 
-    this.scene.particles.createFireEffect(target);
+    this.scene.fx.createFireEffect(target);
 
     if (this.params.damage) {
       this.spreadDamage(target, this.params.damage * SHOT_BALL_DAMAGE_SPREAD_FACTOR);

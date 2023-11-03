@@ -117,7 +117,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.setVisible(true);
 
     if (this.glow) {
-      this.effect = this.scene.particles.createGlowEffect(this, {
+      this.effect = this.scene.fx.createGlowEffect(this, {
         speed: this.params.speed,
         color: this.color,
       });

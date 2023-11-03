@@ -14,7 +14,7 @@ import { progressionLinear } from '~lib/progression';
 import { hashString } from '~lib/utils';
 import { Builder } from '~scene/world/builder';
 import { Camera } from '~scene/world/camera';
-import { ParticlesManager } from '~scene/world/effects/particles-manager';
+import { FXManager } from '~scene/world/effects/fx-manager';
 import { WorldUI } from '~scene/world/interface';
 import { Level } from '~scene/world/level';
 import { Spawner } from '~scene/world/spawner';
@@ -26,7 +26,7 @@ import {
 } from '~type/world';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
-import { IParticlesManager } from '~type/world/effects/particles-manager';
+import { IFXManager } from '~type/world/effects/fx-manager';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
@@ -80,11 +80,11 @@ export class World extends Scene implements IWorld {
 
   private set spawner(v) { this._spawner = v; }
 
-  private _particles: IParticlesManager;
+  private _fx: IFXManager;
 
-  public get particles() { return this._particles; }
+  public get fx() { return this._fx; }
 
-  private set particles(v) { this._particles = v; }
+  private set fx(v) { this._fx = v; }
 
   private _camera: ICamera;
 
@@ -117,7 +117,7 @@ export class World extends Scene implements IWorld {
     this.input.setPollAlways();
 
     this.level = new Level(this, data);
-    this.particles = new ParticlesManager(this);
+    this.fx = new FXManager(this);
     this.camera = new Camera(this);
     this.spawner = new Spawner(this);
 
