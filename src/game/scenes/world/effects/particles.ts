@@ -1,4 +1,3 @@
-import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { Assets } from '~lib/assets';
 import { IWorld } from '~type/world';
 import {
@@ -46,9 +45,7 @@ export class Particles implements IParticles {
         follow: dynamic ? parent : undefined,
       },
     );
-    this.emitter.setDepth(
-      position?.y ?? parent?.y ?? WORLD_DEPTH_EFFECT,
-    );
+    this.emitter.setDepth(parent.depth + 1);
 
     this.destroy = this.destroy.bind(this);
     this.update = this.update.bind(this);
@@ -73,6 +70,6 @@ export class Particles implements IParticles {
   }
 
   private update() {
-    this.emitter.setDepth(this.parent.depth);
+    this.emitter.setDepth(this.parent.depth + 1);
   }
 }
