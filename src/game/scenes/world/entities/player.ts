@@ -13,12 +13,13 @@ import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, isPositionsEqual } from '~lib/dimension';
+import { Environment } from '~lib/environment';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameEvents, GameSettings } from '~type/game';
+import { GameEvents, GameFlag, GameSettings } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
@@ -480,6 +481,26 @@ export class Player extends Sprite implements IPlayer {
 
     if (this.scene.game.sound.getAll(audio).length === 0) {
       this.scene.game.sound.play(audio);
+    }
+
+    if (
+      this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+      && Environment.GetFlag(GameFlag.BLOOD)
+    ) {
+      new Particles(this, {
+        key: 'blood',
+        texture: ParticlesTexture.BIT_SOFT,
+        dynamic: true,
+        params: {
+          duration: 200,
+          followOffset: this.getBodyOffset(),
+          lifespan: { min: 100, max: 250 },
+          scale: { start: 1.0, end: 0.25 },
+          speed: 60,
+          maxAliveParticles: 6,
+          tint: 0xdd1e1e,
+        },
+      });
     }
 
     super.onDamage(amount);

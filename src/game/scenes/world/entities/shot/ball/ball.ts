@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
@@ -40,10 +39,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private altitude: number = 0;
 
-  private spread: boolean = false;
-
   constructor(scene: IWorld, params: ShotParams, {
-    audio, color, spread = false, glow = false, scale = 1.0,
+    audio, color, glow = false, scale = 1.0,
   }: ShotBallData) {
     super(scene, 0, 0, ShotTexture.BALL);
     scene.add.existing(this);
@@ -53,7 +50,6 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.glow = glow;
     this.params = params;
     this.audio = audio;
-    this.spread = spread;
 
     this.setActive(false);
     this.setVisible(false);
@@ -151,40 +147,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     }
   }
 
-  private hit(target: IEnemy) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public hit(target: IEnemy) {
     this.stop();
-
-    const { damage, freeze } = this.params;
-
-    if (freeze && target.live.armour <= 0) {
-      target.freeze(freeze, true);
-    }
-
-    if (damage) {
-      if (this.spread) {
-        this.spreadDamage(target, damage * SHOT_BALL_DAMAGE_SPREAD_FACTOR);
-      }
-
-      if (target.active) {
-        target.live.damage(damage);
-      }
-    }
-  }
-
-  private spreadDamage(target: IEnemy, damage: number) {
-    const position = target.getBottomFace();
-
-    this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
-      if (enemy.active && enemy !== target) {
-        const distance = getIsometricDistance(position, enemy.getBottomFace());
-
-        if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
-          const damageByDistance = damage * (1 - (distance / SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE));
-
-          enemy.live.damage(damageByDistance);
-        }
-      }
-    });
   }
 
   private stop() {

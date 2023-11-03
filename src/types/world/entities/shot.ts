@@ -74,5 +74,4 @@ export type ShotBallData = ShotData & {
   audio: ShotBallAudio
   color: number
   glow?: boolean
-  spread?: boolean
 };
