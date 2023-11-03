@@ -3,10 +3,7 @@ import {
 } from '~const/world/entities/enemy';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { getIsometricDistance } from '~lib/dimension';
-import { Particles } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariantData, EnemyTexture, IEnemy } from '~type/world/entities/npc/enemy';
 
@@ -89,32 +86,9 @@ export class EnemyTelepath extends Enemy {
 
         enemy.live.addHealth(healthAmount);
 
-        if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-          new Particles(enemy, {
-            key: 'regeneration',
-            texture: ParticlesTexture.PLUS,
-            dynamic: true,
-            params: {
-              followOffset: {
-                x: 0,
-                y: -enemy.displayHeight,
-              },
-              duration: ENEMY_REGENERATION_EFFECT_DURATION,
-              lifespan: ENEMY_REGENERATION_EFFECT_DURATION,
-              alpha: { start: 1.0, end: 0.0 },
-              angle: {
-                min: -110,
-                max: -70,
-              },
-              scale: {
-                start: 1.0,
-                end: 0.5,
-              },
-              speed: 20,
-              maxAliveParticles: 1,
-            },
-          });
-        }
+        this.scene.particles.createHealEffect(enemy, {
+          duration: ENEMY_REGENERATION_EFFECT_DURATION,
+        });
       });
     }
   }

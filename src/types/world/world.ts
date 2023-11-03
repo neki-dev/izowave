@@ -5,6 +5,7 @@ import { IScene } from '~type/scene';
 import { StorageSavePayload } from '~type/storage';
 import { IBuilder } from '~type/world/builder';
 import { ICamera } from '~type/world/camera';
+import { IParticlesManager } from '~type/world/effects/particles-manager';
 import { EntityType } from '~type/world/entities';
 import { BuildingSavePayload } from '~type/world/entities/building';
 import { CrystalSavePayload } from '~type/world/entities/crystal';
@@ -35,6 +36,11 @@ export interface IWorld extends IScene {
    * Enemy spawner.
    */
   readonly spawner: ISpawner
+
+  /**
+   * Particles manager.
+   */
+  readonly particles: IParticlesManager
 
   /**
    * Level.

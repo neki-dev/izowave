@@ -37,10 +37,9 @@ export enum ParticlesTexture {
 }
 
 export type ParticlesData = {
-  key?: string
+  key: string
   position?: PositionAtWorld
   texture: ParticlesTexture
   dynamic?: boolean
-  replay?: boolean
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
 };

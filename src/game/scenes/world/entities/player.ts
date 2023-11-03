@@ -13,16 +13,14 @@ import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, isPositionsEqual } from '~lib/dimension';
-import { Environment } from '~lib/environment';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
-import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameEvents, GameFlag, GameSettings } from '~type/game';
+import { GameEvents, GameSettings } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
-import { IParticles, ParticlesTexture } from '~type/world/effects';
+import { IParticles } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { BuildingVariant } from '~type/world/entities/building';
 import { ICrystal } from '~type/world/entities/crystal';
@@ -483,25 +481,7 @@ export class Player extends Sprite implements IPlayer {
       this.scene.game.sound.play(audio);
     }
 
-    if (
-      this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      && Environment.GetFlag(GameFlag.BLOOD)
-    ) {
-      new Particles(this, {
-        key: 'blood',
-        texture: ParticlesTexture.BIT_SOFT,
-        dynamic: true,
-        params: {
-          duration: 200,
-          followOffset: this.getBodyOffset(),
-          lifespan: { min: 100, max: 250 },
-          scale: { start: 1.0, end: 0.25 },
-          speed: 60,
-          maxAliveParticles: 6,
-          tint: 0xdd1e1e,
-        },
-      });
-    }
+    this.scene.particles.createBloodEffect(this);
 
     super.onDamage(amount);
   }
@@ -695,30 +675,11 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private addDustEffect() {
-    if (
-      this.dustEffect
-      || !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-    ) {
+    if (this.dustEffect) {
       return;
     }
 
-    this.dustEffect = new Particles(this, {
-      key: 'dust',
-      texture: ParticlesTexture.BIT,
-      dynamic: true,
-      params: {
-        followOffset: {
-          x: 0,
-          y: -this.gamut * this.scaleY * 0.5,
-        },
-        lifespan: { min: 150, max: 300 },
-        scale: 0.6,
-        speed: 10,
-        frequency: 150,
-        alpha: { start: 1.0, end: 0.0 },
-        emitting: false,
-      },
-    });
+    this.dustEffect = this.scene.particles.createDustEffect(this);
   }
 
   private removeDustEffect() {

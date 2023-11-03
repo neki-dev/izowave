@@ -1,12 +1,9 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { Tutorial } from '~lib/tutorial';
-import { Particles } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
-import { ParticlesTexture } from '~type/world/effects';
 import {
   BuildingTexture,
   BuildingVariant,
@@ -73,22 +70,6 @@ export class BuildingGenerator extends Building {
 
   private generateResource() {
     this.scene.player.giveResources(1);
-
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Particles(this, {
-        key: 'generate',
-        texture: ParticlesTexture.BIT,
-        position: this.getTopFace(),
-        params: {
-          duration: 300,
-          lifespan: { min: 100, max: 200 },
-          scale: { start: 1.0, end: 0.5 },
-          alpha: { start: 1.0, end: 0.0 },
-          speed: 60,
-          maxAliveParticles: 8,
-          tint: 0x2dffb2,
-        },
-      });
-    }
+    this.scene.particles.createGenerationEffect(this);
   }
 }
