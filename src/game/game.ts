@@ -68,7 +68,7 @@ export class Game extends Phaser.Game implements IGame {
 
   public usedSave: Nullable<StorageSave> = null;
 
-  private triedFullscreen: boolean = false;
+  private sessionsCount: number = 0;
 
   constructor() {
     super({
@@ -200,7 +200,13 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = null;
 
-    this.startGame();
+    if (this.sessionsCount === 0) {
+      this.startGame();
+    } else {
+      SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
+        this.startGame();
+      });
+    }
   }
 
   private startGame() {
@@ -208,7 +214,11 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    this.triggerFullscreen();
+    if (this.sessionsCount === 0) {
+      this.triggerFullscreen();
+    }
+
+    this.sessionsCount++;
 
     if (this.usedSave) {
       this.loadSavePayload(this.usedSave.payload.game);
@@ -348,8 +358,7 @@ export class Game extends Phaser.Game implements IGame {
 
   private triggerFullscreen() {
     if (
-      this.triedFullscreen
-      || this.scale.isFullscreen
+      this.scale.isFullscreen
       || this.isDesktop()
       || Environment.Platform === 'development'
     ) {
@@ -357,7 +366,6 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     try {
-      this.triedFullscreen = true;
       this.scale.startFullscreen();
     } catch (error) {
       //

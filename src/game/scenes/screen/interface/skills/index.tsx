@@ -2,10 +2,12 @@ import { useGame } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { phrase } from '~lib/lang';
+import { SDK } from '~lib/sdk';
 import { Tutorial } from '~lib/tutorial';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
 import { IGame } from '~type/game';
+import { SDKAdsType } from '~type/sdk';
 import { TutorialStep } from '~type/tutorial';
 
 import { Modal } from './modal';
@@ -24,8 +26,10 @@ export const Skills: React.FC = () => {
   };
 
   const onClose = () => {
-    setOpened(false);
-    game.toggleSystemPause(false);
+    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
+      setOpened(false);
+      game.toggleSystemPause(false);
+    });
   };
 
   useEffect(() => (
