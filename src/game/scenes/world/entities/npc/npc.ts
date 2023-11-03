@@ -85,7 +85,7 @@ export class NPC extends Sprite implements INPC {
     this.freezeTimestamp = this.scene.getTime() + duration;
 
     if (effects) {
-      this.scene.particles.createFrozeEffect(this);
+      this.scene.fx.createFrozeEffect(this);
 
       if (this.freezeEffectTimer) {
         this.freezeEffectTimer.elapsed = 0;

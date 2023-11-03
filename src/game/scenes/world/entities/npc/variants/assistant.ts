@@ -2,6 +2,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE, ASSISTANT_WEAPON } from '~const/world/entities/assistant';
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
+import { ShotLazer } from '~entity/shot/lazer';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, getIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
@@ -182,7 +183,7 @@ export class Assistant extends NPC implements IAssistant {
       damage:
         this.shotDefaultParams.damage
         && progressionQuadratic({
-          defaultValue: this.shotDefaultParams.damage,
+          defaultValue: this.shotDefaultParams.damage * (this.shot instanceof ShotLazer ? 1.5 : 1.0),
           scale: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
           level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DAMAGE],
         }),

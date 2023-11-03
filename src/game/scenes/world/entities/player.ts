@@ -481,7 +481,7 @@ export class Player extends Sprite implements IPlayer {
       this.scene.game.sound.play(audio);
     }
 
-    this.scene.particles.createBloodEffect(this);
+    this.scene.fx.createBloodEffect(this);
 
     super.onDamage(amount);
   }
@@ -679,7 +679,7 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    this.dustEffect = this.scene.particles.createDustEffect(this);
+    this.dustEffect = this.scene.fx.createDustEffect(this);
   }
 
   private removeDustEffect() {

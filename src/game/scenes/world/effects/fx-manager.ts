@@ -2,8 +2,8 @@ import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE } from '~const/world/entities/ene
 import { Environment } from '~lib/environment';
 import { GameFlag, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { IParticlesParent, ParticlesTexture } from '~type/world/effects';
-import { IParticlesManager } from '~type/world/effects/particles-manager';
+import { EffectTexture, IParticlesParent, ParticlesTexture } from '~type/world/effects';
+import { IFXManager } from '~type/world/effects/fx-manager';
 import { IBuilding } from '~type/world/entities/building';
 import { INPC } from '~type/world/entities/npc';
 import { EnemyTexture, IEnemy } from '~type/world/entities/npc/enemy';
@@ -11,9 +11,10 @@ import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { PositionAtWorld } from '~type/world/level';
 
+import { Effect } from './effect';
 import { Particles } from './particles';
 
-export class ParticlesManager implements IParticlesManager {
+export class FXManager implements IFXManager {
   private scene: IWorld;
 
   constructor(scene: IWorld) {
@@ -49,7 +50,7 @@ export class ParticlesManager implements IParticlesManager {
       !parent.active
       || !Environment.GetFlag(GameFlag.BLOOD)
       || !this.isEffectsEnabled()
-      || ParticlesManager.IsExist(parent, 'blood')
+      || FXManager.IsExist(parent, 'blood')
     ) {
       return null;
     }
@@ -76,7 +77,7 @@ export class ParticlesManager implements IParticlesManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || ParticlesManager.IsExist(parent, 'froze')
+      || FXManager.IsExist(parent, 'froze')
     ) {
       return null;
     }
@@ -103,7 +104,7 @@ export class ParticlesManager implements IParticlesManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || ParticlesManager.IsExist(parent, 'fire')
+      || FXManager.IsExist(parent, 'fire')
     ) {
       return null;
     }
@@ -162,7 +163,7 @@ export class ParticlesManager implements IParticlesManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || ParticlesManager.IsExist(parent, 'lazer')
+      || FXManager.IsExist(parent, 'lazer')
     ) {
       return null;
     }
@@ -239,7 +240,7 @@ export class ParticlesManager implements IParticlesManager {
   public createHealEffect(parent: ISprite, params: { duration: number }) {
     if (
       !this.isEffectsEnabled()
-      || ParticlesManager.IsExist(parent, 'heal')
+      || FXManager.IsExist(parent, 'heal')
     ) {
       return null;
     }
@@ -288,6 +289,59 @@ export class ParticlesManager implements IParticlesManager {
         maxAliveParticles: 8,
         tint: 0x2dffb2,
       },
+    });
+  }
+
+  public createExplosionEffect(parent: ISprite) {
+    if (!this.isEffectsEnabled()) {
+      return null;
+    }
+
+    return new Effect(this.scene, {
+      texture: EffectTexture.EXPLOSION,
+      position: parent.body.center,
+      depth: parent.depth + 1,
+    });
+  }
+
+  public createBloodStainEffect(position: PositionAtWorld) {
+    if (
+      !this.isEffectsEnabled()
+      || !Environment.GetFlag(GameFlag.BLOOD)
+    ) {
+      return null;
+    }
+
+    return new Effect(this.scene, {
+      texture: EffectTexture.BLOOD,
+      position,
+      staticFrame: Phaser.Math.Between(0, 3),
+    });
+  }
+
+  public createDamageEffect(building: IBuilding) {
+    if (!this.isEffectsEnabled()) {
+      return null;
+    }
+
+    return new Effect(this.scene, {
+      texture: EffectTexture.DAMAGE,
+      position: building.getTopFace(),
+      depth: building.depth + 1,
+      rate: 14,
+    });
+  }
+
+  public createSmokeEffect(building: IBuilding) {
+    if (!this.isEffectsEnabled()) {
+      return null;
+    }
+
+    return new Effect(this.scene, {
+      texture: EffectTexture.SMOKE,
+      position: building.getBottomFace(),
+      depth: building.depth + 1,
+      rate: 18,
     });
   }
 

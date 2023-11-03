@@ -70,6 +70,6 @@ export class BuildingGenerator extends Building {
 
   private generateResource() {
     this.scene.player.giveResources(1);
-    this.scene.particles.createGenerationEffect(this);
+    this.scene.fx.createGenerationEffect(this);
   }
 }

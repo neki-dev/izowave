@@ -138,7 +138,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FIRE_RADIUS: 150, // Attack radius
   BUILDING_TOWER_FIRE_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_FIRE_DELAY: 1400, // Pause between attacks
-  BUILDING_TOWER_FIRE_DELAY_GROWTH: -0.12, // Pause growth by level (Linear)
+  BUILDING_TOWER_FIRE_DELAY_GROWTH: -0.11, // Pause growth by level (Linear)
   BUILDING_TOWER_FIRE_DAMAGE: 45, // Attack damage
   BUILDING_TOWER_FIRE_SHOT_SPEED: 300, // Shot speed
 
@@ -152,7 +152,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FROZEN_RADIUS: 130, // Freeze radius
   BUILDING_TOWER_FROZEN_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_TOWER_FROZEN_DELAY: 1400, // Pause between freezes
-  BUILDING_TOWER_FROZEN_DELAY_GROWTH: -0.12, // Pause growth by level (Linear)
+  BUILDING_TOWER_FROZEN_DELAY_GROWTH: -0.11, // Pause growth by level (Linear)
   BUILDING_TOWER_FROZEN_FREEZE_DURATION: 800, // Freeze duration
   BUILDING_TOWER_FROZEN_SHOT_SPEED: 300, // Shot speed
 

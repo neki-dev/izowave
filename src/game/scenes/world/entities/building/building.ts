@@ -10,15 +10,13 @@ import { Live } from '~entity/addons/live';
 import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
-import { Effect } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameEvents, GameSettings } from '~type/game';
+import { GameEvents } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
-import { EffectTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingData, BuildingEvents, BuildingAudio,
@@ -491,17 +489,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.scene.game.sound.play(audio);
     }
 
+    this.scene.fx.createDamageEffect(this);
+
     if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
       this.autoRepair();
-    }
-
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.DAMAGE,
-        position: this.getTopFace(),
-        depth: this.depth + 1,
-        rate: 14,
-      });
     }
   }
 
@@ -728,15 +719,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
   public break() {
     this.scene.sound.play(BuildingAudio.DEAD);
-
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      new Effect(this.scene, {
-        texture: EffectTexture.SMOKE,
-        position: this.getBottomFace(),
-        depth: this.depth + 1,
-        rate: 18,
-      });
-    }
+    this.scene.fx.createSmokeEffect(this);
 
     const group = this.scene.getEntitiesGroup(EntityType.BUILDING);
 
