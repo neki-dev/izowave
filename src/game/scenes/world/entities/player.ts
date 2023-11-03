@@ -389,34 +389,33 @@ export class Player extends Sprite implements IPlayer {
     });
   }
 
-  private getUpgradeNextValue(type: PlayerSkill, level?: number): number {
-    const nextLevel = level ?? this.upgradeLevel[type] + 1;
-
+  static GetUpgradeNextValue(type: PlayerSkill, level: number): number {
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
         return progressionQuadratic({
           defaultValue: DIFFICULTY.PLAYER_HEALTH,
           scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
-          level: nextLevel,
+          level,
           roundTo: 10,
         });
       }
       case PlayerSkill.SPEED: {
-        return progressionQuadratic({
+        return progressionLinear({
           defaultValue: DIFFICULTY.PLAYER_SPEED,
           scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
-          level: nextLevel,
+          level,
+          roundTo: 1,
         });
       }
       case PlayerSkill.STAMINA: {
         return progressionQuadratic({
           defaultValue: DIFFICULTY.PLAYER_STAMINA,
           scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
-          level: nextLevel,
+          level,
         });
       }
       default: {
-        return nextLevel;
+        return level;
       }
     }
   }
@@ -443,7 +442,7 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
-    const nextValue = this.getUpgradeNextValue(type, level);
+    const nextValue = Player.GetUpgradeNextValue(type, level);
 
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {

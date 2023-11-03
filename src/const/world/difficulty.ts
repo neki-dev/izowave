@@ -8,12 +8,12 @@ export const DIFFICULTY = {
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade health
   PLAYER_SPEED: 90, // Movement speed
-  PLAYER_SPEED_GROWTH: 0.04, // Growth speed by upgrade (Quadratic)
-  PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade speed
+  PLAYER_SPEED_GROWTH: 0.0556, // Growth speed by upgrade (Linear)
+  PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade speed
   PLAYER_STAMINA: 100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
   PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.75, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.8, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -23,7 +23,7 @@ export const DIFFICULTY = {
   ASSISTANT_ATTACK_SPEED: 500, // Attack speed
   ASSISTANT_ATTACK_DAMAGE: 15, // Attack damage
   ASSISTANT_ATTACK_DAMAGE_GROWTH: 0.5, // Damage growth by upgrade level (Quadratic)
-  ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 60, // Experience need to upgrade attack damage
+  ASSISTANT_ATTACK_DAMAGE_EXPERIENCE_TO_UPGRADE: 70, // Experience need to upgrade attack damage
   ASSISTANT_ATTACK_DISTANCE: 70, // Attack distance
   ASSISTANT_ATTACK_DISTANCE_GROWTH: 0.15, // Attack distance growth by upgrade level (Quadratic)
   ASSISTANT_ATTACK_DISTANCE_EXPERIENCE_TO_UPGRADE: 40, // Experience need to upgrade attack distance
