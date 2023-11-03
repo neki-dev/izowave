@@ -3,10 +3,8 @@ import Phaser from 'phaser';
 import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
-import { Particles } from '~scene/world/effects';
-import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesTexture } from '~type/world/effects';
+import { IParticles } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IEnemy } from '~type/world/entities/npc/enemy';
 import {
@@ -30,7 +28,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
 
   private audio: ShotBallAudio;
 
-  private effect: Nullable<Particles> = null;
+  private effect: Nullable<IParticles> = null;
 
   private startPosition: Nullable<PositionAtWorld> = null;
 
@@ -118,19 +116,10 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.setActive(true);
     this.setVisible(true);
 
-    if (this.glow && this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      this.effect = new Particles(this, {
-        key: 'glow',
-        texture: ParticlesTexture.GLOW,
-        dynamic: true,
-        params: {
-          scale: 0.2 * this.scale,
-          alpha: { start: 1.0, end: 0.0 },
-          lifespan: 20000 / this.params.speed,
-          frequency: 10000 / this.params.speed,
-          tint: this.color,
-          blendMode: 'ADD',
-        },
+    if (this.glow) {
+      this.effect = this.scene.particles.createGlowEffect(this, {
+        speed: this.params.speed,
+        color: this.color,
       });
     }
 

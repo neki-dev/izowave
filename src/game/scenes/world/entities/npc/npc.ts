@@ -6,11 +6,8 @@ import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
 import { isPositionsEqual, getIsometricAngle, getIsometricDistance } from '~lib/dimension';
-import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
-import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { INPC, NPCData } from '~type/world/entities/npc';
 import { PositionAtWorld } from '~type/world/level';
@@ -87,37 +84,18 @@ export class NPC extends Sprite implements INPC {
   public freeze(duration: number, effects: boolean = false) {
     this.freezeTimestamp = this.scene.getTime() + duration;
 
-    if (!effects) {
-      return;
-    }
+    if (effects) {
+      this.scene.particles.createFrozeEffect(this);
 
-    if (this.freezeEffectTimer) {
-      this.freezeEffectTimer.elapsed = 0;
-    } else {
-      this.setTint(0x00f2ff);
-      this.freezeEffectTimer = this.scene.time.delayedCall(duration, () => {
-        this.clearTint();
-        this.freezeEffectTimer = null;
-      });
-    }
-
-    if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      const lifespan = Math.min(400, this.displayWidth * 8);
-
-      new Particles(this, {
-        key: 'freeze',
-        texture: ParticlesTexture.BIT_SOFT,
-        dynamic: true,
-        params: {
-          duration: lifespan,
-          followOffset: this.getBodyOffset(),
-          color: [0xffffff, 0x8cf9ff, 0x00f2ff],
-          colorEase: 'quad.out',
-          lifespan: { min: lifespan / 2, max: lifespan },
-          scale: { start: 1.0, end: 0.5 },
-          speed: 80,
-        },
-      });
+      if (this.freezeEffectTimer) {
+        this.freezeEffectTimer.elapsed = 0;
+      } else {
+        this.setTint(0x00f2ff);
+        this.freezeEffectTimer = this.scene.time.delayedCall(duration, () => {
+          this.clearTint();
+          this.freezeEffectTimer = null;
+        });
+      }
     }
   }
 
