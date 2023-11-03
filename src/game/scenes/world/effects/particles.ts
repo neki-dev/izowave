@@ -24,7 +24,7 @@ export class Particles implements IParticles {
   constructor(
     parent: IParticlesParent,
     {
-      key, position, texture, params, replay = true,
+      key, position, texture, params, dynamic, replay = false,
     }: ParticlesData,
   ) {
     this.scene = parent.scene;
@@ -47,18 +47,26 @@ export class Particles implements IParticles {
       position?.x ?? 0,
       position?.y ?? 0,
       texture,
-      params,
+      {
+        ...params,
+        follow: dynamic ? parent : undefined,
+      },
     );
-    this.emitter.setDepth(WORLD_DEPTH_EFFECT);
+    this.emitter.setDepth(
+      position?.y ?? parent?.y ?? WORLD_DEPTH_EFFECT,
+    );
 
-    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.destroy();
-    });
+    this.destroy = this.destroy.bind(this);
+    this.update = this.update.bind(this);
+
+    this.parent.once(Phaser.GameObjects.Events.DESTROY, this.destroy);
+
+    if (dynamic) {
+      this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update);
+    }
 
     if (params.duration) {
-      this.emitter.on(Phaser.GameObjects.Particles.Events.COMPLETE, () => {
-        this.destroy();
-      });
+      this.emitter.once(Phaser.GameObjects.Particles.Events.COMPLETE, this.destroy);
     }
   }
 
@@ -67,5 +75,10 @@ export class Particles implements IParticles {
     this.emitter.destroy();
 
     this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);
+    this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update);
+  }
+
+  private update() {
+    this.emitter.setDepth(this.parent.depth);
   }
 }

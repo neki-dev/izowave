@@ -90,12 +90,11 @@ export class EnemyTelepath extends Enemy {
         enemy.live.addHealth(healthAmount);
 
         if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-          new Particles(this, {
+          new Particles(enemy, {
             key: 'regeneration',
             texture: ParticlesTexture.PLUS,
-            replay: false,
+            dynamic: true,
             params: {
-              follow: enemy,
               followOffset: {
                 x: 0,
                 y: -enemy.displayHeight,

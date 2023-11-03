@@ -353,16 +353,17 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     ) {
       return;
     }
+    const scale = Math.min(2.0, this.displayWidth / 22);
 
     new Particles(this, {
       key: 'blood',
       texture: ParticlesTexture.BIT_SOFT,
+      dynamic: true,
       params: {
         duration: 200,
-        follow: this,
         followOffset: this.getBodyOffset(),
         lifespan: { min: 100, max: 250 },
-        scale: { start: 1.0, end: 0.5 },
+        scale: { start: scale, end: scale * 0.25 },
         speed: 60,
         maxAliveParticles: 6,
         tint: 0xdd1e1e,

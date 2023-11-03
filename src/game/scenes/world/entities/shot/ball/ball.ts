@@ -121,8 +121,8 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       this.effect = new Particles(this, {
         key: 'glow',
         texture: ParticlesTexture.GLOW,
+        dynamic: true,
         params: {
-          follow: this,
           scale: 0.2 * this.scale,
           alpha: { start: 1.0, end: 0.0 },
           lifespan: 20000 / this.params.speed,

@@ -260,8 +260,9 @@ export class Enemy extends NPC implements IEnemy {
     new Particles(this, {
       key: 'fire',
       texture: ParticlesTexture.BIT_SOFT,
+      dynamic: true,
+      replay: true,
       params: {
-        follow: this,
         followOffset: this.getBodyOffset(),
         duration,
         color: [0xfacc22, 0xf89800, 0xf83600, 0x9f0404],

@@ -684,8 +684,8 @@ export class Player extends Sprite implements IPlayer {
     this.dustEffect = new Particles(this, {
       key: 'dust',
       texture: ParticlesTexture.BIT,
+      dynamic: true,
       params: {
-        follow: this,
         followOffset: {
           x: 0,
           y: -this.gamut * this.scaleY * 0.5,

@@ -17,7 +17,10 @@ export interface IParticles {
   destroy(): void
 }
 
-export interface IParticlesParent extends Phaser.GameObjects.GameObject {
+export interface IParticlesParent extends
+  Phaser.GameObjects.GameObject,
+  Phaser.GameObjects.Components.Transform,
+  Phaser.GameObjects.Components.Depth {
   readonly scene: IWorld
 
   /**
@@ -37,6 +40,7 @@ export type ParticlesData = {
   key?: string
   position?: PositionAtWorld
   texture: ParticlesTexture
+  dynamic?: boolean
   replay?: boolean
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
 };

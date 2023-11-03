@@ -107,9 +107,9 @@ export class NPC extends Sprite implements INPC {
       new Particles(this, {
         key: 'freeze',
         texture: ParticlesTexture.BIT_SOFT,
+        dynamic: true,
         params: {
           duration: lifespan,
-          follow: this,
           followOffset: this.getBodyOffset(),
           color: [0xffffff, 0x8cf9ff, 0x00f2ff],
           colorEase: 'quad.out',
