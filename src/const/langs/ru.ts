@@ -60,6 +60,12 @@ export const RU = {
   PATH_TO_CRYSTAL: 'Отображение пути\nдо ближайшего кристалла',
 
   /**
+   * Assistant
+   */
+  ASSISTANT: 'Помощник',
+  ASSISTANT_UNLOCK: 'Новый помощник с улучшенным оружием',
+
+  /**
    * Skills
    */
   SKILLS: 'Навыки',

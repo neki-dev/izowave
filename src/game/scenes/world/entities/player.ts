@@ -13,12 +13,13 @@ import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, isPositionsEqual } from '~lib/dimension';
+import { Environment } from '~lib/environment';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
 import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameEvents, GameSettings } from '~type/game';
+import { GameEvents, GameFlag, GameSettings } from '~type/game';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { IParticles, ParticlesTexture } from '~type/world/effects';
@@ -389,34 +390,33 @@ export class Player extends Sprite implements IPlayer {
     });
   }
 
-  private getUpgradeNextValue(type: PlayerSkill, level?: number): number {
-    const nextLevel = level ?? this.upgradeLevel[type] + 1;
-
+  static GetUpgradeNextValue(type: PlayerSkill, level: number): number {
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
         return progressionQuadratic({
           defaultValue: DIFFICULTY.PLAYER_HEALTH,
           scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
-          level: nextLevel,
+          level,
           roundTo: 10,
         });
       }
       case PlayerSkill.SPEED: {
-        return progressionQuadratic({
+        return progressionLinear({
           defaultValue: DIFFICULTY.PLAYER_SPEED,
           scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
-          level: nextLevel,
+          level,
+          roundTo: 1,
         });
       }
       case PlayerSkill.STAMINA: {
         return progressionQuadratic({
           defaultValue: DIFFICULTY.PLAYER_STAMINA,
           scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
-          level: nextLevel,
+          level,
         });
       }
       default: {
-        return nextLevel;
+        return level;
       }
     }
   }
@@ -443,7 +443,7 @@ export class Player extends Sprite implements IPlayer {
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
-    const nextValue = this.getUpgradeNextValue(type, level);
+    const nextValue = Player.GetUpgradeNextValue(type, level);
 
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
@@ -481,6 +481,26 @@ export class Player extends Sprite implements IPlayer {
 
     if (this.scene.game.sound.getAll(audio).length === 0) {
       this.scene.game.sound.play(audio);
+    }
+
+    if (
+      this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
+      && Environment.GetFlag(GameFlag.BLOOD)
+    ) {
+      new Particles(this, {
+        key: 'blood',
+        texture: ParticlesTexture.BIT_SOFT,
+        dynamic: true,
+        params: {
+          duration: 200,
+          followOffset: this.getBodyOffset(),
+          lifespan: { min: 100, max: 250 },
+          scale: { start: 1.0, end: 0.25 },
+          speed: 60,
+          maxAliveParticles: 6,
+          tint: 0xdd1e1e,
+        },
+      });
     }
 
     super.onDamage(amount);
@@ -685,8 +705,8 @@ export class Player extends Sprite implements IPlayer {
     this.dustEffect = new Particles(this, {
       key: 'dust',
       texture: ParticlesTexture.BIT,
+      dynamic: true,
       params: {
-        follow: this,
         followOffset: {
           x: 0,
           y: -this.gamut * this.scaleY * 0.5,

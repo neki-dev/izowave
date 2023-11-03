@@ -5,13 +5,9 @@ import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
 import { isPositionsEqual } from '~lib/dimension';
-import { Environment } from '~lib/environment';
-import { Particles } from '~scene/world/effects';
 import { Level } from '~scene/world/level';
-import { GameFlag, GameSettings } from '~type/game';
 import { ILive, LiveEvents } from '~type/live';
 import { IWorld } from '~type/world';
-import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { IIndicator } from '~type/world/entities/indicator';
 import {
@@ -345,29 +341,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.strokePath();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, class-methods-use-this
   public onDamage(amount: number) {
-    if (
-      !this.scene.game.isSettingEnabled(GameSettings.EFFECTS)
-      || !Environment.GetFlag(GameFlag.BLOOD)
-    ) {
-      return;
-    }
-
-    new Particles(this, {
-      key: 'blood',
-      texture: ParticlesTexture.BIT_SOFT,
-      params: {
-        duration: 200,
-        follow: this,
-        followOffset: this.getBodyOffset(),
-        lifespan: { min: 100, max: 250 },
-        scale: { start: 1.0, end: 0.5 },
-        speed: 60,
-        maxAliveParticles: 6,
-        tint: 0xdd1e1e,
-      },
-    });
+    //
   }
 
   public onDead() {

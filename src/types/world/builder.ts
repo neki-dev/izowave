@@ -1,10 +1,10 @@
-import EventEmitter from 'events';
+import Phaser from 'phaser';
 
 import { IWorld } from '~type/world';
 import { BuildingBuildData, BuildingVariant, IBuilding } from '~type/world/entities/building';
 import { PositionAtMatrix } from '~type/world/level';
 
-export interface IBuilder extends EventEmitter {
+export interface IBuilder extends Phaser.Events.EventEmitter {
   readonly scene: IWorld
 
   /**

@@ -61,9 +61,13 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.processing();
   }
 
-  public shoot(target: IEnemy) {
+  public shoot(target: IEnemy, params?: ShotParams) {
     if (!this.initiator) {
       return;
+    }
+
+    if (params) {
+      this.params = params;
     }
 
     this.target = target;
@@ -101,15 +105,19 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      const lifespan = this.target.displayWidth * 5;
+      const scale = Math.min(2.25, this.target.displayWidth / 18);
+
       new Particles(this.target, {
-        key: 'glow',
-        texture: ParticlesTexture.GLOW,
+        key: 'lazer',
+        texture: ParticlesTexture.BIT_SOFT,
+        dynamic: true,
         params: {
-          duration: 150,
-          follow: this.target,
+          duration: lifespan,
           followOffset: this.target.getBodyOffset(),
-          lifespan: { min: 100, max: 150 },
-          scale: { start: 0.2, end: 0.1 },
+          lifespan: { min: lifespan / 2, max: lifespan },
+          scale: { start: scale, end: scale * 0.2 },
+          alpha: { start: 1.0, end: 0.0 },
           speed: 80,
           tint: 0xb136ff,
         },

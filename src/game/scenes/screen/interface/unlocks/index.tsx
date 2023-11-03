@@ -4,14 +4,15 @@ import React, { useEffect, useState } from 'react';
 import { GameScene, IGame } from '~type/game';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
+import { AssistantEvents, AssistantVariant } from '~type/world/entities/npc/assistant';
 import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
 import { WaveEvents } from '~type/world/wave';
 
 import { Modal } from './modal';
 
 export type Feature = {
-  type: 'BUILDING' | 'SUPERSKILL'
-  item: BuildingVariant | PlayerSuperskill
+  type: 'BUILDING' | 'SUPERSKILL' | 'ASSISTANT'
+  item: BuildingVariant | PlayerSuperskill | AssistantVariant
 };
 
 export const Unlocks: React.FC = () => {
@@ -48,6 +49,13 @@ export const Unlocks: React.FC = () => {
     setFeatures((current) => current.concat([{
       type: 'SUPERSKILL',
       item: superskill,
+    }]));
+  }, []);
+
+  useEvent(world.assistant, AssistantEvents.UNLOCK_VARIANT, (variant: AssistantVariant) => {
+    setFeatures((current) => current.concat([{
+      type: 'ASSISTANT',
+      item: variant,
     }]));
   }, []);
 

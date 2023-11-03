@@ -60,6 +60,12 @@ export const ES = {
   PATH_TO_CRYSTAL: 'Mostrar el camino\nhacia el cristal más cercano',
 
   /**
+   * Assistant
+   */
+  ASSISTANT: 'Asistente',
+  ASSISTANT_UNLOCK: 'Nuevo asistente con arma mejorada',
+
+  /**
    * Skills
    */
   SKILLS: 'Habilidades',

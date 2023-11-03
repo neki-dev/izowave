@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { Assets } from '~lib/assets';
 import { IWorld } from '~type/world';
@@ -22,37 +24,49 @@ export class Particles implements IParticles {
   constructor(
     parent: IParticlesParent,
     {
-      key, position, texture, params,
+      key, position, texture, params, dynamic, replay = false,
     }: ParticlesData,
   ) {
     this.scene = parent.scene;
     this.parent = parent;
-    this.key = key;
+    this.key = key ?? uuidv4();
+
+    if (!this.parent.effects) {
+      this.parent.effects = {};
+    } else if (this.parent.effects[this.key]) {
+      if (replay) {
+        this.parent.effects[this.key].destroy();
+      } else {
+        return;
+      }
+    }
+
+    this.parent.effects[this.key] = this;
 
     this.emitter = this.scene.add.particles(
       position?.x ?? 0,
       position?.y ?? 0,
       texture,
-      params,
+      {
+        ...params,
+        follow: dynamic ? parent : undefined,
+      },
     );
-    this.emitter.setDepth(WORLD_DEPTH_EFFECT);
+    this.emitter.setDepth(
+      position?.y ?? parent?.y ?? WORLD_DEPTH_EFFECT,
+    );
 
-    if (!this.parent.effects) {
-      this.parent.effects = {};
-    } else if (this.parent.effects[key]) {
-      this.parent.effects[key].destroy();
+    this.destroy = this.destroy.bind(this);
+    this.update = this.update.bind(this);
+
+    this.parent.once(Phaser.GameObjects.Events.DESTROY, this.destroy);
+
+    if (dynamic) {
+      this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update);
     }
 
-    this.parent.effects[key] = this;
-
-    this.parent.on(Phaser.GameObjects.Events.DESTROY, () => {
-      this.destroy();
-    });
-
     if (params.duration) {
-      this.emitter.on(Phaser.GameObjects.Particles.Events.COMPLETE, () => {
-        this.destroy();
-      });
+      this.emitter.once(Phaser.GameObjects.Particles.Events.COMPLETE, this.destroy);
     }
   }
 
@@ -61,5 +75,10 @@ export class Particles implements IParticles {
     this.emitter.destroy();
 
     this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);
+    this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update);
+  }
+
+  private update() {
+    this.emitter.setDepth(this.parent.depth);
   }
 }

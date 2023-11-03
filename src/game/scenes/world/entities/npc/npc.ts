@@ -35,7 +35,7 @@ export class NPC extends Sprite implements INPC {
   private seesInvisibleTarget: boolean = false;
 
   constructor(scene: IWorld, {
-    pathFindTriggerDistance, seesInvisibleTarget, texture, ...data
+    pathFindTriggerDistance, seesInvisibleTarget, texture, customAnimation, ...data
   }: NPCData) {
     super(scene, { ...data, texture });
     scene.addEntityToGroup(this, EntityType.NPC);
@@ -45,14 +45,16 @@ export class NPC extends Sprite implements INPC {
 
     this.addDebugPath();
 
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers(texture, {}),
-      frameRate: 4,
-      repeat: -1,
-      delay: Math.random() * 500,
-    });
-    this.anims.play('idle');
+    if (!customAnimation) {
+      this.anims.create({
+        key: 'idle',
+        frames: this.anims.generateFrameNumbers(texture, {}),
+        frameRate: 4,
+        repeat: -1,
+        delay: Math.random() * 500,
+      });
+      this.anims.play('idle');
+    }
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.freezeEffectTimer) {
@@ -92,7 +94,7 @@ export class NPC extends Sprite implements INPC {
     if (this.freezeEffectTimer) {
       this.freezeEffectTimer.elapsed = 0;
     } else {
-      this.setTint(0x00a8ff);
+      this.setTint(0x00f2ff);
       this.freezeEffectTimer = this.scene.time.delayedCall(duration, () => {
         this.clearTint();
         this.freezeEffectTimer = null;
@@ -100,17 +102,20 @@ export class NPC extends Sprite implements INPC {
     }
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+      const lifespan = Math.min(400, this.displayWidth * 8);
+
       new Particles(this, {
         key: 'freeze',
-        texture: ParticlesTexture.GLOW,
+        texture: ParticlesTexture.BIT_SOFT,
+        dynamic: true,
         params: {
-          duration: 200,
-          follow: this,
+          duration: lifespan,
           followOffset: this.getBodyOffset(),
-          lifespan: { min: 100, max: 150 },
-          scale: 0.2,
+          color: [0xffffff, 0x8cf9ff, 0x00f2ff],
+          colorEase: 'quad.out',
+          lifespan: { min: lifespan / 2, max: lifespan },
+          scale: { start: 1.0, end: 0.5 },
           speed: 80,
-          tint: 0x00ddff,
         },
       });
     }

@@ -1,12 +1,16 @@
+import {
+  ENEMY_REGENERATION_EFFECT_COLOR, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_REGENERATION_RADIUS,
+} from '~const/world/entities/enemy';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { getIsometricDistance } from '~lib/dimension';
+import { Particles } from '~scene/world/effects';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
+import { ParticlesTexture } from '~type/world/effects';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariantData, EnemyTexture, IEnemy } from '~type/world/entities/npc/enemy';
 
 import { Enemy } from '../enemy';
-
-const REGENERATION_RADIUS = 100;
 
 export class EnemyTelepath extends Enemy {
   static SpawnWaveRange = [13];
@@ -59,7 +63,7 @@ export class EnemyTelepath extends Enemy {
       if (!(enemy instanceof EnemyTelepath) && !enemy.live.isMaxHealth()) {
         const distance = getIsometricDistance(position, enemy.getBottomFace());
 
-        if (distance <= REGENERATION_RADIUS) {
+        if (distance <= ENEMY_REGENERATION_RADIUS) {
           enemies.push(enemy);
         }
       }
@@ -73,7 +77,7 @@ export class EnemyTelepath extends Enemy {
       }
 
       this.regenerateTimer = this.scene.addProgression({
-        duration: 500,
+        duration: ENEMY_REGENERATION_EFFECT_DURATION,
         onComplete: () => {
           this.regenerateTimer = null;
           this.regenerateArea.setVisible(false);
@@ -84,16 +88,43 @@ export class EnemyTelepath extends Enemy {
         const healthAmount = Math.floor(amount / enemies.length);
 
         enemy.live.addHealth(healthAmount);
+
+        if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
+          new Particles(enemy, {
+            key: 'regeneration',
+            texture: ParticlesTexture.PLUS,
+            dynamic: true,
+            params: {
+              followOffset: {
+                x: 0,
+                y: -enemy.displayHeight,
+              },
+              duration: ENEMY_REGENERATION_EFFECT_DURATION,
+              lifespan: ENEMY_REGENERATION_EFFECT_DURATION,
+              alpha: { start: 1.0, end: 0.0 },
+              angle: {
+                min: -110,
+                max: -70,
+              },
+              scale: {
+                start: 1.0,
+                end: 0.5,
+              },
+              speed: 20,
+              maxAliveParticles: 1,
+            },
+          });
+        }
       });
     }
   }
 
   private addArea() {
-    const d = REGENERATION_RADIUS * 2;
+    const d = ENEMY_REGENERATION_RADIUS * 2;
 
     this.regenerateArea = this.scene.add.ellipse(0, 0, d, d * LEVEL_MAP_PERSPECTIVE);
     this.regenerateArea.setVisible(false);
-    this.regenerateArea.setFillStyle(0x6fe7e7, 0.33);
+    this.regenerateArea.setFillStyle(ENEMY_REGENERATION_EFFECT_COLOR, 0.33);
   }
 
   private removeArea() {

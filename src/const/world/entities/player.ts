@@ -41,7 +41,7 @@ export const PLAYER_SKILLS: Record<PlayerSkill, PlayerSkillInfo> = {
     target: PlayerSkillTarget.ASSISTANT,
   },
   [PlayerSkill.ATTACK_SPEED]: {
-    experience: DIFFICULTY.ASSISTANT_ATTACK_SPEED_EXPERIENCE_TO_UPGRADE,
+    experience: DIFFICULTY.ASSISTANT_ATTACK_PAUSE_EXPERIENCE_TO_UPGRADE,
     target: PlayerSkillTarget.ASSISTANT,
   },
 };
