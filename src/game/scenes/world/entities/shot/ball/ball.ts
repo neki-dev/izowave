@@ -98,7 +98,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   public shoot(target: IEnemy, params?: ShotParams) {
-    if (!this.initiator) {
+    if (!this.initiator || this.active) {
       return;
     }
 
