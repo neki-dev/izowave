@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { Particles } from '~scene/world/effects';
@@ -60,7 +61,11 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       this,
       this.scene.getEntitiesGroup(EntityType.ENEMY),
       (_, enemy) => {
-        this.hit(enemy as IEnemy);
+        try {
+          this.hit(enemy as IEnemy);
+        } catch (error) {
+          Analytics.TrackError(error as TypeError);
+        }
       },
     );
   }
