@@ -103,7 +103,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
+      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(`BUILDING_NAME_${variant}`)]);
 
       return;
     }
@@ -307,7 +307,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
+      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(`BUILDING_NAME_${this.variant}`)]);
 
       return;
     }

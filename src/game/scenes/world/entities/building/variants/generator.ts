@@ -1,7 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
 import { Tutorial } from '~lib/tutorial';
-import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
@@ -12,10 +11,6 @@ import {
 } from '~type/world/entities/building';
 
 export class BuildingGenerator extends Building {
-  static Name: LangPhrase = 'BUILDING_NAME_GENERATOR';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_GENERATOR';
-
   static Category = BuildingCategory.RESOURCES;
 
   static Texture = BuildingTexture.GENERATOR;

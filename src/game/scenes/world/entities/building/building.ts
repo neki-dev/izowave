@@ -877,6 +877,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unselect();
     };
 
+    const handleStop = () => {
+      handleClear();
+      this.setActive(false);
+    };
+
     this.on(Phaser.Input.Events.POINTER_DOWN, handleClick);
 
     if (this.scene.game.isDesktop()) {
@@ -885,12 +890,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
-    this.scene.game.events.on(GameEvents.FINISH, handleClear);
+    this.scene.game.events.on(GameEvents.FINISH, handleStop);
     this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
-      this.scene.game.events.off(GameEvents.FINISH, handleClear);
+      this.scene.game.events.off(GameEvents.FINISH, handleStop);
       this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
     });
   }

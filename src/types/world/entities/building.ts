@@ -180,8 +180,6 @@ export interface IBuildingTower extends IBuilding {
 }
 
 export interface IBuildingFactory {
-  Name: LangPhrase
-  Description: LangPhrase
   Category: BuildingCategory
   Texture: BuildingTexture
   Cost: number
