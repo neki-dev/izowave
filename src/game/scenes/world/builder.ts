@@ -11,6 +11,7 @@ import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { getStage } from '~lib/utils';
 import { Level } from '~scene/world/level';
+import { ShaderType } from '~type/shader';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
@@ -395,7 +396,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildPreview.setOrigin(0.5, BUILDING_TILE.origin);
-    this.buildPreview.addShader('OutlineShader', {
+    this.buildPreview.addShader(ShaderType.OUTLINE, {
       size: 3.0,
       color: 0xffffff,
     });

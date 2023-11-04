@@ -14,6 +14,7 @@ import { Level } from '~scene/world/level';
 import { GameEvents } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
+import { ShaderType } from '~type/shader';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -647,7 +648,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     if (state === BuildingOutlineState.NONE) {
-      this.removeShader('OutlineShader');
+      this.removeShader(ShaderType.OUTLINE);
     } else {
       const params = {
         [BuildingOutlineState.FOCUSED]: { size: 3.0, color: 0xffffff },
@@ -655,9 +656,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }[state];
 
       if (this.outlineState === BuildingOutlineState.NONE) {
-        this.addShader('OutlineShader', params);
+        this.addShader(ShaderType.OUTLINE, params);
       } else {
-        this.updateShader('OutlineShader', params);
+        this.updateShader(ShaderType.OUTLINE, params);
       }
     }
 
