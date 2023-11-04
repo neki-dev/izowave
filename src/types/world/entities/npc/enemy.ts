@@ -81,7 +81,6 @@ export type EnemySizeParams = {
 };
 
 export type EnemyVariantData = {
-  spawnEffect?: boolean
   positionAtMatrix?: PositionAtMatrix
   positionAtWorld?: PositionAtWorld
 };
