@@ -1,10 +1,12 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
+import { Analytics } from '~lib/analytics';
 import { progressionLinear } from '~lib/progression';
 import { Building } from '~scene/world/entities/building';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
+  BuildingAudio,
   BuildingCategory,
   BuildingEvents,
   BuildingIcon,
@@ -63,12 +65,14 @@ export class BuildingElectro extends Building implements IBuilding {
   public update() {
     super.update();
 
-    if (!this.isActionAllowed()) {
-      return;
+    try {
+      if (this.isActionAllowed()) {
+        this.attack();
+        this.pauseActions();
+      }
+    } catch (error) {
+      Analytics.TrackWarn('Failed electro building update', error as TypeError);
     }
-
-    this.attack();
-    this.pauseActions();
   }
 
   public getInfo() {
@@ -148,6 +152,10 @@ export class BuildingElectro extends Building implements IBuilding {
           enemy.live.damage(damage);
         }
       });
+
+      if (this.scene.game.sound.getAll(BuildingAudio.ELECTRO).length === 0) {
+        this.scene.game.sound.play(BuildingAudio.ELECTRO);
+      }
 
       if (this.area) {
         this.area.setActive(true);

@@ -5,6 +5,7 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '~const/world/level';
+import { Analytics } from '~lib/analytics';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
@@ -74,15 +75,19 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   }
 
   public update() {
-    if (this.isCanBuild()) {
-      if (this.isBuild) {
-        this.updateSupposedPosition();
-        this.updateBuildInstance();
-      } else {
-        this.open();
+    try {
+      if (this.isCanBuild()) {
+        if (this.isBuild) {
+          this.updateSupposedPosition();
+          this.updateBuildInstance();
+        } else {
+          this.open();
+        }
+      } else if (this.isBuild) {
+        this.close();
       }
-    } else if (this.isBuild) {
-      this.close();
+    } catch (error) {
+      Analytics.TrackWarn('Failed builder update', error as TypeError);
     }
   }
 

@@ -82,7 +82,17 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   public update() {
+    try {
+      this.updateFlyDistance();
+    } catch (error) {
+      Analytics.TrackWarn('Failed ball shot update', error as TypeError);
+    }
+  }
+
+  private updateFlyDistance() {
     if (!this.params.maxDistance || !this.startPosition) {
+      this.stop();
+
       return;
     }
 

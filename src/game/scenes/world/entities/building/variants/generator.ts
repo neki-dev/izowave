@@ -1,5 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
+import { Analytics } from '~lib/analytics';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -47,12 +48,14 @@ export class BuildingGenerator extends Building {
   public update() {
     super.update();
 
-    if (!this.isActionAllowed()) {
-      return;
+    try {
+      if (this.isActionAllowed()) {
+        this.generateResource();
+        this.pauseActions();
+      }
+    } catch (error) {
+      Analytics.TrackWarn('Failed generator building update', error as TypeError);
     }
-
-    this.generateResource();
-    this.pauseActions();
   }
 
   public getTopFace() {

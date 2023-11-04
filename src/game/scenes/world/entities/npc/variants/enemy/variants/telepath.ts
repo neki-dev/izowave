@@ -2,6 +2,7 @@ import {
   ENEMY_REGENERATION_EFFECT_COLOR, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_REGENERATION_RADIUS,
 } from '~const/world/entities/enemy';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
+import { Analytics } from '~lib/analytics';
 import { getIsometricDistance } from '~lib/dimension';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -41,11 +42,21 @@ export class EnemyTelepath extends Enemy {
   public update() {
     super.update();
 
-    if (this.regenerateArea.visible) {
-      const position = this.getBottomFace();
-
-      this.regenerateArea.setPosition(position.x, position.y);
+    try {
+      this.updateArea();
+    } catch (error) {
+      Analytics.TrackWarn('Failed telepth enemy update', error as TypeError);
     }
+  }
+
+  private updateArea() {
+    if (!this.regenerateArea.visible) {
+      return;
+    }
+
+    const position = this.getBottomFace();
+
+    this.regenerateArea.setPosition(position.x, position.y);
   }
 
   public onDamage(amount: number) {

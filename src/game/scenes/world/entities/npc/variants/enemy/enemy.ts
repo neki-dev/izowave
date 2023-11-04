@@ -7,6 +7,7 @@ import {
 } from '~const/world/entities/enemy';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { GameSettings } from '~type/game';
@@ -124,13 +125,17 @@ export class Enemy extends NPC implements IEnemy {
   public update() {
     super.update();
 
-    if (this.isOverlapTarget) {
-      this.setVelocity(0, 0);
-    } else if (this.isPathPassed) {
-      this.moveTo(this.scene.player.getBottomFace());
-    }
+    try {
+      if (this.isOverlapTarget) {
+        this.setVelocity(0, 0);
+      } else if (this.isPathPassed) {
+        this.moveTo(this.scene.player.getBottomFace());
+      }
 
-    this.isOverlapTarget = false;
+      this.isOverlapTarget = false;
+    } catch (error) {
+      Analytics.TrackWarn('Failed enemy update', error as TypeError);
+    }
   }
 
   public overlapTarget() {

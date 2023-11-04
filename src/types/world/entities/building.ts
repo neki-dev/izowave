@@ -246,6 +246,7 @@ export enum BuildingAudio {
   REPAIR = 'building/repair',
   DAMAGE_1 = 'building/damage_1',
   DAMAGE_2 = 'building/damage_2',
+  ELECTRO = 'building/electro',
 }
 
 export enum BuildingOutlineState {
