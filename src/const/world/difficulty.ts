@@ -55,6 +55,7 @@ export const DIFFICULTY = {
 
   WAVE_TIMELEFT: 10000, // Pause between waves
   WAVE_TIMELEFT_GROWTH: 0.5, // Pause growth by wave number (Linear)
+  WAVE_TIMELEFT_GROWTH_MAX_LEVEL: 17, // Level for limit pause growth
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
   WAVE_ENEMIES_SPAWN_PAUSE: 2000, // Pause between enemies spawn
@@ -174,13 +175,13 @@ export const DIFFICULTY = {
    */
 
   BUILDING_ELECTRO_COST: 120, // Building cost
-  BUILDING_ELECTRO_HEALTH: 500, // Health
-  BUILDING_ELECTRO_ALLOW_BY_WAVE: 16, // Minimal wave for allow build
-  BUILDING_ELECTRO_RADIUS: 100, // Attack radius
+  BUILDING_ELECTRO_HEALTH: 400, // Health
+  BUILDING_ELECTRO_ALLOW_BY_WAVE: 15, // Minimal wave for allow build
+  BUILDING_ELECTRO_RADIUS: 90, // Attack radius
   BUILDING_ELECTRO_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
   BUILDING_ELECTRO_DELAY: 1500, // Pause between attacks
   BUILDING_ELECTRO_DELAY_GROWTH: -0.1, // Pause growth by level (Linear)
-  BUILDING_ELECTRO_DAMAGE: 95, // Attack damage
+  BUILDING_ELECTRO_DAMAGE: 110, // Attack damage
   BUILDING_ELECTRO_DAMAGE_GROWTH: 0.9, // Damage growth by level (Linear)
 
   /**

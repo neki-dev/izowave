@@ -34,7 +34,11 @@ export class EnemyBerserk extends Enemy {
   }
 
   private heal() {
-    if (this.live.isDead() || this.live.isMaxHealth()) {
+    if (
+      this.scene.player.live.isDead()
+      || this.live.isDead()
+      || this.live.isMaxHealth()
+    ) {
       return;
     }
 

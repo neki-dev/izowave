@@ -158,6 +158,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
         defaultValue: DIFFICULTY.WAVE_TIMELEFT,
         scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
         level: this.number,
+        maxLevel: DIFFICULTY.WAVE_TIMELEFT_GROWTH_MAX_LEVEL,
         roundTo: 1000,
       });
 
