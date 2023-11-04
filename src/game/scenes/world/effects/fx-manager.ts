@@ -29,7 +29,8 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'dust',
       texture: ParticlesTexture.BIT,
-      dynamic: true,
+      depth: 0,
+      attach: true,
       params: {
         followOffset: {
           x: 0,
@@ -60,7 +61,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'blood',
       texture: ParticlesTexture.BIT_SOFT,
-      dynamic: true,
+      attach: true,
       params: {
         duration: 250,
         followOffset: parent.getBodyOffset(),
@@ -87,7 +88,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'froze',
       texture: ParticlesTexture.BIT_SOFT,
-      dynamic: true,
+      attach: true,
       params: {
         duration: lifespan,
         followOffset: parent.getBodyOffset(),
@@ -115,7 +116,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'fire',
       texture: ParticlesTexture.BIT_SOFT,
-      dynamic: true,
+      attach: true,
       params: {
         duration: lifespan,
         followOffset: parent.getBodyOffset(),
@@ -139,7 +140,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'long-fire',
       texture: ParticlesTexture.BIT_SOFT,
-      dynamic: true,
+      attach: true,
       params: {
         followOffset: parent.getBodyOffset(),
         duration: params.duration,
@@ -174,7 +175,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'lazer',
       texture: ParticlesTexture.BIT_SOFT,
-      dynamic: true,
+      attach: true,
       params: {
         duration: lifespan,
         followOffset: parent.getBodyOffset(),
@@ -202,7 +203,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'electro',
       texture: ParticlesTexture.BIT,
-      dynamic: true,
+      attach: true,
       params: {
         duration: lifespan,
         followOffset: parent.getBodyOffset(),
@@ -224,7 +225,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'glow',
       texture: ParticlesTexture.GLOW,
-      dynamic: true,
+      attach: true,
       params: {
         scale: 0.2 * parent.scale,
         alpha: { start: 1.0, end: 0.0 },
@@ -254,6 +255,7 @@ export class FXManager implements IFXManager {
       key: 'spawn',
       texture: ParticlesTexture.BIT_SOFT,
       position,
+      depth: parent.depth - 1,
       params: {
         duration,
         lifespan: { min: duration / 2, max: duration },
@@ -277,7 +279,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'heal',
       texture: ParticlesTexture.PLUS,
-      dynamic: true,
+      attach: true,
       params: {
         followOffset: {
           x: 0,
@@ -309,6 +311,7 @@ export class FXManager implements IFXManager {
       key: 'generate',
       texture: ParticlesTexture.BIT,
       position: parent.getTopFace(),
+      depth: parent.depth + 1,
       params: {
         duration: 300,
         lifespan: { min: 100, max: 200 },
