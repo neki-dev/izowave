@@ -12,7 +12,7 @@ import { eachEntries } from '~lib/utils';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
-import { EnemyVariant } from '~type/world/entities/npc/enemy';
+import { EnemyVariant, IEnemy } from '~type/world/entities/npc/enemy';
 import { PositionAtMatrix } from '~type/world/level';
 import {
   IWave, WaveAudio, WaveEvents, WaveSavePayload,
@@ -255,19 +255,37 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     const EnemyInstance = ENEMIES[variant];
     const positionAtMatrix: PositionAtMatrix = await this.scene.spawner.getSpawnPosition();
     const enemy = new EnemyInstance(this.scene, { positionAtMatrix });
-    const originAlpha = enemy.alpha;
 
+    this.addSpawnEffect(enemy);
+  }
+
+  private addSpawnEffect(enemy: IEnemy) {
     enemy.freeze(750);
 
     this.scene.fx.createSpawnEffect(enemy);
 
+    let effect: Nullable<Phaser.Tweens.Tween> = null;
+
+    const removeEffect = () => {
+      if (effect) {
+        effect.destroy();
+        effect = null;
+      }
+    };
+
+    enemy.once(Phaser.GameObjects.Events.DESTROY, removeEffect);
+
+    const originAlpha = enemy.alpha;
+
     enemy.container.setAlpha(0.0);
     enemy.setAlpha(0.0);
-    this.scene.tweens.add({
+    effect = this.scene.tweens.add({
       targets: enemy,
       alpha: originAlpha,
       duration: 750,
       onComplete: () => {
+        removeEffect();
+        enemy.off(Phaser.GameObjects.Events.DESTROY, removeEffect);
         enemy.container.setAlpha(enemy.alpha);
       },
     });
