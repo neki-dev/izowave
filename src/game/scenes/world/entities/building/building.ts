@@ -698,7 +698,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  private updateActionArea() {
+  public updateActionArea() {
     if (!this.actionsArea) {
       return;
     }

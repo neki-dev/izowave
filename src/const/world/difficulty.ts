@@ -170,6 +170,20 @@ export const DIFFICULTY = {
   BUILDING_TOWER_LAZER_DAMAGE: 70, // Attack damage
 
   /**
+   * Building: Tower: Electro
+   */
+
+  BUILDING_ELECTRO_COST: 120, // Building cost
+  BUILDING_ELECTRO_HEALTH: 500, // Health
+  BUILDING_ELECTRO_ALLOW_BY_WAVE: 16, // Minimal wave for allow build
+  BUILDING_ELECTRO_RADIUS: 100, // Attack radius
+  BUILDING_ELECTRO_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
+  BUILDING_ELECTRO_DELAY: 1500, // Pause between attacks
+  BUILDING_ELECTRO_DELAY_GROWTH: -0.1, // Pause growth by level (Linear)
+  BUILDING_ELECTRO_DAMAGE: 95, // Attack damage
+  BUILDING_ELECTRO_DAMAGE_GROWTH: 0.9, // Damage growth by level (Linear)
+
+  /**
    * Building: Generator
    */
 

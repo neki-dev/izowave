@@ -187,6 +187,35 @@ export class FXManager implements IFXManager {
     });
   }
 
+  public createElectroEffect(parent: IEnemy) {
+    if (
+      !parent.active
+      || !this.isEffectsEnabled()
+      || FXManager.IsExist(parent, 'electro')
+    ) {
+      return null;
+    }
+
+    const lifespan = Math.min(500, parent.displayWidth * 12);
+    const scale = Math.min(2.25, parent.displayWidth / 18);
+
+    return new Particles(parent, {
+      key: 'electro',
+      texture: ParticlesTexture.BIT,
+      dynamic: true,
+      params: {
+        duration: lifespan,
+        followOffset: parent.getBodyOffset(),
+        lifespan: { min: lifespan / 2, max: lifespan },
+        scale: { start: scale, end: scale * 0.2 },
+        alpha: { start: 0.75, end: 0.0 },
+        speed: 120,
+        maxParticles: 6,
+        tint: 0xc9e7dd,
+      },
+    });
+  }
+
   public createGlowEffect(parent: IParticlesParent, params: { speed: number; color: number }) {
     if (!parent.active || !this.isEffectsEnabled()) {
       return null;

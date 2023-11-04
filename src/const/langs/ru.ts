@@ -19,6 +19,8 @@ export const RU = {
   BUILDING_DESCRIPTION_TOWER_FROZEN: 'Замедление врагов',
   BUILDING_NAME_TOWER_LAZER: 'Лазерная башня',
   BUILDING_DESCRIPTION_TOWER_LAZER: 'Моментальная лазерная атака врагов',
+  BUILDING_NAME_ELECTRO: 'Электро башня',
+  BUILDING_DESCRIPTION_ELECTRO: 'Массовая атака электричеством',
   BUILDING_NAME_GENERATOR: 'Генератор',
   BUILDING_DESCRIPTION_GENERATOR: 'Генерация ресурсов для построек',
   BUILDING_NAME_AMMUNITION: 'Амуниция',
