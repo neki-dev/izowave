@@ -57,6 +57,7 @@ export enum ShotTexture {
 export enum ShotBallAudio {
   FIRE = 'shot/ball_fire',
   FROZEN = 'shot/ball_frozen',
+  SIMPLE = 'shot/ball_simple',
 }
 
 export type ShotParams = {
