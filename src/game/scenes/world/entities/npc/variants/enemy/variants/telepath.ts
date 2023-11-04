@@ -84,11 +84,7 @@ export class EnemyTelepath extends Enemy {
       enemies.forEach((enemy) => {
         const healthAmount = Math.floor(amount / enemies.length);
 
-        enemy.live.addHealth(healthAmount);
-
-        this.scene.fx.createHealEffect(enemy, {
-          duration: ENEMY_REGENERATION_EFFECT_DURATION,
-        });
+        enemy.live.heal(healthAmount);
       });
     }
   }

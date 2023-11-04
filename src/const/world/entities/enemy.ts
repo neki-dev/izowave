@@ -6,7 +6,7 @@ export const ENEMY_PATH_BREAKPOINT = 32;
 
 export const ENEMY_REGENERATION_RADIUS = 100;
 
-export const ENEMY_HEAL_TIMESTAMP_PAUSE = 2000;
+export const ENEMY_HEAL_TIMESTAMP_PAUSE = 1000;
 
 export const ENEMY_HEAL_MULTIPLIER = 0.05;
 

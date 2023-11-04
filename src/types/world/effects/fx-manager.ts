@@ -17,7 +17,7 @@ export interface IFXManager {
   createDustEffect(parent: IPlayer): Nullable<IParticles>
   createGenerationEffect(parent: IBuilding): Nullable<IParticles>
   createSpawnEffect(parent: IEnemy): Nullable<IParticles>
-  createHealEffect(parent: ISprite, params: { duration: number }): Nullable<IParticles>
+  createHealEffect(parent: ISprite): Nullable<IParticles>
   createExplosionEffect(parent: ISprite): Nullable<IEffect>
   createBloodStainEffect(position: PositionAtWorld): Nullable<IEffect>
   createDamageEffect(building: IBuilding): Nullable<IEffect>

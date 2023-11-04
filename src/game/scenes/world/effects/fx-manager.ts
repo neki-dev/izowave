@@ -237,7 +237,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createHealEffect(parent: ISprite, params: { duration: number }) {
+  public createHealEffect(parent: ISprite) {
     if (
       !this.isEffectsEnabled()
       || FXManager.IsExist(parent, 'heal')
@@ -254,8 +254,8 @@ export class FXManager implements IFXManager {
           x: 0,
           y: -parent.displayHeight,
         },
-        duration: params.duration,
-        lifespan: params.duration,
+        duration: 500,
+        lifespan: 500,
         alpha: { start: 1.0, end: 0.0 },
         angle: {
           min: -110,

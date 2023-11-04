@@ -33,9 +33,10 @@ export interface ILive extends Phaser.Events.EventEmitter {
   kill(): void
 
   /**
-   * Set current health amount to maximum.
+   * Add or set to max health with event.
+   * @param amount - Health amount
    */
-  heal(): void
+  heal(amount?: number): void
 
   /**
    * Add health amount.
@@ -81,6 +82,7 @@ export interface ILive extends Phaser.Events.EventEmitter {
 export enum LiveEvents {
   DEAD = 'dead',
   DAMAGE = 'damage',
+  HEAL = 'heal',
   UPDATE_MAX_HEALTH = 'update_max_health',
   UPDATE_HEALTH = 'update_health',
 }

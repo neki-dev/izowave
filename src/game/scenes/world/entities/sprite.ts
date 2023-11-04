@@ -89,6 +89,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
+    this.live.on(LiveEvents.HEAL, this.onHeal.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
@@ -344,6 +345,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, class-methods-use-this
   public onDamage(amount: number) {
     //
+  }
+
+  public onHeal() {
+    this.scene.fx.createHealEffect(this);
   }
 
   public onDead() {

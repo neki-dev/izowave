@@ -36,7 +36,7 @@ export class EnemyBerserk extends Enemy {
     if (now >= this.healTimestamp) {
       this.healTimestamp = now + ENEMY_HEAL_TIMESTAMP_PAUSE;
 
-      this.live.addHealth(this.live.maxHealth * ENEMY_HEAL_MULTIPLIER);
+      this.live.heal(this.live.maxHealth * ENEMY_HEAL_MULTIPLIER);
     }
   }
 }
