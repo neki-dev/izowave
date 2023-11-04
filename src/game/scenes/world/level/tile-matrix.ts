@@ -68,7 +68,7 @@ export class TileMatrix implements ITileMatrix {
     this.tiles[z][y][x] = tile;
 
     if (destroyable) {
-      tile.on(Phaser.GameObjects.Events.DESTROY, () => {
+      tile.once(Phaser.GameObjects.Events.DESTROY, () => {
         this.removeTile(position);
       });
     }

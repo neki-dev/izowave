@@ -22,6 +22,11 @@ export interface ILive extends Phaser.Events.EventEmitter {
   readonly maxArmour: number
 
   /**
+   * Destroy live manager
+   */
+  destroy(): void
+
+  /**
    * Give entity damage.
    * @param amount - Damage amount
    */

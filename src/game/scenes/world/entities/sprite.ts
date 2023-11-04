@@ -92,9 +92,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
     this.live.on(LiveEvents.HEAL, this.onHeal.bind(this));
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
-      this.live.removeAllListeners();
+      this.live.destroy();
     });
   }
 
@@ -304,7 +304,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug = this.scene.add.graphics();
     this.positionDebug.setDepth(WORLD_DEPTH_GRAPHIC);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.positionDebug?.destroy();
     });
   }

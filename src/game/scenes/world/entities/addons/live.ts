@@ -39,6 +39,10 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
     this.maxArmour = maxArmour ?? armour ?? 0;
   }
 
+  public destroy() {
+    this.removeAllListeners();
+  }
+
   public damage(amount: number) {
     if (this.isDead()) {
       return;

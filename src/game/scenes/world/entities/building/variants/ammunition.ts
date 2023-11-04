@@ -211,7 +211,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
     });
   }

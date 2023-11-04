@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { WORLD_DEPTH_EFFECT } from '~const/world';
 import { DIFFICULTY } from '~const/world/difficulty';
 import {
   PLAYER_TILE_SIZE,
@@ -359,8 +358,6 @@ export class Player extends Sprite implements IPlayer {
       const position = this.getBottomFace();
       const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
 
-      effect.setDepth(WORLD_DEPTH_EFFECT);
-
       this.scene.tweens.add({
         targets: effect,
         scale: { from: 0.0, to: 2.0 },
@@ -573,7 +570,7 @@ export class Player extends Sprite implements IPlayer {
 
     window.addEventListener('blur', handleMovementStop);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       window.removeEventListener('blur', handleMovementStop);
     });
   }
@@ -803,7 +800,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.game.events.off(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
     });
   }
@@ -824,7 +821,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
     });
   }

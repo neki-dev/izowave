@@ -107,7 +107,7 @@ export class Enemy extends NPC implements IEnemy {
       }
     });
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeDamageLabel();
       if (this.damageTimer) {
         this.scene.removeProgression(this.damageTimer);
@@ -286,7 +286,7 @@ export class Enemy extends NPC implements IEnemy {
     };
 
     this.scene.events.on(PlayerEvents.USE_SUPERSKILL, handler);
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.events.off(PlayerEvents.USE_SUPERSKILL, handler);
     });
   }

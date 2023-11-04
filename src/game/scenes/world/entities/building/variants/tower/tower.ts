@@ -297,7 +297,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     buidingsGroup.on(BuildingEvents.BUY_AMMO, handler);
     buidingsGroup.on(BuildingEvents.BREAK, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       buidingsGroup.off(BuildingEvents.CREATE, handler);
       buidingsGroup.off(BuildingEvents.UPGRADE, handler);
       buidingsGroup.off(BuildingEvents.BUY_AMMO, handler);

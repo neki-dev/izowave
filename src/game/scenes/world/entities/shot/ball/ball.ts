@@ -75,7 +75,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.initiator = initiator;
     this.positionCallback = positionCallback;
 
-    initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
+    initiator.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.effect?.destroy();
       this.destroy();
     });
