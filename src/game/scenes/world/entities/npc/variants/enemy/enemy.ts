@@ -44,10 +44,8 @@ export class Enemy extends NPC implements IEnemy {
 
   private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
 
-  private spawnEffect: boolean;
-
   constructor(scene: IWorld, {
-    texture, score, multipliers, spawnEffect = true, ...data
+    texture, score, multipliers, ...data
   }: EnemyData) {
     super(scene, {
       ...data,
@@ -82,7 +80,6 @@ export class Enemy extends NPC implements IEnemy {
       scale: DIFFICULTY.ENEMY_DAMAGE_GROWTH,
       level: scene.wave.number,
     });
-    this.spawnEffect = spawnEffect;
     this.score = score ?? 1;
     this.might = multipliers.might;
 
@@ -93,10 +90,6 @@ export class Enemy extends NPC implements IEnemy {
     });
 
     this.handlePlayerSuperskill();
-
-    if (this.spawnEffect) {
-      this.addSpawnEffect();
-    }
 
     const frost = this.scene.player.activeSuperskills[PlayerSuperskill.FROST];
 
@@ -260,27 +253,6 @@ export class Enemy extends NPC implements IEnemy {
       effect.setAlpha(0.8);
       this.scene.level.effectsOnGround.push(effect);
     }
-  }
-
-  private addSpawnEffect() {
-    this.freeze(750);
-
-    setTimeout(() => {
-      const originAlpha = this.alpha;
-
-      this.container.setAlpha(0.0);
-      this.setAlpha(0.0);
-      this.scene.tweens.add({
-        targets: this,
-        alpha: originAlpha,
-        duration: 750,
-        onComplete: () => {
-          this.container.setAlpha(originAlpha);
-        },
-      });
-    }, 0);
-
-    this.scene.fx.createSpawnEffect(this);
   }
 
   private handlePlayerSuperskill() {

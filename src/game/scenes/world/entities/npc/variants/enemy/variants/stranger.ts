@@ -35,7 +35,6 @@ export class EnemyStranger extends Enemy {
 
     offsets.forEach((offset) => {
       new EnemyInstance(this.scene, {
-        spawnEffect: false,
         positionAtWorld: {
           x: this.x + offset.x,
           y: this.y + offset.y,

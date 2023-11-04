@@ -13,6 +13,7 @@ import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import { EnemyVariant } from '~type/world/entities/npc/enemy';
+import { PositionAtMatrix } from '~type/world/level';
 import {
   IWave, WaveAudio, WaveEvents, WaveSavePayload,
 } from '~type/world/wave';
@@ -250,13 +251,26 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.createEnemy(variant);
   }
 
-  private createEnemy(variant: EnemyVariant) {
+  private async createEnemy(variant: EnemyVariant) {
     const EnemyInstance = ENEMIES[variant];
+    const positionAtMatrix: PositionAtMatrix = await this.scene.spawner.getSpawnPosition();
+    const enemy = new EnemyInstance(this.scene, { positionAtMatrix });
+    const originAlpha = enemy.alpha;
 
-    this.scene.spawner.getSpawnPosition()
-      .then((positionAtMatrix) => {
-        new EnemyInstance(this.scene, { positionAtMatrix });
-      });
+    enemy.freeze(750);
+
+    this.scene.fx.createSpawnEffect(enemy);
+
+    enemy.container.setAlpha(0.0);
+    enemy.setAlpha(0.0);
+    this.scene.tweens.add({
+      targets: enemy,
+      alpha: originAlpha,
+      duration: 750,
+      onComplete: () => {
+        enemy.container.setAlpha(enemy.alpha);
+      },
+    });
   }
 
   private getEnemyVariant() {
