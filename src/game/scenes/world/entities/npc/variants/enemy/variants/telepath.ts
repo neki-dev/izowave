@@ -31,7 +31,7 @@ export class EnemyTelepath extends Enemy {
 
     this.addArea();
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeArea();
       if (this.regenerateTimer) {
         this.scene.removeProgression(this.regenerateTimer);

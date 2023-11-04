@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { WORLD_DEPTH_EFFECT } from '~const/world';
+import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
@@ -43,7 +43,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.setVisible(false);
 
     this.setStrokeStyle(2, 0xb136ff, 0.5);
-    this.setDepth(WORLD_DEPTH_EFFECT);
+    this.setDepth(WORLD_DEPTH_GRAPHIC);
     this.setOrigin(0.0, 0.0);
   }
 
@@ -51,7 +51,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.initiator = initiator;
     this.positionCallback = positionCallback;
 
-    initiator.on(Phaser.GameObjects.Events.DESTROY, () => {
+    initiator.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.destroy();
     });
   }

@@ -369,7 +369,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       this.buildings[data.variant] = list;
     }
 
-    building.on(Phaser.GameObjects.Events.DESTROY, () => {
+    building.once(Phaser.GameObjects.Events.DESTROY, () => {
       if (list) {
         const index = list.indexOf(building);
 

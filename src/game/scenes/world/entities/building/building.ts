@@ -136,7 +136,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.stopBuildProcess();
 
       this.removeIndicatorsContainer();
@@ -149,7 +149,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
       this.scene.spawner.clearCache();
       this.scene.level.navigator.resetPointCost(positionAtMatrix);
-      this.live.removeAllListeners();
+      this.live.destroy();
     });
   }
 
@@ -477,7 +477,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       end: hideHint,
     });
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       hideHint();
       unbindStep();
     });
@@ -695,7 +695,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.updateActionArea();
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.actionsArea) {
         this.actionsArea.destroy();
         this.actionsArea = null;
@@ -831,7 +831,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.input.keyboard?.on(key, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.keyboard?.off(key, handler);
     });
   }
@@ -854,7 +854,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
     });
   }
@@ -898,7 +898,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.game.events.on(GameEvents.FINISH, handleStop);
     this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
       this.scene.game.events.off(GameEvents.FINISH, handleStop);
       this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);

@@ -57,7 +57,7 @@ export class BuildingElectro extends Building implements IBuilding {
     this.calculatePower();
     this.addArea();
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.removeArea();
     });
   }
@@ -211,7 +211,7 @@ export class BuildingElectro extends Building implements IBuilding {
     buidingsGroup.on(BuildingEvents.UPGRADE, handler);
     buidingsGroup.on(BuildingEvents.BREAK, handler);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       buidingsGroup.off(BuildingEvents.CREATE, handler);
       buidingsGroup.off(BuildingEvents.UPGRADE, handler);
       buidingsGroup.off(BuildingEvents.BREAK, handler);

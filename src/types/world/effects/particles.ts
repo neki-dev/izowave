@@ -40,6 +40,7 @@ export type ParticlesData = {
   key: string
   position?: PositionAtWorld
   texture: ParticlesTexture
-  dynamic?: boolean
+  attach?: boolean
+  depth?: number
   params: Phaser.Types.GameObjects.Particles.ParticleEmitterConfig
 };

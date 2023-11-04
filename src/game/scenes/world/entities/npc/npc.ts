@@ -54,7 +54,7 @@ export class NPC extends Sprite implements INPC {
       this.anims.play('idle');
     }
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       if (this.freezeEffectTimer) {
         this.freezeEffectTimer.destroy();
       }
@@ -243,7 +243,7 @@ export class NPC extends Sprite implements INPC {
     this.pathDebug = this.scene.add.graphics();
     this.pathDebug.setDepth(WORLD_DEPTH_GRAPHIC);
 
-    this.on(Phaser.GameObjects.Events.DESTROY, () => {
+    this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.pathDebug?.destroy();
     });
   }

@@ -21,7 +21,7 @@ export class Particles implements IParticles {
   constructor(
     parent: IParticlesParent,
     {
-      key, position, texture, params, dynamic,
+      key, position, texture, params, depth, attach,
     }: ParticlesData,
   ) {
     this.scene = parent.scene;
@@ -42,17 +42,17 @@ export class Particles implements IParticles {
       texture,
       {
         ...params,
-        follow: dynamic ? parent : undefined,
+        follow: attach ? parent : undefined,
       },
     );
-    this.emitter.setDepth(parent.depth + 1);
+    this.emitter.setDepth(depth ?? parent.depth + 1);
 
     this.destroy = this.destroy.bind(this);
     this.update = this.update.bind(this);
 
     this.parent.once(Phaser.GameObjects.Events.DESTROY, this.destroy);
 
-    if (dynamic) {
+    if (attach && depth === undefined) {
       this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update);
     }
 
