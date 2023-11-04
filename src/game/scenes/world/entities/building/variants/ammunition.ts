@@ -3,7 +3,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
-import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -24,10 +23,6 @@ import {
 import { Building } from '../building';
 
 export class BuildingAmmunition extends Building implements IBuildingAmmunition {
-  static Name: LangPhrase = 'BUILDING_NAME_AMMUNITION';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_AMMUNITION';
-
   static Category = BuildingCategory.RESOURCES;
 
   static Texture = BuildingTexture.AMMUNITION;

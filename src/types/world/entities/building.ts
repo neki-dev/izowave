@@ -180,8 +180,6 @@ export interface IBuildingTower extends IBuilding {
 }
 
 export interface IBuildingFactory {
-  Name: LangPhrase
-  Description: LangPhrase
   Category: BuildingCategory
   Texture: BuildingTexture
   Cost: number
@@ -204,6 +202,7 @@ export enum BuildingVariant {
   TOWER_FIRE = 'TOWER_FIRE',
   TOWER_LAZER = 'TOWER_LAZER',
   TOWER_FROZEN = 'TOWER_FROZEN',
+  ELECTRO = 'ELECTRO',
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   RADAR = 'RADAR',
@@ -215,6 +214,7 @@ export enum BuildingTexture {
   TOWER_FIRE = 'building/textures/tower_fire',
   TOWER_FROZEN = 'building/textures/tower_frozen',
   TOWER_LAZER = 'building/textures/tower_lazer',
+  ELECTRO = 'building/textures/tower_electro',
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
   RADAR = 'building/textures/radar',
@@ -246,6 +246,7 @@ export enum BuildingAudio {
   REPAIR = 'building/repair',
   DAMAGE_1 = 'building/damage_1',
   DAMAGE_2 = 'building/damage_2',
+  ELECTRO = 'building/electro',
 }
 
 export enum BuildingOutlineState {

@@ -5,6 +5,7 @@ import { CRYSTAL_TILE } from '~const/world/entities/crystal';
 import { Assets } from '~lib/assets';
 import { progressionLinear } from '~lib/progression';
 import { Level } from '~scene/world/level';
+import { ShaderType } from '~type/shader';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
@@ -85,14 +86,14 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
         return;
       }
 
-      this.addShader('OutlineShader', {
+      this.addShader(ShaderType.OUTLINE, {
         size: 2.0,
         color: 0xffffff,
       });
     });
 
     this.on(Phaser.Input.Events.POINTER_OUT, () => {
-      this.removeShader('OutlineShader');
+      this.removeShader(ShaderType.OUTLINE);
     });
   }
 }

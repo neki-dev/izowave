@@ -6,6 +6,7 @@ import {
 import { Analytics } from '~lib/analytics';
 import { Environment } from '~lib/environment';
 import { SDK } from '~lib/sdk';
+import { registerShaders } from '~lib/shader';
 import { Storage } from '~lib/storage';
 import { Tutorial } from '~lib/tutorial';
 import { eachEntries } from '~lib/utils';
@@ -29,8 +30,6 @@ import { IScreen } from '~type/screen';
 import { SDKAdsType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { IWorld } from '~type/world';
-
-import { shaders } from '../shaders';
 
 export class Game extends Phaser.Game implements IGame {
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
@@ -101,13 +100,13 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.events.on(Phaser.Core.Events.READY, () => {
+      registerShaders(this.renderer);
+
       this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
       this.world = <IWorld> this.scene.getScene(GameScene.WORLD);
 
       this.sound.setVolume(AUDIO_VOLUME);
       this.sound.mute = !this.isSettingEnabled(GameSettings.AUDIO);
-
-      this.registerShaders();
     });
 
     this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (enabled: boolean) => {
@@ -431,13 +430,5 @@ export class Game extends Phaser.Game implements IGame {
   private loadSavePayload(data: GameSavePayload) {
     this.difficulty = data.difficulty;
     Tutorial.Load(data.tutorial);
-  }
-
-  private registerShaders() {
-    const renderer = this.renderer as Phaser.Renderer.WebGL.WebGLRenderer;
-
-    eachEntries(shaders, (name, Shader) => {
-      renderer.pipelines.addPostPipeline(name, Shader);
-    });
   }
 }

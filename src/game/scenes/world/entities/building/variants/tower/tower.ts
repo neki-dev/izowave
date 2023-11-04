@@ -1,5 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
+import { Analytics } from '~lib/analytics';
 import { getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
@@ -55,8 +56,12 @@ export class BuildingTower extends Building implements IBuildingTower {
   public update() {
     super.update();
 
-    if (this.isCanAttack()) {
-      this.attack();
+    try {
+      if (this.isCanAttack()) {
+        this.attack();
+      }
+    } catch (error) {
+      Analytics.TrackWarn('Failed tower building update', error as TypeError);
     }
   }
 

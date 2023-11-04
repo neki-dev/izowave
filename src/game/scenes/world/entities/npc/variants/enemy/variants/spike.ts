@@ -14,6 +14,7 @@ export class EnemySpike extends Enemy {
         health: 1.1,
         damage: 0.4,
         speed: 0.8,
+        might: 0.7,
       },
     });
   }

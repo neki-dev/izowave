@@ -77,11 +77,25 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
     this.emit(LiveEvents.UPDATE_HEALTH, 0);
   }
 
-  public heal() {
-    this.setHealth(this.maxHealth);
+  public heal(amount?: number) {
+    if (this.isMaxHealth() || (amount && amount <= 0)) {
+      return;
+    }
+
+    if (amount) {
+      this.addHealth(amount);
+    } else {
+      this.setHealth(this.maxHealth);
+    }
+
+    this.emit(LiveEvents.HEAL);
   }
 
   public addHealth(amount: number) {
+    if (amount <= 0) {
+      return;
+    }
+
     this.setHealth(this.health + amount);
   }
 

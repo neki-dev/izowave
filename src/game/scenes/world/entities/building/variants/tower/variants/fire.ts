@@ -1,7 +1,6 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { Tutorial } from '~lib/tutorial';
-import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
@@ -14,10 +13,6 @@ import {
 import { BuildingTower } from '../tower';
 
 export class BuildingTowerFire extends BuildingTower {
-  static Name: LangPhrase = 'BUILDING_NAME_TOWER_FIRE';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_TOWER_FIRE';
-
   static Category = BuildingCategory.ATTACK;
 
   static Texture = BuildingTexture.TOWER_FIRE;

@@ -1,6 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { ShotLazer } from '~entity/shot/lazer';
-import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
   BuildingCategory,
@@ -12,10 +11,6 @@ import {
 import { BuildingTower } from '../tower';
 
 export class BuildingTowerLazer extends BuildingTower {
-  static Name: LangPhrase = 'BUILDING_NAME_TOWER_LAZER';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_TOWER_LAZER';
-
   static Category = BuildingCategory.ATTACK;
 
   static Texture = BuildingTexture.TOWER_LAZER;

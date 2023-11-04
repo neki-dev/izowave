@@ -4,6 +4,7 @@ import { DEBUG_MODS } from '~const/game';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
+import { Analytics } from '~lib/analytics';
 import { isPositionsEqual } from '~lib/dimension';
 import { Level } from '~scene/world/level';
 import { ILive, LiveEvents } from '~type/live';
@@ -89,6 +90,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
+    this.live.on(LiveEvents.HEAL, this.onHeal.bind(this));
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
@@ -97,17 +99,24 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   public update() {
+    try {
+      this.updateDimension();
+      this.updateContainer();
+      this.updateIndicators();
+
+      this.drawDebugGroundPosition();
+    } catch (error) {
+      Analytics.TrackWarn('Failed sprite update', error as TypeError);
+    }
+  }
+
+  private updateDimension() {
     const positionOnGround = this.getBottomFace();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
 
     this.setDepth(positionOnGround.y);
-
-    this.updateContainer();
-    this.updateIndicators();
-
-    this.drawDebugGroundPosition();
   }
 
   private addContainer() {
@@ -344,6 +353,10 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, class-methods-use-this
   public onDamage(amount: number) {
     //
+  }
+
+  public onHeal() {
+    this.scene.fx.createHealEffect(this);
   }
 
   public onDead() {

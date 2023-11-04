@@ -1,5 +1,4 @@
 import { DIFFICULTY } from '~const/world/difficulty';
-import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
   BuildingVariant,
@@ -11,10 +10,6 @@ import {
 import { Building } from '../building';
 
 export class BuildingWall extends Building {
-  static Name: LangPhrase = 'BUILDING_NAME_WALL';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_WALL';
-
   static Category = BuildingCategory.DEFENSE;
 
   static Texture = BuildingTexture.WALL;

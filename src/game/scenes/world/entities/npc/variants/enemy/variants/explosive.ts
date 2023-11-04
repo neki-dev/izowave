@@ -24,6 +24,7 @@ export class EnemyExplosive extends Enemy {
         health: 1.2,
         damage: 0.4,
         speed: 0.5,
+        might: 1.2,
       },
     });
   }

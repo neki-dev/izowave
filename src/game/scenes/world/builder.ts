@@ -5,12 +5,14 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '~const/world/level';
+import { Analytics } from '~lib/analytics';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { getStage } from '~lib/utils';
 import { Level } from '~scene/world/level';
+import { ShaderType } from '~type/shader';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import { BuilderEvents, IBuilder } from '~type/world/builder';
@@ -73,15 +75,19 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   }
 
   public update() {
-    if (this.isCanBuild()) {
-      if (this.isBuild) {
-        this.updateSupposedPosition();
-        this.updateBuildInstance();
-      } else {
-        this.open();
+    try {
+      if (this.isCanBuild()) {
+        if (this.isBuild) {
+          this.updateSupposedPosition();
+          this.updateBuildInstance();
+        } else {
+          this.open();
+        }
+      } else if (this.isBuild) {
+        this.close();
       }
-    } else if (this.isBuild) {
-      this.close();
+    } catch (error) {
+      Analytics.TrackWarn('Failed builder update', error as TypeError);
     }
   }
 
@@ -102,7 +108,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     }
 
     if (this.isBuildingLimitReached(variant)) {
-      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
+      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(`BUILDING_NAME_${variant}`)]);
 
       return;
     }
@@ -306,7 +312,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     const BuildingInstance = BUILDINGS[this.variant];
 
     if (this.isBuildingLimitReached(this.variant)) {
-      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(BuildingInstance.Name)]);
+      this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(`BUILDING_NAME_${this.variant}`)]);
 
       return;
     }
@@ -395,7 +401,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     this.buildPreview = this.scene.add.image(0, 0, BuildingInstance.Texture);
     this.buildPreview.setOrigin(0.5, BUILDING_TILE.origin);
-    this.buildPreview.addShader('OutlineShader', {
+    this.buildPreview.addShader(ShaderType.OUTLINE, {
       size: 3.0,
       color: 0xffffff,
     });

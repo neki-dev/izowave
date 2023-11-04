@@ -11,6 +11,7 @@ import {
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, isPositionsEqual } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -184,16 +185,20 @@ export class Player extends Sprite implements IPlayer {
   public update() {
     super.update();
 
-    this.findPathToCrystal();
-    this.drawPathToCrystal();
+    try {
+      this.findPathToCrystal();
+      this.drawPathToCrystal();
 
-    if (!this.live.isDead()) {
-      this.dustEffect?.emitter.setDepth(this.depth - 1);
+      if (!this.live.isDead()) {
+        this.dustEffect?.emitter.setDepth(this.depth - 1);
 
-      this.updateMovement();
-      this.updateVelocity();
-      this.updateVisible();
-      this.updateStamina();
+        this.updateMovement();
+        this.updateVelocity();
+        this.updateVisible();
+        this.updateStamina();
+      }
+    } catch (error) {
+      Analytics.TrackWarn('Failed player update', error as TypeError);
     }
   }
 

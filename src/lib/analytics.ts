@@ -32,9 +32,7 @@ export class Analytics {
       return;
     }
 
-    this.FetchEventRequest(
-      this.GetEventPayload(data),
-    );
+    this.FetchRequest('create-event', this.GetEventPayload(data));
   }
 
   static TrackError(data: Error) {
@@ -42,40 +40,32 @@ export class Analytics {
       return;
     }
 
-    this.FetchErrorRequest(
-      this.GetErrorPayload(data),
-    );
+    this.FetchRequest('create-error', this.GetErrorPayload(data));
   }
 
-  static TrackWarn(message: string) {
-    if (Environment.Platform === 'development') {
-      console.warn(message);
+  static TrackWarn(message: string, originError?: TypeError) {
+    let fullMessage = message;
 
+    if (originError) {
+      fullMessage += `. Error: ${originError.message}`;
+    }
+
+    console.warn(fullMessage);
+
+    if (Environment.Platform === 'development') {
       return;
     }
 
-    this.FetchErrorRequest(
-      this.GetWarnPayload(message),
-    );
+    this.FetchRequest('create-error', this.GetWarnPayload(fullMessage));
   }
 
-  private static FetchEventRequest(payload: any) {
-    fetch(`${ANALYTICS_SERVER}/api/create-event.php`, {
+  private static FetchRequest(endpoint: string, payload: any) {
+    fetch(`${ANALYTICS_SERVER}/api/${endpoint}.php`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     }).catch((e) => {
-      console.warn('Failed analytics event tracking:', payload, e);
-    });
-  }
-
-  private static FetchErrorRequest(payload: any) {
-    fetch(`${ANALYTICS_SERVER}/api/create-error.php`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    }).catch((e) => {
-      console.warn('Failed analytics error tracking:', payload, e);
+      console.warn('Failed analytics', endpoint, 'request:', payload, e);
     });
   }
 

@@ -71,28 +71,45 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   }
 
   public update() {
+    try {
+      this.handleTimeleft();
+      this.handleProcessing();
+    } catch (error) {
+      Analytics.TrackWarn('Failed wave update', error as TypeError);
+    }
+  }
+
+  private handleProcessing() {
+    if (!this.isGoing) {
+      return;
+    }
+
     const now = this.scene.getTime();
 
-    if (this.isGoing) {
-      if (this.spawnedEnemiesCount < this.enemiesMaxCount) {
-        if (this.nextSpawnTimestamp <= now) {
-          this.spawnEnemy();
-        }
-      } else if (this.scene.getEntitiesGroup(EntityType.ENEMY).getTotalUsed() === 0) {
-        this.complete();
+    if (this.spawnedEnemiesCount < this.enemiesMaxCount) {
+      if (this.nextSpawnTimestamp <= now) {
+        this.spawnEnemy();
       }
-    } else if (!this.isPeaceMode) {
-      const left = this.nextWaveTimestamp - now;
+    } else if (this.scene.getEntitiesGroup(EntityType.ENEMY).getTotalUsed() === 0) {
+      this.complete();
+    }
+  }
 
-      if (left <= 0) {
-        this.start();
-      } else if (
-        left <= WAVE_TIMELEFT_ALARM
-        && !this.scene.isTimePaused()
-        && !this.alarmInterval
-      ) {
-        this.runAlarmCountdown();
-      }
+  private handleTimeleft() {
+    if (this.isGoing || this.isPeaceMode) {
+      return;
+    }
+
+    const left = this.nextWaveTimestamp - this.scene.getTime();
+
+    if (left <= 0) {
+      this.start();
+    } else if (
+      left <= WAVE_TIMELEFT_ALARM
+      && !this.scene.isTimePaused()
+      && !this.alarmInterval
+    ) {
+      this.runAlarmCountdown();
     }
   }
 
@@ -141,6 +158,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
         defaultValue: DIFFICULTY.WAVE_TIMELEFT,
         scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
         level: this.number,
+        maxLevel: DIFFICULTY.WAVE_TIMELEFT_GROWTH_MAX_LEVEL,
         roundTo: 1000,
       });
 

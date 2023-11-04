@@ -1,6 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Tutorial } from '~lib/tutorial';
-import { LangPhrase } from '~type/lang';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
 import {
@@ -13,10 +12,6 @@ import {
 import { Building } from '../building';
 
 export class BuildingRadar extends Building {
-  static Name: LangPhrase = 'BUILDING_NAME_RADAR';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_RADAR';
-
   static Category = BuildingCategory.OTHER;
 
   static Texture = BuildingTexture.RADAR;

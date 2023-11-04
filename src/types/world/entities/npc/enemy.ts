@@ -45,6 +45,7 @@ export enum EnemyTexture {
   BOSS = 'enemy/boss',
   GHOST = 'enemy/ghost',
   TERMER = 'enemy/termer',
+  BERSERK = 'enemy/berserk',
   EXPLOSIVE = 'enemy/explosive',
   STRANGER = 'enemy/stranger',
   ADHERENT = 'enemy/adherent',
@@ -60,6 +61,7 @@ export enum EnemyVariant {
   BOSS = 'BOSS',
   GHOST = 'GHOST',
   TERMER = 'TERMER',
+  BERSERK = 'BERSERK',
   EXPLOSIVE = 'EXPLOSIVE',
   STRANGER = 'STRANGER',
   ADHERENT = 'ADHERENT',
@@ -91,5 +93,6 @@ export type EnemyData = EnemyVariantData & {
     speed: number
     damage: number
     health: number
+    might: number
   }
 };

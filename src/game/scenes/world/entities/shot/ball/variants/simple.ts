@@ -8,7 +8,7 @@ export class ShotBallSimple extends ShotBall {
   constructor(scene: IWorld, params: ShotParams, data: ShotData = {}) {
     super(scene, params, {
       ...data,
-      audio: ShotBallAudio.FIRE,
+      audio: ShotBallAudio.SIMPLE,
       color: 0xfff985,
     });
   }

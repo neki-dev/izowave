@@ -7,6 +7,7 @@ import { BUILDING_TILE } from '~const/world/entities/building';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
@@ -14,6 +15,7 @@ import { Level } from '~scene/world/level';
 import { GameEvents } from '~type/game';
 import { LangPhrase } from '~type/lang';
 import { ILive, LiveEvents } from '~type/live';
+import { ShaderType } from '~type/shader';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld, WorldEvents, WorldMode } from '~type/world';
 import { BuilderEvents } from '~type/world/builder';
@@ -152,12 +154,16 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public update() {
-    this.updateOutline();
-    this.updateIndicators();
+    try {
+      this.updateOutline();
+      this.updateIndicators();
 
-    // Catch focus by camera moving
-    if (this.toFocus) {
-      this.focus();
+      // Catch focus by camera moving
+      if (this.toFocus) {
+        this.focus();
+      }
+    } catch (error) {
+      Analytics.TrackWarn('Failed building update', error as TypeError);
     }
   }
 
@@ -647,7 +653,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     if (state === BuildingOutlineState.NONE) {
-      this.removeShader('OutlineShader');
+      this.removeShader(ShaderType.OUTLINE);
     } else {
       const params = {
         [BuildingOutlineState.FOCUSED]: { size: 3.0, color: 0xffffff },
@@ -655,9 +661,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }[state];
 
       if (this.outlineState === BuildingOutlineState.NONE) {
-        this.addShader('OutlineShader', params);
+        this.addShader(ShaderType.OUTLINE, params);
       } else {
-        this.updateShader('OutlineShader', params);
+        this.updateShader(ShaderType.OUTLINE, params);
       }
     }
 
@@ -697,7 +703,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  private updateActionArea() {
+  public updateActionArea() {
     if (!this.actionsArea) {
       return;
     }
@@ -876,6 +882,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.unselect();
     };
 
+    const handleStop = () => {
+      handleClear();
+      this.setActive(false);
+    };
+
     this.on(Phaser.Input.Events.POINTER_DOWN, handleClick);
 
     if (this.scene.game.isDesktop()) {
@@ -884,12 +895,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
-    this.scene.game.events.on(GameEvents.FINISH, handleClear);
+    this.scene.game.events.on(GameEvents.FINISH, handleStop);
     this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
 
     this.on(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
-      this.scene.game.events.off(GameEvents.FINISH, handleClear);
+      this.scene.game.events.off(GameEvents.FINISH, handleStop);
       this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
     });
   }

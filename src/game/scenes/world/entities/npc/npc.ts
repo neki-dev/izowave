@@ -5,6 +5,7 @@ import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { NPC_PATH_FIND_RATE } from '~const/world/entities/npc';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Sprite } from '~entity/sprite';
+import { Analytics } from '~lib/analytics';
 import { isPositionsEqual, getIsometricAngle, getIsometricDistance } from '~lib/dimension';
 import { Level } from '~scene/world/level';
 import { IWorld } from '~type/world';
@@ -66,18 +67,22 @@ export class NPC extends Sprite implements INPC {
   public update() {
     super.update();
 
-    if (this.isCanPursuit()) {
-      if (this.getDistanceToTarget() <= this.pathFindTriggerDistance) {
-        this.resetPath();
-        this.isPathPassed = true;
+    try {
+      if (this.isCanPursuit()) {
+        if (this.getDistanceToTarget() <= this.pathFindTriggerDistance) {
+          this.resetPath();
+          this.isPathPassed = true;
+        } else {
+          this.findPathToTarget();
+          this.moveByPath();
+          this.isPathPassed = false;
+        }
       } else {
-        this.findPathToTarget();
-        this.moveByPath();
+        this.setVelocity(0, 0);
         this.isPathPassed = false;
       }
-    } else {
-      this.setVelocity(0, 0);
-      this.isPathPassed = false;
+    } catch (error) {
+      Analytics.TrackWarn('Failed NPC update', error as TypeError);
     }
   }
 

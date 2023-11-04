@@ -16,6 +16,7 @@ export class EnemyTank extends Enemy {
         health: 1.8,
         damage: 0.6,
         speed: 0.7,
+        might: 1.5,
       },
     });
 

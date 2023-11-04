@@ -1,6 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { progressionLinear } from '~lib/progression';
-import { LangPhrase } from '~type/lang';
 import { IWorld } from '~type/world';
 import {
   BuildingVariant,
@@ -16,10 +15,6 @@ import {
 import { Building } from '../building';
 
 export class BuildingBooster extends Building implements IBuildingBooster {
-  static Name: LangPhrase = 'BUILDING_NAME_BOOSTER';
-
-  static Description: LangPhrase = 'BUILDING_DESCRIPTION_BOOSTER';
-
   static Category = BuildingCategory.OTHER;
 
   static Texture = BuildingTexture.BOOSTER;

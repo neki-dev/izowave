@@ -53,7 +53,7 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
     <Wrapper>
       <Container>
         <Head>
-          <Name>{phrase(building.getMeta().Name)}</Name>
+          <Name>{phrase(`BUILDING_NAME_${building.variant}`)}</Name>
         </Head>
         <Body>
           <Health>
