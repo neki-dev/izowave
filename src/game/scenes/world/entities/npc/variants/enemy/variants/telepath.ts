@@ -24,6 +24,7 @@ export class EnemyTelepath extends Enemy {
         health: 1.5,
         damage: 1.0,
         speed: 0.8,
+        might: 1.6,
       },
     });
 

@@ -15,6 +15,7 @@ export class EnemyGhost extends Enemy {
         health: 1.5,
         damage: 0.7,
         speed: 0.8,
+        might: 1.5,
       },
     });
 

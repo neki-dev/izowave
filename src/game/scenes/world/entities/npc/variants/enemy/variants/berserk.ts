@@ -15,8 +15,9 @@ export class EnemyBerserk extends Enemy {
       texture: EnemyTexture.BERSERK,
       multipliers: {
         health: 2.0,
-        damage: 0.8,
+        damage: 1.0,
         speed: 0.7,
+        might: 1.7,
       },
     });
   }

@@ -14,6 +14,7 @@ export class EnemyDemon extends Enemy {
         health: 0.6,
         damage: 0.3,
         speed: 0.8,
+        might: 0.5,
       },
     });
   }

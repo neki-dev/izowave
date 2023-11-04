@@ -15,6 +15,7 @@ export class EnemyStranger extends Enemy {
         health: 1.5,
         damage: 0.8,
         speed: 0.7,
+        might: 1.0,
       },
     });
   }

@@ -13,6 +13,7 @@ export class EnemyBoss extends Enemy {
         health: 8.0,
         damage: 1.0,
         speed: 0.5,
+        might: 5.0,
       },
     });
   }

@@ -83,11 +83,7 @@ export class Enemy extends NPC implements IEnemy {
     });
     this.spawnEffect = spawnEffect;
     this.score = score ?? 1;
-    this.might = (
-      multipliers.health
-      + multipliers.damage
-      + multipliers.speed
-    ) / 3;
+    this.might = multipliers.might;
 
     this.addDamageLabel();
     this.addIndicator('health', {

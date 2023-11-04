@@ -14,6 +14,7 @@ export class EnemyRisper extends Enemy {
         health: 0.9,
         damage: 0.5,
         speed: 1.1,
+        might: 0.8,
       },
     });
   }

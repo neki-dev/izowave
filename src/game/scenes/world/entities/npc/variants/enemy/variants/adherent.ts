@@ -12,6 +12,7 @@ export class EnemyAdherent extends Enemy {
         health: 0.6,
         damage: 0.2,
         speed: 0.9,
+        might: 0.5,
       },
     });
   }
