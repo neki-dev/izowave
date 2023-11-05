@@ -844,7 +844,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private handleToggleModes() {
-    const handlerToggle = (mode: WorldMode) => {
+    const handler = (mode: WorldMode) => {
       switch (mode) {
         case WorldMode.BUILDING_INDICATORS: {
           this.toggleIndicators();
@@ -853,10 +853,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
-    this.scene.events.on(WorldEvents.TOGGLE_MODE, handlerToggle);
+    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.TOGGLE_MODE, handlerToggle);
+      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
     });
   }
 

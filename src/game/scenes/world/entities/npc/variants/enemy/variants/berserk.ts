@@ -10,6 +10,8 @@ export class EnemyBerserk extends Enemy {
 
   private healTimestamp: number = 0;
 
+  private healAmount: number = 0;
+
   constructor(scene: IWorld, data: EnemyVariantData) {
     super(scene, {
       ...data,
@@ -21,6 +23,8 @@ export class EnemyBerserk extends Enemy {
         might: 1.7,
       },
     });
+
+    this.healAmount = Math.ceil(this.live.maxHealth * ENEMY_HEAL_MULTIPLIER);
   }
 
   public update() {
@@ -47,7 +51,7 @@ export class EnemyBerserk extends Enemy {
     if (now >= this.healTimestamp) {
       this.healTimestamp = now + ENEMY_HEAL_TIMESTAMP_PAUSE;
 
-      this.live.heal(this.live.maxHealth * ENEMY_HEAL_MULTIPLIER);
+      this.live.heal(this.healAmount);
     }
   }
 }
