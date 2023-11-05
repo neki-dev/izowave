@@ -158,12 +158,22 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.updateOutline();
       this.updateIndicators();
 
+      if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
+        this.handleAutorepair();
+      }
+
       // Catch focus by camera moving
       if (this.toFocus) {
         this.focus();
       }
     } catch (error) {
       Analytics.TrackWarn('Failed building update', error as TypeError);
+    }
+  }
+
+  public handleAutorepair() {
+    if (this.live.health / this.live.maxHealth <= 0.5) {
+      this.repair(true);
     }
   }
 
@@ -375,12 +385,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.sound.play(BuildingAudio.REPAIR);
   }
 
-  private autoRepair() {
-    if (this.live.health / this.live.maxHealth <= 0.5) {
-      this.repair(true);
-    }
-  }
-
   private upgradeHealth() {
     const maxHealth = this.getMaxHealth();
 
@@ -496,10 +500,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.fx.createDamageEffect(this);
-
-    if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
-      this.autoRepair();
-    }
   }
 
   private onDead() {
@@ -837,25 +837,19 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private handleToggleModes() {
-    const handler = (mode: WorldMode, state: boolean) => {
+    const handlerToggle = (mode: WorldMode) => {
       switch (mode) {
         case WorldMode.BUILDING_INDICATORS: {
           this.toggleIndicators();
           break;
         }
-        case WorldMode.AUTO_REPAIR: {
-          if (state) {
-            this.autoRepair();
-          }
-          break;
-        }
       }
     };
 
-    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+    this.scene.events.on(WorldEvents.TOGGLE_MODE, handlerToggle);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
+      this.scene.events.off(WorldEvents.TOGGLE_MODE, handlerToggle);
     });
   }
 

@@ -4,7 +4,7 @@ import { BUILDING_TILE } from '~const/world/entities/building';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldEvents, WorldMode } from '~type/world';
+import { IWorld, WorldMode } from '~type/world';
 import { EntityType } from '~type/world/entities';
 import {
   BuildingAudio,
@@ -61,8 +61,6 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       value: () => this.ammo / this.maxAmmo,
     });
 
-    this.handleToggleAutoAmmo();
-
     Tutorial.Complete(TutorialStep.BUILD_AMMUNITION);
 
     this.bindTutorialHint(
@@ -118,7 +116,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     if (this.ammo === 0) {
       if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
-        this.autoBuyAmmo();
+        this.buyAmmo(true);
       } else {
         if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
           this.scene.game.sound.play(BuildingAudio.OVER);
@@ -174,12 +172,6 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     Tutorial.Complete(TutorialStep.BUY_AMMO);
   }
 
-  private autoBuyAmmo() {
-    if (this.ammo === 0) {
-      this.buyAmmo(true);
-    }
-  }
-
   private getMaxAmmo() {
     return progressionQuadratic({
       defaultValue: DIFFICULTY.BUILDING_AMMUNITION_AMMO,
@@ -197,23 +189,12 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.ammo += addedAmmo;
   }
 
-  private handleToggleAutoAmmo() {
-    const handler = (mode: WorldMode, state: boolean) => {
-      switch (mode) {
-        case WorldMode.AUTO_REPAIR: {
-          if (state) {
-            this.autoBuyAmmo();
-          }
-          break;
-        }
-      }
-    };
+  public handleAutorepair() {
+    super.handleAutorepair();
 
-    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
-
-    this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
-    });
+    if (this.ammo === 0) {
+      this.buyAmmo(true);
+    }
   }
 
   public getSavePayload() {
