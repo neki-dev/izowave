@@ -214,7 +214,7 @@ export class Enemy extends NPC implements IEnemy {
   }
 
   public onDead() {
-    const experience = progressionQuadratic({
+    const experience = progressionLinear({
       defaultValue: DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
       scale: DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
       level: this.scene.wave.number,

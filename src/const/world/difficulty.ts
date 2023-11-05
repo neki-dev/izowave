@@ -13,7 +13,7 @@ export const DIFFICULTY = {
   PLAYER_STAMINA: 100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
   PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.8, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 1.0, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -41,12 +41,12 @@ export const DIFFICULTY = {
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 10000, // Frost duration
-  SUPERSKILL_FIRE_COST: 40, // Cost of use
+  SUPERSKILL_FIRE_COST: 45, // Cost of use
   SUPERSKILL_FIRE_DURATION: 2000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
-  SUPERSKILL_RAGE_COST: 40, // Cost of use
+  SUPERSKILL_RAGE_COST: 45, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
-  SUPERSKILL_COST_GROWTH: 0.2, // Growth cost by wave number (Linear)
+  SUPERSKILL_COST_GROWTH: 0.25, // Growth cost by wave number (Linear)
   SUPERSKILL_UNLOCK_PER_WAVE: 3, // Period of superskill unlocking
 
   /**
@@ -55,14 +55,14 @@ export const DIFFICULTY = {
 
   WAVE_TIMELEFT: 10000, // Pause between waves
   WAVE_TIMELEFT_GROWTH: 0.5, // Pause growth by wave number (Linear)
-  WAVE_TIMELEFT_GROWTH_MAX_LEVEL: 17, // Level for limit pause growth
+  WAVE_TIMELEFT_GROWTH_MAX_LEVEL: 11, // Level for limit pause growth
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
   WAVE_ENEMIES_SPAWN_PAUSE: 2000, // Pause between enemies spawn
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.05, // Enemies spawn pause growth by wave number (Linear)
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL: 11, // Level for limit spawn pause growth
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
-  WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
+  WAVE_EXPERIENCE_GROWTH: 0.25, // Experience amount growth by wave number (Quadratic)
 
   /**
    * Crystals
@@ -73,6 +73,7 @@ export const DIFFICULTY = {
   CRYSTAL_COUNT_GROWTH_MAX_LEVEL: 10, // Level for limit count growth
   CRYSTAL_RESOURCES: 4, // Resources in crystal
   CRYSTAL_RESOURCES_GROWTH: 0.8, // Resources amount growth by wave number (Linear)
+  CRYSTAL_RESOURCES_GROWTH_MAX_LEVEL: 12, // Level for limit resources growth
 
   /**
    * Enemies
@@ -90,7 +91,7 @@ export const DIFFICULTY = {
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.32, // Damage growth by wave number (Linear)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
-  ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
+  ENEMY_KILL_EXPERIENCE_GROWTH: 0.28, // Experience growth by wave number (Linear)
 
   /**
    * Builder

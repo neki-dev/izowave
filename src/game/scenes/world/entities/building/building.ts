@@ -158,12 +158,22 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.updateOutline();
       this.updateIndicators();
 
+      if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
+        this.handleAutorepair();
+      }
+
       // Catch focus by camera moving
       if (this.toFocus) {
         this.focus();
       }
     } catch (error) {
       Analytics.TrackWarn('Failed building update', error as TypeError);
+    }
+  }
+
+  public handleAutorepair() {
+    if (this.live.health / this.live.maxHealth <= 0.5) {
+      this.repair(true);
     }
   }
 
@@ -375,12 +385,6 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.scene.sound.play(BuildingAudio.REPAIR);
   }
 
-  private autoRepair() {
-    if (this.live.health / this.live.maxHealth <= 0.5) {
-      this.repair(true);
-    }
-  }
-
   private upgradeHealth() {
     const maxHealth = this.getMaxHealth();
 
@@ -497,8 +501,11 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.fx.createDamageEffect(this);
 
-    if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
-      this.autoRepair();
+    if (
+      this.scene.isModeActive(WorldMode.AUTO_REPAIR)
+      && this.live.health / this.live.maxHealth <= 0.5
+    ) {
+      this.repair(true);
     }
   }
 
@@ -837,16 +844,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private handleToggleModes() {
-    const handler = (mode: WorldMode, state: boolean) => {
+    const handler = (mode: WorldMode) => {
       switch (mode) {
         case WorldMode.BUILDING_INDICATORS: {
           this.toggleIndicators();
-          break;
-        }
-        case WorldMode.AUTO_REPAIR: {
-          if (state) {
-            this.autoRepair();
-          }
           break;
         }
       }
