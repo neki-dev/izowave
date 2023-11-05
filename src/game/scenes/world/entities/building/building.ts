@@ -500,6 +500,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.fx.createDamageEffect(this);
+
+    if (
+      this.scene.isModeActive(WorldMode.AUTO_REPAIR)
+      && this.live.health / this.live.maxHealth <= 0.5
+    ) {
+      this.repair(true);
+    }
   }
 
   private onDead() {

@@ -87,6 +87,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.addContainer();
     this.addIndicatorsContainer();
     this.addDebugPosition();
+    this.updateDimension();
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));

@@ -1,4 +1,3 @@
-import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE } from '~const/world/entities/enemy';
 import { Environment } from '~lib/environment';
 import { GameFlag, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
@@ -6,7 +5,7 @@ import { EffectTexture, IParticlesParent, ParticlesTexture } from '~type/world/e
 import { IFXManager } from '~type/world/effects/fx-manager';
 import { IBuilding } from '~type/world/entities/building';
 import { INPC } from '~type/world/entities/npc';
-import { EnemyTexture, IEnemy } from '~type/world/entities/npc/enemy';
+import { IEnemy } from '~type/world/entities/npc/enemy';
 import { IPlayer } from '~type/world/entities/player';
 import { ISprite } from '~type/world/entities/sprite';
 import { PositionAtWorld } from '~type/world/level';
@@ -242,19 +241,16 @@ export class FXManager implements IFXManager {
       return null;
     }
 
-    // Native body.center isn't working at current state
-    const size = ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[parent.texture.key as EnemyTexture]];
-    const position: PositionAtWorld = {
-      x: parent.x,
-      y: parent.y - size.height / 2,
-    };
     const duration = Math.min(700, parent.displayHeight * 17);
     const scale = parent.displayWidth / 16;
 
     return new Particles(parent, {
       key: 'spawn',
       texture: ParticlesTexture.BIT_SOFT,
-      position,
+      position: {
+        x: parent.x,
+        y: parent.body.y,
+      },
       depth: parent.depth - 1,
       params: {
         duration,
