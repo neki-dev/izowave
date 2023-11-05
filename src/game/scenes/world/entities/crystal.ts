@@ -66,6 +66,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
       defaultValue: DIFFICULTY.CRYSTAL_RESOURCES,
       scale: DIFFICULTY.CRYSTAL_RESOURCES_GROWTH,
       level: this.scene.wave.number,
+      maxLevel: DIFFICULTY.CRYSTAL_RESOURCES_GROWTH_MAX_LEVEL,
     });
 
     return Phaser.Math.Between(

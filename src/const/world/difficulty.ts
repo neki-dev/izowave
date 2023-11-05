@@ -62,7 +62,7 @@ export const DIFFICULTY = {
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH: -0.05, // Enemies spawn pause growth by wave number (Linear)
   WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL: 11, // Level for limit spawn pause growth
   WAVE_EXPERIENCE: 50, // Gained experience per complete wave
-  WAVE_EXPERIENCE_GROWTH: 0.2, // Experience amount growth by wave number (Quadratic)
+  WAVE_EXPERIENCE_GROWTH: 0.25, // Experience amount growth by wave number (Quadratic)
 
   /**
    * Crystals
@@ -73,6 +73,7 @@ export const DIFFICULTY = {
   CRYSTAL_COUNT_GROWTH_MAX_LEVEL: 10, // Level for limit count growth
   CRYSTAL_RESOURCES: 4, // Resources in crystal
   CRYSTAL_RESOURCES_GROWTH: 0.8, // Resources amount growth by wave number (Linear)
+  CRYSTAL_RESOURCES_GROWTH_MAX_LEVEL: 12, // Level for limit resources growth
 
   /**
    * Enemies
@@ -90,7 +91,7 @@ export const DIFFICULTY = {
   ENEMY_DAMAGE: 90, // Attack damage
   ENEMY_DAMAGE_GROWTH: 0.32, // Damage growth by wave number (Linear)
   ENEMY_KILL_EXPERIENCE: 10, // Gained experience per kill enemy
-  ENEMY_KILL_EXPERIENCE_GROWTH: 0.15, // Experience growth by wave number (Quadratic)
+  ENEMY_KILL_EXPERIENCE_GROWTH: 0.28, // Experience growth by wave number (Linear)
 
   /**
    * Builder
