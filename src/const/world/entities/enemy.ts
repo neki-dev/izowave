@@ -8,7 +8,7 @@ export const ENEMY_REGENERATION_RADIUS = 100;
 
 export const ENEMY_HEAL_TIMESTAMP_PAUSE = 1000;
 
-export const ENEMY_HEAL_MULTIPLIER = 0.05;
+export const ENEMY_HEAL_MULTIPLIER = 0.075;
 
 export const ENEMY_SPREAD_DAMAGE_RADIUS = 60;
 

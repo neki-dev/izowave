@@ -13,7 +13,7 @@ export const DIFFICULTY = {
   PLAYER_STAMINA: 100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
   PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
-  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 0.8, // Growth experience need to upgrade (Quadratic)
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 1.0, // Growth experience need to upgrade (Quadratic)
 
   /**
    * Assistant
@@ -41,12 +41,12 @@ export const DIFFICULTY = {
   SUPERSKILL_INVISIBLE_DURATION: 5000, // Invisible duration
   SUPERSKILL_FROST_COST: 30, // Cost of use
   SUPERSKILL_FROST_DURATION: 10000, // Frost duration
-  SUPERSKILL_FIRE_COST: 40, // Cost of use
+  SUPERSKILL_FIRE_COST: 45, // Cost of use
   SUPERSKILL_FIRE_DURATION: 2000, // Fire duration
   SUPERSKILL_FIRE_FORCE: 1.5, // Fire damage force
-  SUPERSKILL_RAGE_COST: 40, // Cost of use
+  SUPERSKILL_RAGE_COST: 45, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
-  SUPERSKILL_COST_GROWTH: 0.2, // Growth cost by wave number (Linear)
+  SUPERSKILL_COST_GROWTH: 0.25, // Growth cost by wave number (Linear)
   SUPERSKILL_UNLOCK_PER_WAVE: 3, // Period of superskill unlocking
 
   /**
