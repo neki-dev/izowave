@@ -55,7 +55,7 @@ export const DIFFICULTY = {
 
   WAVE_TIMELEFT: 10000, // Pause between waves
   WAVE_TIMELEFT_GROWTH: 0.5, // Pause growth by wave number (Linear)
-  WAVE_TIMELEFT_GROWTH_MAX_LEVEL: 17, // Level for limit pause growth
+  WAVE_TIMELEFT_GROWTH_MAX_LEVEL: 11, // Level for limit pause growth
   WAVE_ENEMIES_COUNT: 4, // Enemies count on first wave
   WAVE_ENEMIES_COUNT_GROWTH: 0.27, // Enemies count growth by wave number (Quadratic Mixed)
   WAVE_ENEMIES_SPAWN_PAUSE: 2000, // Pause between enemies spawn
