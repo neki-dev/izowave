@@ -25,8 +25,8 @@ export class FXManager implements IFXManager {
     try {
       const sound = typeof key === 'string' ? key : Phaser.Utils.Array.GetRandom(key);
 
-      if (!params.limit || this.scene.game.sound.getAll(sound).length < params.limit) {
-        this.scene.fx.playSound(sound, params);
+      if (!params.limit || this.scene.sound.getAll(sound).length < params.limit) {
+        this.scene.sound.play(sound, params);
       }
     } catch (error) {
       Analytics.TrackWarn('Failed to play sound', error as TypeError);
