@@ -55,8 +55,8 @@ const world = {
     on: jest.fn(),
     off: jest.fn(),
   },
-  sound: {
-    play: jest.fn(),
+  fx: {
+    playSound: jest.fn(),
   },
 };
 
