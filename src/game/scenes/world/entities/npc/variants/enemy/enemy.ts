@@ -122,12 +122,12 @@ export class Enemy extends NPC implements IEnemy {
       if (this.isOverlapTarget) {
         this.setVelocity(0, 0);
       } else if (this.isPathPassed) {
-        this.moveTo(this.scene.player.getBottomFace());
+        this.moveTo(this.scene.player.getBottomEdgePosition());
       }
 
       this.isOverlapTarget = false;
     } catch (error) {
-      Analytics.TrackWarn('Failed enemy update', error as TypeError);
+      Analytics.TrackWarn('Failed to update enemy', error as TypeError);
     }
   }
 
@@ -246,7 +246,7 @@ export class Enemy extends NPC implements IEnemy {
       return;
     }
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
     const effect = this.scene.fx.createBloodStainEffect(position);
 
     if (effect) {

@@ -347,7 +347,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    this.scene.game.sound.play(BuildingAudio.UPGRADE);
+    this.scene.fx.playSound(BuildingAudio.UPGRADE);
 
     if (Tutorial.IsInProgress(TutorialStep.UPGRADE_BUILDING)) {
       Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
@@ -382,7 +382,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.takeResources(cost);
 
-    this.scene.sound.play(BuildingAudio.REPAIR);
+    this.scene.fx.playSound(BuildingAudio.REPAIR);
   }
 
   private upgradeHealth() {
@@ -416,7 +416,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private updateIndicatorsPosition() {
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.indicators.setPosition(
       position.x - (BUILDING_TILE.width / 4),
@@ -473,7 +473,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
           hintId = this.scene.showHint({
             side: 'top',
             label,
-            position: this.getBottomFace(),
+            position: this.getBottomEdgePosition(),
             unique: true,
           });
         }
@@ -490,16 +490,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private onDamage() {
     this.updateTileCost();
 
-    const audio = Phaser.Utils.Array.GetRandom([
+    this.scene.fx.createDamageEffect(this);
+    this.scene.fx.playSound([
       BuildingAudio.DAMAGE_1,
       BuildingAudio.DAMAGE_2,
-    ]);
-
-    if (this.scene.game.sound.getAll(audio).length === 0) {
-      this.scene.game.sound.play(audio);
-    }
-
-    this.scene.fx.createDamageEffect(this);
+    ], {
+      limit: 1,
+    });
 
     if (
       this.scene.isModeActive(WorldMode.AUTO_REPAIR)
@@ -530,14 +527,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.isFocused = false;
   }
 
-  public getTopFace() {
+  public getTopEdgePosition() {
     return {
       x: this.x,
       y: this.y - BUILDING_TILE.height * 0.5,
     };
   }
 
-  public getBottomFace() {
+  public getBottomEdgePosition() {
     return {
       x: this.x,
       y: this.y,
@@ -549,7 +546,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.alertIcon = this.scene.add.image(position.x, position.y, BuildingIcon.ALERT);
     this.alertIcon.setDepth(this.depth + 1);
@@ -581,7 +578,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeUpgradeIcon();
     }
 
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.upgradeIcon = this.scene.add.image(position.x, position.y, BuildingIcon.UPGRADE);
     this.upgradeIcon.setDepth(this.depth + 1);
@@ -694,7 +691,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
 
     this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setFillStyle(0xffffff, 0.3);
@@ -731,7 +728,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public break() {
-    this.scene.sound.play(BuildingAudio.DEAD);
+    this.scene.fx.playSound(BuildingAudio.DEAD);
     this.scene.fx.createSmokeEffect(this);
 
     const group = this.scene.getEntitiesGroup(EntityType.BUILDING);
@@ -805,7 +802,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       color: 0xffffff,
     });
 
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.buildBar.setPosition(
       position.x - this.buildBar.width / 2,

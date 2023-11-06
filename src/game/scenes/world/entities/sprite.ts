@@ -54,40 +54,30 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   constructor(scene: IWorld, {
-    texture, positionAtWorld, positionAtMatrix, health, speed, body, frame = 0,
+    texture, positionAtWorld, positionAtMatrix, speed, body, health = 1, frame = 0,
   }: SpriteData) {
-    let position: Nullable<{
-      matrix: PositionAtMatrix
-      world: PositionAtWorld
-    }> = null;
+    let position: Nullable<PositionAtWorld> = null;
 
     if (positionAtWorld) {
-      position = {
-        world: positionAtWorld,
-        matrix: Level.ToMatrixPosition(positionAtWorld),
-      };
+      position = positionAtWorld;
     } else if (positionAtMatrix) {
-      position = {
-        world: Level.ToWorldPosition(positionAtMatrix),
-        matrix: positionAtMatrix,
-      };
+      position = Level.ToWorldPosition(positionAtMatrix);
     } else {
       throw Error('Invalid sprite position');
     }
 
-    super(scene, position.world.x, position.world.y, texture, frame);
+    super(scene, position.x, position.y, texture, frame);
     scene.add.existing(this);
     scene.addEntityToGroup(this, EntityType.SPRITE);
 
-    this.positionAtMatrix = position.matrix;
-    this.live = new Live({ health: health ?? 1 });
+    this.live = new Live({ health });
     this.speed = speed;
 
     this.configureBody(body);
+    this.updateDimension();
     this.addContainer();
     this.addIndicatorsContainer();
     this.addDebugPosition();
-    this.updateDimension();
 
     this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
@@ -107,12 +97,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
       this.drawDebugGroundPosition();
     } catch (error) {
-      Analytics.TrackWarn('Failed sprite update', error as TypeError);
+      Analytics.TrackWarn('Failed to update sprite', error as TypeError);
     }
   }
 
   private updateDimension() {
-    const positionOnGround = this.getBottomFace();
+    const positionOnGround = this.getBottomEdgePosition();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
@@ -159,7 +149,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
       this,
       this.scene.getEntitiesGroup(target),
       (_, sprite) => {
-        callback(sprite);
+        try {
+          callback(sprite);
+        } catch (error) {
+          Analytics.TrackWarn(`Failed to handle sprite ${mode} with ${target.toLowerCase()}`, error as TypeError);
+        }
       },
     );
   }
@@ -197,7 +191,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check ground collision
     if (this.collisionGround) {
-      const currentPositionAtWorld = this.getBottomFace();
+      const currentPositionAtWorld = this.getBottomEdgePosition();
       const positionAtMatrix = Level.ToMatrixPosition({
         x: currentPositionAtWorld.x + offset.x,
         y: currentPositionAtWorld.y + offset.y,
@@ -229,7 +223,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return false;
   }
 
-  public getBottomFace(): PositionAtWorld {
+  public getBottomEdgePosition(): PositionAtWorld {
     return {
       x: this.x,
       y: this.y - this.getGamutOffset(),
@@ -252,7 +246,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     const rX = this.displayWidth * 0.4;
     const rY = this.getGamutOffset();
     const l = Phaser.Math.PI2 / count;
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
     const points: PositionAtWorld[] = [];
 
     for (let u = 0; u < count; u++) {
@@ -321,7 +315,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.lineStyle(1, 0xff0000);
     this.positionDebug.beginPath();
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
 
     this.positionDebug.moveTo(position.x, position.y);
     this.positionDebug.lineTo(position.x + 10, position.y);

@@ -45,7 +45,7 @@ export class EnemyTelepath extends Enemy {
     try {
       this.updateArea();
     } catch (error) {
-      Analytics.TrackWarn('Failed telepth enemy update', error as TypeError);
+      Analytics.TrackWarn('Failed to update telepth enemy', error as TypeError);
     }
   }
 
@@ -54,7 +54,7 @@ export class EnemyTelepath extends Enemy {
       return;
     }
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
 
     this.regenerateArea.setPosition(position.x, position.y);
   }
@@ -65,12 +65,12 @@ export class EnemyTelepath extends Enemy {
   }
 
   private healNearbyEnemies(amount: number) {
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
     const enemies: IEnemy[] = [];
 
     this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
       if (!(enemy instanceof EnemyTelepath) && !enemy.live.isMaxHealth()) {
-        const distance = getIsometricDistance(position, enemy.getBottomFace());
+        const distance = getIsometricDistance(position, enemy.getBottomEdgePosition());
 
         if (distance <= ENEMY_REGENERATION_RADIUS) {
           enemies.push(enemy);

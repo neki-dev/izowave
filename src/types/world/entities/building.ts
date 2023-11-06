@@ -113,12 +113,12 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Get top face center position.
    */
-  getTopFace(): PositionAtWorld
+  getTopEdgePosition(): PositionAtWorld
 
   /**
    * Get bottom face center position.
    */
-  getBottomFace(): PositionAtWorld
+  getBottomEdgePosition(): PositionAtWorld
 
   /**
    * Set building active state.
@@ -177,6 +177,11 @@ export interface IBuildingTower extends IBuilding {
    * Current ammo in clip.
    */
   readonly ammo: number
+
+  /**
+   * Power multiplier.
+   */
+  readonly power: number
 }
 
 export interface IBuildingFactory {
@@ -202,7 +207,7 @@ export enum BuildingVariant {
   TOWER_FIRE = 'TOWER_FIRE',
   TOWER_LAZER = 'TOWER_LAZER',
   TOWER_FROZEN = 'TOWER_FROZEN',
-  ELECTRO = 'ELECTRO',
+  TOWER_ELECTRO = 'TOWER_ELECTRO',
   GENERATOR = 'GENERATOR',
   AMMUNITION = 'AMMUNITION',
   RADAR = 'RADAR',
@@ -214,7 +219,7 @@ export enum BuildingTexture {
   TOWER_FIRE = 'building/textures/tower_fire',
   TOWER_FROZEN = 'building/textures/tower_frozen',
   TOWER_LAZER = 'building/textures/tower_lazer',
-  ELECTRO = 'building/textures/tower_electro',
+  TOWER_ELECTRO = 'building/textures/tower_electro',
   GENERATOR = 'building/textures/generator',
   AMMUNITION = 'building/textures/ammunition',
   RADAR = 'building/textures/radar',

@@ -62,7 +62,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         try {
           this.hit(enemy as IEnemy);
         } catch (error) {
-          Analytics.TrackError(error as TypeError);
+          Analytics.TrackWarn('Failed to handle ball shot collider', error as TypeError);
         }
       },
     );
@@ -85,7 +85,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     try {
       this.updateFlyDistance();
     } catch (error) {
-      Analytics.TrackWarn('Failed ball shot update', error as TypeError);
+      Analytics.TrackWarn('Failed to update ball shot', error as TypeError);
     }
   }
 
@@ -133,7 +133,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       });
     }
 
-    this.altitude = this.initiator.getBottomFace().y - position.y;
+    this.altitude = this.initiator.getBottomEdgePosition().y - position.y;
     this.startPosition = {
       x: position.x,
       y: position.y,
@@ -146,9 +146,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.scene.physics.moveTo(this, targetPosition.x, targetPosition.y, this.params.speed);
 
-    if (this.scene.game.sound.getAll(this.audio).length < 3) {
-      this.scene.game.sound.play(this.audio);
-    }
+    this.scene.fx.playSound(this.audio, {
+      limit: 3,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

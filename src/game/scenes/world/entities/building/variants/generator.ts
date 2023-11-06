@@ -54,12 +54,12 @@ export class BuildingGenerator extends Building {
         this.pauseActions();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed generator building update', error as TypeError);
+      Analytics.TrackWarn('Failed to update generator generator', error as TypeError);
     }
   }
 
-  public getTopFace() {
-    const position = super.getTopFace();
+  public getTopEdgePosition() {
+    const position = super.getTopEdgePosition();
 
     position.y += (this.upgradeLevel === 1) ? 5 : -4;
 

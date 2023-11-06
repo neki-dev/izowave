@@ -1,8 +1,9 @@
+import { Analytics } from '~lib/analytics';
 import { Environment } from '~lib/environment';
 import { GameFlag, GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, IParticlesParent, ParticlesTexture } from '~type/world/effects';
-import { IFXManager } from '~type/world/effects/fx-manager';
+import { IFXManager, SoundParams } from '~type/world/effects/fx-manager';
 import { IBuilding } from '~type/world/entities/building';
 import { INPC } from '~type/world/entities/npc';
 import { IEnemy } from '~type/world/entities/npc/enemy';
@@ -18,6 +19,18 @@ export class FXManager implements IFXManager {
 
   constructor(scene: IWorld) {
     this.scene = scene;
+  }
+
+  public playSound(key: string | string[], params: SoundParams = {}) {
+    try {
+      const sound = typeof key === 'string' ? key : Phaser.Utils.Array.GetRandom(key);
+
+      if (!params.limit || this.scene.sound.getAll(sound).length < params.limit) {
+        this.scene.sound.play(sound, params);
+      }
+    } catch (error) {
+      Analytics.TrackWarn('Failed to play sound', error as TypeError);
+    }
   }
 
   public createDustEffect(parent: IPlayer) {
@@ -306,7 +319,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'generate',
       texture: ParticlesTexture.BIT,
-      position: parent.getTopFace(),
+      position: parent.getTopEdgePosition(),
       depth: parent.depth + 1,
       params: {
         duration: 300,
@@ -354,7 +367,7 @@ export class FXManager implements IFXManager {
 
     return new Effect(this.scene, {
       texture: EffectTexture.DAMAGE,
-      position: building.getTopFace(),
+      position: building.getTopEdgePosition(),
       depth: building.depth + 1,
       rate: 14,
     });
@@ -367,7 +380,7 @@ export class FXManager implements IFXManager {
 
     return new Effect(this.scene, {
       texture: EffectTexture.SMOKE,
-      position: building.getBottomFace(),
+      position: building.getBottomEdgePosition(),
       depth: building.depth + 1,
       rate: 18,
     });

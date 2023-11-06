@@ -56,7 +56,7 @@ export interface ILevel extends ITileMatrix {
   readSpawnPositions(target: SpawnTarget, grid?: number): PositionAtMatrix[]
 
   /**
-   * Check is presence of tile between world positions.
+   * Check is presence of map tile between world positions.
    * @param positionA - Position at world
    * @param positionB - Position at world
    */
@@ -149,6 +149,10 @@ export enum BiomeType {
 export type PositionAtWorld = {
   x: number
   y: number
+};
+
+export type PositionAtWorldTransform = PositionAtWorld & {
+  getBottomEdgePosition?: () => PositionAtWorld
 };
 
 export type PositionAtMatrix = {

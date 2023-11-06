@@ -197,7 +197,7 @@ export class Player extends Sprite implements IPlayer {
         this.updateStamina();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed player update', error as TypeError);
+      Analytics.TrackWarn('Failed to update player', error as TypeError);
     }
   }
 
@@ -238,7 +238,7 @@ export class Player extends Sprite implements IPlayer {
       if (this.stamina === 0.0) {
         this.updateMovementAnimation();
         this.scene.sound.stopByKey(PlayerAudio.WALK);
-        this.scene.game.sound.play(PlayerAudio.WALK, {
+        this.scene.fx.playSound(PlayerAudio.WALK, {
           loop: true,
           rate: 1.4,
         });
@@ -352,10 +352,10 @@ export class Player extends Sprite implements IPlayer {
 
     this.takeResources(cost);
 
-    this.scene.sound.play(PlayerAudio.SUPERSKILL);
+    this.scene.fx.playSound(PlayerAudio.SUPERSKILL);
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      const position = this.getBottomFace();
+      const position = this.getBottomEdgePosition();
       const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
 
       this.scene.tweens.add({
@@ -439,7 +439,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.emit(PlayerEvents.UPGRADE_SKILL, type);
 
-    this.scene.sound.play(PlayerAudio.UPGRADE);
+    this.scene.fx.playSound(PlayerAudio.UPGRADE);
   }
 
   private setSkillUpgrade(type: PlayerSkill, level: number) {
@@ -473,23 +473,20 @@ export class Player extends Sprite implements IPlayer {
   public onDamage(amount: number) {
     this.scene.camera.shake();
 
-    const audio = Phaser.Utils.Array.GetRandom([
+    this.scene.fx.createBloodEffect(this);
+    this.scene.fx.playSound([
       PlayerAudio.DAMAGE_1,
       PlayerAudio.DAMAGE_2,
       PlayerAudio.DAMAGE_3,
-    ]);
-
-    if (this.scene.game.sound.getAll(audio).length === 0) {
-      this.scene.game.sound.play(audio);
-    }
-
-    this.scene.fx.createBloodEffect(this);
+    ], {
+      limit: 1,
+    });
 
     super.onDamage(amount);
   }
 
   public onDead() {
-    this.scene.sound.play(PlayerAudio.DEAD);
+    this.scene.fx.playSound(PlayerAudio.DEAD);
 
     this.setVelocity(0, 0);
     this.stopMovement();
@@ -616,7 +613,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.dustEffect?.emitter.start();
 
-    this.scene.game.sound.play(PlayerAudio.WALK, {
+    this.scene.fx.playSound(PlayerAudio.WALK, {
       loop: true,
       rate: 1.8,
     });

@@ -29,7 +29,7 @@ export class EnemyGhost extends Enemy {
     try {
       this.updateVisible();
     } catch (error) {
-      Analytics.TrackWarn('Failed ghost enemy update', error as TypeError);
+      Analytics.TrackWarn('Failed to update ghost enemy', error as TypeError);
     }
   }
 

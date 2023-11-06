@@ -35,7 +35,7 @@ export class EnemyExplosive extends Enemy {
   }
 
   private createExplosion() {
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
     const d = ENEMY_EXPLOSION_RADIUS * 2;
     const area = this.scene.add.ellipse(position.x, position.y, d, d * LEVEL_MAP_PERSPECTIVE);
 
@@ -50,8 +50,8 @@ export class EnemyExplosive extends Enemy {
       },
     });
 
-    this.scene.sound.play(EffectAudio.EXPLOSION);
     this.scene.fx.createExplosionEffect(this);
+    this.scene.fx.playSound(EffectAudio.EXPLOSION);
 
     let targets: IEnemyTarget[] = [this.scene.player];
 
@@ -60,7 +60,7 @@ export class EnemyExplosive extends Enemy {
 
     targets.forEach((target) => {
       if (target.active && target !== this) {
-        const distance = getIsometricDistance(position, target.getBottomFace());
+        const distance = getIsometricDistance(position, target.getBottomEdgePosition());
 
         if (distance <= ENEMY_EXPLOSION_RADIUS) {
           const multiplier = Math.min(1.0, 0.5 + (1 - (distance / ENEMY_EXPLOSION_RADIUS)));

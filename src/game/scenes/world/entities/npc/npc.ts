@@ -82,7 +82,7 @@ export class NPC extends Sprite implements INPC {
         this.isPathPassed = false;
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed NPC update', error as TypeError);
+      Analytics.TrackWarn('Failed to update NPC', error as TypeError);
     }
   }
 
@@ -164,13 +164,13 @@ export class NPC extends Sprite implements INPC {
 
   private getDistanceToTarget() {
     return getIsometricDistance(
-      this.getBottomFace(),
-      this.scene.player.getBottomFace(),
+      this.getBottomEdgePosition(),
+      this.scene.player.getBottomEdgePosition(),
     );
   }
 
   public moveTo(position: PositionAtWorld) {
-    const rotation = getIsometricAngle(this.getBottomFace(), position);
+    const rotation = getIsometricAngle(this.getBottomEdgePosition(), position);
     const direction = Phaser.Math.RadToDeg(rotation);
     const collide = this.handleCollide(direction);
 
@@ -190,7 +190,7 @@ export class NPC extends Sprite implements INPC {
 
   private nextPathTile() {
     const tilePosition = Level.ToWorldPosition(this.pathToTarget[0]);
-    const currentPosition = this.getBottomFace();
+    const currentPosition = this.getBottomEdgePosition();
     const signX = Math.sign(this.body.velocity.x);
     const signY = Math.sign(this.body.velocity.y);
 

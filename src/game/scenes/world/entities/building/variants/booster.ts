@@ -58,8 +58,8 @@ export class BuildingBooster extends Building implements IBuildingBooster {
     return super.getInfo().concat(info);
   }
 
-  public getTopFace() {
-    const position = super.getTopFace();
+  public getTopEdgePosition() {
+    const position = super.getTopEdgePosition();
 
     position.y -= 6;
 

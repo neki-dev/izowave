@@ -56,7 +56,7 @@ export class Crystal extends Phaser.GameObjects.Image implements ICrystal, ITile
     this.scene.getEntitiesGroup(EntityType.CRYSTAL)
       .emit(CrystalEvents.PICKUP, this, resources);
 
-    this.scene.sound.play(CrystalAudio.PICKUP);
+    this.scene.fx.playSound(CrystalAudio.PICKUP);
 
     this.destroy();
   }

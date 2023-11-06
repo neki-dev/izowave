@@ -29,7 +29,7 @@ export interface IEnemyFactory {
 export interface IEnemyTarget {
   readonly live: ILive
   active: boolean
-  getBottomFace(): PositionAtWorld
+  getBottomEdgePosition(): PositionAtWorld
 }
 
 export enum EnemyAudio {

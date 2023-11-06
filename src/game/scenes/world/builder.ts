@@ -87,7 +87,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
         this.close();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed builder update', error as TypeError);
+      Analytics.TrackWarn('Failed to update builder', error as TypeError);
     }
   }
 
@@ -127,7 +127,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       this.variant = variant;
     }
 
-    this.scene.sound.play(BuildingAudio.SELECT);
+    this.scene.fx.playSound(BuildingAudio.SELECT);
   }
 
   public unsetBuildingVariant() {
@@ -135,7 +135,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       return;
     }
 
-    this.scene.sound.play(BuildingAudio.UNSELECT);
+    this.scene.fx.playSound(BuildingAudio.UNSELECT);
 
     this.clearBuildingVariant();
 
@@ -336,7 +336,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     this.scene.player.takeResources(BuildingInstance.Cost);
     this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
-    this.scene.sound.play(BuildingAudio.BUILD);
+    this.scene.fx.playSound(BuildingAudio.BUILD);
 
     if (this.variant) {
       if (this.scene.game.isDesktop()) {

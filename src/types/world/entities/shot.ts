@@ -39,7 +39,7 @@ export interface IShotInitiator extends Phaser.GameObjects.GameObject {
   readonly scene: IWorld
   x: number
   y: number
-  getBottomFace(): PositionAtWorld
+  getBottomEdgePosition(): PositionAtWorld
 }
 
 export interface IShotFactory {
