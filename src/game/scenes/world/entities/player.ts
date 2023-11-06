@@ -197,7 +197,7 @@ export class Player extends Sprite implements IPlayer {
         this.updateStamina();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed player update', error as TypeError);
+      Analytics.TrackWarn('Failed to update player', error as TypeError);
     }
   }
 
@@ -355,7 +355,7 @@ export class Player extends Sprite implements IPlayer {
     this.scene.sound.play(PlayerAudio.SUPERSKILL);
 
     if (this.scene.game.isSettingEnabled(GameSettings.EFFECTS)) {
-      const position = this.getBottomFace();
+      const position = this.getBottomEdgePosition();
       const effect = this.scene.add.image(position.x, position.y, PlayerTexture.SUPERSKILL);
 
       this.scene.tweens.add({

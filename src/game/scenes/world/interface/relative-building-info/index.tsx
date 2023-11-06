@@ -40,7 +40,7 @@ export const RelativeBuildingInfo: React.FC = () => {
     building && (isSmallScreen ? (
       <TranslateToScreen building={building} />
     ) : (
-      <RelativePosition x={building.x} y={building.getTopFace().y}>
+      <RelativePosition x={building.x} y={building.getTopEdgePosition().y}>
         <RelativeScale {...INTERFACE_SCALE}>
           <BuildingInfo building={building} />
         </RelativeScale>

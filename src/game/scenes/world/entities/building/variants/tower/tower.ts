@@ -47,7 +47,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     super(scene, data);
 
     if (shot) {
-      shot.setInitiator(this, () => this.getTopFace());
+      shot.setInitiator(this, () => this.getTopEdgePosition());
       this.shot = shot;
       this.shotDefaultParams = shot.params;
     }
@@ -67,7 +67,7 @@ export class BuildingTower extends Building implements IBuildingTower {
         this.attack();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed tower building update', error as TypeError);
+      Analytics.TrackWarn('Failed to update tower building', error as TypeError);
     }
   }
 
@@ -109,8 +109,8 @@ export class BuildingTower extends Building implements IBuildingTower {
     return info.concat(super.getInfo());
   }
 
-  public getTopFace() {
-    const position = super.getTopFace();
+  public getTopEdgePosition() {
+    const position = super.getTopEdgePosition();
 
     position.y -= 5;
 
@@ -178,7 +178,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getAmmunition() {
     const ammunitions = this.scene.builder.getBuildingsByVariant<IBuildingAmmunition>(BuildingVariant.AMMUNITION)
-      .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getBottomFace())));
+      .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getBottomEdgePosition())));
 
     if (ammunitions.length === 0) {
       return null;
@@ -226,11 +226,11 @@ export class BuildingTower extends Building implements IBuildingTower {
         && !enemy.live.isDead()
         && (!this.shotDefaultParams?.freeze || !enemy.isFreezed(true))
       ) {
-        const position = enemy.getBottomFace();
+        const position = enemy.getBottomEdgePosition();
 
         return (
           this.actionsAreaContains(position)
-          && !this.scene.level.hasTilesBetweenPositions(position, this.getBottomFace())
+          && !this.scene.level.hasTilesBetweenPositions(position, this.getBottomEdgePosition())
         );
       }
 
@@ -265,7 +265,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private getBooster() {
     const boosters = this.scene.builder.getBuildingsByVariant<IBuildingBooster>(BuildingVariant.BOOSTER)
-      .filter((building) => building.actionsAreaContains(this.getBottomFace()));
+      .filter((building) => building.actionsAreaContains(this.getBottomEdgePosition()));
 
     if (boosters.length === 0) {
       return null;

@@ -162,7 +162,7 @@ export class World extends Scene implements IWorld {
       this.builder.update();
       this.wave.update();
     } catch (error) {
-      Analytics.TrackWarn('Failed world update', error as TypeError);
+      Analytics.TrackWarn('Failed to update world', error as TypeError);
     }
   }
 

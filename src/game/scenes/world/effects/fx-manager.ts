@@ -306,7 +306,7 @@ export class FXManager implements IFXManager {
     return new Particles(parent, {
       key: 'generate',
       texture: ParticlesTexture.BIT,
-      position: parent.getTopFace(),
+      position: parent.getTopEdgePosition(),
       depth: parent.depth + 1,
       params: {
         duration: 300,
@@ -354,7 +354,7 @@ export class FXManager implements IFXManager {
 
     return new Effect(this.scene, {
       texture: EffectTexture.DAMAGE,
-      position: building.getTopFace(),
+      position: building.getTopEdgePosition(),
       depth: building.depth + 1,
       rate: 14,
     });
@@ -367,7 +367,7 @@ export class FXManager implements IFXManager {
 
     return new Effect(this.scene, {
       texture: EffectTexture.SMOKE,
-      position: building.getBottomFace(),
+      position: building.getBottomEdgePosition(),
       depth: building.depth + 1,
       rate: 18,
     });

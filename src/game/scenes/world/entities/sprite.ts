@@ -97,12 +97,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
       this.drawDebugGroundPosition();
     } catch (error) {
-      Analytics.TrackWarn('Failed sprite update', error as TypeError);
+      Analytics.TrackWarn('Failed to update sprite', error as TypeError);
     }
   }
 
   private updateDimension() {
-    const positionOnGround = this.getBottomFace();
+    const positionOnGround = this.getBottomEdgePosition();
 
     this.positionAtMatrix = Level.ToMatrixPosition(positionOnGround);
     this.currentBiome = this.scene.level.map.getAt(this.positionAtMatrix);
@@ -191,7 +191,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
     // Check ground collision
     if (this.collisionGround) {
-      const currentPositionAtWorld = this.getBottomFace();
+      const currentPositionAtWorld = this.getBottomEdgePosition();
       const positionAtMatrix = Level.ToMatrixPosition({
         x: currentPositionAtWorld.x + offset.x,
         y: currentPositionAtWorld.y + offset.y,
@@ -223,7 +223,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return false;
   }
 
-  public getBottomFace(): PositionAtWorld {
+  public getBottomEdgePosition(): PositionAtWorld {
     return {
       x: this.x,
       y: this.y - this.getGamutOffset(),
@@ -246,7 +246,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     const rX = this.displayWidth * 0.4;
     const rY = this.getGamutOffset();
     const l = Phaser.Math.PI2 / count;
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
     const points: PositionAtWorld[] = [];
 
     for (let u = 0; u < count; u++) {
@@ -315,7 +315,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.lineStyle(1, 0xff0000);
     this.positionDebug.beginPath();
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
 
     this.positionDebug.moveTo(position.x, position.y);
     this.positionDebug.lineTo(position.x + 10, position.y);

@@ -61,7 +61,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       this.updateLine();
       this.processing();
     } catch (error) {
-      Analytics.TrackWarn('Failed lazer shot update', error as TypeError);
+      Analytics.TrackWarn('Failed to update lazer shot', error as TypeError);
     }
   }
 

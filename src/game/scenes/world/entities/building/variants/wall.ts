@@ -29,8 +29,8 @@ export class BuildingWall extends Building {
     });
   }
 
-  public getTopFace() {
-    const position = super.getTopFace();
+  public getTopEdgePosition() {
+    const position = super.getTopEdgePosition();
 
     position.y += (this.upgradeLevel === 1) ? 6 : -2;
 

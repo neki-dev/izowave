@@ -69,7 +69,7 @@ export class BuildingTowerElectro extends BuildingTower {
       return;
     }
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
 
     this.area = this.scene.add.ellipse(position.x, position.y);
     this.area.setFillStyle(0xc9e7dd, 0.15);
@@ -108,7 +108,7 @@ export class BuildingTowerElectro extends BuildingTower {
   public getTargets() {
     return this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => (
       !enemy.live.isDead()
-      && this.actionsAreaContains(enemy.getBottomFace())
+      && this.actionsAreaContains(enemy.getBottomEdgePosition())
     ));
   }
 

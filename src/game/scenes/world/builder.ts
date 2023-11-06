@@ -87,7 +87,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
         this.close();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed builder update', error as TypeError);
+      Analytics.TrackWarn('Failed to update builder', error as TypeError);
     }
   }
 

@@ -85,7 +85,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     try {
       this.updateFlyDistance();
     } catch (error) {
-      Analytics.TrackWarn('Failed ball shot update', error as TypeError);
+      Analytics.TrackWarn('Failed to update ball shot', error as TypeError);
     }
   }
 
@@ -133,7 +133,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
       });
     }
 
-    this.altitude = this.initiator.getBottomFace().y - position.y;
+    this.altitude = this.initiator.getBottomEdgePosition().y - position.y;
     this.startPosition = {
       x: position.x,
       y: position.y,

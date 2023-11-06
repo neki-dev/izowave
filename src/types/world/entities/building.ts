@@ -113,12 +113,12 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   /**
    * Get top face center position.
    */
-  getTopFace(): PositionAtWorld
+  getTopEdgePosition(): PositionAtWorld
 
   /**
    * Get bottom face center position.
    */
-  getBottomFace(): PositionAtWorld
+  getBottomEdgePosition(): PositionAtWorld
 
   /**
    * Set building active state.

@@ -74,7 +74,7 @@ export class Particles implements IParticles {
     try {
       this.emitter.setDepth(this.parent.depth + 1);
     } catch (error) {
-      Analytics.TrackWarn('Failed particles update', error as TypeError);
+      Analytics.TrackWarn('Failed to update particles', error as TypeError);
     }
   }
 }

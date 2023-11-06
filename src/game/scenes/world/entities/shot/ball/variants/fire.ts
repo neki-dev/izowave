@@ -32,11 +32,11 @@ export class ShotBallFire extends ShotBall {
   }
 
   private spreadDamage(target: IEnemy, damage: number) {
-    const position = target.getBottomFace();
+    const position = target.getBottomEdgePosition();
 
     this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
       if (enemy.active && enemy !== target) {
-        const distance = getIsometricDistance(position, enemy.getBottomFace());
+        const distance = getIsometricDistance(position, enemy.getBottomEdgePosition());
 
         if (distance < SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE) {
           const damageByDistance = damage * (1 - (distance / SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE));

@@ -73,7 +73,7 @@ export class Assistant extends NPC implements IAssistant {
         this.attack();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed assistant update', error as TypeError);
+      Analytics.TrackWarn('Failed to update assistant', error as TypeError);
     }
   }
 
@@ -122,8 +122,8 @@ export class Assistant extends NPC implements IAssistant {
         return false;
       }
 
-      const positionFrom = this.getBottomFace();
-      const positionTo = enemy.getBottomFace();
+      const positionFrom = this.getBottomEdgePosition();
+      const positionTo = enemy.getBottomEdgePosition();
 
       return (
         getIsometricDistance(positionFrom, positionTo) <= maxDistance

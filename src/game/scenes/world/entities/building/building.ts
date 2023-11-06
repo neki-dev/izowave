@@ -416,7 +416,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   private updateIndicatorsPosition() {
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.indicators.setPosition(
       position.x - (BUILDING_TILE.width / 4),
@@ -473,7 +473,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
           hintId = this.scene.showHint({
             side: 'top',
             label,
-            position: this.getBottomFace(),
+            position: this.getBottomEdgePosition(),
             unique: true,
           });
         }
@@ -530,14 +530,14 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.isFocused = false;
   }
 
-  public getTopFace() {
+  public getTopEdgePosition() {
     return {
       x: this.x,
       y: this.y - BUILDING_TILE.height * 0.5,
     };
   }
 
-  public getBottomFace() {
+  public getBottomEdgePosition() {
     return {
       x: this.x,
       y: this.y,
@@ -549,7 +549,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.alertIcon = this.scene.add.image(position.x, position.y, BuildingIcon.ALERT);
     this.alertIcon.setDepth(this.depth + 1);
@@ -581,7 +581,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.removeUpgradeIcon();
     }
 
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.upgradeIcon = this.scene.add.image(position.x, position.y, BuildingIcon.UPGRADE);
     this.upgradeIcon.setDepth(this.depth + 1);
@@ -694,7 +694,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       return;
     }
 
-    const position = this.getBottomFace();
+    const position = this.getBottomEdgePosition();
 
     this.actionsArea = this.scene.add.ellipse(position.x, position.y);
     this.actionsArea.setFillStyle(0xffffff, 0.3);
@@ -805,7 +805,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       color: 0xffffff,
     });
 
-    const position = this.getTopFace();
+    const position = this.getTopEdgePosition();
 
     this.buildBar.setPosition(
       position.x - this.buildBar.width / 2,

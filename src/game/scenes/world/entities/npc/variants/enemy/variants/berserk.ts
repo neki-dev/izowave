@@ -33,7 +33,7 @@ export class EnemyBerserk extends Enemy {
     try {
       this.heal();
     } catch (error) {
-      Analytics.TrackWarn('Failed berserk enemy update', error as TypeError);
+      Analytics.TrackWarn('Failed to update berserk enemy', error as TypeError);
     }
   }
 

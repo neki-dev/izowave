@@ -76,7 +76,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       this.handleTimeleft();
       this.handleProcessing();
     } catch (error) {
-      Analytics.TrackWarn('Failed wave update', error as TypeError);
+      Analytics.TrackWarn('Failed to update wave', error as TypeError);
     }
   }
 

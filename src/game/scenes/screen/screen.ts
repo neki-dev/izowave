@@ -38,7 +38,7 @@ export class Screen extends Scene implements IScreen {
     try {
       this.handleJoystick();
     } catch (error) {
-      Analytics.TrackWarn('Failed screen update', error as TypeError);
+      Analytics.TrackWarn('Failed to update screen', error as TypeError);
     }
   }
 
