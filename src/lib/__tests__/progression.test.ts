@@ -12,14 +12,20 @@ describe('lib / progression', () => {
         defaultValue: 90, scale: 0.3, level: 15,
       })).toEqual(3543);
       expect(progressionQuadratic({
+        defaultValue: 90, scale: 0.3, level: 14, retardationLevel: 15,
+      })).toEqual(2725);
+      expect(progressionQuadratic({
         defaultValue: 90, scale: 0.3, level: 15, retardationLevel: 15,
       })).toEqual(3543);
+      expect(progressionQuadratic({
+        defaultValue: 90, scale: 0.3, level: 16, retardationLevel: 15,
+      })).toEqual(4605);
       expect(progressionQuadratic({
         defaultValue: 90, scale: 0.3, level: 20,
       })).toEqual(13157);
       expect(progressionQuadratic({
         defaultValue: 90, scale: 0.3, level: 20, retardationLevel: 15,
-      })).toEqual(6200);
+      })).toEqual(8857);
     });
 
     it('should return correct negative value growth', () => {
