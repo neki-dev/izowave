@@ -87,9 +87,9 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     this.setActive(true);
     this.setVisible(true);
 
-    if (this.scene.game.sound.getAll(ShotLazerAudio.LAZER).length < 3) {
-      this.scene.game.sound.play(ShotLazerAudio.LAZER);
-    }
+    this.scene.fx.playSound(ShotLazerAudio.LAZER, {
+      limit: 3,
+    });
   }
 
   private stop() {

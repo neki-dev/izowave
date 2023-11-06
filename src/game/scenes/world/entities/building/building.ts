@@ -347,7 +347,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.giveExperience(experience);
 
-    this.scene.game.sound.play(BuildingAudio.UPGRADE);
+    this.scene.fx.playSound(BuildingAudio.UPGRADE);
 
     if (Tutorial.IsInProgress(TutorialStep.UPGRADE_BUILDING)) {
       Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
@@ -382,7 +382,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.player.takeResources(cost);
 
-    this.scene.sound.play(BuildingAudio.REPAIR);
+    this.scene.fx.playSound(BuildingAudio.REPAIR);
   }
 
   private upgradeHealth() {
@@ -490,16 +490,13 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   private onDamage() {
     this.updateTileCost();
 
-    const audio = Phaser.Utils.Array.GetRandom([
+    this.scene.fx.createDamageEffect(this);
+    this.scene.fx.playSound([
       BuildingAudio.DAMAGE_1,
       BuildingAudio.DAMAGE_2,
-    ]);
-
-    if (this.scene.game.sound.getAll(audio).length === 0) {
-      this.scene.game.sound.play(audio);
-    }
-
-    this.scene.fx.createDamageEffect(this);
+    ], {
+      limit: 1,
+    });
 
     if (
       this.scene.isModeActive(WorldMode.AUTO_REPAIR)
@@ -731,7 +728,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
   }
 
   public break() {
-    this.scene.sound.play(BuildingAudio.DEAD);
+    this.scene.fx.playSound(BuildingAudio.DEAD);
     this.scene.fx.createSmokeEffect(this);
 
     const group = this.scene.getEntitiesGroup(EntityType.BUILDING);

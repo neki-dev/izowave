@@ -122,9 +122,9 @@ export class BuildingTowerElectro extends BuildingTower {
       }
     });
 
-    if (this.scene.game.sound.getAll(BuildingAudio.ELECTRO).length === 0) {
-      this.scene.game.sound.play(BuildingAudio.ELECTRO);
-    }
+    this.scene.fx.playSound(BuildingAudio.ELECTRO, {
+      limit: 1,
+    });
 
     if (this.area) {
       this.area.setActive(true);

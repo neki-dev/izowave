@@ -19,7 +19,7 @@ export class EnemyBoss extends Enemy {
   }
 
   public onDead() {
-    this.scene.sound.play(EnemyAudio.ROAR);
+    this.scene.fx.playSound(EnemyAudio.ROAR);
     super.onDead();
   }
 }

@@ -118,9 +118,9 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
       if (this.scene.isModeActive(WorldMode.AUTO_REPAIR)) {
         this.buyAmmo(true);
       } else {
-        if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
-          this.scene.game.sound.play(BuildingAudio.OVER);
-        }
+        this.scene.fx.playSound(BuildingAudio.OVER, {
+          limit: 1,
+        });
 
         Tutorial.Start(TutorialStep.BUY_AMMO);
       }
@@ -167,7 +167,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.scene.getEntitiesGroup(EntityType.BUILDING)
       .emit(BuildingEvents.BUY_AMMO, this);
 
-    this.scene.sound.play(BuildingAudio.RELOAD);
+    this.scene.fx.playSound(BuildingAudio.RELOAD);
 
     Tutorial.Complete(TutorialStep.BUY_AMMO);
   }

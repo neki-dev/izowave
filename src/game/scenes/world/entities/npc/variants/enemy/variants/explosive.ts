@@ -50,8 +50,8 @@ export class EnemyExplosive extends Enemy {
       },
     });
 
-    this.scene.sound.play(EffectAudio.EXPLOSION);
     this.scene.fx.createExplosionEffect(this);
+    this.scene.fx.playSound(EffectAudio.EXPLOSION);
 
     let targets: IEnemyTarget[] = [this.scene.player];
 

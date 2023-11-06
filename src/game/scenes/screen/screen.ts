@@ -43,7 +43,7 @@ export class Screen extends Scene implements IScreen {
   }
 
   public failure(text?: LangPhrase, format?: any[]) {
-    this.game.sound.play(ScreenAudio.ERROR);
+    this.sound.play(ScreenAudio.ERROR);
     if (text) {
       this.events.emit(ScreenEvents.NOTICE, { text, format });
     }

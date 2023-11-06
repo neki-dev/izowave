@@ -12,7 +12,7 @@ import {
   LEVEL_MAP_PERSPECTIVE,
 } from '~const/world/level';
 import { Assets } from '~lib/assets';
-import { interpolate } from '~lib/dimension';
+import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
 import { Effect } from '~scene/world/effects';
 import { GameEvents, GameSettings } from '~type/game';
@@ -147,9 +147,29 @@ export class Level extends TileMatrix implements ILevel {
   public hasTilesBetweenPositions(positionA: PositionAtWorld, positionB: PositionAtWorld) {
     const positionAtMatrixA = Level.ToMatrixPosition(positionA);
     const positionAtMatrixB = Level.ToMatrixPosition(positionB);
-    const line = interpolate(positionAtMatrixA, positionAtMatrixB);
+    const current: TilePosition = { ...positionAtMatrixA, z: 1 };
+    const dx = Math.abs(positionAtMatrixB.x - positionAtMatrixA.x);
+    const dy = Math.abs(positionAtMatrixB.y - positionAtMatrixA.y);
+    let err = dx - dy;
 
-    return line.some((point) => this.getTile({ ...point, z: 1 })?.tileType === TileType.MAP);
+    while (!isPositionsEqual(current, positionAtMatrixB)) {
+      const shift = 2 * err;
+
+      if (shift > -dy) {
+        err -= dy;
+        current.x += (positionAtMatrixA.x < positionAtMatrixB.x) ? 1 : -1;
+      }
+      if (shift < dx) {
+        err += dx;
+        current.y += (positionAtMatrixA.y < positionAtMatrixB.y) ? 1 : -1;
+      }
+
+      if (this.getTile(current)?.tileType === TileType.MAP) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   public getBiome(type: BiomeType): Nullable<LevelBiome> {

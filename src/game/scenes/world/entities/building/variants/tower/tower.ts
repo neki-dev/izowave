@@ -203,47 +203,51 @@ export class BuildingTower extends Building implements IBuildingTower {
         this.removeAlertIcon();
         this.needReload = false;
 
-        if (this.scene.game.sound.getAll(BuildingAudio.RELOAD).length === 0) {
-          this.scene.game.sound.play(BuildingAudio.RELOAD);
-        }
+        this.scene.fx.playSound(BuildingAudio.RELOAD, {
+          limit: 1,
+        });
       }
     } else if (!this.needReload) {
       this.addAlertIcon();
       this.needReload = true;
 
-      if (this.scene.game.sound.getAll(BuildingAudio.OVER).length === 0) {
-        this.scene.game.sound.play(BuildingAudio.OVER);
-      }
+      this.scene.fx.playSound(BuildingAudio.OVER, {
+        limit: 1,
+      });
 
       Tutorial.Start(TutorialStep.RELOAD_TOWER);
     }
   }
 
   public getTargets() {
-    const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
+    const towerPosition = this.getBottomEdgePosition();
+
+    return this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
       if (
         enemy.alpha >= 1.0
         && !enemy.live.isDead()
         && (!this.shotDefaultParams?.freeze || !enemy.isFreezed(true))
       ) {
-        const position = enemy.getBottomEdgePosition();
+        const enemyPosition = enemy.getBottomEdgePosition();
 
         return (
-          this.actionsAreaContains(position)
-          && !this.scene.level.hasTilesBetweenPositions(position, this.getBottomEdgePosition())
+          this.actionsAreaContains(enemyPosition)
+          && !this.scene.level.hasTilesBetweenPositions(enemyPosition, towerPosition)
         );
       }
 
       return false;
     });
-
-    const enemy = getClosestByIsometricDistance(enemies, this);
-
-    return enemy ? [enemy] : [];
   }
 
   public shoot(targets: IEnemy[]) {
     if (!this.shot) {
+      return;
+    }
+
+    const target = getClosestByIsometricDistance(targets, this);
+
+    if (!target) {
       return;
     }
 
@@ -258,9 +262,7 @@ export class BuildingTower extends Building implements IBuildingTower {
       }
     }
 
-    targets.forEach((target) => {
-      this.shot?.shoot(target, params);
-    });
+    this.shot?.shoot(target, params);
   }
 
   private getBooster() {

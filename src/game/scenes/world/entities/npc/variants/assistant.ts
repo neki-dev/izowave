@@ -110,25 +110,24 @@ export class Assistant extends NPC implements IAssistant {
     this.instantShot = !this.instantShot;
   }
 
-  private getTarget(): Nullable<IEnemy> {
+  private getTarget() {
+    const assistantPosition = this.getBottomEdgePosition();
     const maxDistance = progressionQuadratic({
       defaultValue: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
       scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
       level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
     });
-
     const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
-      if (enemy.alpha < 1.0 || enemy.live.isDead()) {
-        return false;
+      if (enemy.alpha >= 1.0 && !enemy.live.isDead()) {
+        const enemyPosition = enemy.getBottomEdgePosition();
+
+        return (
+          getIsometricDistance(enemyPosition, assistantPosition) <= maxDistance
+          && !this.scene.level.hasTilesBetweenPositions(enemyPosition, assistantPosition)
+        );
       }
 
-      const positionFrom = this.getBottomEdgePosition();
-      const positionTo = enemy.getBottomEdgePosition();
-
-      return (
-        getIsometricDistance(positionFrom, positionTo) <= maxDistance
-        && !this.scene.level.hasTilesBetweenPositions(positionFrom, positionTo)
-      );
+      return false;
     });
 
     return getClosestByIsometricDistance(enemies, this);

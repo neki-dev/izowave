@@ -115,13 +115,13 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   }
 
   private runAlarmCountdown() {
-    this.scene.sound.play(WaveAudio.TICK);
+    this.scene.fx.playSound(WaveAudio.TICK);
 
     this.alarmInterval = this.scene.addProgression({
       duration: WAVE_TIMELEFT_ALARM,
       frequence: 1000,
       onProgress: () => {
-        this.scene.sound.play(WaveAudio.TICK);
+        this.scene.fx.playSound(WaveAudio.TICK);
       },
       onComplete: () => {
         this.alarmInterval = null;
@@ -188,7 +188,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
     this.emit(WaveEvents.START, this.number);
 
-    this.scene.sound.play(WaveAudio.START);
+    this.scene.fx.playSound(WaveAudio.START);
 
     if (Tutorial.IsInProgress(TutorialStep.SKIP_TIMELEFT)) {
       Tutorial.Complete(TutorialStep.SKIP_TIMELEFT);
@@ -208,7 +208,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
     this.emit(WaveEvents.COMPLETE, prevNumber);
 
-    this.scene.sound.play(WaveAudio.COMPLETE);
+    this.scene.fx.playSound(WaveAudio.COMPLETE);
 
     switch (this.number) {
       case 2: {

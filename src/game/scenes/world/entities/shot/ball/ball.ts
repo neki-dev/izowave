@@ -146,9 +146,9 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     this.scene.physics.world.enable(this, Phaser.Physics.Arcade.DYNAMIC_BODY);
     this.scene.physics.moveTo(this, targetPosition.x, targetPosition.y, this.params.speed);
 
-    if (this.scene.game.sound.getAll(this.audio).length < 3) {
-      this.scene.game.sound.play(this.audio);
-    }
+    this.scene.fx.playSound(this.audio, {
+      limit: 3,
+    });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

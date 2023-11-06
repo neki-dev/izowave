@@ -1,5 +1,5 @@
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
-import { PositionAtWorld, PositionAtMatrix } from '~type/world/level';
+import { PositionAtWorld, PositionAtMatrix, PositionAtWorldTransform } from '~type/world/level';
 
 /**
  * Check positions is equals.
@@ -73,10 +73,14 @@ export function getIsometricAngle(
  * @param positions - Positions list
  * @param target - Target position
  */
-export function getClosestByIsometricDistance<T extends PositionAtWorld>(
+export function getClosestByIsometricDistance<T extends PositionAtWorldTransform>(
   positions: T[],
-  target: PositionAtWorld,
+  target: PositionAtWorldTransform,
 ): Nullable<T> {
+  if (positions.length === 0) {
+    return null;
+  }
+
   let closest: {
     distance: number
     position: Nullable<T>
@@ -85,8 +89,11 @@ export function getClosestByIsometricDistance<T extends PositionAtWorld>(
     position: null,
   };
 
+  const targetPosition = target.getBottomEdgePosition?.() ?? target;
+
   positions.forEach((position) => {
-    const distance = getIsometricDistance(target, position);
+    const currentPosition = position.getBottomEdgePosition?.() ?? position;
+    const distance = getIsometricDistance(targetPosition, currentPosition);
 
     if (distance < closest.distance) {
       closest = { position, distance };
@@ -130,41 +137,4 @@ export function aroundPosition(position: PositionAtMatrix) {
   }
 
   return list;
-}
-
-/**
- * Get all points on matrix between two given points.
- * @param beg - Start position
- * @param end - End posotion
- */
-export function interpolate(beg: PositionAtMatrix, end: PositionAtMatrix) {
-  const line: PositionAtMatrix[] = [];
-
-  const current = { ...beg };
-  const dx = Math.abs(end.x - beg.x);
-  const dy = Math.abs(end.y - beg.y);
-  const sx = (beg.x < end.x) ? 1 : -1;
-  const sy = (beg.y < end.y) ? 1 : -1;
-
-  let err = dx - dy;
-  let shift;
-
-  line.push({ ...current });
-
-  while (!isPositionsEqual(current, end)) {
-    shift = 2 * err;
-
-    if (shift > -dy) {
-      err -= dy;
-      current.x += sx;
-    }
-    if (shift < dx) {
-      err += dx;
-      current.y += sy;
-    }
-
-    line.push({ ...current });
-  }
-
-  return line;
 }
