@@ -175,15 +175,15 @@ export const DIFFICULTY = {
    * Building: Tower: Electro
    */
 
-  BUILDING_ELECTRO_COST: 120, // Building cost
-  BUILDING_ELECTRO_HEALTH: 400, // Health
-  BUILDING_ELECTRO_ALLOW_BY_WAVE: 15, // Minimal wave for allow build
-  BUILDING_ELECTRO_RADIUS: 90, // Attack radius
-  BUILDING_ELECTRO_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
-  BUILDING_ELECTRO_DELAY: 1500, // Pause between attacks
-  BUILDING_ELECTRO_DELAY_GROWTH: -0.1, // Pause growth by level (Linear)
-  BUILDING_ELECTRO_DAMAGE: 110, // Attack damage
-  BUILDING_ELECTRO_DAMAGE_GROWTH: 0.9, // Damage growth by level (Linear)
+  BUILDING_TOWER_ELECTRO_COST: 120, // Building cost
+  BUILDING_TOWER_ELECTRO_HEALTH: 400, // Health
+  BUILDING_TOWER_ELECTRO_ALLOW_BY_WAVE: 15, // Minimal wave for allow build
+  BUILDING_TOWER_ELECTRO_RADIUS: 90, // Attack radius
+  BUILDING_TOWER_ELECTRO_RADIUS_GROWTH: 0.15, // Radius growth by level (Linear)
+  BUILDING_TOWER_ELECTRO_DELAY: 1500, // Pause between attacks
+  BUILDING_TOWER_ELECTRO_DELAY_GROWTH: -0.1, // Pause growth by level (Linear)
+  BUILDING_TOWER_ELECTRO_DAMAGE: 110, // Attack damage
+  BUILDING_TOWER_ELECTRO_DAMAGE_GROWTH: 0.8, // Damage growth by level (Linear)
 
   /**
    * Building: Generator
