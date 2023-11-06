@@ -3,6 +3,7 @@ import VirtualJoystick from 'phaser3-rex-plugins/plugins/virtualjoystick';
 
 import { INTERFACE_SCALE } from '~const/interface';
 import { Scene } from '~game/scenes';
+import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { GameScene } from '~type/game';
 import { LangPhrase } from '~type/lang';
@@ -34,7 +35,11 @@ export class Screen extends Scene implements IScreen {
   }
 
   public update() {
-    this.handleJoystick();
+    try {
+      this.handleJoystick();
+    } catch (error) {
+      Analytics.TrackWarn('Failed screen update', error as TypeError);
+    }
   }
 
   public failure(text?: LangPhrase, format?: any[]) {

@@ -156,10 +156,14 @@ export class World extends Scene implements IWorld {
       return;
     }
 
-    this.deltaTime = delta;
+    try {
+      this.deltaTime = delta;
 
-    this.builder.update();
-    this.wave.update();
+      this.builder.update();
+      this.wave.update();
+    } catch (error) {
+      Analytics.TrackWarn('Failed world update', error as TypeError);
+    }
   }
 
   public showHint(hint: WorldHint) {

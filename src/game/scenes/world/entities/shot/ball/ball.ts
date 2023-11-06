@@ -62,7 +62,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         try {
           this.hit(enemy as IEnemy);
         } catch (error) {
-          Analytics.TrackError(error as TypeError);
+          Analytics.TrackWarn('Failed to handle ball shot collider', error as TypeError);
         }
       },
     );
