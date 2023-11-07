@@ -1,3 +1,5 @@
+ 🟨 _After version 1.18.5, development has been moved to the private repository._
+
 ## ![IZOWAVE](./docs/logotype-large.png)
 [![Testing](https://github.com/neki-dev/izowave/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/test.yml)
 [![Building](https://github.com/neki-dev/izowave/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/build.yml)
