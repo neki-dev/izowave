@@ -3,9 +3,6 @@ import Phaser from 'phaser';
 import {
   AUDIO_VOLUME, CONTAINER_ID, DEBUG_MODS,
 } from '~const/game';
-import { Analytics } from '~lib/analytics';
-import { Environment } from '~lib/environment';
-import { SDK } from '~lib/sdk';
 import { registerShaders } from '~lib/shader';
 import { Storage } from '~lib/storage';
 import { Tutorial } from '~lib/tutorial';
@@ -27,7 +24,6 @@ import {
 } from '~type/game';
 import { MenuPage } from '~type/menu';
 import { IScreen } from '~type/screen';
-import { SDKAdsType } from '~type/sdk';
 import { StorageSave } from '~type/storage';
 import { IWorld } from '~type/world';
 
@@ -89,10 +85,6 @@ export class Game extends Phaser.Game implements IGame {
       },
     });
 
-    Analytics.Register();
-
-    SDK.ToggleLoadState(true);
-
     this.readSettings();
 
     if (!this.isSettingEnabled(GameSettings.TUTORIAL)) {
@@ -127,7 +119,7 @@ export class Game extends Phaser.Game implements IGame {
         || (this.state === GameState.PAUSED && !this.isSaved)
       );
 
-      if (needConfirm && Environment.Platform !== 'development') {
+      if (needConfirm && ENV_MODE !== 'development') {
         event.preventDefault();
         // @ts-ignore
         // eslint-disable-next-line no-param-reassign
@@ -137,12 +129,6 @@ export class Game extends Phaser.Game implements IGame {
 
     window.addEventListener('contextmenu', (event: Event) => {
       event.preventDefault();
-    });
-
-    window.addEventListener('error', (event: ErrorEvent) => {
-      Analytics.TrackError(
-        event.error ?? new Error(event.message ?? 'Undefined error'),
-      );
     });
   }
 
@@ -168,16 +154,14 @@ export class Game extends Phaser.Game implements IGame {
       return;
     }
 
-    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
-      this.setState(GameState.STARTED);
+    this.setState(GameState.STARTED);
 
-      this.scene.systemScene.scene.stop(GameScene.MENU);
+    this.scene.systemScene.scene.stop(GameScene.MENU);
 
-      this.world.scene.resume();
-      this.screen.scene.resume();
+    this.world.scene.resume();
+    this.screen.scene.resume();
 
-      this.isSaved = false;
-    });
+    this.isSaved = false;
   }
 
   public continueGame(save: StorageSave) {
@@ -187,9 +171,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = save;
 
-    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
-      this.startGame();
-    });
+    this.startGame();
   }
 
   public startNewGame() {
@@ -199,13 +181,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.usedSave = null;
 
-    if (this.sessionsCount === 0) {
-      this.startGame();
-    } else {
-      SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
-        this.startGame();
-      });
-    }
+    this.startGame();
   }
 
   private startGame() {
@@ -262,10 +238,7 @@ export class Game extends Phaser.Game implements IGame {
     }
 
     this.stopGame(false);
-
-    SDK.ShowAds(SDKAdsType.MIDGAME).then(() => {
-      this.startGame();
-    });
+    this.startGame();
   }
 
   public finishGame() {
@@ -284,15 +257,9 @@ export class Game extends Phaser.Game implements IGame {
 
     this.scene.systemScene.scene.stop(GameScene.SCREEN);
     this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
-
-    Analytics.TrackEvent({
-      world: this.world,
-      success: false,
-    });
   }
 
   public toggleSystemPause(state: boolean) {
-    SDK.TogglePlayState(!state);
     this.events.emit(GameEvents.TOGGLE_PAUSE, state);
 
     if (state) {
@@ -313,7 +280,6 @@ export class Game extends Phaser.Game implements IGame {
     this.state = state;
 
     if (prevPauseState !== nextPauseState) {
-      SDK.TogglePlayState(!nextPauseState);
       this.events.emit(GameEvents.TOGGLE_PAUSE, nextPauseState);
     }
   }
@@ -359,7 +325,7 @@ export class Game extends Phaser.Game implements IGame {
     if (
       this.scale.isFullscreen
       || this.isDesktop()
-      || Environment.Platform === 'development'
+      || ENV_MODE === 'development'
     ) {
       return;
     }

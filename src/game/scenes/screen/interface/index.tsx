@@ -4,7 +4,6 @@ import React from 'react';
 import { INTERFACE_SCALE } from '~const/interface';
 import { Section } from '~scene/system/interface/section';
 
-import { AdsReward } from './ads-reward';
 import { Builder } from './builder';
 import { Debug } from './debug';
 import { Modes } from './modes';
@@ -33,7 +32,6 @@ export const ScreenUI: React.FC = () => {
               <Modes />
               <Skills />
             </Section>
-            <AdsReward />
             <Notices />
           </Section>
           <Superskills />

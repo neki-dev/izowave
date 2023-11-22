@@ -10,7 +10,6 @@ import {
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Crystal } from '~entity/crystal';
 import { Sprite } from '~entity/sprite';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, isPositionsEqual } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -197,7 +196,7 @@ export class Player extends Sprite implements IPlayer {
         this.updateStamina();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed to update player', error as TypeError);
+      console.warn('Failed to update player', error as TypeError);
     }
   }
 

@@ -1,6 +1,5 @@
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Building } from '~entity/building';
-import { Analytics } from '~lib/analytics';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~type/tutorial';
 import { IWorld } from '~type/world';
@@ -54,7 +53,7 @@ export class BuildingGenerator extends Building {
         this.pauseActions();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed to update generator generator', error as TypeError);
+      console.warn('Failed to update generator generator', error as TypeError);
     }
   }
 

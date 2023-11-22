@@ -1,7 +1,6 @@
 import { CONTROL_KEY } from '~const/controls';
 import { Scene } from '~game/scenes';
 import { Assets } from '~lib/assets';
-import { SDK } from '~lib/sdk';
 import { removeLoading, setLoadingStatus } from '~lib/state';
 import { Storage } from '~lib/storage';
 import { GameScene, GameState } from '~type/game';
@@ -42,8 +41,6 @@ export class System extends Scene {
     });
 
     this.scene.bringToTop();
-
-    SDK.ToggleLoadState(false);
 
     removeLoading();
 

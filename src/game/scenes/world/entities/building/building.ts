@@ -7,7 +7,6 @@ import { BUILDING_TILE } from '~const/world/entities/building';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
 import { Indicator } from '~entity/addons/indicator';
 import { Live } from '~entity/addons/live';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
@@ -167,7 +166,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
         this.focus();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed building update', error as TypeError);
+      console.warn('Failed building update', error as TypeError);
     }
   }
 

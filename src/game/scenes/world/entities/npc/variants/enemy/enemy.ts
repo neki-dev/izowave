@@ -7,7 +7,6 @@ import {
 } from '~const/world/entities/enemy';
 import { Building } from '~entity/building';
 import { NPC } from '~entity/npc';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { GameSettings } from '~type/game';
@@ -127,7 +126,7 @@ export class Enemy extends NPC implements IEnemy {
 
       this.isOverlapTarget = false;
     } catch (error) {
-      Analytics.TrackWarn('Failed to update enemy', error as TypeError);
+      console.warn('Failed to update enemy', error as TypeError);
     }
   }
 

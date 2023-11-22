@@ -2,7 +2,6 @@ import {
   ENEMY_REGENERATION_EFFECT_COLOR, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_REGENERATION_RADIUS,
 } from '~const/world/entities/enemy';
 import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
-import { Analytics } from '~lib/analytics';
 import { getIsometricDistance } from '~lib/dimension';
 import { IWorld } from '~type/world';
 import { EntityType } from '~type/world/entities';
@@ -45,7 +44,7 @@ export class EnemyTelepath extends Enemy {
     try {
       this.updateArea();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update telepth enemy', error as TypeError);
+      console.warn('Failed to update telepth enemy', error as TypeError);
     }
   }
 

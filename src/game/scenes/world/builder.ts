@@ -5,7 +5,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { BUILDING_TILE } from '~const/world/entities/building';
 import { BUILDINGS } from '~const/world/entities/buildings';
 import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '~const/world/level';
-import { Analytics } from '~lib/analytics';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
@@ -87,7 +86,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
         this.close();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed to update builder', error as TypeError);
+      console.warn('Failed to update builder', error as TypeError);
     }
   }
 

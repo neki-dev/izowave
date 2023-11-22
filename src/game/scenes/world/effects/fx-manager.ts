@@ -1,6 +1,4 @@
-import { Analytics } from '~lib/analytics';
-import { Environment } from '~lib/environment';
-import { GameFlag, GameSettings } from '~type/game';
+import { GameSettings } from '~type/game';
 import { IWorld } from '~type/world';
 import { EffectTexture, IParticlesParent, ParticlesTexture } from '~type/world/effects';
 import { IFXManager, SoundParams } from '~type/world/effects/fx-manager';
@@ -29,7 +27,7 @@ export class FXManager implements IFXManager {
         this.scene.sound.play(sound, params);
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed to play sound', error as TypeError);
+      console.warn('Failed to play sound', error as TypeError);
     }
   }
 
@@ -61,7 +59,6 @@ export class FXManager implements IFXManager {
   public createBloodEffect(parent: ISprite) {
     if (
       !parent.active
-      || !Environment.GetFlag(GameFlag.BLOOD)
       || !this.isEffectsEnabled()
       || FXManager.IsExist(parent, 'blood')
     ) {
@@ -346,10 +343,7 @@ export class FXManager implements IFXManager {
   }
 
   public createBloodStainEffect(position: PositionAtWorld) {
-    if (
-      !this.isEffectsEnabled()
-      || !Environment.GetFlag(GameFlag.BLOOD)
-    ) {
+    if (!this.isEffectsEnabled()) {
       return null;
     }
 

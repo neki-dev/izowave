@@ -2,7 +2,6 @@ import Phaser from 'phaser';
 
 import { WORLD_DEPTH_GRAPHIC } from '~const/world';
 import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { IWorld } from '~type/world';
@@ -61,7 +60,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
       this.updateLine();
       this.processing();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update lazer shot', error as TypeError);
+      console.warn('Failed to update lazer shot', error as TypeError);
     }
   }
 

@@ -151,17 +151,8 @@ export enum GameDifficulty {
   HARD = 'HARD',
 }
 
-export enum GameFlag {
-  BLOOD = 'BLOOD',
-  ADS = 'ADS',
-  AUTO_ORIENTATION = 'AUTO_ORIENTATION',
-  COPYRIGHT = 'COPYRIGHT',
-}
-
 export enum GamePlatform {
   DEVELOPMENT = 'development',
-  POKI = 'poki',
-  CRAZY_GAMES = 'crazy_games',
   VANILLA = 'vanilla',
 }
 
@@ -177,13 +168,8 @@ export type GameStat = {
   lived: number
 };
 
-export type GameEnvironment = {
-  flags: Partial<Record<GameFlag, boolean>>
-  sdk?: string
-};
-
 declare global {
-  const PLATFORM: GamePlatform;
+  const ENV_MODE: GamePlatform;
 
   interface Window {
     GAME?: IGame

@@ -4,7 +4,6 @@ import { DIFFICULTY } from '~const/world/difficulty';
 import { ENEMIES } from '~const/world/entities/enemies';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '~const/world/entities/enemy';
 import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from '~const/world/wave';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
@@ -76,7 +75,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       this.handleTimeleft();
       this.handleProcessing();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update wave', error as TypeError);
+      console.warn('Failed to update wave', error as TypeError);
     }
   }
 
@@ -224,11 +223,6 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
         break;
       }
     }
-
-    Analytics.TrackEvent({
-      world: this.scene,
-      success: true,
-    });
   }
 
   private spawnEnemy() {

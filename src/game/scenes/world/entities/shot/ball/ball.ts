@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { IWorld } from '~type/world';
@@ -62,7 +61,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
         try {
           this.hit(enemy as IEnemy);
         } catch (error) {
-          Analytics.TrackWarn('Failed to handle ball shot collider', error as TypeError);
+          console.warn('Failed to handle ball shot collider', error as TypeError);
         }
       },
     );
@@ -85,7 +84,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
     try {
       this.updateFlyDistance();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update ball shot', error as TypeError);
+      console.warn('Failed to update ball shot', error as TypeError);
     }
   }
 

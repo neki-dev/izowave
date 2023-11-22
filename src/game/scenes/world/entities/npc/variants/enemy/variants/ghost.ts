@@ -1,4 +1,3 @@
-import { Analytics } from '~lib/analytics';
 import { IWorld } from '~type/world';
 import { BuildingVariant } from '~type/world/entities/building';
 import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
@@ -29,7 +28,7 @@ export class EnemyGhost extends Enemy {
     try {
       this.updateVisible();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update ghost enemy', error as TypeError);
+      console.warn('Failed to update ghost enemy', error as TypeError);
     }
   }
 

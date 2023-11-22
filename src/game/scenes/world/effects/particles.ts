@@ -1,4 +1,3 @@
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { IWorld } from '~type/world';
 import {
@@ -74,7 +73,7 @@ export class Particles implements IParticles {
     try {
       this.emitter.setDepth(this.parent.depth + 1);
     } catch (error) {
-      Analytics.TrackWarn('Failed to update particles', error as TypeError);
+      console.warn('Failed to update particles', error as TypeError);
     }
   }
 }

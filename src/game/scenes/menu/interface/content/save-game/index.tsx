@@ -4,7 +4,6 @@ import React, {
 } from 'react';
 
 import { MAX_GAME_SAVES } from '~const/game';
-import { Environment } from '~lib/environment';
 import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
@@ -30,7 +29,7 @@ export const SaveGame: React.FC = () => {
 
   const reachedLimit = (
     saves.length >= MAX_GAME_SAVES
-    && Environment.Platform !== 'development'
+    && ENV_MODE !== 'development'
   );
 
   const onSelectSave = (save: StorageSave) => {

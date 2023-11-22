@@ -1,5 +1,4 @@
 import { ENEMY_HEAL_MULTIPLIER, ENEMY_HEAL_TIMESTAMP_PAUSE } from '~const/world/entities/enemy';
-import { Analytics } from '~lib/analytics';
 import { IWorld } from '~type/world';
 import { EnemyVariantData, EnemyTexture } from '~type/world/entities/npc/enemy';
 
@@ -33,7 +32,7 @@ export class EnemyBerserk extends Enemy {
     try {
       this.heal();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update berserk enemy', error as TypeError);
+      console.warn('Failed to update berserk enemy', error as TypeError);
     }
   }
 

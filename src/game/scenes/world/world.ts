@@ -8,7 +8,6 @@ import { Crystal } from '~entity/crystal';
 import { Assistant } from '~entity/npc/variants/assistant';
 import { Player } from '~entity/player';
 import { Scene } from '~game/scenes';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
@@ -162,7 +161,7 @@ export class World extends Scene implements IWorld {
       this.builder.update();
       this.wave.update();
     } catch (error) {
-      Analytics.TrackWarn('Failed to update world', error as TypeError);
+      console.warn('Failed to update world', error as TypeError);
     }
   }
 
@@ -450,7 +449,7 @@ export class World extends Scene implements IWorld {
 
         building.loadSavePayload(buildingData);
       } catch (error) {
-        Analytics.TrackWarn(`Failed to load '${buildingData.variant}' building`, error as TypeError);
+        console.warn(`Failed to load '${buildingData.variant}' building`, error as TypeError);
       }
     });
   }

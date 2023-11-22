@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => ({
     port: 9999,
   },
   define: {
-    PLATFORM: JSON.stringify(mode),
+    ENV_MODE: JSON.stringify(mode),
   },
   resolve: {
     alias: alias

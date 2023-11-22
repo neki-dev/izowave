@@ -3,7 +3,6 @@ import { ASSISTANT_PATH_BREAKPOINT, ASSISTANT_TILE_SIZE, ASSISTANT_WEAPON } from
 import { NPC } from '~entity/npc';
 import { ShotBallFire } from '~entity/shot/ball/variants/fire';
 import { ShotLazer } from '~entity/shot/lazer';
-import { Analytics } from '~lib/analytics';
 import { Assets } from '~lib/assets';
 import { getClosestByIsometricDistance, getIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
@@ -73,7 +72,7 @@ export class Assistant extends NPC implements IAssistant {
         this.attack();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed to update assistant', error as TypeError);
+      console.warn('Failed to update assistant', error as TypeError);
     }
   }
 
