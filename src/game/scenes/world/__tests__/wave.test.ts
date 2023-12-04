@@ -2,7 +2,6 @@ import 'jest-canvas-mock';
 
 import { DIFFICULTY } from '~const/world/difficulty';
 import { Tutorial } from '~lib/tutorial';
-import { Analytics } from '~lib/analytics';
 import { progressionLinear } from '~lib/progression';
 import { IWorld } from '~type/world';
 import { IWave, WaveEvents } from '~type/world/wave';
@@ -17,7 +16,6 @@ describe('world / wave', () => {
 
   beforeAll(() => {
     Tutorial.Disable();
-    Analytics.TrackEvent = jest.fn();
   });
 
   beforeEach(() => {

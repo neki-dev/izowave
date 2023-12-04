@@ -26,9 +26,6 @@ const world = {
       complete: jest.fn(),
       state: jest.fn(() => TutorialStepState.COMPLETED),
     },
-    analytics: {
-      trackEvent: jest.fn(),
-    },
     screen: {
       notice: jest.fn(),
     },

@@ -153,7 +153,7 @@ export enum GameDifficulty {
 
 export enum GamePlatform {
   DEVELOPMENT = 'development',
-  VANILLA = 'vanilla',
+  PRODUCTION = 'production',
 }
 
 export type GameSavePayload = {
