@@ -7,7 +7,6 @@ window.GAME = new Game();
 
 checkScreenOrientation();
 
-console.clear();
 console.log([
   `Created by ${pkg.author.name} / ${pkg.author.url}`,
   `Build v${pkg.version}`,

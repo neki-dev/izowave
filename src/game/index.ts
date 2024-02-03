@@ -1,4 +1,3 @@
-import { World } from 'gen-biome';
 import Phaser from 'phaser';
 
 import { registerShaders } from '~lib/shader';
@@ -9,8 +8,10 @@ import { Utils } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';
+import { Screen } from '~scene/screen';
 import { IScreen } from '~scene/screen/types';
 import { System } from '~scene/system';
+import { World } from '~scene/world';
 import { IWorld } from '~scene/world/types';
 
 import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
