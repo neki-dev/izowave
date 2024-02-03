@@ -1,13 +1,13 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../const/difficulty';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { getStage } from '~lib/utils';
+import { Utils } from '~lib/utils';
 
 import { BuilderEvents, IBuilder } from './types';
 import { WORLD_DEPTH_GRAPHIC } from '../const';
@@ -201,7 +201,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     }
 
     const start = BUILDINGS[variant].AllowByWave ?? 1;
-    const limit = getStage(start, this.scene.wave.number);
+    const limit = Utils.GetStage(start, this.scene.wave.number);
 
     return Math.min(limit, DIFFICULTY.BUILDING_LIMITED_BOUND);
   }

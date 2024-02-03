@@ -1,3 +1,4 @@
+// TODO: Split and move into every feature
 export const DIFFICULTY = {
   /**
    * Player

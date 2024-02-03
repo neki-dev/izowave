@@ -14,7 +14,7 @@ import {
   NavigatorPayloadCreateTask,
   NavigatorPayloadCancelTask,
 } from './types';
-import NavigatorWorker from './worker.ts?worker';
+import NavigatorWorker from './worker/index.ts?worker';
 
 export class Navigator implements INavigator {
   private pointsCost: number[][] = [];

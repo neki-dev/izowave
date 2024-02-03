@@ -7,7 +7,7 @@ import { IGame, GameScene, GameEvents } from '../../../../types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { formatTime } from '~lib/utils';
+import { Utils } from '~lib/utils';
 import { Hint } from '~scene/system/interface/hint';
 import { IWorld } from '~scene/world/types';
 import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
@@ -71,7 +71,7 @@ export const Wave: React.FC = () => {
         && !world.isTimePaused()
       );
 
-      setValue(world.wave.isPeaceMode ? '-' : formatTime(timeleft));
+      setValue(world.wave.isPeaceMode ? '-' : Utils.FormatTime(timeleft));
       setAlarm(currentIsAlarm);
     }
   }, []);

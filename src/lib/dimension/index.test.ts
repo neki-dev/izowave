@@ -7,7 +7,7 @@ import {
   excludePosition,
   sortByMatrixDistance,
   getDistance,
-} from '../dimension';
+} from '.';
 
 describe('lib / dimension', () => {
   describe('isPositionsEqual', () => {
@@ -96,7 +96,7 @@ describe('lib / dimension', () => {
           { x: 100, y: 50 },
           { x: 60, y: 100 },
           { x: 5, y: 5 },
-        ], { x: 0, y: 0 })
+        ], { x: 0, y: 0 }),
       ).toEqual([
         { x: 5, y: 5 },
         { x: 0, y: 100 },

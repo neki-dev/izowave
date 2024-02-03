@@ -1,4 +1,4 @@
-import { DIFFICULTY } from '../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../const/difficulty';
 
 import {
   PlayerSkill, PlayerSkillInfo, PlayerSkillTarget, MovementDirection,

@@ -6,7 +6,7 @@ import { phrase } from '~lib/lang';
 import { LangPhrase } from '~lib/lang/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { mapEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import { BuildingVariant, BuildingCategory } from '~scene/world/entities/building/types';
 import { IWorld } from '~scene/world/types';
@@ -27,7 +27,7 @@ export const Builder: React.FC = () => {
   }>>(null);
 
   const categories = useMemo(() => {
-    const buildings = mapEntries(BUILDINGS, (variant, building, index) => ({
+    const buildings = Utils.MapObject(BUILDINGS, (variant, building, index) => ({
       variant,
       category: building.Category,
       number: index + 1,

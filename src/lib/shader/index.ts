@@ -1,4 +1,4 @@
-import { eachEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 
 import { SHADERS } from './pipelines';
 import { ShaderType } from './types';
@@ -10,7 +10,7 @@ export function registerShaders(renderer: Phaser.Renderer.WebGL.WebGLRenderer | 
     return;
   }
 
-  eachEntries(SHADERS, (name, Shader) => {
+  Utils.EachObject(SHADERS, (name, Shader) => {
     try {
       renderer.pipelines.addPostPipeline(name, Shader);
     } catch (error) {

@@ -1,5 +1,5 @@
 import { Building } from '..';
-import { DIFFICULTY } from '../../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { EntityType } from '../../types';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionQuadratic } from '~lib/progression';

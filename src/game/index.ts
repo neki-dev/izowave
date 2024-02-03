@@ -5,7 +5,7 @@ import { registerShaders } from '~lib/shader';
 import { Storage } from '~lib/storage';
 import { StorageSave } from '~lib/storage/types';
 import { Tutorial } from '~lib/tutorial';
-import { eachEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';
@@ -303,7 +303,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   private readSettings() {
-    eachEntries(GameSettings, (key) => {
+    Utils.EachObject(GameSettings, (key) => {
       const userValue = localStorage.getItem(`SETTINGS.${key}`);
 
       if (userValue) {

@@ -1,10 +1,10 @@
-import { PathNode } from '../node';
-import { 
-  isDiagonalShift, getCost, getSimpleCost, getDirections,
-} from '../tools';
-
-import points from '../__mocks__/points';
 import grid from '../__mocks__/grid';
+import points from '../__mocks__/points';
+import { PathNode } from '../node';
+
+import {
+  isDiagonalShift, getCost, getSimpleCost, getDirections,
+} from '.';
 
 describe('lib / navigator / tools', () => {
   describe('isDiagonalShift', () => {
@@ -21,7 +21,7 @@ describe('lib / navigator / tools', () => {
 
   describe('getCost', () => {
     let node: PathNode;
-  
+
     beforeAll(() => {
       node = new PathNode({
         position: { x: 0, y: 0 },
@@ -42,7 +42,7 @@ describe('lib / navigator / tools', () => {
     it('should return simple cost for straight shift', () => {
       expect(getSimpleCost({ x: 1, y: 0 })).toEqual(1);
     });
-  
+
     it('should return simple cost for diagonal shift', () => {
       expect(getSimpleCost({ x: 1, y: 1 })).toEqual(Math.SQRT2);
     });

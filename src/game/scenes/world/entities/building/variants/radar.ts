@@ -1,5 +1,5 @@
 import { Building } from '..';
-import { DIFFICULTY } from '../../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { IWorld } from '~scene/world/types';

@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../const/difficulty';
 import { GameEvents } from '../../../../types';
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';

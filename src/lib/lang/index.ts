@@ -1,4 +1,4 @@
-import { LANGS } from '../../langs';
+import { LANGS } from '../../const/langs';
 
 import { Lang, LangPhrase } from './types';
 

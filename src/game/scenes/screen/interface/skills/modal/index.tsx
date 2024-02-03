@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
-import { mapEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 import { PLAYER_SKILLS } from '~scene/world/entities/player/const';
 import { PlayerSkillTarget } from '~scene/world/entities/player/types';
 
@@ -44,11 +44,11 @@ export const Modal: React.FC<Props> = ({ onClose }) => {
         <Container ref={refContainer}>
           <Close ref={refClose}>{phrase('SKILLS_CLOSE')}</Close>
           <Groups>
-            {mapEntries(PlayerSkillTarget, (key, target) => (
+            {Utils.MapObject(PlayerSkillTarget, (key, target) => (
               <Group key={key}>
                 <Target>{phrase(`SKILL_TARGET_${target}`)}</Target>
                 <List>
-                  {mapEntries(PLAYER_SKILLS, (type, skill) => skill.target === target && (
+                  {Utils.MapObject(PLAYER_SKILLS, (type, skill) => skill.target === target && (
                     <Item key={type} type={type} />
                   ))}
                 </List>

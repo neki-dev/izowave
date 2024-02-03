@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../const/difficulty';
 import { Assets } from '~lib/assets';
 import { progressionLinear } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';

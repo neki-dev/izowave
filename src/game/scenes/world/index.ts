@@ -3,12 +3,12 @@ import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
 import { Scene } from '..';
-import { DIFFICULTY } from '../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../const/difficulty';
 import { GameScene, GameState, GameEvents } from '../../types';
 import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
-import { hashString } from '~lib/utils';
+import { Utils } from '~lib/utils';
 
 import { Builder } from './builder';
 import { IBuilder } from './builder/types';
@@ -167,7 +167,7 @@ export class World extends Scene implements IWorld {
 
   public showHint(hint: WorldHint) {
     const id = hint.unique
-      ? hashString(hint.label)
+      ? Utils.HashString(hint.label)
       : uuidv4();
 
     this.events.emit(WorldEvents.SHOW_HINT, id, hint);

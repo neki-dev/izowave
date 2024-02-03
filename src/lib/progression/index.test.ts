@@ -1,4 +1,4 @@
-import { progressionQuadratic, progressionLinear } from '../progression';
+import { progressionQuadratic, progressionLinear } from '.';
 
 describe('lib / progression', () => {
   describe('progressionQuadratic', () => {

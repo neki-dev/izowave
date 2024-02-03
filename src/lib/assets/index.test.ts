@@ -1,6 +1,6 @@
-import { Assets } from '../assets';
+import assets from './__mocks__/assets';
 
-import assets from '../__mocks__/assets';
+import { Assets } from '.';
 
 describe('lib / assets', () => {
   beforeAll(() => {

@@ -1,4 +1,4 @@
-import { LANGS } from '../../langs';
+import { LANGS } from '../../const/langs';
 
 export type Lang = keyof typeof LANGS;
 

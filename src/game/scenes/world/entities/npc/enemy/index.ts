@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { NPC } from '..';
-import { DIFFICULTY } from '../../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { GameSettings } from '../../../../../types';
 import { Building } from '../../building';
 import { PlayerSuperskill, PlayerEvents } from '../../player/types';

@@ -1,5 +1,6 @@
-import { PathNode } from '~lib/navigator/node';
 import { PositionAtMatrix } from '~scene/world/level/types';
+
+import { PathNode } from './worker/node';
 
 export interface INavigator {
   /**

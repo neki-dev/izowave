@@ -1,6 +1,6 @@
-import { Tutorial } from '../tutorial';
+import { TutorialStep } from './types';
 
-import { TutorialStep}  from '~type/tutorial';
+import { Tutorial } from '.';
 
 describe('lib / tutorial', () => {
   beforeEach(() => {

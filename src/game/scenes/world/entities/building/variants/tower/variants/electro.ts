@@ -1,5 +1,5 @@
 import { BuildingTower } from '..';
-import { DIFFICULTY } from '../../../../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../../../../const/difficulty';
 import {
   BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant, BuildingParam, BuildingIcon, BuildingAudio,
 } from '../../../types';

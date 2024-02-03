@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
 
 import { Sprite } from '..';
-import { DIFFICULTY } from '../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../const/difficulty';
 import { GameSettings, GameEvents } from '../../../../types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { eachEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 import { IParticles } from '~scene/world/fx-manager/particles/types';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
@@ -853,7 +853,7 @@ export class Player extends Sprite implements IPlayer {
       }
     }
 
-    eachEntries(data.upgradeLevel, (type, level) => {
+    Utils.EachObject(data.upgradeLevel, (type, level) => {
       if (level > 1) {
         this.setSkillUpgrade(type, level);
       }

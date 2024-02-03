@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../const/difficulty';
 import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { eachEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 
 import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
 import {
@@ -296,7 +296,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
     const variants: EnemyVariant[] = [];
 
-    eachEntries(ENEMIES, (variant, Instance) => {
+    Utils.EachObject(ENEMIES, (variant, Instance) => {
       if (
         variant !== this.lastSpawnedEnemyVariant
         && Instance.SpawnWaveRange

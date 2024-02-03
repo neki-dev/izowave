@@ -1,4 +1,4 @@
-import { TutorialStepState } from '~type/tutorial';
+import { TutorialStepState } from '../../../../lib/tutorial/types';
 
 const entityGroup = {
   getTotalUsed: jest.fn(() => 0),

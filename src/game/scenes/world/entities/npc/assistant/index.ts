@@ -1,5 +1,5 @@
 import { NPC } from '..';
-import { DIFFICULTY } from '../../../../../../const/world/difficulty';
+import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { IPlayer, PlayerSkill } from '../../player/types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotLazer } from '../../shot/lazer';

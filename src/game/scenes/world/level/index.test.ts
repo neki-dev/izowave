@@ -1,6 +1,6 @@
 import 'jest-canvas-mock';
 
-import { Level } from '../level';
+import { Level } from '.';
 
 describe('world / level', () => {
   it('should convert matrix position to world position', () => {

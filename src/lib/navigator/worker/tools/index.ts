@@ -1,7 +1,7 @@
-import { eachEntries } from '~lib/utils';
+import { Utils } from '~lib/utils';
 import { PositionAtMatrix } from '~scene/world/level/types';
 
-import { PathNode } from './node';
+import { PathNode } from '../node';
 
 export function isDiagonalShift(shift: PositionAtMatrix) {
   return Math.abs(shift.x) + Math.abs(shift.y) !== 1;
@@ -50,7 +50,7 @@ export function getDirections(grid: boolean[][], currentNode: PathNode) {
 
   const allowedDirs: PositionAtMatrix[] = [];
 
-  eachEntries(straightDirs, (key, dir) => {
+  Utils.EachObject(straightDirs, (key, dir) => {
     const x = currentNode.position.x + dir.x;
     const y = currentNode.position.y + dir.y;
 
@@ -60,7 +60,7 @@ export function getDirections(grid: boolean[][], currentNode: PathNode) {
     }
   });
 
-  eachEntries(diagonalDirs, (key, dir) => {
+  Utils.EachObject(diagonalDirs, (key, dir) => {
     const dontCross = key.split('').every((flag) => straightFlags[flag]);
     const x = currentNode.position.x + dir.x;
     const y = currentNode.position.y + dir.y;
