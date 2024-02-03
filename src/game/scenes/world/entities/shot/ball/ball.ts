@@ -1,15 +1,16 @@
 import Phaser from 'phaser';
 
+import { IEnemy } from '../../npc/enemy/types';
+import { EntityType } from '../../types';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
-import { IWorld } from '~type/world';
-import { IParticles } from '~type/world/effects';
-import { EntityType } from '~type/world/entities';
-import { IEnemy } from '~type/world/entities/npc/enemy';
+import { IParticles } from '~scene/world/fx-manager/particles/types';
+import { PositionAtWorld } from '~scene/world/level/types';
+import { IWorld } from '~scene/world/types';
+
 import {
-  ShotParams, ShotBallData, ShotBallAudio, IShotInitiator, IShotBall, ShotTexture,
-} from '~type/world/entities/shot';
-import { PositionAtWorld } from '~type/world/level';
+  ShotBallAudio, ShotTexture, IShotBall, ShotParams, IShotInitiator, ShotBallData,
+} from '../types';
 
 Assets.RegisterAudio(ShotBallAudio);
 Assets.RegisterImages(ShotTexture);

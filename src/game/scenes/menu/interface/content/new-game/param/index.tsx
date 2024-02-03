@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
+import { LangPhrase } from '~lib/lang/types';
 import { Setting } from '~scene/system/interface/setting';
-import { LangPhrase } from '~type/lang';
 
 type Props = {
   label: LangPhrase

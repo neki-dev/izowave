@@ -1,9 +1,9 @@
-import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '~const/world/entities/shot';
+import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '../../const';
+import { ShotParams, ShotData, ShotBallAudio } from '../../types';
 import { getIsometricDistance } from '~lib/dimension';
-import { IWorld } from '~type/world';
-import { EntityType } from '~type/world/entities';
-import { IEnemy } from '~type/world/entities/npc/enemy';
-import { ShotBallAudio, ShotData, ShotParams } from '~type/world/entities/shot';
+import { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import { EntityType } from '~scene/world/entities/types';
+import { IWorld } from '~scene/world/types';
 
 import { ShotBall } from '../ball';
 

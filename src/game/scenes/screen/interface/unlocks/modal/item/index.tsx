@@ -3,10 +3,10 @@ import React, { useMemo } from 'react';
 
 import { Feature } from '../..';
 import { phrase } from '~lib/lang';
-import { LangPhrase } from '~type/lang';
-import { BuildingTexture, BuildingVariant } from '~type/world/entities/building';
-import { AssistantTexture, AssistantVariant } from '~type/world/entities/npc/assistant';
-import { PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
+import { LangPhrase } from '~lib/lang/types';
+import { BuildingVariant, BuildingTexture } from '~scene/world/entities/building/types';
+import { AssistantTexture, AssistantVariant } from '~scene/world/entities/npc/assistant/types';
+import { PlayerSuperskill, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
 
 import {
   Container, IconContainer, Name, Type, Body, Description, Info,

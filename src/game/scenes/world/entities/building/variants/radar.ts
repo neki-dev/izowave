@@ -1,15 +1,12 @@
-import { DIFFICULTY } from '~const/world/difficulty';
+import { Building } from '..';
+import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
-import {
-  BuildingVariant,
-  BuildingTexture,
-  BuildingVariantData,
-  BuildingCategory,
-} from '~type/world/entities/building';
+import { TutorialStep } from '~lib/tutorial/types';
+import { IWorld } from '~scene/world/types';
 
-import { Building } from '../building';
+import {
+  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+} from '../types';
 
 export class BuildingRadar extends Building {
   static Category = BuildingCategory.OTHER;

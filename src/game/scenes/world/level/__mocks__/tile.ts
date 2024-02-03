@@ -1,4 +1,4 @@
-import { ITile } from '~type/world/level/tile-matrix';
+import { ITile } from "../tile-matrix/types";
 
 const tile = {
   on: jest.fn(),

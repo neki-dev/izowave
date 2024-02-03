@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
 import {
   InterfaceFont,
   InterfaceBackgroundColor,
   InterfaceTextColor,
-} from '~type/interface';
+} from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   margin-top: 15px;

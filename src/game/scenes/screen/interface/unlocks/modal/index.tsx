@@ -23,14 +23,10 @@ export const Modal: React.FC<Props> = ({ features, onClose }) => {
   const refOverlay = useRef<HTMLDivElement>(null);
   const refButton = useRef<HTMLDivElement>(null);
 
-  const handleClose = () => {
-    onClose();
-  };
-
   useClick(refOverlay, 'down', () => {}, []);
-  useClick(refButton, 'down', handleClose, []);
+  useClick(refButton, 'down', onClose, []);
 
-  useEvent(scene.input.keyboard, 'keyup-ESC', handleClose, []);
+  useEvent(scene.input.keyboard, 'keyup-ESC', onClose, []);
 
   useEffect(() => {
     setUnlocks(features);

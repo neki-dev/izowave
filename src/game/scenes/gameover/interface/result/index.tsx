@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
+import { GameStat } from '../../../../types';
 import { phrase } from '~lib/lang';
-import { GameStat } from '~type/game';
-import { LangPhrase } from '~type/lang';
+import { LangPhrase } from '~lib/lang/types';
 
 import {
   Wrapper, Item, Value, Label, Record,

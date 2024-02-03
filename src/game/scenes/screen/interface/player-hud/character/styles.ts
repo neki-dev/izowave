@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor } from '~type/interface';
+import { InterfaceBackgroundColor } from '~lib/interface/types';
 
 export const Container = styled.div`
   padding: 5px;

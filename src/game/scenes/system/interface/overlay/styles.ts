@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceLayer } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceLayer } from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   width: 100%;

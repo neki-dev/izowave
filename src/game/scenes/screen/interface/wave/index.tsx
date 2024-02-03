@@ -3,14 +3,14 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { WAVE_TIMELEFT_ALARM } from '~const/world/wave';
+import { IGame, GameScene, GameEvents } from '../../../../types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
-import { formatTime } from '~lib/utils';
+import { TutorialStep } from '~lib/tutorial/types';
+import { Utils } from '~lib/utils';
 import { Hint } from '~scene/system/interface/hint';
-import { GameEvents, GameScene, IGame } from '~type/game';
-import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { IWorld } from '~scene/world/types';
+import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
 
 import {
   CurrentNumber,
@@ -71,7 +71,7 @@ export const Wave: React.FC = () => {
         && !world.isTimePaused()
       );
 
-      setValue(world.wave.isPeaceMode ? '-' : formatTime(timeleft));
+      setValue(world.wave.isPeaceMode ? '-' : Utils.FormatTime(timeleft));
       setAlarm(currentIsAlarm);
     }
   }, []);

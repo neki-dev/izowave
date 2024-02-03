@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~type/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Container = styled.div`
   overflow: hidden;

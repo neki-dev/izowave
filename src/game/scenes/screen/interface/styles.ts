@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
 
 export const Wrapper = styled.div`
   height: 100%;

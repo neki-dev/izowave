@@ -1,20 +1,13 @@
-import { DIFFICULTY } from '~const/world/difficulty';
-import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
-import { progressionLinear } from '~lib/progression';
-import { IWorld } from '~type/world';
-import { EntityType } from '~type/world/entities';
+import { BuildingTower } from '..';
+import { DIFFICULTY } from '../../../../../../../../const/difficulty';
 import {
-  BuildingAudio,
-  BuildingCategory,
-  BuildingIcon,
-  BuildingParam,
-  BuildingTexture,
-  BuildingVariant,
-  BuildingVariantData,
-} from '~type/world/entities/building';
-import { IEnemy } from '~type/world/entities/npc/enemy';
-
-import { BuildingTower } from '../tower';
+  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant, BuildingParam, BuildingIcon, BuildingAudio,
+} from '../../../types';
+import { progressionLinear } from '~lib/progression';
+import { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import { EntityType } from '~scene/world/entities/types';
+import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
+import { IWorld } from '~scene/world/types';
 
 export class BuildingTowerElectro extends BuildingTower {
   static Category = BuildingCategory.ATTACK;

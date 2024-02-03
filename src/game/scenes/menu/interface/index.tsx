@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
-import { MenuPage } from '~type/menu';
 
 import { Content } from './content';
 import { Copyright } from './copyright';
@@ -10,6 +9,7 @@ import { Navigation } from './navigation';
 import {
   Wrapper, Logotype, Sidebar, Main,
 } from './styles';
+import { MenuPage } from '../types';
 
 type Props = {
   defaultPage?: MenuPage

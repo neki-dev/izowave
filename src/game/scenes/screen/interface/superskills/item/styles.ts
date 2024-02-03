@@ -1,11 +1,11 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
 import {
   InterfaceBackgroundColor,
   InterfaceTextColor,
   InterfaceFont,
-} from '~type/interface';
+} from '~lib/interface/types';
 
 const animationTimeout = keyframes`
   0% { top: 0 }

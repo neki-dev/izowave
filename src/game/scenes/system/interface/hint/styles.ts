@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { InterfaceFont, InterfaceBackgroundColor, InterfaceLayer } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor, InterfaceLayer } from '~lib/interface/types';
 
 const align = {
   'top-left': { transform: 'translate(0, 0)', left: '39px', right: 'auto' },

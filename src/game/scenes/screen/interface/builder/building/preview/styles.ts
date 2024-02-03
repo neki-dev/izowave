@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { InterfaceFont, InterfaceBackgroundColor } from '~type/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceFont, InterfaceBackgroundColor } from '~lib/interface/types';
 
 export const Container = styled.div<{
   $allow?: boolean

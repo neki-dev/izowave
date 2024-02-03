@@ -1,16 +1,17 @@
 import Phaser from 'phaser';
 
-import { WORLD_DEPTH_GRAPHIC } from '~const/world';
-import { SHOT_LAZER_DELAY, SHOT_LAZER_REPEAT } from '~const/world/entities/shot';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
-import { IWorld } from '~type/world';
-import { EntityType } from '~type/world/entities';
-import { IEnemy } from '~type/world/entities/npc/enemy';
+import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
+import { PositionAtWorld } from '~scene/world/level/types';
+import { IWorld } from '~scene/world/types';
+
+import { SHOT_LAZER_REPEAT, SHOT_LAZER_DELAY } from './const';
 import {
-  IShotInitiator, IShotLazer, ShotLazerAudio, ShotParams,
-} from '~type/world/entities/shot';
-import { PositionAtWorld } from '~type/world/level';
+  ShotLazerAudio, IShotLazer, ShotParams, IShotInitiator,
+} from './types';
+import { IEnemy } from '../npc/enemy/types';
+import { EntityType } from '../types';
 
 Assets.RegisterAudio(ShotLazerAudio);
 

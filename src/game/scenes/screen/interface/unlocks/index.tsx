@@ -1,12 +1,12 @@
 import { useEvent, useGame, useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { GameScene, IGame } from '~type/game';
-import { IWorld } from '~type/world';
-import { BuildingVariant } from '~type/world/entities/building';
-import { AssistantEvents, AssistantVariant } from '~type/world/entities/npc/assistant';
-import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
-import { WaveEvents } from '~type/world/wave';
+import { IGame, GameScene } from '../../../../types';
+import { BuildingVariant } from '~scene/world/entities/building/types';
+import { AssistantVariant, AssistantEvents } from '~scene/world/entities/npc/assistant/types';
+import { PlayerSuperskill, PlayerEvents } from '~scene/world/entities/player/types';
+import { IWorld } from '~scene/world/types';
+import { WaveEvents } from '~scene/world/wave/types';
 
 import { Modal } from './modal';
 

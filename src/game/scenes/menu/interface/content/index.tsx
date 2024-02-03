@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { MenuPage } from '~type/menu';
+import { MenuPage } from '~scene/menu/types';
 
 import { AboutGame } from './about-game';
 import { Controls } from './controls';

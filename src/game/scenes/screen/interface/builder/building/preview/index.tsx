@@ -3,11 +3,11 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
-import { BUILDINGS } from '~const/world/entities/buildings';
+import { GameScene } from '../../../../../../types';
 import { Cost } from '~scene/system/interface/cost';
-import { GameScene } from '~type/game';
-import { IWorld } from '~type/world';
-import { BuildingVariant } from '~type/world/entities/building';
+import { BUILDINGS } from '~scene/world/entities/building/factory/const';
+import { BuildingVariant } from '~scene/world/entities/building/types';
+import { IWorld } from '~scene/world/types';
 
 import {
   Container, Number, Image, Info, Frame,

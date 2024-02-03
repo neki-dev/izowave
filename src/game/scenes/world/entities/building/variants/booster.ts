@@ -1,18 +1,18 @@
-import { DIFFICULTY } from '~const/world/difficulty';
+import { Building } from '..';
+import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { progressionLinear } from '~lib/progression';
-import { IWorld } from '~type/world';
+import { IWorld } from '~scene/world/types';
+
 import {
-  BuildingVariant,
-  BuildingTexture,
-  BuildingParam,
-  BuildingVariantData,
-  BuildingIcon,
-  BuildingEvents,
   IBuildingBooster,
   BuildingCategory,
-} from '~type/world/entities/building';
-
-import { Building } from '../building';
+  BuildingTexture,
+  BuildingVariantData,
+  BuildingVariant,
+  BuildingEvents,
+  BuildingParam,
+  BuildingIcon,
+} from '../types';
 
 export class BuildingBooster extends Building implements IBuildingBooster {
   static Category = BuildingCategory.OTHER;

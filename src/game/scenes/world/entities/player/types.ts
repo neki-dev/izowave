@@ -1,0 +1,223 @@
+import { PositionAtMatrix } from '~scene/world/level/types';
+
+import { ILive } from '../addons/live/types';
+import { IEnemyTarget } from '../npc/enemy/types';
+import { ISprite } from '../types';
+
+export interface IPlayer extends ISprite, IEnemyTarget {
+  /**
+   * Total number of killed enemies.
+   */
+  readonly kills: number
+
+  /**
+   * Player experience.
+   */
+  experience: number
+
+  /**
+   * Score amount.
+   */
+  readonly score: number
+
+  /**
+   * Resourses amount.
+   */
+  readonly resources: number
+
+  /**
+   * Health management.
+   */
+  readonly live: ILive
+
+  /**
+   * Levels of upgrades.
+   */
+  readonly upgradeLevel: Record<PlayerSkill, number>
+
+  /**
+   * Unlocked superskills.
+   */
+  readonly unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+
+  /**
+   * Active superskills.
+   */
+  readonly activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>>
+
+  /**
+   * Last visible position at matrix.
+   */
+  readonly lastVisiblePosition: PositionAtMatrix
+
+  /**
+   * Upgrade player skill.
+   */
+  upgrade(type: PlayerSkill): void
+
+  /**
+   * Get experience amount need to upgrade.
+   */
+  getExperienceToUpgrade(type: PlayerSkill): number
+
+  /**
+   * Inremeting number of killed enemies.
+   */
+  incrementKills(): void
+
+  /**
+   * Give player score.
+   * @param amount - Amount
+   */
+  giveScore(amount: number): void
+
+  /**
+   * Give player experience.
+   * @param amount - Amount
+   */
+  giveExperience(amount: number): void
+
+  /**
+   * Give player resources.
+   * @param amount - Resources amount
+   */
+  giveResources(amount: number): void
+
+  /**
+   * Take player resources.
+   * @param amount - Resources amount
+   */
+  takeResources(amount: number): void
+
+  /**
+   * Use superskill.
+   * @param type - Superskill
+   */
+  useSuperskill(type: PlayerSuperskill): void
+
+  /**
+   * Unlock next superskill.
+   */
+  unlockSuperskill(): void
+
+  /**
+   * Get current cost of superskill.
+   * @param type - Superskill
+   */
+  getSuperskillCost(type: PlayerSuperskill): number
+
+  /**
+   * Set angle of target movement direction.
+   * @param angle - Angle
+   */
+  setMovementTarget(angle: Nullable<number>): void
+
+  /**
+   * Get data for saving.
+   */
+  getSavePayload(): PlayerSavePayload
+
+  /**
+   * Load saved data.
+   * @param data - Data
+   */
+  loadSavePayload(data: PlayerSavePayload): void
+}
+
+export enum PlayerTexture {
+  PLAYER = 'player/player',
+  SUPERSKILL = 'player/superskill',
+}
+
+export enum PlayerSkillIcon {
+  MAX_HEALTH = 'player/skills/max_health',
+  SPEED = 'player/skills/speed',
+  STAMINA = 'player/skills/stamina',
+  BUILD_SPEED = 'player/skills/build_speed',
+  ATTACK_DAMAGE = 'player/skills/attack_damage',
+  ATTACK_DISTANCE = 'player/skills/attack_distance',
+  ATTACK_SPEED = 'player/skills/attack_speed',
+}
+
+export enum PlayerSuperskillIcon {
+  INVISIBLE = 'player/superskills/invisible',
+  FROST = 'player/superskills/frost',
+  SHIELD = 'player/superskills/shield',
+  RAGE = 'player/superskills/rage',
+  FIRE = 'player/superskills/fire',
+}
+
+export enum PlayerAudio {
+  UPGRADE = 'player/upgrade',
+  WALK = 'player/walk',
+  DEAD = 'player/dead',
+  DAMAGE_1 = 'player/damage_1',
+  DAMAGE_2 = 'player/damage_2',
+  DAMAGE_3 = 'player/damage_3',
+  SUPERSKILL = 'player/superskill',
+}
+
+export enum PlayerSkillTarget {
+  CHARACTER = 'CHARACTER',
+  ASSISTANT = 'ASSISTANT',
+}
+
+export enum PlayerSkill {
+  MAX_HEALTH = 'MAX_HEALTH',
+  SPEED = 'SPEED',
+  STAMINA = 'STAMINA',
+  BUILD_SPEED = 'BUILD_SPEED',
+  ATTACK_DAMAGE = 'ATTACK_DAMAGE',
+  ATTACK_DISTANCE = 'ATTACK_DISTANCE',
+  ATTACK_SPEED = 'ATTACK_SPEED',
+}
+
+export enum PlayerSuperskill {
+  SHIELD = 'SHIELD',
+  INVISIBLE = 'INVISIBLE',
+  FROST = 'FROST',
+  FIRE = 'FIRE',
+  RAGE = 'RAGE',
+}
+
+export enum PlayerEvents {
+  USE_SUPERSKILL = 'use_superskill',
+  UNLOCK_SUPERSKILL = 'unlock_superskill',
+  UPGRADE_SKILL = 'upgrade_skill',
+  UPDATE_EXPERIENCE = 'update_experience',
+  UPDATE_SCORE = 'update_score',
+  UPDATE_RESOURCES = 'update_resources',
+}
+
+export enum MovementDirection {
+  UP = 'up',
+  DOWN = 'down',
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+export type PlayerData = {
+  positionAtMatrix: PositionAtMatrix
+};
+
+export type PlayerSkillInfo = {
+  experience: number
+  target: PlayerSkillTarget
+};
+
+export type PlayerSkillData = {
+  experience: number
+  type: PlayerSkill
+  currentLevel: number
+};
+
+export type PlayerSavePayload = {
+  position: PositionAtMatrix
+  score: number
+  experience: number
+  resources: number
+  kills: number
+  health: number
+  unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>>
+  upgradeLevel: Record<PlayerSkill, number>
+};

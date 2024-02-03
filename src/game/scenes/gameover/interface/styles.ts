@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   display: flex;

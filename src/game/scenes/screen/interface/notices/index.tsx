@@ -1,10 +1,10 @@
 import { useCurrentScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { NOTICE_DURATION } from '~const/screen';
 import { phrase } from '~lib/lang';
-import { IScreen, Notice, ScreenEvents } from '~type/screen';
+import { IScreen, Notice, ScreenEvents } from '~scene/screen/types';
 
+import { NOTICE_DURATION } from './const';
 import { Icon, Item, Wrapper } from './styles';
 
 export const Notices: React.FC = () => {

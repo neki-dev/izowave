@@ -1,32 +1,14 @@
-import { removeFailure, throwFailure } from '~lib/state';
-import { GamePlatform } from '~type/game';
-import { FailureType } from '~type/state';
+import { checkScreenOrientation } from '~lib/screen';
 
+import { Game } from './game';
 import pkg from '../package.json';
 
-import { Game } from '~game';
-
-const game = new Game();
-
-if (ENV_MODE === GamePlatform.DEVELOPMENT) {
-  window.GAME = game;
-}
-
-const checkScreenOrientation = (event?: MediaQueryListEvent) => {
-  if (event ? event.matches : window.innerWidth >= window.innerHeight) {
-    removeFailure(FailureType.BAD_SCREEN_SIZE);
-  } else {
-    throwFailure(FailureType.BAD_SCREEN_SIZE);
-  }
-};
+window.GAME = new Game();
 
 checkScreenOrientation();
-window.matchMedia('(orientation: landscape)')
-  .addEventListener('change', checkScreenOrientation);
 
-console.clear();
 console.log([
   `Created by ${pkg.author.name} / ${pkg.author.url}`,
-  `Build v${pkg.version}-${ENV_MODE}`,
+  `Build v${pkg.version}`,
   `Open-Source at ${pkg.repository.url.replace('git+', '')}`,
 ].join('\n'));

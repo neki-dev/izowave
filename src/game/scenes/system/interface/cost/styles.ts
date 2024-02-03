@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { InterfaceFont, InterfaceTextColor } from '~type/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   color: #fff;
