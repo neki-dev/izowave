@@ -21,8 +21,6 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build --mode vanilla",
-    "build:crazy_games": "vite build --mode crazy_games",
-    "build:poki": "vite build --mode poki",
     "test": "jest",
     "lint": "eslint \"./**/*.{js,ts,tsx}\" --ignore-path .gitignore --fix"
   },

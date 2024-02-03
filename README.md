@@ -1,6 +1,6 @@
+ 🟨 _After version 1.18.5, development has been moved to the private repository._
+
 ## ![IZOWAVE](./docs/logotype-large.png)
-[![Testing](https://github.com/neki-dev/izowave/actions/workflows/test.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/test.yml)
-[![Building](https://github.com/neki-dev/izowave/actions/workflows/build.yml/badge.svg)](https://github.com/neki-dev/izowave/actions/workflows/build.yml)
 
 Your task is to survive on chosen planet as many waves as possible. 
 With each wave count of enemies and their characteristics will grow.
@@ -14,6 +14,7 @@ And also upgrade skills of your character and his assistant.
 ## 🎮 [PLAY NOW](https://izowave.neki.guru/)
   * *Itch.io* / https://neki-dev.itch.io/izowave
   * *CrazyGames* / https://www.crazygames.com/game/izowave---build-and-defence
+  * *Poki* / https://poki.com/en/g/izowave-build-and-defend
 
 .
 
