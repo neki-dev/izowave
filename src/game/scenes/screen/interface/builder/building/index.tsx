@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { phrase } from '~lib/lang';
+import { LangPhrase } from '~lib/lang/types';
 import { Hint } from '~scene/system/interface/hint';
-import { LangPhrase } from '~type/lang';
-import { BuildingVariant } from '~type/world/entities/building';
+import { BuildingVariant } from '~scene/world/entities/building/types';
 
 import { Preview } from './preview';
 import {

@@ -1,11 +1,13 @@
-import { CONTROL_KEY } from '~const/controls';
-import { DIFFICULTY } from '~const/world/difficulty';
-import { BUILDING_TILE } from '~const/world/entities/building';
+import { Building } from '..';
+import { DIFFICULTY } from '../../../../../../const/world/difficulty';
+import { EntityType } from '../../types';
+import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~type/tutorial';
-import { IWorld, WorldMode } from '~type/world';
-import { EntityType } from '~type/world/entities';
+import { TutorialStep } from '~lib/tutorial/types';
+import { IWorld, WorldMode } from '~scene/world/types';
+
+import { BUILDING_TILE } from '../const';
 import {
   BuildingAudio,
   BuildingParam,
@@ -18,9 +20,7 @@ import {
   BuildingSavePayload,
   BuildingControl,
   BuildingCategory,
-} from '~type/world/entities/building';
-
-import { Building } from '../building';
+} from '../types';
 
 export class BuildingAmmunition extends Building implements IBuildingAmmunition {
   static Category = BuildingCategory.RESOURCES;

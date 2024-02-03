@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceLayer } from '~type/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceBackgroundColor, InterfaceFont, InterfaceLayer } from '~lib/interface/types';
 
 export const Backdrop = styled.div`
   position: fixed;

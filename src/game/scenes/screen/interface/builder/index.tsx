@@ -1,15 +1,15 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { BUILDINGS } from '~const/world/entities/buildings';
+import { IGame, GameScene } from '../../../../types';
 import { phrase } from '~lib/lang';
+import { LangPhrase } from '~lib/lang/types';
 import { Tutorial } from '~lib/tutorial';
+import { TutorialStep } from '~lib/tutorial/types';
 import { mapEntries } from '~lib/utils';
-import { GameScene, IGame } from '~type/game';
-import { LangPhrase } from '~type/lang';
-import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
-import { BuildingCategory, BuildingVariant } from '~type/world/entities/building';
+import { BUILDINGS } from '~scene/world/entities/building/factory/const';
+import { BuildingVariant, BuildingCategory } from '~scene/world/entities/building/types';
+import { IWorld } from '~scene/world/types';
 
 import { Building } from './building';
 import {
@@ -109,7 +109,11 @@ export const Builder: React.FC = () => {
                 key={building.variant}
                 variant={building.variant}
                 number={building.number}
-                hint={hintBuilding?.variant === building.variant ? hintBuilding.label : undefined}
+                hint={
+                  (hintBuilding && hintBuilding.variant === building.variant)
+                    ? hintBuilding.label
+                    : undefined
+                }
               />
             ))}
           </Variants>

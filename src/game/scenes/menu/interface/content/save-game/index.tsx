@@ -3,16 +3,15 @@ import React, {
   useRef, ChangeEvent, useEffect, useState,
 } from 'react';
 
-import { MAX_GAME_SAVES } from '~const/game';
-import { Environment } from '~lib/environment';
+import { MAX_GAME_SAVES } from '../../../../../const';
+import { IGame } from '../../../../../types';
 import { phrase } from '~lib/lang';
+import { LangPhrase } from '~lib/lang/types';
 import { Storage } from '~lib/storage';
+import { StorageSave } from '~lib/storage/types';
 import { Button } from '~scene/system/interface/button';
 import { Confirm } from '~scene/system/interface/confirm';
 import { Table } from '~scene/system/interface/table';
-import { IGame } from '~type/game';
-import { LangPhrase } from '~type/lang';
-import { StorageSave } from '~type/storage';
 
 import { Input, Limit, Wrapper } from './styles';
 
@@ -28,10 +27,7 @@ export const SaveGame: React.FC = () => {
 
   const refInput = useRef<HTMLInputElement>();
 
-  const reachedLimit = (
-    saves.length >= MAX_GAME_SAVES
-    && Environment.Platform !== 'development'
-  );
+  const reachedLimit = (saves.length >= MAX_GAME_SAVES);
 
   const onSelectSave = (save: StorageSave) => {
     setSaveName(save.name);

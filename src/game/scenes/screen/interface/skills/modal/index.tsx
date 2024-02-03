@@ -1,11 +1,11 @@
 import { useClick, useCurrentScene, useEvent } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
-import { PLAYER_SKILLS } from '~const/world/entities/player';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { mapEntries } from '~lib/utils';
-import { PlayerSkillTarget } from '~type/world/entities/player';
+import { PLAYER_SKILLS } from '~scene/world/entities/player/const';
+import { PlayerSkillTarget } from '~scene/world/entities/player/types';
 
 import { Item } from './item';
 import {

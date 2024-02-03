@@ -2,13 +2,11 @@
 import Heap from 'heap';
 
 import { getDistance } from '~lib/dimension';
-import {
-  NavigatorTaskData, NavigatorEvent, NavigatorPayloadCompleteTask,
-} from '~type/navigator';
-import { PositionAtMatrix } from '~type/world/level';
+import { PositionAtMatrix } from '~scene/world/level/types';
 
 import { PathNode } from './node';
 import { getCost, getSimpleCost } from './tools';
+import { NavigatorTaskData, NavigatorPayloadCompleteTask, NavigatorEvent } from './types';
 
 export class NavigatorTask {
   readonly from: PositionAtMatrix;

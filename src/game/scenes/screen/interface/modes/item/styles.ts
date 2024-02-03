@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
-import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
 
 export const Placeholder = styled.div`
   font-family: ${InterfaceFont.PIXEL_TEXT};

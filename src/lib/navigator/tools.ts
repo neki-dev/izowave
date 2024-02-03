@@ -1,5 +1,5 @@
 import { eachEntries } from '~lib/utils';
-import { PositionAtMatrix } from '~type/world/level';
+import { PositionAtMatrix } from '~scene/world/level/types';
 
 import { PathNode } from './node';
 

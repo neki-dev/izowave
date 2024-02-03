@@ -1,9 +1,9 @@
 import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { GameScene } from '~type/game';
-import { IWorld } from '~type/world';
-import { PlayerEvents, PlayerSuperskill } from '~type/world/entities/player';
+import { GameScene } from '../../../../types';
+import { PlayerSuperskill, PlayerEvents } from '~scene/world/entities/player/types';
+import { IWorld } from '~scene/world/types';
 
 import { Item } from './item';
 import { Wrapper } from './styles';

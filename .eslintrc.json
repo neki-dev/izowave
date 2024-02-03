@@ -1,6 +1,7 @@
 {
   "extends": ["neki/ts"],
   "rules": {
+    "import/no-cycle": "off",
     "no-new": "off",
     "no-console": "off",
     "default-case": "off",

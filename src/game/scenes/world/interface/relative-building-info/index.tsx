@@ -3,11 +3,11 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~const/interface';
+import { GameScene } from '../../../../types';
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~lib/interface/const';
 import { BuildingInfo } from '~scene/system/interface/building-info';
-import { GameScene } from '~type/game';
-import { IWorld, WorldEvents } from '~type/world';
-import { IBuilding } from '~type/world/entities/building';
+import { IBuilding } from '~scene/world/entities/building/types';
+import { IWorld, WorldEvents } from '~scene/world/types';
 
 import { TranslateToScreen } from './translate-to-screen';
 

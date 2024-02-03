@@ -1,12 +1,10 @@
-import { CONTROL_KEY } from '~const/controls';
-import { Scene } from '~game/scenes';
+import { Scene } from '..';
+import { GameScene, GameState } from '../../types';
 import { Assets } from '~lib/assets';
-import { SDK } from '~lib/sdk';
-import { removeLoading, setLoadingStatus } from '~lib/state';
+import { CONTROL_KEY } from '~lib/controls/const';
+import { InterfaceFont } from '~lib/interface/types';
 import { Storage } from '~lib/storage';
-import { GameScene, GameState } from '~type/game';
-import { InterfaceFont } from '~type/interface';
-import { MenuPage } from '~type/menu';
+import { MenuPage } from '~scene/menu/types';
 
 export class System extends Scene {
   constructor() {
@@ -15,7 +13,7 @@ export class System extends Scene {
 
   public async preload() {
     this.load.on('progress', (value: number) => {
-      setLoadingStatus(`LOADING\n${Math.round(value * 100)}%`);
+      System.SetLoadingStatus(`LOADING\n${Math.round(value * 100)}%`);
     });
 
     this.load.addPack([{
@@ -31,7 +29,7 @@ export class System extends Scene {
   }
 
   public async create() {
-    setLoadingStatus('LOADING\nDONE');
+    System.SetLoadingStatus('LOADING\nDONE');
 
     await Storage.Register()
       .then(() => Storage.LoadSaves());
@@ -43,9 +41,7 @@ export class System extends Scene {
 
     this.scene.bringToTop();
 
-    SDK.ToggleLoadState(false);
-
-    removeLoading();
+    System.RemoveLoading();
 
     if (!this.game.isDesktop()) {
       this.input.addPointer(1);
@@ -72,5 +68,21 @@ export class System extends Scene {
         }
       }
     });
+  }
+
+  private static SetLoadingStatus(text: string) {
+    const status = document.getElementById('loading-status');
+
+    if (status) {
+      status.innerText = text;
+    }
+  }
+
+  private static RemoveLoading() {
+    const overlay = document.getElementById('loading');
+
+    if (overlay) {
+      overlay.remove();
+    }
   }
 }

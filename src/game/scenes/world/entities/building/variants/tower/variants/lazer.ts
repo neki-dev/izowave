@@ -1,14 +1,10 @@
-import { DIFFICULTY } from '~const/world/difficulty';
-import { ShotLazer } from '~entity/shot/lazer';
-import { IWorld } from '~type/world';
+import { BuildingTower } from '..';
+import { DIFFICULTY } from '../../../../../../../../const/world/difficulty';
 import {
-  BuildingCategory,
-  BuildingTexture,
-  BuildingVariant,
-  BuildingVariantData,
-} from '~type/world/entities/building';
-
-import { BuildingTower } from '../tower';
+  BuildingCategory, BuildingTexture, BuildingVariant, BuildingVariantData,
+} from '../../../types';
+import { ShotLazer } from '~scene/world/entities/shot/lazer';
+import { IWorld } from '~scene/world/types';
 
 export class BuildingTowerLazer extends BuildingTower {
   static Category = BuildingCategory.ATTACK;

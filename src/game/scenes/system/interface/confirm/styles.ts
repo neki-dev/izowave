@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceLayer } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont, InterfaceLayer } from '~lib/interface/types';
 
 export const Overlay = styled.div`
   position: fixed;

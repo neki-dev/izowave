@@ -3,11 +3,11 @@ import React, {
   useEffect, useMemo, useRef, useState,
 } from 'react';
 
-import { GameScene } from '~type/game';
-import { IWorld } from '~type/world';
-import { PlayerEvents } from '~type/world/entities/player';
+import { GameScene } from '../../../../types';
+import { PlayerEvents } from '~scene/world/entities/player/types';
+import { IWorld } from '~scene/world/types';
 
-import { Wrapper, Icon, Value } from './styles';
+import * as styles from './styles';
 
 type Props = {
   type: 'RESOURCES' | 'EXPERIENCE'
@@ -39,9 +39,9 @@ export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
   }, [value]);
 
   return (
-    <Wrapper>
-      <Icon src={`assets/sprites/hud/${type.toLowerCase()}.png`} />
-      <Value $attention={!isEnough}>{value}</Value>
-    </Wrapper>
+    <styles.Wrapper>
+      <styles.Icon src={`assets/sprites/hud/${type.toLowerCase()}.png`} />
+      <styles.Value $attention={!isEnough}>{value}</styles.Value>
+    </styles.Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
 
 export const Container = styled.div`
   background: ${InterfaceBackgroundColor.BLACK};

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { GameSettings } from '~type/game';
+import { GameSettings } from '../../../../../types';
 
 import { Param } from './param';
 import { Wrapper } from './styles';

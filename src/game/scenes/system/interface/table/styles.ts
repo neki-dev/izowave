@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceFont } from '~type/interface';
+import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
 
 export const Table: any = styled.table`
   width: 100%;

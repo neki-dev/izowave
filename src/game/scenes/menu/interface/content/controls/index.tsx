@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CONTROLS } from '~const/controls';
+import { CONTROLS } from '~lib/controls/const';
 import { phrase } from '~lib/lang';
 
 import {

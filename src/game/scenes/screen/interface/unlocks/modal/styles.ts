@@ -1,9 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT } from '~const/interface';
+import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
 import {
   InterfaceBackgroundColor, InterfaceFont, InterfaceLayer,
-} from '~type/interface';
+} from '~lib/interface/types';
 
 const animationOpacity = keyframes`
   0% { opacity: 0; }

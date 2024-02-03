@@ -1,15 +1,12 @@
-import { DIFFICULTY } from '~const/world/difficulty';
-import { Building } from '~entity/building';
-import { Analytics } from '~lib/analytics';
+import { Building } from '..';
+import { DIFFICULTY } from '../../../../../../const/world/difficulty';
 import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { TutorialStep } from '~lib/tutorial/types';
+import { IWorld } from '~scene/world/types';
+
 import {
-  BuildingTexture,
-  BuildingVariant,
-  BuildingVariantData,
-  BuildingCategory,
-} from '~type/world/entities/building';
+  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+} from '../types';
 
 export class BuildingGenerator extends Building {
   static Category = BuildingCategory.RESOURCES;
@@ -54,7 +51,7 @@ export class BuildingGenerator extends Building {
         this.pauseActions();
       }
     } catch (error) {
-      Analytics.TrackWarn('Failed to update generator generator', error as TypeError);
+      console.warn('Failed to update generator generator', error as TypeError);
     }
   }
 

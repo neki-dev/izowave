@@ -2,10 +2,10 @@ import { useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { GameScene } from '~type/game';
-import { IWorld } from '~type/world';
-import { EntityType } from '~type/world/entities';
-import { CrystalAmount, CrystalEvents, ICrystal } from '~type/world/entities/crystal';
+import { GameScene } from '../../../../types';
+import { CrystalAmount, ICrystal, CrystalEvents } from '~scene/world/entities/crystal/types';
+import { EntityType } from '~scene/world/entities/types';
+import { IWorld } from '~scene/world/types';
 
 import { Amount } from './amount';
 

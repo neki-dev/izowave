@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BuildingControl } from '~type/world/entities/building';
+import { BuildingControl } from '~scene/world/entities/building/types';
 
 import { Action } from './action';
 import { Wrapper } from './styles';

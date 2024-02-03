@@ -1,8 +1,6 @@
 import React from 'react';
 
 import pkg from '../../../../../../package.json';
-import { Environment } from '~lib/environment';
-import { GameFlag } from '~type/game';
 
 import {
   Wrapper, Icon, About, Discord, Author, Link,
@@ -13,11 +11,9 @@ export const Copyright: React.FC = () => (
     <About>
       <Author>
         Created by{' '}
-        {Environment.GetFlag(GameFlag.COPYRIGHT) ? (
-          <Link href={pkg.author.url} target="_blank">
-            {pkg.author.name}
-          </Link>
-        ) : pkg.author.name}
+        <Link href={pkg.author.url} target="_blank">
+          {pkg.author.name}
+        </Link>
       </Author>
       Version {pkg.version}
     </About>

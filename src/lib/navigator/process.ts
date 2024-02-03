@@ -1,6 +1,6 @@
 /* eslint-disable no-continue */
 import { isPositionsEqual } from '~lib/dimension';
-import { PositionAtMatrix } from '~type/world/level';
+import { PositionAtMatrix } from '~scene/world/level/types';
 
 import { NavigatorTask } from './task';
 import { getDirections } from './tools';

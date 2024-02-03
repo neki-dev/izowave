@@ -1,7 +1,7 @@
 import { Interface } from 'phaser-react-ui';
 
-import { Scene } from '~game/scenes';
-import { GameScene } from '~type/game';
+import { Scene } from '..';
+import { GameScene } from '../../types';
 
 import { GameoverUI } from './interface';
 

@@ -3,14 +3,14 @@ import {
 } from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
-import { PLAYER_MAX_SKILL_LEVEL } from '~const/world/entities/player';
+import { GameScene } from '../../../../../../types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { GameScene } from '~type/game';
-import { IWorld } from '~type/world';
+import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
 import {
-  PlayerEvents, PlayerSkill, PlayerSkillData, PlayerSkillIcon,
-} from '~type/world/entities/player';
+  PlayerSkill, PlayerSkillData, PlayerEvents, PlayerSkillIcon,
+} from '~scene/world/entities/player/types';
+import { IWorld } from '~scene/world/types';
 
 import {
   Container, Info, Action, Label, Level, Button, Limit, Icon, Head,

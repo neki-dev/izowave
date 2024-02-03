@@ -1,16 +1,12 @@
-import { DIFFICULTY } from '~const/world/difficulty';
-import { ShotBallFire } from '~entity/shot/ball/variants/fire';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~type/tutorial';
-import { IWorld } from '~type/world';
+import { BuildingTower } from '..';
+import { DIFFICULTY } from '../../../../../../../../const/world/difficulty';
 import {
-  BuildingCategory,
-  BuildingTexture,
-  BuildingVariant,
-  BuildingVariantData,
-} from '~type/world/entities/building';
-
-import { BuildingTower } from '../tower';
+  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+} from '../../../types';
+import { Tutorial } from '~lib/tutorial';
+import { TutorialStep } from '~lib/tutorial/types';
+import { ShotBallFire } from '~scene/world/entities/shot/ball/variants/fire';
+import { IWorld } from '~scene/world/types';
 
 export class BuildingTowerFire extends BuildingTower {
   static Category = BuildingCategory.ATTACK;

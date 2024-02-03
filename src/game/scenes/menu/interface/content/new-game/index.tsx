@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 import { useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
+import { IGame, GameDifficulty } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
-import { GameDifficulty, IGame } from '~type/game';
-import { LevelPlanet } from '~type/world/level';
+import { LevelPlanet } from '~scene/world/level/types';
 
 import { Param } from './param';
 import { Record } from './record';

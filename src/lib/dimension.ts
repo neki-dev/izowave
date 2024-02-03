@@ -1,5 +1,5 @@
-import { LEVEL_MAP_PERSPECTIVE } from '~const/world/level';
-import { PositionAtWorld, PositionAtMatrix, PositionAtWorldTransform } from '~type/world/level';
+import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
+import { PositionAtWorld, PositionAtMatrix, PositionAtWorldTransform } from '~scene/world/level/types';
 
 /**
  * Check positions is equals.

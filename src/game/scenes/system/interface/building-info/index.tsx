@@ -1,14 +1,10 @@
 import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { GameScene } from '../../../../types';
 import { phrase } from '~lib/lang';
-import { GameScene } from '~type/game';
-import { IWorld } from '~type/world';
-import {
-  BuildingControl,
-  BuildingParam,
-  IBuilding,
-} from '~type/world/entities/building';
+import { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
+import { IWorld } from '~scene/world/types';
 
 import { Controls } from './controls';
 import { Params } from './params';

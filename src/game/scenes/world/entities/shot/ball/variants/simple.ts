@@ -1,6 +1,6 @@
-import { IWorld } from '~type/world';
-import { IEnemy } from '~type/world/entities/npc/enemy';
-import { ShotBallAudio, ShotData, ShotParams } from '~type/world/entities/shot';
+import { ShotParams, ShotData, ShotBallAudio } from '../../types';
+import { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import { IWorld } from '~scene/world/types';
 
 import { ShotBall } from '../ball';
 

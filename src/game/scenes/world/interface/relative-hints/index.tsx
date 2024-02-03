@@ -1,8 +1,8 @@
 import { useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { GameScene } from '~type/game';
-import { IWorld, WorldEvents, WorldHint } from '~type/world';
+import { GameScene } from '../../../../types';
+import { IWorld, WorldEvents, WorldHint } from '~scene/world/types';
 
 import { RelativeHint } from './relative-hint';
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT } from '~const/interface';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~type/interface';
+import { INTERFACE_DESKTOP_BREAKPOINT } from '~lib/interface/const';
+import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Info = styled.div`
   position: absolute;

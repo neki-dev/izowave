@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceFont, InterfaceBackgroundColor, InterfaceTextColor } from '~type/interface';
+import { InterfaceFont, InterfaceBackgroundColor, InterfaceTextColor } from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   display: flex;

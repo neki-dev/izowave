@@ -3,11 +3,11 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
+import { IGame, GameScene, GameEvents } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { GameEvents, GameScene, IGame } from '~type/game';
-import { IWorld } from '~type/world';
-import { PlayerEvents, PlayerSuperskill, PlayerSuperskillIcon } from '~type/world/entities/player';
+import { PlayerSuperskill, PlayerEvents, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
+import { IWorld } from '~scene/world/types';
 
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,

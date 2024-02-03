@@ -4,7 +4,7 @@ import {
   InterfaceFont,
   InterfaceTextColor,
   InterfaceBackgroundColor,
-} from '~type/interface';
+} from '~lib/interface/types';
 
 export const Wrapper = styled.div`
 `;
