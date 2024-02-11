@@ -1,5 +1,5 @@
 import { Assets } from '~lib/assets';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   ParticlesTexture, IParticles, IParticlesParent, ParticlesData,

@@ -1,7 +1,7 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { LangPhrase } from '~lib/lang/types';
-import { IScene } from '~scene/types';
+import type { LangPhrase } from '~lib/lang/types';
+import type { IScene } from '~scene/types';
 
 export interface IScreen extends IScene {
   /**
@@ -26,7 +26,7 @@ export enum ScreenAudio {
   ERROR = 'interface/error',
 }
 
-export enum ScreenEvents {
+export enum ScreenEvent {
   NOTICE = 'notice',
 }
 

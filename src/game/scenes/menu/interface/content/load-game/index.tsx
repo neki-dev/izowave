@@ -1,7 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import { IGame } from '../../../../../types';
+import type { IGame } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { LangPhrase } from '~lib/lang/types';
 import { Storage } from '~lib/storage';

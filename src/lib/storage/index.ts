@@ -1,6 +1,6 @@
 import { openDB, IDBPDatabase } from 'idb';
 
-import { IGame } from '../../game/types';
+import type { IGame } from '../../game/types';
 
 import { StorageSave, StorageSavePayload } from './types';
 

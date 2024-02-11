@@ -4,10 +4,10 @@ import {
   BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant, BuildingParam, BuildingIcon, BuildingAudio,
 } from '../../../types';
 import { progressionLinear } from '~lib/progression';
-import { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 export class BuildingTowerElectro extends BuildingTower {
   static Category = BuildingCategory.ATTACK;

@@ -1,6 +1,6 @@
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
-import { EnemyVariantData, IEnemy } from '../types';
+import type { EnemyVariantData, IEnemy } from '../types';
 
 export interface IEnemyFactory {
   SpawnWaveRange?: number[]

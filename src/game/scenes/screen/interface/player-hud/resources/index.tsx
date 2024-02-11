@@ -7,7 +7,7 @@ import { TutorialStep } from '~lib/tutorial/types';
 import { Amount } from '~scene/system/interface/amount';
 import { Hint } from '~scene/system/interface/hint';
 import { PlayerEvents } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Wrapper } from './styles';
 

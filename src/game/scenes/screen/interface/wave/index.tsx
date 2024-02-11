@@ -3,13 +3,14 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { IGame, GameScene, GameEvents } from '../../../../types';
+import type { IGame } from '../../../../types';
+import { GameScene, GameEvent } from '../../../../types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 import { Hint } from '~scene/system/interface/hint';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
 
 import {
@@ -49,7 +50,7 @@ export const Wave: React.FC = () => {
     })
   ), []);
 
-  useEvent(game.events, GameEvents.TOGGLE_PAUSE, (paused: boolean) => {
+  useEvent(game.events, GameEvent.TOGGLE_PAUSE, (paused: boolean) => {
     setGamePaused(paused);
   }, []);
 

@@ -1,7 +1,7 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { PositionAtWorld } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 
 export interface IParticles {
   readonly scene: IWorld

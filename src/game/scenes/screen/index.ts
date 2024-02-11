@@ -8,7 +8,7 @@ import { INTERFACE_SCALE } from '~lib/interface/const';
 import { LangPhrase } from '~lib/lang/types';
 
 import { ScreenUI } from './interface';
-import { ScreenAudio, IScreen, ScreenEvents } from './types';
+import { ScreenAudio, IScreen, ScreenEvent } from './types';
 
 Assets.RegisterAudio(ScreenAudio);
 
@@ -44,7 +44,7 @@ export class Screen extends Scene implements IScreen {
   public failure(text?: LangPhrase, format?: any[]) {
     this.sound.play(ScreenAudio.ERROR);
     if (text) {
-      this.events.emit(ScreenEvents.NOTICE, { text, format });
+      this.events.emit(ScreenEvent.NOTICE, { text, format });
     }
   }
 

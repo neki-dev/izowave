@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { IGame } from '../types';
+import type { IGame } from '../types';
 
 export interface IScene extends Phaser.Scene {
   readonly game: IGame

@@ -1,7 +1,7 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 
 export interface ICrystal extends Phaser.GameObjects.Image {
   readonly scene: IWorld

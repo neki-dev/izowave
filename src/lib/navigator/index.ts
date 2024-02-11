@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { PositionAtMatrix } from '~scene/world/level/types';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
 import {
   INavigator,

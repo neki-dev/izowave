@@ -2,7 +2,7 @@ import { Enemy } from '..';
 import { getIsometricDistance } from '~lib/dimension';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_REGENERATION_RADIUS, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_REGENERATION_EFFECT_COLOR } from '../const';
 import { EnemyVariantData, EnemyTexture, IEnemy } from '../types';
@@ -56,7 +56,7 @@ export class EnemyTelepath extends Enemy {
     this.regenerateArea.setPosition(position.x, position.y);
   }
 
-  public onDamage(amount: number) {
+  protected onDamage(amount: number) {
     this.healNearbyEnemies(amount);
     super.onDamage(amount);
   }

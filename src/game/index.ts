@@ -9,14 +9,14 @@ import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';
 import { Screen } from '~scene/screen';
-import { IScreen } from '~scene/screen/types';
+import type { IScreen } from '~scene/screen/types';
 import { System } from '~scene/system';
 import { World } from '~scene/world';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
 import {
-  IGame, GameDifficulty, GameState, GameSettings, GameScene, GameEvents, GameStat, GameSavePayload,
+  IGame, GameDifficulty, GameState, GameSettings, GameScene, GameEvent, GameStat, GameSavePayload,
 } from './types';
 
 export class Game extends Phaser.Game implements IGame {
@@ -93,11 +93,11 @@ export class Game extends Phaser.Game implements IGame {
       this.sound.mute = !this.isSettingEnabled(GameSettings.AUDIO);
     });
 
-    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (enabled: boolean) => {
+    this.events.on(`${GameEvent.UPDATE_SETTINGS}.${GameSettings.AUDIO}`, (enabled: boolean) => {
       this.sound.mute = !enabled;
     });
 
-    this.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (enabled: boolean) => {
+    this.events.on(`${GameEvent.UPDATE_SETTINGS}.${GameSettings.TUTORIAL}`, (enabled: boolean) => {
       if (enabled) {
         Tutorial.Enable();
       } else {
@@ -240,7 +240,7 @@ export class Game extends Phaser.Game implements IGame {
 
     this.setState(GameState.FINISHED);
 
-    this.events.emit(GameEvents.FINISH);
+    this.events.emit(GameEvent.FINISH);
 
     const record = this.getRecordStat();
     const stat = this.getCurrentStat();
@@ -252,7 +252,7 @@ export class Game extends Phaser.Game implements IGame {
   }
 
   public toggleSystemPause(state: boolean) {
-    this.events.emit(GameEvents.TOGGLE_PAUSE, state);
+    this.events.emit(GameEvent.TOGGLE_PAUSE, state);
 
     if (state) {
       this.pause();
@@ -272,7 +272,7 @@ export class Game extends Phaser.Game implements IGame {
     this.state = state;
 
     if (prevPauseState !== nextPauseState) {
-      this.events.emit(GameEvents.TOGGLE_PAUSE, nextPauseState);
+      this.events.emit(GameEvent.TOGGLE_PAUSE, nextPauseState);
     }
   }
 
@@ -292,7 +292,7 @@ export class Game extends Phaser.Game implements IGame {
     this.settings[key] = value;
     localStorage.setItem(`SETTINGS.${key}`, value ? 'on' : 'off');
 
-    this.events.emit(`${GameEvents.UPDATE_SETTINGS}.${key}`, value);
+    this.events.emit(`${GameEvent.UPDATE_SETTINGS}.${key}`, value);
   }
 
   public isSettingEnabled(key: GameSettings) {

@@ -1,5 +1,5 @@
 import { Enemy } from '..';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_HEAL_MULTIPLIER, ENEMY_HEAL_TIMESTAMP_PAUSE } from '../const';
 import { EnemyVariantData, EnemyTexture } from '../types';

@@ -1,21 +1,22 @@
 import { NPC } from '..';
 import { DIFFICULTY } from '../../../../../../const/difficulty';
-import { IPlayer, PlayerSkill } from '../../player/types';
+import type { IPlayer } from '../../player/types';
+import { PlayerSkill } from '../../player/types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotLazer } from '../../shot/lazer';
-import { IShot, ShotParams, IShotFactory } from '../../shot/types';
+import type { IShot, ShotParams, IShotFactory } from '../../shot/types';
 import { EntityType } from '../../types';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
-import { IWorld } from '~scene/world/types';
-import { WaveEvents } from '~scene/world/wave/types';
+import type { IWorld } from '~scene/world/types';
+import { WaveEvent } from '~scene/world/wave/types';
 
 import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
 import {
   AssistantTexture, IAssistant, AssistantVariant, AssistantData, AssistantEvents,
 } from './types';
-import { IEnemy } from '../enemy/types';
+import type { IEnemy } from '../enemy/types';
 
 Assets.RegisterSprites(AssistantTexture, ASSISTANT_TILE_SIZE);
 
@@ -54,7 +55,7 @@ export class Assistant extends NPC implements IAssistant {
     this.registerAnimations();
     this.updateVariant();
 
-    this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
+    this.scene.wave.on(WaveEvent.COMPLETE, this.onWaveComplete.bind(this));
   }
 
   public update() {

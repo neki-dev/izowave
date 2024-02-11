@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { GameScene } from '../../../../../types';
 import { Amount } from '~scene/system/interface/amount';
 import { PlayerEvents } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 export const Experience: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

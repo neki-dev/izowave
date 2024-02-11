@@ -3,9 +3,9 @@ import 'jest-canvas-mock';
 import { registerHelper } from './helpers/wave';
 import world from '../../__mocks__/world';
 import { Wave } from '..';
-import { IWave, WaveEvents } from '../types';
+import type { IWave, WaveEvent } from '../types';
 import { DIFFICULTY } from '../../../../../const/difficulty';
-import { IWorld } from '../../types';
+import type { IWorld } from '../../types';
 import { progressionLinear } from '../../../../../lib/progression';
 import { Tutorial } from '../../../../../lib/tutorial';
 
@@ -63,7 +63,7 @@ describe('world / wave', () => {
     expect(wave.isGoing).toEqual(true);
     // @ts-ignore
     expect(wave.enemiesMaxCount).toEqual(DIFFICULTY.WAVE_ENEMIES_COUNT);
-    expect(wave.emit).toBeCalledWith(WaveEvents.START, 1);
+    expect(wave.emit).toBeCalledWith(WaveEvent.START, 1);
   });
 
   it('should spawn enemies', () => {
@@ -84,7 +84,7 @@ describe('world / wave', () => {
     wave.update();
 
     expect(wave.isGoing).toEqual(false);
-    expect(wave.emit).toBeCalledWith(WaveEvents.COMPLETE, 1);
+    expect(wave.emit).toBeCalledWith(WaveEvent.COMPLETE, 1);
   });
 
   // it('should spawn boss on last wave of season', () => {

@@ -1,11 +1,11 @@
-import { IEffect } from './effect/types';
-import { IParticles, IParticlesParent } from './particles/types';
-import { IBuilding } from '../entities/building/types';
-import { IEnemy } from '../entities/npc/enemy/types';
-import { INPC } from '../entities/npc/types';
-import { IPlayer } from '../entities/player/types';
-import { ISprite } from '../entities/types';
-import { PositionAtWorld } from '../level/types';
+import type { IEffect } from './effect/types';
+import type { IParticles, IParticlesParent } from './particles/types';
+import type { IBuilding } from '../entities/building/types';
+import type { IEnemy } from '../entities/npc/enemy/types';
+import type { INPC } from '../entities/npc/types';
+import type { IPlayer } from '../entities/player/types';
+import type { ISprite } from '../entities/types';
+import type { PositionAtWorld } from '../level/types';
 
 export type SoundParams = Phaser.Types.Sound.SoundConfig & {
   limit?: number

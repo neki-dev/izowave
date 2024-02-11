@@ -16,7 +16,7 @@ import { BUILDINGS } from '../entities/building/factory/const';
 import {
   IBuilding, BuildingVariant, BuildingAudio, BuildingBuildData, BuildingIcon,
 } from '../entities/building/types';
-import { IEnemy } from '../entities/npc/enemy/types';
+import type { IEnemy } from '../entities/npc/enemy/types';
 import { PlayerSkill } from '../entities/player/types';
 import { EntityType } from '../entities/types';
 import { Level } from '../level';
@@ -24,7 +24,7 @@ import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '../level/const';
 import {
   PositionAtMatrix, BiomeType, TileType, PositionAtWorld,
 } from '../level/types';
-import { IWorld } from '../types';
+import type { IWorld } from '../types';
 
 export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   readonly scene: IWorld;

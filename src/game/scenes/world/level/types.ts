@@ -1,10 +1,10 @@
-import { World, WorldBiomeParams } from 'gen-biome';
+import type { World, WorldBiomeParams } from 'gen-biome';
 
-import { INavigator } from '~lib/navigator/types';
+import type { INavigator } from '~lib/navigator/types';
 
-import { ITileMatrix } from './tile-matrix/types';
-import { Effect } from '../fx-manager/effect';
-import { IWorld } from '../types';
+import type { ITileMatrix } from './tile-matrix/types';
+import type { Effect } from '../fx-manager/effect';
+import type { IWorld } from '../types';
 
 export interface ILevel extends ITileMatrix {
   readonly scene: IWorld

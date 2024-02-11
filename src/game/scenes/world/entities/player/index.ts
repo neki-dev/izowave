@@ -2,19 +2,21 @@ import Phaser from 'phaser';
 
 import { Sprite } from '..';
 import { DIFFICULTY } from '../../../../../const/difficulty';
-import { GameSettings, GameEvents } from '../../../../types';
+import { GameSettings, GameEvent } from '../../../../types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
-import { IParticles } from '~scene/world/fx-manager/particles/types';
+import type { IParticles } from '~scene/world/fx-manager/particles/types';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import { PositionAtMatrix, PositionAtWorld, TileType } from '~scene/world/level/types';
-import { IWorld, WorldMode, WorldEvents } from '~scene/world/types';
-import { WaveEvents } from '~scene/world/wave/types';
+import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
+import { TileType } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
+import { WorldMode, WorldEvent } from '~scene/world/types';
+import { WaveEvent } from '~scene/world/wave/types';
 
 import {
   PLAYER_TILE_SIZE,
@@ -37,8 +39,8 @@ import {
 } from './types';
 import { BuildingVariant } from '../building/types';
 import { Crystal } from '../crystal';
-import { ICrystal } from '../crystal/types';
-import { IEnemy } from '../npc/enemy/types';
+import type { ICrystal } from '../crystal/types';
+import type { IEnemy } from '../npc/enemy/types';
 import { EntityType } from '../types';
 
 Assets.RegisterAudio(PlayerAudio);
@@ -178,7 +180,7 @@ export class Player extends Sprite implements IPlayer {
       enemy.overlapTarget();
     });
 
-    this.scene.wave.on(WaveEvents.COMPLETE, this.onWaveComplete.bind(this));
+    this.scene.wave.on(WaveEvent.COMPLETE, this.onWaveComplete.bind(this));
   }
 
   public update() {
@@ -470,7 +472,7 @@ export class Player extends Sprite implements IPlayer {
     this.upgradeLevel[type] = level;
   }
 
-  public onDamage(amount: number) {
+  protected onDamage(amount: number) {
     this.scene.camera.shake();
 
     this.scene.fx.createBloodEffect(this);
@@ -485,7 +487,7 @@ export class Player extends Sprite implements IPlayer {
     super.onDamage(amount);
   }
 
-  public onDead() {
+  protected onDead() {
     this.scene.fx.playSound(PlayerAudio.DEAD);
 
     this.setVelocity(0, 0);
@@ -795,10 +797,10 @@ export class Player extends Sprite implements IPlayer {
       }
     };
 
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
+    this.scene.game.events.on(`${GameEvent.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.game.events.off(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
+      this.scene.game.events.off(`${GameEvent.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, handler);
     });
   }
 
@@ -816,10 +818,10 @@ export class Player extends Sprite implements IPlayer {
       }
     };
 
-    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+    this.scene.events.on(WorldEvent.TOGGLE_MODE, handler);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
+      this.scene.events.off(WorldEvent.TOGGLE_MODE, handler);
     });
   }
 

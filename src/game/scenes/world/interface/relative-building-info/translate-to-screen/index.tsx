@@ -3,7 +3,7 @@ import React from 'react';
 
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { BuildingInfo } from '~scene/system/interface/building-info';
-import { IBuilding } from '~scene/world/entities/building/types';
+import type { IBuilding } from '~scene/world/entities/building/types';
 
 import { Wrapper } from './styles';
 

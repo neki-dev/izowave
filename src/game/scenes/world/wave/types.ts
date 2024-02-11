@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { IWorld } from '../types';
+import type { IWorld } from '../types';
 
 export interface IWave extends Phaser.Events.EventEmitter {
   readonly scene: IWorld
@@ -63,7 +63,7 @@ export interface IWave extends Phaser.Events.EventEmitter {
   loadSavePayload(data: WaveSavePayload): void
 }
 
-export enum WaveEvents {
+export enum WaveEvent {
   START = 'start',
   COMPLETE = 'complete',
 }

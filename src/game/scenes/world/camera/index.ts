@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
 import { Level } from '~scene/world/level';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { CAMERA_MIN_ZOOM, CAMERA_MAX_ZOOM } from './const';
-import { ICamera } from './types';
+import type { ICamera } from './types';
 
 export class Camera implements ICamera {
   private scene: IWorld;

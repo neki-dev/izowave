@@ -1,6 +1,6 @@
 import world from '../../../__mocks__/world';
 import { DIFFICULTY } from '../../../../../../const/difficulty';
-import { IWave } from '../../types';
+import type { IWave } from '../../types';
 
 export function registerHelper(wave: IWave) {
   return {

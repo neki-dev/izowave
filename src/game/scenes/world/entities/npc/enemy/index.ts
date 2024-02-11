@@ -11,7 +11,7 @@ import { InterfaceFont } from '~lib/interface/types';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
 import {
@@ -203,7 +203,7 @@ export class Enemy extends NPC implements IEnemy {
     }
   }
 
-  public onDamage(amount: number) {
+  protected onDamage(amount: number) {
     if (this.scene.game.isSettingEnabled(GameSettings.SHOW_DAMAGE)) {
       this.updateDamageLabel(amount);
     }
@@ -211,7 +211,7 @@ export class Enemy extends NPC implements IEnemy {
     super.onDamage(amount);
   }
 
-  public onDead() {
+  protected onDead() {
     const experience = progressionLinear({
       defaultValue: DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
       scale: DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,

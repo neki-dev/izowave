@@ -1,4 +1,4 @@
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { BUILDINGS } from './const';
 import { BuildingVariant, BuildingVariantData } from '../types';

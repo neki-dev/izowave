@@ -1,6 +1,6 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { TilePosition, TileType } from '../types';
+import type { TilePosition, TileType } from '../types';
 
 export interface ITileMatrix {
   /**

@@ -6,7 +6,7 @@ import {
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { ShotBallFire } from '~scene/world/entities/shot/ball/variants/fire';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 export class BuildingTowerFire extends BuildingTower {
   static Category = BuildingCategory.ATTACK;

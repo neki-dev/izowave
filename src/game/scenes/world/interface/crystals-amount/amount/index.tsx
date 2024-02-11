@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { Cost } from '~scene/system/interface/cost';
-import { PositionAtWorld } from '~scene/world/level/types';
+import type { PositionAtWorld } from '~scene/world/level/types';
 
 import { Container } from './styles';
 

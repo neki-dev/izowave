@@ -1,6 +1,6 @@
 import { Enemy } from '..';
 import { BuildingVariant } from '~scene/world/entities/building/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { EnemyVariantData, EnemyTexture } from '../types';
 

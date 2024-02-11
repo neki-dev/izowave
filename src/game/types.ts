@@ -1,7 +1,7 @@
-import { StorageSave } from '~lib/storage/types';
-import { TutorialStep, TutorialStepState } from '~lib/tutorial/types';
-import { IScreen } from '~scene/screen/types';
-import { IWorld } from '~scene/world/types';
+import type { StorageSave } from '~lib/storage/types';
+import type { TutorialStep, TutorialStepState } from '~lib/tutorial/types';
+import type { IScreen } from '~scene/screen/types';
+import type { IWorld } from '~scene/world/types';
 
 export interface IGame extends Phaser.Game {
   /**
@@ -124,7 +124,7 @@ export enum GameScene {
   MENU = 'MENU',
 }
 
-export enum GameEvents {
+export enum GameEvent {
   START = 'start',
   FINISH = 'finish',
   UPDATE_SETTINGS = 'update_settings',

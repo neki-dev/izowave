@@ -4,14 +4,14 @@ import { Effect } from './effect';
 import { EffectTexture } from './effect/types';
 import { Particles } from './particles';
 import { ParticlesTexture, IParticlesParent } from './particles/types';
-import { IFXManager, SoundParams } from './types';
-import { IBuilding } from '../entities/building/types';
-import { IEnemy } from '../entities/npc/enemy/types';
-import { INPC } from '../entities/npc/types';
-import { IPlayer } from '../entities/player/types';
-import { ISprite } from '../entities/types';
-import { PositionAtWorld } from '../level/types';
-import { IWorld } from '../types';
+import type { IFXManager, SoundParams } from './types';
+import type { IBuilding } from '../entities/building/types';
+import type { IEnemy } from '../entities/npc/enemy/types';
+import type { INPC } from '../entities/npc/types';
+import type { IPlayer } from '../entities/player/types';
+import type { ISprite } from '../entities/types';
+import type { PositionAtWorld } from '../level/types';
+import type { IWorld } from '../types';
 
 export class FXManager implements IFXManager {
   private scene: IWorld;

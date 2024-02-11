@@ -1,20 +1,20 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { LangPhrase } from '~lib/lang/types';
-import { StorageSavePayload } from '~lib/storage/types';
-import { IScene } from '~scene/types';
+import type { LangPhrase } from '~lib/lang/types';
+import type { StorageSavePayload } from '~lib/storage/types';
+import type { IScene } from '~scene/types';
 
-import { IBuilder } from './builder/types';
-import { ICamera } from './camera/types';
-import { BuildingSavePayload } from './entities/building/types';
-import { CrystalSavePayload } from './entities/crystal/types';
-import { IAssistant } from './entities/npc/assistant/types';
-import { IPlayer } from './entities/player/types';
-import { EntityType, ISprite } from './entities/types';
-import { IFXManager } from './fx-manager/types';
-import { ILevel, PositionAtWorld } from './level/types';
-import { ISpawner } from './spawner/types';
-import { IWave } from './wave/types';
+import type { IBuilder } from './builder/types';
+import type { ICamera } from './camera/types';
+import type { BuildingSavePayload } from './entities/building/types';
+import type { CrystalSavePayload } from './entities/crystal/types';
+import type { IAssistant } from './entities/npc/assistant/types';
+import type { IPlayer } from './entities/player/types';
+import type { EntityType, ISprite } from './entities/types';
+import type { IFXManager } from './fx-manager/types';
+import type { ILevel, PositionAtWorld } from './level/types';
+import type { ISpawner } from './spawner/types';
+import type { IWave } from './wave/types';
 
 export interface IWorld extends IScene {
   /**
@@ -167,7 +167,7 @@ export interface IWorld extends IScene {
   getSavePayload(): WorldSavePayload
 }
 
-export enum WorldEvents {
+export enum WorldEvent {
   SELECT_BUILDING = 'select_building',
   UNSELECT_BUILDING = 'unselect_building',
   SHOW_HINT = 'show_hint',
@@ -182,7 +182,7 @@ export enum WorldMode {
   PATH_TO_CRYSTAL = 'PATH_TO_CRYSTAL',
 }
 
-export enum WorldModeIcons {
+export enum WorldModeIcon {
   TIME_SCALE = 'world/modes/time_scale',
   BUILDING_INDICATORS = 'world/modes/building_indicators',
   AUTO_REPAIR = 'world/modes/auto_repair',

@@ -2,7 +2,8 @@ import { useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { GameScene } from '../../../../types';
-import { IWorld, WorldEvents, WorldHint } from '~scene/world/types';
+import type { IWorld, WorldHint } from '~scene/world/types';
+import { WorldEvent } from '~scene/world/types';
 
 import { RelativeHint } from './relative-hint';
 
@@ -33,12 +34,12 @@ export const RelativeHints: React.FC = () => {
   };
 
   useEffect(() => {
-    world.events.on(WorldEvents.SHOW_HINT, showHint);
-    world.events.on(WorldEvents.HIDE_HINT, hideHint);
+    world.events.on(WorldEvent.SHOW_HINT, showHint);
+    world.events.on(WorldEvent.HIDE_HINT, hideHint);
 
     return () => {
-      world.events.off(WorldEvents.SHOW_HINT, showHint);
-      world.events.off(WorldEvents.HIDE_HINT, hideHint);
+      world.events.off(WorldEvent.SHOW_HINT, showHint);
+      world.events.off(WorldEvent.HIDE_HINT, hideHint);
     };
   }, []);
 

@@ -1,8 +1,8 @@
-import { PositionAtMatrix } from '~scene/world/level/types';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
-import { ILive } from '../addons/live/types';
-import { IEnemyTarget } from '../npc/enemy/types';
-import { ISprite } from '../types';
+import type { ILive } from '../addons/live/types';
+import type { IEnemyTarget } from '../npc/enemy/types';
+import type { ISprite } from '../types';
 
 export interface IPlayer extends ISprite, IEnemyTarget {
   /**

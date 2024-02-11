@@ -1,16 +1,16 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { LangPhrase } from '~lib/lang/types';
-import { TutorialStep } from '~lib/tutorial/types';
-import { IParticlesParent } from '~scene/world/fx-manager/particles/types';
-import { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { LangPhrase } from '~lib/lang/types';
+import type { TutorialStep } from '~lib/tutorial/types';
+import type { IParticlesParent } from '~scene/world/fx-manager/particles/types';
+import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 
-import { IBuildingFactory } from './factory/types';
-import { IndicatorData } from '../addons/indicator/types';
-import { ILive } from '../addons/live/types';
-import { IEnemyTarget } from '../npc/enemy/types';
-import { IShotInitiator } from '../shot/types';
+import type { IBuildingFactory } from './factory/types';
+import type { IndicatorData } from '../addons/indicator/types';
+import type { ILive } from '../addons/live/types';
+import type { IEnemyTarget } from '../npc/enemy/types';
+import type { IShotInitiator } from '../shot/types';
 
 export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IParticlesParent, IShotInitiator {
   readonly scene: IWorld

@@ -1,11 +1,11 @@
 import { World, WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
-import { GameEvents, GameSettings } from '../../../types';
+import { GameEvent, GameSettings } from '../../../types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
-import { INavigator } from '~lib/navigator/types';
+import type { INavigator } from '~lib/navigator/types';
 
 import {
   LEVEL_MAP_TILE,
@@ -18,7 +18,7 @@ import {
   LEVEL_MAP_PERSPECTIVE,
 } from './const';
 import { TileMatrix } from './tile-matrix';
-import { ITile } from './tile-matrix/types';
+import type { ITile } from './tile-matrix/types';
 import {
   BiomeType,
   ILevel,
@@ -35,7 +35,7 @@ import {
   TileType,
 } from './types';
 import { Effect } from '../fx-manager/effect';
-import { IWorld } from '../types';
+import type { IWorld } from '../types';
 
 Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
 Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);
@@ -100,7 +100,7 @@ export class Level extends TileMatrix implements ILevel {
     this.addMapTiles();
     this.addScenery();
 
-    this.scene.game.events.on(`${GameEvents.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
+    this.scene.game.events.on(`${GameEvent.UPDATE_SETTINGS}.${GameSettings.EFFECTS}`, (value: string) => {
       if (value === 'off') {
         this.removeEffects();
       }

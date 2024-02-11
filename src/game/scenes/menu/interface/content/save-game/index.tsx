@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 
 import { MAX_GAME_SAVES } from '../../../../../const';
-import { IGame } from '../../../../../types';
+import type { IGame } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { LangPhrase } from '~lib/lang/types';
 import { Storage } from '~lib/storage';

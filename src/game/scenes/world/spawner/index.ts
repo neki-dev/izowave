@@ -12,10 +12,11 @@ import {
 import {
   ISpawner, SpawnCache, SpawnPositionMeta, SpawnPositionResolve,
 } from './types';
-import { IBuilding } from '../entities/building/types';
+import type { IBuilding } from '../entities/building/types';
 import { EntityType } from '../entities/types';
-import { PositionAtMatrix, SpawnTarget } from '../level/types';
-import { IWorld } from '../types';
+import type { PositionAtMatrix } from '../level/types';
+import { SpawnTarget } from '../level/types';
+import type { IWorld } from '../types';
 
 export class Spawner implements ISpawner {
   private scene: IWorld;

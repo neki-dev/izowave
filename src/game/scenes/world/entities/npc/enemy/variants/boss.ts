@@ -1,5 +1,5 @@
 import { Enemy } from '..';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { EnemyVariantData, EnemyTexture, EnemyAudio } from '../types';
 
@@ -18,7 +18,7 @@ export class EnemyBoss extends Enemy {
     });
   }
 
-  public onDead() {
+  protected onDead() {
     this.scene.fx.playSound(EnemyAudio.ROAR);
     super.onDead();
   }

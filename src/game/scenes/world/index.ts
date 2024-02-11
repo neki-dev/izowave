@@ -4,24 +4,24 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { Scene } from '..';
 import { DIFFICULTY } from '../../../const/difficulty';
-import { GameScene, GameState, GameEvents } from '../../types';
+import { GameScene, GameState, GameEvent } from '../../types';
 import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Utils } from '~lib/utils';
 
 import { Builder } from './builder';
-import { IBuilder } from './builder/types';
+import type { IBuilder } from './builder/types';
 import { Camera } from './camera';
-import { ICamera } from './camera/types';
-import { LiveEvents } from './entities/addons/live/types';
+import type { ICamera } from './camera/types';
+import { LiveEvent } from './entities/addons/live/types';
 import { BuildingVariant, IBuilding } from './entities/building/types';
 import { Crystal } from './entities/crystal';
-import { ICrystal } from './entities/crystal/types';
+import type { ICrystal } from './entities/crystal/types';
 import { Assistant } from './entities/npc/assistant';
-import { IAssistant } from './entities/npc/assistant/types';
+import type { IAssistant } from './entities/npc/assistant/types';
 import { Player } from './entities/player';
-import { IPlayer } from './entities/player/types';
+import type { IPlayer } from './entities/player/types';
 import { EntityType, ISprite } from './entities/types';
 import { FXManager } from './fx-manager';
 import { IFXManager } from './fx-manager/types';
@@ -32,14 +32,15 @@ import {
   ILevel, LevelData, PositionAtWorld, SpawnTarget, PositionAtMatrix,
 } from './level/types';
 import { Spawner } from './spawner';
-import { ISpawner } from './spawner/types';
+import type { ISpawner } from './spawner/types';
 import {
-  WorldModeIcons, IWorld, WorldMode, WorldHint, WorldEvents, WorldTimerParams, WorldSavePayload,
+  WorldModeIcon, IWorld, WorldMode, WorldHint, WorldEvent, WorldTimerParams, WorldSavePayload,
 } from './types';
 import { Wave } from './wave';
-import { IWave, WaveEvents } from './wave/types';
+import type { IWave } from './wave/types';
+import { WaveEvent } from './wave/types';
 
-Assets.RegisterImages(WorldModeIcons);
+Assets.RegisterImages(WorldModeIcon);
 
 export class World extends Scene implements IWorld {
   private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;
@@ -170,13 +171,13 @@ export class World extends Scene implements IWorld {
       ? Utils.HashString(hint.label)
       : uuidv4();
 
-    this.events.emit(WorldEvents.SHOW_HINT, id, hint);
+    this.events.emit(WorldEvent.SHOW_HINT, id, hint);
 
     return id;
   }
 
   public hideHint(id: string) {
-    this.events.emit(WorldEvents.HIDE_HINT, id);
+    this.events.emit(WorldEvent.HIDE_HINT, id);
   }
 
   public getTime() {
@@ -241,7 +242,7 @@ export class World extends Scene implements IWorld {
   public setModeActive(mode: WorldMode, state: boolean) {
     this.modes[mode] = state;
 
-    this.events.emit(WorldEvents.TOGGLE_MODE, mode, state);
+    this.events.emit(WorldEvent.TOGGLE_MODE, mode, state);
   }
 
   public isModeActive(mode: WorldMode) {
@@ -328,7 +329,7 @@ export class World extends Scene implements IWorld {
   private addBuilder() {
     this.builder = new Builder(this);
 
-    this.game.events.once(GameEvents.FINISH, () => {
+    this.game.events.once(GameEvent.FINISH, () => {
       this.builder.close();
     });
 
@@ -353,7 +354,7 @@ export class World extends Scene implements IWorld {
 
     this.camera.focusOn(this.player);
 
-    this.player.live.on(LiveEvents.DEAD, () => {
+    this.player.live.on(LiveEvent.DEAD, () => {
       this.camera.zoomOut();
       this.game.finishGame();
     });
@@ -412,7 +413,7 @@ export class World extends Scene implements IWorld {
       }
     }
 
-    this.wave.on(WaveEvents.COMPLETE, () => {
+    this.wave.on(WaveEvent.COMPLETE, () => {
       const newCount = getMaxCount() - this.getEntitiesGroup(EntityType.CRYSTAL).getTotalUsed();
 
       for (let i = 0; i < newCount; i++) {

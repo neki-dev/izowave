@@ -1,6 +1,6 @@
 import { Building } from '..';
 import { DIFFICULTY } from '../../../../../../const/difficulty';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,

@@ -5,7 +5,8 @@ import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { IWorld, WorldMode } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
+import { WorldMode } from '~scene/world/types';
 
 import { BUILDING_TILE } from '../const';
 import {

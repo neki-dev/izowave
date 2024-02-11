@@ -6,8 +6,9 @@ import React, { useEffect, useState } from 'react';
 import { GameScene } from '../../../../types';
 import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~lib/interface/const';
 import { BuildingInfo } from '~scene/system/interface/building-info';
-import { IBuilding } from '~scene/world/entities/building/types';
-import { IWorld, WorldEvents } from '~scene/world/types';
+import type { IBuilding } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
+import { WorldEvent } from '~scene/world/types';
 
 import { TranslateToScreen } from './translate-to-screen';
 
@@ -27,12 +28,12 @@ export const RelativeBuildingInfo: React.FC = () => {
   };
 
   useEffect(() => {
-    world.events.on(WorldEvents.SELECT_BUILDING, onSelect);
-    world.events.on(WorldEvents.UNSELECT_BUILDING, onUnselect);
+    world.events.on(WorldEvent.SELECT_BUILDING, onSelect);
+    world.events.on(WorldEvent.UNSELECT_BUILDING, onUnselect);
 
     return () => {
-      world.events.off(WorldEvents.SELECT_BUILDING, onSelect);
-      world.events.off(WorldEvents.UNSELECT_BUILDING, onUnselect);
+      world.events.off(WorldEvent.SELECT_BUILDING, onSelect);
+      world.events.off(WorldEvent.UNSELECT_BUILDING, onUnselect);
     };
   }, []);
 

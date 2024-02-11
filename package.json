@@ -20,7 +20,7 @@
   "main": "./dist/index.html",
   "scripts": {
     "start": "vite --host",
-    "build": "vite build --mode vanilla",
+    "build": "vite build",
     "test": "jest",
     "lint": "eslint \"./**/*.{js,ts,tsx}\" --ignore-path .gitignore --fix"
   },

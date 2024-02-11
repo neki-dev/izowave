@@ -3,7 +3,8 @@ import React, { useRef, useState } from 'react';
 
 import { GameScene } from '../../../../../types';
 import { phrase } from '~lib/lang';
-import { IWorld, WorldMode, WorldModeIcons } from '~scene/world/types';
+import type { IWorld, WorldMode } from '~scene/world/types';
+import { WorldModeIcon } from '~scene/world/types';
 
 import { Container, Placeholder } from './styles';
 
@@ -27,7 +28,7 @@ export const Item: React.FC<Props> = ({ mode }) => {
 
   return (
     <Container ref={refContainer} $active={isActive}>
-      <Texture name={WorldModeIcons[mode]} />
+      <Texture name={WorldModeIcon[mode]} />
       {isHover && (
         <Placeholder>{phrase(mode)}</Placeholder>
       )}

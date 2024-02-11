@@ -1,12 +1,13 @@
 import { useEvent, useGame, useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { IGame, GameScene } from '../../../../types';
+import type { IGame } from '../../../../types';
+import { GameScene } from '../../../../types';
 import { BuildingVariant } from '~scene/world/entities/building/types';
 import { AssistantVariant, AssistantEvents } from '~scene/world/entities/npc/assistant/types';
 import { PlayerSuperskill, PlayerEvents } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
-import { WaveEvents } from '~scene/world/wave/types';
+import type { IWorld } from '~scene/world/types';
+import { WaveEvent } from '~scene/world/wave/types';
 
 import { Modal } from './modal';
 
@@ -27,7 +28,7 @@ export const Unlocks: React.FC = () => {
     setFeatures([]);
   };
 
-  useEvent(world.wave, WaveEvents.COMPLETE, (number: number) => {
+  useEvent(world.wave, WaveEvent.COMPLETE, (number: number) => {
     const list: Feature[] = [];
 
     Object.values(BuildingVariant).forEach((building) => {

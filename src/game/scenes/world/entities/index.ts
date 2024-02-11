@@ -4,9 +4,10 @@ import { DEBUG_MODS } from '../../../const';
 import { isPositionsEqual } from '~lib/dimension';
 
 import { Indicator } from './addons/indicator';
-import { IIndicator } from './addons/indicator/types';
+import type { IIndicator } from './addons/indicator/types';
 import { Live } from './addons/live';
-import { ILive, LiveEvents } from './addons/live/types';
+import type { ILive } from './addons/live/types';
+import { LiveEvent } from './addons/live/types';
 import {
   ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData, EntityType,
 } from './types';
@@ -15,7 +16,7 @@ import { Level } from '../level';
 import {
   LevelBiome, PositionAtMatrix, TileType, PositionAtWorld,
 } from '../level/types';
-import { IWorld } from '../types';
+import type { IWorld } from '../types';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly scene: IWorld;
@@ -78,9 +79,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.addIndicatorsContainer();
     this.addDebugPosition();
 
-    this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
-    this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
-    this.live.on(LiveEvents.HEAL, this.onHeal.bind(this));
+    this.live.on(LiveEvent.DAMAGE, this.onDamage.bind(this));
+    this.live.on(LiveEvent.DEAD, this.onDead.bind(this));
+    this.live.on(LiveEvent.HEAL, this.onHeal.bind(this));
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.container.destroy();
@@ -344,16 +345,12 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.positionDebug.strokePath();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, class-methods-use-this
-  public onDamage(amount: number) {
+  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
+  protected onDamage(amount: number) {
     //
   }
 
-  public onHeal() {
-    this.scene.fx.createHealEffect(this);
-  }
-
-  public onDead() {
+  protected onDead() {
     this.anims.stop();
     this.scene.tweens.add({
       targets: [this, this.container],
@@ -363,5 +360,9 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
         this.destroy();
       },
     });
+  }
+
+  protected onHeal() {
+    this.scene.fx.createHealEffect(this);
   }
 }

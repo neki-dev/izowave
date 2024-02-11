@@ -3,7 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import { GameScene } from '../../../../types';
 import { PlayerSuperskill, PlayerEvents } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Item } from './item';
 import { Wrapper } from './styles';

@@ -1,12 +1,12 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
-import { IIndicator, IndicatorData } from './addons/indicator/types';
-import { ILive } from './addons/live/types';
-import { IParticlesParent } from '../fx-manager/particles/types';
-import {
+import type { IIndicator, IndicatorData } from './addons/indicator/types';
+import type { ILive } from './addons/live/types';
+import type { IParticlesParent } from '../fx-manager/particles/types';
+import type {
   PositionAtMatrix, LevelBiome, PositionAtWorld, TileType,
 } from '../level/types';
-import { IWorld } from '../types';
+import type { IWorld } from '../types';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
   readonly scene: IWorld

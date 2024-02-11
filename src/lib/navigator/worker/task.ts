@@ -2,7 +2,7 @@
 import Heap from 'heap';
 
 import { getDistance } from '~lib/dimension';
-import { PositionAtMatrix } from '~scene/world/level/types';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
 import { PathNode } from './node';
 import { getCost, getSimpleCost } from './tools';

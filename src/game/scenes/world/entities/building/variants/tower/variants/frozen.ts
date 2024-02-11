@@ -4,7 +4,7 @@ import {
   BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
 } from '../../../types';
 import { ShotBallFrozen } from '~scene/world/entities/shot/ball/variants/frozen';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 export class BuildingTowerFrozen extends BuildingTower {
   static Category = BuildingCategory.DEFENSE;

@@ -17,11 +17,11 @@ import { getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import { PlayerSuperskill } from '~scene/world/entities/player/types';
-import { IShot, ShotParams } from '~scene/world/entities/shot/types';
+import type { IShot, ShotParams } from '~scene/world/entities/shot/types';
 import { EntityType } from '~scene/world/entities/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 export class BuildingTower extends Building implements IBuildingTower {
   private shot: Nullable<IShot> = null;

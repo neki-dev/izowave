@@ -10,7 +10,7 @@ import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
 import {
   PlayerSkill, PlayerSkillData, PlayerEvents, PlayerSkillIcon,
 } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   Container, Info, Action, Label, Level, Button, Limit, Icon, Head,

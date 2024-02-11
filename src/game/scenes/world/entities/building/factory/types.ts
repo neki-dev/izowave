@@ -1,6 +1,6 @@
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
-import {
+import type {
   BuildingCategory, BuildingTexture, BuildingVariantData, IBuilding,
 } from '../types';
 

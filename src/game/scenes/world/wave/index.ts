@@ -9,14 +9,15 @@ import { Utils } from '~lib/utils';
 
 import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
 import {
-  IWave, WaveAudio, WaveEvents, WaveSavePayload,
+  IWave, WaveAudio, WaveEvent, WaveSavePayload,
 } from './types';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '../entities/npc/enemy/const';
 import { EnemyFactory } from '../entities/npc/enemy/factory';
 import { ENEMIES } from '../entities/npc/enemy/factory/const';
 import { EnemyVariant, IEnemy } from '../entities/npc/enemy/types';
 import { EntityType } from '../entities/types';
-import { IWorld, WorldEvents, WorldMode } from '../types';
+import type { IWorld } from '../types';
+import { WorldEvent, WorldMode } from '../types';
 
 Assets.RegisterAudio(WaveAudio);
 
@@ -186,7 +187,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       this.scene.setTimeScale(WAVE_INCREASED_TIME_SCALE);
     }
 
-    this.emit(WaveEvents.START, this.number);
+    this.emit(WaveEvent.START, this.number);
 
     this.scene.fx.playSound(WaveAudio.START);
 
@@ -206,7 +207,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
     this.runTimeleft();
 
-    this.emit(WaveEvents.COMPLETE, prevNumber);
+    this.emit(WaveEvent.COMPLETE, prevNumber);
 
     this.scene.fx.playSound(WaveAudio.COMPLETE);
 
@@ -323,10 +324,10 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
       }
     };
 
-    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+    this.scene.events.on(WorldEvent.TOGGLE_MODE, handler);
 
     this.scene.events.on(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
+      this.scene.events.off(WorldEvent.TOGGLE_MODE, handler);
     });
   }
 

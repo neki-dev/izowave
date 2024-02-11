@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 
-import { IEnemy } from '../../npc/enemy/types';
+import type { IEnemy } from '../../npc/enemy/types';
 import { EntityType } from '../../types';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
-import { IParticles } from '~scene/world/fx-manager/particles/types';
-import { PositionAtWorld } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { IParticles } from '~scene/world/fx-manager/particles/types';
+import type { PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   ShotBallAudio, ShotTexture, IShotBall, ShotParams, IShotInitiator, ShotBallData,

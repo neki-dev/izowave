@@ -6,8 +6,8 @@ import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~lib/
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import { PositionAtWorld } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 
 import { NPC_PATH_FIND_RATE } from './const';
 import { INPC, NPCData } from './types';

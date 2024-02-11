@@ -1,10 +1,10 @@
 import { Enemy } from '..';
 import { getIsometricDistance } from '~lib/dimension';
-import { IBuilding } from '~scene/world/entities/building/types';
+import type { IBuilding } from '~scene/world/entities/building/types';
 import { EntityType } from '~scene/world/entities/types';
 import { EffectAudio } from '~scene/world/fx-manager/effect/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_EXPLOSION_RADIUS, ENEMY_EXPLOSION_EFFECT_COLOR, ENEMY_EXPLOSION_EFFECT_DURATION } from '../const';
 import {
@@ -27,7 +27,7 @@ export class EnemyExplosive extends Enemy {
     });
   }
 
-  public onDead() {
+  protected onDead() {
     this.createExplosion();
     super.onDead();
   }

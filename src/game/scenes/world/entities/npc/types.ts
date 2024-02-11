@@ -1,8 +1,8 @@
-import { PositionAtWorld, PositionAtMatrix } from '~scene/world/level/types';
+import type { PositionAtWorld, PositionAtMatrix } from '~scene/world/level/types';
 
-import { AssistantTexture } from './assistant/types';
-import { EnemyTexture } from './enemy/types';
-import { ISprite, SpriteBodyData } from '../types';
+import type { AssistantTexture } from './assistant/types';
+import type { EnemyTexture } from './enemy/types';
+import type { ISprite, SpriteBodyData } from '../types';
 
 export interface INPC extends ISprite {
   /**

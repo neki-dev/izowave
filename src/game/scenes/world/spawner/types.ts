@@ -1,4 +1,4 @@
-import { PositionAtMatrix } from '../level/types';
+import type { PositionAtMatrix } from '../level/types';
 
 export interface ISpawner {
   /**

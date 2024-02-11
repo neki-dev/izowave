@@ -5,7 +5,7 @@ import React, {
 
 import { GameScene } from '../../../../types';
 import { PlayerEvents } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import * as styles from './styles';
 

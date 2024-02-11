@@ -3,8 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { GameScene } from '../../../../types';
 import { phrase } from '~lib/lang';
-import { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
-import { IWorld } from '~scene/world/types';
+import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Controls } from './controls';
 import { Params } from './params';

@@ -1,5 +1,5 @@
 import { Enemy } from '..';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { EnemyFactory } from '../factory';
 import { EnemyVariantData, EnemyTexture, EnemyVariant } from '../types';
@@ -20,7 +20,7 @@ export class EnemyStranger extends Enemy {
     });
   }
 
-  public onDead() {
+  protected onDead() {
     this.spawnAdherents();
     super.onDead();
   }

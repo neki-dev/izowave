@@ -7,7 +7,7 @@ import { GameScene } from '../../../../../../types';
 import { Cost } from '~scene/system/interface/cost';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import { BuildingVariant } from '~scene/world/entities/building/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   Container, Number, Image, Info, Frame,

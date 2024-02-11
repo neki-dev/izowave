@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '../../../../../const/difficulty';
-import { GameEvents } from '../../../../types';
+import { GameEvent } from '../../../../types';
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { LangPhrase } from '~lib/lang/types';
@@ -13,21 +13,24 @@ import { BuilderEvents } from '~scene/world/builder/types';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import { ITile } from '~scene/world/level/tile-matrix/types';
-import { PositionAtMatrix, TileType, PositionAtWorld } from '~scene/world/level/types';
-import { IWorld, WorldMode, WorldEvents } from '~scene/world/types';
+import type { ITile } from '~scene/world/level/tile-matrix/types';
+import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
+import { TileType } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
+import { WorldMode, WorldEvent } from '~scene/world/types';
 
 import { BUILDING_TILE } from './const';
-import { IBuildingFactory } from './factory/types';
+import type { IBuildingFactory } from './factory/types';
 import {
   BuildingData, BuildingEvents, BuildingAudio,
   BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
   BuildingOutlineState, IBuilding, BuildingIcon, BuildingGrowthValue, BuildingSavePayload,
 } from './types';
 import { Indicator } from '../addons/indicator';
-import { IIndicator, IndicatorData } from '../addons/indicator/types';
+import type { IIndicator, IndicatorData } from '../addons/indicator/types';
 import { Live } from '../addons/live';
-import { ILive, LiveEvents } from '../addons/live/types';
+import type { ILive } from '../addons/live/types';
+import { LiveEvent } from '../addons/live/types';
 import { EntityType } from '../types';
 
 Assets.RegisterAudio(BuildingAudio);
@@ -134,8 +137,8 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.bindHotKey(CONTROL_KEY.BUILDING_UPGRADE, () => this.upgrade());
     this.bindHotKey(CONTROL_KEY.BUILDING_DESTROY, () => this.break());
 
-    this.live.on(LiveEvents.DAMAGE, this.onDamage.bind(this));
-    this.live.on(LiveEvents.DEAD, this.onDead.bind(this));
+    this.live.on(LiveEvent.DAMAGE, this.onDamage.bind(this));
+    this.live.on(LiveEvent.DEAD, this.onDead.bind(this));
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.stopBuildProcess();
@@ -632,7 +635,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.actionsArea.setVisible(true);
     }
 
-    this.scene.events.emit(WorldEvents.SELECT_BUILDING, this);
+    this.scene.events.emit(WorldEvent.SELECT_BUILDING, this);
   }
 
   public unselect() {
@@ -649,7 +652,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       this.actionsArea.setVisible(false);
     }
 
-    this.scene.events.emit(WorldEvents.UNSELECT_BUILDING, this);
+    this.scene.events.emit(WorldEvent.UNSELECT_BUILDING, this);
   }
 
   private setOutline(state: BuildingOutlineState) {
@@ -851,10 +854,10 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
       }
     };
 
-    this.scene.events.on(WorldEvents.TOGGLE_MODE, handler);
+    this.scene.events.on(WorldEvent.TOGGLE_MODE, handler);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(WorldEvents.TOGGLE_MODE, handler);
+      this.scene.events.off(WorldEvent.TOGGLE_MODE, handler);
     });
   }
 
@@ -894,12 +897,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     }
 
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
-    this.scene.game.events.on(GameEvents.FINISH, handleStop);
+    this.scene.game.events.on(GameEvent.FINISH, handleStop);
     this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
-      this.scene.game.events.off(GameEvents.FINISH, handleStop);
+      this.scene.game.events.off(GameEvent.FINISH, handleStop);
       this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
     });
   }

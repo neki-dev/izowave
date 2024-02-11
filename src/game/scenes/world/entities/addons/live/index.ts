@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
-import { ILive, LiveData, LiveEvents } from './types';
+import type { ILive, LiveData } from './types';
+import { LiveEvent } from './types';
 
 export class Live extends Phaser.Events.EventEmitter implements ILive {
   private _health: number;
@@ -63,10 +64,10 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
 
     this.setHealth(this.health - leftAmount);
 
-    this.emit(LiveEvents.DAMAGE, leftAmount);
+    this.emit(LiveEvent.DAMAGE, leftAmount);
 
     if (this.isDead()) {
-      this.emit(LiveEvents.DEAD);
+      this.emit(LiveEvent.DEAD);
     }
   }
 
@@ -77,8 +78,8 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
 
     this.health = 0;
 
-    this.emit(LiveEvents.DEAD);
-    this.emit(LiveEvents.UPDATE_HEALTH, 0);
+    this.emit(LiveEvent.DEAD);
+    this.emit(LiveEvent.UPDATE_HEALTH, 0);
   }
 
   public heal(amount?: number) {
@@ -92,7 +93,7 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
       this.setHealth(this.maxHealth);
     }
 
-    this.emit(LiveEvents.HEAL);
+    this.emit(LiveEvent.HEAL);
   }
 
   public addHealth(amount: number) {
@@ -110,7 +111,7 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
 
     this.health = Math.min(this.maxHealth, Math.max(0, amount));
 
-    this.emit(LiveEvents.UPDATE_HEALTH, this.health);
+    this.emit(LiveEvent.UPDATE_HEALTH, this.health);
   }
 
   public setArmour(amount: number) {
@@ -124,7 +125,7 @@ export class Live extends Phaser.Events.EventEmitter implements ILive {
   public setMaxHealth(amount: number) {
     this.maxHealth = Math.max(1, amount);
 
-    this.emit(LiveEvents.UPDATE_MAX_HEALTH, this.maxHealth);
+    this.emit(LiveEvent.UPDATE_MAX_HEALTH, this.maxHealth);
   }
 
   public isMaxHealth() {

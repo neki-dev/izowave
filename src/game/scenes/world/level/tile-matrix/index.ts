@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { ITileMatrix, ITile } from './types';
+import type { ITileMatrix, ITile } from './types';
 import { TilePosition, TileType } from '../types';
 
 export class TileMatrix implements ITileMatrix {

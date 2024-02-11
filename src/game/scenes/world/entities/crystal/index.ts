@@ -5,9 +5,9 @@ import { Assets } from '~lib/assets';
 import { progressionLinear } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';
 import { Level } from '~scene/world/level';
-import { ITile } from '~scene/world/level/tile-matrix/types';
+import type { ITile } from '~scene/world/level/tile-matrix/types';
 import { TileType, PositionAtMatrix } from '~scene/world/level/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { CRYSTAL_TILE } from './const';
 import {

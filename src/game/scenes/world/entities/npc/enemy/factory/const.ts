@@ -13,7 +13,7 @@ import { EnemyTelepath } from '~scene/world/entities/npc/enemy/variants/telepath
 import { EnemyTermer } from '~scene/world/entities/npc/enemy/variants/termer';
 import { EnemyUndead } from '~scene/world/entities/npc/enemy/variants/undead';
 
-import { IEnemyFactory } from './types';
+import type { IEnemyFactory } from './types';
 
 export const ENEMIES: Record<EnemyVariant, IEnemyFactory> = {
   [EnemyVariant.DEMON]: EnemyDemon,

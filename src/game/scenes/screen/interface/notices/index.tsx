@@ -2,7 +2,8 @@ import { useCurrentScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { phrase } from '~lib/lang';
-import { IScreen, Notice, ScreenEvents } from '~scene/screen/types';
+import type { IScreen, Notice } from '~scene/screen/types';
+import { ScreenEvent } from '~scene/screen/types';
 
 import { NOTICE_DURATION } from './const';
 import { Icon, Item, Wrapper } from './styles';
@@ -52,10 +53,10 @@ export const Notices: React.FC = () => {
   };
 
   useEffect(() => {
-    screen.events.on(ScreenEvents.NOTICE, addNotice);
+    screen.events.on(ScreenEvent.NOTICE, addNotice);
 
     return () => {
-      screen.events.off(ScreenEvents.NOTICE, addNotice);
+      screen.events.off(ScreenEvent.NOTICE, addNotice);
     };
   }, []);
 

@@ -9,7 +9,7 @@ import { BuildingTowerFrozen } from '~scene/world/entities/building/variants/tow
 import { BuildingTowerLazer } from '~scene/world/entities/building/variants/tower/variants/lazer';
 import { BuildingWall } from '~scene/world/entities/building/variants/wall';
 
-import { IBuildingFactory } from './types';
+import type { IBuildingFactory } from './types';
 
 export const BUILDINGS: Record<BuildingVariant, IBuildingFactory> = {
   [BuildingVariant.WALL]: BuildingWall,

@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import type Phaser from 'phaser';
 
 export interface ILive extends Phaser.Events.EventEmitter {
   /**
@@ -84,7 +84,7 @@ export interface ILive extends Phaser.Events.EventEmitter {
   isDead(): boolean
 }
 
-export enum LiveEvents {
+export enum LiveEvent {
   DEAD = 'dead',
   DAMAGE = 'damage',
   HEAL = 'heal',

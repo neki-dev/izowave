@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { GameScene } from '../../../../types';
 import { CrystalAmount, ICrystal, CrystalEvents } from '~scene/world/entities/crystal/types';
 import { EntityType } from '~scene/world/entities/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Amount } from './amount';
 

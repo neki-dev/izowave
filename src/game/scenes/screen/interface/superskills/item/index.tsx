@@ -3,11 +3,12 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
-import { IGame, GameScene, GameEvents } from '../../../../../types';
+import type { IGame } from '../../../../../types';
+import { GameScene, GameEvent } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { PlayerSuperskill, PlayerEvents, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
-import { IWorld } from '~scene/world/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,
@@ -40,7 +41,7 @@ export const Item: React.FC<Props> = ({ type }) => {
     }
   }, []);
 
-  useEvent(game.events, GameEvents.TOGGLE_PAUSE, (paused: boolean) => {
+  useEvent(game.events, GameEvent.TOGGLE_PAUSE, (paused: boolean) => {
     setGamePaused(paused);
   }, []);
 
