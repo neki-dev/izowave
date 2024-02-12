@@ -4,7 +4,7 @@ import { NPC } from '..';
 import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { GameSettings } from '../../../../../types';
 import { Building } from '../../building';
-import { PlayerSuperskill, PlayerEvents } from '../../player/types';
+import { PlayerSuperskill, PlayerEvent } from '../../player/types';
 import { EntityType } from '../../types';
 import { Assets } from '~lib/assets';
 import { InterfaceFont } from '~lib/interface/types';
@@ -23,7 +23,7 @@ Assets.RegisterSprites(EnemyTexture, (texture) => (
   ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]]
 ));
 
-export class Enemy extends NPC implements IEnemy {
+export abstract class Enemy extends NPC implements IEnemy {
   private _damage: number;
 
   public get damage() { return this._damage; }
@@ -283,9 +283,9 @@ export class Enemy extends NPC implements IEnemy {
       }
     };
 
-    this.scene.events.on(PlayerEvents.USE_SUPERSKILL, handler);
+    this.scene.events.on(PlayerEvent.USE_SUPERSKILL, handler);
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.scene.events.off(PlayerEvents.USE_SUPERSKILL, handler);
+      this.scene.events.off(PlayerEvent.USE_SUPERSKILL, handler);
     });
   }
 }

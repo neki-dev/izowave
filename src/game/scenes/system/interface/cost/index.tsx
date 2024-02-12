@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 
 import { GameScene } from '../../../../types';
-import { PlayerEvents } from '~scene/world/entities/player/types';
+import { PlayerEvent } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
 import * as styles from './styles';
@@ -30,7 +30,7 @@ export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
     (!check || typeof value !== 'number' || haveAmount >= value)
   ), [check, value, haveAmount]);
 
-  useEvent(world.player, PlayerEvents[`UPDATE_${type}`], (amount: number) => {
+  useEvent(world.player, PlayerEvent[`UPDATE_${type}`], (amount: number) => {
     setHaveAmount(amount);
   }, []);
 

@@ -1,13 +1,11 @@
 import type Phaser from 'phaser';
 
 import type { LangPhrase } from '~lib/lang/types';
-import type { TutorialStep } from '~lib/tutorial/types';
 import type { IParticlesParent } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
 import type { IBuildingFactory } from './factory/types';
-import type { IndicatorData } from '../addons/indicator/types';
 import type { ILive } from '../addons/live/types';
 import type { IEnemyTarget } from '../npc/enemy/types';
 import type { IShotInitiator } from '../shot/types';
@@ -47,31 +45,6 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   actionsAreaContains(position: PositionAtWorld): boolean
 
   /**
-   * Pause actions.
-   */
-  pauseActions(): void
-
-  /**
-   * Check is actions not paused.
-   */
-  isActionAllowed(): boolean
-
-  /**
-   * Bind hot key for action.
-   * @param key - Key
-   * @param callback - Callback
-   */
-  bindHotKey(key: string, callback: () => void): void
-
-  /**
-   * Bind hint on tutorial step
-   * @param step - Tutorial step
-   * @param label - Phrase key
-   * @param condition - Show condition
-   */
-  bindTutorialHint(step: TutorialStep, label: LangPhrase, condition?: () => boolean): void
-
-  /**
    * Get building information params.
    */
   getInfo(): BuildingParam[]
@@ -87,19 +60,9 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   getMeta(): IBuildingFactory
 
   /**
-   * Add indicator.
-   */
-  addIndicator(data: IndicatorData): void
-
-  /**
    * Toggle indicators visible.
    */
   toggleIndicators(): void
-
-  /**
-   * Get actions radius.
-   */
-  getActionsRadius(): number
 
   /**
    * Get actions pause.
@@ -131,16 +94,6 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Remove building active state.
    */
   unselect(): void
-
-  /**
-   * Add alert icon.
-   */
-  addAlertIcon(): void
-
-  /**
-   * Remove alert icon.
-   */
-  removeAlertIcon(): void
 
   /**
    * Get data for saving.
@@ -186,7 +139,7 @@ export interface IBuildingTower extends IBuilding {
   readonly power: number
 }
 
-export enum BuildingEvents {
+export enum BuildingEvent {
   UPGRADE = 'upgrade',
   BUY_AMMO = 'buy_ammo',
   BREAK = 'break',

@@ -1,10 +1,11 @@
-import { BuildingTower } from '..';
-import { DIFFICULTY } from '../../../../../../../../const/difficulty';
+import { DIFFICULTY } from '../../../../../../../const/difficulty';
 import {
   BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
-} from '../../../types';
+} from '../../types';
 import { ShotBallFrozen } from '~scene/world/entities/shot/ball/variants/frozen';
 import type { IWorld } from '~scene/world/types';
+
+import { BuildingTower } from '.';
 
 export class BuildingTowerFrozen extends BuildingTower {
   static Category = BuildingCategory.DEFENSE;

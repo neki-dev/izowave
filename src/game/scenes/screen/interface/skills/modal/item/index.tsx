@@ -8,7 +8,7 @@ import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
 import {
-  PlayerSkill, PlayerSkillData, PlayerEvents, PlayerSkillIcon,
+  PlayerSkill, PlayerSkillData, PlayerEvent, PlayerSkillIcon,
 } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
@@ -41,7 +41,7 @@ export const Item: React.FC<Props> = ({ type }) => {
     world.player.upgrade(type);
   }, [type]);
 
-  useEvent(world.player, PlayerEvents.UPGRADE_SKILL, () => {
+  useEvent(world.player, PlayerEvent.UPGRADE_SKILL, () => {
     setData(getData());
   }, []);
 

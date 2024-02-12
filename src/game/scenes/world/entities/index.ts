@@ -144,7 +144,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     return this.getProjectionOnGround().map((position) => Level.ToMatrixPosition(position));
   }
 
-  public addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void) {
+  protected addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void) {
     this.scene.physics.add[mode](
       this,
       this.scene.getEntitiesGroup(target),
@@ -158,7 +158,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     );
   }
 
-  public setTilesCollision(
+  protected setTilesCollision(
     targets: TileType[],
     handler: (tile: Phaser.GameObjects.Image) => void,
   ) {
@@ -166,11 +166,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.collisionHandler = handler;
   }
 
-  public setTilesGroundCollision(state: boolean) {
+  protected setTilesGroundCollision(state: boolean) {
     this.collisionGround = state;
   }
 
-  public handleCollide(direction: number) {
+  protected handleCollide(direction: number) {
     const tile = this.getCollidedTile(direction);
 
     if (this.collisionHandler && tile instanceof Phaser.GameObjects.Image) {
@@ -269,7 +269,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.container.add(this.indicators);
   }
 
-  public addIndicator(key: string, data: SpriteIndicatorData) {
+  protected addIndicator(key: string, data: SpriteIndicatorData) {
     const indicator = new Indicator(this, {
       ...data,
       size: this.displayWidth,
@@ -281,7 +281,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
     this.indicators.add(indicator);
   }
 
-  public getIndicator(key: string) {
+  protected getIndicator(key: string) {
     return this.indicators.getByName<IIndicator>(key) ?? null;
   }
 

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import { GameScene } from '../../../../../types';
 import { Amount } from '~scene/system/interface/amount';
-import { PlayerEvents } from '~scene/world/entities/player/types';
+import { PlayerEvent } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
 export const Experience: React.FC = () => {
@@ -11,7 +11,7 @@ export const Experience: React.FC = () => {
 
   const [amount, setAmount] = useState(world.player.experience);
 
-  useEvent(world.player, PlayerEvents.UPDATE_EXPERIENCE, (experience: number) => {
+  useEvent(world.player, PlayerEvent.UPDATE_EXPERIENCE, (experience: number) => {
     setAmount(experience);
   }, []);
 

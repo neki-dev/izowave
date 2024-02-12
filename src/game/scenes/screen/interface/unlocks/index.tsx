@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import type { IGame } from '../../../../types';
 import { GameScene } from '../../../../types';
 import { BuildingVariant } from '~scene/world/entities/building/types';
-import { AssistantVariant, AssistantEvents } from '~scene/world/entities/npc/assistant/types';
-import { PlayerSuperskill, PlayerEvents } from '~scene/world/entities/player/types';
+import { AssistantVariant, AssistantEvent } from '~scene/world/entities/npc/assistant/types';
+import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
@@ -46,14 +46,14 @@ export const Unlocks: React.FC = () => {
     setFeatures((current) => list.concat(current));
   }, []);
 
-  useEvent(world.player, PlayerEvents.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
+  useEvent(world.player, PlayerEvent.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
     setFeatures((current) => current.concat([{
       type: 'SUPERSKILL',
       item: superskill,
     }]));
   }, []);
 
-  useEvent(world.assistant, AssistantEvents.UNLOCK_VARIANT, (variant: AssistantVariant) => {
+  useEvent(world.assistant, AssistantEvent.UNLOCK_VARIANT, (variant: AssistantVariant) => {
     setFeatures((current) => current.concat([{
       type: 'ASSISTANT',
       item: variant,

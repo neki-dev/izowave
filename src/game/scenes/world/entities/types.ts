@@ -1,11 +1,9 @@
 import type Phaser from 'phaser';
 
-import type { IIndicator, IndicatorData } from './addons/indicator/types';
+import type { IndicatorData } from './addons/indicator/types';
 import type { ILive } from './addons/live/types';
 import type { IParticlesParent } from '../fx-manager/particles/types';
-import type {
-  PositionAtMatrix, LevelBiome, PositionAtWorld, TileType,
-} from '../level/types';
+import type { PositionAtMatrix, LevelBiome, PositionAtWorld } from '../level/types';
 import type { IWorld } from '../types';
 
 export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent {
@@ -48,14 +46,6 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
   isStopped(): boolean
 
   /**
-   * Add collider handler.
-   * @param target - Entity type
-   * @param callback - Handler
-   * @param overlap - Overlap mode
-   */
-  addCollider(target: EntityType, mode: 'overlap' | 'collider', callback: (sprite: any) => void): void
-
-  /**
    * Get all occupied positions by body.
    */
   getAllPositionsAtMatrix(): PositionAtMatrix[]
@@ -70,37 +60,6 @@ export interface ISprite extends Phaser.Physics.Arcade.Sprite, IParticlesParent 
    */
   getBodyOffset(): PositionAtWorld
 
-  /**
-   * Set collision for tiles.
-   * @param targets - Tile types
-   * @param handler - Collision handler
-   */
-  setTilesCollision(targets: TileType[], handler: (tile: Phaser.GameObjects.Image) => void): void
-
-  /**
-   * Set state of checking ground collision.
-   * @param state - Checking state
-   */
-  setTilesGroundCollision(state: boolean): void
-
-  /**
-   * Handle tiles collide and return result.
-   * @param direction - Rotation in degrees
-   */
-  handleCollide(direction: number): boolean
-
-  /**
-   * Add indicator above sprite.
-   * @param key - Unique key
-   * @param data - Indicator parameters
-   */
-  addIndicator(key: string, data: SpriteIndicatorData): void
-
-  /**
-   * Get indicator by key.
-   * @param key - Unique key
-   */
-  getIndicator(key: string): Nullable<IIndicator>
 }
 
 export type SpriteBodyData = {

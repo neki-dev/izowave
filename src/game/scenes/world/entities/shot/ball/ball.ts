@@ -8,14 +8,15 @@ import type { IParticles } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
-import {
-  ShotBallAudio, ShotTexture, IShotBall, ShotParams, IShotInitiator, ShotBallData,
-} from '../types';
+import type { IShotBall, ShotBallData } from './types';
+import { ShotBallAudio } from './types';
+import type { ShotParams, IShotInitiator } from '../types';
+import { ShotTexture } from '../types';
 
 Assets.RegisterAudio(ShotBallAudio);
 Assets.RegisterImages(ShotTexture);
 
-export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
+export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   readonly scene: IWorld;
 
   readonly body: Phaser.Physics.Arcade.Body;
@@ -152,7 +153,7 @@ export class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  public hit(target: IEnemy) {
+  protected hit(target: IEnemy) {
     this.stop();
   }
 

@@ -180,7 +180,7 @@ export enum PlayerSuperskill {
   RAGE = 'RAGE',
 }
 
-export enum PlayerEvents {
+export enum PlayerEvent {
   USE_SUPERSKILL = 'use_superskill',
   UNLOCK_SUPERSKILL = 'unlock_superskill',
   UPGRADE_SKILL = 'upgrade_skill',

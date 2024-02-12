@@ -9,7 +9,7 @@ import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import { BuilderEvents } from '~scene/world/builder/types';
+import { BuilderEvent } from '~scene/world/builder/types';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
@@ -21,10 +21,21 @@ import { WorldMode, WorldEvent } from '~scene/world/types';
 
 import { BUILDING_TILE } from './const';
 import type { IBuildingFactory } from './factory/types';
+import type {
+  BuildingData,
+  BuildingParam,
+  BuildingControl,
+  IBuilding,
+  BuildingGrowthValue,
+  BuildingSavePayload,
+} from './types';
 import {
-  BuildingData, BuildingEvents, BuildingAudio,
-  BuildingTexture, BuildingVariant, BuildingParam, BuildingControl,
-  BuildingOutlineState, IBuilding, BuildingIcon, BuildingGrowthValue, BuildingSavePayload,
+  BuildingEvent,
+  BuildingAudio,
+  BuildingTexture,
+  BuildingVariant,
+  BuildingIcon,
+  BuildingOutlineState,
 } from './types';
 import { Indicator } from '../addons/indicator';
 import type { IIndicator, IndicatorData } from '../addons/indicator/types';
@@ -37,7 +48,7 @@ Assets.RegisterAudio(BuildingAudio);
 Assets.RegisterImages(BuildingIcon);
 Assets.RegisterSprites(BuildingTexture, BUILDING_TILE);
 
-export class Building extends Phaser.GameObjects.Image implements IBuilding, ITile {
+export abstract class Building extends Phaser.GameObjects.Image implements IBuilding, ITile {
   readonly scene: IWorld;
 
   readonly live: ILive;
@@ -192,7 +203,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     return contains;
   }
 
-  public pauseActions() {
+  protected pauseActions() {
     if (!this.delay) {
       return;
     }
@@ -200,7 +211,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.nextActionTimestamp = this.scene.getTime() + this.getActionsDelay();
   }
 
-  public isActionAllowed() {
+  protected isActionAllowed() {
     if (!this.delay) {
       return true;
     }
@@ -261,7 +272,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     return this.constructor as IBuildingFactory;
   }
 
-  public getActionsRadius() {
+  protected getActionsRadius() {
     return this.radius
       ? progressionLinear({
         defaultValue: this.radius.default,
@@ -337,9 +348,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.upgradeHealth();
     this.setFrame(this.upgradeLevel - 1);
 
-    this.emit(BuildingEvents.UPGRADE);
+    this.emit(BuildingEvent.UPGRADE);
     this.scene.getEntitiesGroup(EntityType.BUILDING)
-      .emit(BuildingEvents.UPGRADE, this);
+      .emit(BuildingEvent.UPGRADE, this);
 
     this.scene.player.takeResources(cost);
 
@@ -428,7 +439,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     );
   }
 
-  public addIndicator(data: IndicatorData) {
+  protected addIndicator(data: IndicatorData) {
     const indicator = new Indicator(this, data);
 
     indicator.setPosition(0, this.indicators.length * -5);
@@ -461,7 +472,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.indicators.destroy();
   }
 
-  public bindTutorialHint(step: TutorialStep, label: LangPhrase, condition?: () => boolean) {
+  protected bindTutorialHint(step: TutorialStep, label: LangPhrase, condition?: () => boolean) {
     let hintId: Nullable<string> = null;
 
     const hideHint = () => {
@@ -545,7 +556,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     };
   }
 
-  public addAlertIcon() {
+  protected addAlertIcon() {
     if (this.alertIcon) {
       return;
     }
@@ -565,7 +576,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public removeAlertIcon() {
+  protected removeAlertIcon() {
     if (!this.alertIcon) {
       return;
     }
@@ -711,7 +722,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
   }
 
-  public updateActionArea() {
+  protected updateActionArea() {
     if (!this.actionsArea) {
       return;
     }
@@ -739,7 +750,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.destroy();
 
-    group.emit(BuildingEvents.BREAK, this);
+    group.emit(BuildingEvent.BREAK, this);
   }
 
   private startBuildProcess(duration: number) {
@@ -764,7 +775,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     });
 
     this.scene.getEntitiesGroup(EntityType.BUILDING)
-      .emit(BuildingEvents.CREATE, this);
+      .emit(BuildingEvent.CREATE, this);
   }
 
   private stopBuildProcess() {
@@ -823,7 +834,7 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
     this.buildBar = null;
   }
 
-  public bindHotKey(key: string, callback: () => void) {
+  protected bindHotKey(key: string, callback: () => void) {
     if (!this.scene.game.isDesktop()) {
       return;
     }
@@ -898,12 +909,12 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
     this.scene.input.on(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
     this.scene.game.events.on(GameEvent.FINISH, handleStop);
-    this.scene.builder.on(BuilderEvents.BUILD_START, handleClear);
+    this.scene.builder.on(BuilderEvent.BUILD_START, handleClear);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
       this.scene.input.off(Phaser.Input.Events.POINTER_DOWN, handleOutsideClick);
       this.scene.game.events.off(GameEvent.FINISH, handleStop);
-      this.scene.builder.off(BuilderEvents.BUILD_START, handleClear);
+      this.scene.builder.off(BuilderEvent.BUILD_START, handleClear);
     });
   }
 
@@ -926,9 +937,9 @@ export class Building extends Phaser.GameObjects.Image implements IBuilding, ITi
 
       this.live.setMaxHealth(this.getMaxHealth());
 
-      this.emit(BuildingEvents.UPGRADE);
+      this.emit(BuildingEvent.UPGRADE);
       this.scene.getEntitiesGroup(EntityType.BUILDING)
-        .emit(BuildingEvents.UPGRADE, this);
+        .emit(BuildingEvent.UPGRADE, this);
     }
 
     this.live.setHealth(data.health);

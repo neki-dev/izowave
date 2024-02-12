@@ -7,7 +7,7 @@ import type { IGame } from '../../../../../types';
 import { GameScene, GameEvent } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { PlayerSuperskill, PlayerEvents, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
+import { PlayerSuperskill, PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
 import {
@@ -35,7 +35,7 @@ export const Item: React.FC<Props> = ({ type }) => {
     }
   }, [type, isAllow]);
 
-  useEvent(world.player, PlayerEvents.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
+  useEvent(world.player, PlayerEvent.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
     if (superskill === type) {
       setAllow(true);
     }

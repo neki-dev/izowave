@@ -13,9 +13,8 @@ import type { IWorld } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
 import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
-import {
-  AssistantTexture, IAssistant, AssistantVariant, AssistantData, AssistantEvents,
-} from './types';
+import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
+import type { IAssistant, AssistantData } from './types';
 import type { IEnemy } from '../enemy/types';
 
 Assets.RegisterSprites(AssistantTexture, ASSISTANT_TILE_SIZE);
@@ -146,7 +145,7 @@ export class Assistant extends NPC implements IAssistant {
     this.variant = variants[index];
 
     if (prevVariant) {
-      this.emit(AssistantEvents.UNLOCK_VARIANT, this.variant);
+      this.emit(AssistantEvent.UNLOCK_VARIANT, this.variant);
     }
 
     this.setWeapon(ASSISTANT_WEAPON[this.variant]);

@@ -9,7 +9,7 @@ import {
   BuildingTexture,
   BuildingVariantData,
   BuildingVariant,
-  BuildingEvents,
+  BuildingEvent,
   BuildingParam,
   BuildingIcon,
 } from '../types';
@@ -45,7 +45,7 @@ export class BuildingBooster extends Building implements IBuildingBooster {
       },
     });
 
-    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
+    this.on(BuildingEvent.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public getInfo() {

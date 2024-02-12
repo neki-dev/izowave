@@ -10,7 +10,7 @@ export interface IAssistant extends INPC, IShotInitiator {
   readonly body: Phaser.Physics.Arcade.Body
 }
 
-export enum AssistantEvents {
+export enum AssistantEvent {
   UNLOCK_VARIANT = 'unlock_variant',
 }
 

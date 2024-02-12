@@ -6,7 +6,7 @@ import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Amount } from '~scene/system/interface/amount';
 import { Hint } from '~scene/system/interface/hint';
-import { PlayerEvents } from '~scene/world/entities/player/types';
+import { PlayerEvent } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
 import { Wrapper } from './styles';
@@ -25,7 +25,7 @@ export const Resources: React.FC = () => {
     [],
   );
 
-  useEvent(world.player, PlayerEvents.UPDATE_RESOURCES, (resources: number) => {
+  useEvent(world.player, PlayerEvent.UPDATE_RESOURCES, (resources: number) => {
     setAmount(resources);
   }, []);
 

@@ -4,9 +4,6 @@ import alias from 'alias-reuse';
 import { defineConfig } from 'vite';
 import checkerPlugin from 'vite-plugin-checker';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-import zipPackPlugin from 'vite-plugin-zip-pack';
-
-import pkg from './package.json';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
@@ -19,11 +16,6 @@ export default defineConfig(({ mode }) => ({
         src: 'assets',
         dest: '',
       }],
-    }),
-    (mode !== 'development') && zipPackPlugin({
-      inDir: 'dist',
-      outDir: 'dist',
-      outFileName: `${pkg.name}-${pkg.version}-${mode}.zip`,
     }),
   ],
   root: './src',

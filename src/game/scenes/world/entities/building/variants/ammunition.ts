@@ -12,7 +12,7 @@ import { BUILDING_TILE } from '../const';
 import {
   BuildingAudio,
   BuildingParam,
-  BuildingEvents,
+  BuildingEvent,
   BuildingTexture,
   BuildingVariant,
   BuildingVariantData,
@@ -74,7 +74,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
 
     this.bindHotKey(CONTROL_KEY.BUILDING_BUY_AMMO, () => this.buyAmmo());
 
-    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
+    this.on(BuildingEvent.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public getInfo() {
@@ -166,7 +166,7 @@ export class BuildingAmmunition extends Building implements IBuildingAmmunition 
     this.removeAlertIcon();
 
     this.scene.getEntitiesGroup(EntityType.BUILDING)
-      .emit(BuildingEvents.BUY_AMMO, this);
+      .emit(BuildingEvent.BUY_AMMO, this);
 
     this.scene.fx.playSound(BuildingAudio.RELOAD);
 

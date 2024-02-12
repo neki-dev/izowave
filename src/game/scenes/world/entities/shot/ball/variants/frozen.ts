@@ -1,8 +1,9 @@
-import { ShotParams, ShotData, ShotBallAudio } from '../../types';
+import type { ShotParams, ShotData } from '../../types';
 import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import type { IWorld } from '~scene/world/types';
 
 import { ShotBall } from '../ball';
+import { ShotBallAudio } from '../types';
 
 export class ShotBallFrozen extends ShotBall {
   constructor(scene: IWorld, params: ShotParams, data: ShotData = {}) {
@@ -17,8 +18,10 @@ export class ShotBallFrozen extends ShotBall {
   public hit(target: IEnemy) {
     super.hit(target);
 
-    if (this.params.freeze && target.live.armour <= 0) {
-      target.freeze(this.params.freeze, true);
+    const duration = this.params.freeze;
+
+    if (duration && target.live.armour <= 0) {
+      target.freeze(duration, true);
     }
   }
 }

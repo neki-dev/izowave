@@ -13,7 +13,7 @@ import { NPC_PATH_FIND_RATE } from './const';
 import { INPC, NPCData } from './types';
 import { EntityType } from '../types';
 
-export class NPC extends Sprite implements INPC {
+export abstract class NPC extends Sprite implements INPC {
   public isPathPassed: boolean = false;
 
   private pathToTarget: PositionAtWorld[] = [];

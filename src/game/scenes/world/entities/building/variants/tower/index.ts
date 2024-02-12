@@ -10,7 +10,7 @@ import {
   IBuildingTower,
   BuildingAudio,
   BuildingSavePayload,
-  BuildingEvents,
+  BuildingEvent,
   IBuildingBooster,
 } from '../../types';
 import { getClosestByIsometricDistance } from '~lib/dimension';
@@ -55,7 +55,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     this.calculatePower();
 
-    this.on(BuildingEvents.UPGRADE, this.onUpgrade.bind(this));
+    this.on(BuildingEvent.UPGRADE, this.onUpgrade.bind(this));
   }
 
   public update() {
@@ -307,16 +307,16 @@ export class BuildingTower extends Building implements IBuildingTower {
 
     const buidingsGroup = this.scene.getEntitiesGroup(EntityType.BUILDING);
 
-    buidingsGroup.on(BuildingEvents.CREATE, handler);
-    buidingsGroup.on(BuildingEvents.UPGRADE, handler);
-    buidingsGroup.on(BuildingEvents.BUY_AMMO, handler);
-    buidingsGroup.on(BuildingEvents.BREAK, handler);
+    buidingsGroup.on(BuildingEvent.CREATE, handler);
+    buidingsGroup.on(BuildingEvent.UPGRADE, handler);
+    buidingsGroup.on(BuildingEvent.BUY_AMMO, handler);
+    buidingsGroup.on(BuildingEvent.BREAK, handler);
 
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      buidingsGroup.off(BuildingEvents.CREATE, handler);
-      buidingsGroup.off(BuildingEvents.UPGRADE, handler);
-      buidingsGroup.off(BuildingEvents.BUY_AMMO, handler);
-      buidingsGroup.off(BuildingEvents.BREAK, handler);
+      buidingsGroup.off(BuildingEvent.CREATE, handler);
+      buidingsGroup.off(BuildingEvent.UPGRADE, handler);
+      buidingsGroup.off(BuildingEvent.BUY_AMMO, handler);
+      buidingsGroup.off(BuildingEvent.BREAK, handler);
     });
   }
 

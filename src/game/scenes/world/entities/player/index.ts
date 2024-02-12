@@ -33,7 +33,7 @@ import {
   PlayerSuperskill,
   PlayerSavePayload,
   MovementDirection,
-  PlayerEvents,
+  PlayerEvent,
   PlayerSkillIcon,
   PlayerSuperskillIcon,
 } from './types';
@@ -263,7 +263,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.score += amount;
 
-    this.emit(PlayerEvents.UPDATE_SCORE, this.score);
+    this.emit(PlayerEvent.UPDATE_SCORE, this.score);
   }
 
   public giveExperience(amount: number) {
@@ -273,13 +273,13 @@ export class Player extends Sprite implements IPlayer {
 
     this.experience += Math.round(amount / this.scene.game.getDifficultyMultiplier());
 
-    this.emit(PlayerEvents.UPDATE_EXPERIENCE, this.experience);
+    this.emit(PlayerEvent.UPDATE_EXPERIENCE, this.experience);
   }
 
   private takeExperience(amount: number) {
     this.experience -= amount;
 
-    this.emit(PlayerEvents.UPDATE_EXPERIENCE, this.experience);
+    this.emit(PlayerEvent.UPDATE_EXPERIENCE, this.experience);
   }
 
   public giveResources(amount: number) {
@@ -289,7 +289,7 @@ export class Player extends Sprite implements IPlayer {
 
     this.resources += amount;
 
-    this.emit(PlayerEvents.UPDATE_RESOURCES, this.resources);
+    this.emit(PlayerEvent.UPDATE_RESOURCES, this.resources);
 
     if (Tutorial.IsInProgress(TutorialStep.RESOURCES)) {
       Tutorial.Complete(TutorialStep.RESOURCES);
@@ -299,7 +299,7 @@ export class Player extends Sprite implements IPlayer {
   public takeResources(amount: number) {
     this.resources -= amount;
 
-    this.emit(PlayerEvents.UPDATE_RESOURCES, this.resources);
+    this.emit(PlayerEvent.UPDATE_RESOURCES, this.resources);
 
     if (
       this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
@@ -320,7 +320,7 @@ export class Player extends Sprite implements IPlayer {
     if (superskill) {
       this.unlockedSuperskills[superskill] = true;
 
-      this.emit(PlayerEvents.UNLOCK_SUPERSKILL, superskill);
+      this.emit(PlayerEvent.UNLOCK_SUPERSKILL, superskill);
     }
   }
 
@@ -380,7 +380,7 @@ export class Player extends Sprite implements IPlayer {
       },
     });
 
-    this.scene.events.emit(PlayerEvents.USE_SUPERSKILL, type);
+    this.scene.events.emit(PlayerEvent.USE_SUPERSKILL, type);
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {
@@ -439,7 +439,7 @@ export class Player extends Sprite implements IPlayer {
     this.setSkillUpgrade(type, this.upgradeLevel[type] + 1);
     this.takeExperience(experience);
 
-    this.emit(PlayerEvents.UPGRADE_SKILL, type);
+    this.emit(PlayerEvent.UPGRADE_SKILL, type);
 
     this.scene.fx.playSound(PlayerAudio.UPGRADE);
   }

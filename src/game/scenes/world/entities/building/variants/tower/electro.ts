@@ -1,13 +1,14 @@
-import { BuildingTower } from '..';
-import { DIFFICULTY } from '../../../../../../../../const/difficulty';
+import { DIFFICULTY } from '../../../../../../../const/difficulty';
 import {
   BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant, BuildingParam, BuildingIcon, BuildingAudio,
-} from '../../../types';
+} from '../../types';
 import { progressionLinear } from '~lib/progression';
 import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { IWorld } from '~scene/world/types';
+
+import { BuildingTower } from '.';
 
 export class BuildingTowerElectro extends BuildingTower {
   static Category = BuildingCategory.ATTACK;
@@ -79,7 +80,7 @@ export class BuildingTowerElectro extends BuildingTower {
     this.area = null;
   }
 
-  public updateActionArea() {
+  protected updateActionArea() {
     super.updateActionArea();
 
     if (this.area) {

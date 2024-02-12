@@ -9,7 +9,7 @@ import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 
-import { BuilderEvents, IBuilder } from './types';
+import { BuilderEvent, IBuilder } from './types';
 import { WORLD_DEPTH_GRAPHIC } from '../const';
 import { BUILDING_TILE } from '../entities/building/const';
 import { BUILDINGS } from '../entities/building/factory/const';
@@ -226,7 +226,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     this.createBuildInstance();
 
-    this.emit(BuilderEvents.BUILD_START);
+    this.emit(BuilderEvent.BUILD_START);
   }
 
   public close() {
@@ -239,7 +239,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     this.isBuild = false;
     this.supposedPosition = null;
 
-    this.emit(BuilderEvents.BUILD_STOP);
+    this.emit(BuilderEvent.BUILD_STOP);
   }
 
   private clearBuildingVariant() {
