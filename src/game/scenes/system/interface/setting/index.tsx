@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { InterfaceTextColor } from '~lib/interface/types';
+import type { InterfaceTextColor } from '~lib/interface/types';
 import { phrase } from '~lib/lang';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 
 import {
   Wrapper, Label, Values, Value,

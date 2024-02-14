@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '../../../../../../../const/difficulty';
+import type { BuildingVariantData } from '../../types';
 import {
-  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+  BuildingCategory, BuildingTexture, BuildingVariant,
 } from '../../types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';

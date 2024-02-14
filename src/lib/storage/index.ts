@@ -1,8 +1,9 @@
-import { openDB, IDBPDatabase } from 'idb';
+import type { IDBPDatabase } from 'idb';
+import { openDB } from 'idb';
 
 import type { IGame } from '../../game/types';
 
-import { StorageSave, StorageSavePayload } from './types';
+import type { StorageSave, StorageSavePayload } from './types';
 
 export class Storage {
   private static DB: Nullable<IDBPDatabase> = null;

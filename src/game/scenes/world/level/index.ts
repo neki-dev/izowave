@@ -1,4 +1,5 @@
-import { World, WorldGenerator } from 'gen-biome';
+import type { World } from 'gen-biome';
+import { WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import { GameEvent, GameSettings } from '../../../types';
@@ -19,22 +20,23 @@ import {
 } from './const';
 import { TileMatrix } from './tile-matrix';
 import type { ITile } from './tile-matrix/types';
-import {
+import type {
   BiomeType,
   ILevel,
   LevelBiome,
   LevelData,
-  LevelPlanet,
   LevelSavePayload,
-  LevelSceneryTexture,
-  LevelTilesetTexture,
   PositionAtMatrix,
   PositionAtWorld,
+  TilePosition } from './types';
+import {
+  LevelPlanet,
+  LevelSceneryTexture,
+  LevelTilesetTexture,
   SpawnTarget,
-  TilePosition,
   TileType,
 } from './types';
-import { Effect } from '../fx-manager/effect';
+import type { Effect } from '../fx-manager/effect';
 import type { IWorld } from '../types';
 
 Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);

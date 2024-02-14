@@ -6,7 +6,8 @@ import type { PositionAtMatrix } from '~scene/world/level/types';
 
 import { PathNode } from './node';
 import { getCost, getSimpleCost } from './tools';
-import { NavigatorTaskData, NavigatorPayloadCompleteTask, NavigatorEvent } from '../types';
+import type { NavigatorTaskData, NavigatorPayloadCompleteTask } from '../types';
+import { NavigatorEvent } from '../types';
 
 export class NavigatorTask {
   readonly from: PositionAtMatrix;

@@ -5,10 +5,11 @@ import { Scene } from '..';
 import { GameScene } from '../../types';
 import { Assets } from '~lib/assets';
 import { INTERFACE_SCALE } from '~lib/interface/const';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 
 import { ScreenUI } from './interface';
-import { ScreenAudio, IScreen, ScreenEvent } from './types';
+import type { IScreen } from './types';
+import { ScreenAudio, ScreenEvent } from './types';
 
 Assets.RegisterAudio(ScreenAudio);
 

@@ -1,7 +1,8 @@
 import { Enemy } from '..';
 import type { IWorld } from '~scene/world/types';
 
-import { EnemyVariantData, EnemyTexture, EnemyAudio } from '../types';
+import type { EnemyVariantData } from '../types';
+import { EnemyTexture, EnemyAudio } from '../types';
 
 export class EnemyBoss extends Enemy {
   constructor(scene: IWorld, data: EnemyVariantData) {

@@ -3,14 +3,15 @@ import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { progressionLinear } from '~lib/progression';
 import type { IWorld } from '~scene/world/types';
 
-import {
+import type {
   IBuildingBooster,
+  BuildingVariantData,
+  BuildingParam } from '../types';
+import {
   BuildingCategory,
   BuildingTexture,
-  BuildingVariantData,
   BuildingVariant,
   BuildingEvent,
-  BuildingParam,
   BuildingIcon,
 } from '../types';
 

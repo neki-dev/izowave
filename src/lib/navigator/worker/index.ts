@@ -3,8 +3,9 @@
 
 import { NavigatorProcess } from './process';
 import { NavigatorTask } from './task';
+import type { NavigatorPayloadCancelTask, NavigatorPayloadCreateTask, NavigatorPayloadUpdatePointCost } from '../types';
 import {
-  NavigatorEvent, NavigatorPayloadCancelTask, NavigatorPayloadCreateTask, NavigatorPayloadUpdatePointCost,
+  NavigatorEvent
 } from '../types';
 
 const navigatorProcess = new NavigatorProcess();

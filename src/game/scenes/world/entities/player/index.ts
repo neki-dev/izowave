@@ -24,14 +24,15 @@ import {
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from './const';
+import type {
+  PlayerData,
+  IPlayer,
+  PlayerSavePayload } from './types';
 import {
   PlayerTexture,
   PlayerAudio,
-  PlayerData,
-  IPlayer,
   PlayerSkill,
   PlayerSuperskill,
-  PlayerSavePayload,
   MovementDirection,
   PlayerEvent,
   PlayerSkillIcon,

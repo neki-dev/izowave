@@ -9,7 +9,7 @@ import { Navigation } from './navigation';
 import {
   Wrapper, Logotype, Sidebar, Main,
 } from './styles';
-import { MenuPage } from '../types';
+import type { MenuPage } from '../types';
 
 type Props = {
   defaultPage?: MenuPage

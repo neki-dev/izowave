@@ -8,12 +8,13 @@ import type { IIndicator } from './addons/indicator/types';
 import { Live } from './addons/live';
 import type { ILive } from './addons/live/types';
 import { LiveEvent } from './addons/live/types';
-import {
-  ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData, EntityType,
+import type {
+  ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
+import { EntityType,
 } from './types';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
 import { Level } from '../level';
-import {
+import type {
   LevelBiome, PositionAtMatrix, TileType, PositionAtWorld,
 } from '../level/types';
 import type { IWorld } from '../types';

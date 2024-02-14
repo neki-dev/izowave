@@ -1,7 +1,7 @@
 import { useClick, useCurrentScene, useEvent } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Feature } from '..';
+import type { Feature } from '..';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 

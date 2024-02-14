@@ -1,4 +1,4 @@
-import { ControlItem } from './types';
+import type { ControlItem } from './types';
 
 export const CONTROL_KEY = {
   PAUSE: 'keyup-ESC',

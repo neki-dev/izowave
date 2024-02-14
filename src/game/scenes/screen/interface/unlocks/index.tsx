@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import type { IGame } from '../../../../types';
 import { GameScene } from '../../../../types';
 import { BuildingVariant } from '~scene/world/entities/building/types';
-import { AssistantVariant, AssistantEvent } from '~scene/world/entities/npc/assistant/types';
-import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
+import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
+import { AssistantEvent } from '~scene/world/entities/npc/assistant/types';
+import type { PlayerSuperskill } from '~scene/world/entities/player/types';
+import { PlayerEvent } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 

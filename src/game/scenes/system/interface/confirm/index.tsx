@@ -2,7 +2,7 @@ import { useCurrentScene, useEvent } from 'phaser-react-ui';
 import React from 'react';
 
 import { phrase } from '~lib/lang';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 
 import {
   Overlay, Container, Content, Buttons,

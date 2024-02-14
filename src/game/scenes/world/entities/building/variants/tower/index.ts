@@ -1,17 +1,19 @@
 import { Building } from '../..';
 import { DIFFICULTY } from '../../../../../../../const/difficulty';
-import {
+import type {
   BuildingData,
-  BuildingIcon,
   BuildingParam,
-  BuildingVariant,
   IBuilding,
   IBuildingAmmunition,
   IBuildingTower,
-  BuildingAudio,
   BuildingSavePayload,
-  BuildingEvent,
-  IBuildingBooster,
+  IBuildingBooster
+} from '../../types';
+import {
+  BuildingIcon,
+  BuildingVariant,
+  BuildingAudio,
+  BuildingEvent
 } from '../../types';
 import { getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { phrase } from '~lib/lang';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 
 import {
   Positioner, Wrapper, Container, Key,

@@ -9,7 +9,7 @@ import {
   SPAWN_POSITIONS_OUTPUT_LIMIT,
   SPAWN_COST_FACTOR,
 } from './const';
-import {
+import type {
   ISpawner, SpawnCache, SpawnPositionMeta, SpawnPositionResolve,
 } from './types';
 import type { IBuilding } from '../entities/building/types';

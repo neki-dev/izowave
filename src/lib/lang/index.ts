@@ -1,6 +1,6 @@
 import { LANGS } from '../../const/langs';
 
-import { Lang, LangPhrase } from './types';
+import type { Lang, LangPhrase } from './types';
 
 function getLang() {
   try {

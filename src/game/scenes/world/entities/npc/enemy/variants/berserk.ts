@@ -2,7 +2,8 @@ import { Enemy } from '..';
 import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_HEAL_MULTIPLIER, ENEMY_HEAL_TIMESTAMP_PAUSE } from '../const';
-import { EnemyVariantData, EnemyTexture } from '../types';
+import type { EnemyVariantData } from '../types';
+import { EnemyTexture } from '../types';
 
 export class EnemyBerserk extends Enemy {
   static SpawnWaveRange = [16];

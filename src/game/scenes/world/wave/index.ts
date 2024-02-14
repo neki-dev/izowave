@@ -8,13 +8,15 @@ import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 
 import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
-import {
-  IWave, WaveAudio, WaveEvent, WaveSavePayload,
+import type {
+  IWave, WaveSavePayload } from './types';
+import { WaveAudio, WaveEvent
 } from './types';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '../entities/npc/enemy/const';
 import { EnemyFactory } from '../entities/npc/enemy/factory';
 import { ENEMIES } from '../entities/npc/enemy/factory/const';
-import { EnemyVariant, IEnemy } from '../entities/npc/enemy/types';
+import type { IEnemy } from '../entities/npc/enemy/types';
+import { EnemyVariant } from '../entities/npc/enemy/types';
 import { EntityType } from '../entities/types';
 import type { IWorld } from '../types';
 import { WorldEvent, WorldMode } from '../types';

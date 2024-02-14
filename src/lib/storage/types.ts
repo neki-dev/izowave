@@ -1,8 +1,8 @@
-import { GameSavePayload } from '../../game/types';
-import { PlayerSavePayload } from '~scene/world/entities/player/types';
-import { LevelSavePayload } from '~scene/world/level/types';
-import { WorldSavePayload } from '~scene/world/types';
-import { WaveSavePayload } from '~scene/world/wave/types';
+import type { GameSavePayload } from '../../game/types';
+import type { PlayerSavePayload } from '~scene/world/entities/player/types';
+import type { LevelSavePayload } from '~scene/world/level/types';
+import type { WorldSavePayload } from '~scene/world/types';
+import type { WaveSavePayload } from '~scene/world/wave/types';
 
 export type StorageSave = {
   name: string

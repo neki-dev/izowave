@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '../../../../../../../const/difficulty';
+import type { BuildingVariantData } from '../../types';
 import {
-  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+  BuildingCategory, BuildingTexture, BuildingVariant,
 } from '../../types';
 import { ShotBallFrozen } from '~scene/world/entities/shot/ball/variants/frozen';
 import type { IWorld } from '~scene/world/types';

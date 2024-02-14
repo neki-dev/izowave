@@ -14,8 +14,9 @@ import { TileType } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
+import type { IEnemy, EnemyData, IEnemyTarget } from './types';
 import {
-  EnemyAudio, EnemyTexture, IEnemy, EnemyData, IEnemyTarget,
+  EnemyAudio, EnemyTexture
 } from './types';
 
 Assets.RegisterAudio(EnemyAudio);

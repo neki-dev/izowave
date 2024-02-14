@@ -1,7 +1,8 @@
 import { Enemy } from '..';
 import type { IWorld } from '~scene/world/types';
 
-import { EnemyVariantData, EnemyTexture } from '../types';
+import type { EnemyVariantData } from '../types';
+import { EnemyTexture } from '../types';
 
 export class EnemyUndead extends Enemy {
   static SpawnWaveRange = [4, 9];

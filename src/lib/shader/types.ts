@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 export enum ShaderType {
   OUTLINE = 'OUTLINE',
 }

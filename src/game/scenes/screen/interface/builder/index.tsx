@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import type { IGame } from '../../../../types';
 import { GameScene } from '../../../../types';
 import { phrase } from '~lib/lang';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';

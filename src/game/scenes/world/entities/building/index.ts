@@ -4,7 +4,7 @@ import { DIFFICULTY } from '../../../../../const/difficulty';
 import { GameEvent } from '../../../../types';
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';
 import { Tutorial } from '~lib/tutorial';
@@ -28,12 +28,12 @@ import type {
   IBuilding,
   BuildingGrowthValue,
   BuildingSavePayload,
-} from './types';
+
+  BuildingVariant } from './types';
 import {
   BuildingEvent,
   BuildingAudio,
   BuildingTexture,
-  BuildingVariant,
   BuildingIcon,
   BuildingOutlineState,
 } from './types';

@@ -2,8 +2,9 @@ import { Building } from '..';
 import { DIFFICULTY } from '../../../../../../const/difficulty';
 import type { IWorld } from '~scene/world/types';
 
+import type { BuildingVariantData } from '../types';
 import {
-  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+  BuildingCategory, BuildingTexture, BuildingVariant,
 } from '../types';
 
 export class BuildingWall extends Building {

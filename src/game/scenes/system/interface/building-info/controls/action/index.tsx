@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { BuildingControl } from '~scene/world/entities/building/types';
+import type { BuildingControl } from '~scene/world/entities/building/types';
 
 import {
   Container, Label, Addon, Main, Key,

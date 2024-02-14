@@ -9,17 +9,18 @@ import type { IWorld } from '~scene/world/types';
 import { WorldMode } from '~scene/world/types';
 
 import { BUILDING_TILE } from '../const';
+import type {
+  BuildingParam,
+  BuildingVariantData,
+  IBuildingAmmunition,
+  BuildingSavePayload,
+  BuildingControl } from '../types';
 import {
   BuildingAudio,
-  BuildingParam,
   BuildingEvent,
   BuildingTexture,
   BuildingVariant,
-  BuildingVariantData,
   BuildingIcon,
-  IBuildingAmmunition,
-  BuildingSavePayload,
-  BuildingControl,
   BuildingCategory,
 } from '../types';
 

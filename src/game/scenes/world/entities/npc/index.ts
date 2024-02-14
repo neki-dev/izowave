@@ -10,7 +10,7 @@ import type { PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
 import { NPC_PATH_FIND_RATE } from './const';
-import { INPC, NPCData } from './types';
+import type { INPC, NPCData } from './types';
 import { EntityType } from '../types';
 
 export abstract class NPC extends Sprite implements INPC {

@@ -1,7 +1,7 @@
 import { useClick, useGame } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
-import { GameStat, IGame } from '../../../types';
+import type { GameStat, IGame } from '../../../types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';

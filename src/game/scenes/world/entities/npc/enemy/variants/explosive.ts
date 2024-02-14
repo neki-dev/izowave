@@ -7,9 +7,8 @@ import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { IWorld } from '~scene/world/types';
 
 import { ENEMY_EXPLOSION_RADIUS, ENEMY_EXPLOSION_EFFECT_COLOR, ENEMY_EXPLOSION_EFFECT_DURATION } from '../const';
-import {
-  EnemyTexture, EnemyVariantData, IEnemy, IEnemyTarget,
-} from '../types';
+import type { EnemyVariantData, IEnemy, IEnemyTarget } from '../types';
+import { EnemyTexture } from '../types';
 
 export class EnemyExplosive extends Enemy {
   static SpawnWaveRange = [7];

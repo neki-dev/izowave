@@ -15,26 +15,30 @@ import type { IBuilder } from './builder/types';
 import { Camera } from './camera';
 import type { ICamera } from './camera/types';
 import { LiveEvent } from './entities/addons/live/types';
-import { BuildingVariant, IBuilding } from './entities/building/types';
+import type { IBuilding } from './entities/building/types';
+import { BuildingVariant } from './entities/building/types';
 import { Crystal } from './entities/crystal';
 import type { ICrystal } from './entities/crystal/types';
 import { Assistant } from './entities/npc/assistant';
 import type { IAssistant } from './entities/npc/assistant/types';
 import { Player } from './entities/player';
 import type { IPlayer } from './entities/player/types';
-import { EntityType, ISprite } from './entities/types';
+import type { ISprite } from './entities/types';
+import { EntityType } from './entities/types';
 import { FXManager } from './fx-manager';
-import { IFXManager } from './fx-manager/types';
+import type { IFXManager } from './fx-manager/types';
 import { WorldUI } from './interface';
 import { Level } from './level';
 import { LEVEL_PLANETS } from './level/const';
-import {
-  ILevel, LevelData, PositionAtWorld, SpawnTarget, PositionAtMatrix,
+import type {
+  ILevel, LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
+import { SpawnTarget
 } from './level/types';
 import { Spawner } from './spawner';
 import type { ISpawner } from './spawner/types';
+import type { IWorld, WorldHint, WorldTimerParams, WorldSavePayload } from './types';
 import {
-  WorldModeIcon, IWorld, WorldMode, WorldHint, WorldEvent, WorldTimerParams, WorldSavePayload,
+  WorldModeIcon, WorldMode, WorldEvent
 } from './types';
 import { Wave } from './wave';
 import type { IWave } from './wave/types';

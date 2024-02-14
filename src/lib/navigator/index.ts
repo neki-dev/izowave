@@ -2,17 +2,18 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
-import {
+import type {
   INavigator,
   NavigatorTaskInfo,
   NavigatorWorkerResult,
-  NavigatorEvent,
   NavigatorPayloadCompleteTask,
   NavigatorPayloadUpdatePointCost,
   NavigatorTaskData,
   NavigatorTaskCallback,
   NavigatorPayloadCreateTask,
-  NavigatorPayloadCancelTask,
+  NavigatorPayloadCancelTask } from './types';
+import {
+  NavigatorEvent
 } from './types';
 import NavigatorWorker from './worker/index.ts?worker';
 

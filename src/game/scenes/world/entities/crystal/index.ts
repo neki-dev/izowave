@@ -6,12 +6,14 @@ import { progressionLinear } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';
 import { Level } from '~scene/world/level';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
-import { TileType, PositionAtMatrix } from '~scene/world/level/types';
+import type { PositionAtMatrix } from '~scene/world/level/types';
+import { TileType } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
 import { CRYSTAL_TILE } from './const';
+import type { ICrystal, CrystalData, CrystalSavePayload } from './types';
 import {
-  CrystalAudio, CrystalTexture, ICrystal, CrystalData, CrystalEvents, CrystalSavePayload,
+  CrystalAudio, CrystalTexture, CrystalEvents
 } from './types';
 import { EntityType } from '../types';
 

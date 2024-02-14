@@ -4,8 +4,9 @@ import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import type { IWorld } from '~scene/world/types';
 
+import type { BuildingVariantData } from '../types';
 import {
-  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant,
+  BuildingCategory, BuildingTexture, BuildingVariant,
 } from '../types';
 
 export class BuildingRadar extends Building {

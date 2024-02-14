@@ -1,4 +1,5 @@
-import { LevelBiomes, BiomeType, SpawnTarget } from '~scene/world/level/types';
+import type { LevelBiomes } from '~scene/world/level/types';
+import { BiomeType, SpawnTarget } from '~scene/world/level/types';
 
 export const LEVEL_BIOMES_MARS: LevelBiomes = [{
   params: { upperBound: 0.09 },

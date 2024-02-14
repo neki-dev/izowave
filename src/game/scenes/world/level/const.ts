@@ -1,9 +1,10 @@
-import { WorldLayerParams } from 'gen-biome';
+import type { WorldLayerParams } from 'gen-biome';
 
 import { LEVEL_BIOMES_EARTH } from './planets/earth';
 import { LEVEL_BIOMES_MARS } from './planets/mars';
 import { LEVEL_BIOMES_MOON } from './planets/moon';
-import { LevelPlanet, LevelBiomes } from './types';
+import type { LevelBiomes } from './types';
+import { LevelPlanet } from './types';
 
 export const LEVEL_MAP_SIZE = 100;
 

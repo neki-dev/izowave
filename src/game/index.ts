@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { registerShaders } from '~lib/shader';
 import { Storage } from '~lib/storage';
-import { StorageSave } from '~lib/storage/types';
+import type { StorageSave } from '~lib/storage/types';
 import { Tutorial } from '~lib/tutorial';
 import { Utils } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
@@ -15,8 +15,9 @@ import { World } from '~scene/world';
 import type { IWorld } from '~scene/world/types';
 
 import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
-import {
-  IGame, GameDifficulty, GameState, GameSettings, GameScene, GameEvent, GameStat, GameSavePayload,
+import type {
+  IGame, GameStat, GameSavePayload } from './types';
+import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent
 } from './types';
 
 export class Game extends Phaser.Game implements IGame {

@@ -1,6 +1,7 @@
 import { DIFFICULTY } from '../../../../../../../const/difficulty';
+import type { BuildingVariantData, BuildingParam } from '../../types';
 import {
-  BuildingCategory, BuildingTexture, BuildingVariantData, BuildingVariant, BuildingParam, BuildingIcon, BuildingAudio,
+  BuildingCategory, BuildingTexture, BuildingVariant, BuildingIcon, BuildingAudio,
 } from '../../types';
 import { progressionLinear } from '~lib/progression';
 import type { IEnemy } from '~scene/world/entities/npc/enemy/types';

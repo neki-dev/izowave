@@ -1,4 +1,4 @@
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 
 export type ControlItem = {
   keys: string

@@ -4,9 +4,10 @@ import React, { useMemo, useState } from 'react';
 import type { IGame } from '../../../../types';
 import { GameState } from '../../../../types';
 import { phrase } from '~lib/lang';
-import { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~lib/lang/types';
 import { Tutorial } from '~lib/tutorial';
-import { MenuPage, MenuItem } from '~scene/menu/types';
+import type { MenuItem } from '~scene/menu/types';
+import { MenuPage } from '~scene/menu/types';
 import { Confirm } from '~scene/system/interface/confirm';
 
 import { Wrapper, Item, Space } from './styles';

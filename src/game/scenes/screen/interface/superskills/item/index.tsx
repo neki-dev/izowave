@@ -7,7 +7,8 @@ import type { IGame } from '../../../../../types';
 import { GameScene, GameEvent } from '../../../../../types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
-import { PlayerSuperskill, PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
+import type { PlayerSuperskill } from '~scene/world/entities/player/types';
+import { PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
 import {

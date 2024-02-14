@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GameScene } from '../../../../types';
-import { CrystalAmount, ICrystal, CrystalEvents } from '~scene/world/entities/crystal/types';
+import type { CrystalAmount, ICrystal } from '~scene/world/entities/crystal/types';
+import { CrystalEvents } from '~scene/world/entities/crystal/types';
 import { EntityType } from '~scene/world/entities/types';
 import type { IWorld } from '~scene/world/types';
 
