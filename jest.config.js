@@ -7,6 +7,7 @@ module.exports = {
   moduleNameMapper: {
     ...alias.fromFile(__dirname, './tsconfig.json').toJest(),
     '(.*)\\?worker': './$1',
+    '^phaser3spectorjs': require.resolve('phaser3spectorjs'),
   },
   testRegex: '\\.test\\.tsx?$',
   setupFiles: ['jest-canvas-mock'],
