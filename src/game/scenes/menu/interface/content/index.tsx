@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { MenuPage } from '~scene/menu/types';
-
 import { AboutGame } from './about-game';
 import { Controls } from './controls';
 import { LoadGame } from './load-game';
@@ -9,6 +7,7 @@ import { NewGame } from './new-game';
 import { SaveGame } from './save-game';
 import { Settings } from './settings';
 import { Wrapper } from './styles';
+import { MenuPage } from '~scene/menu/types';
 
 type Props = {
   page?: MenuPage

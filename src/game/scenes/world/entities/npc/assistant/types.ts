@@ -1,10 +1,9 @@
-import type Phaser from 'phaser';
-
 import type { IPlayer } from '../../player/types';
 import type { IShotInitiator } from '../../shot/types';
-import type { PositionAtMatrix } from '~scene/world/level/types';
 
 import type { INPC } from '../types';
+import type Phaser from 'phaser';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export interface IAssistant extends INPC, IShotInitiator {
   readonly body: Phaser.Physics.Arcade.Body

@@ -1,6 +1,5 @@
-import type { PositionAtMatrix } from '~scene/world/level/types';
-
 import type { NavigatorPathNodeData } from '../types';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class PathNode {
   readonly position: PositionAtMatrix;

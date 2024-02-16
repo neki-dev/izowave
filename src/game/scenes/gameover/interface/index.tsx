@@ -1,15 +1,14 @@
 import { useClick, useGame } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
-import type { GameStat, IGame } from '../../../types';
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
-import { Overlay } from '~scene/system/interface/overlay';
-
 import { Result } from './result';
 import {
   Wrapper, Label, Button, Head, IconRestart,
 } from './styles';
+import type { GameStat, IGame } from '../../../types';
+import { phrase } from '~lib/lang';
+import { Tutorial } from '~lib/tutorial';
+import { Overlay } from '~scene/system/interface/overlay';
 
 type Props = {
   stat: GameStat

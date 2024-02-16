@@ -1,9 +1,9 @@
 import { DIFFICULTY } from '../../../../../const/difficulty';
 
-import type { PlayerSkillInfo } from './types';
 import {
   PlayerSkill, PlayerSkillTarget, MovementDirection,
 } from './types';
+import type { PlayerSkillInfo } from './types';
 
 export const PLAYER_TILE_SIZE = {
   width: 20,

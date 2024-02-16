@@ -2,15 +2,15 @@ import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { GameScene } from '../../../../types';
-import { phrase } from '~lib/lang';
-import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
 
 import { Controls } from './controls';
 import { Params } from './params';
 import {
   Name, Level, Health, Wrapper, Head, Body, Container,
 } from './styles';
+import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
+import { phrase } from '~lib/lang';
 
 type Props = {
   building: IBuilding

@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
 
-import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
-import type { IWorld } from '~scene/world/types';
-
 import type { IIndicator, IndicatorData } from './types';
+import type { IWorld } from '~scene/world/types';
+import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 
 export class Indicator extends Phaser.GameObjects.Container implements IIndicator {
   readonly scene: IWorld;

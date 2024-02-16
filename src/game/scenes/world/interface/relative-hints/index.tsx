@@ -2,10 +2,9 @@ import { useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
 import { GameScene } from '../../../../types';
+import { RelativeHint } from './relative-hint';
 import type { IWorld, WorldHint } from '~scene/world/types';
 import { WorldEvent } from '~scene/world/types';
-
-import { RelativeHint } from './relative-hint';
 
 export const RelativeHints: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

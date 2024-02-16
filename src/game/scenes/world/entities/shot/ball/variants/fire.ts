@@ -1,12 +1,11 @@
-import type { ShotParams, ShotData } from '../../types';
-import { getIsometricDistance } from '~lib/dimension';
-import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
-import { EntityType } from '~scene/world/entities/types';
-import type { IWorld } from '~scene/world/types';
-
 import { ShotBall } from '../ball';
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '../const';
 import { ShotBallAudio } from '../types';
+import type { ShotParams, ShotData } from '../../types';
+import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import type { IWorld } from '~scene/world/types';
+import { getIsometricDistance } from '~lib/dimension';
+import { EntityType } from '~scene/world/entities/types';
 
 export class ShotBallFire extends ShotBall {
   constructor(scene: IWorld, params: ShotParams, data: ShotData = {}) {

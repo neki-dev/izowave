@@ -1,10 +1,9 @@
 import { Enemy } from '..';
 import { DIFFICULTY } from '../../../../../../../const/difficulty';
-import { progressionQuadratic } from '~lib/progression';
-import type { IWorld } from '~scene/world/types';
-
-import type { EnemyVariantData } from '../types';
 import { EnemyTexture } from '../types';
+import type { EnemyVariantData } from '../types';
+import type { IWorld } from '~scene/world/types';
+import { progressionQuadratic } from '~lib/progression';
 
 export class EnemyTank extends Enemy {
   static SpawnWaveRange = [6];

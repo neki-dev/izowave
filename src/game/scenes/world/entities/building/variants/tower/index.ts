@@ -1,5 +1,11 @@
 import { Building } from '../..';
 import { DIFFICULTY } from '../../../../../../../const/difficulty';
+import {
+  BuildingIcon,
+  BuildingVariant,
+  BuildingAudio,
+  BuildingEvent,
+} from '../../types';
 import type {
   BuildingData,
   BuildingParam,
@@ -7,23 +13,17 @@ import type {
   IBuildingAmmunition,
   IBuildingTower,
   BuildingSavePayload,
-  IBuildingBooster
+  IBuildingBooster,
 } from '../../types';
-import {
-  BuildingIcon,
-  BuildingVariant,
-  BuildingAudio,
-  BuildingEvent
-} from '../../types';
+import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import type { IShot, ShotParams } from '~scene/world/entities/shot/types';
+import type { IWorld } from '~scene/world/types';
 import { getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import { PlayerSuperskill } from '~scene/world/entities/player/types';
-import type { IShot, ShotParams } from '~scene/world/entities/shot/types';
 import { EntityType } from '~scene/world/entities/types';
-import type { IWorld } from '~scene/world/types';
 
 export class BuildingTower extends Building implements IBuildingTower {
   private shot: Nullable<IShot> = null;

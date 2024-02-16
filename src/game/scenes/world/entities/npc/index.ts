@@ -2,16 +2,15 @@ import Phaser from 'phaser';
 
 import { Sprite } from '..';
 import { DEBUG_MODS } from '../../../../const';
+import { EntityType } from '../types';
+import { NPC_PATH_FIND_RATE } from './const';
+import type { INPC, NPCData } from './types';
+import type { PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~lib/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import type { PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
-
-import { NPC_PATH_FIND_RATE } from './const';
-import type { INPC, NPCData } from './types';
-import { EntityType } from '../types';
 
 export abstract class NPC extends Sprite implements INPC {
   public isPathPassed: boolean = false;

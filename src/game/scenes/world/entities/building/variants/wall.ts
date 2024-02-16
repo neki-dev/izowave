@@ -1,11 +1,10 @@
 import { Building } from '..';
 import { DIFFICULTY } from '../../../../../../const/difficulty';
-import type { IWorld } from '~scene/world/types';
-
-import type { BuildingVariantData } from '../types';
 import {
   BuildingCategory, BuildingTexture, BuildingVariant,
 } from '../types';
+import type { BuildingVariantData } from '../types';
+import type { IWorld } from '~scene/world/types';
 
 export class BuildingWall extends Building {
   static Category = BuildingCategory.DEFENSE;

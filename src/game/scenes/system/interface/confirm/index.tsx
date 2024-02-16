@@ -1,13 +1,12 @@
 import { useCurrentScene, useEvent } from 'phaser-react-ui';
 import React from 'react';
 
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
-
+import { Button } from '../button';
 import {
   Overlay, Container, Content, Buttons,
 } from './styles';
-import { Button } from '../button';
+import type { LangPhrase } from '~lib/lang/types';
+import { phrase } from '~lib/lang';
 
 type Props = {
   message: LangPhrase

@@ -1,17 +1,16 @@
 import { useEvent, useGame, useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import type { IGame } from '../../../../types';
 import { GameScene } from '../../../../types';
-import { BuildingVariant } from '~scene/world/entities/building/types';
-import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
-import { AssistantEvent } from '~scene/world/entities/npc/assistant/types';
-import type { PlayerSuperskill } from '~scene/world/entities/player/types';
-import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
-import { WaveEvent } from '~scene/world/wave/types';
-
 import { Modal } from './modal';
+import type { IGame } from '../../../../types';
+import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
+import type { PlayerSuperskill } from '~scene/world/entities/player/types';
+import type { IWorld } from '~scene/world/types';
+import { BuildingVariant } from '~scene/world/entities/building/types';
+import { AssistantEvent } from '~scene/world/entities/npc/assistant/types';
+import { PlayerEvent } from '~scene/world/entities/player/types';
+import { WaveEvent } from '~scene/world/wave/types';
 
 export type Feature = {
   type: 'BUILDING' | 'SUPERSKILL' | 'ASSISTANT'

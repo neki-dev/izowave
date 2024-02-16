@@ -1,15 +1,14 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
+import { Modal } from './modal';
+import { Wrapper } from './styles';
 import type { IGame } from '../../../../types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
-
-import { Modal } from './modal';
-import { Wrapper } from './styles';
 
 export const Skills: React.FC = () => {
   const game = useGame<IGame>();

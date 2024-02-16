@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import type { ILive, LiveData } from './types';
 import { LiveEvent } from './types';
+import type { ILive, LiveData } from './types';
 
 export class Live extends Phaser.Events.EventEmitter implements ILive {
   private _health: number;

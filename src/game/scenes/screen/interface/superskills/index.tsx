@@ -2,11 +2,11 @@ import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { GameScene } from '../../../../types';
-import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
 
 import { Item } from './item';
 import { Wrapper } from './styles';
+import type { IWorld } from '~scene/world/types';
+import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
 
 export const Superskills: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

@@ -1,12 +1,11 @@
 import Phaser from 'phaser';
 
-import { Assets } from '~lib/assets';
-import type { IWorld } from '~scene/world/types';
-
-import type { IEffect, EffectData } from './types';
 import {
-  EffectAudio, EffectTexture
+  EffectAudio, EffectTexture,
 } from './types';
+import type { IEffect, EffectData } from './types';
+import type { IWorld } from '~scene/world/types';
+import { Assets } from '~lib/assets';
 
 Assets.RegisterAudio(EffectAudio);
 Assets.RegisterSprites(EffectTexture, {

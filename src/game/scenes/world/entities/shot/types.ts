@@ -1,10 +1,9 @@
+import type { IEnemy } from '../npc/enemy/types';
 import type Phaser from 'phaser';
 
 import type { IParticlesParent } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
-
-import type { IEnemy } from '../npc/enemy/types';
 
 export interface IShot extends IParticlesParent {
   /**

@@ -1,7 +1,6 @@
 import type { ILive } from '../../addons/live/types';
-import type { PositionAtWorld, PositionAtMatrix } from '~scene/world/level/types';
-
 import type { INPC } from '../types';
+import type { PositionAtWorld, PositionAtMatrix } from '~scene/world/level/types';
 
 export interface IEnemy extends INPC {
   /**

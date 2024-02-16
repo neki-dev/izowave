@@ -1,8 +1,7 @@
+import type { IShot, ShotData } from '../types';
 import type Phaser from 'phaser';
 
 import type { IWorld } from '~scene/world/types';
-
-import type { IShot, ShotData } from '../types';
 
 export interface IShotBall extends Phaser.Physics.Arcade.Image, IShot {
   readonly scene: IWorld

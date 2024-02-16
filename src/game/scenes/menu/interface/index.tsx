@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { Tutorial } from '~lib/tutorial';
-import { Overlay } from '~scene/system/interface/overlay';
-
 import { Content } from './content';
 import { Copyright } from './copyright';
 import { Navigation } from './navigation';
@@ -10,6 +7,8 @@ import {
   Wrapper, Logotype, Sidebar, Main,
 } from './styles';
 import type { MenuPage } from '../types';
+import { Tutorial } from '~lib/tutorial';
+import { Overlay } from '~scene/system/interface/overlay';
 
 type Props = {
   defaultPage?: MenuPage

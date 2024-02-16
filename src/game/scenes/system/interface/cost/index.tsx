@@ -4,10 +4,9 @@ import React, {
 } from 'react';
 
 import { GameScene } from '../../../../types';
-import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
-
 import * as styles from './styles';
+import type { IWorld } from '~scene/world/types';
+import { PlayerEvent } from '~scene/world/entities/player/types';
 
 type Props = {
   type: 'RESOURCES' | 'EXPERIENCE'

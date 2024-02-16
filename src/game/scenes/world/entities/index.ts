@@ -1,23 +1,23 @@
 import Phaser from 'phaser';
 
 import { DEBUG_MODS } from '../../../const';
-import { isPositionsEqual } from '~lib/dimension';
 
-import { Indicator } from './addons/indicator';
-import type { IIndicator } from './addons/indicator/types';
-import { Live } from './addons/live';
-import type { ILive } from './addons/live/types';
-import { LiveEvent } from './addons/live/types';
-import type {
-  ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
-import { EntityType,
-} from './types';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
 import { Level } from '../level';
+import { Indicator } from './addons/indicator';
+import { Live } from './addons/live';
+import { LiveEvent } from './addons/live/types';
+import { EntityType,
+} from './types';
+import type { IIndicator } from './addons/indicator/types';
+import type { ILive } from './addons/live/types';
+import type {
+  ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
 import type {
   LevelBiome, PositionAtMatrix, TileType, PositionAtWorld,
 } from '../level/types';
 import type { IWorld } from '../types';
+import { isPositionsEqual } from '~lib/dimension';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   readonly scene: IWorld;

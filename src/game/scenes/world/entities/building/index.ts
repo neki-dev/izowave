@@ -2,24 +2,18 @@ import Phaser from 'phaser';
 
 import { DIFFICULTY } from '../../../../../const/difficulty';
 import { GameEvent } from '../../../../types';
-import { Assets } from '~lib/assets';
-import { CONTROL_KEY } from '~lib/controls/const';
-import type { LangPhrase } from '~lib/lang/types';
-import { progressionLinear, progressionQuadratic } from '~lib/progression';
-import { ShaderType } from '~lib/shader/types';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
-import { BuilderEvent } from '~scene/world/builder/types';
-import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
-import { Level } from '~scene/world/level';
-import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import type { ITile } from '~scene/world/level/tile-matrix/types';
-import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
-import { TileType } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
-import { WorldMode, WorldEvent } from '~scene/world/types';
-
+import { Indicator } from '../addons/indicator';
+import { Live } from '../addons/live';
+import { LiveEvent } from '../addons/live/types';
+import { EntityType } from '../types';
 import { BUILDING_TILE } from './const';
+import {
+  BuildingEvent,
+  BuildingAudio,
+  BuildingTexture,
+  BuildingIcon,
+  BuildingOutlineState,
+} from './types';
 import type { IBuildingFactory } from './factory/types';
 import type {
   BuildingData,
@@ -30,19 +24,24 @@ import type {
   BuildingSavePayload,
 
   BuildingVariant } from './types';
-import {
-  BuildingEvent,
-  BuildingAudio,
-  BuildingTexture,
-  BuildingIcon,
-  BuildingOutlineState,
-} from './types';
-import { Indicator } from '../addons/indicator';
 import type { IIndicator, IndicatorData } from '../addons/indicator/types';
-import { Live } from '../addons/live';
 import type { ILive } from '../addons/live/types';
-import { LiveEvent } from '../addons/live/types';
-import { EntityType } from '../types';
+import type { LangPhrase } from '~lib/lang/types';
+import type { ITile } from '~scene/world/level/tile-matrix/types';
+import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
+import { Assets } from '~lib/assets';
+import { CONTROL_KEY } from '~lib/controls/const';
+import { progressionLinear, progressionQuadratic } from '~lib/progression';
+import { ShaderType } from '~lib/shader/types';
+import { Tutorial } from '~lib/tutorial';
+import { TutorialStep } from '~lib/tutorial/types';
+import { BuilderEvent } from '~scene/world/builder/types';
+import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
+import { Level } from '~scene/world/level';
+import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
+import { TileType } from '~scene/world/level/types';
+import { WorldMode, WorldEvent } from '~scene/world/types';
 
 Assets.RegisterAudio(BuildingAudio);
 Assets.RegisterImages(BuildingIcon);

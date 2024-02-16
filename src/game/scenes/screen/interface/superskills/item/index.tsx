@@ -3,17 +3,16 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
-import type { IGame } from '../../../../../types';
 import { GameScene, GameEvent } from '../../../../../types';
-import { phrase } from '~lib/lang';
-import { Cost } from '~scene/system/interface/cost';
-import type { PlayerSuperskill } from '~scene/world/entities/player/types';
-import { PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
-
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,
 } from './styles';
+import type { IGame } from '../../../../../types';
+import type { PlayerSuperskill } from '~scene/world/entities/player/types';
+import type { IWorld } from '~scene/world/types';
+import { phrase } from '~lib/lang';
+import { Cost } from '~scene/system/interface/cost';
+import { PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
 
 type Props = {
   type: PlayerSuperskill

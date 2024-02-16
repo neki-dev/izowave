@@ -1,9 +1,9 @@
 import { Enemy } from '..';
-import type { IWorld } from '~scene/world/types';
 
 import { EnemyFactory } from '../factory';
-import type { EnemyVariantData } from '../types';
 import { EnemyTexture, EnemyVariant } from '../types';
+import type { EnemyVariantData } from '../types';
+import type { IWorld } from '~scene/world/types';
 
 export class EnemyStranger extends Enemy {
   static SpawnWaveRange = [11];

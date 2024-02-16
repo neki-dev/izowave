@@ -1,11 +1,10 @@
 import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
+import { Wrapper } from './styles';
+import type { IBuilding } from '~scene/world/entities/building/types';
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { BuildingInfo } from '~scene/system/interface/building-info';
-import type { IBuilding } from '~scene/world/entities/building/types';
-
-import { Wrapper } from './styles';
 
 type Props = {
   building: IBuilding

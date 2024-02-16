@@ -1,3 +1,4 @@
+import type { IBuildingFactory } from './types';
 import { BuildingVariant } from '~scene/world/entities/building/types';
 import { BuildingAmmunition } from '~scene/world/entities/building/variants/ammunition';
 import { BuildingBooster } from '~scene/world/entities/building/variants/booster';
@@ -8,8 +9,6 @@ import { BuildingTowerFire } from '~scene/world/entities/building/variants/tower
 import { BuildingTowerFrozen } from '~scene/world/entities/building/variants/tower/frozen';
 import { BuildingTowerLazer } from '~scene/world/entities/building/variants/tower/lazer';
 import { BuildingWall } from '~scene/world/entities/building/variants/wall';
-
-import type { IBuildingFactory } from './types';
 
 export const BUILDINGS: Record<BuildingVariant, IBuildingFactory> = {
   [BuildingVariant.WALL]: BuildingWall,

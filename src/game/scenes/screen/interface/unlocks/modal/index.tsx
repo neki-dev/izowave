@@ -1,14 +1,13 @@
 import { useClick, useCurrentScene, useEvent } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { Feature } from '..';
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
-
 import { Item } from './item';
 import {
   Button, Container, Label, List, Overlay,
 } from './styles';
+import type { Feature } from '..';
+import { phrase } from '~lib/lang';
+import { Tutorial } from '~lib/tutorial';
 
 type Props = {
   features: Feature[]

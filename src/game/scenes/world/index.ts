@@ -5,44 +5,44 @@ import { v4 as uuidv4 } from 'uuid';
 import { Scene } from '..';
 import { DIFFICULTY } from '../../../const/difficulty';
 import { GameScene, GameState, GameEvent } from '../../types';
+
+import { Builder } from './builder';
+import { Camera } from './camera';
+import { LiveEvent } from './entities/addons/live/types';
+import { BuildingVariant } from './entities/building/types';
+import { Crystal } from './entities/crystal';
+import { Assistant } from './entities/npc/assistant';
+import { Player } from './entities/player';
+import { EntityType } from './entities/types';
+import { FXManager } from './fx-manager';
+import { WorldUI } from './interface';
+import { Level } from './level';
+import { LEVEL_PLANETS } from './level/const';
+import { SpawnTarget,
+} from './level/types';
+import { Spawner } from './spawner';
+import {
+  WorldModeIcon, WorldMode, WorldEvent,
+} from './types';
+import { Wave } from './wave';
+import { WaveEvent } from './wave/types';
+import type { IBuilder } from './builder/types';
+import type { ICamera } from './camera/types';
+import type { IBuilding } from './entities/building/types';
+import type { ICrystal } from './entities/crystal/types';
+import type { IAssistant } from './entities/npc/assistant/types';
+import type { IPlayer } from './entities/player/types';
+import type { ISprite } from './entities/types';
+import type { IFXManager } from './fx-manager/types';
+import type {
+  ILevel, LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
+import type { ISpawner } from './spawner/types';
+import type { IWorld, WorldHint, WorldTimerParams, WorldSavePayload } from './types';
+import type { IWave } from './wave/types';
 import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Utils } from '~lib/utils';
-
-import { Builder } from './builder';
-import type { IBuilder } from './builder/types';
-import { Camera } from './camera';
-import type { ICamera } from './camera/types';
-import { LiveEvent } from './entities/addons/live/types';
-import type { IBuilding } from './entities/building/types';
-import { BuildingVariant } from './entities/building/types';
-import { Crystal } from './entities/crystal';
-import type { ICrystal } from './entities/crystal/types';
-import { Assistant } from './entities/npc/assistant';
-import type { IAssistant } from './entities/npc/assistant/types';
-import { Player } from './entities/player';
-import type { IPlayer } from './entities/player/types';
-import type { ISprite } from './entities/types';
-import { EntityType } from './entities/types';
-import { FXManager } from './fx-manager';
-import type { IFXManager } from './fx-manager/types';
-import { WorldUI } from './interface';
-import { Level } from './level';
-import { LEVEL_PLANETS } from './level/const';
-import type {
-  ILevel, LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
-import { SpawnTarget
-} from './level/types';
-import { Spawner } from './spawner';
-import type { ISpawner } from './spawner/types';
-import type { IWorld, WorldHint, WorldTimerParams, WorldSavePayload } from './types';
-import {
-  WorldModeIcon, WorldMode, WorldEvent
-} from './types';
-import { Wave } from './wave';
-import type { IWave } from './wave/types';
-import { WaveEvent } from './wave/types';
 
 Assets.RegisterImages(WorldModeIcon);
 

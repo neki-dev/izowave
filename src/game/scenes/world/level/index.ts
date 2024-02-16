@@ -1,12 +1,7 @@
-import type { World } from 'gen-biome';
 import { WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
 import { GameEvent, GameSettings } from '../../../types';
-import { Assets } from '~lib/assets';
-import { isPositionsEqual } from '~lib/dimension';
-import { Navigator } from '~lib/navigator';
-import type { INavigator } from '~lib/navigator/types';
 
 import {
   LEVEL_MAP_TILE,
@@ -19,6 +14,13 @@ import {
   LEVEL_MAP_PERSPECTIVE,
 } from './const';
 import { TileMatrix } from './tile-matrix';
+import {
+  LevelPlanet,
+  LevelSceneryTexture,
+  LevelTilesetTexture,
+  SpawnTarget,
+  TileType,
+} from './types';
 import type { ITile } from './tile-matrix/types';
 import type {
   BiomeType,
@@ -29,15 +31,13 @@ import type {
   PositionAtMatrix,
   PositionAtWorld,
   TilePosition } from './types';
-import {
-  LevelPlanet,
-  LevelSceneryTexture,
-  LevelTilesetTexture,
-  SpawnTarget,
-  TileType,
-} from './types';
 import type { Effect } from '../fx-manager/effect';
 import type { IWorld } from '../types';
+import type { World } from 'gen-biome';
+import type { INavigator } from '~lib/navigator/types';
+import { Assets } from '~lib/assets';
+import { isPositionsEqual } from '~lib/dimension';
+import { Navigator } from '~lib/navigator';
 
 Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
 Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);

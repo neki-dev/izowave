@@ -1,21 +1,20 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import type { IGame } from '../../../../types';
 import { GameScene } from '../../../../types';
-import { phrase } from '~lib/lang';
+import { Building } from './building';
+import {
+  Category, Label, Variants, Wrapper,
+} from './styles';
+import type { IGame } from '../../../../types';
 import type { LangPhrase } from '~lib/lang/types';
+import type { IWorld } from '~scene/world/types';
+import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import { BuildingVariant, BuildingCategory } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
-
-import { Building } from './building';
-import {
-  Category, Label, Variants, Wrapper,
-} from './styles';
 
 export const Builder: React.FC = () => {
   const game = useGame<IGame>();

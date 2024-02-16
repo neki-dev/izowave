@@ -2,8 +2,8 @@ import { useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import type { GameSettings, IGame } from '../../../../../../types';
-import { InterfaceTextColor } from '~lib/interface/types';
 import type { LangPhrase } from '~lib/lang/types';
+import { InterfaceTextColor } from '~lib/interface/types';
 import { Setting } from '~scene/system/interface/setting';
 
 type Props = {

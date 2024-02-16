@@ -1,7 +1,6 @@
-import type { IWorld } from '~scene/world/types';
-
 import { ENEMIES } from './const';
 import type { EnemyVariant, EnemyVariantData } from '../types';
+import type { IWorld } from '~scene/world/types';
 
 export class EnemyFactory {
   public static create(scene: IWorld, variant: EnemyVariant, data: EnemyVariantData) {

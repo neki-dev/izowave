@@ -22,7 +22,7 @@
     "start": "vite --host",
     "build": "vite build",
     "test": "jest",
-    "lint": "eslint \"./**/*.{js,ts,tsx}\" --ignore-path .gitignore --fix"
+    "lint": "eslint \"./**/*.{ts,tsx}\" --ignore-path .gitignore --fix"
   },
   "devDependencies": {
     "@types/heap": "0.2.33",
@@ -37,6 +37,7 @@
     "@vitejs/plugin-react": "4.2.1",
     "alias-reuse": "2.0.0",
     "eslint": "8.56.0",
+    "eslint-plugin-import": "2.29.1",
     "jest": "29.7.0",
     "jest-canvas-mock": "2.5.2",
     "jest-environment-jsdom": "29.7.0",

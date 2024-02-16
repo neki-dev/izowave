@@ -1,11 +1,11 @@
+import {
+  TutorialEvents,
+  TutorialStepState,
+} from './types';
 import type {
   TutorialStep,
   TutorialBindCallbacks,
   TutorialBindAllCallbacks } from './types';
-import {
-  TutorialEvents,
-  TutorialStepState
-} from './types';
 
 export class Tutorial {
   private static _Progress: Partial<Record<TutorialStep, TutorialStepState>> = {};

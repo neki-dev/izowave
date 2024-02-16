@@ -4,13 +4,12 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import { GameScene } from '../../../../types';
-import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~lib/interface/const';
-import { BuildingInfo } from '~scene/system/interface/building-info';
+import { TranslateToScreen } from './translate-to-screen';
 import type { IBuilding } from '~scene/world/entities/building/types';
 import type { IWorld } from '~scene/world/types';
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~lib/interface/const';
+import { BuildingInfo } from '~scene/system/interface/building-info';
 import { WorldEvent } from '~scene/world/types';
-
-import { TranslateToScreen } from './translate-to-screen';
 
 export const RelativeBuildingInfo: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

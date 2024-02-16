@@ -1,8 +1,7 @@
-import type Phaser from 'phaser';
-
 import pkg from '../../../package.json';
 
 import type { AssetsSource, AssetsSpriteParams } from './types';
+import type Phaser from 'phaser';
 
 export class Assets {
   static Files: Phaser.Types.Loader.FileConfig[] = [];

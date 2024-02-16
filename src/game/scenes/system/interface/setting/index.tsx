@@ -1,12 +1,11 @@
 import React from 'react';
 
-import type { InterfaceTextColor } from '~lib/interface/types';
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
-
 import {
   Wrapper, Label, Values, Value,
 } from './styles';
+import type { InterfaceTextColor } from '~lib/interface/types';
+import type { LangPhrase } from '~lib/lang/types';
+import { phrase } from '~lib/lang';
 
 type Props = {
   label: LangPhrase

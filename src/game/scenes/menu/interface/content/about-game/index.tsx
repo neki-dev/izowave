@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { phrase } from '~lib/lang';
-
 import { Wrapper } from './styles';
+import { phrase } from '~lib/lang';
 
 export const AboutGame: React.FC = () => (
   <Wrapper>

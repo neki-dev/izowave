@@ -1,17 +1,16 @@
 import Phaser from 'phaser';
 
-import type { IEnemy } from '../../npc/enemy/types';
 import { EntityType } from '../../types';
+import { SHOT_LAZER_REPEAT, SHOT_LAZER_DELAY } from './const';
+import { ShotLazerAudio } from './types';
+import type { IShotLazer } from './types';
+import type { IEnemy } from '../../npc/enemy/types';
+import type { ShotParams, IShotInitiator } from '../types';
+import type { PositionAtWorld } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
-import type { PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
-
-import { SHOT_LAZER_REPEAT, SHOT_LAZER_DELAY } from './const';
-import type { IShotLazer } from './types';
-import { ShotLazerAudio } from './types';
-import type { ShotParams, IShotInitiator } from '../types';
 
 Assets.RegisterAudio(ShotLazerAudio);
 

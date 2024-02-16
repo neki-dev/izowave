@@ -1,9 +1,6 @@
 import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
-import { INTERFACE_SCALE } from '~lib/interface/const';
-import { Section } from '~scene/system/interface/section';
-
 import { Builder } from './builder';
 import { Debug } from './debug';
 import { Modes } from './modes';
@@ -14,6 +11,8 @@ import { Column, Grid, Wrapper } from './styles';
 import { Superskills } from './superskills';
 import { Unlocks } from './unlocks';
 import { Wave } from './wave';
+import { INTERFACE_SCALE } from '~lib/interface/const';
+import { Section } from '~scene/system/interface/section';
 
 export const ScreenUI: React.FC = () => {
   const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);

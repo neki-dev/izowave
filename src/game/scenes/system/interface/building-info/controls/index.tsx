@@ -1,9 +1,8 @@
 import React from 'react';
 
-import type { BuildingControl } from '~scene/world/entities/building/types';
-
 import { Action } from './action';
 import { Wrapper } from './styles';
+import type { BuildingControl } from '~scene/world/entities/building/types';
 
 type Props = {
   list: BuildingControl[]
