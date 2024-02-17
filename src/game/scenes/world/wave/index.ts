@@ -214,18 +214,18 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.scene.fx.playSound(WaveAudio.COMPLETE);
 
     switch (this.number) {
-      case 2: {
-        Tutorial.Start(TutorialStep.BUILD_GENERATOR_SECOND);
-        break;
-      }
-      case 3: {
-        Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
-        break;
-      }
-      case 8: {
-        Tutorial.Start(TutorialStep.BUILD_RADAR);
-        break;
-      }
+    case 2: {
+      Tutorial.Start(TutorialStep.BUILD_GENERATOR_SECOND);
+      break;
+    }
+    case 3: {
+      Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
+      break;
+    }
+    case 8: {
+      Tutorial.Start(TutorialStep.BUILD_RADAR);
+      break;
+    }
     }
   }
 

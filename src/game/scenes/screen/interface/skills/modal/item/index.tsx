@@ -48,19 +48,19 @@ export const Item: React.FC<Props> = ({ type }) => {
   return (
     <Container ref={refContainer} $active={data.currentLevel < PLAYER_MAX_SKILL_LEVEL }>
       <Info>
-          <Icon>
-            <Texture name={PlayerSkillIcon[data.type]} />
-          </Icon>
-          <Head>
+        <Icon>
+          <Texture name={PlayerSkillIcon[data.type]} />
+        </Icon>
+        <Head>
           <Label>{phrase(`SKILL_LABEL_${data.type}`)}</Label>
-        <Level>
-          {levels.map((_, level) => (
-            <Level.Progress
-              key={level}
-              $active={data.currentLevel && level < data.currentLevel}
-            />
-          ))}
-        </Level>
+          <Level>
+            {levels.map((_, level) => (
+              <Level.Progress
+                key={level}
+                $active={data.currentLevel && level < data.currentLevel}
+              />
+            ))}
+          </Level>
         </Head>
       </Info>
       <Action>

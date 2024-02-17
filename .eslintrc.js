@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = {
   root: true,
   parser: "@typescript-eslint/parser",
@@ -18,6 +19,7 @@ module.exports = {
     "eol-last": ["error", "always"],
     "no-trailing-spaces": "error",
     "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "indent": ["error", 2],
     // TypeScript
     "@typescript-eslint/semi": "error",
     "@typescript-eslint/consistent-type-imports": "error",
@@ -47,5 +49,4 @@ module.exports = {
       },
     ],
   },
-  ignorePatterns: ["**/*.js"],
 };

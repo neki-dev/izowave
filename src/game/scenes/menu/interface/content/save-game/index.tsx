@@ -23,7 +23,7 @@ export const SaveGame: React.FC = () => {
   const [confirmation, setConfirmation] = useState<Nullable<{
     message: LangPhrase
     onConfirm:() => void
-  }>>(null);
+      }>>(null);
 
   const refInput = useRef<HTMLInputElement>();
 

@@ -41,48 +41,48 @@ export const Builder: React.FC = () => {
 
   const showHint = (step: TutorialStep) => {
     switch (step) {
-      case TutorialStep.BUILD_GENERATOR: {
-        return setHintBuilding({
-          variant: BuildingVariant.GENERATOR,
-          label: 'TUTORIAL_BUILD_GENERATOR',
-        });
-      }
-      case TutorialStep.BUILD_GENERATOR_SECOND: {
-        return setHintBuilding({
-          variant: BuildingVariant.GENERATOR,
-          label: 'TUTORIAL_BUILD_GENERATOR_SECOND',
-        });
-      }
-      case TutorialStep.BUILD_RADAR: {
-        return setHintBuilding({
-          variant: BuildingVariant.RADAR,
-          label: 'TUTORIAL_BUILD_RADAR',
-        });
-      }
-      case TutorialStep.BUILD_TOWER_FIRE: {
-        return setHintBuilding({
-          variant: BuildingVariant.TOWER_FIRE,
-          label: 'TUTORIAL_BUILD_TOWER_FIRE',
-        });
-      }
-      case TutorialStep.BUILD_AMMUNITION: {
-        return setHintBuilding({
-          variant: BuildingVariant.AMMUNITION,
-          label: 'TUTORIAL_BUILD_AMMUNITION',
-        });
-      }
+    case TutorialStep.BUILD_GENERATOR: {
+      return setHintBuilding({
+        variant: BuildingVariant.GENERATOR,
+        label: 'TUTORIAL_BUILD_GENERATOR',
+      });
+    }
+    case TutorialStep.BUILD_GENERATOR_SECOND: {
+      return setHintBuilding({
+        variant: BuildingVariant.GENERATOR,
+        label: 'TUTORIAL_BUILD_GENERATOR_SECOND',
+      });
+    }
+    case TutorialStep.BUILD_RADAR: {
+      return setHintBuilding({
+        variant: BuildingVariant.RADAR,
+        label: 'TUTORIAL_BUILD_RADAR',
+      });
+    }
+    case TutorialStep.BUILD_TOWER_FIRE: {
+      return setHintBuilding({
+        variant: BuildingVariant.TOWER_FIRE,
+        label: 'TUTORIAL_BUILD_TOWER_FIRE',
+      });
+    }
+    case TutorialStep.BUILD_AMMUNITION: {
+      return setHintBuilding({
+        variant: BuildingVariant.AMMUNITION,
+        label: 'TUTORIAL_BUILD_AMMUNITION',
+      });
+    }
     }
   };
 
   const hideHint = (step: TutorialStep) => {
     switch (step) {
-      case TutorialStep.BUILD_GENERATOR:
-      case TutorialStep.BUILD_GENERATOR_SECOND:
-      case TutorialStep.BUILD_RADAR:
-      case TutorialStep.BUILD_TOWER_FIRE:
-      case TutorialStep.BUILD_AMMUNITION: {
-        return setHintBuilding(null);
-      }
+    case TutorialStep.BUILD_GENERATOR:
+    case TutorialStep.BUILD_GENERATOR_SECOND:
+    case TutorialStep.BUILD_RADAR:
+    case TutorialStep.BUILD_TOWER_FIRE:
+    case TutorialStep.BUILD_AMMUNITION: {
+      return setHintBuilding(null);
+    }
     }
   };
 

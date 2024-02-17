@@ -46,11 +46,11 @@ export const Amount: React.FC<Props> = ({ position, value, onHide }) => {
 
   return (
     <RelativePosition x={position.x} y={position.y}>
-        <RelativeScale {...INTERFACE_SCALE}>
-          <Container ref={refContainer}>
-            <Cost type='RESOURCES' value={`+${value}`} />
-          </Container>
-        </RelativeScale>
+      <RelativeScale {...INTERFACE_SCALE}>
+        <Container ref={refContainer}>
+          <Cost type='RESOURCES' value={`+${value}`} />
+        </Container>
+      </RelativeScale>
     </RelativePosition>
   );
 };

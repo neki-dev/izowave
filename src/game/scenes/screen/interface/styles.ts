@@ -28,15 +28,15 @@ export const Column = styled.div<{
   position: relative;
   ${(props) => {
     switch (props.$side) {
-      case 'left': return css`
+    case 'left': return css`
         justify-self: start;
         align-items: flex-start;
       `;
-      case 'center': return css`
+    case 'center': return css`
         justify-self: center;
         align-items: center;
       `;
-      case 'right': return css`
+    case 'right': return css`
         justify-self: end;
         align-items: flex-end;
       `;

@@ -54,18 +54,18 @@ export class System extends Scene {
       }
 
       switch (this.game.state) {
-        case GameState.FINISHED: {
-          this.game.stopGame();
-          break;
-        }
-        case GameState.PAUSED: {
-          this.game.resumeGame();
-          break;
-        }
-        case GameState.STARTED: {
-          this.game.pauseGame();
-          break;
-        }
+      case GameState.FINISHED: {
+        this.game.stopGame();
+        break;
+      }
+      case GameState.PAUSED: {
+        this.game.resumeGame();
+        break;
+      }
+      case GameState.STARTED: {
+        this.game.pauseGame();
+        break;
+      }
       }
     });
   }

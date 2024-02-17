@@ -264,22 +264,22 @@ export abstract class Enemy extends NPC implements IEnemy {
       const duration = superskill.getRemaining();
 
       switch (type) {
-        case PlayerSuperskill.FROST: {
-          this.freeze(duration, true);
-          break;
-        }
-        case PlayerSuperskill.FIRE: {
-          const damage = progressionQuadratic({
-            defaultValue: DIFFICULTY.ENEMY_HEALTH,
-            scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
-            level: this.scene.wave.number,
-            retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
-          }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
+      case PlayerSuperskill.FROST: {
+        this.freeze(duration, true);
+        break;
+      }
+      case PlayerSuperskill.FIRE: {
+        const damage = progressionQuadratic({
+          defaultValue: DIFFICULTY.ENEMY_HEALTH,
+          scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
+          level: this.scene.wave.number,
+          retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+        }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
 
-          this.scene.fx.createLongFireEffect(this, { duration });
-          this.addOngoingDamage(damage, duration);
-          break;
-        }
+        this.scene.fx.createLongFireEffect(this, { duration });
+        this.addOngoingDamage(damage, duration);
+        break;
+      }
       }
     };
 

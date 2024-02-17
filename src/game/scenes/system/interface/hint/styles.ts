@@ -78,7 +78,7 @@ export const Positioner = styled.div<{
   position: absolute;
   ${(props) => {
     switch (props.$side) {
-      case 'left': return css`
+    case 'left': return css`
         padding-left: 10px;
         transform: translate(0, -50%);
         ${Container} {
@@ -93,7 +93,7 @@ export const Positioner = styled.div<{
           }
         }
       `;
-      case 'right': return css`
+    case 'right': return css`
         padding-right: 10px;
         transform: translate(-100%, -50%);
         ${Container} {
@@ -108,7 +108,7 @@ export const Positioner = styled.div<{
           }
         }
       `;
-      case 'top': return css`
+    case 'top': return css`
         padding-top: 10px;
         transform: ${align[`top-${props.$align}`].transform};
         ${Container} {
@@ -124,7 +124,7 @@ export const Positioner = styled.div<{
           }
         }
       `;
-      case 'bottom': return css`
+    case 'bottom': return css`
         padding-bottom: 10px;
         transform: ${align[`bottom-${props.$align}`].transform};
         ${Container} {

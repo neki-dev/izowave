@@ -394,32 +394,32 @@ export class Player extends Sprite implements IPlayer {
 
   static GetUpgradeNextValue(type: PlayerSkill, level: number): number {
     switch (type) {
-      case PlayerSkill.MAX_HEALTH: {
-        return progressionQuadratic({
-          defaultValue: DIFFICULTY.PLAYER_HEALTH,
-          scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
-          level,
-          roundTo: 10,
-        });
-      }
-      case PlayerSkill.SPEED: {
-        return progressionLinear({
-          defaultValue: DIFFICULTY.PLAYER_SPEED,
-          scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
-          level,
-          roundTo: 1,
-        });
-      }
-      case PlayerSkill.STAMINA: {
-        return progressionQuadratic({
-          defaultValue: DIFFICULTY.PLAYER_STAMINA,
-          scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
-          level,
-        });
-      }
-      default: {
-        return level;
-      }
+    case PlayerSkill.MAX_HEALTH: {
+      return progressionQuadratic({
+        defaultValue: DIFFICULTY.PLAYER_HEALTH,
+        scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
+        level,
+        roundTo: 10,
+      });
+    }
+    case PlayerSkill.SPEED: {
+      return progressionLinear({
+        defaultValue: DIFFICULTY.PLAYER_SPEED,
+        scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
+        level,
+        roundTo: 1,
+      });
+    }
+    case PlayerSkill.STAMINA: {
+      return progressionQuadratic({
+        defaultValue: DIFFICULTY.PLAYER_STAMINA,
+        scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
+        level,
+      });
+    }
+    default: {
+      return level;
+    }
     }
   }
 
@@ -448,25 +448,25 @@ export class Player extends Sprite implements IPlayer {
     const nextValue = Player.GetUpgradeNextValue(type, level);
 
     switch (type) {
-      case PlayerSkill.MAX_HEALTH: {
-        const addedHealth = nextValue - this.live.maxHealth;
+    case PlayerSkill.MAX_HEALTH: {
+      const addedHealth = nextValue - this.live.maxHealth;
 
-        this.live.setMaxHealth(nextValue);
-        this.live.addHealth(addedHealth);
-        break;
+      this.live.setMaxHealth(nextValue);
+      this.live.addHealth(addedHealth);
+      break;
+    }
+    case PlayerSkill.SPEED: {
+      this.speed = nextValue;
+      if (this.scene.assistant) {
+        this.scene.assistant.speed = nextValue;
       }
-      case PlayerSkill.SPEED: {
-        this.speed = nextValue;
-        if (this.scene.assistant) {
-          this.scene.assistant.speed = nextValue;
-        }
-        break;
-      }
-      case PlayerSkill.STAMINA: {
-        this.staminaMax = nextValue;
-        this.stamina = this.staminaMax;
-        break;
-      }
+      break;
+    }
+    case PlayerSkill.STAMINA: {
+      this.staminaMax = nextValue;
+      this.stamina = this.staminaMax;
+      break;
+    }
     }
 
     this.upgradeLevel[type] = level;
@@ -807,14 +807,14 @@ export class Player extends Sprite implements IPlayer {
   private handleTogglePathToCrystal() {
     const handler = (mode: WorldMode, state: boolean) => {
       switch (mode) {
-        case WorldMode.PATH_TO_CRYSTAL: {
-          if (state) {
-            this.addPathToCrystal();
-          } else {
-            this.removePathToCrystal();
-          }
-          break;
+      case WorldMode.PATH_TO_CRYSTAL: {
+        if (state) {
+          this.addPathToCrystal();
+        } else {
+          this.removePathToCrystal();
         }
+        break;
+      }
       }
     };
 

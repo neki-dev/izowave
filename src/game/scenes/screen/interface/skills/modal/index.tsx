@@ -56,6 +56,6 @@ export const Modal: React.FC<Props> = ({ onClose }) => {
           </Groups>
         </Container>
       </Overlay>
-      </>
+    </>
   );
 };

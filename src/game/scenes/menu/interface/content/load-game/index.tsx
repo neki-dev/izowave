@@ -18,7 +18,7 @@ export const LoadGame: React.FC = () => {
   const [confirmation, setConfirmation] = useState<Nullable<{
     message: LangPhrase
     onConfirm:() => void
-  }>>(null);
+      }>>(null);
 
   const onClickStart = () => {
     game.continueGame(selectedSave);

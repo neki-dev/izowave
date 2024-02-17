@@ -857,10 +857,10 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
   private handleToggleModes() {
     const handler = (mode: WorldMode) => {
       switch (mode) {
-        case WorldMode.BUILDING_INDICATORS: {
-          this.toggleIndicators();
-          break;
-        }
+      case WorldMode.BUILDING_INDICATORS: {
+        this.toggleIndicators();
+        break;
+      }
       }
     };
 

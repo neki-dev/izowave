@@ -62,21 +62,21 @@ export const IconContainer = styled.div<{
   overflow: hidden;
   ${(props) => {
     switch (props.$type) {
-      case 'BUILDING': return css`
+    case 'BUILDING': return css`
         width: 68px;
         height: 80px;
         [role=texture] {
           height: 100%;
         }
       `;
-      case 'SUPERSKILL': return css`
+    case 'SUPERSKILL': return css`
         width: 64px;
         height: 64px;
         [role=texture] {
           width: 100%;
         }
       `;
-      case 'ASSISTANT': return css`
+    case 'ASSISTANT': return css`
         width: 48px;
         height: 80px;
         [role=texture] {

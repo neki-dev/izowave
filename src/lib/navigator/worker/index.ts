@@ -16,24 +16,24 @@ setInterval(() => {
 
 self.onmessage = ({ data }) => {
   switch (data.event) {
-    case NavigatorEvent.CREATE_TASK: {
-      const payload = data.payload as NavigatorPayloadCreateTask;
-      const task = new NavigatorTask(payload);
+  case NavigatorEvent.CREATE_TASK: {
+    const payload = data.payload as NavigatorPayloadCreateTask;
+    const task = new NavigatorTask(payload);
 
-      navigatorProcess.createTask(task);
-      break;
-    }
-    case NavigatorEvent.CANCEL_TASK: {
-      const payload = data.payload as NavigatorPayloadCancelTask;
+    navigatorProcess.createTask(task);
+    break;
+  }
+  case NavigatorEvent.CANCEL_TASK: {
+    const payload = data.payload as NavigatorPayloadCancelTask;
 
-      navigatorProcess.cancelTask(payload.id);
-      break;
-    }
-    case NavigatorEvent.UPDATE_POINT_COST: {
-      const payload = data.payload as NavigatorPayloadUpdatePointCost;
+    navigatorProcess.cancelTask(payload.id);
+    break;
+  }
+  case NavigatorEvent.UPDATE_POINT_COST: {
+    const payload = data.payload as NavigatorPayloadUpdatePointCost;
 
-      navigatorProcess.setPointCost(payload.position, payload.cost);
-      break;
-    }
+    navigatorProcess.setPointCost(payload.position, payload.cost);
+    break;
+  }
   }
 };

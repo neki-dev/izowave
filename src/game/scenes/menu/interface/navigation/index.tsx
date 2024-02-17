@@ -22,7 +22,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
   const [confirmation, setConfirmation] = useState<Nullable<{
     message: LangPhrase
     onConfirm:() => void
-  }>>(null);
+      }>>(null);
 
   const menuItems = useMemo(() => {
     const items: (MenuItem | null)[] = [];
