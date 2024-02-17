@@ -3,13 +3,17 @@ import { useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { GameDifficulty } from '../../../../../types';
+
 import { Param } from './param';
 import { Record } from './record';
-import { Wrapper, Params } from './styles';
+
 import type { IGame } from '../../../../../types';
+
 import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
 import { LevelPlanet } from '~scene/world/level/types';
+
+import { Wrapper, Params } from './styles';
 
 export const NewGame: React.FC = () => {
   const game = useGame<IGame>();

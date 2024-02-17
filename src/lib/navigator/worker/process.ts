@@ -1,7 +1,9 @@
 /* eslint-disable no-continue */
 import { getDirections } from './tools';
+
 import type { NavigatorTask } from './task';
 import type { PositionAtMatrix } from '~scene/world/level/types';
+
 import { isPositionsEqual } from '~lib/dimension';
 
 export class NavigatorProcess {

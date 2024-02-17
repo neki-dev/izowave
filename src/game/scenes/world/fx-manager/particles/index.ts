@@ -1,6 +1,8 @@
 import { ParticlesTexture } from './types';
+
 import type { IParticles, IParticlesParent, ParticlesData } from './types';
 import type { IWorld } from '~scene/world/types';
+
 import { Assets } from '~lib/assets';
 
 Assets.RegisterImages(ParticlesTexture);

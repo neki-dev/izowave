@@ -6,6 +6,7 @@ import { Experience } from './experience';
 import { MenuButton } from './menu-button';
 import { Resources } from './resources';
 import { Score } from './score';
+
 import { Section } from '~scene/system/interface/section';
 
 export const PlayerHUD: React.FC = () => {

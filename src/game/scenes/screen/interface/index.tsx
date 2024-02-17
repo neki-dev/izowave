@@ -7,12 +7,14 @@ import { Modes } from './modes';
 import { Notices } from './notices';
 import { PlayerHUD } from './player-hud';
 import { Skills } from './skills';
-import { Column, Grid, Wrapper } from './styles';
 import { Superskills } from './superskills';
 import { Unlocks } from './unlocks';
 import { Wave } from './wave';
+
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { Section } from '~scene/system/interface/section';
+
+import { Column, Grid, Wrapper } from './styles';
 
 export const ScreenUI: React.FC = () => {
   const refScale = useRelativeScale<HTMLDivElement>(INTERFACE_SCALE);

@@ -28,11 +28,10 @@ module.exports = {
     "@typescript-eslint/ban-ts-comment": "off",
     // Import
     "import/no-unresolved": "off",
-    "import/no-named-as-default-member": "off",
-    "import/no-named-as-default": "off",
     "import/order": [
       "warn",
       {
+        "newlines-between": "always",
         groups: [
           "builtin",
           "external",
@@ -46,6 +45,14 @@ module.exports = {
         alphabetize: {
           order: "asc",
         },
+        pathGroups: [
+          {
+            pattern: './styles',
+            group: 'unknown',
+            patternOptions: { matchBase: true },
+            position: 'after',
+          },
+        ],
       },
     ],
   },

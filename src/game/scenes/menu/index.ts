@@ -4,6 +4,7 @@ import { Scene } from '..';
 import { GameScene, GameState } from '../../types';
 
 import { MenuUI } from './interface';
+
 import type { MenuPage } from './types';
 
 export class Menu extends Scene {

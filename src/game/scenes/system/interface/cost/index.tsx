@@ -4,9 +4,12 @@ import React, {
 } from 'react';
 
 import { GameScene } from '../../../../types';
-import * as styles from './styles';
+
 import type { IWorld } from '~scene/world/types';
+
 import { PlayerEvent } from '~scene/world/entities/player/types';
+
+import * as styles from './styles';
 
 type Props = {
   type: 'RESOURCES' | 'EXPERIENCE'

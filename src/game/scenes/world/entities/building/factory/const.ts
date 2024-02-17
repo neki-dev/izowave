@@ -1,4 +1,5 @@
 import type { IBuildingFactory } from './types';
+
 import { BuildingVariant } from '~scene/world/entities/building/types';
 import { BuildingAmmunition } from '~scene/world/entities/building/variants/ammunition';
 import { BuildingBooster } from '~scene/world/entities/building/variants/booster';

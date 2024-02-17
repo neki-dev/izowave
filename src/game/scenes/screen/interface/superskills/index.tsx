@@ -4,9 +4,12 @@ import React, { useMemo, useState } from 'react';
 import { GameScene } from '../../../../types';
 
 import { Item } from './item';
-import { Wrapper } from './styles';
+
 import type { IWorld } from '~scene/world/types';
+
 import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
+
+import { Wrapper } from './styles';
 
 export const Superskills: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

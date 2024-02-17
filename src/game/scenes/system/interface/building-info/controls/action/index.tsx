@@ -1,12 +1,14 @@
 import { useClick, useMobilePlatform } from 'phaser-react-ui';
 import React, { useRef } from 'react';
 
+import type { BuildingControl } from '~scene/world/entities/building/types';
+
+import { phrase } from '~lib/lang';
+import { Cost } from '~scene/system/interface/cost';
+
 import {
   Container, Label, Addon, Main, Key,
 } from './styles';
-import type { BuildingControl } from '~scene/world/entities/building/types';
-import { phrase } from '~lib/lang';
-import { Cost } from '~scene/system/interface/cost';
 
 type Props = {
   control: BuildingControl

@@ -4,17 +4,20 @@ import {
 import React, { useMemo, useRef, useState } from 'react';
 
 import { GameScene } from '../../../../../../types';
-import {
-  Container, Info, Action, Label, Level, Button, Limit, Icon, Head,
-} from './styles';
+
 import type {
   PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
+
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
 import { PlayerEvent, PlayerSkillIcon,
 } from '~scene/world/entities/player/types';
+
+import {
+  Container, Info, Action, Label, Level, Button, Limit, Icon, Head,
+} from './styles';
 
 type Props = {
   type: PlayerSkill

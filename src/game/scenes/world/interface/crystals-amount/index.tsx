@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GameScene } from '../../../../types';
+
 import { Amount } from './amount';
+
 import type { CrystalAmount, ICrystal } from '~scene/world/entities/crystal/types';
 import type { IWorld } from '~scene/world/types';
+
 import { CrystalEvents } from '~scene/world/entities/crystal/types';
 import { EntityType } from '~scene/world/entities/types';
 

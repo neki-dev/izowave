@@ -1,5 +1,4 @@
 import type Phaser from 'phaser';
-
 import type { LangPhrase } from '~lib/lang/types';
 import type { IScene } from '~scene/types';
 

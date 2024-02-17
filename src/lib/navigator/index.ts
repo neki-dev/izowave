@@ -4,6 +4,7 @@ import {
   NavigatorEvent,
 } from './types';
 import NavigatorWorker from './worker/index.ts?worker';
+
 import type {
   INavigator,
   NavigatorTaskInfo,

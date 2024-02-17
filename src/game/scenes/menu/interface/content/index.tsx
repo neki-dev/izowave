@@ -6,8 +6,10 @@ import { LoadGame } from './load-game';
 import { NewGame } from './new-game';
 import { SaveGame } from './save-game';
 import { Settings } from './settings';
-import { Wrapper } from './styles';
+
 import { MenuPage } from '~scene/menu/types';
+
+import { Wrapper } from './styles';
 
 type Props = {
   page?: MenuPage

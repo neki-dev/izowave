@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 
 import type { GameSettings, IGame } from '../../../../../../types';
 import type { LangPhrase } from '~lib/lang/types';
+
 import { InterfaceTextColor } from '~lib/interface/types';
 import { Setting } from '~scene/system/interface/setting';
 

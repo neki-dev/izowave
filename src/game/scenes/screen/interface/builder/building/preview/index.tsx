@@ -4,13 +4,16 @@ import {
 import React, { useRef, useState } from 'react';
 
 import { GameScene } from '../../../../../../types';
+
+import type { BuildingVariant } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
+
+import { Cost } from '~scene/system/interface/cost';
+import { BUILDINGS } from '~scene/world/entities/building/factory/const';
+
 import {
   Container, Number, Image, Info, Frame,
 } from './styles';
-import type { BuildingVariant } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
-import { Cost } from '~scene/system/interface/cost';
-import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 
 type Props = {
   number: number

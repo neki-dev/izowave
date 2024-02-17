@@ -1,5 +1,6 @@
 import { Scene } from '..';
 import { GameScene, GameState } from '../../types';
+
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { InterfaceFont } from '~lib/interface/types';

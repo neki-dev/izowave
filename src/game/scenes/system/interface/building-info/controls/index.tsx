@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { Action } from './action';
-import { Wrapper } from './styles';
+
 import type { BuildingControl } from '~scene/world/entities/building/types';
+
+import { Wrapper } from './styles';
 
 type Props = {
   list: BuildingControl[]

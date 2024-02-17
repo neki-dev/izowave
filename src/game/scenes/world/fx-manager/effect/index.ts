@@ -3,8 +3,10 @@ import Phaser from 'phaser';
 import {
   EffectAudio, EffectTexture,
 } from './types';
+
 import type { IEffect, EffectData } from './types';
 import type { IWorld } from '~scene/world/types';
+
 import { Assets } from '~lib/assets';
 
 Assets.RegisterAudio(EffectAudio);

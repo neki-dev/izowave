@@ -3,7 +3,6 @@ import type { ILive } from '../addons/live/types';
 import type { IEnemyTarget } from '../npc/enemy/types';
 import type { IShotInitiator } from '../shot/types';
 import type Phaser from 'phaser';
-
 import type { LangPhrase } from '~lib/lang/types';
 import type { IParticlesParent } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';

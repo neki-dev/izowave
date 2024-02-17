@@ -1,13 +1,16 @@
 import React from 'react';
 
 import { Preview } from './preview';
+
+import type { LangPhrase } from '~lib/lang/types';
+import type { BuildingVariant } from '~scene/world/entities/building/types';
+
+import { phrase } from '~lib/lang';
+import { Hint } from '~scene/system/interface/hint';
+
 import {
   Container, Info, Name, Text,
 } from './styles';
-import type { LangPhrase } from '~lib/lang/types';
-import type { BuildingVariant } from '~scene/world/entities/building/types';
-import { phrase } from '~lib/lang';
-import { Hint } from '~scene/system/interface/hint';
 
 type Props = {
   variant: BuildingVariant

@@ -1,14 +1,16 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import { Wrapper, Empty } from './styles';
 import type { IGame } from '../../../../../types';
 import type { LangPhrase } from '~lib/lang/types';
+
 import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
 import { Confirm } from '~scene/system/interface/confirm';
 import { Table } from '~scene/system/interface/table';
+
+import { Wrapper, Empty } from './styles';
 
 export const LoadGame: React.FC = () => {
   const game = useGame<IGame>();

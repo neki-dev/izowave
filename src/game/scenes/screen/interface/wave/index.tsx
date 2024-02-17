@@ -4,6 +4,17 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 
 import { GameScene, GameEvent } from '../../../../types';
+
+import type { IGame } from '../../../../types';
+import type { IWorld } from '~scene/world/types';
+
+import { phrase } from '~lib/lang';
+import { Tutorial } from '~lib/tutorial';
+import { TutorialStep } from '~lib/tutorial/types';
+import { Utils } from '~lib/utils';
+import { Hint } from '~scene/system/interface/hint';
+import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
+
 import {
   CurrentNumber,
   Container,
@@ -13,14 +24,6 @@ import {
   Value,
   Placeholder,
 } from './styles';
-import type { IGame } from '../../../../types';
-import type { IWorld } from '~scene/world/types';
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
-import { Utils } from '~lib/utils';
-import { Hint } from '~scene/system/interface/hint';
-import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
 
 export const Wave: React.FC = () => {
   const game = useGame<IGame>();

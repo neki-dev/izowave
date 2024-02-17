@@ -1,5 +1,6 @@
 import { Enemy } from '..';
 import { EnemyTexture } from '../types';
+
 import type { EnemyVariantData } from '../types';
 import type { IWorld } from '~scene/world/types';
 

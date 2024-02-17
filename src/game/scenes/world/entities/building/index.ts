@@ -6,6 +6,7 @@ import { Indicator } from '../addons/indicator';
 import { Live } from '../addons/live';
 import { LiveEvent } from '../addons/live/types';
 import { EntityType } from '../types';
+
 import { BUILDING_TILE } from './const';
 import {
   BuildingEvent,
@@ -14,6 +15,7 @@ import {
   BuildingIcon,
   BuildingOutlineState,
 } from './types';
+
 import type { IBuildingFactory } from './factory/types';
 import type {
   BuildingData,
@@ -30,6 +32,7 @@ import type { LangPhrase } from '~lib/lang/types';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
+
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';

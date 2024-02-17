@@ -1,5 +1,4 @@
 import type Phaser from 'phaser';
-
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 

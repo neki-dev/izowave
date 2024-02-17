@@ -1,18 +1,20 @@
 import { Texture } from 'phaser-react-ui';
 import React, { useMemo } from 'react';
 
-import {
-  Container, IconContainer, Name, Type, Body, Description, Info,
-} from './styles';
 import type { Feature } from '../..';
 import type { LangPhrase } from '~lib/lang/types';
 import type { BuildingVariant } from '~scene/world/entities/building/types';
 import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';
+
 import { phrase } from '~lib/lang';
 import { BuildingTexture } from '~scene/world/entities/building/types';
 import { AssistantTexture } from '~scene/world/entities/npc/assistant/types';
 import { PlayerSuperskillIcon } from '~scene/world/entities/player/types';
+
+import {
+  Container, IconContainer, Name, Type, Body, Description, Info,
+} from './styles';
 
 // TODO: Refactoring
 export const Item: React.FC<Feature> = ({ type, item }) => {

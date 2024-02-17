@@ -1,8 +1,9 @@
 import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
-import { Wrapper } from './styles';
 import { INTERFACE_SCALE } from '~lib/interface/const';
+
+import { Wrapper } from './styles';
 
 type Props = {
   children: React.ReactNode

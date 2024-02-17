@@ -4,6 +4,7 @@ import { Effect } from './effect';
 import { EffectTexture } from './effect/types';
 import { Particles } from './particles';
 import { ParticlesTexture } from './particles/types';
+
 import type { IParticlesParent } from './particles/types';
 import type { IFXManager, SoundParams } from './types';
 import type { IBuilding } from '../entities/building/types';

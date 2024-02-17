@@ -10,6 +10,7 @@ import {
   BuildingIcon,
   BuildingCategory,
 } from '../types';
+
 import type {
   BuildingParam,
   BuildingVariantData,
@@ -17,6 +18,7 @@ import type {
   BuildingSavePayload,
   BuildingControl } from '../types';
 import type { IWorld } from '~scene/world/types';
+
 import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';

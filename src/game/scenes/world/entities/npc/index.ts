@@ -3,10 +3,13 @@ import Phaser from 'phaser';
 import { Sprite } from '..';
 import { DEBUG_MODS } from '../../../../const';
 import { EntityType } from '../types';
+
 import { NPC_PATH_FIND_RATE } from './const';
+
 import type { INPC, NPCData } from './types';
 import type { PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
+
 import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~lib/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';

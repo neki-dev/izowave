@@ -2,14 +2,17 @@ import { useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { GameState } from '../../../../types';
-import { Wrapper, Item, Space } from './styles';
+
 import type { IGame } from '../../../../types';
 import type { LangPhrase } from '~lib/lang/types';
 import type { MenuItem } from '~scene/menu/types';
+
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { MenuPage } from '~scene/menu/types';
 import { Confirm } from '~scene/system/interface/confirm';
+
+import { Wrapper, Item, Space } from './styles';
 
 type Props = {
   page?: MenuPage

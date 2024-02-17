@@ -2,9 +2,12 @@ import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import { GameScene } from '../../../../../../types';
-import { Container, Progress, Value } from './styles';
+
 import type { IWorld } from '~scene/world/types';
+
 import { LiveEvent } from '~scene/world/entities/addons/live/types';
+
+import { Container, Progress, Value } from './styles';
 
 export const Health: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

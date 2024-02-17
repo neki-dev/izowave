@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Health } from './health';
+
 import { Container, Avatar, Image } from './styles';
 
 export const Character: React.FC = () => (

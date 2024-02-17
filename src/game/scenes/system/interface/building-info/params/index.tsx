@@ -1,6 +1,10 @@
 import { Texture } from 'phaser-react-ui';
 import React from 'react';
 
+import type { BuildingParam } from '~scene/world/entities/building/types';
+
+import { phrase } from '~lib/lang';
+
 import {
   Info,
   IconContainer,
@@ -9,8 +13,6 @@ import {
   Wrapper,
   Value,
 } from './styles';
-import type { BuildingParam } from '~scene/world/entities/building/types';
-import { phrase } from '~lib/lang';
 
 type Props = {
   list: BuildingParam[]

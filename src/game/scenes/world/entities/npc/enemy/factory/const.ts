@@ -1,4 +1,5 @@
 import type { IEnemyFactory } from './types';
+
 import { EnemyVariant } from '~scene/world/entities/npc/enemy/types';
 import { EnemyAdherent } from '~scene/world/entities/npc/enemy/variants/adherent';
 import { EnemyBerserk } from '~scene/world/entities/npc/enemy/variants/berserk';

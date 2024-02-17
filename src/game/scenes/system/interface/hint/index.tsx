@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 
+import type { LangPhrase } from '~lib/lang/types';
+
+import { phrase } from '~lib/lang';
+
 import {
   Positioner, Wrapper, Container, Key,
 } from './styles';
-import type { LangPhrase } from '~lib/lang/types';
-import { phrase } from '~lib/lang';
 
 type Props = {
   side: 'left' | 'right' | 'top' | 'bottom'

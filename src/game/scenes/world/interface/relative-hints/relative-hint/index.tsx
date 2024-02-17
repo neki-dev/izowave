@@ -4,12 +4,15 @@ import {
 import React, { useRef, useState } from 'react';
 
 import { GameScene } from '../../../../../types';
-import { Wrapper } from './styles';
+
 import type { PositionAtWorld } from '~scene/world/level/types';
 import type { WorldHint, IWorld } from '~scene/world/types';
+
 import { isPositionsEqual } from '~lib/dimension';
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { Hint } from '~scene/system/interface/hint';
+
+import { Wrapper } from './styles';
 
 type Props = WorldHint;
 

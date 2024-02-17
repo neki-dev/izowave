@@ -1,9 +1,11 @@
 import { Enemy } from '..';
 import { ENEMY_EXPLOSION_RADIUS, ENEMY_EXPLOSION_EFFECT_COLOR, ENEMY_EXPLOSION_EFFECT_DURATION } from '../const';
 import { EnemyTexture } from '../types';
+
 import type { EnemyVariantData, IEnemy, IEnemyTarget } from '../types';
 import type { IBuilding } from '~scene/world/entities/building/types';
 import type { IWorld } from '~scene/world/types';
+
 import { getIsometricDistance } from '~lib/dimension';
 import { EntityType } from '~scene/world/entities/types';
 import { EffectAudio } from '~scene/world/fx-manager/effect/types';

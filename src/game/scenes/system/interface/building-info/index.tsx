@@ -5,12 +5,15 @@ import { GameScene } from '../../../../types';
 
 import { Controls } from './controls';
 import { Params } from './params';
+
+import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
+
+import { phrase } from '~lib/lang';
+
 import {
   Name, Level, Health, Wrapper, Head, Body, Container,
 } from './styles';
-import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
-import { phrase } from '~lib/lang';
 
 type Props = {
   building: IBuilding

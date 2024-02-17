@@ -1,6 +1,5 @@
 import type { IPlayer } from '../../player/types';
 import type { IShotInitiator } from '../../shot/types';
-
 import type { INPC } from '../types';
 import type Phaser from 'phaser';
 import type { PositionAtMatrix } from '~scene/world/level/types';

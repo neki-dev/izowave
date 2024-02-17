@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import { DIFFICULTY } from '../../../../const/difficulty';
-
 import { WORLD_DEPTH_GRAPHIC } from '../const';
 import { BUILDING_TILE } from '../entities/building/const';
 import { BUILDINGS } from '../entities/building/factory/const';
@@ -13,7 +12,9 @@ import { Level } from '../level';
 import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '../level/const';
 import { BiomeType, TileType,
 } from '../level/types';
+
 import { BuilderEvent } from './types';
+
 import type { IBuilder } from './types';
 import type {
   IBuilding, BuildingBuildData } from '../entities/building/types';
@@ -21,6 +22,7 @@ import type { IEnemy } from '../entities/npc/enemy/types';
 import type {
   PositionAtMatrix, PositionAtWorld } from '../level/types';
 import type { IWorld } from '../types';
+
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';

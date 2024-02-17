@@ -6,7 +6,9 @@ import { progressionLinear } from '../../../../../lib/progression';
 import { Tutorial } from '../../../../../lib/tutorial';
 import world from '../../__mocks__/world';
 import { WaveEvent } from '../types';
+
 import { registerHelper } from './helpers/wave';
+
 import type { IWorld } from '../../types';
 import type { IWave } from '../types';
 

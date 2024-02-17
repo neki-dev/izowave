@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 
+import type { GameStat } from '../../../../types';
+import type { LangPhrase } from '~lib/lang/types';
+
+import { phrase } from '~lib/lang';
+
 import {
   Wrapper, Item, Value, Label, Record,
 } from './styles';
-import type { GameStat } from '../../../../types';
-import type { LangPhrase } from '~lib/lang/types';
-import { phrase } from '~lib/lang';
 
 type Props = {
   stat: GameStat
