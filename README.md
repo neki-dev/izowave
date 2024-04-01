@@ -2,14 +2,10 @@
 
 ## ![IZOWAVE](./docs/logotype-large.png)
 
-Your task is to survive on chosen planet as many waves as possible. 
-With each wave count of enemies and their characteristics will grow.
+Your task is to survive on chosen planet as many waves as possible. With each wave count of enemies and their characteristics will grow. Build walls to defend, towers to attack, ammunitions to reload towers and generators to get more resources.And also upgrade skills of your character and his assistant.
 
-Build walls to defend, towers to attack, ammunitions to reload towers and generators to get more resources.
+[![](https://dcbadge.vercel.app/api/server/cnFAdMsRxn)](https://discord.gg/cnFAdMsRxn)
 
-And also upgrade skills of your character and his assistant.
-
-**Join Discord - https://discord.gg/cnFAdMsRxn**
 
 ## 🎮 [PLAY NOW](https://izowave.neki.guru/)
   * *Poki* / https://poki.com/en/g/izowave-build-and-defend
