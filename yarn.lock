@@ -1186,10 +1186,10 @@ ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-alias-reuse@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/alias-reuse/-/alias-reuse-2.0.0.tgz#7c077dfaa88b2f547e3bd76567d686342d9d585a"
-  integrity sha512-ur59Ph9sy1irk4JzXDJuSk/R3Hrlnfko90Le7PbdUyjeGrpAQjWoamk/LGuMyhE5SLWEAZlEdi8r3G+eWFf12w==
+alias-reuse@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/alias-reuse/-/alias-reuse-3.0.5.tgz#f8c25e03616373e8863bbde38b5a9d30f733240c"
+  integrity sha512-EO4imO1BJKg59aN/s9jF7LsGDO2VKc2UXiFQOveXt6fnH289Oi8UB9KPY6IBO2B45p4KWTqxfKLNa3Jd6ehEiQ==
 
 ansi-escapes@^4.2.1, ansi-escapes@^4.3.0:
   version "4.3.2"

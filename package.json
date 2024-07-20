@@ -35,7 +35,7 @@
     "@typescript-eslint/eslint-plugin": "7.0.1",
     "@typescript-eslint/parser": "7.0.1",
     "@vitejs/plugin-react": "4.2.1",
-    "alias-reuse": "2.0.0",
+    "alias-reuse": "3.0.5",
     "eslint": "8.56.0",
     "eslint-plugin-import": "2.29.1",
     "jest": "29.7.0",
