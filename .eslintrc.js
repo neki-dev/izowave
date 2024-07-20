@@ -11,15 +11,21 @@ module.exports = {
   ],
   rules: {
     // Basic
+    quotes: ["error", "single"],
     "no-multiple-empty-lines": ["error", { max: 1, maxBOF: 0, maxEOF: 1 }],
+    "no-multi-spaces": "error",
     "object-curly-spacing": ["error", "always"],
     "array-bracket-spacing": ["error", "never"],
     "computed-property-spacing": ["error", "never"],
     "comma-dangle": ["error", "always-multiline"],
     "eol-last": ["error", "always"],
     "no-trailing-spaces": "error",
-    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
-    "indent": ["error", 2],
+    "brace-style": ["error", "1tbs", { allowSingleLine: true }],
+    indent: ["error", 2, { SwitchCase: 1 }],
+    "keyword-spacing": ["error", { before: true, after: true }],
+    "padded-blocks": ["error", "never"],
+    "comma-spacing": ["error", { before: false, after: true }],
+    "space-in-parens": ["error", "never"],
     // TypeScript
     "@typescript-eslint/semi": "error",
     "@typescript-eslint/consistent-type-imports": "error",
@@ -27,16 +33,15 @@ module.exports = {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     // Import
+    "import/no-cycle": "error",
     "import/no-unresolved": "off",
     "import/order": [
       "warn",
       {
         "newlines-between": "always",
         groups: [
-          "builtin",
-          "external",
-          "parent",
-          "sibling",
+          ["builtin", "external"],
+          ["parent", "sibling"],
           "index",
           "object",
           "type",
