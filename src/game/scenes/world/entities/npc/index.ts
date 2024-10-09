@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 
+import { NPC_PATH_FIND_RATE } from './const';
 import { Sprite } from '..';
 import { DEBUG_MODS } from '../../../../const';
 import { EntityType } from '../types';
-
-import { NPC_PATH_FIND_RATE } from './const';
 
 import type { INPC, NPCData } from './types';
 import type { PositionAtWorld } from '~scene/world/level/types';
@@ -16,7 +15,7 @@ import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 
 export abstract class NPC extends Sprite implements INPC {
-  public isPathPassed: boolean = false;
+  public pathPassed: boolean = false;
 
   private pathToTarget: PositionAtWorld[] = [];
 
@@ -73,15 +72,15 @@ export abstract class NPC extends Sprite implements INPC {
       if (this.isCanPursuit()) {
         if (this.getDistanceToTarget() <= this.pathFindTriggerDistance) {
           this.resetPath();
-          this.isPathPassed = true;
+          this.pathPassed = true;
         } else {
           this.findPathToTarget();
           this.moveByPath();
-          this.isPathPassed = false;
+          this.pathPassed = false;
         }
       } else {
         this.setVelocity(0, 0);
-        this.isPathPassed = false;
+        this.pathPassed = false;
       }
     } catch (error) {
       console.warn('Failed to update NPC', error as TypeError);

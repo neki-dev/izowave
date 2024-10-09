@@ -4,9 +4,7 @@ import type { LangPhrase } from '~lib/lang/types';
 
 import { phrase } from '~lib/lang';
 
-import {
-  Positioner, Wrapper, Container, Key,
-} from './styles';
+import { Positioner, Wrapper, Container, Key } from './styles';
 
 type Props = {
   side: 'left' | 'right' | 'top' | 'bottom'

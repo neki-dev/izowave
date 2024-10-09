@@ -1,4 +1,4 @@
-import { ShotBall } from '../ball';
+import { ShotBall } from '..';
 import { ShotBallAudio } from '../types';
 
 import type { ShotParams, ShotData } from '../../types';

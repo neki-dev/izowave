@@ -1,10 +1,9 @@
 import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import { GameScene } from '../../../../../types';
-
 import type { IWorld } from '~scene/world/types';
 
+import { GameScene } from '~game/types';
 import { Amount } from '~scene/system/interface/amount';
 import { PlayerEvent } from '~scene/world/entities/player/types';
 
@@ -17,5 +16,9 @@ export const Experience: React.FC = () => {
     setAmount(experience);
   }, []);
 
-  return <Amount type="EXPERIENCE" placeholder={true}>{amount}</Amount>;
+  return (
+    <Amount type="EXPERIENCE" placeholder={true}>
+      {amount}
+    </Amount>
+  );
 };

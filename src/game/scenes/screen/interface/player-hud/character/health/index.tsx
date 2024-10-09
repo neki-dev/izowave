@@ -1,10 +1,9 @@
 import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import { GameScene } from '../../../../../../types';
-
 import type { IWorld } from '~scene/world/types';
 
+import { GameScene } from '~game/types';
 import { LiveEvent } from '~scene/world/entities/addons/live/types';
 
 import { Container, Progress, Value } from './styles';

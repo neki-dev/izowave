@@ -1,20 +1,17 @@
 import Phaser from 'phaser';
 
+import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
+import { EnemyAudio, EnemyTexture } from './types';
 import { NPC } from '..';
-import { DIFFICULTY } from '../../../../../../const/difficulty';
-import { GameSettings } from '../../../../../types';
 import { Building } from '../../building';
 import { PlayerSuperskill, PlayerEvent } from '../../player/types';
 import { EntityType } from '../../types';
 
-import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
-import {
-  EnemyAudio, EnemyTexture,
-} from './types';
-
 import type { IEnemy, EnemyData, IEnemyTarget } from './types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
+import { GameSettings } from '~game/types';
 import { Assets } from '~lib/assets';
 import { InterfaceFont } from '~lib/interface/types';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
@@ -28,22 +25,20 @@ Assets.RegisterSprites(EnemyTexture, (texture) => (
 
 export abstract class Enemy extends NPC implements IEnemy {
   private _damage: number;
-
   public get damage() { return this._damage; }
-
   private set damage(v) { this._damage = v; }
 
-  private might: number;
-
   private damageTimer: Nullable<Phaser.Time.TimerEvent> = null;
+
+  private damageLabel: Nullable<Phaser.GameObjects.Text> = null;
+
+  private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
 
   private score: number;
 
   private isOverlapTarget: boolean = false;
 
-  private damageLabel: Nullable<Phaser.GameObjects.Text> = null;
-
-  private damageLabelTween: Nullable<Phaser.Tweens.Tween> = null;
+  private might: number;
 
   constructor(scene: IWorld, {
     texture, score, multipliers, ...data
@@ -122,7 +117,7 @@ export abstract class Enemy extends NPC implements IEnemy {
     try {
       if (this.isOverlapTarget) {
         this.setVelocity(0, 0);
-      } else if (this.isPathPassed) {
+      } else if (this.pathPassed) {
         this.moveTo(this.scene.player.getBottomEdgePosition());
       }
 
@@ -267,22 +262,22 @@ export abstract class Enemy extends NPC implements IEnemy {
       const duration = superskill.getRemaining();
 
       switch (type) {
-      case PlayerSuperskill.FROST: {
-        this.freeze(duration, true);
-        break;
-      }
-      case PlayerSuperskill.FIRE: {
-        const damage = progressionQuadratic({
-          defaultValue: DIFFICULTY.ENEMY_HEALTH,
-          scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
-          level: this.scene.wave.number,
-          retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
-        }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
+        case PlayerSuperskill.FROST: {
+          this.freeze(duration, true);
+          break;
+        }
+        case PlayerSuperskill.FIRE: {
+          const damage = progressionQuadratic({
+            defaultValue: DIFFICULTY.ENEMY_HEALTH,
+            scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
+            level: this.scene.wave.number,
+            retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+          }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
 
-        this.scene.fx.createLongFireEffect(this, { duration });
-        this.addOngoingDamage(damage, duration);
-        break;
-      }
+          this.scene.fx.createLongFireEffect(this, { duration });
+          this.addOngoingDamage(damage, duration);
+          break;
+        }
       }
     };
 

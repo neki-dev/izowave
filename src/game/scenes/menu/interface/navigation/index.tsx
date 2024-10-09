@@ -46,7 +46,7 @@ export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
         label: 'SAVE_GAME',
         page: MenuPage.SAVE_GAME,
         disabled: (
-          game.world.wave.isGoing
+          game.world.wave.going
           || (game.world.wave.number === 1 && Tutorial.IsEnabled)
         ),
       }, null, {

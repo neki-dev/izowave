@@ -12,6 +12,7 @@
     "strictPropertyInitialization": false,
     "types": ["vite/client", "jest"],
     "paths": {
+      "~game/*": ["./src/game/*"],
       "~scene/*": ["./src/game/scenes/*"],
       "~lib/*": ["./src/lib/*"]
     }

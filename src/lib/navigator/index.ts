@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  NavigatorEvent,
-} from './types';
+import { NavigatorEvent } from './types';
 import NavigatorWorker from './worker/index.ts?worker';
 
 import type {
@@ -14,7 +12,8 @@ import type {
   NavigatorTaskData,
   NavigatorTaskCallback,
   NavigatorPayloadCreateTask,
-  NavigatorPayloadCancelTask } from './types';
+  NavigatorPayloadCancelTask,
+} from './types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class Navigator implements INavigator {
@@ -29,18 +28,18 @@ export class Navigator implements INavigator {
 
     this.worker.addEventListener('message', ({ data }: NavigatorWorkerResult) => {
       switch (data.event) {
-      case NavigatorEvent.COMPLETE_TASK: {
-        const payload = data.payload as NavigatorPayloadCompleteTask;
-        const task = this.tasks.find((info) => info.id === payload.id);
+        case NavigatorEvent.COMPLETE_TASK: {
+          const payload = data.payload as NavigatorPayloadCompleteTask;
+          const task = this.tasks.find((info) => info.id === payload.id);
 
-        if (task) {
-          task.callback(payload.result.path, payload.result.cost);
-        } else {
-          // Events occurs for canceled tasks, since the path calculation occurs sequentially in single process.
-          // Need to figure out how to interrupt the calculation for a canceled task.
+          if (task) {
+            task.callback(payload.result.path, payload.result.cost);
+          } else {
+            // Events occurs for canceled tasks, since the path calculation occurs sequentially in single process.
+            // Need to figure out how to interrupt the calculation for a canceled task.
+          }
+          break;
         }
-        break;
-      }
       }
     });
   }

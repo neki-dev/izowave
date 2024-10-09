@@ -1,19 +1,16 @@
 import { ifModifiedArray, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
-import { GameScene } from '../../../../types';
-
 import { Controls } from './controls';
 import { Params } from './params';
+import { GameScene } from '../../../../types';
 
 import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
 import type { IWorld } from '~scene/world/types';
 
 import { phrase } from '~lib/lang';
 
-import {
-  Name, Level, Health, Wrapper, Head, Body, Container,
-} from './styles';
+import { Name, Level, Health, Wrapper, Head, Body, Container } from './styles';
 
 type Props = {
   building: IBuilding
@@ -71,7 +68,6 @@ export const BuildingInfo: React.FC<Props> = ({ building }) => {
           )}
         </Body>
       </Container>
-
       <Controls list={controls} />
     </Wrapper>
   );

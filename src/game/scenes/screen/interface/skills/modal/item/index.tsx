@@ -1,19 +1,14 @@
-import {
-  Texture, useClick, useEvent, useScene,
-} from 'phaser-react-ui';
+import { Texture, useClick, useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
-import { GameScene } from '../../../../../../types';
-
-import type {
-  PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';
+import type { PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';
 import type { IWorld } from '~scene/world/types';
 
+import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
-import { PlayerEvent, PlayerSkillIcon,
-} from '~scene/world/entities/player/types';
+import { PlayerEvent, PlayerSkillIcon } from '~scene/world/entities/player/types';
 
 import {
   Container, Info, Action, Label, Level, Button, Limit, Icon, Head,
@@ -34,7 +29,7 @@ export const Item: React.FC<Props> = ({ type }) => {
     currentLevel: world.player.upgradeLevel[type],
   });
 
-  const [data, setData] = useState<PlayerSkillData>(getData);
+  const [data, setData] = useState(getData);
 
   const levels = useMemo(() => Array.from({
     length: PLAYER_MAX_SKILL_LEVEL,

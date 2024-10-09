@@ -2,10 +2,6 @@ import Phaser from 'phaser';
 import { Interface } from 'phaser-react-ui';
 import { v4 as uuidv4 } from 'uuid';
 
-import { Scene } from '..';
-import { DIFFICULTY } from '../../../const/difficulty';
-import { GameScene, GameState, GameEvent } from '../../types';
-
 import { Builder } from './builder';
 import { Camera } from './camera';
 import { LiveEvent } from './entities/addons/live/types';
@@ -18,14 +14,13 @@ import { FXManager } from './fx-manager';
 import { WorldUI } from './interface';
 import { Level } from './level';
 import { LEVEL_PLANETS } from './level/const';
-import { SpawnTarget,
-} from './level/types';
+import { SpawnTarget } from './level/types';
 import { Spawner } from './spawner';
-import {
-  WorldModeIcon, WorldMode, WorldEvent,
-} from './types';
+import { WorldModeIcon, WorldMode, WorldEvent } from './types';
 import { Wave } from './wave';
 import { WaveEvent } from './wave/types';
+import { Scene } from '..';
+import { GameScene, GameState, GameEvent } from '../../types';
 
 import type { IBuilder } from './builder/types';
 import type { ICamera } from './camera/types';
@@ -35,12 +30,12 @@ import type { IAssistant } from './entities/npc/assistant/types';
 import type { IPlayer } from './entities/player/types';
 import type { ISprite } from './entities/types';
 import type { IFXManager } from './fx-manager/types';
-import type {
-  ILevel, LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
+import type { ILevel, LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
 import type { ISpawner } from './spawner/types';
 import type { IWorld, WorldHint, WorldTimerParams, WorldSavePayload } from './types';
 import type { IWave } from './wave/types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
@@ -51,61 +46,7 @@ Assets.RegisterImages(WorldModeIcon);
 export class World extends Scene implements IWorld {
   private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;
 
-  private _player: IPlayer;
-
-  public get player() { return this._player; }
-
-  private set player(v) { this._player = v; }
-
-  private _assistant: IAssistant;
-
-  public get assistant() { return this._assistant; }
-
-  private set assistant(v) { this._assistant = v; }
-
-  private _level: ILevel;
-
-  public get level() { return this._level; }
-
-  private set level(v) { this._level = v; }
-
-  private _wave: IWave;
-
-  public get wave() { return this._wave; }
-
-  private set wave(v) { this._wave = v; }
-
-  private _builder: IBuilder;
-
-  public get builder() { return this._builder; }
-
-  private set builder(v) { this._builder = v; }
-
-  private _spawner: ISpawner;
-
-  public get spawner() { return this._spawner; }
-
-  private set spawner(v) { this._spawner = v; }
-
-  private _fx: IFXManager;
-
-  public get fx() { return this._fx; }
-
-  private set fx(v) { this._fx = v; }
-
-  private _camera: ICamera;
-
-  public get camera() { return this._camera; }
-
-  private set camera(v) { this._camera = v; }
-
   private lifecyle: Phaser.Time.TimerEvent;
-
-  private _deltaTime: number = 1;
-
-  public get deltaTime() { return this._deltaTime; }
-
-  private set deltaTime(v) { this._deltaTime = v; }
 
   private timers: Phaser.Time.TimerEvent[] = [];
 
@@ -115,6 +56,42 @@ export class World extends Scene implements IWorld {
     [WorldMode.AUTO_REPAIR]: false,
     [WorldMode.PATH_TO_CRYSTAL]: false,
   };
+
+  private _deltaTime: number = 1;
+  public get deltaTime() { return this._deltaTime; }
+  private set deltaTime(v) { this._deltaTime = v; }
+
+  private _player: IPlayer;
+  public get player() { return this._player; }
+  private set player(v) { this._player = v; }
+
+  private _assistant: IAssistant;
+  public get assistant() { return this._assistant; }
+  private set assistant(v) { this._assistant = v; }
+
+  private _level: ILevel;
+  public get level() { return this._level; }
+  private set level(v) { this._level = v; }
+
+  private _wave: IWave;
+  public get wave() { return this._wave; }
+  private set wave(v) { this._wave = v; }
+
+  private _builder: IBuilder;
+  public get builder() { return this._builder; }
+  private set builder(v) { this._builder = v; }
+
+  private _spawner: ISpawner;
+  public get spawner() { return this._spawner; }
+  private set spawner(v) { this._spawner = v; }
+
+  private _fx: IFXManager;
+  public get fx() { return this._fx; }
+  private set fx(v) { this._fx = v; }
+
+  private _camera: ICamera;
+  public get camera() { return this._camera; }
+  private set camera(v) { this._camera = v; }
 
   constructor() {
     super(GameScene.WORLD);
@@ -206,7 +183,6 @@ export class World extends Scene implements IWorld {
     this.physics.world.timeScale = 1 / scale;
 
     this.timers.forEach((timer) => {
-      // eslint-disable-next-line no-param-reassign
       timer.timeScale = scale;
     });
   }
@@ -238,7 +214,6 @@ export class World extends Scene implements IWorld {
 
   public removeProgression(timer: Phaser.Time.TimerEvent): void {
     const index = this.timers.indexOf(timer);
-
     if (index !== -1) {
       timer.destroy();
       this.timers.splice(index, 1);
@@ -385,7 +360,6 @@ export class World extends Scene implements IWorld {
 
     const getRandomPosition = () => {
       const freePositions = positions.filter((position) => this.level.isFreePoint({ ...position, z: 1 }));
-
       return Phaser.Utils.Array.GetRandom(freePositions);
     };
 
@@ -414,7 +388,6 @@ export class World extends Scene implements IWorld {
 
       for (let i = 0; i < maxCount; i++) {
         const position = getRandomPosition();
-
         create(position);
       }
     }
@@ -424,7 +397,6 @@ export class World extends Scene implements IWorld {
 
       for (let i = 0; i < newCount; i++) {
         const position = getRandomPosition();
-
         create(position);
       }
     });

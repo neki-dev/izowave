@@ -20,25 +20,25 @@ import {
 export const Item: React.FC<Feature> = ({ type, item }) => {
   const name = useMemo(() => {
     switch (type) {
-    case 'BUILDING': return phrase(`BUILDING_NAME_${item as BuildingVariant}`);
-    case 'SUPERSKILL': return phrase(`SUPERSKILL_NAME_${item as PlayerSuperskill}`);
-    case 'ASSISTANT': return item;
+      case 'BUILDING': return phrase(`BUILDING_NAME_${item as BuildingVariant}`);
+      case 'SUPERSKILL': return phrase(`SUPERSKILL_NAME_${item as PlayerSuperskill}`);
+      case 'ASSISTANT': return item;
     }
   }, [type, item]);
 
   const description = useMemo<LangPhrase>(() => {
     switch (type) {
-    case 'BUILDING': return `BUILDING_DESCRIPTION_${item as BuildingVariant}`;
-    case 'SUPERSKILL': return `SUPERSKILL_DESCRIPTION_${item as PlayerSuperskill}`;
-    case 'ASSISTANT': return 'ASSISTANT_UNLOCK';
+      case 'BUILDING': return `BUILDING_DESCRIPTION_${item as BuildingVariant}`;
+      case 'SUPERSKILL': return `SUPERSKILL_DESCRIPTION_${item as PlayerSuperskill}`;
+      case 'ASSISTANT': return 'ASSISTANT_UNLOCK';
     }
   }, [type, item]);
 
   const icon = useMemo(() => {
     switch (type) {
-    case 'BUILDING': return BuildingTexture[item as BuildingVariant];
-    case 'SUPERSKILL': return PlayerSuperskillIcon[item as PlayerSuperskill];
-    case 'ASSISTANT': return AssistantTexture[item as AssistantVariant];
+      case 'BUILDING': return BuildingTexture[item as BuildingVariant];
+      case 'SUPERSKILL': return PlayerSuperskillIcon[item as PlayerSuperskill];
+      case 'ASSISTANT': return AssistantTexture[item as AssistantVariant];
     }
   }, [type, item]);
 

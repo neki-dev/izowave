@@ -1,8 +1,7 @@
+import { AssistantVariant } from './types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotBallSimple } from '../../shot/ball/variants/simple';
 import { ShotLazer } from '../../shot/lazer';
-
-import { AssistantVariant } from './types';
 
 import type { IShotFactory } from '../../shot/types';
 

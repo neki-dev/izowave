@@ -226,8 +226,8 @@ export const FR = {
    * About game
    */
   GAME_DESCRIPTION: [
-    "Votre tâche est de survivre sur la planète choisie pendant le plus grand nombre d'ondes possible.",
-    "Avec chaque vague, le nombre d'ennemis et leurs caractéristiques augmenteront.\n",
+    'Votre tâche est de survivre sur la planète choisie pendant le plus grand nombre d\'ondes possible.',
+    'Avec chaque vague, le nombre d\'ennemis et leurs caractéristiques augmenteront.\n',
     'Construisez des murs pour vous défendre, des tours pour attaquer, des munitions pour recharger les tours',
     'et des générateurs pour obtenir plus de ressources.\n',
     'Et améliorez également les compétences de votre personnage et de son assistant.',

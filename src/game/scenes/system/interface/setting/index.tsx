@@ -5,9 +5,7 @@ import type { LangPhrase } from '~lib/lang/types';
 
 import { phrase } from '~lib/lang';
 
-import {
-  Wrapper, Label, Values, Value,
-} from './styles';
+import { Wrapper, Label, Values, Value } from './styles';
 
 type Props = {
   label: LangPhrase

@@ -1,4 +1,4 @@
-import { DIFFICULTY } from '../../../../../../const/difficulty';
+import { DIFFICULTY } from '../../../../../../game/difficulty';
 import world from '../../../__mocks__/world';
 
 import type { IWave } from '../../types';

@@ -1,22 +1,17 @@
 import Phaser from 'phaser';
 
+import { Indicator } from './addons/indicator';
+import { Live } from './addons/live';
+import { LiveEvent } from './addons/live/types';
+import { EntityType } from './types';
 import { DEBUG_MODS } from '../../../const';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
 import { Level } from '../level';
 
-import { Indicator } from './addons/indicator';
-import { Live } from './addons/live';
-import { LiveEvent } from './addons/live/types';
-import { EntityType,
-} from './types';
-
 import type { IIndicator } from './addons/indicator/types';
 import type { ILive } from './addons/live/types';
-import type {
-  ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
-import type {
-  LevelBiome, PositionAtMatrix, TileType, PositionAtWorld,
-} from '../level/types';
+import type { ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
+import type { LevelBiome, PositionAtMatrix, TileType, PositionAtWorld } from '../level/types';
 import type { IWorld } from '../types';
 
 import { isPositionsEqual } from '~lib/dimension';
@@ -28,23 +23,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
 
   readonly live: ILive;
 
-  private _container: Phaser.GameObjects.Container;
-
-  public get container() { return this._container; }
-
-  private set container(v) { this._container = v; }
-
   public gamut: number = 0;
 
   public speed: number = 0;
 
   public currentBiome: Nullable<LevelBiome> = null;
-
-  private _positionAtMatrix: PositionAtMatrix;
-
-  public get positionAtMatrix() { return this._positionAtMatrix; }
-
-  private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   private collisionTargets: TileType[] = [];
 
@@ -55,6 +38,14 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   private indicators: Phaser.GameObjects.Container;
 
   private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
+
+  private _container: Phaser.GameObjects.Container;
+  public get container() { return this._container; }
+  private set container(v) { this._container = v; }
+
+  private _positionAtMatrix: PositionAtMatrix;
+  public get positionAtMatrix() { return this._positionAtMatrix; }
+  private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
   constructor(scene: IWorld, {
     texture, positionAtWorld, positionAtMatrix, speed, body, health = 1, frame = 0,

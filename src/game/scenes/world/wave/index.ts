@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../const/difficulty';
+import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
+import { WaveAudio, WaveEvent } from './types';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '../entities/npc/enemy/const';
 import { EnemyFactory } from '../entities/npc/enemy/factory';
 import { ENEMIES } from '../entities/npc/enemy/factory/const';
@@ -8,15 +9,11 @@ import { EnemyVariant } from '../entities/npc/enemy/types';
 import { EntityType } from '../entities/types';
 import { WorldEvent, WorldMode } from '../types';
 
-import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
-import { WaveAudio, WaveEvent,
-} from './types';
-
-import type {
-  IWave, WaveSavePayload } from './types';
+import type { IWave, WaveSavePayload } from './types';
 import type { IEnemy } from '../entities/npc/enemy/types';
 import type { IWorld } from '../types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
@@ -28,22 +25,16 @@ Assets.RegisterAudio(WaveAudio);
 export class Wave extends Phaser.Events.EventEmitter implements IWave {
   readonly scene: IWorld;
 
-  private _isGoing: boolean = false;
+  private _going: boolean = false;
+  public get going() { return this._going; }
+  private set going(v) { this._going = v; }
 
-  public get isGoing() { return this._isGoing; }
-
-  private set isGoing(v) { this._isGoing = v; }
-
-  private _isPeaceMode: boolean = false;
-
-  public get isPeaceMode() { return this._isPeaceMode; }
-
-  private set isPeaceMode(v) { this._isPeaceMode = v; }
+  private _peaceMode: boolean = false;
+  public get peaceMode() { return this._peaceMode; }
+  private set peaceMode(v) { this._peaceMode = v; }
 
   private _number: number = 1;
-
   public get number() { return this._number; }
-
   private set number(v) { this._number = v; }
 
   private spawnedEnemiesCount: number = 0;
@@ -86,7 +77,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   }
 
   private handleProcessing() {
-    if (!this.isGoing) {
+    if (!this.going) {
       return;
     }
 
@@ -102,7 +93,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   }
 
   private handleTimeleft() {
-    if (this.isGoing || this.isPeaceMode) {
+    if (this.going || this.peaceMode) {
       return;
     }
 
@@ -142,7 +133,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   }
 
   public skipTimeleft() {
-    if (this.isGoing || this.scene.isTimePaused()) {
+    if (this.going || this.scene.isTimePaused()) {
       return;
     }
 
@@ -172,7 +163,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   }
 
   private start() {
-    this.isGoing = true;
+    this.going = true;
 
     this.nextSpawnTimestamp = 0;
     this.spawnedEnemiesCount = 0;
@@ -203,7 +194,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
   private complete() {
     const prevNumber = this.number;
 
-    this.isGoing = false;
+    this.going = false;
     this.number++;
 
     this.scene.setTimeScale(1.0);
@@ -216,18 +207,18 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.scene.fx.playSound(WaveAudio.COMPLETE);
 
     switch (this.number) {
-    case 2: {
-      Tutorial.Start(TutorialStep.BUILD_GENERATOR_SECOND);
-      break;
-    }
-    case 3: {
-      Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
-      break;
-    }
-    case 8: {
-      Tutorial.Start(TutorialStep.BUILD_RADAR);
-      break;
-    }
+      case 2: {
+        Tutorial.Start(TutorialStep.BUILD_GENERATOR_SECOND);
+        break;
+      }
+      case 3: {
+        Tutorial.Start(TutorialStep.BUILD_AMMUNITION);
+        break;
+      }
+      case 8: {
+        Tutorial.Start(TutorialStep.BUILD_RADAR);
+        break;
+      }
     }
   }
 
@@ -323,7 +314,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
   private handleToggleTimeScale() {
     const handler = (mode: WorldMode, state: boolean) => {
-      if (mode === WorldMode.TIME_SCALE && this.isGoing) {
+      if (mode === WorldMode.TIME_SCALE && this.going) {
         this.scene.setTimeScale(state ? WAVE_INCREASED_TIME_SCALE : 1.0);
       }
     };

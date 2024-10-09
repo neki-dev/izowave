@@ -3,11 +3,10 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { GameScene, GameEvent } from '../../../../types';
-
-import type { IGame } from '../../../../types';
+import type { IGame } from '~game/types';
 import type { IWorld } from '~scene/world/types';
 
+import { GameScene, GameEvent } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
@@ -33,14 +32,14 @@ export const Wave: React.FC = () => {
 
   const [currentNumber, setCurrentNumber] = useState(1);
   const [value, setValue] = useState<Nullable<number | string>>(null);
-  const [isGoing, setGoing] = useState(false);
+  const [going, setGoing] = useState(false);
   const [isAlarm, setAlarm] = useState(false);
   const [isGamePaused, setGamePaused] = useState(false);
   const [isTimePaused, setTimePaused] = useState(true);
   const [hint, setHint] = useState(false);
 
   useClick(refContainer, 'down', () => {
-    if (!world.wave.isGoing) {
+    if (!world.wave.going) {
       world.wave.skipTimeleft();
     }
   }, []);
@@ -59,9 +58,9 @@ export const Wave: React.FC = () => {
   useSceneUpdate(world, () => {
     setTimePaused(world.isTimePaused());
     setCurrentNumber(world.wave.number);
-    setGoing(world.wave.isGoing);
+    setGoing(world.wave.going);
 
-    if (world.wave.isGoing) {
+    if (world.wave.going) {
       const enemiesLeft = world.wave.getEnemiesLeft();
 
       setValue(enemiesLeft);
@@ -70,23 +69,23 @@ export const Wave: React.FC = () => {
       const timeleft = world.wave.getTimeleft();
       const currentIsAlarm = (
         timeleft <= WAVE_TIMELEFT_ALARM
-        && !world.wave.isPeaceMode
+        && !world.wave.peaceMode
         && !world.isTimePaused()
       );
 
-      setValue(world.wave.isPeaceMode ? '-' : Utils.FormatTime(timeleft));
+      setValue(world.wave.peaceMode ? '-' : Utils.FormatTime(timeleft));
       setAlarm(currentIsAlarm);
     }
   }, []);
 
   return (
     <Wrapper>
-      <Container ref={refContainer} $skippable={!isGoing && !isTimePaused}>
-        <CurrentNumber $paused={isTimePaused} $going={isGoing}>
+      <Container ref={refContainer} $skippable={!going && !isTimePaused}>
+        <CurrentNumber $paused={isTimePaused} $going={going}>
           {isTimePaused ? '||' : currentNumber}
         </CurrentNumber>
         <State>
-          <Label>{phrase(isGoing ? 'WAVE_ENEMIES' : 'WAVE_TIMELEFT')}</Label>
+          <Label>{phrase(going ? 'WAVE_ENEMIES' : 'WAVE_TIMELEFT')}</Label>
           <Value
             $attention={isAlarm}
             style={{
@@ -96,7 +95,7 @@ export const Wave: React.FC = () => {
             {value}
           </Value>
         </State>
-        {(!hint && !isGoing && !isTimePaused) && (
+        {(!hint && !going && !isTimePaused) && (
           <Placeholder>{phrase('SKIP_WAVE_TIMELEFT')}</Placeholder>
         )}
       </Container>

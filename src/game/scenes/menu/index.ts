@@ -1,11 +1,11 @@
 import { Interface } from 'phaser-react-ui';
 
-import { Scene } from '..';
-import { GameScene, GameState } from '../../types';
-
 import { MenuUI } from './interface';
+import { Scene } from '..';
 
 import type { MenuPage } from './types';
+
+import { GameScene, GameState } from '~game/types';
 
 export class Menu extends Scene {
   constructor() {

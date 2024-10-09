@@ -1,9 +1,8 @@
 import { Interface } from 'phaser-react-ui';
 
+import { GameoverUI } from './interface';
 import { Scene } from '..';
 import { GameScene } from '../../types';
-
-import { GameoverUI } from './interface';
 
 export class Gameover extends Scene {
   constructor() {

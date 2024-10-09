@@ -8,7 +8,10 @@ import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
  * @param pointB - Second position
  */
 export function isPositionsEqual(pointA: PositionAtWorld, pointB: PositionAtWorld) {
-  return pointA.x === pointB.x && pointA.y === pointB.y;
+  return (
+    pointA.x === pointB.x &&
+    pointA.y === pointB.y
+  );
 }
 
 /**
@@ -18,7 +21,6 @@ export function isPositionsEqual(pointA: PositionAtWorld, pointB: PositionAtWorl
  */
 export function excludePosition(positions: PositionAtWorld[], target: PositionAtWorld) {
   const index = positions.findIndex((position) => isPositionsEqual(position, target));
-
   if (index !== -1) {
     positions.splice(index, 1);
   }

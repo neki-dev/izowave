@@ -2,9 +2,7 @@ import grid from '../__mocks__/grid';
 import points from '../__mocks__/points';
 import { PathNode } from '../node';
 
-import {
-  isDiagonalShift, getCost, getSimpleCost, getDirections,
-} from '.';
+import { isDiagonalShift, getCost, getSimpleCost, getDirections } from '.';
 
 describe('lib / navigator / tools', () => {
   describe('isDiagonalShift', () => {

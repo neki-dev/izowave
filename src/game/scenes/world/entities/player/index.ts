@@ -1,12 +1,5 @@
 import Phaser from 'phaser';
 
-import { Sprite } from '..';
-import { DIFFICULTY } from '../../../../../const/difficulty';
-import { GameSettings, GameEvent } from '../../../../types';
-import { BuildingVariant } from '../building/types';
-import { Crystal } from '../crystal';
-import { EntityType } from '../types';
-
 import {
   PLAYER_TILE_SIZE,
   PLAYER_SKILLS,
@@ -23,17 +16,20 @@ import {
   PlayerSkillIcon,
   PlayerSuperskillIcon,
 } from './types';
+import { Sprite } from '..';
+import { BuildingVariant } from '../building/types';
+import { Crystal } from '../crystal';
+import { EntityType } from '../types';
 
-import type {
-  PlayerData,
-  IPlayer,
-  PlayerSavePayload } from './types';
+import type { PlayerData, IPlayer, PlayerSavePayload } from './types';
 import type { ICrystal } from '../crystal/types';
 import type { IEnemy } from '../npc/enemy/types';
 import type { IParticles } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
+import { GameSettings, GameEvent } from '~game/types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -54,33 +50,23 @@ Assets.RegisterImages(PlayerSuperskillIcon);
 
 export class Player extends Sprite implements IPlayer {
   private _experience: number = 0;
-
   public get experience() { return this._experience; }
-
   private set experience(v) { this._experience = v; }
 
   private _resources: number = DIFFICULTY.PLAYER_START_RESOURCES;
-
   public get resources() { return this._resources; }
-
   private set resources(v) { this._resources = v; }
 
   private _score: number = 0;
-
   public get score() { return this._score; }
-
   private set score(v) { this._score = v; }
 
   private _kills: number = 0;
-
   public get kills() { return this._kills; }
-
   private set kills(v) { this._kills = v; }
 
   private _lastVisiblePosition: PositionAtMatrix;
-
   public get lastVisiblePosition() { return this._lastVisiblePosition; }
-
   private set lastVisiblePosition(v) { this._lastVisiblePosition = v; }
 
   private _upgradeLevel: Record<PlayerSkill, number> = {
@@ -92,9 +78,7 @@ export class Player extends Sprite implements IPlayer {
     [PlayerSkill.ATTACK_DISTANCE]: 1,
     [PlayerSkill.ATTACK_SPEED]: 1,
   };
-
   public get upgradeLevel() { return this._upgradeLevel; }
-
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
   private movementTarget: Nullable<number> = null;
@@ -104,15 +88,11 @@ export class Player extends Sprite implements IPlayer {
   private dustEffect: Nullable<IParticles> = null;
 
   private _unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
-
   public get unlockedSuperskills() { return this._unlockedSuperskills; }
-
   private set unlockedSuperskills(v) { this._unlockedSuperskills = v; }
 
   private _activeSuperskills: Partial<Record<PlayerSuperskill, Phaser.Time.TimerEvent>> = {};
-
   public get activeSuperskills() { return this._activeSuperskills; }
-
   private set activeSuperskills(v) { this._activeSuperskills = v; }
 
   private pathToCrystal: Nullable<Phaser.GameObjects.Graphics> = null;
@@ -341,7 +321,7 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    if (!this.scene.wave.isGoing) {
+    if (!this.scene.wave.going) {
       this.scene.game.screen.failure();
 
       return;
@@ -397,32 +377,32 @@ export class Player extends Sprite implements IPlayer {
 
   static GetUpgradeNextValue(type: PlayerSkill, level: number): number {
     switch (type) {
-    case PlayerSkill.MAX_HEALTH: {
-      return progressionQuadratic({
-        defaultValue: DIFFICULTY.PLAYER_HEALTH,
-        scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
-        level,
-        roundTo: 10,
-      });
-    }
-    case PlayerSkill.SPEED: {
-      return progressionLinear({
-        defaultValue: DIFFICULTY.PLAYER_SPEED,
-        scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
-        level,
-        roundTo: 1,
-      });
-    }
-    case PlayerSkill.STAMINA: {
-      return progressionQuadratic({
-        defaultValue: DIFFICULTY.PLAYER_STAMINA,
-        scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
-        level,
-      });
-    }
-    default: {
-      return level;
-    }
+      case PlayerSkill.MAX_HEALTH: {
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.PLAYER_HEALTH,
+          scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
+          level,
+          roundTo: 10,
+        });
+      }
+      case PlayerSkill.SPEED: {
+        return progressionLinear({
+          defaultValue: DIFFICULTY.PLAYER_SPEED,
+          scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
+          level,
+          roundTo: 1,
+        });
+      }
+      case PlayerSkill.STAMINA: {
+        return progressionQuadratic({
+          defaultValue: DIFFICULTY.PLAYER_STAMINA,
+          scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
+          level,
+        });
+      }
+      default: {
+        return level;
+      }
     }
   }
 
@@ -451,25 +431,25 @@ export class Player extends Sprite implements IPlayer {
     const nextValue = Player.GetUpgradeNextValue(type, level);
 
     switch (type) {
-    case PlayerSkill.MAX_HEALTH: {
-      const addedHealth = nextValue - this.live.maxHealth;
+      case PlayerSkill.MAX_HEALTH: {
+        const addedHealth = nextValue - this.live.maxHealth;
 
-      this.live.setMaxHealth(nextValue);
-      this.live.addHealth(addedHealth);
-      break;
-    }
-    case PlayerSkill.SPEED: {
-      this.speed = nextValue;
-      if (this.scene.assistant) {
-        this.scene.assistant.speed = nextValue;
+        this.live.setMaxHealth(nextValue);
+        this.live.addHealth(addedHealth);
+        break;
       }
-      break;
-    }
-    case PlayerSkill.STAMINA: {
-      this.staminaMax = nextValue;
-      this.stamina = this.staminaMax;
-      break;
-    }
+      case PlayerSkill.SPEED: {
+        this.speed = nextValue;
+        if (this.scene.assistant) {
+          this.scene.assistant.speed = nextValue;
+        }
+        break;
+      }
+      case PlayerSkill.STAMINA: {
+        this.staminaMax = nextValue;
+        this.stamina = this.staminaMax;
+        break;
+      }
     }
 
     this.upgradeLevel[type] = level;
@@ -810,14 +790,14 @@ export class Player extends Sprite implements IPlayer {
   private handleTogglePathToCrystal() {
     const handler = (mode: WorldMode, state: boolean) => {
       switch (mode) {
-      case WorldMode.PATH_TO_CRYSTAL: {
-        if (state) {
-          this.addPathToCrystal();
-        } else {
-          this.removePathToCrystal();
+        case WorldMode.PATH_TO_CRYSTAL: {
+          if (state) {
+            this.addPathToCrystal();
+          } else {
+            this.removePathToCrystal();
+          }
+          break;
         }
-        break;
-      }
       }
     };
 

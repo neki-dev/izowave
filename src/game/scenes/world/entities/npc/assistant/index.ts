@@ -1,12 +1,10 @@
+import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
+import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 import { NPC } from '..';
-import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { PlayerSkill } from '../../player/types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotLazer } from '../../shot/lazer';
 import { EntityType } from '../../types';
-
-import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
-import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 
 import type { IAssistant, AssistantData } from './types';
 import type { IPlayer } from '../../player/types';
@@ -14,6 +12,7 @@ import type { IShot, ShotParams, IShotFactory } from '../../shot/types';
 import type { IEnemy } from '../enemy/types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
@@ -63,7 +62,7 @@ export class Assistant extends NPC implements IAssistant {
     super.update();
 
     try {
-      if (this.isPathPassed) {
+      if (this.pathPassed) {
         this.setVelocity(0, 0);
       }
 

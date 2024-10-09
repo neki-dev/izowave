@@ -3,15 +3,13 @@ import React, { useEffect, useRef } from 'react';
 
 import { Result } from './result';
 
-import type { GameStat, IGame } from '../../../types';
+import type { GameStat, IGame } from '~game/types';
 
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
 
-import {
-  Wrapper, Label, Button, Head, IconRestart,
-} from './styles';
+import { Wrapper, Label, Button, Head, IconRestart } from './styles';
 
 type Props = {
   stat: GameStat

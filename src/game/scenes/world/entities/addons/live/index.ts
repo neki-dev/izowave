@@ -6,27 +6,19 @@ import type { ILive, LiveData } from './types';
 
 export class Live extends Phaser.Events.EventEmitter implements ILive {
   private _health: number;
-
   public get health() { return this._health; }
-
   private set health(v) { this._health = v; }
 
   private _maxHealth: number;
-
   public get maxHealth() { return this._maxHealth; }
-
   private set maxHealth(v) { this._maxHealth = v; }
 
   private _armour: number;
-
   public get armour() { return this._armour; }
-
   private set armour(v) { this._armour = v; }
 
   private _maxArmour: number;
-
   public get maxArmour() { return this._maxArmour; }
-
   private set maxArmour(v) { this._maxArmour = v; }
 
   constructor({

@@ -1,5 +1,5 @@
 import { useCurrentScene, useEvent } from 'phaser-react-ui';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { Button } from '../button';
 
@@ -7,9 +7,7 @@ import type { LangPhrase } from '~lib/lang/types';
 
 import { phrase } from '~lib/lang';
 
-import {
-  Overlay, Container, Content, Buttons,
-} from './styles';
+import { Overlay, Container, Content, Buttons } from './styles';
 
 type Props = {
   message: LangPhrase
@@ -17,13 +15,14 @@ type Props = {
   onClose: () => void
 };
 
+// TODO: Use with context
 export const Confirm: React.FC<Props> = ({ message, onConfirm, onClose }) => {
   const scene = useCurrentScene();
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     onClose();
     onConfirm();
-  };
+  }, [onConfirm, onClose]);
 
   useEvent(scene.input.keyboard, 'keyup-ENTER', handleConfirm, [handleConfirm]);
 

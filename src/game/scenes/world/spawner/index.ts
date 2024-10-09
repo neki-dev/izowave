@@ -1,6 +1,3 @@
-import { EntityType } from '../entities/types';
-import { SpawnTarget } from '../level/types';
-
 import {
   SPAWN_CACHE_RESET_DISTANCE,
   SPAWN_DISTANCE_FROM_BUILDING,
@@ -10,10 +7,10 @@ import {
   SPAWN_POSITIONS_OUTPUT_LIMIT,
   SPAWN_COST_FACTOR,
 } from './const';
+import { EntityType } from '../entities/types';
+import { SpawnTarget } from '../level/types';
 
-import type {
-  ISpawner, SpawnCache, SpawnPositionMeta, SpawnPositionResolve,
-} from './types';
+import type { ISpawner, SpawnCache, SpawnPositionMeta, SpawnPositionResolve } from './types';
 import type { IBuilding } from '../entities/building/types';
 import type { PositionAtMatrix } from '../level/types';
 import type { IWorld } from '../types';

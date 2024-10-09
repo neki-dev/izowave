@@ -1,4 +1,4 @@
-import { ShotBall } from '../ball';
+import { ShotBall } from '..';
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '../const';
 import { ShotBallAudio } from '../types';
 

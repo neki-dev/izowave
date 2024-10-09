@@ -1,10 +1,10 @@
 import { Enemy } from '..';
-import { DIFFICULTY } from '../../../../../../../const/difficulty';
 import { EnemyTexture } from '../types';
 
 import type { EnemyVariantData } from '../types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { progressionQuadratic } from '~lib/progression';
 
 export class EnemyTank extends Enemy {

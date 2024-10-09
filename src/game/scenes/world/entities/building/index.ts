@@ -1,12 +1,5 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../../const/difficulty';
-import { GameEvent } from '../../../../types';
-import { Indicator } from '../addons/indicator';
-import { Live } from '../addons/live';
-import { LiveEvent } from '../addons/live/types';
-import { EntityType } from '../types';
-
 import { BUILDING_TILE } from './const';
 import {
   BuildingEvent,
@@ -15,6 +8,10 @@ import {
   BuildingIcon,
   BuildingOutlineState,
 } from './types';
+import { Indicator } from '../addons/indicator';
+import { Live } from '../addons/live';
+import { LiveEvent } from '../addons/live/types';
+import { EntityType } from '../types';
 
 import type { IBuildingFactory } from './factory/types';
 import type {
@@ -24,8 +21,8 @@ import type {
   IBuilding,
   BuildingGrowthValue,
   BuildingSavePayload,
-
-  BuildingVariant } from './types';
+  BuildingVariant,
+} from './types';
 import type { IIndicator, IndicatorData } from '../addons/indicator/types';
 import type { ILive } from '../addons/live/types';
 import type { LangPhrase } from '~lib/lang/types';
@@ -33,6 +30,8 @@ import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
+import { GameEvent } from '~game/types';
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -62,9 +61,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
   readonly tileType: TileType = TileType.BUILDING;
 
   private _upgradeLevel: number = 1;
-
   public get upgradeLevel() { return this._upgradeLevel; }
-
   private set upgradeLevel(v) { this._upgradeLevel = v; }
 
   private radius: Nullable<BuildingGrowthValue> = null;
@@ -86,9 +83,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
   private actionsArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
   private _isFocused: boolean = false;
-
   public get isFocused() { return this._isFocused; }
-
   private set isFocused(v) { this._isFocused = v; }
 
   private toFocus: boolean = false;
@@ -368,7 +363,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
     if (Tutorial.IsInProgress(TutorialStep.UPGRADE_BUILDING)) {
       Tutorial.Complete(TutorialStep.UPGRADE_BUILDING);
-      if (!this.scene.wave.isGoing) {
+      if (!this.scene.wave.going) {
         Tutorial.Start(TutorialStep.SKIP_TIMELEFT);
       }
     }
@@ -860,10 +855,10 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
   private handleToggleModes() {
     const handler = (mode: WorldMode) => {
       switch (mode) {
-      case WorldMode.BUILDING_INDICATORS: {
-        this.toggleIndicators();
-        break;
-      }
+        case WorldMode.BUILDING_INDICATORS: {
+          this.toggleIndicators();
+          break;
+        }
       }
     };
 

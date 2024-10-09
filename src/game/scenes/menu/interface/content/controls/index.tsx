@@ -3,9 +3,7 @@ import React from 'react';
 import { CONTROLS } from '~lib/controls/const';
 import { phrase } from '~lib/lang';
 
-import {
-  Wrapper, Control, Keys, Key, Description,
-} from './styles';
+import { Wrapper, Control, Keys, Key, Description } from './styles';
 
 export const Controls: React.FC = () => (
   <Wrapper>

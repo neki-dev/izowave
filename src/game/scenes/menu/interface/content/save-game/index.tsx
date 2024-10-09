@@ -1,15 +1,12 @@
 import { useGame } from 'phaser-react-ui';
-import React, {
-  useRef, useEffect, useState,
-} from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
-import { MAX_GAME_SAVES } from '../../../../../const';
-
-import type { IGame } from '../../../../../types';
 import type { ChangeEvent } from 'react';
+import type { IGame } from '~game/types';
 import type { LangPhrase } from '~lib/lang/types';
 import type { StorageSave } from '~lib/storage/types';
 
+import { MAX_GAME_SAVES } from '~game/const';
 import { phrase } from '~lib/lang';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';

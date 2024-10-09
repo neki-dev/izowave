@@ -2,9 +2,7 @@ import React from 'react';
 
 import { phrase } from '~lib/lang';
 
-import {
-  Icon, IconContainer, Value, Wrapper, Container, Placeholder,
-} from './styles';
+import { Icon, IconContainer, Value, Wrapper, Container, Placeholder } from './styles';
 
 type Props = {
   children: React.ReactNode

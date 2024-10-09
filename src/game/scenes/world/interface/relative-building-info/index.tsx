@@ -3,9 +3,8 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { GameScene } from '../../../../types';
-
 import { TranslateToScreen } from './translate-to-screen';
+import { GameScene } from '../../../../types';
 
 import type { IBuilding } from '~scene/world/entities/building/types';
 import type { IWorld } from '~scene/world/types';

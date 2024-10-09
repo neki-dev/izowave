@@ -1,28 +1,23 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../const/difficulty';
+import { BuilderEvent } from './types';
 import { WORLD_DEPTH_GRAPHIC } from '../const';
 import { BUILDING_TILE } from '../entities/building/const';
 import { BUILDINGS } from '../entities/building/factory/const';
-import { BuildingVariant, BuildingAudio, BuildingIcon,
-} from '../entities/building/types';
+import { BuildingVariant, BuildingAudio, BuildingIcon } from '../entities/building/types';
 import { PlayerSkill } from '../entities/player/types';
 import { EntityType } from '../entities/types';
 import { Level } from '../level';
 import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '../level/const';
-import { BiomeType, TileType,
-} from '../level/types';
-
-import { BuilderEvent } from './types';
+import { BiomeType, TileType } from '../level/types';
 
 import type { IBuilder } from './types';
-import type {
-  IBuilding, BuildingBuildData } from '../entities/building/types';
+import type { IBuilding, BuildingBuildData } from '../entities/building/types';
 import type { IEnemy } from '../entities/npc/enemy/types';
-import type {
-  PositionAtMatrix, PositionAtWorld } from '../level/types';
+import type { PositionAtMatrix, PositionAtWorld } from '../level/types';
 import type { IWorld } from '../types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { isPositionsEqual } from '~lib/dimension';
 import { phrase } from '~lib/lang';
 import { progressionLinear } from '~lib/progression';
@@ -34,12 +29,6 @@ import { Utils } from '~lib/utils';
 export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   readonly scene: IWorld;
 
-  private _isBuild: boolean = false;
-
-  public get isBuild() { return this._isBuild; }
-
-  private set isBuild(v) { this._isBuild = v; }
-
   public selectedBuilding: Nullable<IBuilding> = null;
 
   private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
@@ -50,16 +39,16 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
   private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
 
+  private _isBuild: boolean = false;
+  public get isBuild() { return this._isBuild; }
+  private set isBuild(v) { this._isBuild = v; }
+
   private _supposedPosition: Nullable<PositionAtMatrix> = null;
-
   public get supposedPosition() { return this._supposedPosition; }
-
   private set supposedPosition(v) { this._supposedPosition = v; }
 
   private _variant: Nullable<BuildingVariant> = null;
-
   public get variant() { return this._variant; }
-
   private set variant(v) { this._variant = v; }
 
   constructor(scene: IWorld) {

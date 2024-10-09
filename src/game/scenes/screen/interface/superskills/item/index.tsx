@@ -25,18 +25,18 @@ export const Item: React.FC<Props> = ({ type }) => {
   const game = useGame<IGame>();
   const world = useScene<IWorld>(GameScene.WORLD);
 
-  const [isAllow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
-  const [isGamePaused, setGamePaused] = useState(false);
+  const [allow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
+  const [gamePaused, setGamePaused] = useState(false);
   const [progress, setProgress] = useState<Nullable<Phaser.Time.TimerEvent>>(null);
   const [cost, setCost] = useState(0);
 
   const refContainer = useRef<HTMLDivElement>(null);
 
   const isHover = useInteraction(refContainer, () => {
-    if (isAllow) {
+    if (allow) {
       world.player.useSuperskill(type);
     }
-  }, [type, isAllow]);
+  }, [type, allow]);
 
   useEvent(world.player, PlayerEvent.UNLOCK_SUPERSKILL, (superskill: PlayerSuperskill) => {
     if (superskill === type) {
@@ -55,7 +55,7 @@ export const Item: React.FC<Props> = ({ type }) => {
 
   return (
     <Wrapper>
-      {(isHover && isAllow) && (
+      {(isHover && allow) && (
         <Info>
           <Head>
             <Name>{phrase(`SUPERSKILL_NAME_${type}`)}</Name>
@@ -66,21 +66,21 @@ export const Item: React.FC<Props> = ({ type }) => {
           </Body>
         </Info>
       )}
-      <Container ref={refContainer} $active={Boolean(progress)} $allow={isAllow}>
+      <Container ref={refContainer} $active={Boolean(progress)} $allow={allow}>
         {progress && (
           <Timeout
             style={{
               animationDuration: `${progress.delay}ms`,
-              animationPlayState: isGamePaused ? 'paused' : 'running',
+              animationPlayState: gamePaused ? 'paused' : 'running',
             }}
           />
         )}
-        {!isAllow && (
+        {!allow && (
           <Lock>
             <IconLock src='assets/sprites/hud/lock.png' />
           </Lock>
         )}
-        <IconContainer $allow={isAllow}>
+        <IconContainer $allow={allow}>
           <Texture name={PlayerSuperskillIcon[type]} />
         </IconContainer>
       </Container>

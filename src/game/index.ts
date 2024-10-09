@@ -1,11 +1,9 @@
 import Phaser from 'phaser';
 
 import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
-import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent,
-} from './types';
+import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent } from './types';
 
-import type {
-  IGame, GameStat, GameSavePayload } from './types';
+import type { IGame, GameStat, GameSavePayload } from './types';
 import type { StorageSave } from '~lib/storage/types';
 import type { IScreen } from '~scene/screen/types';
 import type { IWorld } from '~scene/world/types';
@@ -24,24 +22,18 @@ import { World } from '~scene/world';
 export class Game extends Phaser.Game implements IGame {
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
-  private isSaved: boolean = false;
+  private saved: boolean = false;
 
   private _state: GameState = GameState.IDLE;
-
   public get state() { return this._state; }
-
   private set state(v) { this._state = v; }
 
   private _screen: IScreen;
-
   public get screen() { return this._screen; }
-
   private set screen(v) { this._screen = v; }
 
   private _world: IWorld;
-
   public get world() { return this._world; }
-
   private set world(v) { this._world = v; }
 
   private _settings: Record<GameSettings, boolean> = {
@@ -50,9 +42,7 @@ export class Game extends Phaser.Game implements IGame {
     [GameSettings.EFFECTS]: true,
     [GameSettings.SHOW_DAMAGE]: true,
   };
-
   public get settings() { return this._settings; }
-
   private set settings(v) { this._settings = v; }
 
   public usedSave: Nullable<StorageSave> = null;
@@ -110,7 +100,7 @@ export class Game extends Phaser.Game implements IGame {
     window.addEventListener('beforeunload', (event: Event) => {
       const needConfirm = (
         this.state === GameState.STARTED
-        || (this.state === GameState.PAUSED && !this.isSaved)
+        || (this.state === GameState.PAUSED && !this.saved)
       );
 
       if (needConfirm) {
@@ -155,7 +145,7 @@ export class Game extends Phaser.Game implements IGame {
     this.world.scene.resume();
     this.screen.scene.resume();
 
-    this.isSaved = false;
+    this.saved = false;
   }
 
   public continueGame(save: StorageSave) {
@@ -284,9 +274,9 @@ export class Game extends Phaser.Game implements IGame {
 
   public getDifficultyMultiplier() {
     switch (this.difficulty) {
-    case GameDifficulty.EASY: return 0.8;
-    case GameDifficulty.HARD: return 1.4;
-    default: return 1.0;
+      case GameDifficulty.EASY: return 0.8;
+      case GameDifficulty.HARD: return 1.4;
+      default: return 1.0;
     }
   }
 
@@ -369,7 +359,7 @@ export class Game extends Phaser.Game implements IGame {
     const save = await Storage.AddSave(this, name);
 
     if (save) {
-      this.isSaved = true;
+      this.saved = true;
       this.usedSave = save;
     }
 

@@ -1,9 +1,8 @@
-import { GameSettings } from '../../../types';
-
 import { Effect } from './effect';
 import { EffectTexture } from './effect/types';
 import { Particles } from './particles';
 import { ParticlesTexture } from './particles/types';
+import { GameSettings } from '../../../types';
 
 import type { IParticlesParent } from './particles/types';
 import type { IFXManager, SoundParams } from './types';

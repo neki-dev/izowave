@@ -1,9 +1,8 @@
 import { useEvent, useGame, useScene } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
-import { GameScene } from '../../../../types';
-
 import { Modal } from './modal';
+import { GameScene } from '../../../../types';
 
 import type { IGame } from '../../../../types';
 import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
@@ -26,7 +25,7 @@ export const Unlocks: React.FC = () => {
 
   const [features, setFeatures] = useState<Feature[]>([]);
 
-  const isListEmpty = features.length === 0;
+  const empty = features.length === 0;
 
   const onClose = () => {
     setFeatures([]);
@@ -65,7 +64,7 @@ export const Unlocks: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (isListEmpty) {
+    if (empty) {
       return;
     }
 
@@ -76,7 +75,7 @@ export const Unlocks: React.FC = () => {
     return () => {
       game.toggleSystemPause(false);
     };
-  }, [isListEmpty]);
+  }, [empty]);
 
   return features.length > 0 && (
     <Modal features={features} onClose={onClose} />

@@ -1,13 +1,12 @@
 import 'jest-canvas-mock';
 
+import { registerHelper } from './helpers/wave';
 import { Wave } from '..';
-import { DIFFICULTY } from '../../../../../const/difficulty';
+import { DIFFICULTY } from '../../../../../game/difficulty';
 import { progressionLinear } from '../../../../../lib/progression';
 import { Tutorial } from '../../../../../lib/tutorial';
 import world from '../../__mocks__/world';
 import { WaveEvent } from '../types';
-
-import { registerHelper } from './helpers/wave';
 
 import type { IWorld } from '../../types';
 import type { IWave } from '../types';
@@ -63,7 +62,7 @@ describe('world / wave', () => {
     helper.skipTime(wave.getTimeleft());
     wave.update();
 
-    expect(wave.isGoing).toEqual(true);
+    expect(wave.going).toEqual(true);
     // @ts-ignore
     expect(wave.enemiesMaxCount).toEqual(DIFFICULTY.WAVE_ENEMIES_COUNT);
     expect(wave.emit).toBeCalledWith(WaveEvent.START, 1);
@@ -86,7 +85,7 @@ describe('world / wave', () => {
     helper.killAllEnemies();
     wave.update();
 
-    expect(wave.isGoing).toEqual(false);
+    expect(wave.going).toEqual(false);
     expect(wave.emit).toBeCalledWith(WaveEvent.COMPLETE, 1);
   });
 

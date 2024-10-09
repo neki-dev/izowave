@@ -6,9 +6,7 @@ import type { BuildingControl } from '~scene/world/entities/building/types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 
-import {
-  Container, Label, Addon, Main, Key,
-} from './styles';
+import { Container, Label, Addon, Main, Key } from './styles';
 
 type Props = {
   control: BuildingControl

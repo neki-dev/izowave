@@ -1,5 +1,4 @@
 import { Building } from '..';
-import { DIFFICULTY } from '../../../../../../const/difficulty';
 import { EntityType } from '../../types';
 import { BUILDING_TILE } from '../const';
 import {
@@ -16,9 +15,11 @@ import type {
   BuildingVariantData,
   IBuildingAmmunition,
   BuildingSavePayload,
-  BuildingControl } from '../types';
+  BuildingControl,
+} from '../types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';

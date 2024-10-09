@@ -1,8 +1,6 @@
 import Phaser from 'phaser';
 
-import {
-  EffectAudio, EffectTexture,
-} from './types';
+import { EffectAudio, EffectTexture } from './types';
 
 import type { IEffect, EffectData } from './types';
 import type { IWorld } from '~scene/world/types';

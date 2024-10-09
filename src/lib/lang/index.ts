@@ -1,4 +1,4 @@
-import { LANGS } from '../../const/langs';
+import { LANGS } from '../../langs';
 
 import type { Lang, LangPhrase } from './types';
 
@@ -29,7 +29,6 @@ const LANG = getLang();
  */
 export function phrase(key: LangPhrase, format?: any[]) {
   let text = LANG[key];
-
   if (!text) {
     return key;
   }

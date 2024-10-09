@@ -1,5 +1,4 @@
 import { Building } from '..';
-import { DIFFICULTY } from '../../../../../../const/difficulty';
 import {
   BuildingCategory,
   BuildingTexture,
@@ -11,9 +10,11 @@ import {
 import type {
   IBuildingBooster,
   BuildingVariantData,
-  BuildingParam } from '../types';
+  BuildingParam,
+} from '../types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { progressionLinear } from '~lib/progression';
 
 export class BuildingBooster extends Building implements IBuildingBooster {

@@ -7,7 +7,7 @@ export interface IWave extends Phaser.Events.EventEmitter {
   /**
    * State of wave starting.
    */
-  readonly isGoing: boolean
+  readonly going: boolean
 
   /**
    * Current wave number.
@@ -18,7 +18,7 @@ export interface IWave extends Phaser.Events.EventEmitter {
    * Mod that stops start of wave.
    * Used for test.
    */
-  readonly isPeaceMode: boolean
+  readonly peaceMode: boolean
 
   /**
    * Destroy wave.

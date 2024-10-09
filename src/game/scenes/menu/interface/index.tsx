@@ -9,9 +9,7 @@ import type { MenuPage } from '../types';
 import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
 
-import {
-  Wrapper, Logotype, Sidebar, Main,
-} from './styles';
+import { Wrapper, Logotype, Sidebar, Main } from './styles';
 
 type Props = {
   defaultPage?: MenuPage

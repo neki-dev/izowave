@@ -8,9 +8,7 @@ import type { BuildingVariant } from '~scene/world/entities/building/types';
 import { phrase } from '~lib/lang';
 import { Hint } from '~scene/system/interface/hint';
 
-import {
-  Container, Info, Name, Text,
-} from './styles';
+import { Container, Info, Name, Text } from './styles';
 
 type Props = {
   variant: BuildingVariant

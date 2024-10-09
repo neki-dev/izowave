@@ -10,12 +10,12 @@ import { Score } from './score';
 import { Section } from '~scene/system/interface/section';
 
 export const PlayerHUD: React.FC = () => {
-  const isMobile = useMobilePlatform();
+  const mobile = useMobilePlatform();
 
   return (
     <Section direction='horizontal' gap={12}>
       <Section direction='vertical' gap={6}>
-        {isMobile && (
+        {mobile && (
           <MenuButton />
         )}
         <Character />

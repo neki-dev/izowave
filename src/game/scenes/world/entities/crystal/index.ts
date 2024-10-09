@@ -1,18 +1,15 @@
 import Phaser from 'phaser';
 
-import { DIFFICULTY } from '../../../../../const/difficulty';
-import { EntityType } from '../types';
-
 import { CRYSTAL_TILE } from './const';
-import {
-  CrystalAudio, CrystalTexture, CrystalEvents,
-} from './types';
+import { CrystalAudio, CrystalTexture, CrystalEvents } from './types';
+import { EntityType } from '../types';
 
 import type { ICrystal, CrystalData, CrystalSavePayload } from './types';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 
+import { DIFFICULTY } from '~game/difficulty';
 import { Assets } from '~lib/assets';
 import { progressionLinear } from '~lib/progression';
 import { ShaderType } from '~lib/shader/types';

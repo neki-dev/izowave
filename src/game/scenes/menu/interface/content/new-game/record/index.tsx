@@ -2,9 +2,7 @@ import React from 'react';
 
 import { phrase } from '~lib/lang';
 
-import {
-  Wrapper, Amount, Icon, Label, Value,
-} from './styles';
+import { Wrapper, Amount, Icon, Label, Value } from './styles';
 
 type Props = {
   value: number

@@ -1,8 +1,6 @@
 import { WorldGenerator } from 'gen-biome';
 import Phaser from 'phaser';
 
-import { GameEvent, GameSettings } from '../../../types';
-
 import {
   LEVEL_MAP_TILE,
   LEVEL_MAP_SIZE,
@@ -21,6 +19,7 @@ import {
   SpawnTarget,
   TileType,
 } from './types';
+import { GameEvent, GameSettings } from '../../../types';
 
 import type { ITile } from './tile-matrix/types';
 import type {
@@ -31,7 +30,8 @@ import type {
   LevelSavePayload,
   PositionAtMatrix,
   PositionAtWorld,
-  TilePosition } from './types';
+  TilePosition,
+} from './types';
 import type { Effect } from '../fx-manager/effect';
 import type { IWorld } from '../types';
 import type { World } from 'gen-biome';
@@ -58,15 +58,11 @@ export class Level extends TileMatrix implements ILevel {
   readonly gridSolid: boolean[][] = [];
 
   private _effectsOnGround: Effect[] = [];
-
   public get effectsOnGround() { return this._effectsOnGround; }
-
   private set effectsOnGround(v) { this._effectsOnGround = v; }
 
   private _groundLayer: Phaser.Tilemaps.TilemapLayer;
-
   public get groundLayer() { return this._groundLayer; }
-
   private set groundLayer(v) { this._groundLayer = v; }
 
   private sceneryTiles: Phaser.GameObjects.Group;

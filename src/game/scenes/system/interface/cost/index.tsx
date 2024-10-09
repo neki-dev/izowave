@@ -1,15 +1,12 @@
 import { useEvent, useScene } from 'phaser-react-ui';
-import React, {
-  useEffect, useMemo, useRef, useState,
-} from 'react';
-
-import { GameScene } from '../../../../types';
+import React, { useEffect, useRef, useState } from 'react';
 
 import type { IWorld } from '~scene/world/types';
 
+import { GameScene } from '~game/types';
 import { PlayerEvent } from '~scene/world/entities/player/types';
 
-import * as styles from './styles';
+import { Wrapper, Icon, Value } from './styles';
 
 type Props = {
   type: 'RESOURCES' | 'EXPERIENCE'
@@ -24,13 +21,10 @@ export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
 
   const [haveAmount, setHaveAmount] = useState(() => {
     const field = type.toLowerCase() as 'resources' | 'experience';
-
     return world.player[field];
   });
 
-  const isEnough = useMemo(() => (
-    (!check || typeof value !== 'number' || haveAmount >= value)
-  ), [check, value, haveAmount]);
+  const enough = (!check || typeof value !== 'number' || haveAmount >= value);
 
   useEvent(world.player, PlayerEvent[`UPDATE_${type}`], (amount: number) => {
     setHaveAmount(amount);
@@ -41,9 +35,9 @@ export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
   }, [value]);
 
   return (
-    <styles.Wrapper>
-      <styles.Icon src={`assets/sprites/hud/${type.toLowerCase()}.png`} />
-      <styles.Value $attention={!isEnough}>{value}</styles.Value>
-    </styles.Wrapper>
+    <Wrapper>
+      <Icon src={`assets/sprites/hud/${type.toLowerCase()}.png`} />
+      <Value $attention={!enough}>{value}</Value>
+    </Wrapper>
   );
 };

@@ -1,4 +1,4 @@
-import type { ITile } from "../tile-matrix/types";
+import type { ITile } from '../tile-matrix/types';
 
 const tile = {
   on: jest.fn(),

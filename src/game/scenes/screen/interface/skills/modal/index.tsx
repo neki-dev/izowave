@@ -9,9 +9,7 @@ import { Utils } from '~lib/utils';
 import { PLAYER_SKILLS } from '~scene/world/entities/player/const';
 import { PlayerSkillTarget } from '~scene/world/entities/player/types';
 
-import {
-  Container, Groups, Group, Target, List, Backdrop, Overlay, Close,
-} from './styles';
+import { Container, Groups, Group, Target, List, Backdrop, Overlay, Close } from './styles';
 
 type Props = {
   onClose: () => void

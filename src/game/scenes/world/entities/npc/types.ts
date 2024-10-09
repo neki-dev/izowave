@@ -7,7 +7,7 @@ export interface INPC extends ISprite {
   /**
    * State of finded path.
    */
-  isPathPassed: boolean
+  pathPassed: boolean
 
   /**
    * Slow down and stop actions.

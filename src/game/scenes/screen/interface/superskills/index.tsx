@@ -1,9 +1,8 @@
 import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { GameScene } from '../../../../types';
-
 import { Item } from './item';
+import { GameScene } from '../../../../types';
 
 import type { IWorld } from '~scene/world/types';
 
@@ -18,7 +17,7 @@ export const Superskills: React.FC = () => {
     Object.keys(PlayerSuperskill) as PlayerSuperskill[]
   ), []);
 
-  const [isAllow, setAllow] = useState(() => (
+  const [allow, setAllow] = useState(() => (
     Object.keys(world.player.unlockedSuperskills).length > 0
   ));
 
@@ -26,7 +25,7 @@ export const Superskills: React.FC = () => {
     setAllow(true);
   }, []);
 
-  return isAllow && (
+  return allow && (
     <Wrapper>
       {superskills.map((superskill) => (
         <Item key={superskill} type={superskill} />

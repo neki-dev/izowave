@@ -1,11 +1,10 @@
 import { Interface } from 'phaser-react-ui';
 import VirtualJoystick from 'phaser3-rex-plugins/plugins/virtualjoystick';
 
-import { Scene } from '..';
-import { GameScene } from '../../types';
-
 import { ScreenUI } from './interface';
 import { ScreenAudio, ScreenEvent } from './types';
+import { Scene } from '..';
+import { GameScene } from '../../types';
 
 import type { IScreen } from './types';
 import type { LangPhrase } from '~lib/lang/types';
@@ -19,9 +18,7 @@ export class Screen extends Scene implements IScreen {
   private joystick: Nullable<VirtualJoystick> = null;
 
   private _joystickActivePointer: Nullable<Phaser.Input.Pointer> = null;
-
   public get joystickActivePointer() { return this._joystickActivePointer; }
-
   private set joystickActivePointer(v) { this._joystickActivePointer = v; }
 
   constructor() {
@@ -68,7 +65,6 @@ export class Screen extends Scene implements IScreen {
 
     this.scale.on(Phaser.Scale.Events.RESIZE, () => {
       const { x, y } = this.getJoystickParams();
-
       this.joystick?.setPosition(x, y);
     });
 

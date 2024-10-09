@@ -8,9 +8,7 @@ import type { Feature } from '..';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 
-import {
-  Button, Container, Label, List, Overlay,
-} from './styles';
+import { Button, Container, Label, List, Overlay } from './styles';
 
 type Props = {
   features: Feature[]

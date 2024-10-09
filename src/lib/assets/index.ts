@@ -4,9 +4,9 @@ import type { AssetsSource, AssetsSpriteParams } from './types';
 import type Phaser from 'phaser';
 
 export class Assets {
-  static Files: Phaser.Types.Loader.FileConfig[] = [];
+  public static Files: Phaser.Types.Loader.FileConfig[] = [];
 
-  static RegisterAudio(files: AssetsSource) {
+  public static RegisterAudio(files: AssetsSource) {
     this.Files = this.Files.concat(
       this.Normalize(files).map((file) => ({
         key: file,
@@ -16,7 +16,7 @@ export class Assets {
     );
   }
 
-  static RegisterImages(files: AssetsSource) {
+  public static RegisterImages(files: AssetsSource) {
     this.Files = this.Files.concat(
       this.Normalize(files).map((file) => ({
         key: file,
@@ -26,7 +26,7 @@ export class Assets {
     );
   }
 
-  static RegisterSprites<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
+  public static RegisterSprites<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
     this.Files = this.Files.concat(
       this.Normalize(files).map((file) => {
         const {
@@ -48,7 +48,7 @@ export class Assets {
     );
   }
 
-  static async ImportFontFace(name: string, file: string) {
+  public static async ImportFontFace(name: string, file: string) {
     const font = new FontFace(name, `url('assets/fonts/${file}')`);
 
     await font.load();
@@ -57,7 +57,7 @@ export class Assets {
     return font;
   }
 
-  static Clear() {
+  public static Clear() {
     this.Files = [];
   }
 

@@ -16,7 +16,7 @@ import { Wrapper } from './styles';
 export const Skills: React.FC = () => {
   const game = useGame<IGame>();
 
-  const [isOpened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false);
   const [hint, setHint] = useState(false);
 
   const onClick = () => {
@@ -39,9 +39,11 @@ export const Skills: React.FC = () => {
 
   return (
     <>
-      {isOpened && <Modal onClose={onClose} />}
+      {opened && (
+        <Modal onClose={onClose} />
+      )}
       <Wrapper>
-        <Button onClick={onClick} view={isOpened ? 'confirm' : undefined}>
+        <Button onClick={onClick} view={opened ? 'confirm' : undefined}>
           {phrase('SKILLS')}
         </Button>
         {hint && (
