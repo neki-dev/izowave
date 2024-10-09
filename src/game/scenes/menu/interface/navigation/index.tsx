@@ -1,12 +1,11 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import { GameState } from '../../../../types';
-
-import type { IGame } from '../../../../types';
+import type { IGame } from '~game/types';
 import type { LangPhrase } from '~lib/lang/types';
 import type { MenuItem } from '~scene/menu/types';
 
+import { GameState } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { MenuPage } from '~scene/menu/types';

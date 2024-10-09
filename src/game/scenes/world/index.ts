@@ -20,7 +20,6 @@ import { WorldModeIcon, WorldMode, WorldEvent } from './types';
 import { Wave } from './wave';
 import { WaveEvent } from './wave/types';
 import { Scene } from '..';
-import { GameScene, GameState, GameEvent } from '../../types';
 
 import type { IBuilder } from './builder/types';
 import type { ICamera } from './camera/types';
@@ -36,6 +35,7 @@ import type { IWorld, WorldHint, WorldTimerParams, WorldSavePayload } from './ty
 import type { IWave } from './wave/types';
 
 import { DIFFICULTY } from '~game/difficulty';
+import { GameScene, GameState, GameEvent } from '~game/types';
 import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';

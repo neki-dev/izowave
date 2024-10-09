@@ -4,7 +4,6 @@ import { Indicator } from './addons/indicator';
 import { Live } from './addons/live';
 import { LiveEvent } from './addons/live/types';
 import { EntityType } from './types';
-import { DEBUG_MODS } from '../../../const';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
 import { Level } from '../level';
 
@@ -14,6 +13,7 @@ import type { ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from '.
 import type { LevelBiome, PositionAtMatrix, TileType, PositionAtWorld } from '../level/types';
 import type { IWorld } from '../types';
 
+import { DEBUG_MODS } from '~game/const';
 import { isPositionsEqual } from '~lib/dimension';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {

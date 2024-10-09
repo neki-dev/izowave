@@ -19,7 +19,6 @@ import {
   SpawnTarget,
   TileType,
 } from './types';
-import { GameEvent, GameSettings } from '../../../types';
 
 import type { ITile } from './tile-matrix/types';
 import type {
@@ -37,6 +36,7 @@ import type { IWorld } from '../types';
 import type { World } from 'gen-biome';
 import type { INavigator } from '~lib/navigator/types';
 
+import { GameEvent, GameSettings } from '~game/types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';

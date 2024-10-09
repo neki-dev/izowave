@@ -4,10 +4,10 @@ import React, { useMemo, useState } from 'react';
 
 import { Param } from './param';
 import { Record } from './record';
-import { GameDifficulty } from '../../../../../types';
 
-import type { IGame } from '../../../../../types';
+import type { IGame } from '~game/types';
 
+import { GameDifficulty } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
 import { LevelPlanet } from '~scene/world/level/types';
