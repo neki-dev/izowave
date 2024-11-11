@@ -5,7 +5,7 @@ import { BiomeType, SpawnTarget } from '~scene/world/level/types';
 export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
   params: { upperBound: 0.12 },
   data: {
-    type: BiomeType.WATER,
+    type: BiomeType.WATER,  // deepwater - [0]
     tileIndex: 0,
     z: 0,
     collide: false,
@@ -25,7 +25,7 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
 }, {
   params: { lowerBound: 0.15, upperBound: 0.17 },
   data: {
-    type: BiomeType.WATER,
+    type: BiomeType.WATER,  // water - [2] 
     tileIndex: 2,
     z: 0,
     collide: false,
@@ -55,12 +55,13 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
 }, {
   params: { lowerBound: 0.24, upperBound: 0.34 },
   data: {
-    type: BiomeType.GRASS,
+    type: BiomeType.GRASS,  // hill - [5]
     tileIndex: 12,
     z: 0,
     collide: false,
     solid: true,
-    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.SCENERY],
+    friction: 2,  // slow down in hills
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.SCENERY, SpawnTarget.CRYSTAL],
   },
 }, {
   params: { lowerBound: 0.34, upperBound: 0.44 },
@@ -75,17 +76,17 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
 }, {
   params: { lowerBound: 0.44, upperBound: 0.54 },
   data: {
-    type: BiomeType.GRASS,
+    type: BiomeType.GRASS,  // plain - [7] 
     tileIndex: [15, 17],
     z: 0,
     collide: false,
     solid: true,
-    spawn: [SpawnTarget.ENEMY],
+    spawn: [SpawnTarget.ENEMY, SpawnTarget.PLAYER, SpawnTarget.SCENERY, SpawnTarget.CRYSTAL],
   },
 }, {
   params: { lowerBound: 0.54, upperBound: 0.59 },
   data: {
-    type: BiomeType.MOUNT,
+    type: BiomeType.MOUNT,  // mountain - [8]
     tileIndex: [24, 25],
     z: 1,
     collide: true,

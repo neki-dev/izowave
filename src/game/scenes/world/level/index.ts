@@ -41,6 +41,10 @@ import { Assets } from '~lib/assets';
 import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
 
+import twMap from './realmaps/tw.json';
+import japanMap from './realmaps/japan.json';
+import britainMap from './realmaps/britain.json';
+
 Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
 Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);
 
@@ -58,6 +62,10 @@ export class Level extends TileMatrix implements ILevel {
   readonly gridSolid: boolean[][] = [];
 
   private _effectsOnGround: Effect[] = [];
+
+  private mapWidth: number;
+
+  private mapHeight: number;
 
   public get effectsOnGround() { return this._effectsOnGround; }
 
@@ -77,9 +85,25 @@ export class Level extends TileMatrix implements ILevel {
     this.scene = scene;
     this.planet = planet ?? LevelPlanet.EARTH;
 
+    // Load the map data from JSON file
+    let mapData: any = twMap;
+
+    if (planet === LevelPlanet.MOON) {
+      mapData = japanMap;
+      this.planet = LevelPlanet.EARTH;
+    } else if (planet === LevelPlanet.MARS) {
+      mapData = britainMap;
+      this.planet = LevelPlanet.EARTH;
+    }    
+    
+    // Map width and height from JSON
+    this.mapWidth = mapData.width;
+    this.mapHeight = mapData.height;
+    console.log("mapWidth: ", this.mapWidth, "mapHeight: ", this.mapHeight);
+
     const generator = new WorldGenerator<LevelBiome>({
-      width: LEVEL_MAP_SIZE,
-      height: LEVEL_MAP_SIZE,
+      width: this.mapWidth,
+      height: this.mapHeight,
     });
 
     const layer = generator.addLayer(LEVEL_BIOME_PARAMETERS);
@@ -94,6 +118,41 @@ export class Level extends TileMatrix implements ILevel {
       seed,
       seedSize: LEVEL_SEED_SIZE,
     });
+
+    const plain = LEVEL_PLANETS[this.planet].BIOMES[7].data;  
+    const hill = LEVEL_PLANETS[this.planet].BIOMES[5].data;  
+    const mountain = LEVEL_PLANETS[this.planet].BIOMES[8].data;
+    const water = LEVEL_PLANETS[this.planet].BIOMES[2].data;
+    const deepwater = LEVEL_PLANETS[this.planet].BIOMES[0].data;
+
+    // Iterate over each tile in the JSON map and update the biome
+    for (let y = 0; y < this.mapHeight; y++) {
+      for (let x = 0; x < this.mapWidth; x++) {
+        //if ( x >= mapWidth || y >= mapHeight) {
+          //this.map.replaceAt({ x, y }, deepwater);
+          //continue;
+        //}
+
+        // Find the corresponding tile object from JSON
+        const tile = mapData.layers[0].objects.find((obj: any) => obj.x / 32 === x && obj.y / 32 === y);
+
+        if (tile) {
+          // Set biome based on terrain type
+          if (tile.type === "water") {
+            this.map.replaceAt({ x, y }, water);
+          } else if (tile.type === "deepwater") {
+            this.map.replaceAt({ x, y }, deepwater);
+          } else if (tile.type === "plain") {
+            this.map.replaceAt({ x, y }, plain);
+          } else if (tile.type === "hill") {
+            this.map.replaceAt({ x, y }, hill);
+          } else if (tile.type === "mountain") {
+            this.map.replaceAt({ x, y }, mountain);
+          }
+        }
+      }
+    }
+
 
     this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
     this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));
@@ -197,8 +256,8 @@ export class Level extends TileMatrix implements ILevel {
 
   private addTilemap() {
     const data = new Phaser.Tilemaps.MapData({
-      width: LEVEL_MAP_SIZE,
-      height: LEVEL_MAP_SIZE,
+      width: this.mapWidth,
+      height: this.mapHeight,
       tileWidth: LEVEL_MAP_TILE.width,
       tileHeight: LEVEL_MAP_TILE.height * 0.5,
       orientation: Phaser.Tilemaps.Orientation.ISOMETRIC,
@@ -223,6 +282,7 @@ export class Level extends TileMatrix implements ILevel {
     this.addGroundLayer(tilemap, tileset);
   }
 
+  // Add ground layer which contains tiles in the main map area 
   private addGroundLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
     const layer = tilemap.createBlankLayer(
       'ground',
@@ -238,11 +298,15 @@ export class Level extends TileMatrix implements ILevel {
     this.groundLayer = layer;
   }
 
+  // Add falloff layer to hide the edge of the map
   private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
+    // Calculate the size of the visible area 
     const tileAngle = Math.atan2(1 / LEVEL_MAP_PERSPECTIVE, 1);
     const visibleDiagonal = (this.scene.game.canvas.clientWidth / 2) / Math.sin(tileAngle);
     const edgeSize = Math.ceil(visibleDiagonal / LEVEL_MAP_TILE.edgeLength);
-    const sizeInTiles = (edgeSize * 2) + LEVEL_MAP_SIZE;
+    //const sizeInTiles = (edgeSize * 2) + LEVEL_MAP_SIZE;
+    const widthInTiles = (edgeSize * 2) + this.mapWidth;
+    const heightInTiles = (edgeSize * 2) + this.mapHeight;
     const position = Level.ToWorldPosition({ x: -edgeSize, y: -edgeSize }, 0);
 
     const layer = tilemap.createBlankLayer(
@@ -250,26 +314,28 @@ export class Level extends TileMatrix implements ILevel {
       tileset,
       position.x - LEVEL_MAP_TILE.width * 0.5,
       position.y - LEVEL_MAP_TILE.height * LEVEL_MAP_TILE.origin,
-      sizeInTiles,
-      sizeInTiles,
+      widthInTiles,
+      heightInTiles,
     );
 
     if (!layer) {
       return;
     }
-
-    const biome = LEVEL_PLANETS[this.planet].BIOMES[0].data;
+    
+    // Set the biome for the edge - defined in the planets/earth.ts 
+    const biome = LEVEL_PLANETS[this.planet].BIOMES[0].data;  
+    // Get the tile index from the biome 
     const index = Array.isArray(biome.tileIndex)
       ? biome.tileIndex[0]
       : biome.tileIndex;
 
-    for (let y = 0; y < sizeInTiles; y++) {
-      for (let x = 0; x < sizeInTiles; x++) {
+    for (let y = 0; y < heightInTiles; y++) {
+      for (let x = 0; x < widthInTiles; x++) {
         if (
           x < edgeSize
-          || x >= sizeInTiles - edgeSize
+          || x >= widthInTiles - edgeSize
           || y < edgeSize
-          || y >= sizeInTiles - edgeSize
+          || y >= heightInTiles - edgeSize
         ) {
           layer.putTileAt(index, x, y, false);
         }
@@ -277,6 +343,7 @@ export class Level extends TileMatrix implements ILevel {
     }
   }
 
+  // Add tiles to the map according to the biome data 
   private addMapTiles() {
     const addTile = (position: PositionAtMatrix, biome: LevelBiome) => {
       const index = Array.isArray(biome.tileIndex)
@@ -334,7 +401,8 @@ export class Level extends TileMatrix implements ILevel {
     this.sceneryTiles = this.scene.add.group();
 
     const positions = this.readSpawnPositions(SpawnTarget.SCENERY);
-    const count = Math.ceil(LEVEL_MAP_SIZE * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
+    //const count = Math.ceil(LEVEL_MAP_SIZE * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
+    const count = Math.ceil(this.mapWidth * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
 
     for (let i = 0; i < count; i++) {
       const positionAtMatrix = Phaser.Utils.Array.GetRandom(positions);
