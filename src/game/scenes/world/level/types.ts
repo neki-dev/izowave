@@ -122,18 +122,27 @@ export enum LevelPlanet {
   EARTH = 'EARTH',
   MOON = 'MOON',
   MARS = 'MARS',
+  TAIWAN = 'TAIWAN',
+  JAPAN = 'JAPAN',
+  BRITAIN = 'BRITAIN',
 }
 
 export enum LevelSceneryTexture {
   EARTH = 'level/earth/scenery',
   MOON = 'level/moon/scenery',
   MARS = 'level/mars/scenery',
+  TAIWAN = 'level/earth/scenery',
+  JAPAN = 'level/earth/scenery',
+  BRITAIN = 'level/earth/scenery',
 }
 
 export enum LevelTilesetTexture {
   EARTH = 'level/earth/tiles',
   MOON = 'level/moon/tiles',
   MARS = 'level/mars/tiles',
+  TAIWAN = 'level/earth/tiles',
+  JAPAN = 'level/earth/tiles',
+  BRITAIN = 'level/earth/tiles',
 }
 
 export enum BiomeType {

@@ -159,7 +159,7 @@ export const EN = {
   /**
    * Game params
    */
-  PLANET: 'Planet',
+  PLANET: 'Planet/Scenario',
   DIFFICULTY: 'Difficulty',
   START: 'Start',
 
@@ -180,6 +180,9 @@ export const EN = {
   EARTH: 'Earth',
   MOON: 'Moon',
   MARS: 'Mars',
+  TAIWAN: 'Taiwan',
+  JAPAN: 'Japan',
+  BRITAIN: 'Britain',
 
   /**
    * Difficulties

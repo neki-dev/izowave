@@ -87,19 +87,28 @@ export class Level extends TileMatrix implements ILevel {
 
     // Load the map data from JSON file
     let mapData: any = twMap;
+    let newScenario = false;
 
-    if (planet === LevelPlanet.MOON) {
+    if (planet === LevelPlanet.TAIWAN) {
+      mapData = twMap;
+      newScenario = true;
+    } else if (planet === LevelPlanet.JAPAN) {
       mapData = japanMap;
-      this.planet = LevelPlanet.EARTH;
-    } else if (planet === LevelPlanet.MARS) {
+      newScenario = true;
+    } else if (planet === LevelPlanet.BRITAIN) {
       mapData = britainMap;
-      this.planet = LevelPlanet.EARTH;
+      newScenario = true;
     }    
     
-    // Map width and height from JSON
-    this.mapWidth = mapData.width;
-    this.mapHeight = mapData.height;
-    console.log("mapWidth: ", this.mapWidth, "mapHeight: ", this.mapHeight);
+    if (newScenario) {    
+      // Map width and height from JSON
+      this.mapWidth = mapData.width;
+      this.mapHeight = mapData.height;
+      console.log("mapWidth: ", this.mapWidth, "mapHeight: ", this.mapHeight);
+    } else {
+      this.mapWidth = LEVEL_MAP_SIZE;
+      this.mapHeight = LEVEL_MAP_SIZE;
+    }
 
     const generator = new WorldGenerator<LevelBiome>({
       width: this.mapWidth,
@@ -119,40 +128,36 @@ export class Level extends TileMatrix implements ILevel {
       seedSize: LEVEL_SEED_SIZE,
     });
 
-    const plain = LEVEL_PLANETS[this.planet].BIOMES[7].data;  
-    const hill = LEVEL_PLANETS[this.planet].BIOMES[5].data;  
-    const mountain = LEVEL_PLANETS[this.planet].BIOMES[8].data;
-    const water = LEVEL_PLANETS[this.planet].BIOMES[2].data;
-    const deepwater = LEVEL_PLANETS[this.planet].BIOMES[0].data;
+    if (newScenario) {
+      const plain = LEVEL_PLANETS[this.planet].BIOMES[7].data;  
+      const hill = LEVEL_PLANETS[this.planet].BIOMES[5].data;  
+      const mountain = LEVEL_PLANETS[this.planet].BIOMES[8].data;
+      const water = LEVEL_PLANETS[this.planet].BIOMES[2].data;
+      const deepwater = LEVEL_PLANETS[this.planet].BIOMES[0].data;
 
-    // Iterate over each tile in the JSON map and update the biome
-    for (let y = 0; y < this.mapHeight; y++) {
-      for (let x = 0; x < this.mapWidth; x++) {
-        //if ( x >= mapWidth || y >= mapHeight) {
-          //this.map.replaceAt({ x, y }, deepwater);
-          //continue;
-        //}
+      // Iterate over each tile in the JSON map and update the biome
+      for (let y = 0; y < this.mapHeight; y++) {
+        for (let x = 0; x < this.mapWidth; x++) {        
+          // Find the corresponding tile object from JSON
+          const tile = mapData.layers[0].objects.find((obj: any) => obj.x / 32 === x && obj.y / 32 === y);
 
-        // Find the corresponding tile object from JSON
-        const tile = mapData.layers[0].objects.find((obj: any) => obj.x / 32 === x && obj.y / 32 === y);
-
-        if (tile) {
-          // Set biome based on terrain type
-          if (tile.type === "water") {
-            this.map.replaceAt({ x, y }, water);
-          } else if (tile.type === "deepwater") {
-            this.map.replaceAt({ x, y }, deepwater);
-          } else if (tile.type === "plain") {
-            this.map.replaceAt({ x, y }, plain);
-          } else if (tile.type === "hill") {
-            this.map.replaceAt({ x, y }, hill);
-          } else if (tile.type === "mountain") {
-            this.map.replaceAt({ x, y }, mountain);
+          if (tile) {
+            // Set biome based on terrain type
+            if (tile.type === "water") {
+              this.map.replaceAt({ x, y }, water);
+            } else if (tile.type === "deepwater") {
+              this.map.replaceAt({ x, y }, deepwater);
+            } else if (tile.type === "plain") {
+              this.map.replaceAt({ x, y }, plain);
+            } else if (tile.type === "hill") {
+              this.map.replaceAt({ x, y }, hill);
+            } else if (tile.type === "mountain") {
+              this.map.replaceAt({ x, y }, mountain);
+            }
           }
         }
       }
     }
-
 
     this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
     this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));

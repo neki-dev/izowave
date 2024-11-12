@@ -180,6 +180,9 @@ export const RU = {
   EARTH: 'Земля',
   MOON: 'Луна',
   MARS: 'Марс',
+  TAIWAN: 'Taiwan',
+  JAPAN: 'Japan',
+  BRITAIN: 'Britain',
 
   /**
    * Difficulties

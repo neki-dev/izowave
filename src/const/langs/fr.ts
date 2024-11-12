@@ -180,6 +180,9 @@ export const FR = {
   EARTH: 'Terre',
   MOON: 'Lune',
   MARS: 'Mars',
+  TAIWAN: 'Taiwan',
+  JAPAN: 'Japan',
+  BRITAIN: 'Britain',
 
   /**
    * Difficulties

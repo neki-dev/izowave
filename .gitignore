@@ -10,3 +10,5 @@ TODO.md
 *.psd
 *.log
 *.zip
+yarn.lock
+*.lock
