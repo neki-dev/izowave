@@ -53,7 +53,7 @@ export class Camera implements ICamera {
   public addZoomControl() {
     if (this.scene.game.isDesktop()) {
       this.scene.input.on(Phaser.Input.Events.POINTER_WHEEL, (pointer: Phaser.Input.Pointer) => {
-        const force = pointer.deltaY / 500;
+        const force = pointer.deltaY / 800;   // Around 5 mouse wheel scrolls from min to max zoom
 
         this.updateZoom(force);
       });
