@@ -191,16 +191,22 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByWave(variant: BuildingVariant, number?: number) {
-    const waveAllowed = BUILDINGS[variant].AllowByWave;
-
-    if (waveAllowed) {
-      return (waveAllowed <= (number ?? this.scene.wave.number));
-    }
-
+    // don't check wave requirement
     return true;
+    
+    // const waveAllowed = BUILDINGS[variant].AllowByWave;
+
+    // if (waveAllowed) {
+    //   return (waveAllowed <= (number ?? this.scene.wave.number));
+    // }
+
+    // return true;
   }
 
   public getBuildingLimit(variant: BuildingVariant): Nullable<number> {
+    // don't check building limit
+    return DIFFICULTY.BUILDING_LIMITED_BOUND; 
+    
     if (!BUILDINGS[variant].Limit) {
       return null;
     }
@@ -363,7 +369,8 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       positionAtMatrix: data.positionAtMatrix,
     });
 
-    this.addFoundation(data.positionAtMatrix);
+    // Don't add foundation
+    //this.addFoundation(data.positionAtMatrix);
 
     let list = this.buildings[data.variant];
 
@@ -550,6 +557,9 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   }
 
   public isBuildingAllowByTutorial(variant: BuildingVariant) {
+
+    return true;
+
     if (!Tutorial.IsEnabled) {
       return true;
     }
@@ -567,9 +577,9 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     const restriction = restrictions.find((item) => Tutorial.IsInProgress(item.step));
 
-    return restriction
-      ? (restriction.variant === variant)
-      : (this.scene.wave.number > 2);
+    // return restriction
+    //   ? (restriction.variant === variant)
+    //   : (this.scene.wave.number > 2);
   }
 
   private handleKeyboard() {

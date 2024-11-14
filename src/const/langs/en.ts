@@ -29,6 +29,8 @@ export const EN = {
   BUILDING_DESCRIPTION_RADAR: 'Uncovers enemies within building radius',
   BUILDING_NAME_BOOSTER: 'Booster',
   BUILDING_DESCRIPTION_BOOSTER: 'Increases towers efficiency',
+  BUILDING_NAME_CITYCENTER: 'City center',
+  BUILDING_DESCRIPTION_CITYCENTER: 'The center of a city',  
   BUILDING_CATEGORY_DEFENSE: 'Defense',
   BUILDING_CATEGORY_ATTACK: 'Attack',
   BUILDING_CATEGORY_RESOURCES: 'Resources',
@@ -139,6 +141,7 @@ export const EN = {
   TUTORIAL_RELOAD_TOWER: 'Build ammunition nearby',
   TUTORIAL_CLICK_TO_BUY_AMMO: 'Click to buy ammo',
   TUTORIAL_HOVER_TO_BUY_AMMO: 'Hover and press [F]\nto buy ammo',
+  TUTORIAL_BUILD_CITYCENTER: 'Build city center\nto occupy land and get resources',
 
   /**
    * Menu navigation
