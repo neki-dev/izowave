@@ -8,6 +8,7 @@ import type { IParticlesParent } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
 import { IPlayer } from '../player/types';
+import { City } from '~scene/world/nation/city';
 
 export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IParticlesParent, IShotInitiator {
   readonly scene: IWorld
@@ -36,11 +37,10 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    * Is cursor on building.
    */
   readonly isFocused: boolean
-
-  setPlayer(player: IPlayer): void
-
-  getPlayer(): IPlayer
   
+  setCity(City: City): void
+
+  getCity(): City
   /**
    * Check is position inside action area.
    * @param position - Position at world

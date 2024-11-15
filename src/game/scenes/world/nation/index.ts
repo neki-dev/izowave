@@ -17,4 +17,8 @@ export class Nation {
         this.player = player;
         this.name = name;
     }
+
+    public addCity(city: City) {
+        this.cities.push(city);
+    }
 }

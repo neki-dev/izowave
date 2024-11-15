@@ -45,7 +45,7 @@ import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import { TileType } from '~scene/world/level/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
-import { IPlayer } from '../player/types';
+import { City } from '~scene/world/nation/city';
 
 Assets.RegisterAudio(BuildingAudio);
 Assets.RegisterImages(BuildingIcon);
@@ -62,7 +62,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
   readonly tileType: TileType = TileType.BUILDING;
 
-  private _player: IPlayer;
+  private _city: City;
 
   private _upgradeLevel: number = 1;
 
@@ -173,14 +173,12 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
     });
   }
 
-  public setPlayer(player: IPlayer): void {
-    this._player = player;    
-  }
+  public setCity(city: City) {
+    this._city = city;
+  } 
 
-  public getPlayer(): IPlayer {
-    return this._player;
-  }
-  
+  public getCity() { return this._city; }
+
   public update() {
     try {
       this.updateOutline();

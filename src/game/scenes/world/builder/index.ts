@@ -30,6 +30,7 @@ import { ShaderType } from '~lib/shader/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
+import { City } from '~scene/world/nation/city';
 
 export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   readonly scene: IWorld;
@@ -370,7 +371,14 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       positionAtMatrix: data.positionAtMatrix,
     });
 
-    building.setPlayer(this.scene.player);
+    // Create a city 
+    if (data.variant == BuildingVariant.CITYCENTER) {
+      let city = new City(this.scene, this.scene.player.getNation(), 'City Name', building);
+      building.setCity(city);
+      this.scene.player.getNation().addCity(city);
+    }
+    // Find the city and add the building to it
+    // ...  
 
     // Don't add foundation
     //this.addFoundation(data.positionAtMatrix);
