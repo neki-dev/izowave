@@ -2,8 +2,10 @@ import type { ILive } from '../addons/live/types';
 import type { IEnemyTarget } from '../npc/enemy/types';
 import type { ISprite } from '../types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
+import type { Nation } from '~scene/world/nation';
 
 export interface IPlayer extends ISprite, IEnemyTarget {
+  
   /**
    * Total number of killed enemies.
    */
@@ -49,6 +51,10 @@ export interface IPlayer extends ISprite, IEnemyTarget {
    */
   readonly lastVisiblePosition: PositionAtMatrix
 
+  setNation(nation: Nation): void
+
+  getNation(): Nation
+  
   /**
    * Upgrade player skill.
    */

@@ -79,6 +79,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     this.removeAllListeners();
   }
 
+  // update the building process
   public update() {
     try {
       if (this.isCanBuild()) {
@@ -368,6 +369,8 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       buildDuration: data.buildDuration,
       positionAtMatrix: data.positionAtMatrix,
     });
+
+    building.setPlayer(this.scene.player);
 
     // Don't add foundation
     //this.addFoundation(data.positionAtMatrix);

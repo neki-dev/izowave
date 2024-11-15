@@ -45,6 +45,7 @@ import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import { TileType } from '~scene/world/level/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
+import { Nation } from '~scene/world/nation';
 
 Assets.RegisterAudio(PlayerAudio);
 Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
@@ -53,7 +54,15 @@ Assets.RegisterImages(PlayerSkillIcon);
 Assets.RegisterImages(PlayerSuperskillIcon);
 
 export class Player extends Sprite implements IPlayer {
+  private nation: Nation;
+  
   private _experience: number = 0;
+
+  public setNation(nation: Nation): void {
+    this.nation = nation;
+  }
+
+  public getNation(): Nation { return this.nation; }
 
   public get experience() { return this._experience; }
 
@@ -184,7 +193,7 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.scene.wave.on(WaveEvent.COMPLETE, this.onWaveComplete.bind(this));
-  }
+  } 
 
   public update() {
     super.update();

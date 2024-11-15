@@ -7,6 +7,7 @@ import type { LangPhrase } from '~lib/lang/types';
 import type { IParticlesParent } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import type { IWorld } from '~scene/world/types';
+import { IPlayer } from '../player/types';
 
 export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IParticlesParent, IShotInitiator {
   readonly scene: IWorld
@@ -36,6 +37,10 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
    */
   readonly isFocused: boolean
 
+  setPlayer(player: IPlayer): void
+
+  getPlayer(): IPlayer
+  
   /**
    * Check is position inside action area.
    * @param position - Position at world

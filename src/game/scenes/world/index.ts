@@ -45,6 +45,7 @@ import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Utils } from '~lib/utils';
+import { Nation } from './nation';
 
 Assets.RegisterImages(WorldModeIcon);
 
@@ -109,6 +110,8 @@ export class World extends Scene implements IWorld {
 
   private timers: Phaser.Time.TimerEvent[] = [];
 
+  private nations: Nation[] = [];
+  
   private modes: Record<WorldMode, boolean> = {
     [WorldMode.TIME_SCALE]: false,
     [WorldMode.BUILDING_INDICATORS]: false,
@@ -353,6 +356,10 @@ export class World extends Scene implements IWorld {
     );
 
     this.player = new Player(this, { positionAtMatrix });
+
+    let nation = new Nation(this, this.player, 'Player Nation');
+    this.nations.push(nation);
+    this.player.setNation(nation);
 
     if (this.game.usedSave?.payload.player) {
       this.player.loadSavePayload(this.game.usedSave.payload.player);
