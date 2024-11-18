@@ -64,7 +64,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
   static CityRequired = true;
 
-  private _city: City;
+  private city: City;
 
   private _upgradeLevel: number = 1;
 
@@ -176,13 +176,13 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
   }
 
   public setCity(city: City) {
-    this._city = city;
+    this.city = city;
   } 
 
-  public getCity() { return this._city; }
+  public getCity() { return this.city; }
 
   public getFoodProduction(): number {  return 0; }
-      
+
   public update() {
     try {
       this.updateOutline();

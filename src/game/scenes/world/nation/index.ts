@@ -8,7 +8,7 @@ export class Nation {
 
     readonly player: IPlayer;
   
-    private name: string;
+    private _name: string;
 
     private cities: City[] = [];
     
@@ -16,7 +16,7 @@ export class Nation {
     constructor(scene: IWorld, player: IPlayer, name: string) {
         this.scene = scene;
         this.player = player;
-        this.name = name;
+        this._name = name;
     }
 
     public addCity(city: City) {
