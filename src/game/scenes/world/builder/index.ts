@@ -98,6 +98,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     }
   }
 
+  // The user has selected a building to build
   public setBuildingVariant(variant: BuildingVariant) {
     if (
       this.variant === variant
@@ -279,6 +280,8 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     );
   }
 
+  // Check if the building can be built
+  // Called when the user moves around with their mouse on the screen
   private isAllowBuild() {
     if (!this.supposedPosition) {
       return false;
@@ -291,11 +294,23 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       return false;
     }
 
-    const isFreeFromTile = this.scene.level.isFreePoint({ ...positionAtMatrix, z: 1 });
-
-    if (!isFreeFromTile) {
+    // Check if the tile is within the radius of a city 
+    if (!this.variant) {
       return false;
     }
+
+    const BuildingInstance = BUILDINGS[this.variant];
+    if (BuildingInstance.CityRequired &&
+      !this.scene.player.getNation().isPosContainedByCity(positionAtMatrix)) {
+      return false;
+    }        
+
+    // No need to - Check if the tile is at z = 0, and empty at z = 1 
+    //const isFreeFromTile = this.scene.level.isFreePoint({ ...positionAtMatrix, z: 1 });
+
+//    if (!isFreeFromTile) {
+//      return false;
+//    }
 
     const targets = [
       this.scene.player,
@@ -323,10 +338,9 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     }
 
     const BuildingInstance = BUILDINGS[this.variant];
-
+   
     if (this.isBuildingLimitReached(this.variant)) {
       this.scene.game.screen.failure('BUILDING_LIMIT_REACHED', [phrase(`BUILDING_NAME_${this.variant}`)]);
-
       return;
     }
 
@@ -377,8 +391,14 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       building.setCity(city);
       this.scene.player.getNation().addCity(city);
     }
-    // Find the city and add the building to it
-    // ...  
+    // Or, find the city and add the building to it 
+    else if (BuildingInstance.CityRequired) {
+      let city = this.scene.player.getNation().getCityContainingPos(data.positionAtMatrix);
+      if (city) {
+        city.addBuilding(building);
+        building.setCity(city);
+      }
+    }
 
     // Don't add foundation
     //this.addFoundation(data.positionAtMatrix);

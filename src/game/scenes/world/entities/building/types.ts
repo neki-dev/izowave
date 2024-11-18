@@ -41,6 +41,9 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
   setCity(City: City): void
 
   getCity(): City
+
+  getFoodProduction(): number
+  
   /**
    * Check is position inside action area.
    * @param position - Position at world
@@ -160,6 +163,7 @@ export enum BuildingVariant {
   RADAR = 'RADAR',
   BOOSTER = 'BOOSTER',
   CITYCENTER = 'CITYCENTER',
+  FARM = 'FARM',
 }
 
 export enum BuildingTexture {
@@ -173,6 +177,7 @@ export enum BuildingTexture {
   RADAR = 'building/textures/radar',
   BOOSTER = 'building/textures/booster',
   CITYCENTER = 'building/textures/generator',
+  FARM = 'building/textures/generator',
 }
 
 export enum BuildingIcon {

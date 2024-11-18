@@ -18,6 +18,8 @@ export class BuildingWall extends Building {
 
   static MaxLevel = 3;
 
+  static CityRequired = false;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     super(scene, {
       ...data,
@@ -26,7 +28,7 @@ export class BuildingWall extends Building {
       texture: BuildingWall.Texture,
     });
   }
-
+  
   public getTopEdgePosition() {
     const position = super.getTopEdgePosition();
 

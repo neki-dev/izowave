@@ -11,11 +11,14 @@ import type { IWorld } from '~scene/world/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { ShotBallFire } from '~scene/world/entities/shot/ball/variants/fire';
+import { BuildingIcon } from '../types';
+import { BuildingParam } from '../types';
+import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 
 export class BuildingCityCenter extends BuildingTower {
   static Category = BuildingCategory.OTHER;
 
-  static Texture = BuildingTexture.GENERATOR;
+  static Texture = BuildingTexture.TOWER_FIRE;
 
   static Cost = DIFFICULTY.BUILDING_GENERATOR_COST;
 
@@ -24,6 +27,10 @@ export class BuildingCityCenter extends BuildingTower {
   static Limit = true;
 
   static MaxLevel = 4;
+
+  static CityRequired = false;
+
+  private buildActionRadius: Phaser.GameObjects.Ellipse;
 
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
@@ -34,13 +41,17 @@ export class BuildingCityCenter extends BuildingTower {
     super(scene, {
       ...data,
       variant: BuildingVariant.CITYCENTER,
-      health: DIFFICULTY.BUILDING_GENERATOR_HEALTH,
+      health: DIFFICULTY.BUILDING_TOWER_FIRE_HEALTH,
       texture: BuildingCityCenter.Texture,
-      delay: {
-        default: DIFFICULTY.BUILDING_GENERATOR_DELAY,
-        growth: DIFFICULTY.BUILDING_GENERATOR_DELAY_GROWTH,
+      radius: {
+        default: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS,
+        growth: DIFFICULTY.BUILDING_TOWER_FIRE_RADIUS_GROWTH,
       },
-    });
+      delay: {
+        default: DIFFICULTY.BUILDING_TOWER_FIRE_DELAY,
+        growth: DIFFICULTY.BUILDING_TOWER_FIRE_DELAY_GROWTH,
+      },
+    }, shot);
 
     if (Tutorial.IsInProgress(TutorialStep.BUILD_GENERATOR)) {
       Tutorial.Complete(TutorialStep.BUILD_GENERATOR);
@@ -51,6 +62,22 @@ export class BuildingCityCenter extends BuildingTower {
       Tutorial.Complete(TutorialStep.BUILD_GENERATOR_SECOND);
       Tutorial.Start(TutorialStep.UPGRADE_BUILDING);
     }
+
+    let radius = BuildingCityCenter.Radius;
+    const d = radius * 2;
+
+    this.buildActionRadius = this.scene.add.ellipse(0, 0, d, d * LEVEL_MAP_PERSPECTIVE);
+    this.buildActionRadius.setFillStyle(0xffffff, 0.2);
+  }
+
+  public getInfo() {
+    const info: BuildingParam[] = [{
+      label: 'BUILDING_POPULATION',
+      icon: BuildingIcon.POWER,
+      value: `${this.getCity().getPopulation()}/${this.getCity().getMaxPopulation()}`,      
+    }];
+
+    return info.concat(super.getInfo());
   }
 
   public update() {
@@ -77,5 +104,7 @@ export class BuildingCityCenter extends BuildingTower {
   private generateResource() {
     this.scene.player.giveResources(1);
     this.scene.fx.createGenerationEffect(this);
+
+    this.getCity().growPopulation();
   }
 }

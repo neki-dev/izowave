@@ -31,6 +31,8 @@ export const EN = {
   BUILDING_DESCRIPTION_BOOSTER: 'Increases towers efficiency',
   BUILDING_NAME_CITYCENTER: 'City center',
   BUILDING_DESCRIPTION_CITYCENTER: 'The center of a city',  
+  BUILDING_NAME_FARM: 'Farm',
+  BUILDING_DESCRIPTION_FARM: 'Produce food',  
   BUILDING_CATEGORY_DEFENSE: 'Defense',
   BUILDING_CATEGORY_ATTACK: 'Attack',
   BUILDING_CATEGORY_RESOURCES: 'Resources',
@@ -43,6 +45,7 @@ export const EN = {
   BUILDING_DAMAGE: 'Damage',
   BUILDING_SPEED: 'Speed',
   BUILDING_DELAY: 'Delay',
+  BUILDING_POPULATION: 'Population',
   BUILDING_UPGRADE: 'Upgrade',
   BUILDING_BUY_AMMO: 'Buy ammo',
   BUILDING_REPAIR: 'Repair',
@@ -142,6 +145,7 @@ export const EN = {
   TUTORIAL_CLICK_TO_BUY_AMMO: 'Click to buy ammo',
   TUTORIAL_HOVER_TO_BUY_AMMO: 'Hover and press [F]\nto buy ammo',
   TUTORIAL_BUILD_CITYCENTER: 'Build city center\nto occupy land and get resources',
+  TUTORIAL_BUILD_FARM: 'Build farm\nto produce food',
 
   /**
    * Menu navigation

@@ -62,6 +62,8 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
   readonly tileType: TileType = TileType.BUILDING;
 
+  static CityRequired = true;
+
   private _city: City;
 
   private _upgradeLevel: number = 1;
@@ -179,6 +181,8 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
   public getCity() { return this._city; }
 
+  public getFoodProduction(): number {  return 0; }
+      
   public update() {
     try {
       this.updateOutline();
