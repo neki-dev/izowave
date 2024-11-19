@@ -384,15 +384,9 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       buildDuration: data.buildDuration,
       positionAtMatrix: data.positionAtMatrix,
     });
-
-    // Create a city 
-    if (data.variant == BuildingVariant.CITYCENTER) {
-      let city = new City(this.scene, this.scene.player.getNation(), 'City Name', building);
-      building.setCity(city);
-      this.scene.player.getNation().addCity(city);
-    }
-    // Or, find the city and add the building to it 
-    else if (BuildingInstance.CityRequired) {
+    
+    // Find the city and add the building to it 
+    if (BuildingInstance.CityRequired) {
       let city = this.scene.player.getNation().getCityContainingPos(data.positionAtMatrix);
       if (city) {
         city.addBuilding(building);

@@ -30,10 +30,10 @@ export class Nation {
         });
 
         // Check if the tile is within the radius of a city
-        return sortedCities.find(city => city.distanceTo(pos) <= city.getRadius());
+        return sortedCities.find(city => city.distanceTo(pos) <= city.getRadiusInTile());
     }
 
     public isPosContainedByCity(pos: PositionAtMatrix) {
-        return this.cities.some(city => city.distanceTo(pos) <= city.getRadius());
+        return this.cities.some(city => city.distanceTo(pos) <= city.getRadiusInTile());
     }
 }
