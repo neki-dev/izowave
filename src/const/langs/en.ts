@@ -57,6 +57,9 @@ export const EN = {
    */
   NOT_ENOUGH_RESOURCES: 'Not enough resources',
   NOT_ENOUGH_EXPERIENCE: 'Not enough experience',
+  
+  NEDD_WITHIN_CITY: 'Need to be inside a city',
+  NEED_POPULATION_TO_HIRE: 'Need 10 population to support one solider',
 
   /**
    * Modes
@@ -127,7 +130,9 @@ export const EN = {
   SUPERSKILL_DESCRIPTION_SHIELD: 'Prevents damage to all buildings',
   SUPERSKILL_NAME_FIRE: 'Fire',
   SUPERSKILL_DESCRIPTION_FIRE: 'Deals damage to all enemies',
-
+  SUPERSKILL_NAME_HIRE: 'Hire',
+  SUPERSKILL_DESCRIPTION_HIRE: 'Hire soldiers',
+  
   /**
    * Tutorial
    */

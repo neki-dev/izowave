@@ -55,14 +55,20 @@ Assets.RegisterImages(PlayerSuperskillIcon);
 
 export class Player extends Sprite implements IPlayer {
   private nation: Nation;
-  
-  private _experience: number = 0;
 
-  public setNation(nation: Nation): void {
-    this.nation = nation;
-  }
+  public setNation(nation: Nation) { this.nation = nation; }
 
   public getNation(): Nation { return this.nation; }
+
+  private _soldiers: number = 0;
+
+  public get soldiers() { return this._soldiers; }
+
+  private set soldiers(v) { this._soldiers = v; }
+
+  private soldiersText: Nullable<Phaser.GameObjects.Text> = null;
+  
+  private _experience: number = 0;
 
   public get experience() { return this._experience; }
 
@@ -209,9 +215,25 @@ export class Player extends Sprite implements IPlayer {
         this.updateVelocity();
         this.updateVisible();
         this.updateStamina();
+        this.updateSoldiersText();
       }
     } catch (error) {
       console.warn('Failed to update player', error as TypeError);
+    }
+  }
+
+  private updateSoldiersText() {
+    if (this.soldiersText) {
+      if (this.soldiers === 0) {
+        this.soldiersText.setVisible(false);
+      }
+      else {
+        // Using an emoji as the symbol
+        const symbol = '⚔';//'⚔️'; 
+        let soldiersText = `${symbol} ${this.soldiers}`;
+        this.soldiersText.setPosition(this.body.center.x, this.body.center.y + 20);
+        this.soldiersText.setText(soldiersText);
+      }
     }
   }
 
@@ -265,6 +287,26 @@ export class Player extends Sprite implements IPlayer {
           destroyIf: (value: number) => value >= 1.0,
         });
       }
+    }
+  }
+
+  public hireSoldiers() {
+    this.soldiers++;
+
+    if (!this.soldiersText) {
+      this.soldiersText = this.scene.add.text(0, 0, '', {
+        fontFamily: 'Arial',
+        fontSize: '10px',
+        color: '#ffffff',
+        //stroke: '#000000',
+        //strokeThickness: 2,
+      });
+      this.soldiersText.setOrigin(0.5, 0.5);
+      this.soldiersText.setDepth(100);
+      this.soldiersText.setActive(true);
+      this.soldiersText.setVisible(true);
+      this.soldiersText.setPosition(this.body.center.x, this.body.center.y - 20);
+      this.soldiersText.setText(this.soldiers.toString());
     }
   }
 
@@ -393,6 +435,22 @@ export class Player extends Sprite implements IPlayer {
     });
 
     this.scene.events.emit(PlayerEvent.USE_SUPERSKILL, type);
+
+    // Hire soldiers
+    if (type == PlayerSuperskill.HIRE) {
+      let city = this.nation.getCityContainingPos(this.positionAtMatrix);
+      if (city == null) {
+        this.scene.game.screen.failure('NEDD_WITHIN_CITY');
+        return;
+      }
+
+      if (!city.canHire()) {
+        this.scene.game.screen.failure('NEED_POPULATION_TO_HIRE');  
+      }
+
+      city.hireSoldier();
+      this.hireSoldiers();
+    }
   }
 
   public getExperienceToUpgrade(type: PlayerSkill) {

@@ -54,7 +54,7 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   setNation(nation: Nation): void
 
   getNation(): Nation
-  
+
   /**
    * Upgrade player skill.
    */
@@ -150,6 +150,7 @@ export enum PlayerSuperskillIcon {
   SHIELD = 'player/superskills/shield',
   RAGE = 'player/superskills/rage',
   FIRE = 'player/superskills/fire',
+  HIRE = 'player/superskills/shield',
 }
 
 export enum PlayerAudio {
@@ -178,6 +179,7 @@ export enum PlayerSkill {
 }
 
 export enum PlayerSuperskill {
+  HIRE = 'HIRE',
   SHIELD = 'SHIELD',
   INVISIBLE = 'INVISIBLE',
   FROST = 'FROST',

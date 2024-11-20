@@ -51,6 +51,15 @@ export class City {
         return Math.max(radiusInTilesHorizontal, radiusInTilesVertical);
     }
     
+    public canHire() {
+        return this._population > 10;
+    }
+
+    public hireSoldier() {
+        if (this.canHire()) {
+            this._population -= 1;
+        }
+    }
 
     public getMaxPopulation() {
         let totalFoodProduction = 0;
