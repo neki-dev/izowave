@@ -20,6 +20,9 @@ export class City {
 
     private _name: string;
 
+    public get name() { return this._name; }
+    
+
     constructor(scene: IWorld, nation: Nation, name: string, citycenter: BuildingCityCenter) {
         this.scene = scene;
         this.nation = nation;

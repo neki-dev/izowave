@@ -33,6 +33,8 @@ export class BuildingCityCenter extends BuildingTower {
 
   private impactArea: Nullable<Phaser.GameObjects.Ellipse> = null;
 
+  private nameText: Nullable<Phaser.GameObjects.Text> = null;
+
   constructor(scene: IWorld, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
         damage: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE,
@@ -70,6 +72,7 @@ export class BuildingCityCenter extends BuildingTower {
     this.scene.player.getNation().addCity(city);
     
     this.addImpactArea();
+    this.addNameText();
   }
 
   public getImpactRadius() {
@@ -115,6 +118,24 @@ export class BuildingCityCenter extends BuildingTower {
     this.impactArea.destroy();
     this.impactArea = null;
   }
+
+  private addNameText() {
+    if (!this.nameText) {
+        this.nameText = this.scene.add.text(0, 0, '', {
+          fontFamily: 'Arial',
+          fontSize: '10px',
+          color: '#ffffff',
+          //stroke: '#000000',
+          //strokeThickness: 2,
+        });
+        this.nameText.setOrigin(0.5, 0.5);
+        this.nameText.setDepth(100);
+        this.nameText.setActive(true);
+        this.nameText.setVisible(true);
+        this.nameText.setPosition(this.getTopEdgePosition().x, this.getTopEdgePosition().y - 10);
+        this.nameText.setText(this.getCity().name.toString());
+    }
+}  
 
   public getInfo() {
     const info: BuildingParam[] = [{
