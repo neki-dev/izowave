@@ -205,6 +205,7 @@ export enum MovementDirection {
 
 export type PlayerData = {
   positionAtMatrix: PositionAtMatrix
+  ai: boolean
 };
 
 export type PlayerSkillInfo = {

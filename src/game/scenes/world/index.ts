@@ -111,6 +111,8 @@ export class World extends Scene implements IWorld {
   private timers: Phaser.Time.TimerEvent[] = [];
 
   private nations: Nation[] = [];
+
+  private aiPlayers: IPlayer[] = [];
   
   private modes: Record<WorldMode, boolean> = {
     [WorldMode.TIME_SCALE]: false,
@@ -154,6 +156,7 @@ export class World extends Scene implements IWorld {
     this.addPlayer();
     this.addAssistant();
     this.addCrystals();
+    this.addAIPlayer();
 
     if (this.game.usedSave?.payload.world) {
       this.loadSavePayload(this.game.usedSave.payload.world);
@@ -355,7 +358,7 @@ export class World extends Scene implements IWorld {
       )
     );
 
-    this.player = new Player(this, { positionAtMatrix });
+    this.player = new Player(this, { positionAtMatrix, ai: false });
 
     let nation = new Nation(this, this.player, 'Player Nation');
     this.nations.push(nation);
@@ -385,6 +388,33 @@ export class World extends Scene implements IWorld {
       positionAtMatrix: positionAtMatrix || this.player.positionAtMatrix,
       speed: this.player.speed,
     });
+  }
+
+  private addAIPlayer() {
+    const positionAtMatrix = (
+      this.game.usedSave?.payload.player.position
+      ?? Phaser.Utils.Array.GetRandom(
+        this.level.readSpawnPositions(SpawnTarget.PLAYER),
+      )
+    );
+
+    let aiPlayer = new Player(this, { positionAtMatrix, ai: true });
+    this.aiPlayers.push(aiPlayer);
+
+    let nation = new Nation(this, this.player, 'AI-1');
+    this.nations.push(nation);
+    aiPlayer.setNation(nation);
+
+    //if (this.game.usedSave?.payload.player) {
+    //  this.player.loadSavePayload(this.game.usedSave.payload.player);
+    //}
+
+    //this.camera.focusOn(this.player);
+
+    //this.player.live.on(LiveEvent.DEAD, () => {
+    //  this.camera.zoomOut();
+    //  this.game.finishGame();
+    //});
   }
 
   private addCrystals() {

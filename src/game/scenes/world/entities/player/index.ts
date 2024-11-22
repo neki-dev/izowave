@@ -66,6 +66,10 @@ export class Player extends Sprite implements IPlayer {
 
   private set soldiers(v) { this._soldiers = v; }
 
+  private _ai: boolean = false;
+
+  public get ai() { return this._ai; }
+
   private soldiersText: Nullable<Phaser.GameObjects.Text> = null;
   
   private _experience: number = 0;
@@ -161,8 +165,15 @@ export class Player extends Sprite implements IPlayer {
     });
     scene.add.existing(this);
 
+    this._ai = data.ai;
     if (this.scene.game.isDesktop()) {
-      this.handleMovementByKeyboard();
+      if (this.ai ) {
+        this.handleAIMovement();
+      }
+      else {
+        this.handleMovementByKeyboard();
+      }
+
     }
 
     this.handleToggleEffects();
@@ -203,6 +214,10 @@ export class Player extends Sprite implements IPlayer {
 
   public update() {
     super.update();
+
+    if (this.ai) {
+      this.updateAIMovement();
+    }
 
     try {
       this.findPathToCrystal();
@@ -633,6 +648,10 @@ export class Player extends Sprite implements IPlayer {
       toggleKeyState(event.code, false);
     });
 
+    this.handleWindowBlur();
+  }
+
+  private handleWindowBlur() {
     const handleMovementStop = () => {
       this.movementTarget = null;
     };
@@ -642,6 +661,41 @@ export class Player extends Sprite implements IPlayer {
     this.once(Phaser.GameObjects.Events.DESTROY, () => {
       window.removeEventListener('blur', handleMovementStop);
     });
+  }
+
+  private handleAIMovement() {
+    this.moveAIPlayerRandomly();
+    
+    this.handleWindowBlur();
+  }
+
+  moveAIPlayerRandomly() {
+    // Randomize movement direction
+    const max = 7;
+    this.movementTarget = Math.floor(Math.random() * (max + 1));
+
+    // Simulate movement
+    console.log(`AI moving in direction: ${this.movementTarget}`);
+
+    // Schedule the next move or pause after a random duration
+    let moveDuration = Phaser.Math.Between(2000, 5000); // Random duration between 2 and 5 seconds
+    this.scene.time.delayedCall(moveDuration, this.pauseAIPlayer, [], this);
+  }
+
+  pauseAIPlayer() {
+    // AI pauses movement
+    console.log("AI is pausing");
+
+    // Clear the movement target
+    this.movementTarget = null;
+
+    // Schedule the next move after a pause
+    let pauseDuration = Phaser.Math.Between(1000, 3000); // Random pause duration between 1 and 3 seconds
+    this.scene.time.delayedCall(pauseDuration, this.moveAIPlayerRandomly, [], this);
+  }
+
+  private updateAIMovement() {
+
   }
 
   private updateVelocity() {
