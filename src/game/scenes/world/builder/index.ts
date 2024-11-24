@@ -30,10 +30,13 @@ import { ShaderType } from '~lib/shader/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
+import { IPlayer } from '../entities/player/types';
 import { City } from '~scene/world/nation/city';
 
 export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   readonly scene: IWorld;
+
+  readonly player: IPlayer;
 
   private _isBuild: boolean = false;
 
@@ -57,16 +60,22 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
   private set supposedPosition(v) { this._supposedPosition = v; }
 
+  public setSupposedPosition(position: PositionAtMatrix) { this.supposedPosition = position; }
+
   private _variant: Nullable<BuildingVariant> = null;
 
   public get variant() { return this._variant; }
 
   private set variant(v) { this._variant = v; }
 
-  constructor(scene: IWorld) {
+  constructor(scene: IWorld, player: IPlayer) {
     super();
 
     this.scene = scene;
+    this.player = player;
+
+    if (this.player.ai) 
+      return;
 
     this.handleKeyboard();
     this.handlePointer();
@@ -121,7 +130,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       return;
     }
 
-    if (this.scene.player.resources < BuildingInstance.Cost) {
+    if (this.player.resources < BuildingInstance.Cost) {
       this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
 
       return;
@@ -233,8 +242,8 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     if (!this.scene.game.isDesktop()) {
       this.supposedPosition = (
-        this.scene.level.getFreeAdjacentTiles(this.scene.player.positionAtMatrix)[0]
-        ?? this.scene.player.positionAtMatrix
+        this.scene.level.getFreeAdjacentTiles(this.player.positionAtMatrix)[0]
+        ?? this.player.positionAtMatrix
       );
     }
 
@@ -276,7 +285,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   private isCanBuild() {
     return (
       this.variant !== null
-      && !this.scene.player.live.isDead()
+      && !this.player.live.isDead()
     );
   }
 
@@ -301,7 +310,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     const BuildingInstance = BUILDINGS[this.variant];
     if (BuildingInstance.CityRequired &&
-      !this.scene.player.getNation().isPosContainedByCity(positionAtMatrix)) {
+      !this.player.getNation().isPosContainedByCity(positionAtMatrix)) {
       return false;
     }        
 
@@ -313,7 +322,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 //    }
 
     const targets = [
-      this.scene.player,
+      this.player,
       ...this.scene.getEntities<IEnemy>(EntityType.ENEMY),
     ];
 
@@ -329,6 +338,10 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   }
 
   private build() {
+    this.toBuild();
+  }
+
+  public toBuild() {
     if (
       !this.variant
       || !this.supposedPosition
@@ -344,7 +357,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       return;
     }
 
-    if (this.scene.player.resources < BuildingInstance.Cost) {
+    if (this.player.resources < BuildingInstance.Cost) {
       this.scene.game.screen.failure('NOT_ENOUGH_RESOURCES');
 
       return;
@@ -356,12 +369,12 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       buildDuration: progressionLinear({
         defaultValue: DIFFICULTY.BUILDER_BUILD_DURATION,
         scale: DIFFICULTY.BUILDER_BUILD_DURATION_GROWTH,
-        level: this.scene.player.upgradeLevel[PlayerSkill.BUILD_SPEED],
+        level: this.player.upgradeLevel[PlayerSkill.BUILD_SPEED],
       }),
     });
 
-    this.scene.player.takeResources(BuildingInstance.Cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
+    this.player.takeResources(BuildingInstance.Cost);
+    this.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
 
     this.scene.fx.playSound(BuildingAudio.BUILD);
 
@@ -385,14 +398,9 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
       positionAtMatrix: data.positionAtMatrix,
     });
     
-    // Find the city and add the building to it 
-    if (BuildingInstance.CityRequired) {
-      let city = this.scene.player.getNation().getCityContainingPos(data.positionAtMatrix);
-      if (city) {
-        city.addBuilding(building);
-        building.setCity(city);
-      }
-    }
+    // Associate this building with a city
+    // Need to create one if it's a city center 
+    building.associateCity(this.player);  
 
     // Don't add foundation
     //this.addFoundation(data.positionAtMatrix);

@@ -2,9 +2,12 @@ import type { BuildingVariant, IBuilding, BuildingBuildData } from '../entities/
 import type { PositionAtMatrix } from '../level/types';
 import type Phaser from 'phaser';
 import type { IWorld } from '~scene/world/types';
+import type { IPlayer } from '../entities/player/types';
 
 export interface IBuilder extends Phaser.Events.EventEmitter {
   readonly scene: IWorld
+
+  readonly player: IPlayer
 
   /**
    * Build state.
@@ -20,6 +23,8 @@ export interface IBuilder extends Phaser.Events.EventEmitter {
    * Current position to build.
    */
   readonly supposedPosition: Nullable<PositionAtMatrix>
+
+  setSupposedPosition(position: PositionAtMatrix): void
 
   /**
    * Current active building.
@@ -41,6 +46,8 @@ export interface IBuilder extends Phaser.Events.EventEmitter {
    */
   close(): void
 
+  toBuild(): void
+  
   /**
    * Create building.
    * @param data - Building data

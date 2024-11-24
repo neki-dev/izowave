@@ -3,9 +3,12 @@ import type { IEnemyTarget } from '../npc/enemy/types';
 import type { ISprite } from '../types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 import type { Nation } from '~scene/world/nation';
+import type { IBuilder } from '~scene/world/builder/types';
 
 export interface IPlayer extends ISprite, IEnemyTarget {
   
+  readonly ai: boolean
+
   /**
    * Total number of killed enemies.
    */
@@ -54,6 +57,10 @@ export interface IPlayer extends ISprite, IEnemyTarget {
   setNation(nation: Nation): void
 
   getNation(): Nation
+
+  setBuilder(builder: IBuilder): void
+  
+  getBuilder(): IBuilder
 
   /**
    * Upgrade player skill.

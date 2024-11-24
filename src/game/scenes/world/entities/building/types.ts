@@ -44,6 +44,8 @@ export interface IBuilding extends Phaser.GameObjects.Image, IEnemyTarget, IPart
 
   getFoodProduction(): number
   
+  associateCity(player: IPlayer): void
+
   /**
    * Check is position inside action area.
    * @param position - Position at world

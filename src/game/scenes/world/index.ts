@@ -151,9 +151,9 @@ export class World extends Scene implements IWorld {
 
     this.camera.addZoomControl();
 
-    this.addWaveManager();
-    this.addBuilder();
+    this.addWaveManager();    
     this.addPlayer();
+    this.addBuilder();
     this.addAssistant();
     this.addCrystals();
     this.addAIPlayer();
@@ -339,15 +339,7 @@ export class World extends Scene implements IWorld {
   }
 
   private addBuilder() {
-    this.builder = new Builder(this);
 
-    this.game.events.once(GameEvent.FINISH, () => {
-      this.builder.close();
-    });
-
-    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-      this.builder.destroy();
-    });
   }
 
   private addPlayer() {
@@ -363,6 +355,18 @@ export class World extends Scene implements IWorld {
     let nation = new Nation(this, this.player, 'Player Nation');
     this.nations.push(nation);
     this.player.setNation(nation);
+
+    this.builder = new Builder(this, this.player);
+
+    this.game.events.once(GameEvent.FINISH, () => {
+      this.builder.close();
+    });
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      this.builder.destroy();
+    });
+
+    this.player.setBuilder(this.builder);
 
     if (this.game.usedSave?.payload.player) {
       this.player.loadSavePayload(this.game.usedSave.payload.player);
@@ -404,6 +408,18 @@ export class World extends Scene implements IWorld {
     let nation = new Nation(this, this.player, 'AI-1');
     this.nations.push(nation);
     aiPlayer.setNation(nation);
+
+    let builder = new Builder(this, aiPlayer);
+
+    this.game.events.once(GameEvent.FINISH, () => {
+      builder.close();
+    });
+
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+      builder.destroy();
+    });
+
+    aiPlayer.setBuilder(builder);
 
     //if (this.game.usedSave?.payload.player) {
     //  this.player.loadSavePayload(this.game.usedSave.payload.player);

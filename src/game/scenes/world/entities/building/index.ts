@@ -46,6 +46,7 @@ import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import { TileType } from '~scene/world/level/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 import { City } from '~scene/world/nation/city';
+import { IPlayer } from '../player/types';
 
 Assets.RegisterAudio(BuildingAudio);
 Assets.RegisterImages(BuildingIcon);
@@ -183,6 +184,17 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
   public getFoodProduction(): number {  return 0; }
 
+  public associateCity(player : IPlayer): void {
+    if (player === null)
+      return;
+
+    let city = player.getNation().getCityContainingPos(this.positionAtMatrix);
+    if (city) {
+      city.addBuilding(this);
+      this.setCity(city);
+    }
+  }
+  
   public update() {
     try {
       this.updateOutline();

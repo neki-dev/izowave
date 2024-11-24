@@ -23,6 +23,8 @@ export class Nation {
         this.cities.push(city);
     }
 
+    public getCityNum() { return this.cities.length; }
+    
     public getCityContainingPos(pos: PositionAtMatrix) {
         // get the city list sorted by distance 
         const sortedCities = this.cities.sort((a, b) => {
@@ -36,4 +38,6 @@ export class Nation {
     public isPosContainedByCity(pos: PositionAtMatrix) {
         return this.cities.some(city => city.distanceTo(pos) <= city.getRadiusInTile());
     }
+
+
 }

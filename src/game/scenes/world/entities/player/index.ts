@@ -46,6 +46,7 @@ import { TileType } from '~scene/world/level/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 import { Nation } from '~scene/world/nation';
+import { IBuilder } from '~scene/world/builder/types';
 
 Assets.RegisterAudio(PlayerAudio);
 Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
@@ -54,11 +55,17 @@ Assets.RegisterImages(PlayerSkillIcon);
 Assets.RegisterImages(PlayerSuperskillIcon);
 
 export class Player extends Sprite implements IPlayer {
-  private nation: Nation;
+  private _nation: Nation;
 
-  public setNation(nation: Nation) { this.nation = nation; }
+  public setNation(nation: Nation) { this._nation = nation; }
 
-  public getNation(): Nation { return this.nation; }
+  public getNation(): Nation { return this._nation; }
+
+  private _builder: IBuilder;
+
+  public setBuilder(builder: IBuilder): void { this._builder = builder;}
+
+  public getBuilder(): IBuilder { return this._builder; }
 
   private _soldiers: number = 0;
 
@@ -453,7 +460,7 @@ export class Player extends Sprite implements IPlayer {
 
     // Hire soldiers
     if (type == PlayerSuperskill.HIRE) {
-      let city = this.nation.getCityContainingPos(this.positionAtMatrix);
+      let city = this.getNation().getCityContainingPos(this.positionAtMatrix);
       if (city == null) {
         this.scene.game.screen.failure('NEDD_WITHIN_CITY');
         return;
@@ -675,7 +682,7 @@ export class Player extends Sprite implements IPlayer {
     this.movementTarget = Math.floor(Math.random() * (max + 1));
 
     // Simulate movement
-    console.log(`AI moving in direction: ${this.movementTarget}`);
+    //console.log(`AI moving in direction: ${this.movementTarget}`);
 
     // Schedule the next move or pause after a random duration
     let moveDuration = Phaser.Math.Between(2000, 5000); // Random duration between 2 and 5 seconds
@@ -684,7 +691,7 @@ export class Player extends Sprite implements IPlayer {
 
   pauseAIPlayer() {
     // AI pauses movement
-    console.log("AI is pausing");
+    //console.log("AI is pausing");
 
     // Clear the movement target
     this.movementTarget = null;
@@ -692,6 +699,29 @@ export class Player extends Sprite implements IPlayer {
     // Schedule the next move after a pause
     let pauseDuration = Phaser.Math.Between(1000, 3000); // Random pause duration between 1 and 3 seconds
     this.scene.time.delayedCall(pauseDuration, this.moveAIPlayerRandomly, [], this);
+
+    // if no city, build one
+    if (this.getNation().getCityNum() == 0) {
+      this.scene.time.delayedCall(pauseDuration + 1000, this.aiBuildCityCenter, [this.positionAtMatrix], this);      
+    }
+  }
+
+  aiBuildCityCenter(position: PositionAtMatrix) {
+    // AI builds a city center
+    //console.log("AI is building a city center");
+
+    // Get the builder
+    let builder = this.getBuilder();
+    if (builder == null) {
+      console.log("AI failed to get a builder");
+      return;
+    }
+
+    // Build a city center
+    builder.setBuildingVariant(BuildingVariant.CITYCENTER);
+    builder.setSupposedPosition(position);
+
+    builder.toBuild();
   }
 
   private updateAIMovement() {

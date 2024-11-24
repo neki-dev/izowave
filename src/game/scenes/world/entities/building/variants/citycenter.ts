@@ -15,6 +15,7 @@ import { BuildingIcon } from '../types';
 import { BuildingParam } from '../types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import { City } from '~scene/world/nation/city';
+import { IPlayer } from '~scene/world/entities/player/types';
 
 export class BuildingCityCenter extends BuildingTower {
   static Category = BuildingCategory.OTHER;
@@ -65,11 +66,6 @@ export class BuildingCityCenter extends BuildingTower {
       Tutorial.Complete(TutorialStep.BUILD_GENERATOR_SECOND);
       Tutorial.Start(TutorialStep.UPGRADE_BUILDING);
     }
-
-    // Create a city 
-    let city = new City(this.scene, this.scene.player.getNation(), 'City Name', this);
-    this.setCity(city);
-    this.scene.player.getNation().addCity(city);
     
     this.addImpactArea();
     this.addNameText();
@@ -133,9 +129,21 @@ export class BuildingCityCenter extends BuildingTower {
         this.nameText.setActive(true);
         this.nameText.setVisible(true);
         this.nameText.setPosition(this.getTopEdgePosition().x, this.getTopEdgePosition().y - 10);
-        this.nameText.setText(this.getCity().name.toString());
+
+        const name = this.getCity()?.name;
+        this.nameText.setText(name);
     }
-}  
+  }  
+
+  public associateCity(player : IPlayer): void {
+    if (player === null)
+      return;
+
+    let city = new City(this.scene, player.getNation(), 'City Name', this);
+    player.getNation().addCity(city);
+    city.addBuilding(this);
+    this.setCity(city);
+  }
 
   public getInfo() {
     const info: BuildingParam[] = [{
@@ -154,6 +162,9 @@ export class BuildingCityCenter extends BuildingTower {
       if (this.isActionAllowed()) {
         this.generateResource();
         this.pauseActions();
+
+        const name = this.getCity()?.name;
+        this.nameText?.setText(name);
       }
     } catch (error) {
       console.warn('Failed to update generator generator', error as TypeError);
