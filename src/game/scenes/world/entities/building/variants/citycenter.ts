@@ -20,7 +20,7 @@ import { IPlayer } from '~scene/world/entities/player/types';
 export class BuildingCityCenter extends BuildingTower {
   static Category = BuildingCategory.OTHER;
 
-  static Texture = BuildingTexture.TOWER_FIRE;
+  static Texture = BuildingTexture.CITYCENTER;
 
   static Cost = DIFFICULTY.BUILDING_GENERATOR_COST;
 

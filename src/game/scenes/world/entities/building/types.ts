@@ -178,8 +178,8 @@ export enum BuildingTexture {
   AMMUNITION = 'building/textures/ammunition',
   RADAR = 'building/textures/radar',
   BOOSTER = 'building/textures/booster',
-  CITYCENTER = 'building/textures/generator',
-  FARM = 'building/textures/generator',
+  CITYCENTER = 'building/textures/citycenter',
+  FARM = 'building/textures/farm',
 }
 
 export enum BuildingIcon {

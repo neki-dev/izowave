@@ -87,7 +87,7 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
   params: { lowerBound: 0.54, upperBound: 0.59 },
   data: {
     type: BiomeType.MOUNT,  // mountain - [8]
-    tileIndex: [24, 25],
+    tileIndex: 24,
     z: 0,                 // z-index = 0 - no piled mountains
     collide: false,
     solid: true,

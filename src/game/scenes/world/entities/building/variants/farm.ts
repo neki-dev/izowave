@@ -13,7 +13,7 @@ import { TutorialStep } from '~lib/tutorial/types';
 export class BuildingFarm extends Building {
   static Category = BuildingCategory.RESOURCES;
 
-  static Texture = BuildingTexture.GENERATOR;
+  static Texture = BuildingTexture.FARM;
 
   static Cost = DIFFICULTY.BUILDING_GENERATOR_COST;
 
@@ -68,7 +68,7 @@ export class BuildingFarm extends Building {
   public getFoodProduction(): number {
     return 10;
   }
-  
+
   private generateResource() {
     this.scene.player.giveResources(1);
     this.scene.fx.createGenerationEffect(this);
