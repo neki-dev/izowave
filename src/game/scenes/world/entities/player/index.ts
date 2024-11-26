@@ -239,6 +239,11 @@ export class Player extends Sprite implements IPlayer {
         this.updateStamina();
         this.updateSoldiersText();
       }
+
+      // if this player is the user, clear fog
+      if (!this.ai) {
+        this.scene.level.clearFog(this.positionAtMatrix, 4);
+      }
     } catch (error) {
       console.warn('Failed to update player', error as TypeError);
     }

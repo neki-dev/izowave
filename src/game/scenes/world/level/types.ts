@@ -73,6 +73,8 @@ export interface ILevel extends ITileMatrix {
    */
   getFreeAdjacentTiles(position: PositionAtMatrix): PositionAtMatrix[]
 
+  clearFog(position: PositionAtMatrix, radiusInTile: number) : void
+  
   /**
    * Get data for saving.
    */

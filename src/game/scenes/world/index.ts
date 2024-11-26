@@ -372,6 +372,8 @@ export class World extends Scene implements IWorld {
       this.player.loadSavePayload(this.game.usedSave.payload.player);
     }
 
+    this.level.clearFog(this.player.positionAtMatrix, 4);
+    
     this.camera.focusOn(this.player);
 
     this.player.live.on(LiveEvent.DEAD, () => {

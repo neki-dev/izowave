@@ -117,7 +117,7 @@ export const LEVEL_BIOMES_EARTH: LevelBiomes = [{
 }, {
   params: { lowerBound: 0.72 },
   data: {
-    type: BiomeType.SNOW,
+    type: BiomeType.SNOW, // snow/fog - [11]
     tileIndex: 30,
     z: 3,
     collide: true,

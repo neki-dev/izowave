@@ -40,6 +40,7 @@ import type { INavigator } from '~lib/navigator/types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
+import { WORLD_DEPTH_FOG } from '~scene/world/const';
 
 import twMap from './realmaps/tw.json';
 import japanMap from './realmaps/japan.json';
@@ -78,6 +79,14 @@ export class Level extends TileMatrix implements ILevel {
   private set groundLayer(v) { this._groundLayer = v; }
 
   private sceneryTiles: Phaser.GameObjects.Group;
+
+  private _fogLayer: Phaser.Tilemaps.TilemapLayer;
+
+  public get fogLayer() { return this._fogLayer; }
+
+  private set fogLayer(v) { this._fogLayer = v; }
+
+  private gridFog: boolean[][] = [];
 
   constructor(scene: IWorld, { planet, seed }: LevelData) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT);
@@ -161,6 +170,7 @@ export class Level extends TileMatrix implements ILevel {
 
     this.gridCollide = this.map.getMatrix().map((y) => y.map((x) => x.collide));
     this.gridSolid = this.map.getMatrix().map((y) => y.map((x) => !x.solid));
+    this.gridFog = this.map.getMatrix().map((y) => y.map((x) => true));
 
     this.navigator = new Navigator();
 
@@ -283,6 +293,7 @@ export class Level extends TileMatrix implements ILevel {
       throw Error('Unable to create map tileset');
     }
 
+    this.addFogLayer(tilemap, tileset);
     this.addFalloffLayer(tilemap, tileset);
     this.addGroundLayer(tilemap, tileset);
   }
@@ -301,6 +312,57 @@ export class Level extends TileMatrix implements ILevel {
     }
 
     this.groundLayer = layer;
+  }
+
+  // Add ground layer which contains tiles in the main map area 
+  private addFogLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
+    const layer = tilemap.createBlankLayer(
+      'fog',
+      tileset,
+      -LEVEL_MAP_TILE.width * 0.5,
+      -LEVEL_MAP_TILE.height * 0.25,
+    );
+
+    if (!layer) {
+      throw Error('Unable to create fog layer');
+    }
+
+    this.fogLayer = layer;
+    this.fogLayer.setDepth(WORLD_DEPTH_FOG);
+
+    // Set the biome for the fog - defined in the planets/earth.ts 
+    const biome = LEVEL_PLANETS[this.planet].BIOMES[11].data;  
+
+    const index = Array.isArray(biome.tileIndex)
+        ? Phaser.Math.Between(...biome.tileIndex)
+        : biome.tileIndex;
+      
+    this.fogLayer.fill(index, 0, 0, this.mapWidth, this.mapHeight, false);
+    
+  } 
+ 
+  private checkFogAt(x: number, y: number) {
+    if (y >= 0 && y < this.gridFog.length && x >= 0 && x < this.gridFog[y].length) {
+      return this.gridFog[y][x];
+    } else {
+      console.error('Tile coordinates out of bounds.');
+      return false; // Return false or handle as per game logic (e.g., always foggy out of bounds)
+    }
+  }
+  
+  public clearFog(position: PositionAtMatrix, radiusInTile: number) {
+    const { x, y } = position;
+
+    for (let i = -radiusInTile; i <= radiusInTile; i++) {
+      for (let j = -radiusInTile; j <= radiusInTile; j++) {
+        const tile = this.map.getAt({ x: x + i, y: y + j });
+
+        if (tile && this.checkFogAt(x + i, y + j)) {
+          this.gridFog[y][x] = false;
+          this.fogLayer.putTileAt(-1, x + i, y + j, false);
+        }
+      }
+    }
   }
 
   // Add falloff layer to hide the edge of the map
