@@ -197,7 +197,7 @@ export class Player extends Sprite implements IPlayer {
     this.setTilesGroundCollision(true);
     this.setTilesCollision([
       TileType.MAP,
-      TileType.BUILDING,
+      //TileType.BUILDING,
       TileType.CRYSTAL,
     ], (tile) => {
       if (tile instanceof Crystal) {
