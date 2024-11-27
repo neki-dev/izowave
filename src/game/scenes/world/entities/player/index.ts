@@ -743,7 +743,7 @@ export class Player extends Sprite implements IPlayer {
         this.setVelocity(0, 0);
       } else {
         const friction = this.currentBiome?.friction ?? 1;
-        const stamina = (this.stamina === 0) ? 1.5 : 1;
+        const stamina = (this.stamina === 0) ? 2 : 1;
         const speed = (this.speed / friction) / stamina;
         const velocity = this.scene.physics.velocityFromAngle(this.movementAngle, speed);
 
