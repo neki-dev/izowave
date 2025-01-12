@@ -8,6 +8,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const tsconfig = path.resolve(__dirname, 'tsconfig.json');
 
+
 export default defineConfig(({ mode }) => ({
   plugins: [
     react(),
@@ -39,5 +40,11 @@ export default defineConfig(({ mode }) => ({
     alias: reuse()
       .from(tsconfig)
       .for('vite'),
+  },
+  resolve: {
+    alias: {
+      '~scene': path.resolve(__dirname, 'src/game/scenes'),
+      '~lib': path.resolve(__dirname, 'src/lib'),
+    },
   },
 }));

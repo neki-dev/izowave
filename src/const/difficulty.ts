@@ -8,10 +8,10 @@ export const DIFFICULTY = {
   PLAYER_HEALTH: 100, // Health
   PLAYER_HEALTH_GROWTH: 0.4, // Growth health by upgrade (Quadratic)
   PLAYER_HEALTH_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade health
-  PLAYER_SPEED: 90, // Movement speed
+  PLAYER_SPEED: 190, // Movement speed
   PLAYER_SPEED_GROWTH: 0.0556, // Growth speed by upgrade (Linear)
   PLAYER_SPEED_EXPERIENCE_TO_UPGRADE: 80, // Experience need to upgrade speed
-  PLAYER_STAMINA: 100, // Stamina
+  PLAYER_STAMINA: 9100, // Stamina
   PLAYER_STAMINA_GROWTH: 0.2, // Growth stamina by upgrade (Quadratic)
   PLAYER_STAMINA_EXPERIENCE_TO_UPGRADE: 60, //  Experience need to upgrade stamina
   PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH: 1.0, // Growth experience need to upgrade (Quadratic)
@@ -48,8 +48,9 @@ export const DIFFICULTY = {
   SUPERSKILL_RAGE_COST: 45, // Cost of use
   SUPERSKILL_RAGE_DURATION: 10000, // Rage duration
   SUPERSKILL_COST_GROWTH: 0.25, // Growth cost by wave number (Linear)
-  SUPERSKILL_UNLOCK_PER_WAVE: 3, // Period of superskill unlocking
-
+  SUPERSKILL_UNLOCK_PER_WAVE: 2, // Period of superskill unlocking
+  SUPERSKILL_HIRE_COST: 10, // Cost of use
+  SUPERSKILL_HIRE_DURATION: 10, // Shield duration
   /**
    * Wave
    */
@@ -144,6 +145,7 @@ export const DIFFICULTY = {
   BUILDING_TOWER_FIRE_DELAY_GROWTH: -0.11, // Pause growth by level (Linear)
   BUILDING_TOWER_FIRE_DAMAGE: 45, // Attack damage
   BUILDING_TOWER_FIRE_SHOT_SPEED: 300, // Shot speed
+  BUILDING_CITYCENTER_IMPACT_RADIUS: 200, // City center impact radius (allow to build) 
 
   /**
    * Building: Tower: Frozen
