@@ -12,3 +12,5 @@ TODO.md
 *.zip
 yarn.lock
 *.lock
+yarn.lock
+package-lock.json
