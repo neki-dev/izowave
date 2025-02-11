@@ -4,14 +4,13 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 
 import type { IGame } from '~game/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene, GameEvent } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 import { Hint } from '~scene/system/interface/hint';
+import type { IWorld } from '~scene/world/types';
 import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
 
 import {

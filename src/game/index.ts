@@ -2,22 +2,21 @@ import Phaser from 'phaser';
 
 import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
 import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent } from './types';
-
 import type { IGame, GameStat, GameSavePayload } from './types';
-import type { StorageSave } from '~lib/storage/types';
-import type { IScreen } from '~scene/screen/types';
-import type { IWorld } from '~scene/world/types';
 
 import { registerShaders } from '~lib/shader';
 import { Storage } from '~lib/storage';
+import type { StorageSave } from '~lib/storage/types';
 import { Tutorial } from '~lib/tutorial';
 import { Utils } from '~lib/utils';
 import { Gameover } from '~scene/gameover';
 import { Menu } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';
 import { Screen } from '~scene/screen';
+import type { IScreen } from '~scene/screen/types';
 import { System } from '~scene/system';
 import { World } from '~scene/world';
+import type { IWorld } from '~scene/world/types';
 
 export class Game extends Phaser.Game implements IGame {
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;

@@ -20,19 +20,21 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'eol-last': ['error', 'always'],
     'no-trailing-spaces': 'error',
-    'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-    'indent': ['error', 2, { SwitchCase: 1 }],
+    'brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
+    'indent': ['error', 2, { 'SwitchCase': 1 }],
     'keyword-spacing': ['error', { before: true, after: true }],
     'padded-blocks': ['error', 'never'],
-    'comma-spacing': ['error', { before: false, after: true }],
+    'comma-spacing': ['error', { 'before': false, 'after': true }],
     'space-in-parens': ['error', 'never'],
+    'semi': ['error', 'always'],
     // TypeScript
-    '@typescript-eslint/semi': 'error',
     '@typescript-eslint/consistent-type-imports': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
+    '@typescript-eslint/no-empty-object-type': 'off',
     // Import
+    'import/no-named-as-default': 'off',
     'import/no-named-as-default-member': 'off',
     'import/no-cycle': 'error',
     'import/no-unresolved': 'off',
@@ -40,23 +42,18 @@ module.exports = {
       'warn',
       {
         'newlines-between': 'always',
-        groups: [
-          ['builtin', 'external'],
-          ['parent', 'sibling'],
-          'index',
-          'object',
-          'type',
-          'unknown',
-        ],
-        alphabetize: {
-          order: 'asc',
+        'groups': ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'unknown'],
+        'alphabetize': {
+          'order': 'asc',
         },
-        pathGroups: [
+        'pathGroups': [
           {
-            pattern: './styles',
-            group: 'unknown',
-            patternOptions: { matchBase: true },
-            position: 'after',
+            'pattern': './styles',
+            'group': 'unknown',
+            'position': 'after',
+            'patternOptions': {
+              'matchBase': true,
+            },
           },
         ],
       },

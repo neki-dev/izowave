@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
+import type { MenuPage } from '../types';
+
 import { Content } from './content';
 import { Copyright } from './copyright';
 import { Navigation } from './navigation';
-
-import type { MenuPage } from '../types';
 
 import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';

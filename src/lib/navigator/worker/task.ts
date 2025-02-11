@@ -1,14 +1,14 @@
 /* eslint-disable no-restricted-globals */
 import Heap from 'heap';
 
+import { NavigatorEvent } from '../types';
+import type { NavigatorTaskData, NavigatorPayloadCompleteTask } from '../types';
+
 import { PathNode } from './node';
 import { getCost, getSimpleCost } from './tools';
-import { NavigatorEvent } from '../types';
-
-import type { NavigatorTaskData, NavigatorPayloadCompleteTask } from '../types';
-import type { PositionAtMatrix } from '~scene/world/level/types';
 
 import { getDistance } from '~lib/dimension';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class NavigatorTask {
   readonly from: PositionAtMatrix;

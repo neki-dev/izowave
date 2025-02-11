@@ -1,4 +1,5 @@
 import type { GameSavePayload } from '../../game/types';
+
 import type { PlayerSavePayload } from '~scene/world/entities/player/types';
 import type { LevelSavePayload } from '~scene/world/level/types';
 import type { WorldSavePayload } from '~scene/world/types';

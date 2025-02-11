@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { NavigatorEvent } from './types';
-import NavigatorWorker from './worker/index.ts?worker';
-
 import type {
   INavigator,
   NavigatorTaskInfo,
@@ -14,6 +12,8 @@ import type {
   NavigatorPayloadCreateTask,
   NavigatorPayloadCancelTask,
 } from './types';
+import NavigatorWorker from './worker/index.ts?worker';
+
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class Navigator implements INavigator {

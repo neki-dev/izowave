@@ -2,9 +2,8 @@ import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import type { IGame } from '~game/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Value } from './styles';
 

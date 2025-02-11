@@ -1,3 +1,5 @@
+import type Phaser from 'phaser';
+
 import type { IBuilder } from './builder/types';
 import type { ICamera } from './camera/types';
 import type { BuildingSavePayload } from './entities/building/types';
@@ -9,7 +11,7 @@ import type { IFXManager } from './fx-manager/types';
 import type { ILevel, PositionAtWorld } from './level/types';
 import type { ISpawner } from './spawner/types';
 import type { IWave } from './wave/types';
-import type Phaser from 'phaser';
+
 import type { LangPhrase } from '~lib/lang/types';
 import type { StorageSavePayload } from '~lib/storage/types';
 import type { IScene } from '~scene/types';

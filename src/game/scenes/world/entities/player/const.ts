@@ -1,5 +1,4 @@
 import { PlayerSkill, PlayerSkillTarget, MovementDirection } from './types';
-
 import type { PlayerSkillInfo } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';

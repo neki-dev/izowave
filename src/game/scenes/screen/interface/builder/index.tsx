@@ -4,16 +4,15 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Building } from './building';
 
 import type { IGame } from '~game/types';
-import type { LangPhrase } from '~lib/lang/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
+import type { LangPhrase } from '~lib/lang/types';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import { BuildingVariant, BuildingCategory } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Category, Label, Variants, Wrapper } from './styles';
 

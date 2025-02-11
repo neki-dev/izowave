@@ -1,8 +1,8 @@
 import { Interface } from 'phaser-react-ui';
 
-import { MenuUI } from './interface';
 import { Scene } from '..';
 
+import { MenuUI } from './interface';
 import type { MenuPage } from './types';
 
 import { GameScene, GameState } from '~game/types';

@@ -1,6 +1,5 @@
-import type { LangPhrase } from '~lib/lang/types';
-
 import { InterfaceTextColor } from '~lib/interface/types';
+import type { LangPhrase } from '~lib/lang/types';
 
 export const PARAM_VALUES: {
   value: LangPhrase

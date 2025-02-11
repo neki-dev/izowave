@@ -1,5 +1,4 @@
 import { SHADERS } from './pipelines';
-
 import type { ShaderType } from './types';
 
 import { Utils } from '~lib/utils';

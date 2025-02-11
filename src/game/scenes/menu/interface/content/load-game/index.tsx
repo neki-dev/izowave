@@ -2,9 +2,8 @@ import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import type { IGame } from '~game/types';
-import type { LangPhrase } from '~lib/lang/types';
-
 import { phrase } from '~lib/lang';
+import type { LangPhrase } from '~lib/lang/types';
 import { Storage } from '~lib/storage';
 import { Button } from '~scene/system/interface/button';
 import { Confirm } from '~scene/system/interface/confirm';

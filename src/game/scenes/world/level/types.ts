@@ -1,7 +1,10 @@
-import type { ITileMatrix } from './tile-matrix/types';
+import type { World, WorldBiomeParams } from 'gen-biome';
+
 import type { Effect } from '../fx-manager/effect';
 import type { IWorld } from '../types';
-import type { World, WorldBiomeParams } from 'gen-biome';
+
+import type { ITileMatrix } from './tile-matrix/types';
+
 import type { INavigator } from '~lib/navigator/types';
 
 export interface ILevel extends ITileMatrix {

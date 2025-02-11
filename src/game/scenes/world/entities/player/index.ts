@@ -1,11 +1,19 @@
 import Phaser from 'phaser';
 
+import { Sprite } from '..';
+import { BuildingVariant } from '../building/types';
+import { Crystal } from '../crystal';
+import type { ICrystal } from '../crystal/types';
+import type { IEnemy } from '../npc/enemy/types';
+import { EntityType } from '../types';
+
 import {
   PLAYER_TILE_SIZE,
   PLAYER_SKILLS,
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from './const';
+import type { PlayerData, IPlayer, PlayerSavePayload } from './types';
 import {
   PlayerTexture,
   PlayerAudio,
@@ -16,17 +24,6 @@ import {
   PlayerSkillIcon,
   PlayerSuperskillIcon,
 } from './types';
-import { Sprite } from '..';
-import { BuildingVariant } from '../building/types';
-import { Crystal } from '../crystal';
-import { EntityType } from '../types';
-
-import type { PlayerData, IPlayer, PlayerSavePayload } from './types';
-import type { ICrystal } from '../crystal/types';
-import type { IEnemy } from '../npc/enemy/types';
-import type { IParticles } from '~scene/world/fx-manager/particles/types';
-import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameSettings, GameEvent } from '~game/types';
@@ -36,9 +33,12 @@ import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
+import type { IParticles } from '~scene/world/fx-manager/particles/types';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
+import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import { TileType } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 

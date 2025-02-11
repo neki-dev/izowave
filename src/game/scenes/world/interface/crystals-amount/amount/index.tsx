@@ -1,10 +1,9 @@
 import { RelativePosition, RelativeScale } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
-import type { PositionAtWorld } from '~scene/world/level/types';
-
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { Cost } from '~scene/system/interface/cost';
+import type { PositionAtWorld } from '~scene/world/level/types';
 
 import { Container } from './styles';
 

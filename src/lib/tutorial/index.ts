@@ -1,5 +1,4 @@
 import { TutorialEvents, TutorialStepState } from './types';
-
 import type { TutorialStep, TutorialBindCallbacks, TutorialBindAllCallbacks } from './types';
 
 export class Tutorial {

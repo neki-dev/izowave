@@ -1,11 +1,10 @@
 import { useEvent, useScene } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
 import { Amount } from '~scene/system/interface/amount';
 import { PlayerEvent } from '~scene/world/entities/player/types';
+import type { IWorld } from '~scene/world/types';
 
 export const Score: React.FC = () => {
   const world = useScene<IWorld>(GameScene.WORLD);

@@ -1,11 +1,11 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-case-declarations */
 
+import { NavigatorEvent } from '../types';
+import type { NavigatorPayloadCancelTask, NavigatorPayloadCreateTask, NavigatorPayloadUpdatePointCost } from '../types';
+
 import { NavigatorProcess } from './process';
 import { NavigatorTask } from './task';
-import { NavigatorEvent } from '../types';
-
-import type { NavigatorPayloadCancelTask, NavigatorPayloadCreateTask, NavigatorPayloadUpdatePointCost } from '../types';
 
 const navigatorProcess = new NavigatorProcess();
 

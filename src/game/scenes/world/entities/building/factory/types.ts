@@ -1,6 +1,7 @@
 import type {
   BuildingCategory, BuildingTexture, BuildingVariantData, IBuilding,
 } from '../types';
+
 import type { IWorld } from '~scene/world/types';
 
 export interface IBuildingFactory {

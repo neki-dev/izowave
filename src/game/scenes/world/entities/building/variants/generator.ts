@@ -1,12 +1,11 @@
 import { Building } from '..';
 import { BuildingCategory, BuildingTexture, BuildingVariant } from '../types';
-
 import type { BuildingVariantData } from '../types';
-import type { IWorld } from '~scene/world/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
+import type { IWorld } from '~scene/world/types';
 
 export class BuildingGenerator extends Building {
   static Category = BuildingCategory.RESOURCES;

@@ -1,9 +1,9 @@
-import { AssistantVariant } from './types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotBallSimple } from '../../shot/ball/variants/simple';
 import { ShotLazer } from '../../shot/lazer';
-
 import type { IShotFactory } from '../../shot/types';
+
+import { AssistantVariant } from './types';
 
 export const ASSISTANT_TILE_SIZE = {
   width: 12,

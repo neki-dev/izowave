@@ -1,14 +1,13 @@
 import Phaser from 'phaser';
 
-import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
-import { EnemyAudio, EnemyTexture } from './types';
 import { NPC } from '..';
 import { Building } from '../../building';
 import { PlayerSuperskill, PlayerEvent } from '../../player/types';
 import { EntityType } from '../../types';
 
+import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
+import { EnemyAudio, EnemyTexture } from './types';
 import type { IEnemy, EnemyData, IEnemyTarget } from './types';
-import type { IWorld } from '~scene/world/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameSettings } from '~game/types';
@@ -17,6 +16,7 @@ import { InterfaceFont } from '~lib/interface/types';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
+import type { IWorld } from '~scene/world/types';
 
 Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => (

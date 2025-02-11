@@ -1,5 +1,4 @@
 import { EnemySize, EnemyTexture } from './types';
-
 import type { EnemySizeParams } from './types';
 
 export const ENEMY_BOSS_SPAWN_WAVE_RATE = 5;

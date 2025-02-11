@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from './modal';
 
 import type { IGame } from '~game/types';
-
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';

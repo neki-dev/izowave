@@ -1,10 +1,9 @@
 /* eslint-disable no-continue */
+import type { NavigatorTask } from './task';
 import { getDirections } from './tools';
 
-import type { NavigatorTask } from './task';
-import type { PositionAtMatrix } from '~scene/world/level/types';
-
 import { isPositionsEqual } from '~lib/dimension';
+import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class NavigatorProcess {
   private pointsCost: number[][] = [];

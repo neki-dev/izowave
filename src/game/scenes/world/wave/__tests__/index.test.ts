@@ -1,15 +1,15 @@
 import 'jest-canvas-mock';
 
-import { registerHelper } from './helpers/wave';
 import { Wave } from '..';
 import { DIFFICULTY } from '../../../../../game/difficulty';
 import { progressionLinear } from '../../../../../lib/progression';
 import { Tutorial } from '../../../../../lib/tutorial';
 import world from '../../__mocks__/world';
-import { WaveEvent } from '../types';
-
 import type { IWorld } from '../../types';
+import { WaveEvent } from '../types';
 import type { IWave } from '../types';
+
+import { registerHelper } from './helpers/wave';
 
 describe('world / wave', () => {
   let wave: IWave;

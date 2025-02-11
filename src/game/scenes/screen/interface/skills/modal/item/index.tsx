@@ -1,14 +1,13 @@
 import { Texture, useClick, useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
-import type { PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
+import type { PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';
 import { PlayerEvent, PlayerSkillIcon } from '~scene/world/entities/player/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   Container, Info, Action, Label, Level, Button, Limit, Icon, Head,

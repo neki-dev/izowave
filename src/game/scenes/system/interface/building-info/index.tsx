@@ -4,11 +4,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Controls } from './controls';
 import { Params } from './params';
 
-import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
+import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
+import type { IWorld } from '~scene/world/types';
 
 import { Name, Level, Health, Wrapper, Head, Body, Container } from './styles';
 

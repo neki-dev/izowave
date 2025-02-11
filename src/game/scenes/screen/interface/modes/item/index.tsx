@@ -1,10 +1,9 @@
 import { Texture, useInteraction, useScene } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
-import type { IWorld, WorldMode } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
+import type { IWorld, WorldMode } from '~scene/world/types';
 import { WorldModeIcon } from '~scene/world/types';
 
 import { Container, Placeholder } from './styles';

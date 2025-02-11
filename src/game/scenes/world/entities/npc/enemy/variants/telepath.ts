@@ -1,13 +1,12 @@
 import { Enemy } from '..';
 import { ENEMY_REGENERATION_RADIUS, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_REGENERATION_EFFECT_COLOR } from '../const';
 import { EnemyTexture } from '../types';
-
 import type { EnemyVariantData, IEnemy } from '../types';
-import type { IWorld } from '~scene/world/types';
 
 import { getIsometricDistance } from '~lib/dimension';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
+import type { IWorld } from '~scene/world/types';
 
 export class EnemyTelepath extends Enemy {
   static SpawnWaveRange = [13];

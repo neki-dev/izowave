@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Wrapper, Icon, About, Discord, Author, Link } from './styles';
-
 import pkg from '~game/../../package.json';
+
+import { Wrapper, Icon, About, Discord, Author, Link } from './styles';
 
 export const Copyright: React.FC = () => (
   <Wrapper>

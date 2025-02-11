@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 import { NOTICE_DURATION } from './const';
 
-import type { IScreen, Notice } from '~scene/screen/types';
-
 import { phrase } from '~lib/lang';
+import type { IScreen, Notice } from '~scene/screen/types';
 import { ScreenEvent } from '~scene/screen/types';
 
 import { Icon, Item, Wrapper } from './styles';

@@ -1,16 +1,16 @@
 import { Interface } from 'phaser-react-ui';
 import VirtualJoystick from 'phaser3-rex-plugins/plugins/virtualjoystick';
 
-import { ScreenUI } from './interface';
-import { ScreenAudio, ScreenEvent } from './types';
 import { Scene } from '..';
 
+import { ScreenUI } from './interface';
+import { ScreenAudio, ScreenEvent } from './types';
 import type { IScreen } from './types';
-import type { LangPhrase } from '~lib/lang/types';
 
 import { GameScene } from '~game/types';
 import { Assets } from '~lib/assets';
 import { INTERFACE_SCALE } from '~lib/interface/const';
+import type { LangPhrase } from '~lib/lang/types';
 
 Assets.RegisterAudio(ScreenAudio);
 

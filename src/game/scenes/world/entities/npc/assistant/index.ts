@@ -1,21 +1,21 @@
-import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
-import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 import { NPC } from '..';
 import { PlayerSkill } from '../../player/types';
+import type { IPlayer } from '../../player/types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotLazer } from '../../shot/lazer';
-import { EntityType } from '../../types';
-
-import type { IAssistant, AssistantData } from './types';
-import type { IPlayer } from '../../player/types';
 import type { IShot, ShotParams, IShotFactory } from '../../shot/types';
+import { EntityType } from '../../types';
 import type { IEnemy } from '../enemy/types';
-import type { IWorld } from '~scene/world/types';
+
+import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
+import type { IAssistant, AssistantData } from './types';
+import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
+import type { IWorld } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
 Assets.RegisterSprites(AssistantTexture, ASSISTANT_TILE_SIZE);

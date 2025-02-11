@@ -4,14 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from './modal';
 
 import type { IGame } from '~game/types';
-import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
-import type { PlayerSuperskill } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
 import { BuildingVariant } from '~scene/world/entities/building/types';
+import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
 import { AssistantEvent } from '~scene/world/entities/npc/assistant/types';
+import type { PlayerSuperskill } from '~scene/world/entities/player/types';
 import { PlayerEvent } from '~scene/world/entities/player/types';
+import type { IWorld } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
 export type Feature = {

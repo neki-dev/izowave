@@ -9,7 +9,6 @@ import {
   BuildingIcon,
   BuildingCategory,
 } from '../types';
-
 import type {
   BuildingParam,
   BuildingVariantData,
@@ -17,13 +16,13 @@ import type {
   BuildingSavePayload,
   BuildingControl,
 } from '../types';
-import type { IWorld } from '~scene/world/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { CONTROL_KEY } from '~lib/controls/const';
 import { progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
+import type { IWorld } from '~scene/world/types';
 import { WorldMode } from '~scene/world/types';
 
 export class BuildingAmmunition extends Building implements IBuildingAmmunition {

@@ -1,6 +1,8 @@
+import type Phaser from 'phaser';
+
 import type { BuildingVariant, IBuilding, BuildingBuildData } from '../entities/building/types';
 import type { PositionAtMatrix } from '../level/types';
-import type Phaser from 'phaser';
+
 import type { IWorld } from '~scene/world/types';
 
 export interface IBuilder extends Phaser.Events.EventEmitter {

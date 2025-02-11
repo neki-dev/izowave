@@ -1,5 +1,6 @@
-import { Game } from './game';
 import pkg from '../package.json';
+
+import { Game } from './game';
 
 import { checkScreenOrientation } from '~lib/screen';
 

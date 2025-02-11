@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 
 import { RelativeHint } from './relative-hint';
 
-import type { IWorld, WorldHint } from '~scene/world/types';
-
 import { GameScene } from '~game/types';
+import type { IWorld, WorldHint } from '~scene/world/types';
 import { WorldEvent } from '~scene/world/types';
 
 export const RelativeHints: React.FC = () => {

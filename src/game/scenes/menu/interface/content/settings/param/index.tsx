@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { PARAM_VALUES } from './const';
 
 import type { GameSettings, IGame } from '~game/types';
-
 import { Setting } from '~scene/system/interface/setting';
 
 type Props = {

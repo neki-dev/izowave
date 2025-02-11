@@ -4,13 +4,12 @@ import {
 import React, { useRef, useState } from 'react';
 
 import type { IGame } from '~game/types';
-import type { PlayerSuperskill } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
-
 import { GameScene, GameEvent } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
+import type { PlayerSuperskill } from '~scene/world/entities/player/types';
 import { PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
+import type { IWorld } from '~scene/world/types';
 
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,
