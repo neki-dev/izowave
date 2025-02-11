@@ -7,7 +7,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const tsconfig = path.resolve(__dirname, 'tsconfig.json');
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   plugins: [
     checker({
       typescript: true,
@@ -30,12 +30,9 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 9999,
   },
-  define: {
-    ENV_MODE: JSON.stringify(mode),
-  },
   resolve: {
     alias: reuse()
       .from(tsconfig)
       .for('vite'),
   },
-}));
+});
