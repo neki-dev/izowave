@@ -636,7 +636,7 @@ export class Player extends Sprite implements IPlayer {
         startFrame: (restart || !lastFrame) ? 1 : lastFrame.index,
         frameRate: (this.stamina) === 0.0 ? 6 : 8,
       });
-    } catch (error) {
+    } catch {
       //
     }
   }

@@ -117,7 +117,8 @@ export class World extends Scene implements IWorld {
   }
 
   public start() {
-    new Interface(this, WorldUI);
+    const ui = new Interface(this);
+    ui.render(WorldUI);
 
     this.addLifecycle();
 

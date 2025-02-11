@@ -13,7 +13,8 @@ export class Menu extends Scene {
   }
 
   public create(data: { defaultPage: MenuPage }) {
-    new Interface(this, MenuUI, data);
+    const ui = new Interface(this);
+    ui.render(MenuUI, data);
 
     if (this.game.state === GameState.IDLE) {
       this.game.world.camera.focusOnLevel();

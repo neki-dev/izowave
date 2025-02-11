@@ -311,7 +311,7 @@ export class Game extends Phaser.Game implements IGame {
 
     try {
       this.scale.startFullscreen();
-    } catch (error) {
+    } catch {
       //
     }
   }
@@ -321,7 +321,7 @@ export class Game extends Phaser.Game implements IGame {
       const recordValue = localStorage.getItem(this.getStatStorageKey());
 
       return recordValue && JSON.parse(recordValue);
-    } catch (error) {
+    } catch {
       return null;
     }
   }

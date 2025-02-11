@@ -12,6 +12,7 @@ export class Gameover extends Scene {
   }
 
   public create(data: any) {
-    new Interface(this, GameoverUI, data);
+    const ui = new Interface(this);
+    ui.render(GameoverUI, data);
   }
 }

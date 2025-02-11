@@ -26,7 +26,8 @@ export class Screen extends Scene implements IScreen {
   }
 
   public create() {
-    new Interface(this, ScreenUI);
+    const ui = new Interface(this);
+    ui.render(ScreenUI);
 
     if (!this.game.isDesktop()) {
       this.createJoystick();

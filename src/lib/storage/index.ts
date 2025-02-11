@@ -45,7 +45,7 @@ export class Storage {
               ...save,
               payload: JSON.parse(save.payload as unknown as string),
             });
-          } catch (error) {
+          } catch {
             return null;
           }
         });

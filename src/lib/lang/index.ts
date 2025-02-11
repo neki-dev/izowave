@@ -15,7 +15,7 @@ function getLang() {
     return (value && value in LANGS)
       ? LANGS[value as Lang]
       : LANGS.EN;
-  } catch (error) {
+  } catch {
     return LANGS.EN;
   }
 }
