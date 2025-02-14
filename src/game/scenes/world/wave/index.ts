@@ -34,7 +34,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
   private set isGoing(v) { this._isGoing = v; }
 
-  private _isPeaceMode: boolean = false;
+  private _isPeaceMode: boolean = true; // change default to false, to disable enemy waves
 
   public get isPeaceMode() { return this._isPeaceMode; }
 
