@@ -31,7 +31,6 @@ export const ScreenUI: React.FC = () => {
           <Section direction='vertical' gap={8}>
             <Section direction='horizontal' gap={1}>
               <Date />
-              <Wave />
               <Modes />
               <Skills />
             </Section>
