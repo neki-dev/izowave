@@ -673,7 +673,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     Tutorial.Bind(TutorialStep.BUILD_TOWER_FIRE, {
       beg: () => {
-        this.scene.setTimePause(true);
+        //this.scene.setTimePause(true);
       },
       end: () => {
         this.scene.setTimePause(false);
@@ -683,7 +683,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     Tutorial.Bind(TutorialStep.BUILD_GENERATOR, {
       beg: () => {
-        this.scene.setTimePause(true);
+        //this.scene.setTimePause(true);
       },
       end: () => {
         this.scene.setTimePause(false);
