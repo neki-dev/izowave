@@ -200,6 +200,9 @@ export class World extends Scene implements IWorld {
     return this.lifecyle.paused;
   }
 
+  // Time pause
+  // Stop increasing time, but player's hero still can move 
+  // Mainly used for hints/tutorials
   public setTimePause(state: boolean) {
     this.lifecyle.paused = state;
   }
@@ -352,6 +355,7 @@ export class World extends Scene implements IWorld {
 
     this.player = new Player(this, { positionAtMatrix, ai: false });
 
+    // Add player's nation
     let nation = new Nation(this, this.player, 'Player Nation');
     this.nations.push(nation);
     this.player.setNation(nation);

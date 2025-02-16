@@ -10,6 +10,7 @@ import { Skills } from './skills';
 import { Superskills } from './superskills';
 import { Unlocks } from './unlocks';
 import { Wave } from './wave';
+import { Date } from './date';
 
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { Section } from '~scene/system/interface/section';
@@ -29,6 +30,7 @@ export const ScreenUI: React.FC = () => {
         <Column $side="center">
           <Section direction='vertical' gap={8}>
             <Section direction='horizontal' gap={1}>
+              <Date />
               <Wave />
               <Modes />
               <Skills />

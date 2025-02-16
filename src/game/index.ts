@@ -256,11 +256,20 @@ export class Game extends Phaser.Game implements IGame {
   public toggleSystemPause(state: boolean) {
     this.events.emit(GameEvent.TOGGLE_PAUSE, state);
 
-    if (state) {
+    //console.log('Toggle system pause - ' + this.state);
+    if (state && this.state === GameState.STARTED) {
+      //console.log('Pause game');
       this.pause();
-    } else {
+      this.state = GameState.PAUSED;
+    } else if (!state && this.state === GameState.PAUSED) {
+      //console.log('Resume game');
       this.resume();
+      this.state = GameState.STARTED
     }
+  }
+
+  public isSystemPaused() {
+    return this.state === GameState.PAUSED;
   }
 
   private setState(state: GameState) {

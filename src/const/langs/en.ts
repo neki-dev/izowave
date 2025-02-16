@@ -247,4 +247,7 @@ export const EN = {
     'and generators for getting more resources.\n',
     'Also, upgrade the skills of your character and his assistant.',
   ].join('\n'),
+
+  DAYS: 'Days',
+  PAUSE_RESUME: 'Click to pause/resume game',
 };

@@ -106,6 +106,11 @@ export interface IGame extends Phaser.Game {
   toggleSystemPause(state: boolean): void
 
   /**
+   * Check system is paused.
+   */
+  isSystemPaused(): boolean
+
+  /**
    * Check platform is desktop.
    */
   isDesktop(): boolean
