@@ -5,7 +5,7 @@ import type { BuildingVariantData } from '../types';
 import { DIFFICULTY } from '~game/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class BuildingRadar extends Building {
   static Category = BuildingCategory.OTHER;
@@ -20,7 +20,7 @@ export class BuildingRadar extends Building {
 
   static MaxLevel = 4;
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.RADAR,

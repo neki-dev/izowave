@@ -1,4 +1,5 @@
 import { Building } from '../..';
+import type { Enemy } from '../../../npc/enemy';
 import {
   BuildingIcon,
   BuildingVariant,
@@ -8,25 +9,22 @@ import {
 import type {
   BuildingData,
   BuildingParam,
-  IBuilding,
-  IBuildingAmmunition,
-  IBuildingTower,
   BuildingSavePayload,
-  IBuildingBooster,
 } from '../../types';
+import type { BuildingAmmunition } from '../ammunition';
+import type { BuildingBooster } from '../booster';
 
 import { DIFFICULTY } from '~game/difficulty';
+import type { WorldScene } from '~game/scenes/world';
 import { getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
-import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import { PlayerSuperskill } from '~scene/world/entities/player/types';
 import type { IShot, ShotParams } from '~scene/world/entities/shot/types';
 import { EntityType } from '~scene/world/entities/types';
-import type { IWorld } from '~scene/world/types';
 
-export class BuildingTower extends Building implements IBuildingTower {
+export class BuildingTower extends Building {
   private shot: Nullable<IShot> = null;
 
   private shotDefaultParams: Nullable<ShotParams> = null;
@@ -45,7 +43,7 @@ export class BuildingTower extends Building implements IBuildingTower {
 
   private set ammo(v) { this._ammo = v; }
 
-  constructor(scene: IWorld, data: BuildingData, shot?: IShot) {
+  constructor(scene: WorldScene, data: BuildingData, shot?: IShot) {
     super(scene, data);
 
     if (shot) {
@@ -179,7 +177,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getAmmunition() {
-    const ammunitions = this.scene.builder.getBuildingsByVariant<IBuildingAmmunition>(BuildingVariant.AMMUNITION)
+    const ammunitions = this.scene.builder.getBuildingsByVariant<BuildingAmmunition>(BuildingVariant.AMMUNITION)
       .filter((building) => (building.ammo > 0 && building.actionsAreaContains(this.getBottomEdgePosition())));
 
     if (ammunitions.length === 0) {
@@ -224,7 +222,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   public getTargets() {
     const towerPosition = this.getBottomEdgePosition();
 
-    return this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
+    return this.scene.getEntities<Enemy>(EntityType.ENEMY).filter((enemy) => {
       if (
         enemy.alpha >= 1.0
         && !enemy.live.isDead()
@@ -242,7 +240,7 @@ export class BuildingTower extends Building implements IBuildingTower {
     });
   }
 
-  public shoot(targets: IEnemy[]) {
+  public shoot(targets: Enemy[]) {
     if (!this.shot) {
       return;
     }
@@ -268,7 +266,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private getBooster() {
-    const boosters = this.scene.builder.getBuildingsByVariant<IBuildingBooster>(BuildingVariant.BOOSTER)
+    const boosters = this.scene.builder.getBuildingsByVariant<BuildingBooster>(BuildingVariant.BOOSTER)
       .filter((building) => building.actionsAreaContains(this.getBottomEdgePosition()));
 
     if (boosters.length === 0) {
@@ -298,7 +296,7 @@ export class BuildingTower extends Building implements IBuildingTower {
   }
 
   private handleBuildingRelease() {
-    const handler = (building: IBuilding) => {
+    const handler = (building: Building) => {
       if (building.variant === BuildingVariant.AMMUNITION) {
         if (this.needReload) {
           this.reload();

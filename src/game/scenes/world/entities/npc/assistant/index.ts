@@ -1,29 +1,29 @@
 import { NPC } from '..';
+import type { Player } from '../../player';
 import { PlayerSkill } from '../../player/types';
-import type { IPlayer } from '../../player/types';
 import { ShotBallFire } from '../../shot/ball/variants/fire';
 import { ShotLazer } from '../../shot/lazer';
-import type { IShot, ShotParams, IShotFactory } from '../../shot/types';
+import type { IShot, ShotParams, IShotFactory, IShotInitiator } from '../../shot/types';
 import { EntityType } from '../../types';
-import type { IEnemy } from '../enemy/types';
+import type { Enemy } from '../enemy';
 
 import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
-import type { IAssistant, AssistantData } from './types';
+import type { AssistantData } from './types';
 import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
+import type { WorldScene } from '~game/scenes/world';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
-import type { IWorld } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
 Assets.RegisterSprites(AssistantTexture, ASSISTANT_TILE_SIZE);
 
-export class Assistant extends NPC implements IAssistant {
+export class Assistant extends NPC implements IShotInitiator {
   private shot: IShot;
 
-  private owner: IPlayer;
+  private owner: Player;
 
   private shotDefaultParams: ShotParams;
 
@@ -33,7 +33,7 @@ export class Assistant extends NPC implements IAssistant {
 
   private variant: AssistantVariant;
 
-  constructor(scene: IWorld, {
+  constructor(scene: WorldScene, {
     owner, positionAtMatrix, speed,
   }: AssistantData) {
     super(scene, {
@@ -114,7 +114,7 @@ export class Assistant extends NPC implements IAssistant {
       scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
       level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
     });
-    const enemies = this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => {
+    const enemies = this.scene.getEntities<Enemy>(EntityType.ENEMY).filter((enemy) => {
       if (enemy.alpha >= 1.0 && !enemy.live.isDead()) {
         const enemyPosition = enemy.getBottomEdgePosition();
 

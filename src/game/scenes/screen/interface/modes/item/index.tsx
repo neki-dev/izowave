@@ -1,9 +1,10 @@
 import { Texture, useInteraction, useScene } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
+import type { WorldScene } from '~game/scenes/world';
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
-import type { IWorld, WorldMode } from '~scene/world/types';
+import type { WorldMode } from '~scene/world/types';
 import { WorldModeIcon } from '~scene/world/types';
 
 import { Container, Placeholder } from './styles';
@@ -13,7 +14,7 @@ type Props = {
 };
 
 export const Item: React.FC<Props> = ({ mode }) => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const refContainer = useRef<HTMLDivElement>(null);
 

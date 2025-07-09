@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
 
 import { Sprite } from '..';
+import type { WorldScene } from '../..';
 import { EntityType } from '../types';
 
 import { NPC_PATH_FIND_RATE } from './const';
-import type { INPC, NPCData } from './types';
+import type { NPCData } from './types';
 
 import { DEBUG_MODS } from '~game/const';
 import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~lib/dimension';
@@ -12,9 +13,8 @@ import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 
-export abstract class NPC extends Sprite implements INPC {
+export abstract class NPC extends Sprite {
   public pathPassed: boolean = false;
 
   private pathToTarget: PositionAtWorld[] = [];
@@ -33,7 +33,7 @@ export abstract class NPC extends Sprite implements INPC {
 
   private seesInvisibleTarget: boolean = false;
 
-  constructor(scene: IWorld, {
+  constructor(scene: WorldScene, {
     pathFindTriggerDistance, seesInvisibleTarget, texture, customAnimation, ...data
   }: NPCData) {
     super(scene, { ...data, texture });

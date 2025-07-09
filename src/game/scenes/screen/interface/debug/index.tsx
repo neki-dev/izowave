@@ -1,15 +1,15 @@
 import { useGame, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { GameScene } from '~game/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 import { Value } from './styles';
 
 export const Debug: React.FC = () => {
-  const game = useGame<IGame>();
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const game = useGame<Game>();
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [frames, setFrames] = useState(0);
   const [memory, setMemory] = useState(0);

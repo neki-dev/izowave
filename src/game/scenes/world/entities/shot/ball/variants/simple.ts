@@ -1,12 +1,12 @@
 import { ShotBall } from '..';
+import type { Enemy } from '../../../npc/enemy';
 import type { ShotParams, ShotData } from '../../types';
 import { ShotBallAudio } from '../types';
 
-import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class ShotBallSimple extends ShotBall {
-  constructor(scene: IWorld, params: ShotParams, data: ShotData = {}) {
+  constructor(scene: WorldScene, params: ShotParams, data: ShotData = {}) {
     super(scene, params, {
       ...data,
       audio: ShotBallAudio.SIMPLE,
@@ -14,7 +14,7 @@ export class ShotBallSimple extends ShotBall {
     });
   }
 
-  public hit(target: IEnemy) {
+  public hit(target: Enemy) {
     super.hit(target);
 
     this.scene.fx.createBloodEffect(target);

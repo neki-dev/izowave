@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { NavigatorEvent } from './types';
 import type {
-  INavigator,
   NavigatorTaskInfo,
   NavigatorWorkerResult,
   NavigatorPayloadCompleteTask,
@@ -16,7 +15,7 @@ import NavigatorWorker from './worker/index.ts?worker';
 
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
-export class Navigator implements INavigator {
+export class Navigator {
   private pointsCost: number[][] = [];
 
   private tasks: NavigatorTaskInfo[] = [];

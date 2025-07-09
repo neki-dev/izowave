@@ -1,15 +1,15 @@
 import { ShotBall } from '..';
+import type { Enemy } from '../../../npc/enemy';
 import type { ShotParams, ShotData } from '../../types';
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '../const';
 import { ShotBallAudio } from '../types';
 
 import { getIsometricDistance } from '~lib/dimension';
-import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
+import type { WorldScene } from '~scene/world';
 import { EntityType } from '~scene/world/entities/types';
-import type { IWorld } from '~scene/world/types';
 
 export class ShotBallFire extends ShotBall {
-  constructor(scene: IWorld, params: ShotParams, data: ShotData = {}) {
+  constructor(scene: WorldScene, params: ShotParams, data: ShotData = {}) {
     super(scene, params, {
       ...data,
       audio: ShotBallAudio.FIRE,
@@ -18,7 +18,7 @@ export class ShotBallFire extends ShotBall {
     });
   }
 
-  public hit(target: IEnemy) {
+  public hit(target: Enemy) {
     super.hit(target);
 
     this.scene.fx.createFireEffect(target);
@@ -32,10 +32,10 @@ export class ShotBallFire extends ShotBall {
     }
   }
 
-  private spreadDamage(target: IEnemy, damage: number) {
+  private spreadDamage(target: Enemy, damage: number) {
     const position = target.getBottomEdgePosition();
 
-    this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+    this.scene.getEntities<Enemy>(EntityType.ENEMY).forEach((enemy) => {
       if (enemy.active && enemy !== target) {
         const distance = getIsometricDistance(position, enemy.getBottomEdgePosition());
 

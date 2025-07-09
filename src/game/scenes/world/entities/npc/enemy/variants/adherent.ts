@@ -2,10 +2,10 @@ import { Enemy } from '..';
 import { EnemyTexture } from '../types';
 import type { EnemyVariantData } from '../types';
 
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class EnemyAdherent extends Enemy {
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.ADHERENT,

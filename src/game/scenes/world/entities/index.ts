@@ -1,27 +1,26 @@
 import Phaser from 'phaser';
 
+import type { WorldScene } from '..';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
+import type { IParticlesParent } from '../fx-manager/particles/types';
 import { Level } from '../level';
 import type { LevelBiome, PositionAtMatrix, TileType, PositionAtWorld } from '../level/types';
-import type { IWorld } from '../types';
 
 import { Indicator } from './addons/indicator';
-import type { IIndicator } from './addons/indicator/types';
 import { Live } from './addons/live';
 import { LiveEvent } from './addons/live/types';
-import type { ILive } from './addons/live/types';
 import { EntityType } from './types';
-import type { ISprite, SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
+import type { SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
 
 import { DEBUG_MODS } from '~game/const';
 import { isPositionsEqual } from '~lib/dimension';
 
-export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
-  readonly scene: IWorld;
+export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesParent {
+  readonly scene: WorldScene;
 
   readonly body: Phaser.Physics.Arcade.Body;
 
-  readonly live: ILive;
+  readonly live: Live;
 
   public gamut: number = 0;
 
@@ -47,7 +46,7 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   public get positionAtMatrix() { return this._positionAtMatrix; }
   private set positionAtMatrix(v) { this._positionAtMatrix = v; }
 
-  constructor(scene: IWorld, {
+  constructor(scene: WorldScene, {
     texture, positionAtWorld, positionAtMatrix, speed, body, health = 1, frame = 0,
   }: SpriteData) {
     let position: Nullable<PositionAtWorld> = null;
@@ -276,11 +275,11 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements ISprite {
   }
 
   protected getIndicator(key: string) {
-    return this.indicators.getByName<IIndicator>(key) ?? null;
+    return this.indicators.getByName<Indicator>(key) ?? null;
   }
 
   private updateIndicators() {
-    this.indicators.each((indicator: IIndicator) => {
+    this.indicators.each((indicator: Indicator) => {
       indicator.updateValue();
     });
   }

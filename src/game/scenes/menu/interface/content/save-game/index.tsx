@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import type { ChangeEvent } from 'react';
 
 import { MAX_GAME_SAVES } from '~game/const';
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { phrase } from '~lib/lang';
 import type { LangPhrase } from '~lib/lang/types';
 import { Storage } from '~lib/storage';
@@ -15,7 +15,7 @@ import { Table } from '~scene/system/interface/table';
 import { Input, Limit, Wrapper } from './styles';
 
 export const SaveGame: React.FC = () => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const [saves, setSaves] = useState(Storage.Saves);
   const [saveName, setSaveName] = useState('');

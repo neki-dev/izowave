@@ -5,7 +5,7 @@ import { BuildingTower } from '.';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { ShotLazer } from '~scene/world/entities/shot/lazer';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class BuildingTowerLazer extends BuildingTower {
   static Category = BuildingCategory.ATTACK;
@@ -20,7 +20,7 @@ export class BuildingTowerLazer extends BuildingTower {
 
   static MaxLevel = 5;
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     const shot = new ShotLazer(scene, {
       damage: DIFFICULTY.BUILDING_TOWER_LAZER_DAMAGE,
     });

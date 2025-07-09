@@ -3,14 +3,14 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useRef, useState } from 'react';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { GameScene, GameEvent } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 import { Hint } from '~scene/system/interface/hint';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';
 
 import {
@@ -24,8 +24,8 @@ import {
 } from './styles';
 
 export const Wave: React.FC = () => {
-  const game = useGame<IGame>();
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const game = useGame<Game>();
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const refContainer = useRef<HTMLDivElement>(null);
 

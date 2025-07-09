@@ -7,12 +7,12 @@ import { TutorialStep } from '~lib/tutorial/types';
 import { Amount } from '~scene/system/interface/amount';
 import { Hint } from '~scene/system/interface/hint';
 import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 import { Wrapper } from './styles';
 
 export const Resources: React.FC = () => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [amount, setAmount] = useState(world.player.resources);
   const [hint, setHint] = useState(false);

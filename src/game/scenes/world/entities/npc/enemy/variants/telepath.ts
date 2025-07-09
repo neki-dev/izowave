@@ -1,12 +1,12 @@
 import { Enemy } from '..';
 import { ENEMY_REGENERATION_RADIUS, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_REGENERATION_EFFECT_COLOR } from '../const';
 import { EnemyTexture } from '../types';
-import type { EnemyVariantData, IEnemy } from '../types';
+import type { EnemyVariantData } from '../types';
 
 import { getIsometricDistance } from '~lib/dimension';
+import type { WorldScene } from '~scene/world';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import type { IWorld } from '~scene/world/types';
 
 export class EnemyTelepath extends Enemy {
   static SpawnWaveRange = [13];
@@ -15,7 +15,7 @@ export class EnemyTelepath extends Enemy {
 
   private regenerateTimer: Nullable<Phaser.Time.TimerEvent> = null;
 
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.TELEPATH,
@@ -64,9 +64,9 @@ export class EnemyTelepath extends Enemy {
 
   private healNearbyEnemies(amount: number) {
     const position = this.getBottomEdgePosition();
-    const enemies: IEnemy[] = [];
+    const enemies: Enemy[] = [];
 
-    this.scene.getEntities<IEnemy>(EntityType.ENEMY).forEach((enemy) => {
+    this.scene.getEntities<Enemy>(EntityType.ENEMY).forEach((enemy) => {
       if (!(enemy instanceof EnemyTelepath) && !enemy.live.isMaxHealth()) {
         const distance = getIsometricDistance(position, enemy.getBottomEdgePosition());
 

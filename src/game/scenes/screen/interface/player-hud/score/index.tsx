@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import { GameScene } from '~game/types';
 import { Amount } from '~scene/system/interface/amount';
 import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export const Score: React.FC = () => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [amount, setAmount] = useState(world.player.score);
 

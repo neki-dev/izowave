@@ -1,11 +1,4 @@
-import type Phaser from 'phaser';
-
 import type { PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
-
-export interface IEffect extends Phaser.GameObjects.Sprite {
-  readonly scene: IWorld
-}
 
 export enum EffectTexture {
   BLOOD = 'effect/blood',

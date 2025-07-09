@@ -1,12 +1,12 @@
 import Phaser from 'phaser';
 
-import type { IIndicator, IndicatorData } from './types';
+import type { IndicatorData } from './types';
 
+import type { WorldScene } from '~game/scenes/world';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
-import type { IWorld } from '~scene/world/types';
 
-export class Indicator extends Phaser.GameObjects.Container implements IIndicator {
-  readonly scene: IWorld;
+export class Indicator extends Phaser.GameObjects.Container {
+  readonly scene: WorldScene;
 
   private value?: () => number;
 

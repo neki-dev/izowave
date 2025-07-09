@@ -2,23 +2,21 @@ import Phaser from 'phaser';
 
 import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
 import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent } from './types';
-import type { IGame, GameStat, GameSavePayload } from './types';
+import type { GameStat, GameSavePayload } from './types';
 
 import { registerShaders } from '~lib/shader';
 import { Storage } from '~lib/storage';
 import type { StorageSave } from '~lib/storage/types';
 import { Tutorial } from '~lib/tutorial';
 import { Utils } from '~lib/utils';
-import { Gameover } from '~scene/gameover';
-import { Menu } from '~scene/menu';
+import { GameOverScene } from '~scene/gameover';
+import { MenuScene } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';
-import { Screen } from '~scene/screen';
-import type { IScreen } from '~scene/screen/types';
-import { System } from '~scene/system';
-import { World } from '~scene/world';
-import type { IWorld } from '~scene/world/types';
+import { ScreenScene } from '~scene/screen';
+import { SystemScene } from '~scene/system';
+import { WorldScene } from '~scene/world';
 
-export class Game extends Phaser.Game implements IGame {
+export class Game extends Phaser.Game {
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
 
   private saved: boolean = false;
@@ -27,11 +25,11 @@ export class Game extends Phaser.Game implements IGame {
   public get state() { return this._state; }
   private set state(v) { this._state = v; }
 
-  private _screen: IScreen;
+  private _screen: ScreenScene;
   public get screen() { return this._screen; }
   private set screen(v) { this._screen = v; }
 
-  private _world: IWorld;
+  private _world: WorldScene;
   public get world() { return this._world; }
   private set world(v) { this._world = v; }
 
@@ -50,7 +48,7 @@ export class Game extends Phaser.Game implements IGame {
 
   constructor() {
     super({
-      scene: [System, World, Screen, Menu, Gameover],
+      scene: [SystemScene, WorldScene, ScreenScene, MenuScene, GameOverScene],
       pixelArt: true,
       autoRound: true,
       parent: CONTAINER_ID,
@@ -77,8 +75,8 @@ export class Game extends Phaser.Game implements IGame {
     this.events.on(Phaser.Core.Events.READY, () => {
       registerShaders(this.renderer);
 
-      this.screen = <IScreen> this.scene.getScene(GameScene.SCREEN);
-      this.world = <IWorld> this.scene.getScene(GameScene.WORLD);
+      this.screen = <ScreenScene> this.scene.getScene(GameScene.SCREEN);
+      this.world = <WorldScene> this.scene.getScene(GameScene.WORLD);
 
       this.sound.setVolume(AUDIO_VOLUME);
       this.sound.mute = !this.isSettingEnabled(GameSettings.AUDIO);

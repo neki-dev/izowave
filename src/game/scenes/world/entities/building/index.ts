@@ -1,10 +1,13 @@
 import Phaser from 'phaser';
 
+import type { WorldScene } from '../..';
+import type { IParticlesParent } from '../../fx-manager/particles/types';
 import { Indicator } from '../addons/indicator';
-import type { IIndicator, IndicatorData } from '../addons/indicator/types';
+import type { IndicatorData } from '../addons/indicator/types';
 import { Live } from '../addons/live';
 import { LiveEvent } from '../addons/live/types';
-import type { ILive } from '../addons/live/types';
+import type { IEnemyTarget } from '../npc/enemy/types';
+import type { IShotInitiator } from '../shot/types';
 import { EntityType } from '../types';
 
 import { BUILDING_TILE } from './const';
@@ -13,7 +16,6 @@ import type {
   BuildingData,
   BuildingParam,
   BuildingControl,
-  IBuilding,
   BuildingGrowthValue,
   BuildingSavePayload,
   BuildingVariant,
@@ -42,17 +44,16 @@ import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import { TileType } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 
 Assets.RegisterAudio(BuildingAudio);
 Assets.RegisterImages(BuildingIcon);
 Assets.RegisterSprites(BuildingTexture, BUILDING_TILE);
 
-export abstract class Building extends Phaser.GameObjects.Image implements IBuilding, ITile {
-  readonly scene: IWorld;
+export abstract class Building extends Phaser.GameObjects.Image implements ITile, IEnemyTarget, IParticlesParent, IShotInitiator {
+  readonly scene: WorldScene;
 
-  readonly live: ILive;
+  readonly live: Live;
 
   readonly variant: BuildingVariant;
 
@@ -94,11 +95,11 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
 
   private buildTimer: Nullable< Phaser.Time.TimerEvent> = null;
 
-  private buildBar: Nullable<IIndicator> = null;
+  private buildBar: Nullable<Indicator> = null;
 
   private indicators: Phaser.GameObjects.Container;
 
-  constructor(scene: IWorld, {
+  constructor(scene: WorldScene, {
     positionAtMatrix, buildDuration, health, texture, variant, radius, delay,
   }: BuildingData) {
     const positionAtWorld = Level.ToWorldPosition(positionAtMatrix);
@@ -460,7 +461,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements IBuil
       return;
     }
 
-    this.indicators.each((indicator: IIndicator) => {
+    this.indicators.each((indicator: Indicator) => {
       indicator.updateValue();
     });
   }

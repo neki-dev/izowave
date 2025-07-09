@@ -4,19 +4,20 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Controls } from './controls';
 import { Params } from './params';
 
+import type { WorldScene } from '~game/scenes/world';
+import type { Building } from '~game/scenes/world/entities/building';
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
-import type { IBuilding, BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
+import type { BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
 
 import { Name, Level, Health, Wrapper, Head, Body, Container } from './styles';
 
 type Props = {
-  building: IBuilding
+  building: Building
 };
 
 export const BuildingInfo: React.FC<Props> = ({ building }) => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [upgradeLevel, setUpgradeLevel] = useState(1);
   const [health, setHealth] = useState(1);

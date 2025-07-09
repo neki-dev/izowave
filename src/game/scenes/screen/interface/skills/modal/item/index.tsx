@@ -7,7 +7,7 @@ import { Cost } from '~scene/system/interface/cost';
 import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
 import type { PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';
 import { PlayerEvent, PlayerSkillIcon } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 import {
   Container, Info, Action, Label, Level, Button, Limit, Icon, Head,
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export const Item: React.FC<Props> = ({ type }) => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const refContainer = useRef<HTMLDivElement>(null);
 

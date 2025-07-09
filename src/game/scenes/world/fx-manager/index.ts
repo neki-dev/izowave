@@ -1,24 +1,24 @@
-import type { IBuilding } from '../entities/building/types';
-import type { IEnemy } from '../entities/npc/enemy/types';
-import type { INPC } from '../entities/npc/types';
-import type { IPlayer } from '../entities/player/types';
-import type { ISprite } from '../entities/types';
+import type { WorldScene } from '..';
+import type { Sprite } from '../entities';
+import type { Building } from '../entities/building';
+import type { NPC } from '../entities/npc';
+import type { Enemy } from '../entities/npc/enemy';
+import type { Player } from '../entities/player';
 import type { PositionAtWorld } from '../level/types';
-import type { IWorld } from '../types';
 
 import { Effect } from './effect';
 import { EffectTexture } from './effect/types';
 import { Particles } from './particles';
 import type { IParticlesParent } from './particles/types';
 import { ParticlesTexture } from './particles/types';
-import type { IFXManager, SoundParams } from './types';
+import type { SoundParams } from './types';
 
 import { GameSettings } from '~game/types';
 
-export class FXManager implements IFXManager {
-  private scene: IWorld;
+export class FXManager {
+  private scene: WorldScene;
 
-  constructor(scene: IWorld) {
+  constructor(scene: WorldScene) {
     this.scene = scene;
   }
 
@@ -34,7 +34,7 @@ export class FXManager implements IFXManager {
     }
   }
 
-  public createDustEffect(parent: IPlayer) {
+  public createDustEffect(parent: Player) {
     if (!this.isEffectsEnabled()) {
       return null;
     }
@@ -59,7 +59,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createBloodEffect(parent: ISprite) {
+  public createBloodEffect(parent: Sprite) {
     if (
       !parent.active
       || !this.isEffectsEnabled()
@@ -86,7 +86,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createFrozeEffect(parent: INPC) {
+  public createFrozeEffect(parent: NPC) {
     if (
       !parent.active
       || !this.isEffectsEnabled()
@@ -113,7 +113,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createFireEffect(parent: IEnemy) {
+  public createFireEffect(parent: Enemy) {
     if (
       !parent.active
       || !this.isEffectsEnabled()
@@ -142,7 +142,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createLongFireEffect(parent: IEnemy, params: { duration: number }) {
+  public createLongFireEffect(parent: Enemy, params: { duration: number }) {
     if (!parent.active || !this.isEffectsEnabled()) {
       return null;
     }
@@ -172,7 +172,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createLazerEffect(parent: IEnemy) {
+  public createLazerEffect(parent: Enemy) {
     if (
       !parent.active
       || !this.isEffectsEnabled()
@@ -200,7 +200,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createElectroEffect(parent: IEnemy) {
+  public createElectroEffect(parent: Enemy) {
     if (
       !parent.active
       || !this.isEffectsEnabled()
@@ -249,7 +249,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createSpawnEffect(parent: IEnemy) {
+  public createSpawnEffect(parent: Enemy) {
     if (!this.isEffectsEnabled()) {
       return null;
     }
@@ -277,7 +277,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createHealEffect(parent: ISprite) {
+  public createHealEffect(parent: Sprite) {
     if (
       !this.isEffectsEnabled()
       || FXManager.IsExist(parent, 'heal')
@@ -311,7 +311,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createGenerationEffect(parent: IBuilding) {
+  public createGenerationEffect(parent: Building) {
     if (!this.isEffectsEnabled()) {
       return null;
     }
@@ -333,7 +333,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createExplosionEffect(parent: ISprite) {
+  public createExplosionEffect(parent: Sprite) {
     if (!this.isEffectsEnabled()) {
       return null;
     }
@@ -357,7 +357,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createDamageEffect(building: IBuilding) {
+  public createDamageEffect(building: Building) {
     if (!this.isEffectsEnabled()) {
       return null;
     }
@@ -370,7 +370,7 @@ export class FXManager implements IFXManager {
     });
   }
 
-  public createSmokeEffect(building: IBuilding) {
+  public createSmokeEffect(building: Building) {
     if (!this.isEffectsEnabled()) {
       return null;
     }

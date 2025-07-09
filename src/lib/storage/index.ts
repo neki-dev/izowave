@@ -1,9 +1,9 @@
 import { openDB } from 'idb';
 import type { IDBPDatabase } from 'idb';
 
-import type { IGame } from '../../game/types';
-
 import type { StorageSave, StorageSavePayload } from './types';
+
+import type { Game } from '~game/index';
 
 export class Storage {
   private static DB: Nullable<IDBPDatabase> = null;
@@ -74,7 +74,7 @@ export class Storage {
     }
   }
 
-  public static async AddSave(game: IGame, name: string) {
+  public static async AddSave(game: Game, name: string) {
     if (!this.DB) {
       return Promise.resolve(null);
     }

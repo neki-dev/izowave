@@ -1,13 +1,14 @@
+import type { WorldScene } from '../..';
+
 import { ParticlesTexture } from './types';
-import type { IParticles, IParticlesParent, ParticlesData } from './types';
+import type { IParticlesParent, ParticlesData } from './types';
 
 import { Assets } from '~lib/assets';
-import type { IWorld } from '~scene/world/types';
 
 Assets.RegisterImages(ParticlesTexture);
 
-export class Particles implements IParticles {
-  readonly scene: IWorld;
+export class Particles {
+  readonly scene: WorldScene;
 
   readonly emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 

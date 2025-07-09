@@ -3,7 +3,7 @@ import { BuildingCategory, BuildingTexture, BuildingVariant } from '../types';
 import type { BuildingVariantData } from '../types';
 
 import { DIFFICULTY } from '~game/difficulty';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class BuildingWall extends Building {
   static Category = BuildingCategory.DEFENSE;
@@ -16,7 +16,7 @@ export class BuildingWall extends Building {
 
   static MaxLevel = 3;
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.WALL,

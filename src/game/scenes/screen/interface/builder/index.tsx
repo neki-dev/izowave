@@ -3,7 +3,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { Building } from './building';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
+import type { WorldScene } from '~game/scenes/world';
 import { GameScene } from '~game/types';
 import { phrase } from '~lib/lang';
 import type { LangPhrase } from '~lib/lang/types';
@@ -12,13 +13,12 @@ import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import { BuildingVariant, BuildingCategory } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
 
 import { Category, Label, Variants, Wrapper } from './styles';
 
 export const Builder: React.FC = () => {
-  const game = useGame<IGame>();
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const game = useGame<Game>();
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [isHidden, setHidden] = useState(false);
   const [hintBuilding, setHintBuilding] = useState<Nullable<{

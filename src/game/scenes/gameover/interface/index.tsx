@@ -3,7 +3,8 @@ import React, { useEffect, useRef } from 'react';
 
 import { Result } from './result';
 
-import type { GameStat, IGame } from '~game/types';
+import type { Game } from '~game/index';
+import type { GameStat } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
@@ -16,7 +17,7 @@ type Props = {
 };
 
 export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const refButton = useRef<HTMLDivElement>(null);
 

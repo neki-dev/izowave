@@ -1,29 +1,10 @@
-import type { ILive } from '../../addons/live/types';
-import type { INPC } from '../types';
+import type { Live } from '../../addons/live';
 
 import type { PositionAtWorld, PositionAtMatrix } from '~scene/world/level/types';
 
-export interface IEnemy extends INPC {
-  /**
-   * Damage amount.
-   */
-  readonly damage: number
-
-  /**
-   * Set overlaped state.
-   */
-  overlapTarget(): void
-
-  /**
-   * Give target damage.
-   * @param target - Target
-   */
-  attack(target: IEnemyTarget): void
-}
-
 export interface IEnemyTarget {
-  readonly live: ILive
-  active: boolean
+  readonly live: Live
+  readonly active: boolean
   getBottomEdgePosition(): PositionAtWorld
 }
 

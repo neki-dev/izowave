@@ -1,16 +1,16 @@
 import Phaser from 'phaser';
 
+import type { WorldScene } from '..';
+import type { Enemy } from '../entities/npc/enemy';
 import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '../entities/npc/enemy/const';
 import { EnemyFactory } from '../entities/npc/enemy/factory';
 import { ENEMIES } from '../entities/npc/enemy/factory/const';
 import { EnemyVariant } from '../entities/npc/enemy/types';
-import type { IEnemy } from '../entities/npc/enemy/types';
 import { EntityType } from '../entities/types';
 import { WorldEvent, WorldMode } from '../types';
-import type { IWorld } from '../types';
 
 import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
-import type { IWave, WaveSavePayload } from './types';
+import type { WaveSavePayload } from './types';
 import { WaveAudio, WaveEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
@@ -22,8 +22,8 @@ import { Utils } from '~lib/utils';
 
 Assets.RegisterAudio(WaveAudio);
 
-export class Wave extends Phaser.Events.EventEmitter implements IWave {
-  readonly scene: IWorld;
+export class Wave extends Phaser.Events.EventEmitter {
+  readonly scene: WorldScene;
 
   private _going: boolean = false;
   public get going() { return this._going; }
@@ -49,7 +49,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
 
   private alarmInterval: Nullable<Phaser.Time.TimerEvent> = null;
 
-  constructor(scene: IWorld) {
+  constructor(scene: WorldScene) {
     super();
 
     this.scene = scene;
@@ -250,7 +250,7 @@ export class Wave extends Phaser.Events.EventEmitter implements IWave {
     this.addSpawnEffect(enemy);
   }
 
-  private addSpawnEffect(enemy: IEnemy) {
+  private addSpawnEffect(enemy: Enemy) {
     enemy.freeze(750);
 
     this.scene.fx.createSpawnEffect(enemy);

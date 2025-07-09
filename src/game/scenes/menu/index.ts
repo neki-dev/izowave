@@ -7,7 +7,7 @@ import type { MenuPage } from './types';
 
 import { GameScene, GameState } from '~game/types';
 
-export class Menu extends Scene {
+export class MenuScene extends Scene {
   constructor() {
     super(GameScene.MENU);
   }

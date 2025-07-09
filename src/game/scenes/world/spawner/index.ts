@@ -1,8 +1,8 @@
-import type { IBuilding } from '../entities/building/types';
+import type { WorldScene } from '..';
+import type { Building } from '../entities/building';
 import { EntityType } from '../entities/types';
 import { SpawnTarget } from '../level/types';
 import type { PositionAtMatrix } from '../level/types';
-import type { IWorld } from '../types';
 
 import {
   SPAWN_CACHE_RESET_DISTANCE,
@@ -13,12 +13,12 @@ import {
   SPAWN_POSITIONS_OUTPUT_LIMIT,
   SPAWN_COST_FACTOR,
 } from './const';
-import type { ISpawner, SpawnCache, SpawnPositionMeta, SpawnPositionResolve } from './types';
+import type { SpawnCache, SpawnPositionMeta, SpawnPositionResolve } from './types';
 
 import { excludePosition, getIsometricDistance, sortByMatrixDistance } from '~lib/dimension';
 
-export class Spawner implements ISpawner {
-  private scene: IWorld;
+export class Spawner {
+  private scene: WorldScene;
 
   private positions: PositionAtMatrix[] = [];
 
@@ -28,7 +28,7 @@ export class Spawner implements ISpawner {
 
   private tasks: string[] = [];
 
-  constructor(scene: IWorld) {
+  constructor(scene: WorldScene) {
     this.scene = scene;
     this.positionsAnalog = [];
     this.tasks = [];
@@ -105,7 +105,7 @@ export class Spawner implements ISpawner {
   }
 
   private getFreePositionsMeta() {
-    const buildings = this.scene.getEntities<IBuilding>(EntityType.BUILDING);
+    const buildings = this.scene.getEntities<Building>(EntityType.BUILDING);
     const distanceFromPlayer = this.getSpawnDistanceFromPlayer();
     const positions = this.positions
       .map((position) => ({

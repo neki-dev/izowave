@@ -1,13 +1,4 @@
-import type Phaser from 'phaser';
-
-import type { IShot, ShotData } from '../types';
-
-import type { IWorld } from '~scene/world/types';
-
-export interface IShotBall extends Phaser.Physics.Arcade.Image, IShot {
-  readonly scene: IWorld
-  readonly body: Phaser.Physics.Arcade.Body
-}
+import type { ShotData } from '../types';
 
 export enum ShotBallAudio {
   FIRE = 'shot/ball_fire',

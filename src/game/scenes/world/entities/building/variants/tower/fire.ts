@@ -7,7 +7,7 @@ import { DIFFICULTY } from '~game/difficulty';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { ShotBallFire } from '~scene/world/entities/shot/ball/variants/fire';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class BuildingTowerFire extends BuildingTower {
   static Category = BuildingCategory.ATTACK;
@@ -20,7 +20,7 @@ export class BuildingTowerFire extends BuildingTower {
 
   static MaxLevel = 5;
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     const shot = new ShotBallFire(scene, {
       damage: DIFFICULTY.BUILDING_TOWER_FIRE_DAMAGE,
       speed: DIFFICULTY.BUILDING_TOWER_FIRE_SHOT_SPEED,

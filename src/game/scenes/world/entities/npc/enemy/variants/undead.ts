@@ -2,12 +2,12 @@ import { Enemy } from '..';
 import { EnemyTexture } from '../types';
 import type { EnemyVariantData } from '../types';
 
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class EnemyUndead extends Enemy {
   static SpawnWaveRange = [4, 9];
 
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.UNDEAD,

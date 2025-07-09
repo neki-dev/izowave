@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
 
+import type { WorldScene } from '../..';
+
 import { EffectAudio, EffectTexture } from './types';
-import type { IEffect, EffectData } from './types';
+import type { EffectData } from './types';
 
 import { Assets } from '~lib/assets';
-import type { IWorld } from '~scene/world/types';
 
 Assets.RegisterAudio(EffectAudio);
 Assets.RegisterSprites(EffectTexture, {
@@ -12,10 +13,10 @@ Assets.RegisterSprites(EffectTexture, {
   height: 32,
 });
 
-export class Effect extends Phaser.GameObjects.Sprite implements IEffect {
-  readonly scene: IWorld;
+export class Effect extends Phaser.GameObjects.Sprite {
+  readonly scene: WorldScene;
 
-  constructor(scene: IWorld, {
+  constructor(scene: WorldScene, {
     texture, position, staticFrame, depth, rate = 16,
   }: EffectData) {
     super(scene, position.x, position.y, texture, staticFrame ?? 0);

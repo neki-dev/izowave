@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Modal } from './modal';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { phrase } from '~lib/lang';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
@@ -13,7 +13,7 @@ import { Hint } from '~scene/system/interface/hint';
 import { Wrapper } from './styles';
 
 export const Skills: React.FC = () => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const [opened, setOpened] = useState(false);
   const [hint, setHint] = useState(false);

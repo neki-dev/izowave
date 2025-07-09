@@ -5,7 +5,7 @@ import { BuildingTower } from '.';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { ShotBallFrozen } from '~scene/world/entities/shot/ball/variants/frozen';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class BuildingTowerFrozen extends BuildingTower {
   static Category = BuildingCategory.DEFENSE;
@@ -20,7 +20,7 @@ export class BuildingTowerFrozen extends BuildingTower {
 
   static MaxLevel = 5;
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     const shot = new ShotBallFrozen(scene, {
       freeze: DIFFICULTY.BUILDING_TOWER_FROZEN_FREEZE_DURATION,
       speed: DIFFICULTY.BUILDING_TOWER_FROZEN_SHOT_SPEED,

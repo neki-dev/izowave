@@ -1,7 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { phrase } from '~lib/lang';
 import type { LangPhrase } from '~lib/lang/types';
 import { Storage } from '~lib/storage';
@@ -12,7 +12,7 @@ import { Table } from '~scene/system/interface/table';
 import { Wrapper, Empty } from './styles';
 
 export const LoadGame: React.FC = () => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const [selectedSave, setSelectedSave] = useState(Storage.Saves[0]);
   const [saves, setSaves] = useState(Storage.Saves);

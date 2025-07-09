@@ -6,7 +6,7 @@ import { GameoverUI } from './interface';
 
 import { GameScene } from '~game/types';
 
-export class Gameover extends Scene {
+export class GameOverScene extends Scene {
   constructor() {
     super(GameScene.GAMEOVER);
   }

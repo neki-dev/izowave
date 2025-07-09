@@ -1,7 +1,7 @@
 import { useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { GameState } from '~game/types';
 import { phrase } from '~lib/lang';
 import type { LangPhrase } from '~lib/lang/types';
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export const Navigation: React.FC<Props> = ({ page, onSelect }) => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const [confirmation, setConfirmation] = useState<Nullable<{
     message: LangPhrase

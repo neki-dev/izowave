@@ -3,7 +3,7 @@ import { ENEMY_HEAL_MULTIPLIER, ENEMY_HEAL_TIMESTAMP_PAUSE } from '../const';
 import { EnemyTexture } from '../types';
 import type { EnemyVariantData } from '../types';
 
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class EnemyBerserk extends Enemy {
   static SpawnWaveRange = [16];
@@ -12,7 +12,7 @@ export class EnemyBerserk extends Enemy {
 
   private healAmount: number = 0;
 
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.BERSERK,

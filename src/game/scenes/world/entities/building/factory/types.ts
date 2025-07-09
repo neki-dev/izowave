@@ -1,8 +1,7 @@
-import type {
-  BuildingCategory, BuildingTexture, BuildingVariantData, IBuilding,
-} from '../types';
+import type { Building } from '..';
+import type { BuildingCategory, BuildingTexture, BuildingVariantData } from '../types';
 
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~game/scenes/world';
 
 export interface IBuildingFactory {
   Category: BuildingCategory
@@ -12,5 +11,5 @@ export interface IBuildingFactory {
   Limit?: boolean
   AllowByWave?: number
   MaxLevel: number
-  new (scene: IWorld, data: BuildingVariantData): IBuilding
+  new (scene: WorldScene, data: BuildingVariantData): Building
 }

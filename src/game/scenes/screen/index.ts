@@ -5,7 +5,6 @@ import { Scene } from '..';
 
 import { ScreenUI } from './interface';
 import { ScreenAudio, ScreenEvent } from './types';
-import type { IScreen } from './types';
 
 import { GameScene } from '~game/types';
 import { Assets } from '~lib/assets';
@@ -14,7 +13,7 @@ import type { LangPhrase } from '~lib/lang/types';
 
 Assets.RegisterAudio(ScreenAudio);
 
-export class Screen extends Scene implements IScreen {
+export class ScreenScene extends Scene {
   private joystick: Nullable<VirtualJoystick> = null;
 
   private _joystickActivePointer: Nullable<Phaser.Input.Pointer> = null;

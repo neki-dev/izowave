@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 
 import { PARAM_VALUES } from './const';
 
-import type { GameSettings, IGame } from '~game/types';
+import type { Game } from '~game/index';
+import type { GameSettings } from '~game/types';
 import { Setting } from '~scene/system/interface/setting';
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
 };
 
 export const Param: React.FC<Props> = ({ type }) => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const [currentValue, setCurrentValue] = useState(game.settings[type]);
 

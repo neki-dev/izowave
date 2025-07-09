@@ -2,8 +2,8 @@ import { WorldGenerator } from 'gen-biome';
 import type { World } from 'gen-biome';
 import Phaser from 'phaser';
 
+import type { WorldScene } from '..';
 import type { Effect } from '../fx-manager/effect';
-import type { IWorld } from '../types';
 
 import {
   LEVEL_MAP_TILE,
@@ -19,7 +19,6 @@ import { TileMatrix } from './tile-matrix';
 import type { ITile } from './tile-matrix/types';
 import type {
   BiomeType,
-  ILevel,
   LevelBiome,
   LevelData,
   LevelSavePayload,
@@ -39,15 +38,14 @@ import { GameEvent, GameSettings } from '~game/types';
 import { Assets } from '~lib/assets';
 import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
-import type { INavigator } from '~lib/navigator/types';
 
 Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
 Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);
 
-export class Level extends TileMatrix implements ILevel {
-  readonly scene: IWorld;
+export class Level extends TileMatrix {
+  readonly scene: WorldScene;
 
-  readonly navigator: INavigator;
+  readonly navigator: Navigator;
 
   readonly map: World<LevelBiome>;
 
@@ -67,7 +65,7 @@ export class Level extends TileMatrix implements ILevel {
 
   private sceneryTiles: Phaser.GameObjects.Group;
 
-  constructor(scene: IWorld, { planet, seed }: LevelData) {
+  constructor(scene: WorldScene, { planet, seed }: LevelData) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT);
 
     this.scene = scene;

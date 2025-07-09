@@ -1,24 +1,24 @@
 import Phaser from 'phaser';
 
-import type { IEnemy } from '../../npc/enemy/types';
+import type { Enemy } from '../../npc/enemy';
 import { EntityType } from '../../types';
 import { ShotTexture } from '../types';
-import type { ShotParams, IShotInitiator } from '../types';
+import type { ShotParams, IShotInitiator, IShot } from '../types';
 
 import { ShotBallAudio } from './types';
-import type { IShotBall, ShotBallData } from './types';
+import type { ShotBallData } from './types';
 
+import type { WorldScene } from '~game/scenes/world';
+import type { Particles } from '~game/scenes/world/fx-manager/particles';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
-import type { IParticles } from '~scene/world/fx-manager/particles/types';
 import type { PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 
 Assets.RegisterAudio(ShotBallAudio);
 Assets.RegisterImages(ShotTexture);
 
-export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IShotBall {
-  readonly scene: IWorld;
+export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
+  readonly scene: WorldScene;
 
   readonly body: Phaser.Physics.Arcade.Body;
 
@@ -30,7 +30,7 @@ export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IS
 
   private audio: ShotBallAudio;
 
-  private effect: Nullable<IParticles> = null;
+  private effect: Nullable<Particles> = null;
 
   private startPosition: Nullable<PositionAtWorld> = null;
 
@@ -40,7 +40,7 @@ export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IS
 
   private altitude: number = 0;
 
-  constructor(scene: IWorld, params: ShotParams, {
+  constructor(scene: WorldScene, params: ShotParams, {
     audio, color, glow = false, scale = 1.0,
   }: ShotBallData) {
     super(scene, 0, 0, ShotTexture.BALL);
@@ -62,7 +62,7 @@ export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IS
       this.scene.getEntitiesGroup(EntityType.ENEMY),
       (_, enemy) => {
         try {
-          this.hit(enemy as IEnemy);
+          this.hit(enemy as Enemy);
         } catch (error) {
           console.warn('Failed to handle ball shot collider', error as TypeError);
         }
@@ -109,7 +109,7 @@ export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IS
     this.setDepth(this.y + this.altitude);
   }
 
-  public shoot(target: IEnemy, params?: ShotParams) {
+  public shoot(target: Enemy, params?: ShotParams) {
     if (!this.initiator || this.active) {
       return;
     }
@@ -154,7 +154,7 @@ export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IS
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected hit(target: IEnemy) {
+  protected hit(target: Enemy) {
     this.stop();
   }
 

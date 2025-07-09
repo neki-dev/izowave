@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { Param } from './param';
 import { Record } from './record';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { GameDifficulty } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Button } from '~scene/system/interface/button';
@@ -14,7 +14,7 @@ import { LevelPlanet } from '~scene/world/level/types';
 import { Wrapper, Params } from './styles';
 
 export const NewGame: React.FC = () => {
-  const game = useGame<IGame>();
+  const game = useGame<Game>();
 
   const getScore = () => game.getRecordStat()?.score ?? 0;
 

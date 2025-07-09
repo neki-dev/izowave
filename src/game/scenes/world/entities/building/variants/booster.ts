@@ -7,16 +7,15 @@ import {
   BuildingIcon,
 } from '../types';
 import type {
-  IBuildingBooster,
   BuildingVariantData,
   BuildingParam,
 } from '../types';
 
 import { DIFFICULTY } from '~game/difficulty';
+import type { WorldScene } from '~game/scenes/world';
 import { progressionLinear } from '~lib/progression';
-import type { IWorld } from '~scene/world/types';
 
-export class BuildingBooster extends Building implements IBuildingBooster {
+export class BuildingBooster extends Building {
   static Category = BuildingCategory.OTHER;
 
   static Texture = BuildingTexture.BOOSTER;
@@ -35,7 +34,7 @@ export class BuildingBooster extends Building implements IBuildingBooster {
 
   private set power(v) { this._power = v; }
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.BOOSTER,

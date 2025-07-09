@@ -3,13 +3,13 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { GameScene, GameEvent } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';
 import { PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,
@@ -20,8 +20,8 @@ type Props = {
 };
 
 export const Item: React.FC<Props> = ({ type }) => {
-  const game = useGame<IGame>();
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const game = useGame<Game>();
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [allow, setAllow] = useState(Boolean(world.player.unlockedSuperskills[type]));
   const [gamePaused, setGamePaused] = useState(false);

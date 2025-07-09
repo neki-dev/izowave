@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 
 import type { TilePosition, TileType } from '../types';
 
-import type { ITileMatrix, ITile } from './types';
+import type { ITile } from './types';
 
-export class TileMatrix implements ITileMatrix {
+export class TileMatrix {
   readonly tiles: ITile[][][] = [];
 
   readonly size: number;

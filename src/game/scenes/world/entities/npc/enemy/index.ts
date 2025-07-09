@@ -7,23 +7,23 @@ import { EntityType } from '../../types';
 
 import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
 import { EnemyAudio, EnemyTexture } from './types';
-import type { IEnemy, EnemyData, IEnemyTarget } from './types';
+import type { EnemyData, IEnemyTarget } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
+import type { WorldScene } from '~game/scenes/world';
 import { GameSettings } from '~game/types';
 import { Assets } from '~lib/assets';
 import { InterfaceFont } from '~lib/interface/types';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 
 Assets.RegisterAudio(EnemyAudio);
 Assets.RegisterSprites(EnemyTexture, (texture) => (
   ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]]
 ));
 
-export abstract class Enemy extends NPC implements IEnemy {
+export abstract class Enemy extends NPC {
   private _damage: number;
   public get damage() { return this._damage; }
   private set damage(v) { this._damage = v; }
@@ -40,7 +40,7 @@ export abstract class Enemy extends NPC implements IEnemy {
 
   private might: number;
 
-  constructor(scene: IWorld, {
+  constructor(scene: WorldScene, {
     texture, score, multipliers, ...data
   }: EnemyData) {
     super(scene, {

@@ -5,34 +5,26 @@ import { v4 as uuidv4 } from 'uuid';
 import { Scene } from '..';
 
 import { Builder } from './builder';
-import type { IBuilder } from './builder/types';
 import { Camera } from './camera';
-import type { ICamera } from './camera/types';
+import type { Sprite } from './entities';
 import { LiveEvent } from './entities/addons/live/types';
+import type { Building } from './entities/building';
 import { BuildingVariant } from './entities/building/types';
-import type { IBuilding } from './entities/building/types';
 import { Crystal } from './entities/crystal';
-import type { ICrystal } from './entities/crystal/types';
 import { Assistant } from './entities/npc/assistant';
-import type { IAssistant } from './entities/npc/assistant/types';
 import { Player } from './entities/player';
-import type { IPlayer } from './entities/player/types';
 import { EntityType } from './entities/types';
-import type { ISprite } from './entities/types';
 import { FXManager } from './fx-manager';
-import type { IFXManager } from './fx-manager/types';
 import { WorldUI } from './interface';
 import { Level } from './level';
 import { LEVEL_PLANETS } from './level/const';
 import { SpawnTarget } from './level/types';
-import type { ILevel, LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
+import type { LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
 import { Spawner } from './spawner';
-import type { ISpawner } from './spawner/types';
 import { WorldModeIcon, WorldMode, WorldEvent } from './types';
-import type { IWorld, WorldHint, WorldTimerParams, WorldSavePayload } from './types';
+import type { WorldHint, WorldTimerParams, WorldSavePayload } from './types';
 import { Wave } from './wave';
 import { WaveEvent } from './wave/types';
-import type { IWave } from './wave/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameScene, GameState, GameEvent } from '~game/types';
@@ -43,7 +35,7 @@ import { Utils } from '~lib/utils';
 
 Assets.RegisterImages(WorldModeIcon);
 
-export class World extends Scene implements IWorld {
+export class WorldScene extends Scene {
   private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;
 
   private lifecyle: Phaser.Time.TimerEvent;
@@ -61,35 +53,35 @@ export class World extends Scene implements IWorld {
   public get deltaTime() { return this._deltaTime; }
   private set deltaTime(v) { this._deltaTime = v; }
 
-  private _player: IPlayer;
+  private _player: Player;
   public get player() { return this._player; }
   private set player(v) { this._player = v; }
 
-  private _assistant: IAssistant;
+  private _assistant: Assistant;
   public get assistant() { return this._assistant; }
   private set assistant(v) { this._assistant = v; }
 
-  private _level: ILevel;
+  private _level: Level;
   public get level() { return this._level; }
   private set level(v) { this._level = v; }
 
-  private _wave: IWave;
+  private _wave: Wave;
   public get wave() { return this._wave; }
   private set wave(v) { this._wave = v; }
 
-  private _builder: IBuilder;
+  private _builder: Builder;
   public get builder() { return this._builder; }
   private set builder(v) { this._builder = v; }
 
-  private _spawner: ISpawner;
+  private _spawner: Spawner;
   public get spawner() { return this._spawner; }
   private set spawner(v) { this._spawner = v; }
 
-  private _fx: IFXManager;
+  private _fx: FXManager;
   public get fx() { return this._fx; }
   private set fx(v) { this._fx = v; }
 
-  private _camera: ICamera;
+  private _camera: Camera;
   public get camera() { return this._camera; }
   private set camera(v) { this._camera = v; }
 
@@ -252,7 +244,7 @@ export class World extends Scene implements IWorld {
     return this.entityGroups[type].getChildren() as T[];
   }
 
-  public getFuturePosition(sprite: ISprite, seconds: number): PositionAtWorld {
+  public getFuturePosition(sprite: Sprite, seconds: number): PositionAtWorld {
     const fps = this.game.loop.actualFps;
     const drag = 0.3 ** (1 / fps);
     const per = 1 - drag ** (seconds * fps);
@@ -406,9 +398,9 @@ export class World extends Scene implements IWorld {
   public getSavePayload(): WorldSavePayload {
     return {
       time: this.getTime(),
-      crystals: this.getEntities<ICrystal>(EntityType.CRYSTAL)
+      crystals: this.getEntities<Crystal>(EntityType.CRYSTAL)
         .map((crystal) => crystal.getSavePayload()),
-      buildings: this.getEntities<IBuilding>(EntityType.BUILDING)
+      buildings: this.getEntities<Building>(EntityType.BUILDING)
         .map((building) => building.getSavePayload()),
     };
   }

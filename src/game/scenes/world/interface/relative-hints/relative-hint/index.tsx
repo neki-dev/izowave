@@ -3,19 +3,20 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
+import type { WorldScene } from '~game/scenes/world';
 import { GameScene } from '~game/types';
 import { isPositionsEqual } from '~lib/dimension';
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import { Hint } from '~scene/system/interface/hint';
 import type { PositionAtWorld } from '~scene/world/level/types';
-import type { WorldHint, IWorld } from '~scene/world/types';
+import type { WorldHint } from '~scene/world/types';
 
 import { Wrapper } from './styles';
 
 type Props = WorldHint;
 
 export const RelativeHint: React.FC<Props> = ({ label, side, position }) => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [currentPosition, setCurrentPosition] = useState(position);
 

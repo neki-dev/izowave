@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { GameScene } from '~game/types';
 import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 import { Wrapper, Icon, Value } from './styles';
 
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const Cost: React.FC<Props> = ({ type, value, check = true }) => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const refValue = useRef(value);
 

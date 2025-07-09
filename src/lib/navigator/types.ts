@@ -2,40 +2,6 @@ import type { PathNode } from './worker/node';
 
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
-export interface INavigator {
-  /**
-   * Set point cost.
-   * @param position - Position at matrix
-   * @param cost - Cost
-   */
-  setPointCost(position: PositionAtMatrix, cost: number): void
-
-  /**
-   * Get point cost.
-   * @param position - Position at matrix
-   */
-  getPointCost(position: PositionAtMatrix): number
-
-  /**
-   * Reset point cost.
-   * @param position - Position at matrix
-   */
-  resetPointCost(position: PositionAtMatrix): void
-
-  /**
-   * Create navigation task.
-   * @param data - Task data
-   * @param callback - Complete callback
-   */
-  createTask(data: NavigatorTaskData, callback: NavigatorTaskCallback): string
-
-  /**
-   * Cancel navigation task.
-   * @param id - Task id
-   */
-  cancelTask(id: string): void
-}
-
 export enum NavigatorEvent {
   CREATE_TASK = 'create_task',
   COMPLETE_TASK = 'complete_task',

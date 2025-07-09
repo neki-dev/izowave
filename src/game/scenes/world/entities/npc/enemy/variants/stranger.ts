@@ -3,12 +3,12 @@ import { EnemyFactory } from '../factory';
 import { EnemyTexture, EnemyVariant } from '../types';
 import type { EnemyVariantData } from '../types';
 
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class EnemyStranger extends Enemy {
   static SpawnWaveRange = [11];
 
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.STRANGER,

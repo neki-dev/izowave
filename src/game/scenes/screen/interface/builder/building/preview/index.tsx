@@ -1,11 +1,11 @@
 import { Texture, useClick, useMobilePlatform, useScene, useSceneUpdate } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
+import type { WorldScene } from '~game/scenes/world';
 import { GameScene } from '~game/types';
 import { Cost } from '~scene/system/interface/cost';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import type { BuildingVariant } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
 
 import { Container, Number, Image, Info, Frame } from './styles';
 
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const Preview: React.FC<Props> = ({ number, variant }) => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const isMobile = useMobilePlatform();
 

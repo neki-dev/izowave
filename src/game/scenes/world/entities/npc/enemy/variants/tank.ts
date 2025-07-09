@@ -4,12 +4,12 @@ import type { EnemyVariantData } from '../types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { progressionQuadratic } from '~lib/progression';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 
 export class EnemyTank extends Enemy {
   static SpawnWaveRange = [6];
 
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.TANK,

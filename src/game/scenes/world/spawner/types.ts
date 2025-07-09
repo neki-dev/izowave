@@ -1,17 +1,5 @@
 import type { PositionAtMatrix } from '../level/types';
 
-export interface ISpawner {
-  /**
-   * Clear cached positions.
-   */
-  clearCache(): void
-
-  /**
-   * Get position for enemy spawn.
-   */
-  getSpawnPosition(): Promise<PositionAtMatrix>
-}
-
 export type SpawnCache = {
   target: Nullable<PositionAtMatrix>
   positions: PositionAtMatrix[]

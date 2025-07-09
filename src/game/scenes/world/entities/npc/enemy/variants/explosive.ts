@@ -1,19 +1,19 @@
 import { Enemy } from '..';
+import type { Building } from '../../../building';
 import { ENEMY_EXPLOSION_RADIUS, ENEMY_EXPLOSION_EFFECT_COLOR, ENEMY_EXPLOSION_EFFECT_DURATION } from '../const';
 import { EnemyTexture } from '../types';
-import type { EnemyVariantData, IEnemy, IEnemyTarget } from '../types';
+import type { EnemyVariantData, IEnemyTarget } from '../types';
 
+import type { WorldScene } from '~game/scenes/world';
 import { getIsometricDistance } from '~lib/dimension';
-import type { IBuilding } from '~scene/world/entities/building/types';
 import { EntityType } from '~scene/world/entities/types';
 import { EffectAudio } from '~scene/world/fx-manager/effect/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import type { IWorld } from '~scene/world/types';
 
 export class EnemyExplosive extends Enemy {
   static SpawnWaveRange = [7];
 
-  constructor(scene: IWorld, data: EnemyVariantData) {
+  constructor(scene: WorldScene, data: EnemyVariantData) {
     super(scene, {
       ...data,
       texture: EnemyTexture.EXPLOSIVE,
@@ -52,8 +52,8 @@ export class EnemyExplosive extends Enemy {
 
     let targets: IEnemyTarget[] = [this.scene.player];
 
-    targets = targets.concat(this.scene.getEntities<IEnemy>(EntityType.ENEMY));
-    targets = targets.concat(this.scene.getEntities<IBuilding>(EntityType.BUILDING));
+    targets = targets.concat(this.scene.getEntities<Enemy>(EntityType.ENEMY));
+    targets = targets.concat(this.scene.getEntities<Building>(EntityType.BUILDING));
 
     targets.forEach((target) => {
       if (target.active && target !== this) {

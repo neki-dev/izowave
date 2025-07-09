@@ -7,14 +7,14 @@ import { InterfaceFont } from '~lib/interface/types';
 import { Storage } from '~lib/storage';
 import { MenuPage } from '~scene/menu/types';
 
-export class System extends Scene {
+export class SystemScene extends Scene {
   constructor() {
     super(GameScene.SYSTEM);
   }
 
   public async preload() {
     this.load.on('progress', (value: number) => {
-      System.SetLoadingStatus(`LOADING\n${Math.round(value * 100)}%`);
+      SystemScene.SetLoadingStatus(`LOADING\n${Math.round(value * 100)}%`);
     });
 
     this.load.addPack([{
@@ -30,7 +30,7 @@ export class System extends Scene {
   }
 
   public async create() {
-    System.SetLoadingStatus('LOADING\nDONE');
+    SystemScene.SetLoadingStatus('LOADING\nDONE');
 
     await Storage.Register()
       .then(() => Storage.LoadSaves());
@@ -42,7 +42,7 @@ export class System extends Scene {
 
     this.scene.bringToTop();
 
-    System.RemoveLoading();
+    SystemScene.RemoveLoading();
 
     if (!this.game.isDesktop()) {
       this.input.addPointer(1);

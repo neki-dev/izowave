@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 
 import { Modal } from './modal';
 
-import type { IGame } from '~game/types';
+import type { Game } from '~game/index';
 import { GameScene } from '~game/types';
 import { BuildingVariant } from '~scene/world/entities/building/types';
 import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
 import { AssistantEvent } from '~scene/world/entities/npc/assistant/types';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';
 import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { IWorld } from '~scene/world/types';
+import type { WorldScene } from '~scene/world';
 import { WaveEvent } from '~scene/world/wave/types';
 
 export type Feature = {
@@ -19,8 +19,8 @@ export type Feature = {
 };
 
 export const Unlocks: React.FC = () => {
-  const game = useGame<IGame>();
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const game = useGame<Game>();
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const [features, setFeatures] = useState<Feature[]>([]);
 

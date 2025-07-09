@@ -1,20 +1,20 @@
 import Phaser from 'phaser';
 
+import type { WorldScene } from '..';
 import { WORLD_DEPTH_GRAPHIC } from '../const';
+import type { Building } from '../entities/building';
 import { BUILDING_TILE } from '../entities/building/const';
 import { BUILDINGS } from '../entities/building/factory/const';
 import { BuildingVariant, BuildingAudio, BuildingIcon } from '../entities/building/types';
-import type { IBuilding, BuildingBuildData } from '../entities/building/types';
-import type { IEnemy } from '../entities/npc/enemy/types';
+import type { BuildingBuildData } from '../entities/building/types';
+import type { Enemy } from '../entities/npc/enemy';
 import { PlayerSkill } from '../entities/player/types';
 import { EntityType } from '../entities/types';
 import { Level } from '../level';
 import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '../level/const';
 import { BiomeType, TileType } from '../level/types';
 import type { PositionAtMatrix, PositionAtWorld } from '../level/types';
-import type { IWorld } from '../types';
 
-import type { IBuilder } from './types';
 import { BuilderEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
@@ -26,10 +26,10 @@ import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 
-export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
-  readonly scene: IWorld;
+export class Builder extends Phaser.Events.EventEmitter {
+  readonly scene: WorldScene;
 
-  public selectedBuilding: Nullable<IBuilding> = null;
+  public selectedBuilding: Nullable<Building> = null;
 
   private buildPreview: Nullable<Phaser.GameObjects.Image> = null;
 
@@ -37,7 +37,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
   private buildControls: Nullable<Phaser.GameObjects.Container> = null;
 
-  private buildings: Partial<Record<BuildingVariant, IBuilding[]>> = {};
+  private buildings: Partial<Record<BuildingVariant, Building[]>> = {};
 
   private _isBuild: boolean = false;
   public get isBuild() { return this._isBuild; }
@@ -51,7 +51,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
   public get variant() { return this._variant; }
   private set variant(v) { this._variant = v; }
 
-  constructor(scene: IWorld) {
+  constructor(scene: WorldScene) {
     super();
 
     this.scene = scene;
@@ -200,7 +200,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
     return Math.min(limit, DIFFICULTY.BUILDING_LIMITED_BOUND);
   }
 
-  public getBuildingsByVariant<T extends IBuilding>(variant: BuildingVariant) {
+  public getBuildingsByVariant<T extends Building>(variant: BuildingVariant) {
     return (this.buildings[variant] ?? []) as T[];
   }
 
@@ -280,7 +280,7 @@ export class Builder extends Phaser.Events.EventEmitter implements IBuilder {
 
     const targets = [
       this.scene.player,
-      ...this.scene.getEntities<IEnemy>(EntityType.ENEMY),
+      ...this.scene.getEntities<Enemy>(EntityType.ENEMY),
     ];
 
     const isFreeFromSprite = targets.every((npc) => (

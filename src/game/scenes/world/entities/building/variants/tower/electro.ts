@@ -1,14 +1,14 @@
+import type { Enemy } from '../../../npc/enemy';
 import { BuildingCategory, BuildingTexture, BuildingVariant, BuildingIcon, BuildingAudio } from '../../types';
 import type { BuildingVariantData, BuildingParam } from '../../types';
 
 import { BuildingTower } from '.';
 
 import { DIFFICULTY } from '~game/difficulty';
+import type { WorldScene } from '~game/scenes/world';
 import { progressionLinear } from '~lib/progression';
-import type { IEnemy } from '~scene/world/entities/npc/enemy/types';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
-import type { IWorld } from '~scene/world/types';
 
 export class BuildingTowerElectro extends BuildingTower {
   static Category = BuildingCategory.ATTACK;
@@ -25,7 +25,7 @@ export class BuildingTowerElectro extends BuildingTower {
 
   private area: Nullable<Phaser.GameObjects.Ellipse> = null;
 
-  constructor(scene: IWorld, data: BuildingVariantData) {
+  constructor(scene: WorldScene, data: BuildingVariantData) {
     super(scene, {
       ...data,
       variant: BuildingVariant.TOWER_ELECTRO,
@@ -100,13 +100,13 @@ export class BuildingTowerElectro extends BuildingTower {
   }
 
   public getTargets() {
-    return this.scene.getEntities<IEnemy>(EntityType.ENEMY).filter((enemy) => (
+    return this.scene.getEntities<Enemy>(EntityType.ENEMY).filter((enemy) => (
       !enemy.live.isDead()
       && this.actionsAreaContains(enemy.getBottomEdgePosition())
     ));
   }
 
-  public shoot(targets: IEnemy[]) {
+  public shoot(targets: Enemy[]) {
     const damage = this.getDamage();
 
     targets.forEach((target) => {

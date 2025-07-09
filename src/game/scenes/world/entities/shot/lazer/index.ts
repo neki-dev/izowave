@@ -1,23 +1,22 @@
 import Phaser from 'phaser';
 
-import type { IEnemy } from '../../npc/enemy/types';
+import type { Enemy } from '../../npc/enemy';
 import { EntityType } from '../../types';
-import type { ShotParams, IShotInitiator } from '../types';
+import type { ShotParams, IShotInitiator, IShot } from '../types';
 
 import { SHOT_LAZER_REPEAT, SHOT_LAZER_DELAY } from './const';
 import { ShotLazerAudio } from './types';
-import type { IShotLazer } from './types';
 
+import type { WorldScene } from '~game/scenes/world';
 import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import type { PositionAtWorld } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 
 Assets.RegisterAudio(ShotLazerAudio);
 
-export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
-  readonly scene: IWorld;
+export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
+  readonly scene: WorldScene;
 
   public params: ShotParams;
 
@@ -25,7 +24,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   private positionCallback: Nullable<() => PositionAtWorld> = null;
 
-  private target: Nullable<IEnemy> = null;
+  private target: Nullable<Enemy> = null;
 
   private startPosition: Nullable<PositionAtWorld> = null;
 
@@ -33,7 +32,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
 
   private processingHitsCount: number = 0;
 
-  constructor(scene: IWorld, params: ShotParams) {
+  constructor(scene: WorldScene, params: ShotParams) {
     super(scene);
     scene.add.existing(this);
     scene.addEntityToGroup(this, EntityType.SHOT);
@@ -66,7 +65,7 @@ export class ShotLazer extends Phaser.GameObjects.Line implements IShotLazer {
     }
   }
 
-  public shoot(target: IEnemy, params?: ShotParams) {
+  public shoot(target: Enemy, params?: ShotParams) {
     if (!this.initiator) {
       return;
     }

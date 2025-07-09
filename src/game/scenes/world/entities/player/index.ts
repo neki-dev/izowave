@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 
 import { Sprite } from '..';
+import type { WorldScene } from '../..';
+import type { Particles } from '../../fx-manager/particles';
 import { BuildingVariant } from '../building/types';
 import { Crystal } from '../crystal';
-import type { ICrystal } from '../crystal/types';
-import type { IEnemy } from '../npc/enemy/types';
+import type { Enemy } from '../npc/enemy';
+import type { IEnemyTarget } from '../npc/enemy/types';
 import { EntityType } from '../types';
 
 import {
@@ -13,7 +15,7 @@ import {
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
 } from './const';
-import type { PlayerData, IPlayer, PlayerSavePayload } from './types';
+import type { PlayerData, PlayerSavePayload } from './types';
 import {
   PlayerTexture,
   PlayerAudio,
@@ -33,12 +35,10 @@ import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
-import type { IParticles } from '~scene/world/fx-manager/particles/types';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 import { TileType } from '~scene/world/level/types';
-import type { IWorld } from '~scene/world/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
@@ -48,7 +48,7 @@ Assets.RegisterImages(PlayerTexture.SUPERSKILL);
 Assets.RegisterImages(PlayerSkillIcon);
 Assets.RegisterImages(PlayerSuperskillIcon);
 
-export class Player extends Sprite implements IPlayer {
+export class Player extends Sprite implements IEnemyTarget {
   private _experience: number = 0;
   public get experience() { return this._experience; }
   private set experience(v) { this._experience = v; }
@@ -85,7 +85,7 @@ export class Player extends Sprite implements IPlayer {
 
   private movementAngle: Nullable<number> = null;
 
-  private dustEffect: Nullable<IParticles> = null;
+  private dustEffect: Nullable<Particles> = null;
 
   private _unlockedSuperskills: Partial<Record<PlayerSuperskill, boolean>> = {};
   public get unlockedSuperskills() { return this._unlockedSuperskills; }
@@ -111,7 +111,7 @@ export class Player extends Sprite implements IPlayer {
 
   private staminaTimestamp: number = 0;
 
-  constructor(scene: IWorld, data: PlayerData) {
+  constructor(scene: WorldScene, data: PlayerData) {
     super(scene, {
       ...data,
       texture: PlayerTexture.PLAYER,
@@ -153,13 +153,13 @@ export class Player extends Sprite implements IPlayer {
       }
     });
 
-    this.addCollider(EntityType.ENEMY, 'collider', (enemy: IEnemy) => {
+    this.addCollider(EntityType.ENEMY, 'collider', (enemy: Enemy) => {
       if (!this.isInvisible()) {
         enemy.attack(this);
       }
     });
 
-    this.addCollider(EntityType.ENEMY, 'overlap', (enemy: IEnemy) => {
+    this.addCollider(EntityType.ENEMY, 'overlap', (enemy: Enemy) => {
       enemy.overlapTarget();
     });
 
@@ -740,7 +740,7 @@ export class Player extends Sprite implements IPlayer {
       return;
     }
 
-    const crystals = this.scene.getEntities<ICrystal>(EntityType.CRYSTAL);
+    const crystals = this.scene.getEntities<Crystal>(EntityType.CRYSTAL);
     const crystal = getClosestByIsometricDistance(crystals, this);
 
     if (!crystal) {

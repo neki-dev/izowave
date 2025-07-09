@@ -3,23 +3,24 @@ import {
 } from 'phaser-react-ui';
 import React, { useEffect, useState } from 'react';
 
+import type { WorldScene } from '../..';
+import type { Building } from '../../entities/building';
+
 import { TranslateToScreen } from './translate-to-screen';
 
 import { GameScene } from '~game/types';
 import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~lib/interface/const';
 import { BuildingInfo } from '~scene/system/interface/building-info';
-import type { IBuilding } from '~scene/world/entities/building/types';
-import type { IWorld } from '~scene/world/types';
 import { WorldEvent } from '~scene/world/types';
 
 export const RelativeBuildingInfo: React.FC = () => {
-  const world = useScene<IWorld>(GameScene.WORLD);
+  const world = useScene<WorldScene>(GameScene.WORLD);
 
   const isSmallScreen = useMatchMedia(INTERFACE_MOBILE_BREAKPOINT);
 
-  const [building, setBuilding] = useState<Nullable<IBuilding>>(null);
+  const [building, setBuilding] = useState<Nullable<Building>>(null);
 
-  const onSelect = (target: IBuilding) => {
+  const onSelect = (target: Building) => {
     setBuilding(target);
   };
 
