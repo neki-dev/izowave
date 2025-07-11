@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import type { WorldScene } from '..';
 import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
+import type { Particles } from '../fx-manager/particles';
 import type { IParticlesParent } from '../fx-manager/particles/types';
 import { Level } from '../level';
 import type { LevelBiome, PositionAtMatrix, TileType, PositionAtWorld } from '../level/types';
@@ -25,6 +26,8 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesPa
   public gamut: number = 0;
 
   public speed: number = 0;
+
+  public effects: Map<string, Particles> = new Map();
 
   public currentBiome: Nullable<LevelBiome> = null;
 

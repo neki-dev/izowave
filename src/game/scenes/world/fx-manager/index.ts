@@ -63,7 +63,7 @@ export class FXManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || FXManager.IsExist(parent, 'blood')
+      || parent.effects.has('blood')
     ) {
       return null;
     }
@@ -90,7 +90,7 @@ export class FXManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || FXManager.IsExist(parent, 'froze')
+      || parent.effects.has('froze')
     ) {
       return null;
     }
@@ -117,7 +117,7 @@ export class FXManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || FXManager.IsExist(parent, 'fire')
+      || parent.effects.has('fire')
     ) {
       return null;
     }
@@ -176,7 +176,7 @@ export class FXManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || FXManager.IsExist(parent, 'lazer')
+      || parent.effects.has('lazer')
     ) {
       return null;
     }
@@ -204,7 +204,7 @@ export class FXManager {
     if (
       !parent.active
       || !this.isEffectsEnabled()
-      || FXManager.IsExist(parent, 'electro')
+      || parent.effects.has('electro')
     ) {
       return null;
     }
@@ -280,7 +280,7 @@ export class FXManager {
   public createHealEffect(parent: Sprite) {
     if (
       !this.isEffectsEnabled()
-      || FXManager.IsExist(parent, 'heal')
+      || parent.effects.has('heal')
     ) {
       return null;
     }
@@ -385,9 +385,5 @@ export class FXManager {
 
   private isEffectsEnabled() {
     return this.scene.game.isSettingEnabled(GameSettings.EFFECTS);
-  }
-
-  static IsExist(parent: IParticlesParent, key: string) {
-    return Boolean(parent.effects?.[key]);
   }
 }

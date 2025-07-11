@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import type { WorldScene } from '../..';
+import type { Particles } from '../../fx-manager/particles';
 import type { IParticlesParent } from '../../fx-manager/particles/types';
 import { Indicator } from '../addons/indicator';
 import type { IndicatorData } from '../addons/indicator/types';
@@ -60,6 +61,8 @@ export abstract class Building extends Phaser.GameObjects.Image implements ITile
   private _upgradeLevel: number = 1;
   public get upgradeLevel() { return this._upgradeLevel; }
   private set upgradeLevel(v) { this._upgradeLevel = v; }
+
+  public effects: Map<string, Particles> = new Map();
 
   private radius: Nullable<BuildingGrowthValue> = null;
 

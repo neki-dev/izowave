@@ -11,7 +11,7 @@ export interface IParticlesParent extends
   Phaser.GameObjects.Components.Transform,
   Phaser.GameObjects.Components.Depth {
   readonly scene: WorldScene
-  effects?: Record<string, Particles>
+  effects: Map<string, Particles>
 }
 
 export enum ParticlesTexture {

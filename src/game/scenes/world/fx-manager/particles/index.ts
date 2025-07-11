@@ -23,13 +23,12 @@ export class Particles {
     this.parent = parent;
     this.key = key;
 
-    if (!this.parent.effects) {
-      this.parent.effects = {};
-    } else if (this.parent.effects[this.key]) {
-      this.parent.effects[this.key].destroy();
+    const current = this.parent.effects.get(this.key);
+    if (current) {
+      current.destroy();
     }
 
-    this.parent.effects[this.key] = this;
+    this.parent.effects.set(this.key, this);
 
     this.emitter = this.scene.add.particles(
       position?.x ?? 0,
@@ -57,7 +56,7 @@ export class Particles {
   }
 
   public destroy() {
-    delete this.parent.effects?.[this.key];
+    this.parent.effects.delete(this.key);
     this.emitter.destroy();
 
     this.parent.off(Phaser.GameObjects.Events.DESTROY, this.destroy);

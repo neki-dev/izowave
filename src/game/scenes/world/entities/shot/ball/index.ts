@@ -21,6 +21,8 @@ export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IS
 
   public params: ShotParams;
 
+  public effects: Map<string, Particles> = new Map();
+
   private initiator: Nullable<IShotInitiator> = null;
 
   private positionCallback: Nullable<() => PositionAtWorld> = null;
