@@ -56,12 +56,16 @@ export class Game extends Phaser.Game {
       scale: {
         mode: Phaser.Scale.RESIZE,
       },
+      fps: {
+        target: 60,
+        forceSetTimeOut: true,
+      },
       physics: {
         default: 'arcade',
         arcade: {
           debug: DEBUG_MODS.basic,
           fps: 60,
-          gravity: { y: 0 },
+          gravity: { x: 0, y: 0 },
         },
       },
     });
