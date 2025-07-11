@@ -3,7 +3,6 @@ import { Scene } from '..';
 import { GameScene, GameState } from '~game/types';
 import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
-import { InterfaceFont } from '~lib/interface/types';
 import { Storage } from '~lib/storage';
 import { MenuPage } from '~scene/menu/types';
 
@@ -24,8 +23,8 @@ export class SystemScene extends Scene {
     Assets.Clear();
 
     await Promise.all([
-      Assets.ImportFontFace(InterfaceFont.PIXEL_LABEL, 'pixel_label.ttf'),
-      Assets.ImportFontFace(InterfaceFont.PIXEL_TEXT, 'pixel_text.ttf'),
+      Assets.ImportFontFace('PixelLabel', 'pixel_label.ttf'),
+      Assets.ImportFontFace('PixelText', 'pixel_text.ttf'),
     ]);
   }
 

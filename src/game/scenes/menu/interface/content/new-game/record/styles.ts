@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~lib/interface/types';
-
 export const Wrapper = styled.div`
   margin-bottom: 40px;
 `;
@@ -9,7 +7,7 @@ export const Wrapper = styled.div`
 export const Label = styled.div`
   color: #fff;
   margin-bottom: 10px;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 14px;
   line-height: 14px;
   opacity: 0.5;
@@ -28,7 +26,7 @@ export const Icon = styled.img`
 export const Amount = styled.div`
   margin-top: -3px;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 26px;
   line-height: 26px;
 `;

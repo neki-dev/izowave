@@ -1,11 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import {
-  InterfaceFont,
-  InterfaceTextColor,
-  InterfaceBackgroundColor,
-} from '~lib/interface/types';
+
 
 export const Container = styled.div<{
   $active?: boolean
@@ -17,7 +13,7 @@ export const Container = styled.div<{
   ${(props) => props.$active && css`
     &:hover {
       cursor: pointer;
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+      background: var(--color-background-black-25);
     }
   `}
   &:first-child {
@@ -40,7 +36,7 @@ export const Icon = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   margin-right: 1px;
   [role=texture] {
     width: 24px;
@@ -60,7 +56,7 @@ export const Head = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: var(--color-background-black-25);
   padding: 12px 13px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 10px;
@@ -68,7 +64,7 @@ export const Head = styled.div`
 `;
 
 export const Label = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   font-size: 12px;
   line-height: 12px;
@@ -94,11 +90,11 @@ Level.Progress = styled.div<{
   flex: 1;
   height: 8px;
   transition: all 0.2s ease-out;
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   box-shadow: 0 4px 0 #111 inset;
   ${(props) => props.$active && css`
-    background: ${InterfaceBackgroundColor.SUCCESS};
-    box-shadow: 0 4px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+    background: var(--color-background-success);
+    box-shadow: 0 4px 0 var(--color-background-white-15) inset;
   `}
 `;
 
@@ -111,7 +107,7 @@ export const Action = styled.div`
   pointer-events: all;
   width: 95px;
   padding: 10px 15px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     width: 85px;
     padding: 10px 12px;
@@ -119,7 +115,7 @@ export const Action = styled.div`
 `;
 
 export const Button = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 8px;
   line-height: 8px;
   letter-spacing: 1px;
@@ -131,8 +127,8 @@ export const Button = styled.div`
 `;
 
 export const Limit = styled.div`
-  color: ${InterfaceTextColor.WARN};
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: var(--color-text-warn);
+  font-family: var(--font-pixel-label);
   font-size: 10px;
   line-height: 14px;
   text-align: center;

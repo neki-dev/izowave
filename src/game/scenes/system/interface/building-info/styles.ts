@@ -1,11 +1,6 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~lib/interface/const';
-import {
-  InterfaceFont,
-  InterfaceTextColor,
-  InterfaceBackgroundColor,
-} from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
@@ -21,7 +16,7 @@ export const Wrapper = styled.div`
       transform: translate(-50%, 100%);
       border-left: 12px solid transparent;
       border-right: 12px solid transparent;
-      border-top: 15px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+      border-top: 15px solid var(--color-background-black-50);
     }
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
@@ -31,7 +26,7 @@ export const Wrapper = styled.div`
     top: 0;
     right: 0;
     bottom: 0;
-    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+    background: var(--color-background-black-75);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     transform: translateZ(0);
@@ -58,19 +53,19 @@ export const Head = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 14px 16px;
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
 `;
 
 export const Body = styled.div`
   padding: 16px;
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
-    background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+    background: var(--color-background-black-50);
   }
 `;
 
 export const Name = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
-  color: ${InterfaceTextColor.SUCCESS};
+  font-family: var(--font-pixel-label);
+  color: var(--color-text-success);
   font-size: 14px;
   line-height: 14px;
 `;
@@ -86,30 +81,30 @@ Level.Progress = styled.div<{
   flex: 1;
   height: 12px;
   transition: all 0.2s ease-out;
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   box-shadow: 0 6px 0 #222 inset;
   ${(props) => props.$active && css`
-    background: ${InterfaceBackgroundColor.SUCCESS};
-    box-shadow: 0 6px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+    background: var(--color-background-success);
+    box-shadow: 0 6px 0 var(--color-background-white-15) inset;
   `}
 `;
 
 export const Health: any = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   position: relative;
   margin-bottom: 6px;
 `;
 
 Health.Progress = styled.div`
   height: 14px;
-  background: ${InterfaceBackgroundColor.ERROR};
-  box-shadow: 0 7px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+  background: var(--color-background-error);
+  box-shadow: 0 7px 0 var(--color-background-white-15) inset;
   transition: width 0.3s ease-out;
 `;
 
 Health.Value = styled.div`
   position: absolute;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   font-size: 10px;
   line-height: 10px;

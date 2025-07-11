@@ -1,11 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import {
-  InterfaceBackgroundColor,
-  InterfaceTextColor,
-  InterfaceFont,
-} from '~lib/interface/types';
+
 
 const animationTimeout = keyframes`
   0% { top: 0 }
@@ -25,7 +21,7 @@ export const Container = styled.div<{
   $active?: boolean
   $allow?: boolean
 }>`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   padding: 14px;
   pointer-events: all;
   border-radius: 5px;
@@ -34,7 +30,7 @@ export const Container = styled.div<{
       &:hover {
         cursor: pointer;
         ${() => (!props.$active && css`
-          background: ${InterfaceBackgroundColor.BLACK};
+          background: var(--color-background-black);
         `)};
       }
     `}
@@ -100,7 +96,7 @@ export const Info = styled.div`
     transform: translate(-50%, 100%);
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 12px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+    border-top: 12px solid var(--color-background-black-75);
   }
 `;
 
@@ -109,7 +105,7 @@ export const Head = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 11px 14px 9px 14px;
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   border-radius: 5px 5px 0 0;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 9px 11px;
@@ -117,8 +113,8 @@ export const Head = styled.div`
 `;
 
 export const Name = styled.div`
-  color: ${InterfaceTextColor.SUCCESS};
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: var(--color-text-success);
+  font-family: var(--font-pixel-label);
   font-size: 14px;
   line-height: 14px;
   margin: -2px 10px 0 0;
@@ -129,9 +125,9 @@ export const Name = styled.div`
 `;
 
 export const Body = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   letter-spacing: 1px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   padding: 9px 14px 12px 14px;
   border-radius: 0 0 5px 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
@@ -147,7 +143,7 @@ export const Description = styled.div`
 
 export const Timeout = styled.div`
   position: absolute;
-  background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+  background: var(--color-background-success-dark);
   inset: 0;
   animation: ${animationTimeout} 1s linear;
   border-radius: 5px;

@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Container = styled.div`
   overflow: hidden;
@@ -20,29 +19,29 @@ export const Body = styled.div`
   align-items: center;
   justify-content: center;
   height: 140px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: var(--color-background-black-25);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     height: 100px;
   }
 `;
 
 export const Info = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   padding: 16px 20px;
   flex: 1;
 `;
 
 export const Type = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 10px;
   line-height: 10px;
   opacity: 0.5;
 `;
 
 export const Name = styled.div`
-  color: ${InterfaceTextColor.SUCCESS};
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  color: var(--color-text-success);
+  font-family: var(--font-pixel-label);
   font-size: 14px;
   line-height: 14px;
   margin-top: 5px;
@@ -50,7 +49,7 @@ export const Name = styled.div`
 
 export const Description = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 10px;
   line-height: 10px;
   margin-top: 5px;

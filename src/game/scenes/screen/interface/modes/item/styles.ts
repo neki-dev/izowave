@@ -1,10 +1,9 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
 
 export const Placeholder = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   color: #fff;
   position: absolute;
   pointer-events: none;
@@ -14,7 +13,7 @@ export const Placeholder = styled.div`
   transform: translateX(-50%);
   font-size: 10px;
   line-height: 12px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   border-radius: 5px;
   padding: 9px 12px;
   margin-top: 20px;
@@ -28,7 +27,7 @@ export const Placeholder = styled.div`
     transform: translateX(-50%);
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+    border-bottom: 8px solid var(--color-background-black-75);
   }
 `;
 
@@ -43,15 +42,15 @@ export const Container = styled.div<{
   height: 36px;
   border-radius: 5px;
   pointer-events: all;
-  background: ${(props) => (props.$active
-    ? InterfaceBackgroundColor.SUCCESS
-    : InterfaceBackgroundColor.BLACK
-  )};
+  background: var(${(props) => (props.$active
+    ? '--color-background-success'
+    : '--color-background-black'
+  )});
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     &:hover {
       cursor: pointer;
       ${(props) => (!props.$active && css`
-        background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};
+        background: var(--color-background-success-gradient);
       `)};
     }
     [role=texture] {

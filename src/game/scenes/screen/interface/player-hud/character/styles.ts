@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor } from '~lib/interface/types';
+
 
 export const Container = styled.div`
   padding: 5px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   border-radius: 5px;
 `;
 

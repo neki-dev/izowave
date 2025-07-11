@@ -1,7 +1,5 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { InterfaceFont, InterfaceBackgroundColor, InterfaceLayer } from '~lib/interface/types';
-
 const align = {
   'top-left': { transform: 'translate(0, 0)', left: '39px', right: 'auto' },
   'top-center': { transform: 'translate(-50%, 0)', left: '50%', right: 'auto' },
@@ -38,7 +36,7 @@ const animationKickBottom = keyframes`
 export const Wrapper = styled.div`
   position: relative;
   pointer-events: none;
-  z-index: ${InterfaceLayer.HINT};
+  z-index: var(--layer-hint);
   &.hidden {
     display: none;
   }
@@ -56,11 +54,11 @@ export const Key = styled.span`
 `;
 
 export const Container = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   padding: 9px 12px 10px 12px;
   border-radius: 5px;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 12px;
   line-height: 12px;
   letter-spacing: 1px;
@@ -89,7 +87,7 @@ export const Positioner = styled.div<{
             transform: translate(-100%, -50%);
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-right: 10px solid ${InterfaceBackgroundColor.BLACK};
+            border-right: 10px solid var(--color-background-black);
           }
         }
       `;
@@ -104,7 +102,7 @@ export const Positioner = styled.div<{
             transform: translate(100%, -50%);
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-left: 10px solid ${InterfaceBackgroundColor.BLACK};
+            border-left: 10px solid var(--color-background-black);
           }
         }
       `;
@@ -120,7 +118,7 @@ export const Positioner = styled.div<{
             transform: translate(-50%, -100%);
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
-            border-bottom: 10px solid ${InterfaceBackgroundColor.BLACK};
+            border-bottom: 10px solid var(--color-background-black);
           }
         }
       `;
@@ -136,7 +134,7 @@ export const Positioner = styled.div<{
             transform: translate(-50%, 100%);
             border-left: 8px solid transparent;
             border-right: 8px solid transparent;
-            border-top: 10px solid ${InterfaceBackgroundColor.BLACK};
+            border-top: 10px solid var(--color-background-black);
           }
         }
       `;

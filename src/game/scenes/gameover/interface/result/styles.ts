@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   display: flex;
@@ -9,7 +8,7 @@ export const Wrapper = styled.div`
   padding: 30px 38px;
   border-radius: 0 0 5px 5px;
   gap: 15px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: var(--color-background-black-25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   transform: translateZ(0);
@@ -24,7 +23,7 @@ export const Item = styled.div`
   display: flex;
   align-items: center;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
 `;
 
 export const Value = styled.div`
@@ -32,7 +31,7 @@ export const Value = styled.div`
   line-height: 20px;
   padding: 4px 8px 7px 8px;
   border-radius: 3px;
-  border: 1px solid ${InterfaceBackgroundColor.WHITE_TRANSPARENT_50};
+  border: 1px solid var(--color-background-white-50);
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 18px;
     line-height: 18px;
@@ -54,5 +53,5 @@ export const Record = styled.div`
   margin-left: 15px;
   font-size: 12px;
   line-height: 12px;
-  color: ${InterfaceTextColor.SUCCESS};
+  color: var(--color-text-success);
 `;

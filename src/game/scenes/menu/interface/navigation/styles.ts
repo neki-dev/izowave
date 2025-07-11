@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
+
 
 export const Wrapper = styled.ul`
   list-style: none;
@@ -24,7 +24,7 @@ export const Item = styled.li<{
   $disabled?: boolean
 }>`
   position: relative;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 20px;
   line-height: 20px;
   padding-right: 12px;
@@ -40,9 +40,9 @@ export const Item = styled.li<{
     background: #fff;
   }
   ${(props) => (props.$active ? css`
-    color: ${InterfaceTextColor.SUCCESS};
+    color: var(--color-text-success);
     &:after {
-      background: ${InterfaceTextColor.SUCCESS};
+      background: var(--color-text-success);
     }
     &:hover {
       cursor: pointer;
@@ -51,9 +51,9 @@ export const Item = styled.li<{
     color: #fff;
     &:hover {
       cursor: pointer;
-      color: ${InterfaceTextColor.HOVER};
+      color: var(--color-text-hover);
       &:after {
-        background: ${InterfaceTextColor.HOVER};
+        background: var(--color-text-hover);
       }
     }
   `)}

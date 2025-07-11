@@ -1,17 +1,11 @@
 import styled, { css } from 'styled-components';
 
-import {
-  InterfaceFont,
-  InterfaceTextColor,
-  InterfaceBackgroundColor,
-} from '~lib/interface/types';
-
 export const Wrapper = styled.div`
 `;
 
 export const Label = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 14px;
   line-height: 14px;
   margin-bottom: 10px;
@@ -32,26 +26,26 @@ export const Values = styled.ul<{
 
 export const Value = styled.li<{
   $active?: boolean
-  $color?: InterfaceTextColor
+  $color?: string
 }>`
   color: ${(props) => (props.$active
-    ? (props.$color ?? InterfaceTextColor.SUCCESS)
-    : InterfaceBackgroundColor.WHITE_TRANSPARENT_75
+    ? (props.$color ?? 'var(--color-text-success)')
+    : 'var(--color-background-white-75)'
   )};
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 14px;
   line-height: 14px;
   border: 1px solid ${(props) => (props.$active
-    ? (props.$color ?? InterfaceTextColor.SUCCESS)
-    : InterfaceBackgroundColor.WHITE_TRANSPARENT_75
+    ? (props.$color ?? 'var(--color-text-success)')
+    : 'var(--color-background-white-75)'
   )};
   padding: 4px 7px 6px 7px;
   border-radius: 3px;
   &:hover {
     cursor: pointer;
     ${(props) => !props.$active && css`
-      color: ${InterfaceTextColor.HOVER};
-      border-color: ${InterfaceTextColor.HOVER};
+      color: var(--color-text-hover);
+      border-color: var(--color-text-hover);
     `};
   }
 `;

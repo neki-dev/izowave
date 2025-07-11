@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceTextColor, InterfaceFont } from '~lib/interface/types';
+
 
 export const Wrapper = styled.div`
   margin-top: 50px;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -38,7 +38,7 @@ export const Link = styled.a`
   color: #fff;
   pointer-events: all;
   &:hover {
-    color: ${InterfaceTextColor.HOVER};
+    color: var(--color-text-hover);
   }
 `;
 

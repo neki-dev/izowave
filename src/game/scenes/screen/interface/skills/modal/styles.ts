@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceLayer } from '~lib/interface/types';
+
 
 export const Backdrop = styled.div`
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
 `;
 
 export const Overlay = styled.div`
@@ -17,7 +17,7 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: ${InterfaceLayer.OVERLAY};
+  z-index: var(--layer-overlay);
 `;
 
 export const Groups = styled.div`
@@ -33,14 +33,14 @@ export const Group = styled.div`
 `;
 
 export const Target = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   font-size: 10px;
   line-height: 10px;
   padding: 10px 12px;
   margin-bottom: 10px;
-  background: ${InterfaceBackgroundColor.SUCCESS_DARK};
-  box-shadow: 0 15px 0 ${InterfaceBackgroundColor.SUCCESS} inset;
+  background: var(--color-background-success-dark);
+  box-shadow: 0 15px 0 var(--color-background-success) inset;
   border-radius: 5px;
 `;
 
@@ -51,7 +51,7 @@ export const List = styled.div`
 `;
 
 export const Container = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   border-radius: 10px 0 10px 10px;
   padding: 30px;
   position: relative;
@@ -65,7 +65,7 @@ export const Container = styled.div`
 `;
 
 export const Close = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   color: #fff;
   letter-spacing: 1px;
   font-size: 10px;
@@ -78,7 +78,7 @@ export const Close = styled.div`
   border-radius: 5px 5px 0 0;
   pointer-events: all;
   text-transform: uppercase;
-  background: ${InterfaceBackgroundColor.ERROR_DARK};
+  background: var(--color-background-error-dark);
   opacity: 0.75;
   &:hover {
     cursor: pointer;

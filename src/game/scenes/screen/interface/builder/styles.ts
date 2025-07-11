@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
+
 
 export const Wrapper = styled.div<{
   $hidden?: boolean
@@ -28,12 +28,12 @@ export const Category = styled.div`
 `;
 
 export const Label = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   letter-spacing: 1px;
   font-size: 9px;
   line-height: 9px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   padding: 3px 5px 4px 5px;
   border-radius: 5px;
   margin-bottom: 10px;

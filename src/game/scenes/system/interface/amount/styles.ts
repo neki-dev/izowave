@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceBackgroundColor } from '~lib/interface/types';
+
 
 export const Placeholder = styled.div`
   position: absolute;
   pointer-events: none;
   display: none;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   font-size: 11px;
   line-height: 11px;
@@ -16,7 +16,7 @@ export const Placeholder = styled.div`
   transform: translateY(-50%);
   align-items: center;
   height: 32px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: var(--color-background-black-25);
   border-radius: 0 5px 5px 0;
   padding: 0 12px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
@@ -36,7 +36,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   display: flex;
   border-radius: 5px;
   &:hover {
@@ -46,7 +46,7 @@ export const Container = styled.div`
 
 export const IconContainer = styled.div`
   pointer-events: none;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -68,7 +68,7 @@ export const Icon = styled.img`
 
 export const Value = styled.div`
   pointer-events: none;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   margin-top: -1px;
   font-size: 16px;

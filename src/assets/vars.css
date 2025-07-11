@@ -1,0 +1,38 @@
+:root {
+  --font-pixel-label: 'PixelLabel';
+  --font-pixel-text: 'PixelText';
+
+  --layer-hint: 100;
+  --layer-translator: 200;
+  --layer-overlay: 300;
+
+  --color-text-white: #ffffff;
+  --color-text-hover: #FF9600;
+  --color-text-success: #A4E24D;
+  --color-text-warn: #ffd129;
+  --color-text-error: #ff6d6d;
+
+  --color-background-info: #2A87DB;
+  --color-background-warn: #ff7629;
+  --color-background-warn-gradient: linear-gradient(0deg, rgb(255, 118, 41) 0%, rgb(255, 156, 41) 100%);
+  --color-background-success: #64A226;
+  --color-background-success-light: #A4E24D;
+  --color-background-success-dark: #4D8B1B;
+  --color-background-success-gradient: linear-gradient(0deg, rgb(66, 120, 22) 0%, rgb(100, 162, 38) 100%);
+  --color-background-error: #db2323;
+  --color-background-error-75: rgba(219, 35, 35, 0.75);
+  --color-background-error-light: #ff6d6d;
+  --color-background-error-dark: #BC1927;
+  --color-background-error-dark-75: rgba(120, 0, 10, 0.75);
+  --color-background-error-gradient: linear-gradient(0deg, rgb(188, 25, 39) 0%, rgb(238, 54, 70) 100%);
+  --color-background-white: #ffffff;
+  --color-background-white-15: rgba(255, 255, 255, 0.15);
+  --color-background-white-25: rgba(255, 255, 255, 0.25);
+  --color-background-white-50: rgba(255, 255, 255, 0.50);
+  --color-background-white-75: rgba(255, 255, 255, 0.75);
+  --color-background-black: #000000;
+  --color-background-black-15: rgba(0, 0, 0, 0.15);
+  --color-background-black-25: rgba(0, 0, 0, 0.25);
+  --color-background-black-50: rgba(0, 0, 0, 0.50);
+  --color-background-black-75: rgba(0, 0, 0, 0.75);
+}

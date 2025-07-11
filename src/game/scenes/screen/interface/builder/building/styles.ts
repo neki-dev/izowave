@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Info = styled.div`
   position: absolute;
@@ -12,13 +11,13 @@ export const Info = styled.div`
   min-width: 164px;
   height: 100%;
   padding: 12px 14px;
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   border-radius: 5px 0 0 5px;
 `;
 
 export const Name = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
-  color: ${InterfaceTextColor.SUCCESS};
+  font-family: var(--font-pixel-label);
+  color: var(--color-text-success);
   font-size: 14px;
   line-height: 14px;
   margin-bottom: 8px;
@@ -26,7 +25,7 @@ export const Name = styled.div`
 `;
 
 export const Text = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 9px;
   line-height: 11px;
   letter-spacing: 1px;

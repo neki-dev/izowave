@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~lib/interface/types';
-
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,7 +9,7 @@ export const Wrapper = styled.div`
 
 export const Empty = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 20px;
   line-height: 20px;
   margin-bottom: 30px;

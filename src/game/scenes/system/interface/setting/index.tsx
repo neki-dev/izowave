@@ -1,6 +1,5 @@
 import React from 'react';
 
-import type { InterfaceTextColor } from '~lib/interface/types';
 import { phrase } from '~lib/lang';
 import type { LangPhrase } from '~lib/lang/types';
 
@@ -10,7 +9,7 @@ type Props = {
   label: LangPhrase
   values: (LangPhrase | {
     value: LangPhrase
-    color?: InterfaceTextColor
+    color?: string
   })[]
   currentValue?: LangPhrase
   onChange: (value: any) => void

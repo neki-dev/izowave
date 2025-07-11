@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
+
 
 export const Wrapper = styled.div`
   display: flex;
@@ -13,10 +13,10 @@ export const Head = styled.div`
 `;
 
 export const Label = styled.div`
-  background: ${InterfaceBackgroundColor.ERROR};
+  background: var(--color-background-error);
   color: #fff;
   padding: 15px 36px 21px 36px;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   border-radius: 5px 5px 0 0;
   font-size: 46px;
   line-height: 46px;
@@ -32,19 +32,19 @@ export const Button = styled.div`
   margin-top: 20px;
   pointer-events: all;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   border-radius: 5px;
   letter-spacing: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};  
+  background: var(--color-background-success-gradient);  
   font-size: 22px;
   line-height: 22px;
   padding: 25px;
   &:hover {
     cursor: pointer;
-    background: ${InterfaceBackgroundColor.SUCCESS};
+    background: var(--color-background-success);
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     margin-top: 15px;

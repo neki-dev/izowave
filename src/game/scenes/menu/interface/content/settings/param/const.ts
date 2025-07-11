@@ -1,10 +1,9 @@
-import { InterfaceTextColor } from '~lib/interface/types';
 import type { LangPhrase } from '~lib/lang/types';
 
 export const PARAM_VALUES: {
   value: LangPhrase
-  color?: InterfaceTextColor
+  color?: string
 }[] = [
   { value: 'ON' },
-  { value: 'OFF', color: InterfaceTextColor.ERROR },
+  { value: 'OFF', color: 'var(--color-text-error)' },
 ];

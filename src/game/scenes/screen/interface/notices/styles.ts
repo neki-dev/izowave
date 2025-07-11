@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceBackgroundColor } from '~lib/interface/types';
 
 const animationOpacity = keyframes`
   0% { opacity: 0 }
@@ -19,12 +18,12 @@ export const Item = styled.div`
   border-radius: 5px;
   color: #fff;
   text-transform: uppercase;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 12px;
   line-height: 12px;
   letter-spacing: 2px;
   animation: ${animationOpacity} 0.2s ease-in;
-  background: ${InterfaceBackgroundColor.ERROR_TRANSPARENT_75};
+  background: var(--color-background-error-75);
   display: flex;
   align-items: center;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {

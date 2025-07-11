@@ -11,7 +11,6 @@ import type { EnemyData, IEnemyTarget } from './types';
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
 import { GameSettings } from '~game/types';
-import { InterfaceFont } from '~lib/interface/types';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
@@ -139,7 +138,7 @@ export abstract class Enemy extends NPC {
   private addDamageLabel() {
     this.damageLabel = this.scene.add.text(0, 0, '', {
       fontSize: '6px',
-      fontFamily: InterfaceFont.PIXEL_TEXT,
+      fontFamily: 'PixelText',
       align: 'center',
       color: '#fff',
       resolution: 2,

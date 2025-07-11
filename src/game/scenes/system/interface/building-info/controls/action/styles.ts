@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
+
 
 export const Label = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   letter-spacing: 1px;
   white-space: nowrap;
   font-size: 11px;
@@ -33,12 +33,12 @@ export const Main = styled.div`
 export const Key = styled.div`
   padding: 1px 2px 1px 3px;
   margin: 0 8px 0 -3px;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 9px;
   line-height: 9px;
   color: #fff;
   border: 1px solid #ffffffaa;
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   border-radius: 2px;
 `;
 
@@ -54,23 +54,23 @@ export const Container = styled.div<{
     transform: translateX(-50%);
     padding: 6px 9px;
     ${(props) => (props.$disabled ? css`
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+      background: var(--color-background-black-50);
       ${Label}, ${Addon}, ${Key} {
         opacity: 0.7;
       }
     ` : css`
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+      background: var(--color-background-black-75);
       &:hover {
         cursor: pointer;
-        background: ${InterfaceBackgroundColor.BLACK};
+        background: var(--color-background-black);
       }
     `)}
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
-    background: ${InterfaceBackgroundColor.BLACK};
+    background: var(--color-background-black);
     padding: 14px 15px;
     ${(props) => (props.$disabled && css`
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+      background: var(--color-background-black-50);
       ${Label}, ${Addon} {
         opacity: 0.5;
       }

@@ -1,12 +1,10 @@
 import styled, { css } from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
-
 export const Table: any = styled.table`
   width: 100%;
   margin-bottom: 30px;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   border-collapse: separate; 
   border-spacing: 1px 3px;
 `;
@@ -29,13 +27,13 @@ Table.Body = styled.tbody`
 Table.BodyRow = styled.tr<{
   $active?: boolean
 }>`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: var(--color-background-black-25);
   pointer-events: all;
   ${(props) => (props.$active ? css`
-    background: ${InterfaceBackgroundColor.SUCCESS_DARK};
+    background: var(--color-background-success-dark);
   ` : css`
     &:hover {
-      background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+      background: var(--color-background-black-50);
     }
   `)}
   &:hover {
@@ -51,7 +49,7 @@ Table.Cell = styled.td<{
   ${(props) => (props.$type === 'delete' && css`
     width: 38px;
     &:hover {
-      background: ${InterfaceBackgroundColor.ERROR_DARK};
+      background: var(--color-background-error-dark);
     }
   `)}
   &:first-child {

@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { InterfaceFont } from '~lib/interface/types';
-
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -21,7 +19,7 @@ export const Keys = styled.div`
 
 export const Key = styled.div`
   color: #444;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 12px;
   line-height: 12px;
   padding: 4px 7px 5px 7px;
@@ -33,7 +31,7 @@ export const Key = styled.div`
 `;
 
 export const Description = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 12px;
   line-height: 13px;
   letter-spacing: 1px;

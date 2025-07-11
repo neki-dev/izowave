@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import {
-  InterfaceFont,
-  InterfaceBackgroundColor,
-  InterfaceTextColor,
-} from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   margin-top: 15px;
@@ -20,7 +15,7 @@ export const Wrapper = styled.div`
 export const Param = styled.div`
   display: flex;
   align-items: center;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   border-radius: 5px;
   overflow: hidden;
 `;
@@ -28,7 +23,7 @@ export const Param = styled.div`
 export const IconContainer = styled.div`
   width: 32px;
   height: 32px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,14 +39,14 @@ export const Info = styled.div<{
   $attention?: boolean
 }>`
   padding: 2px 5px;
-  color: ${(props) => (props.$attention
-    ? InterfaceTextColor.WARN
-    : '#fff'
-  )};
+  color: var(${(props) => (props.$attention
+    ? '--color-text-warn'
+    : '--color-text-white'
+  )});
 `;
 
 export const Label = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 9px;
   line-height: 9px;
   opacity: 0.75;
@@ -64,7 +59,7 @@ export const Label = styled.div`
 `;
 
 export const Value = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 11px;
   line-height: 11px;
 `;

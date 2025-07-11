@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor } from '~lib/interface/types';
+
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 
 export const Sidebar = styled.div`
   min-width: 30%;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_25};
+  background: var(--color-background-black-25);
   display: flex;
   flex-direction: column;
   align-items: flex-end;

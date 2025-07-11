@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceTextColor } from '~lib/interface/types';
 
 export const Wrapper = styled.div`
   color: #fff;
@@ -24,10 +23,10 @@ export const Value = styled.div<{
   $attention?: boolean
 }>`
   margin-top: -2px;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 12px;
   line-height: 12px;
-  color: ${(props) => (props.$attention ? InterfaceTextColor.ERROR : '#fff')};
+  color: var(${(props) => (props.$attention ? '--color-text-error' : '--color-text-white')});
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 10px;
     line-height: 10px;

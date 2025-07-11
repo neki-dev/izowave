@@ -1,10 +1,9 @@
 import styled, { css, keyframes } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceTextColor, InterfaceBackgroundColor } from '~lib/interface/types';
 
 const animationBlinkColor = keyframes`
-  0% { color: ${InterfaceTextColor.ERROR} }
+  0% { color: var(--color-text-error) }
   100% { color: #fff }
 `;
 
@@ -15,7 +14,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Placeholder = styled.div`
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   color: #fff;
   position: absolute;
   pointer-events: none;
@@ -25,7 +24,7 @@ export const Placeholder = styled.div`
   transform: translateX(-50%);
   font-size: 10px;
   line-height: 12px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   border-radius: 5px;
   padding: 9px 12px;
   margin-top: 8px;
@@ -40,7 +39,7 @@ export const Placeholder = styled.div`
     transform: translateX(-50%);
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-bottom: 8px solid ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+    border-bottom: 8px solid var(--color-background-black-75);
   }
 `;
 
@@ -49,19 +48,19 @@ export const Container = styled.div<{
 }>`
   position: relative;
   pointer-events: all;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   display: flex;
   color: #fff;
   align-items: center;
   padding: 10px 16px 10px 10px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   border-radius: 5px 0 0 5px;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     padding: 7px 11px 7px 7px;
   }
   ${(props) => props.$skippable && css`
     &:hover {
-      background: ${InterfaceBackgroundColor.BLACK};
+      background: var(--color-background-black);
       cursor: pointer;
       ${Placeholder} {
         display: block;
@@ -76,28 +75,28 @@ export const CurrentNumber = styled.div<{
 }>`
   text-align: center;
   border-radius: 3px;
-  background: ${(props) => {
+  background: var(${(props) => {
     if (props.$paused) {
-      return InterfaceBackgroundColor.WARN;
+      return '--color-background-warn';
     }
     if (props.$going) {
-      return InterfaceBackgroundColor.ERROR;
+      return '--color-background-error';
     }
 
-    return InterfaceBackgroundColor.SUCCESS;
-  }};
+    return '--color-background-success';
+  }});
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {
     font-size: 24px;
     line-height: 24px;
     padding: 6px 12px 10px 12px;
     min-width: 40px;
-    box-shadow: 0 20px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+    box-shadow: 0 20px 0 var(--color-background-white-15) inset;
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 22px;
     line-height: 22px;
     padding: 4px 13px 7px 13px;
-    box-shadow: 0 16px 0 ${InterfaceBackgroundColor.WHITE_TRANSPARENT_15} inset;
+    box-shadow: 0 16px 0 var(--color-background-white-15) inset;
   }
 `;
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceFont, InterfaceLayer } from '~lib/interface/types';
+
 
 export const Overlay = styled.div`
   position: fixed;
@@ -9,8 +9,8 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  z-index: ${InterfaceLayer.OVERLAY};
+  background: var(--color-background-black-75);
+  z-index: var(--layer-overlay);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transform: translateZ(0);
@@ -26,7 +26,7 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 18px;
   line-height: 20px;
   letter-spacing: 1px;

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
-import { InterfaceBackgroundColor, InterfaceFont } from '~lib/interface/types';
+
 
 export const Container = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK};
+  background: var(--color-background-black);
   position: relative;
   border-radius: 3px;
   overflow: hidden;
@@ -12,14 +12,14 @@ export const Container = styled.div`
 
 export const Progress = styled.div`
   height: 20px;
-  background: ${InterfaceBackgroundColor.SUCCESS_DARK};
-  box-shadow: 0 10px 0 ${InterfaceBackgroundColor.SUCCESS} inset;
+  background: var(--color-background-success-dark);
+  box-shadow: 0 10px 0 var(--color-background-success) inset;
   transition: width 0.3s ease-out;
 `;
 
 export const Value = styled.div`
   position: absolute;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   color: #fff;
   font-size: 10px;
   line-height: 10px;

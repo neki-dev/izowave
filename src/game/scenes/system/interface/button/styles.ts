@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceBackgroundColor } from '~lib/interface/types';
 
 export const Container = styled.div<{
   $size?: 'small' | 'large'
@@ -9,7 +8,7 @@ export const Container = styled.div<{
   $disabled?: boolean
 }>`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   border-radius: 5px;
   letter-spacing: 1px;
   display: flex;
@@ -18,27 +17,27 @@ export const Container = styled.div<{
   ${(props) => {
     switch (props.$view) {
       case 'primary': return css`
-        background: ${InterfaceBackgroundColor.WARN_GRADIENT};  
+        background: var(--color-background-warn-gradient);  
         &:hover {
-          background: ${InterfaceBackgroundColor.WARN};
+          background: var(--color-background-warn);
         }
       `;
       case 'confirm': return css`
-        background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};  
+        background: var(--color-background-success-gradient);  
         &:hover {
-          background: ${InterfaceBackgroundColor.SUCCESS};
+          background: var(--color-background-success);
         }
       `;
       case 'decline': return css`
-        background: ${InterfaceBackgroundColor.ERROR_GRADIENT};
+        background: var(--color-background-error-gradient);
         &:hover {
-          background: ${InterfaceBackgroundColor.ERROR};
+          background: var(--color-background-error);
         }
       `;
       default: return css`
-        background: ${InterfaceBackgroundColor.BLACK};
+        background: var(--color-background-black);
         &:hover {
-          background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};
+          background: var(--color-background-success-gradient);
         }
       `;
     }

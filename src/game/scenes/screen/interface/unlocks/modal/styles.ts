@@ -1,11 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import {
-  InterfaceBackgroundColor,
-  InterfaceFont,
-  InterfaceLayer,
-} from '~lib/interface/types';
+
 
 const animationOpacity = keyframes`
   0% { opacity: 0; }
@@ -19,8 +15,8 @@ export const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
-  z-index: ${InterfaceLayer.OVERLAY};
+  background: var(--color-background-black-75);
+  z-index: var(--layer-overlay);
   animation: ${animationOpacity} 0.2s ease-in;
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     background: rgba(0, 0, 0, 0.85);
@@ -39,7 +35,7 @@ export const Container = styled.div`
 
 export const Label = styled.div`
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   font-size: 24px;
   line-height: 28px;
   white-space: pre;
@@ -58,19 +54,19 @@ export const List = styled.div`
 export const Button = styled.div`
   pointer-events: all;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_LABEL};
+  font-family: var(--font-pixel-label);
   border-radius: 5px;
   letter-spacing: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: ${InterfaceBackgroundColor.SUCCESS_GRADIENT};  
+  background: var(--color-background-success-gradient);  
   font-size: 18px;
   line-height: 18px;
   padding: 20px 25px;
   &:hover {
     cursor: pointer;
-    background: ${InterfaceBackgroundColor.SUCCESS};
+    background: var(--color-background-success);
   }
   @media ${INTERFACE_MOBILE_BREAKPOINT} {
     font-size: 14px;

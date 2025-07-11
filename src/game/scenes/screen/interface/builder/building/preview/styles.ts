@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceFont, InterfaceBackgroundColor } from '~lib/interface/types';
 
 export const Container = styled.div<{
   $allow?: boolean
@@ -9,11 +8,11 @@ export const Container = styled.div<{
   $usable?: boolean
 }>`
   border-radius: 5px;
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_75};
+  background: var(--color-background-black-75);
   position: relative;
   ${(props) => (props.$allow ? css`
     ${() => (!props.$usable && css`
-      background: ${InterfaceBackgroundColor.ERROR_DARK_TRANSPARENT_75};
+      background: var(--color-background-error-dark-75);
     `)}
   ` : css`
       opacity: 0.35;
@@ -21,7 +20,7 @@ export const Container = styled.div<{
   `)}
   ${(props) => (props.$active && css`
     opacity: 1.0;
-    background: ${InterfaceBackgroundColor.BLACK};
+    background: var(--color-background-black);
   `)}
   [role=hint]:not(.hidden) + &{
     box-shadow: 0 0 50px 20px #fff;
@@ -63,7 +62,7 @@ export const Info = styled.div`
 export const Number = styled.div`
   position: absolute;
   color: #fff;
-  font-family: ${InterfaceFont.PIXEL_TEXT};
+  font-family: var(--font-pixel-text);
   font-size: 10px;
   line-height: 10px;
   right: 4px;

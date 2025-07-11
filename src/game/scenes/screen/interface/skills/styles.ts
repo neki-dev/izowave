@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
-import { InterfaceBackgroundColor } from '~lib/interface/types';
+
 
 export const Wrapper = styled.div`
-  background: ${InterfaceBackgroundColor.BLACK_TRANSPARENT_50};
+  background: var(--color-background-black-50);
   display: flex;
   justify-content: center;
   align-items: center;
