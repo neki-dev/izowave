@@ -24,7 +24,7 @@ export interface IShotFactory {
 }
 
 export enum ShotTexture {
-  BALL = 'shot/ball',
+  BALL = 'ShotTexture:BALL',
 }
 
 export type ShotParams = {

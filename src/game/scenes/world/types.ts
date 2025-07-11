@@ -20,10 +20,10 @@ export enum WorldMode {
 }
 
 export enum WorldModeIcon {
-  TIME_SCALE = 'world/modes/time_scale',
-  BUILDING_INDICATORS = 'world/modes/building_indicators',
-  AUTO_REPAIR = 'world/modes/auto_repair',
-  PATH_TO_CRYSTAL = 'world/modes/path_to_crystal',
+  TIME_SCALE = 'WorldModeIcon:TIME_SCALE',
+  BUILDING_INDICATORS = 'WorldModeIcon:BUILDING_INDICATORS',
+  AUTO_REPAIR = 'WorldModeIcon:AUTO_REPAIR',
+  PATH_TO_CRYSTAL = 'WorldModeIcon:PATH_TO_CRYSTAL',
 }
 
 export type WorldHint = {

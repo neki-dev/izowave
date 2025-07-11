@@ -1,5 +1,9 @@
 import React from 'react';
 
+import imageExperience from './images/experience.png';
+import imageResources from './images/resources.png';
+import imageScore from './images/score.png';
+
 import { phrase } from '~lib/lang';
 
 import { Icon, IconContainer, Value, Wrapper, Container, Placeholder } from './styles';
@@ -10,11 +14,17 @@ type Props = {
   placeholder?: boolean
 };
 
+const IMAGES = {
+  RESOURCES: imageResources,
+  EXPERIENCE: imageExperience,
+  SCORE: imageScore,
+};
+
 export const Amount: React.FC<Props> = ({ children, type, placeholder }) => (
   <Wrapper>
     <Container>
       <IconContainer>
-        <Icon src={`assets/sprites/hud/${type.toLowerCase()}.png`} />
+        <Icon src={IMAGES[type]} />
       </IconContainer>
       <Value>{children}</Value>
     </Container>

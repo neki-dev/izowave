@@ -13,12 +13,11 @@ import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
-import { Assets } from '~lib/assets';
 import { getIsometricDistance, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionQuadratic } from '~lib/progression';
 import { WaveEvent } from '~scene/world/wave/types';
 
-Assets.RegisterSprites(AssistantTexture, ASSISTANT_TILE_SIZE);
+import './resources';
 
 export class Assistant extends NPC implements IShotInitiator {
   private shot: IShot;

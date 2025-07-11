@@ -7,11 +7,10 @@ import { ScreenUI } from './interface';
 import { ScreenAudio, ScreenEvent } from './types';
 
 import { GameScene } from '~game/types';
-import { Assets } from '~lib/assets';
 import { INTERFACE_SCALE } from '~lib/interface/const';
 import type { LangPhrase } from '~lib/lang/types';
 
-Assets.RegisterAudio(ScreenAudio);
+import './resources';
 
 export class ScreenScene extends Scene {
   private joystick: Nullable<VirtualJoystick> = null;

@@ -8,12 +8,11 @@ import { SHOT_LAZER_REPEAT, SHOT_LAZER_DELAY } from './const';
 import { ShotLazerAudio } from './types';
 
 import type { WorldScene } from '~game/scenes/world';
-import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import type { PositionAtWorld } from '~scene/world/level/types';
 
-Assets.RegisterAudio(ShotLazerAudio);
+import './resources';
 
 export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
   readonly scene: WorldScene;

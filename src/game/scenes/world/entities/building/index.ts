@@ -23,14 +23,12 @@ import type {
 import {
   BuildingEvent,
   BuildingAudio,
-  BuildingTexture,
   BuildingIcon,
   BuildingOutlineState,
 } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameEvent } from '~game/types';
-import { Assets } from '~lib/assets';
 import { CONTROL_KEY } from '~lib/controls/const';
 import type { LangPhrase } from '~lib/lang/types';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
@@ -46,9 +44,7 @@ import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types
 import { TileType } from '~scene/world/level/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 
-Assets.RegisterAudio(BuildingAudio);
-Assets.RegisterImages(BuildingIcon);
-Assets.RegisterSprites(BuildingTexture, BUILDING_TILE);
+import './resources';
 
 export abstract class Building extends Phaser.GameObjects.Image implements ITile, IEnemyTarget, IParticlesParent, IShotInitiator {
   readonly scene: WorldScene;

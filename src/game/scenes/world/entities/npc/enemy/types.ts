@@ -9,23 +9,23 @@ export interface IEnemyTarget {
 }
 
 export enum EnemyAudio {
-  ROAR = 'enemy/roar',
+  ROAR = 'EnemyAudio:ROAR',
 }
 
 export enum EnemyTexture {
-  SPIKE = 'enemy/spike',
-  RISPER = 'enemy/risper',
-  DEMON = 'enemy/demon',
-  UNDEAD = 'enemy/undead',
-  TANK = 'enemy/tank',
-  BOSS = 'enemy/boss',
-  GHOST = 'enemy/ghost',
-  TERMER = 'enemy/termer',
-  BERSERK = 'enemy/berserk',
-  EXPLOSIVE = 'enemy/explosive',
-  STRANGER = 'enemy/stranger',
-  ADHERENT = 'enemy/adherent',
-  TELEPATH = 'enemy/telepath',
+  SPIKE = 'EnemyTexture:SPIKE',
+  RISPER = 'EnemyTexture:RISPER',
+  DEMON = 'EnemyTexture:DEMON',
+  UNDEAD = 'EnemyTexture:UNDEAD',
+  TANK = 'EnemyTexture:TANK',
+  BOSS = 'EnemyTexture:BOSS',
+  GHOST = 'EnemyTexture:GHOST',
+  TERMER = 'EnemyTexture:TERMER',
+  BERSERK = 'EnemyTexture:BERSERK',
+  EXPLOSIVE = 'EnemyTexture:EXPLOSIVE',
+  STRANGER = 'EnemyTexture:STRANGER',
+  ADHERENT = 'EnemyTexture:ADHERENT',
+  TELEPATH = 'EnemyTexture:TELEPATH',
 }
 
 export enum EnemyVariant {

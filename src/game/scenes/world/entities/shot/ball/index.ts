@@ -5,17 +5,14 @@ import { EntityType } from '../../types';
 import { ShotTexture } from '../types';
 import type { ShotParams, IShotInitiator, IShot } from '../types';
 
-import { ShotBallAudio } from './types';
-import type { ShotBallData } from './types';
+import type { ShotBallAudio, ShotBallData } from './types';
 
 import type { WorldScene } from '~game/scenes/world';
 import type { Particles } from '~game/scenes/world/fx-manager/particles';
-import { Assets } from '~lib/assets';
 import { getIsometricDistance } from '~lib/dimension';
 import type { PositionAtWorld } from '~scene/world/level/types';
 
-Assets.RegisterAudio(ShotBallAudio);
-Assets.RegisterImages(ShotTexture);
+import './resources';
 
 export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
   readonly scene: WorldScene;

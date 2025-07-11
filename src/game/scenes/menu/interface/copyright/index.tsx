@@ -2,6 +2,8 @@ import React from 'react';
 
 import pkg from '~game/../../package.json';
 
+import imageDiscord from './images/discord.png';
+
 import { Wrapper, Icon, About, Discord, Author, Link } from './styles';
 
 export const Copyright: React.FC = () => (
@@ -16,7 +18,7 @@ export const Copyright: React.FC = () => (
       Version {pkg.version}
     </About>
     <Discord href='https://discord.gg/cnFAdMsRxn' target="_blank">
-      <Icon src='assets/discord.png' />
+      <Icon src={imageDiscord} />
       DISCORD
     </Discord>
   </Wrapper>

@@ -3,13 +3,15 @@ import {
 } from 'phaser-react-ui';
 import React, { useRef, useState } from 'react';
 
+import imageLock from './images/lock.png';
+
 import type { Game } from '~game/index';
 import { GameScene, GameEvent } from '~game/types';
 import { phrase } from '~lib/lang';
 import { Cost } from '~scene/system/interface/cost';
+import type { WorldScene } from '~scene/world';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';
 import { PlayerEvent, PlayerSuperskillIcon } from '~scene/world/entities/player/types';
-import type { WorldScene } from '~scene/world';
 
 import {
   Container, Timeout, Lock, Info, Body, Head, Name, Description, Wrapper, IconContainer, IconLock,
@@ -75,7 +77,7 @@ export const Item: React.FC<Props> = ({ type }) => {
         )}
         {!allow && (
           <Lock>
-            <IconLock src='assets/sprites/hud/lock.png' />
+            <IconLock src={imageLock} />
           </Lock>
         )}
         <IconContainer $allow={allow}>

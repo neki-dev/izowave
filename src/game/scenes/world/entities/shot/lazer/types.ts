@@ -1,3 +1,3 @@
 export enum ShotLazerAudio {
-  LAZER = 'shot/lazer',
+  LAZER = 'ShotLazerAudio:LAZER',
 }

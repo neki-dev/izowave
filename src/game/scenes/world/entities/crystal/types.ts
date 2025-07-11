@@ -1,11 +1,11 @@
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';
 
 export enum CrystalTexture {
-  CRYSTAL = 'crystal/crystal',
+  CRYSTAL = 'CrystalTexture:CRYSTAL',
 }
 
 export enum CrystalAudio {
-  PICKUP = 'crystal/pickup',
+  PICKUP = 'CrystalAudio:PICKUP',
 }
 
 export enum CrystalEvents {

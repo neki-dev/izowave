@@ -46,15 +46,15 @@ export enum LevelPlanet {
 }
 
 export enum LevelSceneryTexture {
-  EARTH = 'level/earth/scenery',
-  MOON = 'level/moon/scenery',
-  MARS = 'level/mars/scenery',
+  EARTH = 'LevelSceneryTexture:EARTH',
+  MOON = 'LevelSceneryTexture:MOON',
+  MARS = 'LevelSceneryTexture:MARS',
 }
 
 export enum LevelTilesetTexture {
-  EARTH = 'level/earth/tiles',
-  MOON = 'level/moon/tiles',
-  MARS = 'level/mars/tiles',
+  EARTH = 'LevelTilesetTexture:EARTH',
+  MOON = 'LevelTilesetTexture:MOON',
+  MARS = 'LevelTilesetTexture:MARS',
 }
 
 export enum BiomeType {

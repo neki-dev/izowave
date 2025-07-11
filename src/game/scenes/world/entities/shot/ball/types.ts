@@ -1,9 +1,9 @@
 import type { ShotData } from '../types';
 
 export enum ShotBallAudio {
-  FIRE = 'shot/ball_fire',
-  FROZEN = 'shot/ball_frozen',
-  SIMPLE = 'shot/ball_simple',
+  FIRE = 'ShotBallAudio:FIRE',
+  FROZEN = 'ShotBallAudio:FROZEN',
+  SIMPLE = 'ShotBallAudio:SIMPLE',
 }
 
 export type ShotBallData = ShotData & {

@@ -1,7 +1,7 @@
 import type { LangPhrase } from '~lib/lang/types';
 
 export enum ScreenAudio {
-  ERROR = 'interface/error',
+  ERROR = 'ScreenAudio:ERROR',
 }
 
 export enum ScreenEvent {

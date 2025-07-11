@@ -15,10 +15,10 @@ export interface IParticlesParent extends
 }
 
 export enum ParticlesTexture {
-  BIT = 'effect/bit',
-  BIT_SOFT = 'effect/bit_soft',
-  GLOW = 'effect/glow',
-  PLUS = 'effect/plus',
+  BIT = 'ParticlesTexture:BIT',
+  BIT_SOFT = 'ParticlesTexture:BIT_SOFT',
+  GLOW = 'ParticlesTexture:GLOW',
+  PLUS = 'ParticlesTexture:PLUS',
 }
 
 export type ParticlesData = {

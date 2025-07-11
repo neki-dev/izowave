@@ -21,19 +21,18 @@ import { LEVEL_PLANETS } from './level/const';
 import { SpawnTarget } from './level/types';
 import type { LevelData, PositionAtWorld, PositionAtMatrix } from './level/types';
 import { Spawner } from './spawner';
-import { WorldModeIcon, WorldMode, WorldEvent } from './types';
+import { WorldMode, WorldEvent } from './types';
 import type { WorldHint, WorldTimerParams, WorldSavePayload } from './types';
 import { Wave } from './wave';
 import { WaveEvent } from './wave/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameScene, GameState, GameEvent } from '~game/types';
-import { Assets } from '~lib/assets';
 import { aroundPosition } from '~lib/dimension';
 import { progressionLinear } from '~lib/progression';
 import { Utils } from '~lib/utils';
 
-Assets.RegisterImages(WorldModeIcon);
+import './resources';
 
 export class WorldScene extends Scene {
   private entityGroups: Record<EntityType, Phaser.GameObjects.Group>;

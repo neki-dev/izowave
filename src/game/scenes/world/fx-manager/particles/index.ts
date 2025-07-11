@@ -1,11 +1,8 @@
 import type { WorldScene } from '../..';
 
-import { ParticlesTexture } from './types';
 import type { IParticlesParent, ParticlesData } from './types';
 
-import { Assets } from '~lib/assets';
-
-Assets.RegisterImages(ParticlesTexture);
+import './resources';
 
 export class Particles {
   readonly scene: WorldScene;

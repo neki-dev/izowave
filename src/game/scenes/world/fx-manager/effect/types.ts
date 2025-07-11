@@ -1,14 +1,14 @@
 import type { PositionAtWorld } from '~scene/world/level/types';
 
 export enum EffectTexture {
-  BLOOD = 'effect/blood',
-  SMOKE = 'effect/smoke',
-  DAMAGE = 'effect/damage',
-  EXPLOSION = 'effect/explosion',
+  BLOOD = 'EffectTexture:BLOOD',
+  SMOKE = 'EffectTexture:SMOKE',
+  DAMAGE = 'EffectTexture:DAMAGE',
+  EXPLOSION = 'EffectTexture:EXPLOSION',
 }
 
 export enum EffectAudio {
-  EXPLOSION = 'effect/explosion',
+  EXPLOSION = 'EffectAudio:EXPLOSION',
 }
 
 export type EffectData = {

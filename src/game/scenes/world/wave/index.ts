@@ -14,13 +14,12 @@ import type { WaveSavePayload } from './types';
 import { WaveAudio, WaveEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
-import { Assets } from '~lib/assets';
 import { progressionLinear, progressionQuadraticMixed } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
 import { TutorialStep } from '~lib/tutorial/types';
 import { Utils } from '~lib/utils';
 
-Assets.RegisterAudio(WaveAudio);
+import './resources';
 
 export class Wave extends Phaser.Events.EventEmitter {
   readonly scene: WorldScene;

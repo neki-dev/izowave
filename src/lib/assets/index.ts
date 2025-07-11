@@ -1,52 +1,38 @@
 import type Phaser from 'phaser';
 
-import pkg from '../../../package.json';
-
-import type { AssetsSource, AssetsSpriteParams } from './types';
+import type { AssetsSpriteConfig } from './types';
 
 export class Assets {
   public static Files: Phaser.Types.Loader.FileConfig[] = [];
 
-  public static RegisterAudio(files: AssetsSource) {
-    this.Files = this.Files.concat(
-      this.Normalize(files).map((file) => ({
-        key: file,
-        type: 'audio',
-        url: `assets/audio/${file}.mp3?v=${pkg.version}`,
-      })),
-    );
+  public static AddAudio(key: string, url: string) {
+    this.Files.push({
+      key,
+      type: 'audio',
+      url,
+    });
   }
 
-  public static RegisterImages(files: AssetsSource) {
-    this.Files = this.Files.concat(
-      this.Normalize(files).map((file) => ({
-        key: file,
-        type: 'image',
-        url: `assets/sprites/${file}.png?v=${pkg.version}`,
-      })),
-    );
+  public static AddImage(key: string, url: string) {
+    this.Files.push({
+      key,
+      type: 'image',
+      url,
+    });
   }
 
-  public static RegisterSprites<T extends string>(files: AssetsSource<T>, params: AssetsSpriteParams<T>) {
-    this.Files = this.Files.concat(
-      this.Normalize(files).map((file) => {
-        const {
-          width, height, margin, spacing,
-        } = (typeof params === 'function') ? params(file) : params;
-
-        return {
-          key: file,
-          type: 'spritesheet',
-          url: `assets/sprites/${file}.png?v=${pkg.version}`,
-          frameConfig: {
-            frameWidth: width,
-            frameHeight: height,
-            margin,
-            spacing,
-          },
-        };
-      }),
-    );
+  public static AddSprite(key: string, url: string, { width, height, margin, spacing }: AssetsSpriteConfig) {
+    this.Files.push({
+      key,
+      type: 'spritesheet',
+      url,
+      frameConfig: {
+        frameWidth: width,
+        frameHeight: height,
+        margin,
+        spacing,
+      },
+    });
   }
 
   public static async ImportFontFace(name: string, file: string) {
@@ -60,13 +46,5 @@ export class Assets {
 
   public static Clear() {
     this.Files = [];
-  }
-
-  private static Normalize<T extends string>(files: AssetsSource<T>) {
-    if (typeof files === 'string') {
-      return [files];
-    }
-
-    return Object.values(files);
   }
 }

@@ -1,36 +1,36 @@
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export enum PlayerTexture {
-  PLAYER = 'player/player',
-  SUPERSKILL = 'player/superskill',
+  PLAYER = 'PlayerTexture:PLAYER',
+  SUPERSKILL = 'PlayerTexture:SUPERSKILL',
 }
 
 export enum PlayerSkillIcon {
-  MAX_HEALTH = 'player/skills/max_health',
-  SPEED = 'player/skills/speed',
-  STAMINA = 'player/skills/stamina',
-  BUILD_SPEED = 'player/skills/build_speed',
-  ATTACK_DAMAGE = 'player/skills/attack_damage',
-  ATTACK_DISTANCE = 'player/skills/attack_distance',
-  ATTACK_SPEED = 'player/skills/attack_speed',
+  MAX_HEALTH = 'PlayerSkillIcon:MAX_HEALTH',
+  SPEED = 'PlayerSkillIcon:SPEED',
+  STAMINA = 'PlayerSkillIcon:STAMINA',
+  BUILD_SPEED = 'PlayerSkillIcon:BUILD_SPEED',
+  ATTACK_DAMAGE = 'PlayerSkillIcon:ATTACK_DAMAGE',
+  ATTACK_DISTANCE = 'PlayerSkillIcon:ATTACK_DISTANCE',
+  ATTACK_SPEED = 'PlayerSkillIcon:ATTACK_SPEED',
 }
 
 export enum PlayerSuperskillIcon {
-  INVISIBLE = 'player/superskills/invisible',
-  FROST = 'player/superskills/frost',
-  SHIELD = 'player/superskills/shield',
-  RAGE = 'player/superskills/rage',
-  FIRE = 'player/superskills/fire',
+  INVISIBLE = 'PlayerSuperskillIcon:INVISIBLE',
+  FROST = 'PlayerSuperskillIcon:FROST',
+  SHIELD = 'PlayerSuperskillIcon:SHIELD',
+  RAGE = 'PlayerSuperskillIcon:RAGE',
+  FIRE = 'PlayerSuperskillIcon:FIRE',
 }
 
 export enum PlayerAudio {
-  UPGRADE = 'player/upgrade',
-  WALK = 'player/walk',
-  DEAD = 'player/dead',
-  DAMAGE_1 = 'player/damage_1',
-  DAMAGE_2 = 'player/damage_2',
-  DAMAGE_3 = 'player/damage_3',
-  SUPERSKILL = 'player/superskill',
+  UPGRADE = 'PlayerAudio:UPGRADE',
+  WALK = 'PlayerAudio:WALK',
+  DEAD = 'PlayerAudio:DEAD',
+  DAMAGE_1 = 'PlayerAudio:DAMAGE_1',
+  DAMAGE_2 = 'PlayerAudio:DAMAGE_2',
+  DAMAGE_3 = 'PlayerAudio:DAMAGE_3',
+  SUPERSKILL = 'PlayerAudio:SUPERSKILL',
 }
 
 export enum PlayerSkillTarget {

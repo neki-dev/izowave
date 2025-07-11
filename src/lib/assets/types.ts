@@ -10,3 +10,10 @@ export type AssetsSpriteSize = {
 export type AssetsSpriteParams<T = string> =
   | AssetsSpriteSize
   | ((sprite: T) => AssetsSpriteSize);
+
+export type AssetsSpriteConfig = {
+  width: number
+  height: number
+  spacing?: number
+  margin?: number
+};

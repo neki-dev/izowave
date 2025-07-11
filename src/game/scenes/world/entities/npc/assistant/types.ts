@@ -13,9 +13,9 @@ export enum AssistantVariant {
 }
 
 export enum AssistantTexture {
-  DEFAULT = 'assistant/default',
-  FIREBOT = 'assistant/firebot',
-  LASERBOT = 'assistant/laserbot',
+  DEFAULT = 'AssistantTexture:DEFAULT',
+  FIREBOT = 'AssistantTexture:FIREBOT',
+  LASERBOT = 'AssistantTexture:LASERBOT',
 }
 
 export type AssistantData = {

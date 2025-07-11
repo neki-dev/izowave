@@ -6,22 +6,17 @@ import { PlayerSuperskill, PlayerEvent } from '../../player/types';
 import { EntityType } from '../../types';
 
 import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
-import { EnemyAudio, EnemyTexture } from './types';
 import type { EnemyData, IEnemyTarget } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
 import { GameSettings } from '~game/types';
-import { Assets } from '~lib/assets';
 import { InterfaceFont } from '~lib/interface/types';
 import { progressionQuadratic, progressionLinear } from '~lib/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
 
-Assets.RegisterAudio(EnemyAudio);
-Assets.RegisterSprites(EnemyTexture, (texture) => (
-  ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]]
-));
+import './resources';
 
 export abstract class Enemy extends NPC {
   private _damage: number;

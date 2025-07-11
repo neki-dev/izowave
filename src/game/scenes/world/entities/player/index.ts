@@ -23,13 +23,10 @@ import {
   PlayerSuperskill,
   MovementDirection,
   PlayerEvent,
-  PlayerSkillIcon,
-  PlayerSuperskillIcon,
 } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameSettings, GameEvent } from '~game/types';
-import { Assets } from '~lib/assets';
 import { isPositionsEqual, getClosestByIsometricDistance } from '~lib/dimension';
 import { progressionLinear, progressionQuadratic } from '~lib/progression';
 import { Tutorial } from '~lib/tutorial';
@@ -42,11 +39,7 @@ import { TileType } from '~scene/world/level/types';
 import { WorldMode, WorldEvent } from '~scene/world/types';
 import { WaveEvent } from '~scene/world/wave/types';
 
-Assets.RegisterAudio(PlayerAudio);
-Assets.RegisterSprites(PlayerTexture.PLAYER, PLAYER_TILE_SIZE);
-Assets.RegisterImages(PlayerTexture.SUPERSKILL);
-Assets.RegisterImages(PlayerSkillIcon);
-Assets.RegisterImages(PlayerSuperskillIcon);
+import './resources';
 
 export class Player extends Sprite implements IEnemyTarget {
   private _experience: number = 0;

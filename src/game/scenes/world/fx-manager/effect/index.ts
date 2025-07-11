@@ -2,16 +2,9 @@ import Phaser from 'phaser';
 
 import type { WorldScene } from '../..';
 
-import { EffectAudio, EffectTexture } from './types';
 import type { EffectData } from './types';
 
-import { Assets } from '~lib/assets';
-
-Assets.RegisterAudio(EffectAudio);
-Assets.RegisterSprites(EffectTexture, {
-  width: 32,
-  height: 32,
-});
+import './resources';
 
 export class Effect extends Phaser.GameObjects.Sprite {
   readonly scene: WorldScene;

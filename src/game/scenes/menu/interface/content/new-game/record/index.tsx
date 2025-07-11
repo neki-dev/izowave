@@ -1,5 +1,7 @@
 import React from 'react';
 
+import imageScore from './images/score.png';
+
 import { phrase } from '~lib/lang';
 
 import { Wrapper, Amount, Icon, Label, Value } from './styles';
@@ -12,7 +14,7 @@ export const Record: React.FC<Props> = ({ value }) => (
   <Wrapper>
     <Label>{phrase('RECORD')}</Label>
     <Value>
-      <Icon src="assets/sprites/hud/score.png" />
+      <Icon src={imageScore} />
       <Amount>{value}</Amount>
     </Value>
   </Wrapper>

@@ -4,9 +4,9 @@ export enum WaveEvent {
 }
 
 export enum WaveAudio {
-  START = 'wave/start',
-  COMPLETE = 'wave/complete',
-  TICK = 'wave/tick',
+  START = 'WaveAudio:START',
+  COMPLETE = 'WaveAudio:COMPLETE',
+  TICK = 'WaveAudio:TICK',
 }
 
 export type WaveSavePayload = {

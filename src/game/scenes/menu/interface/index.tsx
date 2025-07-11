@@ -4,6 +4,7 @@ import type { MenuPage } from '../types';
 
 import { Content } from './content';
 import { Copyright } from './copyright';
+import imageLogotype from './images/logotype.png';
 import { Navigation } from './navigation';
 
 import { Tutorial } from '~lib/tutorial';
@@ -30,7 +31,7 @@ export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
     <Overlay>
       <Wrapper>
         <Sidebar>
-          <Logotype src="assets/logotype.png" />
+          <Logotype src={imageLogotype} />
           <Navigation page={page} onSelect={setPage} />
           <Copyright />
         </Sidebar>

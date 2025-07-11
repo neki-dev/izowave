@@ -35,12 +35,10 @@ import {
 } from './types';
 
 import { GameEvent, GameSettings } from '~game/types';
-import { Assets } from '~lib/assets';
 import { isPositionsEqual } from '~lib/dimension';
 import { Navigator } from '~lib/navigator';
 
-Assets.RegisterSprites(LevelTilesetTexture, LEVEL_MAP_TILE);
-Assets.RegisterSprites(LevelSceneryTexture, LEVEL_SCENERY_TILE);
+import './resources';
 
 export class Level extends TileMatrix {
   readonly scene: WorldScene;

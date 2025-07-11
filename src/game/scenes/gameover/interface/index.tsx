@@ -1,6 +1,7 @@
 import { useClick, useGame } from 'phaser-react-ui';
 import React, { useEffect, useRef } from 'react';
 
+import imageRestart from './images/restart.png';
 import { Result } from './result';
 
 import type { Game } from '~game/index';
@@ -40,7 +41,7 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
           <Label>GAME OVER</Label>
           <Result stat={stat} record={record} />
           <Button ref={refButton}>
-            <IconRestart src='assets/sprites/hud/restart.png' />
+            <IconRestart src={imageRestart} />
             {phrase('RESTART_GAME')}
           </Button>
         </Head>

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import type { ScreenScene } from '../..';
 
 import { NOTICE_DURATION } from './const';
+import imageFailure from './images/failure.png';
 
 import { phrase } from '~lib/lang';
 import type { Notice } from '~scene/screen/types';
@@ -67,7 +68,7 @@ export const Notices: React.FC = () => {
     <Wrapper>
       {notices.map((notice) => (
         <Item role="notice" key={notice.text}>
-          <Icon src='assets/sprites/hud/failure.png' />
+          <Icon src={imageFailure} />
           {phrase(notice.text, notice.format)}
         </Item>
       ))}
