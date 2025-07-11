@@ -9,29 +9,13 @@ body {
   background: #222;
 }
 
-img {
-  image-rendering: pixelated;
+body, input, a {
+  color: #fff;
+  font: 14px 'PixelText';
 }
 
-.system-overlay {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: #111;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 10vh;
-  font: 14px 'Verdana';
-  font-weight: bold;
-  line-height: 14pt;
-  letter-spacing: 1px;
-  color: #fff;
-  text-align: center;
-  z-index: 9999;
+img {
+  display: block;
 }
 
 #loading {
@@ -43,15 +27,29 @@ img {
 }
 
 #loading #loading-status {
-  font: 14px 'Verdana';
   font-weight: bold;
   font-size: 2vh;
   line-height: 3vh;
   letter-spacing: 1px;
   position: fixed;
   text-align: center;
-  color: #fff;
   left: 50%;
   top: 75%;
   transform: translate(-50%, -50%);
+}
+
+#invalid-screen {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10vh;
+  font-weight: bold;
+  line-height: 14pt;
+  letter-spacing: 1px;
+  text-align: center;
+  z-index: 9999;
 }
