@@ -25,13 +25,13 @@ import {
   PlayerEvent,
 } from './types';
 
-import { DIFFICULTY } from '~game/difficulty';
-import { GameSettings, GameEvent } from '~game/types';
 import { isPositionsEqual, getClosestByIsometricDistance } from '~core/dimension';
 import { progressionLinear, progressionQuadratic } from '~core/progression';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
 import { Utils } from '~core/utils';
+import { DIFFICULTY } from '~game/difficulty';
+import { GameSettings, GameEvent } from '~game/types';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { PositionAtMatrix, PositionAtWorld } from '~scene/world/level/types';

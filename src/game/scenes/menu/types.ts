@@ -1,3 +1,5 @@
+import type { LevelPlanet } from '../world/level/types';
+
 import type { LangPhrase } from '~core/lang/types';
 
 export type MenuItem = {
@@ -14,4 +16,10 @@ export enum MenuPage {
   SETTINGS = 'SETTINGS',
   ABOUT_GAME = 'ABOUT_GAME',
   CONTROLS = 'CONTROLS',
+}
+
+export type MenuData = {
+  background?: boolean
+  defaultPage?: MenuPage
+  planet?: LevelPlanet
 }

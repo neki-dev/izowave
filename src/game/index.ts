@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { CONTAINER_ID, AUDIO_VOLUME } from './const';
+import { LevelPlanet } from './scenes/world/level/types';
 import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent } from './types';
 import type { GameStat, GameSavePayload } from './types';
 
@@ -9,7 +10,6 @@ import { Storage } from '~core/storage';
 import type { StorageSave } from '~core/storage/types';
 import { Tutorial } from '~core/tutorial';
 import { Utils } from '~core/utils';
-import { GameOverScene } from '~scene/gameover';
 import { MenuScene } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';
 import { ScreenScene } from '~scene/screen';
@@ -18,6 +18,8 @@ import { WorldScene } from '~scene/world';
 
 export class Game extends Phaser.Game {
   public difficulty: GameDifficulty = GameDifficulty.NORMAL;
+
+  public planet: LevelPlanet = LevelPlanet.EARTH;
 
   private saved: boolean = false;
 
@@ -46,7 +48,7 @@ export class Game extends Phaser.Game {
 
   constructor() {
     super({
-      scene: [SystemScene, WorldScene, ScreenScene, MenuScene, GameOverScene],
+      scene: [SystemScene, WorldScene, ScreenScene, MenuScene],
       pixelArt: true,
       autoRound: true,
       parent: CONTAINER_ID,
@@ -124,7 +126,8 @@ export class Game extends Phaser.Game {
     this.world.scene.pause();
     this.screen.scene.pause();
 
-    this.scene.systemScene.scene.launch(GameScene.MENU, {
+    this.launchScene(GameScene.MENU, {
+      background: false,
       defaultPage: this.isDesktop()
         ? MenuPage.CONTROLS
         : MenuPage.ABOUT_GAME,
@@ -137,8 +140,7 @@ export class Game extends Phaser.Game {
     }
 
     this.setState(GameState.STARTED);
-
-    this.scene.systemScene.scene.stop(GameScene.MENU);
+    this.stopScene(GameScene.MENU);
 
     this.world.scene.resume();
     this.screen.scene.resume();
@@ -171,22 +173,19 @@ export class Game extends Phaser.Game {
       return;
     }
 
+    this.stopScene(GameScene.MENU);
+
     if (this.usedSave) {
       this.loadSavePayload(this.usedSave.payload.game);
-      this.world.scene.restart(this.usedSave.payload.level);
+      this.launchScene(GameScene.WORLD, this.usedSave.payload.level);
     } else {
       Tutorial.Reset();
-      this.world.scene.restart();
+      this.launchScene(GameScene.WORLD, { planet: this.planet });
     }
 
-    this.world.events.once(Phaser.Scenes.Events.CREATE, () => {
-      this.setState(GameState.STARTED);
+    this.launchScene(GameScene.SCREEN);
 
-      this.scene.systemScene.scene.stop(GameScene.MENU);
-      this.scene.systemScene.scene.launch(GameScene.SCREEN);
-
-      this.world.start();
-    });
+    this.setState(GameState.STARTED);
   }
 
   public stopGame(menu: boolean = true) {
@@ -194,15 +193,14 @@ export class Game extends Phaser.Game {
       return;
     }
 
-    this.scene.systemScene.scene.stop(GameScene.SCREEN);
-    this.scene.systemScene.scene.stop(GameScene.MENU);
-    this.scene.systemScene.scene.stop(GameScene.GAMEOVER);
+    this.stopScene(GameScene.WORLD);
+    this.stopScene(GameScene.SCREEN);
+    this.stopScene(GameScene.MENU);
 
     this.setState(GameState.IDLE);
 
     if (menu) {
-      this.world.scene.restart();
-      this.scene.systemScene.scene.launch(GameScene.MENU, {
+      this.launchScene(GameScene.MENU, {
         defaultPage: MenuPage.NEW_GAME,
       });
     }
@@ -230,9 +228,6 @@ export class Game extends Phaser.Game {
     const stat = this.getCurrentStat();
 
     this.writeBestStat(stat, record);
-
-    this.scene.systemScene.scene.stop(GameScene.SCREEN);
-    this.scene.systemScene.scene.launch(GameScene.GAMEOVER, { stat, record });
   }
 
   public toggleSystemPause(state: boolean) {
@@ -245,6 +240,14 @@ export class Game extends Phaser.Game {
     }
   }
 
+  public launchScene(key: GameScene, data?: object) {
+    this.scene.systemScene.scene.launch(key, data);
+  }
+
+  public stopScene(key: GameScene) {
+    this.scene.systemScene.scene.stop(key);
+  }
+
   private setState(state: GameState) {
     if (this.state === state) {
       return;
@@ -254,6 +257,8 @@ export class Game extends Phaser.Game {
     const nextPauseState = state !== GameState.STARTED;
 
     this.state = state;
+
+    this.events.emit(GameEvent.CHANGE_STATE, state);
 
     if (prevPauseState !== nextPauseState) {
       this.events.emit(GameEvent.TOGGLE_PAUSE, nextPauseState);
@@ -290,17 +295,15 @@ export class Game extends Phaser.Game {
   private readSettings() {
     Utils.EachObject(GameSettings, (key) => {
       const userValue = localStorage.getItem(`SETTINGS.${key}`);
-
       if (userValue) {
         this.settings[key] = userValue === 'on';
       }
     });
   }
 
-  public getRecordStat(): Nullable<GameStat> {
+  public getRecordStat(key?: string): Nullable<GameStat> {
     try {
-      const recordValue = localStorage.getItem(this.getStatStorageKey());
-
+      const recordValue = localStorage.getItem(key ?? this.getStatStorageKey());
       return recordValue && JSON.parse(recordValue);
     } catch {
       return null;
@@ -317,7 +320,7 @@ export class Game extends Phaser.Game {
     localStorage.setItem(this.getStatStorageKey(), JSON.stringify(betterStat));
   }
 
-  private getCurrentStat(): GameStat {
+  public getCurrentStat(): GameStat {
     return {
       score: this.world.player.score,
       waves: this.world.wave.number - 1,
@@ -328,6 +331,10 @@ export class Game extends Phaser.Game {
 
   private getStatStorageKey() {
     return `BEST_STAT.${this.world.level.planet}.${this.difficulty}`;
+  }
+
+  public loadSave(data: StorageSave) {
+    this.usedSave = data;
   }
 
   public async saveGame(name: string) {

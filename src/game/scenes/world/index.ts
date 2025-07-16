@@ -26,11 +26,11 @@ import type { WorldHint, WorldTimerParams, WorldSavePayload } from './types';
 import { Wave } from './wave';
 import { WaveEvent } from './wave/types';
 
-import { DIFFICULTY } from '~game/difficulty';
-import { GameScene, GameState, GameEvent } from '~game/types';
 import { aroundPosition } from '~core/dimension';
 import { progressionLinear } from '~core/progression';
 import { Utils } from '~core/utils';
+import { DIFFICULTY } from '~game/difficulty';
+import { GameScene, GameState, GameEvent } from '~game/types';
 
 import './resources';
 
@@ -91,6 +91,9 @@ export class WorldScene extends Scene {
   public create(data: LevelData) {
     this.input.setPollAlways();
 
+    const ui = new Interface(this);
+    ui.render(WorldUI);
+
     this.level = new Level(this, data);
     this.fx = new FXManager(this);
     this.camera = new Camera(this);
@@ -104,17 +107,10 @@ export class WorldScene extends Scene {
       [WorldMode.PATH_TO_CRYSTAL]: false,
     };
 
-    this.addEntityGroups();
-  }
-
-  public start() {
-    const ui = new Interface(this);
-    ui.render(WorldUI);
-
-    this.addLifecycle();
-
     this.camera.addZoomControl();
 
+    this.addEntityGroups();
+    this.addLifecycle();
     this.addWaveManager();
     this.addBuilder();
     this.addPlayer();

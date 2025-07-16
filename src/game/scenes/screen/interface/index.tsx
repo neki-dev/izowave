@@ -45,5 +45,3 @@ export const ScreenUI: React.FC = () => {
     </Wrapper>
   );
 };
-
-ScreenUI.displayName = 'ScreenUI';

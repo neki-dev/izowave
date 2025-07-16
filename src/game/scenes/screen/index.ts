@@ -6,9 +6,9 @@ import { Scene } from '..';
 import { ScreenUI } from './interface';
 import { ScreenAudio, ScreenEvent } from './types';
 
-import { GameScene } from '~game/types';
 import { INTERFACE_SCALE } from '~core/interface/const';
 import type { LangPhrase } from '~core/lang/types';
+import { GameScene } from '~game/types';
 
 import './resources';
 

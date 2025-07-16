@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import type { MenuPage } from '../types';
+import { MenuPage } from '../types';
 
 import { Content } from './content';
 import { Copyright } from './copyright';
@@ -16,7 +16,9 @@ type Props = {
   defaultPage?: MenuPage
 };
 
-export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
+export const MenuUI: React.FC<Props> = ({
+  defaultPage = MenuPage.NEW_GAME,
+}) => {
   const [page, setPage] = useState(defaultPage);
 
   useEffect(() => {
@@ -42,5 +44,3 @@ export const MenuUI: React.FC<Props> = ({ defaultPage }) => {
     </Overlay>
   );
 };
-
-MenuUI.displayName = 'MenuUI';

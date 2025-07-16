@@ -4,23 +4,20 @@ import React, { useEffect, useRef } from 'react';
 import imageRestart from './images/restart.png';
 import { Result } from './result';
 
-import type { Game } from '~game/index';
-import type { GameStat } from '~game/types';
 import { phrase } from '~core/lang';
 import { Tutorial } from '~core/tutorial';
+import type { Game } from '~game/index';
 import { Overlay } from '~scene/system/interface/overlay';
 
-import { Wrapper, Label, Button, Head, IconRestart } from './styles';
+import { Button, Head, IconRestart, Label, Wrapper } from './styles';
 
-type Props = {
-  stat: GameStat
-  record: Nullable<GameStat>
-};
-
-export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
+export const GameOver: React.FC = () => {
   const game = useGame<Game>();
 
   const refButton = useRef<HTMLDivElement>(null);
+
+  const record = game.getRecordStat();
+  const stat = game.getCurrentStat();
 
   useClick(refButton, 'down', () => {
     game.restartGame();
@@ -49,5 +46,3 @@ export const GameoverUI: React.FC<Props> = ({ stat, record }) => {
     </Overlay>
   );
 };
-
-GameoverUI.displayName = 'GameoverUI';

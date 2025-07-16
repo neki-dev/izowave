@@ -1,15 +1,28 @@
-import React from 'react';
+import { useEvent, useGame } from 'phaser-react-ui';
+import React, { useState } from 'react';
 
 import { CrystalsAmount } from './crystals-amount';
+import { GameOver } from './game-over';
 import { RelativeBuildingInfo } from './relative-building-info';
 import { RelativeHints } from './relative-hints';
 
-export const WorldUI: React.FC = () => (
-  <>
-    <RelativeBuildingInfo />
-    <RelativeHints />
-    <CrystalsAmount />
-  </>
-);
+import type { Game } from '~game/index';
+import { GameEvent, GameState } from '~game/types';
 
-WorldUI.displayName = 'WorldUI';
+export const WorldUI: React.FC = () => {
+  const game = useGame<Game>();
+
+  const [state, setState] = useState(game.state);
+
+  useEvent(game.events, GameEvent.CHANGE_STATE, setState, []);
+
+  return state === GameState.FINISHED ? (
+    <GameOver />
+  ) : (
+    <>
+      <RelativeBuildingInfo />
+      <RelativeHints />
+      <CrystalsAmount />
+    </>
+  );
+};

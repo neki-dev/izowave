@@ -2,7 +2,6 @@ import { WorldGenerator } from 'gen-biome';
 import type { World } from 'gen-biome';
 import Phaser from 'phaser';
 
-import type { WorldScene } from '..';
 import type { Effect } from '../fx-manager/effect';
 
 import {
@@ -34,14 +33,15 @@ import {
   TileType,
 } from './types';
 
-import { GameEvent, GameSettings } from '~game/types';
 import { isPositionsEqual } from '~core/dimension';
 import { Navigator } from '~core/navigator';
+import type { Scene } from '~game/scenes';
+import { GameEvent, GameSettings } from '~game/types';
 
 import './resources';
 
 export class Level extends TileMatrix {
-  readonly scene: WorldScene;
+  readonly scene: Scene;
 
   readonly navigator: Navigator;
 
@@ -61,9 +61,9 @@ export class Level extends TileMatrix {
   public get groundLayer() { return this._groundLayer; }
   private set groundLayer(v) { this._groundLayer = v; }
 
-  private sceneryTiles: Phaser.GameObjects.Group;
+  private tilemap: Phaser.Tilemaps.Tilemap;
 
-  constructor(scene: WorldScene, { planet, seed }: LevelData) {
+  constructor(scene: Scene, { planet, seed }: LevelData) {
     super(LEVEL_MAP_SIZE, LEVEL_MAP_MAX_HEIGHT);
 
     this.scene = scene;
@@ -197,8 +197,8 @@ export class Level extends TileMatrix {
       format: Phaser.Tilemaps.Formats.ARRAY_2D,
     });
 
-    const tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
-    const tileset = tilemap.addTilesetImage(
+    this.tilemap = new Phaser.Tilemaps.Tilemap(this.scene, data);
+    const tileset = this.tilemap.addTilesetImage(
       LevelTilesetTexture[this.planet],
       undefined,
       LEVEL_MAP_TILE.width,
@@ -211,12 +211,12 @@ export class Level extends TileMatrix {
       throw Error('Unable to create map tileset');
     }
 
-    this.addFalloffLayer(tilemap, tileset);
-    this.addGroundLayer(tilemap, tileset);
+    this.addFalloffLayer(tileset);
+    this.addGroundLayer(tileset);
   }
 
-  private addGroundLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
-    const layer = tilemap.createBlankLayer(
+  private addGroundLayer(tileset: Phaser.Tilemaps.Tileset) {
+    const layer = this.tilemap.createBlankLayer(
       'ground',
       tileset,
       -LEVEL_MAP_TILE.width * 0.5,
@@ -230,14 +230,14 @@ export class Level extends TileMatrix {
     this.groundLayer = layer;
   }
 
-  private addFalloffLayer(tilemap: Phaser.Tilemaps.Tilemap, tileset: Phaser.Tilemaps.Tileset) {
+  private addFalloffLayer(tileset: Phaser.Tilemaps.Tileset) {
     const tileAngle = Math.atan2(1 / LEVEL_MAP_PERSPECTIVE, 1);
     const visibleDiagonal = (this.scene.game.canvas.clientWidth / 2) / Math.sin(tileAngle);
     const edgeSize = Math.ceil(visibleDiagonal / LEVEL_MAP_TILE.edgeLength);
     const sizeInTiles = (edgeSize * 2) + LEVEL_MAP_SIZE;
     const position = Level.ToWorldPosition({ x: -edgeSize, y: -edgeSize }, 0);
 
-    const layer = tilemap.createBlankLayer(
+    const layer = this.tilemap.createBlankLayer(
       'falloff',
       tileset,
       position.x - LEVEL_MAP_TILE.width * 0.5,
@@ -323,8 +323,6 @@ export class Level extends TileMatrix {
   }
 
   private addScenery() {
-    this.sceneryTiles = this.scene.add.group();
-
     const positions = this.readSpawnPositions(SpawnTarget.SCENERY);
     const count = Math.ceil(LEVEL_MAP_SIZE * LEVEL_PLANETS[this.planet].SCENERY_DENSITY);
 
@@ -347,7 +345,6 @@ export class Level extends TileMatrix {
         tile.setDepth(positionAtWorld.y);
         tile.setOrigin(0.5, LEVEL_SCENERY_TILE.origin);
         this.putTile(tile, tilePosition);
-        this.sceneryTiles.add(tile);
       }
     }
   }

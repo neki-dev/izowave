@@ -1,13 +1,13 @@
-import Phaser from 'phaser';
-import { useGame } from 'phaser-react-ui';
+import { useCurrentScene, useGame } from 'phaser-react-ui';
 import React, { useMemo, useState } from 'react';
 
 import { Param } from './param';
 import { Record } from './record';
 
-import type { Game } from '~game/index';
-import { GameDifficulty } from '~game/types';
 import { phrase } from '~core/lang';
+import type { Game } from '~game/index';
+import type { MenuScene } from '~game/scenes/menu';
+import { GameDifficulty } from '~game/types';
 import { Button } from '~scene/system/interface/button';
 import { LevelPlanet } from '~scene/world/level/types';
 
@@ -15,10 +15,14 @@ import { Wrapper, Params } from './styles';
 
 export const NewGame: React.FC = () => {
   const game = useGame<Game>();
+  const scene = useCurrentScene<MenuScene>();
 
-  const getScore = () => game.getRecordStat()?.score ?? 0;
+  const [planet, setPlanet] = useState(game.planet);
+  const [difficulty, setDifficulty] = useState(game.difficulty);
 
-  const [score, setScore] = useState(getScore);
+  const score = useMemo(() => (
+    game.getRecordStat(`BEST_STAT.${planet}.${difficulty}`)?.score ?? 0
+  ), [planet, difficulty]);
 
   const planets = useMemo(() => (
     Object.keys(LevelPlanet) as LevelPlanet[]
@@ -28,17 +32,14 @@ export const NewGame: React.FC = () => {
   ), []);
 
   const onChangePlanet = (planet: LevelPlanet) => {
-    game.world.scene.restart({ planet });
-
-    game.world.events.once(Phaser.Scenes.Events.CREATE, () => {
-      game.world.camera.focusOnLevel();
-      setScore(getScore());
-    });
+    setPlanet(planet);
+    scene.scene.restart({ planet });
+    game.planet = planet;
   };
 
   const onChangeDifficulty = (difficulty: GameDifficulty) => {
+    setDifficulty(difficulty);
     game.difficulty = difficulty;
-    setScore(getScore());
   };
 
   const onClickStart = () => {
@@ -51,7 +52,7 @@ export const NewGame: React.FC = () => {
         <Param
           label="PLANET"
           values={planets}
-          defaultValue={game.world.level.planet}
+          defaultValue={planet}
           onChange={onChangePlanet}
         />
         <Param

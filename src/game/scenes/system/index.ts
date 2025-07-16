@@ -1,9 +1,9 @@
 import { Scene } from '..';
 
-import { GameScene, GameState } from '~game/types';
 import { Assets } from '~core/assets';
 import { CONTROL_KEY } from '~core/controls/const';
 import { Storage } from '~core/storage';
+import { GameScene, GameState } from '~game/types';
 import { MenuPage } from '~scene/menu/types';
 
 export class SystemScene extends Scene {
@@ -34,11 +34,9 @@ export class SystemScene extends Scene {
     await Storage.Register()
       .then(() => Storage.LoadSaves());
 
-    this.scene.launch(GameScene.WORLD);
     this.scene.launch(GameScene.MENU, {
       defaultPage: MenuPage.NEW_GAME,
     });
-
     this.scene.bringToTop();
 
     SystemScene.RemoveLoading();

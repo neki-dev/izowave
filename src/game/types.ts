@@ -4,13 +4,13 @@ import type { TutorialStep, TutorialStepState } from '~core/tutorial/types';
 
 export enum GameScene {
   SYSTEM = 'SYSTEM',
-  GAMEOVER = 'GAMEOVER',
   WORLD = 'WORLD',
   SCREEN = 'SCREEN',
   MENU = 'MENU',
 }
 
 export enum GameEvent {
+  CHANGE_STATE = 'change_state',
   START = 'start',
   FINISH = 'finish',
   UPDATE_SETTINGS = 'update_settings',
