@@ -1,8 +1,8 @@
+import type { Wave } from '../..';
 import { DIFFICULTY } from '../../../../../../game/difficulty';
 import world from '../../../__mocks__/world';
-import type { IWave } from '../../types';
 
-export function registerHelper(wave: IWave) {
+export function registerHelper(wave: Wave) {
   return {
     startWave() {
       this.skipTime(wave.getTimeleft());

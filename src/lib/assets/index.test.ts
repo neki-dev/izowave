@@ -1,35 +1,30 @@
-// import assets from './__mocks__/assets';
+import { Assets } from '.';
 
-// import { Assets } from '.';
+describe('lib / assets', () => {
+  it('should add audio', () => {
+    Assets.AddAudio('key', 'path');
 
-// describe('lib / assets', () => {
-//   beforeAll(() => {
-//     Assets.RegisterAudio(assets.audio);
-//     Assets.RegisterImages(assets.images);
-//     Assets.RegisterSprites(assets.sprites, {
-//       width: 10,
-//       height: 10,
-//     });
-//   });
+    const audio = Assets.Files.filter((file) => (file.type === 'audio'));
 
-//   it('should register audio', () => {
-//     const audio = Assets.Files.filter((file) => (file.type === 'audio'));
+    expect(audio.length).toBe(1);
+    expect(audio[0].key).toBe('key');
+  });
 
-//     expect(audio.length).toBe(Object.values(assets.audio).length);
-//     expect(audio[0].key).toBe(Object.values(assets.audio)[0]);
-//   });
+  it('should add images', () => {
+    Assets.AddImage('key', 'path');
 
-//   it('should register images', () => {
-//     const images = Assets.Files.filter((file) => (file.type === 'image'));
+    const images = Assets.Files.filter((file) => (file.type === 'image'));
 
-//     expect(images.length).toBe(Object.values(assets.images).length);
-//     expect(images[0].key).toBe(Object.values(assets.images)[0]);
-//   });
+    expect(images.length).toBe(1);
+    expect(images[0].key).toBe('key');
+  });
 
-//   it('should register sprites', () => {
-//     const sprites = Assets.Files.filter((file) => (file.type === 'spritesheet'));
+  it('should add sprites', () => {
+    Assets.AddSprite('key', 'path', { width: 1, height: 1 });
 
-//     expect(sprites.length).toBe(Object.values(assets.sprites).length);
-//     expect(sprites[0].key).toBe(Object.values(assets.sprites)[0]);
-//   });
-// });
+    const sprites = Assets.Files.filter((file) => (file.type === 'spritesheet'));
+
+    expect(sprites.length).toBe(1);
+    expect(sprites[0].key).toBe('key');
+  });
+});

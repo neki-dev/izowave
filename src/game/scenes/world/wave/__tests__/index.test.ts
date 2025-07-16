@@ -1,18 +1,17 @@
 import 'jest-canvas-mock';
 
 import { Wave } from '..';
+import type { WorldScene } from '../..';
 import { DIFFICULTY } from '../../../../../game/difficulty';
 import { progressionLinear } from '../../../../../lib/progression';
 import { Tutorial } from '../../../../../lib/tutorial';
 import world from '../../__mocks__/world';
-import type { IWorld } from '../../types';
 import { WaveEvent } from '../types';
-import type { IWave } from '../types';
 
 import { registerHelper } from './helpers/wave';
 
 describe('world / wave', () => {
-  let wave: IWave;
+  let wave: Wave;
   let helper: any;
 
   beforeAll(() => {
@@ -21,7 +20,7 @@ describe('world / wave', () => {
 
   beforeEach(() => {
     world.getTime = jest.fn(() => 0);
-    wave = new Wave(world as unknown as IWorld);
+    wave = new Wave(world as unknown as WorldScene);
     // @ts-ignore
     wave.createEnemy = jest.fn();
     wave.runTimeleft();
