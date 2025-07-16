@@ -7,7 +7,7 @@ import type { EffectData } from './types';
 import './resources';
 
 export class Effect extends Phaser.GameObjects.Sprite {
-  readonly scene: WorldScene;
+  declare public readonly scene: WorldScene;
 
   constructor(scene: WorldScene, {
     texture, position, staticFrame, depth, rate = 16,

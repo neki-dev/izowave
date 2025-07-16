@@ -8,10 +8,10 @@ import { EntityType } from '../../types';
 import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
 import type { EnemyData, IEnemyTarget } from './types';
 
+import { progressionQuadratic, progressionLinear } from '~core/progression';
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
 import { GameSettings } from '~game/types';
-import { progressionQuadratic, progressionLinear } from '~core/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
 

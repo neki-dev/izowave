@@ -7,17 +7,17 @@ import type { ShotParams, IShotInitiator, IShot } from '../types';
 
 import type { ShotBallAudio, ShotBallData } from './types';
 
+import { getIsometricDistance } from '~core/dimension';
 import type { WorldScene } from '~game/scenes/world';
 import type { Particles } from '~game/scenes/world/fx-manager/particles';
-import { getIsometricDistance } from '~core/dimension';
 import type { PositionAtWorld } from '~scene/world/level/types';
 
 import './resources';
 
 export abstract class ShotBall extends Phaser.Physics.Arcade.Image implements IShot {
-  readonly scene: WorldScene;
+  declare public readonly scene: WorldScene;
 
-  readonly body: Phaser.Physics.Arcade.Body;
+  declare public readonly body: Phaser.Physics.Arcade.Body;
 
   public params: ShotParams;
 

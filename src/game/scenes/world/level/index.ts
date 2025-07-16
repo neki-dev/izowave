@@ -41,17 +41,17 @@ import { GameEvent, GameSettings } from '~game/types';
 import './resources';
 
 export class Level extends TileMatrix {
-  readonly scene: Scene;
+  public readonly scene: Scene;
 
-  readonly navigator: Navigator;
+  public readonly navigator: Navigator;
 
-  readonly map: World<LevelBiome>;
+  public readonly map: World<LevelBiome>;
 
-  readonly planet: LevelPlanet;
+  public readonly planet: LevelPlanet;
 
-  readonly gridCollide: boolean[][] = [];
+  public readonly gridCollide: boolean[][] = [];
 
-  readonly gridSolid: boolean[][] = [];
+  public readonly gridSolid: boolean[][] = [];
 
   private _effectsOnGround: Effect[] = [];
   public get effectsOnGround() { return this._effectsOnGround; }

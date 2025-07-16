@@ -13,16 +13,16 @@ import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
 import type { WaveSavePayload } from './types';
 import { WaveAudio, WaveEvent } from './types';
 
-import { DIFFICULTY } from '~game/difficulty';
 import { progressionLinear, progressionQuadraticMixed } from '~core/progression';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
 import { Utils } from '~core/utils';
+import { DIFFICULTY } from '~game/difficulty';
 
 import './resources';
 
 export class Wave extends Phaser.Events.EventEmitter {
-  readonly scene: WorldScene;
+  public readonly scene: WorldScene;
 
   private _going: boolean = false;
   public get going() { return this._going; }

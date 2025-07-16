@@ -3,13 +3,13 @@ import type { NavigatorPathNodeData } from '../types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class PathNode {
-  readonly position: PositionAtMatrix;
+  public readonly position: PositionAtMatrix;
 
-  readonly distance: number;
+  public readonly distance: number;
 
-  private parent: Nullable<PathNode>;
+  public parent: Nullable<PathNode>;
 
-  private cost: number;
+  public cost: number;
 
   private listOpened: Nullable<boolean> = null;
 
@@ -24,22 +24,6 @@ export class PathNode {
 
   public bestGuessDistance() {
     return this.cost + this.distance;
-  }
-
-  public getCost() {
-    return this.cost;
-  }
-
-  public setCost(cost: number) {
-    this.cost = cost;
-  }
-
-  public getParent() {
-    return this.parent;
-  }
-
-  public setParent(parent: PathNode) {
-    this.parent = parent;
   }
 
   public isNewList() {
@@ -62,11 +46,11 @@ export class PathNode {
     const path: PositionAtMatrix[] = [this.position];
     const cost = this.parent?.cost ?? 0;
 
-    let parent = this.getParent();
+    let parent = this.parent;
 
     while (parent) {
       path.push(parent.position);
-      parent = parent.getParent();
+      parent = parent.parent;
     }
 
     path.reverse();

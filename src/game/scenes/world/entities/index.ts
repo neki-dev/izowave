@@ -15,12 +15,12 @@ import type { SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
 
 import { isPositionsEqual } from '~core/dimension';
 
-export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesParent {
-  readonly scene: WorldScene;
+export abstract class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesParent {
+  declare public readonly scene: WorldScene;
 
-  readonly body: Phaser.Physics.Arcade.Body;
+  declare public readonly body: Phaser.Physics.Arcade.Body;
 
-  readonly live: Live;
+  public readonly live: Live;
 
   public gamut: number = 0;
 

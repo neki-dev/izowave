@@ -6,7 +6,7 @@ import type { WorldScene } from '~game/scenes/world';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 
 export class Indicator extends Phaser.GameObjects.Container {
-  readonly scene: WorldScene;
+  declare public readonly scene: WorldScene;
 
   private value?: () => number;
 

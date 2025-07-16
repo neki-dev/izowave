@@ -5,9 +5,9 @@ import type { IParticlesParent, ParticlesData } from './types';
 import './resources';
 
 export class Particles {
-  readonly scene: WorldScene;
+  public readonly scene: WorldScene;
 
-  readonly emitter: Phaser.GameObjects.Particles.ParticleEmitter;
+  public readonly emitter: Phaser.GameObjects.Particles.ParticleEmitter;
 
   private key: string;
 

@@ -7,9 +7,9 @@ import { CRYSTAL_TILE } from './const';
 import { CrystalAudio, CrystalTexture, CrystalEvents } from './types';
 import type { CrystalData, CrystalSavePayload } from './types';
 
-import { DIFFICULTY } from '~game/difficulty';
 import { progressionLinear } from '~core/progression';
 import { ShaderType } from '~core/shader/types';
+import { DIFFICULTY } from '~game/difficulty';
 import { Level } from '~scene/world/level';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
@@ -18,11 +18,11 @@ import { TileType } from '~scene/world/level/types';
 import './resources';
 
 export class Crystal extends Phaser.GameObjects.Image implements ITile {
-  readonly scene: WorldScene;
+  declare public readonly scene: WorldScene;
 
-  readonly tileType: TileType = TileType.CRYSTAL;
+  public readonly tileType: TileType = TileType.CRYSTAL;
 
-  readonly positionAtMatrix: PositionAtMatrix;
+  public readonly positionAtMatrix: PositionAtMatrix;
 
   constructor(scene: WorldScene, {
     positionAtMatrix, variant = 0,

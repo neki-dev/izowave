@@ -7,16 +7,16 @@ import type { ShotParams, IShotInitiator, IShot } from '../types';
 import { SHOT_LAZER_REPEAT, SHOT_LAZER_DELAY } from './const';
 import { ShotLazerAudio } from './types';
 
+import { getIsometricDistance } from '~core/dimension';
 import type { WorldScene } from '~game/scenes/world';
 import type { Particles } from '~game/scenes/world/fx-manager/particles';
-import { getIsometricDistance } from '~core/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import type { PositionAtWorld } from '~scene/world/level/types';
 
 import './resources';
 
 export class ShotLazer extends Phaser.GameObjects.Line implements IShot {
-  readonly scene: WorldScene;
+  declare public readonly scene: WorldScene;
 
   public params: ShotParams;
 

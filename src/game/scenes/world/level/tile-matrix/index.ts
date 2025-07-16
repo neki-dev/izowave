@@ -5,11 +5,11 @@ import type { TilePosition, TileType } from '../types';
 import type { ITile } from './types';
 
 export class TileMatrix {
-  readonly tiles: ITile[][][] = [];
+  public readonly tiles: ITile[][][] = [];
 
-  readonly size: number;
+  public readonly size: number;
 
-  readonly height: number;
+  public readonly height: number;
 
   constructor(size: number, height: number) {
     this.size = size;

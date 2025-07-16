@@ -28,14 +28,14 @@ import {
   BuildingOutlineState,
 } from './types';
 
-import { DIFFICULTY } from '~game/difficulty';
-import { GameEvent } from '~game/types';
 import { CONTROL_KEY } from '~core/controls/const';
 import type { LangPhrase } from '~core/lang/types';
 import { progressionLinear, progressionQuadratic } from '~core/progression';
 import { ShaderType } from '~core/shader/types';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
+import { DIFFICULTY } from '~game/difficulty';
+import { GameEvent } from '~game/types';
 import { BuilderEvent } from '~scene/world/builder/types';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
@@ -48,15 +48,15 @@ import { WorldMode, WorldEvent } from '~scene/world/types';
 import './resources';
 
 export abstract class Building extends Phaser.GameObjects.Image implements ITile, IEnemyTarget, IParticlesParent, IShotInitiator {
-  readonly scene: WorldScene;
+  declare public readonly scene: WorldScene;
 
-  readonly live: Live;
+  public readonly live: Live;
 
-  readonly variant: BuildingVariant;
+  public readonly variant: BuildingVariant;
 
-  readonly positionAtMatrix: PositionAtMatrix;
+  public readonly positionAtMatrix: PositionAtMatrix;
 
-  readonly tileType: TileType = TileType.BUILDING;
+  public readonly tileType: TileType = TileType.BUILDING;
 
   private _upgradeLevel: number = 1;
   public get upgradeLevel() { return this._upgradeLevel; }

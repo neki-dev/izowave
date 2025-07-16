@@ -11,13 +11,13 @@ import { getDistance } from '~core/dimension';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class NavigatorTask {
-  readonly from: PositionAtMatrix;
+  public readonly from: PositionAtMatrix;
 
-  readonly to: PositionAtMatrix;
+  public readonly to: PositionAtMatrix;
 
-  readonly grid: boolean[][];
+  public readonly grid: boolean[][];
 
-  readonly id: string;
+  public readonly id: string;
 
   private tree: PathNode[][] = [];
 
@@ -106,13 +106,13 @@ export class NavigatorTask {
     const nextCost = this.ignoreCosts
       ? getSimpleCost(shift)
       : getCost(currentNode, shift, points);
-    const cost = currentNode.getCost() + nextCost;
+    const cost = currentNode.cost + nextCost;
     const existNode = this.pickNode(position);
 
     if (existNode) {
-      if (cost < existNode.getCost()) {
-        existNode.setCost(cost);
-        existNode.setParent(currentNode);
+      if (cost < existNode.cost) {
+        existNode.cost = cost;
+        existNode.parent = currentNode;
         this.upNode(existNode);
       }
     } else {

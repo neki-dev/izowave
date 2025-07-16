@@ -17,7 +17,6 @@ import type { PositionAtMatrix, PositionAtWorld } from '../level/types';
 
 import { BuilderEvent } from './types';
 
-import { DIFFICULTY } from '~game/difficulty';
 import { isPositionsEqual } from '~core/dimension';
 import { phrase } from '~core/lang';
 import { progressionLinear } from '~core/progression';
@@ -25,9 +24,10 @@ import { ShaderType } from '~core/shader/types';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
 import { Utils } from '~core/utils';
+import { DIFFICULTY } from '~game/difficulty';
 
 export class Builder extends Phaser.Events.EventEmitter {
-  readonly scene: WorldScene;
+  public readonly scene: WorldScene;
 
   public selectedBuilding: Nullable<Building> = null;
 
