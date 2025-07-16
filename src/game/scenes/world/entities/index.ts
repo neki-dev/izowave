@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import type { WorldScene } from '..';
-import { WORLD_COLLIDE_SPEED_FACTOR, WORLD_DEPTH_GRAPHIC } from '../const';
+import { WORLD_COLLIDE_SPEED_FACTOR } from '../const';
 import type { Particles } from '../fx-manager/particles';
 import type { IParticlesParent } from '../fx-manager/particles/types';
 import { Level } from '../level';
@@ -13,7 +13,6 @@ import { LiveEvent } from './addons/live/types';
 import { EntityType } from './types';
 import type { SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
 
-import { DEBUG_MODS } from '~game/const';
 import { isPositionsEqual } from '~core/dimension';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesParent {
@@ -38,8 +37,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesPa
   private collisionGround: boolean = false;
 
   private indicators: Phaser.GameObjects.Container;
-
-  private positionDebug: Nullable<Phaser.GameObjects.Graphics> = null;
 
   private _container: Phaser.GameObjects.Container;
   public get container() { return this._container; }
@@ -73,7 +70,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesPa
     this.updateDimension();
     this.addContainer();
     this.addIndicatorsContainer();
-    this.addDebugPosition();
 
     this.live.on(LiveEvent.DAMAGE, this.onDamage.bind(this));
     this.live.on(LiveEvent.DEAD, this.onDead.bind(this));
@@ -90,8 +86,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesPa
       this.updateDimension();
       this.updateContainer();
       this.updateIndicators();
-
-      this.drawDebugGroundPosition();
     } catch (error) {
       console.warn('Failed to update sprite', error as TypeError);
     }
@@ -285,60 +279,6 @@ export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesPa
     this.indicators.each((indicator: Indicator) => {
       indicator.updateValue();
     });
-  }
-
-  private addDebugPosition() {
-    if (!DEBUG_MODS.position) {
-      return;
-    }
-
-    this.positionDebug = this.scene.add.graphics();
-    this.positionDebug.setDepth(WORLD_DEPTH_GRAPHIC);
-
-    this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.positionDebug?.destroy();
-    });
-  }
-
-  private drawDebugGroundPosition() {
-    if (!this.positionDebug) {
-      return;
-    }
-
-    this.positionDebug.clear();
-
-    // Position
-    this.positionDebug.lineStyle(1, 0xff0000);
-    this.positionDebug.beginPath();
-
-    const position = this.getBottomEdgePosition();
-
-    this.positionDebug.moveTo(position.x, position.y);
-    this.positionDebug.lineTo(position.x + 10, position.y);
-    this.positionDebug.moveTo(position.x, position.y);
-    this.positionDebug.lineTo(position.x, position.y + 10);
-
-    this.positionDebug.closePath();
-    this.positionDebug.strokePath();
-
-    // Projection
-    this.positionDebug.lineStyle(1, 0xffffff);
-    this.positionDebug.beginPath();
-
-    const positions = this.getProjectionOnGround();
-
-    const points = [
-      ...positions,
-      positions[0],
-    ];
-
-    for (let i = 1; i < points.length; i++) {
-      this.positionDebug.moveTo(points[i - 1].x, points[i - 1].y);
-      this.positionDebug.lineTo(points[i].x, points[i].y);
-    }
-
-    this.positionDebug.closePath();
-    this.positionDebug.strokePath();
   }
 
   // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars

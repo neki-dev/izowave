@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
+import { CONTAINER_ID, AUDIO_VOLUME } from './const';
 import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent } from './types';
 import type { GameStat, GameSavePayload } from './types';
 
@@ -44,8 +44,6 @@ export class Game extends Phaser.Game {
 
   public usedSave: Nullable<StorageSave> = null;
 
-  private sessionsCount: number = 0;
-
   constructor() {
     super({
       scene: [SystemScene, WorldScene, ScreenScene, MenuScene, GameOverScene],
@@ -63,7 +61,6 @@ export class Game extends Phaser.Game {
       physics: {
         default: 'arcade',
         arcade: {
-          debug: DEBUG_MODS.basic,
           fps: 60,
           gravity: { x: 0, y: 0 },
         },
@@ -173,12 +170,6 @@ export class Game extends Phaser.Game {
     if (this.state !== GameState.IDLE) {
       return;
     }
-
-    if (this.sessionsCount === 0) {
-      this.triggerFullscreen();
-    }
-
-    this.sessionsCount++;
 
     if (this.usedSave) {
       this.loadSavePayload(this.usedSave.payload.game);
@@ -304,18 +295,6 @@ export class Game extends Phaser.Game {
         this.settings[key] = userValue === 'on';
       }
     });
-  }
-
-  private triggerFullscreen() {
-    if (this.scale.isFullscreen || this.isDesktop()) {
-      return;
-    }
-
-    try {
-      this.scale.startFullscreen();
-    } catch {
-      //
-    }
   }
 
   public getRecordStat(): Nullable<GameStat> {

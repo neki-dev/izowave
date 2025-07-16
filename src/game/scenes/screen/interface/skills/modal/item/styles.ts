@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
-
 export const Container = styled.div<{
   $active?: boolean
 }>`

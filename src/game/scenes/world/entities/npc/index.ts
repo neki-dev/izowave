@@ -7,9 +7,7 @@ import { EntityType } from '../types';
 import { NPC_PATH_FIND_RATE } from './const';
 import type { NPCData } from './types';
 
-import { DEBUG_MODS } from '~game/const';
 import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~core/dimension';
-import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 import type { PositionAtWorld } from '~scene/world/level/types';
@@ -25,8 +23,6 @@ export abstract class NPC extends Sprite {
 
   private pathFindTimestamp: number = 0;
 
-  private pathDebug: Nullable<Phaser.GameObjects.Graphics> = null;
-
   private freezeTimestamp: number = 0;
 
   private freezeEffectTimer: Nullable<Phaser.Time.TimerEvent> = null;
@@ -41,8 +37,6 @@ export abstract class NPC extends Sprite {
 
     this.pathFindTriggerDistance = pathFindTriggerDistance;
     this.seesInvisibleTarget = seesInvisibleTarget;
-
-    this.addDebugPath();
 
     if (!customAnimation) {
       this.anims.create({
@@ -155,8 +149,6 @@ export abstract class NPC extends Sprite {
         if (this.isCanPursuit()) {
           this.moveToTile();
         }
-
-        this.drawDebugPath();
       } else {
         this.pathFindingTask = null;
       }
@@ -234,44 +226,5 @@ export abstract class NPC extends Sprite {
       !this.live.isDead()
       && !this.scene.player.live.isDead()
     );
-  }
-
-  private addDebugPath() {
-    if (!DEBUG_MODS.path) {
-      return;
-    }
-
-    this.pathDebug = this.scene.add.graphics();
-    this.pathDebug.setDepth(WORLD_DEPTH_GRAPHIC);
-
-    this.once(Phaser.GameObjects.Events.DESTROY, () => {
-      this.pathDebug?.destroy();
-    });
-  }
-
-  private drawDebugPath() {
-    if (!this.pathDebug) {
-      return;
-    }
-
-    this.pathDebug.clear();
-    this.pathDebug.lineStyle(2, 0xe3fc03);
-    this.pathDebug.beginPath();
-
-    const points = [
-      this.positionAtMatrix,
-      ...this.pathToTarget,
-    ];
-
-    for (let i = 1; i < points.length; i++) {
-      const prev = Level.ToWorldPosition({ ...points[i - 1] });
-      const next = Level.ToWorldPosition({ ...points[i] });
-
-      this.pathDebug.moveTo(prev.x, prev.y);
-      this.pathDebug.lineTo(next.x, next.y);
-    }
-
-    this.pathDebug.closePath();
-    this.pathDebug.strokePath();
   }
 }
