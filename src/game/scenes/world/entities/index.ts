@@ -14,7 +14,7 @@ import { EntityType } from './types';
 import type { SpriteData, SpriteBodyData, SpriteIndicatorData } from './types';
 
 import { DEBUG_MODS } from '~game/const';
-import { isPositionsEqual } from '~lib/dimension';
+import { isPositionsEqual } from '~core/dimension';
 
 export class Sprite extends Phaser.Physics.Arcade.Sprite implements IParticlesParent {
   readonly scene: WorldScene;

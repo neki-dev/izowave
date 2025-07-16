@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 
 import { Button } from '../button';
 
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
 
 import { Overlay, Container, Content, Buttons } from './styles';
 

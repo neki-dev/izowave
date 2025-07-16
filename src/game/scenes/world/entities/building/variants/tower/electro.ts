@@ -6,7 +6,7 @@ import { BuildingTower } from '.';
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
-import { progressionLinear } from '~lib/progression';
+import { progressionLinear } from '~core/progression';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
 

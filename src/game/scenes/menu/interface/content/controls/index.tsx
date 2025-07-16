@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { CONTROLS } from '~lib/controls/const';
-import { phrase } from '~lib/lang';
+import { CONTROLS } from '~core/controls/const';
+import { phrase } from '~core/lang';
 
 import { Wrapper, Control, Keys, Key, Description } from './styles';
 

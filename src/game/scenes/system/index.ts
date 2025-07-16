@@ -1,9 +1,9 @@
 import { Scene } from '..';
 
 import { GameScene, GameState } from '~game/types';
-import { Assets } from '~lib/assets';
-import { CONTROL_KEY } from '~lib/controls/const';
-import { Storage } from '~lib/storage';
+import { Assets } from '~core/assets';
+import { CONTROL_KEY } from '~core/controls/const';
+import { Storage } from '~core/storage';
 import { MenuPage } from '~scene/menu/types';
 
 export class SystemScene extends Scene {

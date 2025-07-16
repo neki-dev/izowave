@@ -1,4 +1,4 @@
-import type { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~core/lang/types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export enum BuildingEvent {

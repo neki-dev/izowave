@@ -1,7 +1,7 @@
 import { Texture } from 'phaser-react-ui';
 import React from 'react';
 
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import type { BuildingParam } from '~scene/world/entities/building/types';
 
 import {

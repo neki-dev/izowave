@@ -6,11 +6,11 @@ import { Building } from './building';
 import type { Game } from '~game/index';
 import type { WorldScene } from '~game/scenes/world';
 import { GameScene } from '~game/types';
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
-import { Utils } from '~lib/utils';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
+import { Tutorial } from '~core/tutorial';
+import { TutorialStep } from '~core/tutorial/types';
+import { Utils } from '~core/utils';
 import { BUILDINGS } from '~scene/world/entities/building/factory/const';
 import { BuildingVariant, BuildingCategory } from '~scene/world/entities/building/types';
 

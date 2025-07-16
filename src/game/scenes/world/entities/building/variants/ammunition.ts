@@ -18,10 +18,10 @@ import type {
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
-import { CONTROL_KEY } from '~lib/controls/const';
-import { progressionQuadratic } from '~lib/progression';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
+import { CONTROL_KEY } from '~core/controls/const';
+import { progressionQuadratic } from '~core/progression';
+import { Tutorial } from '~core/tutorial';
+import { TutorialStep } from '~core/tutorial/types';
 import { WorldMode } from '~scene/world/types';
 
 export class BuildingAmmunition extends Building {

@@ -2,6 +2,6 @@ import { ShotLazerAudio } from '../types';
 
 import audioLazer from './audio/lazer.mp3';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(ShotLazerAudio.LAZER, audioLazer);

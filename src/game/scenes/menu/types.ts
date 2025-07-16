@@ -1,4 +1,4 @@
-import type { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~core/lang/types';
 
 export type MenuItem = {
   label: LangPhrase

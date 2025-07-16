@@ -11,7 +11,7 @@ import { Superskills } from './superskills';
 import { Unlocks } from './unlocks';
 import { Wave } from './wave';
 
-import { INTERFACE_SCALE } from '~lib/interface/const';
+import { INTERFACE_SCALE } from '~core/interface/const';
 import { Section } from '~scene/system/interface/section';
 
 import { Column, Grid, Wrapper } from './styles';

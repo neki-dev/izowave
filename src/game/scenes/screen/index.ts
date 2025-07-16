@@ -7,8 +7,8 @@ import { ScreenUI } from './interface';
 import { ScreenAudio, ScreenEvent } from './types';
 
 import { GameScene } from '~game/types';
-import { INTERFACE_SCALE } from '~lib/interface/const';
-import type { LangPhrase } from '~lib/lang/types';
+import { INTERFACE_SCALE } from '~core/interface/const';
+import type { LangPhrase } from '~core/lang/types';
 
 import './resources';
 

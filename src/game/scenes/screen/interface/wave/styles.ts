@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~lib/interface/const';
+import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
 const animationBlinkColor = keyframes`
   0% { color: var(--color-text-error) }

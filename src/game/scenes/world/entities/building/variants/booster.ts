@@ -13,7 +13,7 @@ import type {
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
-import { progressionLinear } from '~lib/progression';
+import { progressionLinear } from '~core/progression';
 
 export class BuildingBooster extends Building {
   static Category = BuildingCategory.OTHER;

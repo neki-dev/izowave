@@ -15,7 +15,7 @@ import {
 } from './const';
 import type { SpawnCache, SpawnPositionMeta, SpawnPositionResolve } from './types';
 
-import { excludePosition, getIsometricDistance, sortByMatrixDistance } from '~lib/dimension';
+import { excludePosition, getIsometricDistance, sortByMatrixDistance } from '~core/dimension';
 
 export class Spawner {
   private scene: WorldScene;

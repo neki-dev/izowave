@@ -3,9 +3,9 @@ import React, { useMemo, useState } from 'react';
 
 import type { Game } from '~game/index';
 import { GameState } from '~game/types';
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
-import { Tutorial } from '~lib/tutorial';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
+import { Tutorial } from '~core/tutorial';
 import type { MenuItem } from '~scene/menu/types';
 import { MenuPage } from '~scene/menu/types';
 import { Confirm } from '~scene/system/interface/confirm';

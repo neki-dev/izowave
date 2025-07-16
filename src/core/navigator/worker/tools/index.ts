@@ -1,6 +1,6 @@
 import type { PathNode } from '../node';
 
-import { Utils } from '~lib/utils';
+import { Utils } from '~core/utils';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export function isDiagonalShift(shift: PositionAtMatrix) {

@@ -5,7 +5,7 @@ import { EnemyTexture } from '../types';
 import type { EnemyVariantData, IEnemyTarget } from '../types';
 
 import type { WorldScene } from '~game/scenes/world';
-import { getIsometricDistance } from '~lib/dimension';
+import { getIsometricDistance } from '~core/dimension';
 import { EntityType } from '~scene/world/entities/types';
 import { EffectAudio } from '~scene/world/fx-manager/effect/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';

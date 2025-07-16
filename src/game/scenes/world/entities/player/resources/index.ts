@@ -23,7 +23,7 @@ import iconSuperskillShield from './icons/superskills/shield.png';
 import texturePlayer from './textures/player.png';
 import textureSuperskill from './textures/superskill.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(PlayerAudio.DAMAGE_1, audioDamage1);
 Assets.AddAudio(PlayerAudio.DAMAGE_2, audioDamage2);

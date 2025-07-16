@@ -7,7 +7,7 @@ import textureDamage from './textures/damage.png';
 import textureExplosion from './textures/explosion.png';
 import textureSmoke from './textures/smoke.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(EffectAudio.EXPLOSION, audioExplosion);
 

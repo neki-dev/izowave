@@ -30,12 +30,12 @@ import {
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameEvent } from '~game/types';
-import { CONTROL_KEY } from '~lib/controls/const';
-import type { LangPhrase } from '~lib/lang/types';
-import { progressionLinear, progressionQuadratic } from '~lib/progression';
-import { ShaderType } from '~lib/shader/types';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
+import { CONTROL_KEY } from '~core/controls/const';
+import type { LangPhrase } from '~core/lang/types';
+import { progressionLinear, progressionQuadratic } from '~core/progression';
+import { ShaderType } from '~core/shader/types';
+import { Tutorial } from '~core/tutorial';
+import { TutorialStep } from '~core/tutorial/types';
 import { BuilderEvent } from '~scene/world/builder/types';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';

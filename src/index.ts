@@ -2,7 +2,7 @@ import pkg from '../package.json';
 
 import { Game } from './game';
 
-import { checkScreenOrientation } from '~lib/screen';
+import { checkScreenOrientation } from '~core/screen';
 
 window.GAME = new Game();
 

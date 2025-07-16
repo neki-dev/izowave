@@ -33,7 +33,7 @@ import textureTowerFrozen from './textures/tower_frozen.png';
 import textureTowerLazer from './textures/tower_lazer.png';
 import textureWall from './textures/wall.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(BuildingAudio.BUILD, audioBuild);
 Assets.AddAudio(BuildingAudio.DAMAGE_1, audioDamage1);

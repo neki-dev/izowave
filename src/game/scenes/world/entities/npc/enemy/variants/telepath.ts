@@ -3,7 +3,7 @@ import { ENEMY_REGENERATION_RADIUS, ENEMY_REGENERATION_EFFECT_DURATION, ENEMY_RE
 import { EnemyTexture } from '../types';
 import type { EnemyVariantData } from '../types';
 
-import { getIsometricDistance } from '~lib/dimension';
+import { getIsometricDistance } from '~core/dimension';
 import type { WorldScene } from '~scene/world';
 import { EntityType } from '~scene/world/entities/types';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';

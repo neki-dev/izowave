@@ -1,7 +1,7 @@
 import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
-import { INTERFACE_SCALE } from '~lib/interface/const';
+import { INTERFACE_SCALE } from '~core/interface/const';
 
 import { Wrapper } from './styles';
 

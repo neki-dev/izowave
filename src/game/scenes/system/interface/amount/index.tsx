@@ -4,7 +4,7 @@ import imageExperience from './images/experience.png';
 import imageResources from './images/resources.png';
 import imageScore from './images/score.png';
 
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 
 import { Icon, IconContainer, Value, Wrapper, Container, Placeholder } from './styles';
 

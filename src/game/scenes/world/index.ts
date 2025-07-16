@@ -28,9 +28,9 @@ import { WaveEvent } from './wave/types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import { GameScene, GameState, GameEvent } from '~game/types';
-import { aroundPosition } from '~lib/dimension';
-import { progressionLinear } from '~lib/progression';
-import { Utils } from '~lib/utils';
+import { aroundPosition } from '~core/dimension';
+import { progressionLinear } from '~core/progression';
+import { Utils } from '~core/utils';
 
 import './resources';
 

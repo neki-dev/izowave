@@ -7,7 +7,7 @@ import { Copyright } from './copyright';
 import imageLogotype from './images/logotype.png';
 import { Navigation } from './navigation';
 
-import { Tutorial } from '~lib/tutorial';
+import { Tutorial } from '~core/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
 
 import { Wrapper, Logotype, Sidebar, Main } from './styles';

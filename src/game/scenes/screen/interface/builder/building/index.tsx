@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Preview } from './preview';
 
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
 import { Hint } from '~scene/system/interface/hint';
 import type { BuildingVariant } from '~scene/world/entities/building/types';
 

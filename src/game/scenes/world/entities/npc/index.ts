@@ -8,7 +8,7 @@ import { NPC_PATH_FIND_RATE } from './const';
 import type { NPCData } from './types';
 
 import { DEBUG_MODS } from '~game/const';
-import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~lib/dimension';
+import { isPositionsEqual, getIsometricDistance, getIsometricAngle } from '~core/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import imageScore from './images/score.png';
 
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 
 import { Wrapper, Amount, Icon, Label, Value } from './styles';
 

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~lib/interface/const';
+import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_DESKTOP_BREAKPOINT } from '~core/interface/const';
 
 export const Wrapper = styled.div`
   @media ${INTERFACE_DESKTOP_BREAKPOINT} {

@@ -2,7 +2,7 @@ import type { BuildingSavePayload } from './entities/building/types';
 import type { CrystalSavePayload } from './entities/crystal/types';
 import type { PositionAtWorld } from './level/types';
 
-import type { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~core/lang/types';
 
 export enum WorldEvent {
   SELECT_BUILDING = 'select_building',

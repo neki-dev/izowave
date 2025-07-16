@@ -2,9 +2,9 @@ import { useGame } from 'phaser-react-ui';
 import React, { useState } from 'react';
 
 import type { Game } from '~game/index';
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
-import { Storage } from '~lib/storage';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
+import { Storage } from '~core/storage';
 import { Button } from '~scene/system/interface/button';
 import { Confirm } from '~scene/system/interface/confirm';
 import { Table } from '~scene/system/interface/table';

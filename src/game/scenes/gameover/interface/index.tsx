@@ -6,8 +6,8 @@ import { Result } from './result';
 
 import type { Game } from '~game/index';
 import type { GameStat } from '~game/types';
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
+import { phrase } from '~core/lang';
+import { Tutorial } from '~core/tutorial';
 import { Overlay } from '~scene/system/interface/overlay';
 
 import { Wrapper, Label, Button, Head, IconRestart } from './styles';

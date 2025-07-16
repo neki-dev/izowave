@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import type { LangPhrase } from '~lib/lang/types';
+import type { LangPhrase } from '~core/lang/types';
 import { Setting } from '~scene/system/interface/setting';
 
 type Props = {

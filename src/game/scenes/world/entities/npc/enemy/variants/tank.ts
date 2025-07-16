@@ -3,7 +3,7 @@ import { EnemyTexture } from '../types';
 import type { EnemyVariantData } from '../types';
 
 import { DIFFICULTY } from '~game/difficulty';
-import { progressionQuadratic } from '~lib/progression';
+import { progressionQuadratic } from '~core/progression';
 import type { WorldScene } from '~scene/world';
 
 export class EnemyTank extends Enemy {

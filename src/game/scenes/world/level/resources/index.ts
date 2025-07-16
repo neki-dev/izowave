@@ -8,7 +8,7 @@ import textureTilesMars from './textures/mars/tiles.png';
 import textureSceneryMoon from './textures/moon/scenery.png';
 import textureTilesMoon from './textures/moon/tiles.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddSprite(LevelTilesetTexture.EARTH, textureTilesEarth, LEVEL_MAP_TILE);
 Assets.AddSprite(LevelTilesetTexture.MARS, textureTilesMars, LEVEL_MAP_TILE);

@@ -4,7 +4,7 @@ import { CrystalAudio, CrystalTexture } from '../types';
 import audioPickup from './audio/pickup.mp3';
 import textureCrystal from './textures/crystal.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(CrystalAudio.PICKUP, audioPickup);
 

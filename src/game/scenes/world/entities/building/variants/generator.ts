@@ -3,8 +3,8 @@ import { BuildingCategory, BuildingTexture, BuildingVariant } from '../types';
 import type { BuildingVariantData } from '../types';
 
 import { DIFFICULTY } from '~game/difficulty';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
+import { Tutorial } from '~core/tutorial';
+import { TutorialStep } from '~core/tutorial/types';
 import type { WorldScene } from '~scene/world';
 
 export class BuildingGenerator extends Building {

@@ -35,8 +35,8 @@ import {
 } from './types';
 
 import { GameEvent, GameSettings } from '~game/types';
-import { isPositionsEqual } from '~lib/dimension';
-import { Navigator } from '~lib/navigator';
+import { isPositionsEqual } from '~core/dimension';
+import { Navigator } from '~core/navigator';
 
 import './resources';
 

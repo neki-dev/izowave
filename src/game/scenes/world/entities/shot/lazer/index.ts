@@ -9,7 +9,7 @@ import { ShotLazerAudio } from './types';
 
 import type { WorldScene } from '~game/scenes/world';
 import type { Particles } from '~game/scenes/world/fx-manager/particles';
-import { getIsometricDistance } from '~lib/dimension';
+import { getIsometricDistance } from '~core/dimension';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import type { PositionAtWorld } from '~scene/world/level/types';
 

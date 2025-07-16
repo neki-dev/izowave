@@ -13,8 +13,8 @@ import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
-import { getIsometricDistance, getClosestByIsometricDistance } from '~lib/dimension';
-import { progressionQuadratic } from '~lib/progression';
+import { getIsometricDistance, getClosestByIsometricDistance } from '~core/dimension';
+import { progressionQuadratic } from '~core/progression';
 import { WaveEvent } from '~scene/world/wave/types';
 
 import './resources';

@@ -2,7 +2,7 @@ import { Texture, useClick, useEvent, useScene } from 'phaser-react-ui';
 import React, { useMemo, useRef, useState } from 'react';
 
 import { GameScene } from '~game/types';
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import { Cost } from '~scene/system/interface/cost';
 import { PLAYER_MAX_SKILL_LEVEL } from '~scene/world/entities/player/const';
 import type { PlayerSkill, PlayerSkillData } from '~scene/world/entities/player/types';

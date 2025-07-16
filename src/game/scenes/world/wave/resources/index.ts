@@ -4,7 +4,7 @@ import audioComplete from './audio/complete.mp3';
 import audioStart from './audio/start.mp3';
 import audioTick from './audio/tick.mp3';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(WaveAudio.START, audioStart);
 Assets.AddAudio(WaveAudio.COMPLETE, audioComplete);

@@ -1,6 +1,7 @@
 import type { Wave } from '../..';
-import { DIFFICULTY } from '../../../../../../game/difficulty';
 import world from '../../../__mocks__/world';
+
+import { DIFFICULTY } from '~game/difficulty';
 
 export function registerHelper(wave: Wave) {
   return {

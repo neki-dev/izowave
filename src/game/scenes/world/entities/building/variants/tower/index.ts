@@ -16,10 +16,10 @@ import type { BuildingBooster } from '../booster';
 
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
-import { getClosestByIsometricDistance } from '~lib/dimension';
-import { progressionLinear } from '~lib/progression';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
+import { getClosestByIsometricDistance } from '~core/dimension';
+import { progressionLinear } from '~core/progression';
+import { Tutorial } from '~core/tutorial';
+import { TutorialStep } from '~core/tutorial/types';
 import { PlayerSuperskill } from '~scene/world/entities/player/types';
 import type { IShot, ShotParams } from '~scene/world/entities/shot/types';
 import { EntityType } from '~scene/world/entities/types';

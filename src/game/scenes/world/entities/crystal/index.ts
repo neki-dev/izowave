@@ -8,8 +8,8 @@ import { CrystalAudio, CrystalTexture, CrystalEvents } from './types';
 import type { CrystalData, CrystalSavePayload } from './types';
 
 import { DIFFICULTY } from '~game/difficulty';
-import { progressionLinear } from '~lib/progression';
-import { ShaderType } from '~lib/shader/types';
+import { progressionLinear } from '~core/progression';
+import { ShaderType } from '~core/shader/types';
 import { Level } from '~scene/world/level';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix } from '~scene/world/level/types';

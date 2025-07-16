@@ -7,7 +7,7 @@ import imageLock from './images/lock.png';
 
 import type { Game } from '~game/index';
 import { GameScene, GameEvent } from '~game/types';
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import { Cost } from '~scene/system/interface/cost';
 import type { WorldScene } from '~scene/world';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';

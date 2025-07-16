@@ -7,7 +7,7 @@ import type { NavigatorTaskData, NavigatorPayloadCompleteTask } from '../types';
 import { PathNode } from './node';
 import { getCost, getSimpleCost } from './tools';
 
-import { getDistance } from '~lib/dimension';
+import { getDistance } from '~core/dimension';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class NavigatorTask {

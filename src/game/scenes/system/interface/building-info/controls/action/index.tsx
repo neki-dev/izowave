@@ -1,7 +1,7 @@
 import { useClick, useMobilePlatform } from 'phaser-react-ui';
 import React, { useRef } from 'react';
 
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import { Cost } from '~scene/system/interface/cost';
 import type { BuildingControl } from '~scene/world/entities/building/types';
 

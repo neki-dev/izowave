@@ -11,7 +11,7 @@ import type { EnemyData, IEnemyTarget } from './types';
 import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
 import { GameSettings } from '~game/types';
-import { progressionQuadratic, progressionLinear } from '~lib/progression';
+import { progressionQuadratic, progressionLinear } from '~core/progression';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
 import { TileType } from '~scene/world/level/types';
 

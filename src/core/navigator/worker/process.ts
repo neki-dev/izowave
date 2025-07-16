@@ -2,7 +2,7 @@
 import type { NavigatorTask } from './task';
 import { getDirections } from './tools';
 
-import { isPositionsEqual } from '~lib/dimension';
+import { isPositionsEqual } from '~core/dimension';
 import type { PositionAtMatrix } from '~scene/world/level/types';
 
 export class NavigatorProcess {

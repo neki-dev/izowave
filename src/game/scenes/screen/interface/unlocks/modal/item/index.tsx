@@ -3,8 +3,8 @@ import React, { useMemo } from 'react';
 
 import type { Feature } from '../..';
 
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
 import type { BuildingVariant } from '~scene/world/entities/building/types';
 import { BuildingTexture } from '~scene/world/entities/building/types';
 import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';

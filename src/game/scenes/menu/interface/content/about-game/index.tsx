@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 
 import { Wrapper } from './styles';
 

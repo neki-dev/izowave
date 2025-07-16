@@ -1,7 +1,7 @@
 import { SHADERS } from './pipelines';
 import type { ShaderType } from './types';
 
-import { Utils } from '~lib/utils';
+import { Utils } from '~core/utils';
 
 export function registerShaders(renderer: Phaser.Renderer.WebGL.WebGLRenderer | Phaser.Renderer.Canvas.CanvasRenderer) {
   if (renderer instanceof Phaser.Renderer.Canvas.CanvasRenderer) {

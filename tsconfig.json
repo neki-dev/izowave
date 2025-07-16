@@ -15,14 +15,10 @@
     "paths": {
       "~game/*": ["./src/game/*"],
       "~scene/*": ["./src/game/scenes/*"],
-      "~lib/*": ["./src/lib/*"]
+      "~core/*": ["./src/core/*"]
     }
   },
   "include": [
     "./src"
-  ],
-  "exclude": [
-    "./src/**/__tests__/**",
-    "./src/**/__mocks__/**"
   ]
 }

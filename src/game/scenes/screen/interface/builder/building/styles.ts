@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { INTERFACE_DESKTOP_BREAKPOINT } from '~lib/interface/const';
+import { INTERFACE_DESKTOP_BREAKPOINT } from '~core/interface/const';
 
 export const Info = styled.div`
   position: absolute;

@@ -4,7 +4,7 @@ import type { ShotParams, ShotData } from '../../types';
 import { SHOT_BALL_DAMAGE_SPREAD_FACTOR, SHOT_BALL_DAMAGE_SPREAD_MAX_DISTANCE } from '../const';
 import { ShotBallAudio } from '../types';
 
-import { getIsometricDistance } from '~lib/dimension';
+import { getIsometricDistance } from '~core/dimension';
 import type { WorldScene } from '~scene/world';
 import { EntityType } from '~scene/world/entities/types';
 

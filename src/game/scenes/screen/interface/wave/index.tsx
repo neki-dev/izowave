@@ -5,10 +5,10 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import type { Game } from '~game/index';
 import { GameScene, GameEvent } from '~game/types';
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
-import { TutorialStep } from '~lib/tutorial/types';
-import { Utils } from '~lib/utils';
+import { phrase } from '~core/lang';
+import { Tutorial } from '~core/tutorial';
+import { TutorialStep } from '~core/tutorial/types';
+import { Utils } from '~core/utils';
 import { Hint } from '~scene/system/interface/hint';
 import type { WorldScene } from '~scene/world';
 import { WAVE_TIMELEFT_ALARM } from '~scene/world/wave/const';

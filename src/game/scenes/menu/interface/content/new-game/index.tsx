@@ -7,7 +7,7 @@ import { Record } from './record';
 
 import type { Game } from '~game/index';
 import { GameDifficulty } from '~game/types';
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import { Button } from '~scene/system/interface/button';
 import { LevelPlanet } from '~scene/world/level/types';
 

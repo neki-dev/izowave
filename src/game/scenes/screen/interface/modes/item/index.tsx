@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 
 import type { WorldScene } from '~game/scenes/world';
 import { GameScene } from '~game/types';
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import type { WorldMode } from '~scene/world/types';
 import { WorldModeIcon } from '~scene/world/types';
 

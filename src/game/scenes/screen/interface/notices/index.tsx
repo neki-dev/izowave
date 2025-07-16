@@ -6,7 +6,7 @@ import type { ScreenScene } from '../..';
 import { NOTICE_DURATION } from './const';
 import imageFailure from './images/failure.png';
 
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import type { Notice } from '~scene/screen/types';
 import { ScreenEvent } from '~scene/screen/types';
 

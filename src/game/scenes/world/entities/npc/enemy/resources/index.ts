@@ -16,7 +16,7 @@ import textureTelepath from './textures/telepath.png';
 import textureTermer from './textures/termer.png';
 import textureUndead from './textures/undead.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddAudio(EnemyAudio.ROAR, audioRoar);
 

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Game } from '~game/index';
 import { GameState } from '~game/types';
-import { phrase } from '~lib/lang';
+import { phrase } from '~core/lang';
 import { Button } from '~scene/system/interface/button';
 
 import { Icon } from './styles';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
 
 import { Wrapper, Label, Values, Value } from './styles';
 

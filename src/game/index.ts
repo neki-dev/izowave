@@ -4,11 +4,11 @@ import { CONTAINER_ID, DEBUG_MODS, AUDIO_VOLUME } from './const';
 import { GameDifficulty, GameState, GameSettings, GameScene, GameEvent } from './types';
 import type { GameStat, GameSavePayload } from './types';
 
-import { registerShaders } from '~lib/shader';
-import { Storage } from '~lib/storage';
-import type { StorageSave } from '~lib/storage/types';
-import { Tutorial } from '~lib/tutorial';
-import { Utils } from '~lib/utils';
+import { registerShaders } from '~core/shader';
+import { Storage } from '~core/storage';
+import type { StorageSave } from '~core/storage/types';
+import { Tutorial } from '~core/tutorial';
+import { Utils } from '~core/utils';
 import { GameOverScene } from '~scene/gameover';
 import { MenuScene } from '~scene/menu';
 import { MenuPage } from '~scene/menu/types';

@@ -5,8 +5,8 @@ import type { Feature } from '..';
 
 import { Item } from './item';
 
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
+import { phrase } from '~core/lang';
+import { Tutorial } from '~core/tutorial';
 
 import { Button, Container, Label, List, Overlay } from './styles';
 

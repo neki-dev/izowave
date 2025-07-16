@@ -3,9 +3,9 @@ import React, { useEffect, useRef } from 'react';
 
 import { Item } from './item';
 
-import { phrase } from '~lib/lang';
-import { Tutorial } from '~lib/tutorial';
-import { Utils } from '~lib/utils';
+import { phrase } from '~core/lang';
+import { Tutorial } from '~core/tutorial';
+import { Utils } from '~core/utils';
 import { PLAYER_SKILLS } from '~scene/world/entities/player/const';
 import { PlayerSkillTarget } from '~scene/world/entities/player/types';
 

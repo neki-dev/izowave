@@ -1,6 +1,6 @@
 import type { Game } from '.';
 
-import type { TutorialStep, TutorialStepState } from '~lib/tutorial/types';
+import type { TutorialStep, TutorialStepState } from '~core/tutorial/types';
 
 export enum GameScene {
   SYSTEM = 'SYSTEM',

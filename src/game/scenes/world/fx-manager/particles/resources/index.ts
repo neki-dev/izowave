@@ -5,7 +5,7 @@ import textureBitSoft from './textures/bit_soft.png';
 import textureGlow from './textures/glow.png';
 import texturePlus from './textures/plus.png';
 
-import { Assets } from '~lib/assets';
+import { Assets } from '~core/assets';
 
 Assets.AddImage(ParticlesTexture.BIT, textureBit);
 Assets.AddImage(ParticlesTexture.BIT_SOFT, textureBitSoft);

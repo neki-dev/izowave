@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Item } from './item';
 
-import { Utils } from '~lib/utils';
+import { Utils } from '~core/utils';
 import { WorldMode } from '~scene/world/types';
 
 import { Wrapper } from './styles';

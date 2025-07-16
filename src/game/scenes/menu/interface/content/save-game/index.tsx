@@ -4,10 +4,10 @@ import type { ChangeEvent } from 'react';
 
 import { MAX_GAME_SAVES } from '~game/const';
 import type { Game } from '~game/index';
-import { phrase } from '~lib/lang';
-import type { LangPhrase } from '~lib/lang/types';
-import { Storage } from '~lib/storage';
-import type { StorageSave } from '~lib/storage/types';
+import { phrase } from '~core/lang';
+import type { LangPhrase } from '~core/lang/types';
+import { Storage } from '~core/storage';
+import type { StorageSave } from '~core/storage/types';
 import { Button } from '~scene/system/interface/button';
 import { Confirm } from '~scene/system/interface/confirm';
 import { Table } from '~scene/system/interface/table';
