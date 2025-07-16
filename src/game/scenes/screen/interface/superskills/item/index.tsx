@@ -5,9 +5,9 @@ import React, { useRef, useState } from 'react';
 
 import imageLock from './images/lock.png';
 
+import { phrase } from '~core/lang';
 import type { Game } from '~game/index';
 import { GameScene, GameEvent } from '~game/types';
-import { phrase } from '~core/lang';
 import { Cost } from '~scene/system/interface/cost';
 import type { WorldScene } from '~scene/world';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';

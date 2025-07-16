@@ -2,7 +2,6 @@ import styled, { css, keyframes } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
-
 const animationTimeout = keyframes`
   0% { top: 0 }
   100% { top: 100% }

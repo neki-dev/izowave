@@ -8,8 +8,8 @@ import type { Building } from '../../entities/building';
 
 import { TranslateToScreen } from './translate-to-screen';
 
-import { GameScene } from '~game/types';
 import { INTERFACE_MOBILE_BREAKPOINT, INTERFACE_SCALE } from '~core/interface/const';
+import { GameScene } from '~game/types';
 import { BuildingInfo } from '~scene/system/interface/building-info';
 import { WorldEvent } from '~scene/world/types';
 

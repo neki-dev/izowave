@@ -1,27 +1,31 @@
 import { EnemySize, EnemyTexture } from './types';
 import type { EnemySizeParams } from './types';
 
-export const ENEMY_BOSS_SPAWN_WAVE_RATE = 5;
-
 export const ENEMY_PATH_BREAKPOINT = 32;
-
-export const ENEMY_REGENERATION_RADIUS = 100;
-
-export const ENEMY_HEAL_TIMESTAMP_PAUSE = 1000;
-
-export const ENEMY_HEAL_MULTIPLIER = 0.075;
 
 export const ENEMY_SPREAD_DAMAGE_RADIUS = 60;
 
-export const ENEMY_REGENERATION_EFFECT_COLOR = 0x6fe7e7;
+export const ENEMY_FIRE_DAMAGE_FORCE = 1.5;
 
-export const ENEMY_REGENERATION_EFFECT_DURATION = 500;
+export const ENEMY_HEALTH = 60; // Health
 
-export const ENEMY_EXPLOSION_RADIUS = 70;
+export const ENEMY_HEALTH_GROWTH = 0.35; // Health growth by wave number (Quadratic)
 
-export const ENEMY_EXPLOSION_EFFECT_COLOR = 0xff0000;
+export const ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL = 12; // Level for health growth retardation
 
-export const ENEMY_EXPLOSION_EFFECT_DURATION = 1000;
+export const ENEMY_SPEED = 60; // Movement speed
+
+export const ENEMY_SPEED_GROWTH = 0.06; // Speed growth by wave number (Linear)
+
+export const ENEMY_SPEED_GROWTH_MAX_LEVEL = 15; // Level for limit speed growth
+
+export const ENEMY_DAMAGE = 90; // Attack damage
+
+export const ENEMY_DAMAGE_GROWTH = 0.32; // Damage growth by wave number (Linear)
+
+export const ENEMY_KILL_EXPERIENCE = 10; // Gained experience per kill enemy
+
+export const ENEMY_KILL_EXPERIENCE_GROWTH = 0.28; // Experience growth by wave number (Linear)
 
 export const ENEMY_SIZE_PARAMS: Record<EnemySize, EnemySizeParams> = {
   [EnemySize.SMALL]: {

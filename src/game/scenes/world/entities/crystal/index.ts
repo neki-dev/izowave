@@ -3,13 +3,12 @@ import Phaser from 'phaser';
 import type { WorldScene } from '../..';
 import { EntityType } from '../types';
 
-import { CRYSTAL_TILE } from './const';
+import { CRYSTAL_RESOURCES, CRYSTAL_RESOURCES_GROWTH, CRYSTAL_RESOURCES_GROWTH_MAX_LEVEL, CRYSTAL_TILE } from './const';
 import { CrystalAudio, CrystalTexture, CrystalEvents } from './types';
 import type { CrystalData, CrystalSavePayload } from './types';
 
 import { progressionLinear } from '~core/progression';
 import { ShaderType } from '~core/shader/types';
-import { DIFFICULTY } from '~game/difficulty';
 import { Level } from '~scene/world/level';
 import type { ITile } from '~scene/world/level/tile-matrix/types';
 import type { PositionAtMatrix } from '~scene/world/level/types';
@@ -63,10 +62,10 @@ export class Crystal extends Phaser.GameObjects.Image implements ITile {
 
   private getResourcesAmount() {
     const amount = progressionLinear({
-      defaultValue: DIFFICULTY.CRYSTAL_RESOURCES,
-      scale: DIFFICULTY.CRYSTAL_RESOURCES_GROWTH,
+      defaultValue: CRYSTAL_RESOURCES,
+      scale: CRYSTAL_RESOURCES_GROWTH,
       level: this.scene.wave.number,
-      maxLevel: DIFFICULTY.CRYSTAL_RESOURCES_GROWTH_MAX_LEVEL,
+      maxLevel: CRYSTAL_RESOURCES_GROWTH_MAX_LEVEL,
     });
 
     return Phaser.Math.Between(

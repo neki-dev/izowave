@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Modal } from './modal';
 
-import type { Game } from '~game/index';
 import { phrase } from '~core/lang';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
+import type { Game } from '~game/index';
 import { Button } from '~scene/system/interface/button';
 import { Hint } from '~scene/system/interface/hint';
 

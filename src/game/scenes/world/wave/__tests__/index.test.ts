@@ -3,11 +3,11 @@ import 'jest-canvas-mock';
 import { Wave } from '..';
 import type { WorldScene } from '../..';
 import world from '../../__mocks__/world';
+import { WAVE_TIMELEFT, WAVE_TIMELEFT_GROWTH } from '../const';
 import { WaveEvent } from '../types';
 
 import { registerHelper } from './helpers/wave';
 
-import { DIFFICULTY } from '~game/difficulty';
 import { progressionLinear } from '~core/progression';
 import { Tutorial } from '~core/tutorial';
 
@@ -37,7 +37,7 @@ describe('world / wave', () => {
   });
 
   it('should return timeleft to wave start', () => {
-    expect(wave.getTimeleft()).toEqual(DIFFICULTY.WAVE_TIMELEFT);
+    expect(wave.getTimeleft()).toEqual(WAVE_TIMELEFT);
   });
 
   it('should return timeleft to wave start after skip', () => {
@@ -50,8 +50,8 @@ describe('world / wave', () => {
     helper.skipWaves(1);
 
     expect(wave.getTimeleft()).toEqual(progressionLinear({
-      defaultValue: DIFFICULTY.WAVE_TIMELEFT,
-      scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+      defaultValue: WAVE_TIMELEFT,
+      scale: WAVE_TIMELEFT_GROWTH,
       level: 2,
       roundTo: 1000,
     }));
@@ -64,7 +64,7 @@ describe('world / wave', () => {
 
     expect(wave.going).toEqual(true);
     // @ts-ignore
-    expect(wave.enemiesMaxCount).toEqual(DIFFICULTY.WAVE_ENEMIES_COUNT);
+    expect(wave.enemiesMaxCount).toEqual(WAVE_ENEMIES_COUNT);
     expect(wave.emit).toBeCalledWith(WaveEvent.START, 1);
   });
 

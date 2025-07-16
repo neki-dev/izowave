@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
-
 export const Wrapper = styled.div`
   background: var(--color-background-black-50);
   display: flex;

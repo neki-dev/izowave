@@ -11,7 +11,7 @@ import type { IEnemyTarget } from '../npc/enemy/types';
 import type { IShotInitiator } from '../shot/types';
 import { EntityType } from '../types';
 
-import { BUILDING_TILE } from './const';
+import { BUILDING_HEALTH_GROWTH, BUILDING_REPAIR_COST_MULTIPLIER, BUILDING_TILE, BUILDING_TILE_COST_MULTIPLIER, BUILDING_UPGRADE_COST_MULTIPLIER, BUILDING_UPGRADE_EXPERIENCE, BUILDING_UPGRADE_EXPERIENCE_GROWTH } from './const';
 import type { IBuildingFactory } from './factory/types';
 import type {
   BuildingData,
@@ -34,7 +34,6 @@ import { progressionLinear, progressionQuadratic } from '~core/progression';
 import { ShaderType } from '~core/shader/types';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
-import { DIFFICULTY } from '~game/difficulty';
 import { GameEvent } from '~game/types';
 import { BuilderEvent } from '~scene/world/builder/types';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
@@ -217,7 +216,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements ITile
   }
 
   private updateTileCost() {
-    const cost = 2.0 + Number((this.live.maxHealth * DIFFICULTY.BUILDING_TILE_COST_MULTIPLIER).toFixed(1));
+    const cost = 2.0 + Number((this.live.maxHealth * BUILDING_TILE_COST_MULTIPLIER).toFixed(1));
 
     this.scene.level.navigator.setPointCost(this.positionAtMatrix, cost);
   }
@@ -294,7 +293,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements ITile
     const costPerLevel = this.getMeta().Cost;
     const nextLevel = level ?? this.upgradeLevel;
 
-    return Math.round(costPerLevel * nextLevel * DIFFICULTY.BUILDING_UPGRADE_COST_MULTIPLIER);
+    return Math.round(costPerLevel * nextLevel * BUILDING_UPGRADE_COST_MULTIPLIER);
   }
 
   private getRepairCost() {
@@ -305,7 +304,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements ITile
       cost += this.getUpgradeCost(i);
     }
 
-    return Math.ceil(cost * damaged * DIFFICULTY.BUILDING_REPAIR_COST_MULTIPLIER);
+    return Math.ceil(cost * damaged * BUILDING_REPAIR_COST_MULTIPLIER);
   }
 
   private isUpgradeAllowed() {
@@ -352,8 +351,8 @@ export abstract class Building extends Phaser.GameObjects.Image implements ITile
     this.scene.player.takeResources(cost);
 
     const experience = progressionLinear({
-      defaultValue: DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE,
-      scale: DIFFICULTY.BUILDING_UPGRADE_EXPERIENCE_GROWTH,
+      defaultValue: BUILDING_UPGRADE_EXPERIENCE,
+      scale: BUILDING_UPGRADE_EXPERIENCE_GROWTH,
       level: this.upgradeLevel,
     });
 
@@ -411,7 +410,7 @@ export abstract class Building extends Phaser.GameObjects.Image implements ITile
   private getMaxHealth() {
     return progressionQuadratic({
       defaultValue: this.defaultHealth,
-      scale: DIFFICULTY.BUILDING_HEALTH_GROWTH,
+      scale: BUILDING_HEALTH_GROWTH,
       level: this.upgradeLevel,
       roundTo: 100,
     });

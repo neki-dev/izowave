@@ -5,12 +5,12 @@ import { Modal } from './modal';
 
 import type { Game } from '~game/index';
 import { GameScene } from '~game/types';
+import type { WorldScene } from '~scene/world';
 import { BuildingVariant } from '~scene/world/entities/building/types';
 import type { AssistantVariant } from '~scene/world/entities/npc/assistant/types';
 import { AssistantEvent } from '~scene/world/entities/npc/assistant/types';
 import type { PlayerSuperskill } from '~scene/world/entities/player/types';
 import { PlayerEvent } from '~scene/world/entities/player/types';
-import type { WorldScene } from '~scene/world';
 import { WaveEvent } from '~scene/world/wave/types';
 
 export type Feature = {

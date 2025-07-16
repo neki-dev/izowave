@@ -5,11 +5,10 @@ import { Building } from '../../building';
 import { PlayerSuperskill, PlayerEvent } from '../../player/types';
 import { EntityType } from '../../types';
 
-import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT } from './const';
+import { ENEMY_SIZE_PARAMS, ENEMY_TEXTURE_SIZE, ENEMY_PATH_BREAKPOINT, ENEMY_FIRE_DAMAGE_FORCE, ENEMY_HEALTH, ENEMY_HEALTH_GROWTH, ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL, ENEMY_SPEED, ENEMY_SPEED_GROWTH, ENEMY_SPEED_GROWTH_MAX_LEVEL, ENEMY_DAMAGE, ENEMY_DAMAGE_GROWTH, ENEMY_KILL_EXPERIENCE, ENEMY_KILL_EXPERIENCE_GROWTH } from './const';
 import type { EnemyData, IEnemyTarget } from './types';
 
 import { progressionQuadratic, progressionLinear } from '~core/progression';
-import { DIFFICULTY } from '~game/difficulty';
 import type { WorldScene } from '~game/scenes/world';
 import { GameSettings } from '~game/types';
 import { WORLD_DEPTH_GRAPHIC } from '~scene/world/const';
@@ -43,18 +42,18 @@ export abstract class Enemy extends NPC {
       pathFindTriggerDistance: ENEMY_PATH_BREAKPOINT,
       seesInvisibleTarget: false,
       health: progressionQuadratic({
-        defaultValue: DIFFICULTY.ENEMY_HEALTH
+        defaultValue: ENEMY_HEALTH
           * multipliers.health
           * scene.game.getDifficultyMultiplier(),
-        scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
+        scale: ENEMY_HEALTH_GROWTH,
         level: scene.wave.number,
-        retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+        retardationLevel: ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
       }),
       speed: progressionLinear({
-        defaultValue: DIFFICULTY.ENEMY_SPEED * multipliers.speed,
-        scale: DIFFICULTY.ENEMY_SPEED_GROWTH,
+        defaultValue: ENEMY_SPEED * multipliers.speed,
+        scale: ENEMY_SPEED_GROWTH,
         level: scene.wave.number,
-        maxLevel: DIFFICULTY.ENEMY_SPEED_GROWTH_MAX_LEVEL,
+        maxLevel: ENEMY_SPEED_GROWTH_MAX_LEVEL,
       }),
       body: {
         ...ENEMY_SIZE_PARAMS[ENEMY_TEXTURE_SIZE[texture]],
@@ -64,10 +63,10 @@ export abstract class Enemy extends NPC {
     scene.addEntityToGroup(this, EntityType.ENEMY);
 
     this.damage = progressionLinear({
-      defaultValue: DIFFICULTY.ENEMY_DAMAGE
+      defaultValue: ENEMY_DAMAGE
         * multipliers.damage
         * scene.game.getDifficultyMultiplier(),
-      scale: DIFFICULTY.ENEMY_DAMAGE_GROWTH,
+      scale: ENEMY_DAMAGE_GROWTH,
       level: scene.wave.number,
     });
     this.score = score ?? 1;
@@ -205,8 +204,8 @@ export abstract class Enemy extends NPC {
 
   protected onDead() {
     const experience = progressionLinear({
-      defaultValue: DIFFICULTY.ENEMY_KILL_EXPERIENCE * this.might,
-      scale: DIFFICULTY.ENEMY_KILL_EXPERIENCE_GROWTH,
+      defaultValue: ENEMY_KILL_EXPERIENCE * this.might,
+      scale: ENEMY_KILL_EXPERIENCE_GROWTH,
       level: this.scene.wave.number,
     });
 
@@ -262,11 +261,11 @@ export abstract class Enemy extends NPC {
         }
         case PlayerSuperskill.FIRE: {
           const damage = progressionQuadratic({
-            defaultValue: DIFFICULTY.ENEMY_HEALTH,
-            scale: DIFFICULTY.ENEMY_HEALTH_GROWTH,
+            defaultValue: ENEMY_HEALTH,
+            scale: ENEMY_HEALTH_GROWTH,
             level: this.scene.wave.number,
-            retardationLevel: DIFFICULTY.ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
-          }) * DIFFICULTY.SUPERSKILL_FIRE_FORCE;
+            retardationLevel: ENEMY_HEALTH_GROWTH_RETARDATION_LEVEL,
+          }) * ENEMY_FIRE_DAMAGE_FORCE;
 
           this.scene.fx.createLongFireEffect(this, { duration });
           this.addOngoingDamage(damage, duration);

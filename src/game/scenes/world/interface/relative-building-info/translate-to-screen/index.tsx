@@ -1,8 +1,8 @@
 import { useRelativeScale } from 'phaser-react-ui';
 import React from 'react';
 
-import type { Building } from '~game/scenes/world/entities/building';
 import { INTERFACE_SCALE } from '~core/interface/const';
+import type { Building } from '~game/scenes/world/entities/building';
 import { BuildingInfo } from '~scene/system/interface/building-info';
 
 import { Wrapper } from './styles';

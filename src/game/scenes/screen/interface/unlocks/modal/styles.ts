@@ -2,7 +2,6 @@ import styled, { keyframes } from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
-
 const animationOpacity = keyframes`
   0% { opacity: 0; }
   100% { opacity: 1; }

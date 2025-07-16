@@ -1,15 +1,15 @@
 import type { IBuildingFactory } from './types';
 
+import { BuildingAmmunition } from '~game/scenes/world/entities/building/variants/ammunition';
+import { BuildingBooster } from '~game/scenes/world/entities/building/variants/booster';
+import { BuildingGenerator } from '~game/scenes/world/entities/building/variants/generator';
+import { BuildingRadar } from '~game/scenes/world/entities/building/variants/radar';
+import { BuildingTowerElectro } from '~game/scenes/world/entities/building/variants/tower/electro';
+import { BuildingTowerFire } from '~game/scenes/world/entities/building/variants/tower/fire';
+import { BuildingTowerFrozen } from '~game/scenes/world/entities/building/variants/tower/frozen';
+import { BuildingTowerLazer } from '~game/scenes/world/entities/building/variants/tower/lazer';
+import { BuildingWall } from '~game/scenes/world/entities/building/variants/wall';
 import { BuildingVariant } from '~scene/world/entities/building/types';
-import { BuildingAmmunition } from '~scene/world/entities/building/variants/ammunition';
-import { BuildingBooster } from '~scene/world/entities/building/variants/booster';
-import { BuildingGenerator } from '~scene/world/entities/building/variants/generator';
-import { BuildingRadar } from '~scene/world/entities/building/variants/radar';
-import { BuildingTowerElectro } from '~scene/world/entities/building/variants/tower/electro';
-import { BuildingTowerFire } from '~scene/world/entities/building/variants/tower/fire';
-import { BuildingTowerFrozen } from '~scene/world/entities/building/variants/tower/frozen';
-import { BuildingTowerLazer } from '~scene/world/entities/building/variants/tower/lazer';
-import { BuildingWall } from '~scene/world/entities/building/variants/wall';
 
 export const BUILDINGS: Record<BuildingVariant, IBuildingFactory> = {
   [BuildingVariant.WALL]: BuildingWall,

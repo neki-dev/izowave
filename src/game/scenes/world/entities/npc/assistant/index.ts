@@ -7,14 +7,13 @@ import type { IShot, ShotParams, IShotFactory, IShotInitiator } from '../../shot
 import { EntityType } from '../../types';
 import type { Enemy } from '../enemy';
 
-import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON } from './const';
+import { ASSISTANT_TILE_SIZE, ASSISTANT_PATH_BREAKPOINT, ASSISTANT_WEAPON, ASSISTANT_ATTACK_DAMAGE, ASSISTANT_ATTACK_DAMAGE_GROWTH, ASSISTANT_ATTACK_DISTANCE, ASSISTANT_ATTACK_DISTANCE_GROWTH, ASSISTANT_ATTACK_PAUSE, ASSISTANT_ATTACK_PAUSE_GROWTH, ASSISTANT_ATTACK_SPEED, ASSISTANT_UNLOCK_PER_WAVE } from './const';
 import type { AssistantData } from './types';
 import { AssistantTexture, AssistantVariant, AssistantEvent } from './types';
 
-import { DIFFICULTY } from '~game/difficulty';
-import type { WorldScene } from '~game/scenes/world';
 import { getIsometricDistance, getClosestByIsometricDistance } from '~core/dimension';
 import { progressionQuadratic } from '~core/progression';
+import type { WorldScene } from '~game/scenes/world';
 import { WaveEvent } from '~scene/world/wave/types';
 
 import './resources';
@@ -95,8 +94,8 @@ export class Assistant extends NPC implements IShotInitiator {
     const instantAttack = this.instantShot && this.shot instanceof ShotBallFire;
     const now = this.scene.getTime();
     const pause = instantAttack ? 0 : progressionQuadratic({
-      defaultValue: DIFFICULTY.ASSISTANT_ATTACK_PAUSE,
-      scale: DIFFICULTY.ASSISTANT_ATTACK_PAUSE_GROWTH,
+      defaultValue: ASSISTANT_ATTACK_PAUSE,
+      scale: ASSISTANT_ATTACK_PAUSE_GROWTH,
       level: this.owner.upgradeLevel[PlayerSkill.ATTACK_SPEED],
     });
 
@@ -109,8 +108,8 @@ export class Assistant extends NPC implements IShotInitiator {
   private getTarget() {
     const assistantPosition = this.getBottomEdgePosition();
     const maxDistance = progressionQuadratic({
-      defaultValue: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
-      scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
+      defaultValue: ASSISTANT_ATTACK_DISTANCE,
+      scale: ASSISTANT_ATTACK_DISTANCE_GROWTH,
       level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
     });
     const enemies = this.scene.getEntities<Enemy>(EntityType.ENEMY).filter((enemy) => {
@@ -133,7 +132,7 @@ export class Assistant extends NPC implements IShotInitiator {
     const variants = Object.values(AssistantVariant);
     const index = Math.min(
       variants.length - 1,
-      Math.floor((this.scene.wave.number - 1) / DIFFICULTY.ASSISTANT_UNLOCK_PER_WAVE),
+      Math.floor((this.scene.wave.number - 1) / ASSISTANT_UNLOCK_PER_WAVE),
     );
 
     if (this.variant === variants[index]) {
@@ -141,7 +140,6 @@ export class Assistant extends NPC implements IShotInitiator {
     }
 
     const prevVariant = this.variant;
-
     this.variant = variants[index];
 
     if (prevVariant) {
@@ -159,9 +157,9 @@ export class Assistant extends NPC implements IShotInitiator {
     }
 
     this.shot = new Shot(this.scene, {
-      maxDistance: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE,
-      speed: DIFFICULTY.ASSISTANT_ATTACK_SPEED,
-      damage: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE,
+      maxDistance: ASSISTANT_ATTACK_DISTANCE,
+      speed: ASSISTANT_ATTACK_SPEED,
+      damage: ASSISTANT_ATTACK_DAMAGE,
     }, {
       scale: 0.5,
     });
@@ -177,14 +175,14 @@ export class Assistant extends NPC implements IShotInitiator {
         this.shotDefaultParams.maxDistance
         && progressionQuadratic({
           defaultValue: this.shotDefaultParams.maxDistance,
-          scale: DIFFICULTY.ASSISTANT_ATTACK_DISTANCE_GROWTH,
+          scale: ASSISTANT_ATTACK_DISTANCE_GROWTH,
           level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DISTANCE],
         }),
       damage:
         this.shotDefaultParams.damage
         && progressionQuadratic({
           defaultValue: this.shotDefaultParams.damage * (this.shot instanceof ShotLazer ? 1.5 : 1.0),
-          scale: DIFFICULTY.ASSISTANT_ATTACK_DAMAGE_GROWTH,
+          scale: ASSISTANT_ATTACK_DAMAGE_GROWTH,
           level: this.owner.upgradeLevel[PlayerSkill.ATTACK_DAMAGE],
         }),
     };

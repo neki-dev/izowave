@@ -11,6 +11,7 @@ import { LiveEvent } from './entities/addons/live/types';
 import type { Building } from './entities/building';
 import { BuildingVariant } from './entities/building/types';
 import { Crystal } from './entities/crystal';
+import { CRYSTAL_COUNT, CRYSTAL_COUNT_GROWTH, CRYSTAL_COUNT_GROWTH_MAX_LEVEL } from './entities/crystal/const';
 import { Assistant } from './entities/npc/assistant';
 import { Player } from './entities/player';
 import { EntityType } from './entities/types';
@@ -29,7 +30,6 @@ import { WaveEvent } from './wave/types';
 import { aroundPosition } from '~core/dimension';
 import { progressionLinear } from '~core/progression';
 import { Utils } from '~core/utils';
-import { DIFFICULTY } from '~game/difficulty';
 import { GameScene, GameState, GameEvent } from '~game/types';
 
 import './resources';
@@ -361,10 +361,10 @@ export class WorldScene extends Scene {
     };
 
     const getMaxCount = () => progressionLinear({
-      defaultValue: DIFFICULTY.CRYSTAL_COUNT / this.game.getDifficultyMultiplier(),
-      scale: DIFFICULTY.CRYSTAL_COUNT_GROWTH,
+      defaultValue: CRYSTAL_COUNT / this.game.getDifficultyMultiplier(),
+      scale: CRYSTAL_COUNT_GROWTH,
       level: this.wave.number,
-      maxLevel: DIFFICULTY.CRYSTAL_COUNT_GROWTH_MAX_LEVEL,
+      maxLevel: CRYSTAL_COUNT_GROWTH_MAX_LEVEL,
     });
 
     if (this.game.usedSave?.payload.world.crystals) {

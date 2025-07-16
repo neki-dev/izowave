@@ -1,0 +1,1 @@
+export const ENEMY_BOSS_SPAWN_WAVE_RATE = 5;

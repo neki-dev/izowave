@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 
 import { GameScene } from '~game/types';
 import { Amount } from '~scene/system/interface/amount';
-import { PlayerEvent } from '~scene/world/entities/player/types';
 import type { WorldScene } from '~scene/world';
+import { PlayerEvent } from '~scene/world/entities/player/types';
 
 export const Score: React.FC = () => {
   const world = useScene<WorldScene>(GameScene.WORLD);

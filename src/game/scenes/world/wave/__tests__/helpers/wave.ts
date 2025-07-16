@@ -1,7 +1,6 @@
 import type { Wave } from '../..';
 import world from '../../../__mocks__/world';
-
-import { DIFFICULTY } from '~game/difficulty';
+import { WAVE_ENEMIES_SPAWN_PAUSE } from '../../const';
 
 export function registerHelper(wave: Wave) {
   return {
@@ -15,7 +14,7 @@ export function registerHelper(wave: Wave) {
       for (let i = 0; i < wave.enemiesMaxCount; i++) {
         const currentCount = world.entityGroups.enemy.getTotalUsed();
 
-        this.skipTime(DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE);
+        this.skipTime(WAVE_ENEMIES_SPAWN_PAUSE);
         wave.update();
         world.entityGroups.enemy.getTotalUsed = jest.fn(() => currentCount + 1);
       }

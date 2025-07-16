@@ -4,6 +4,7 @@ import { Sprite } from '..';
 import type { WorldScene } from '../..';
 import type { Particles } from '../../fx-manager/particles';
 import { BuildingVariant } from '../building/types';
+import { BUILDING_GENERATOR_COST } from '../building/variants/generator/const';
 import { Crystal } from '../crystal';
 import type { Enemy } from '../npc/enemy';
 import type { IEnemyTarget } from '../npc/enemy/types';
@@ -14,6 +15,17 @@ import {
   PLAYER_SKILLS,
   PLAYER_MOVEMENT_KEYS,
   PLAYER_MAX_SKILL_LEVEL,
+  PLAYER_HEALTH,
+  PLAYER_HEALTH_GROWTH,
+  PLAYER_SPEED,
+  PLAYER_SPEED_GROWTH,
+  PLAYER_STAMINA,
+  PLAYER_STAMINA_GROWTH,
+  PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
+  PLAYER_START_RESOURCES,
+  PLAYER_SUPERSKILL_COST_GROWTH,
+  PLAYER_SUPERSKILL_UNLOCK_PER_WAVE,
+  PLAYER_SUPERSKILLS,
 } from './const';
 import type { PlayerData, PlayerSavePayload } from './types';
 import {
@@ -30,7 +42,6 @@ import { progressionLinear, progressionQuadratic } from '~core/progression';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
 import { Utils } from '~core/utils';
-import { DIFFICULTY } from '~game/difficulty';
 import { GameSettings, GameEvent } from '~game/types';
 import { Level } from '~scene/world/level';
 import { LEVEL_MAP_PERSPECTIVE } from '~scene/world/level/const';
@@ -46,7 +57,7 @@ export class Player extends Sprite implements IEnemyTarget {
   public get experience() { return this._experience; }
   private set experience(v) { this._experience = v; }
 
-  private _resources: number = DIFFICULTY.PLAYER_START_RESOURCES;
+  private _resources: number = PLAYER_START_RESOURCES;
   public get resources() { return this._resources; }
   private set resources(v) { this._resources = v; }
 
@@ -108,8 +119,8 @@ export class Player extends Sprite implements IEnemyTarget {
     super(scene, {
       ...data,
       texture: PlayerTexture.PLAYER,
-      health: DIFFICULTY.PLAYER_HEALTH,
-      speed: DIFFICULTY.PLAYER_SPEED,
+      health: PLAYER_HEALTH,
+      speed: PLAYER_SPEED,
       body: {
         type: 'rect',
         width: 14,
@@ -278,7 +289,7 @@ export class Player extends Sprite implements IEnemyTarget {
     this.emit(PlayerEvent.UPDATE_RESOURCES, this.resources);
 
     if (
-      this.resources < DIFFICULTY.BUILDING_GENERATOR_COST
+      this.resources < BUILDING_GENERATOR_COST
       && this.scene.builder.getBuildingsByVariant(BuildingVariant.GENERATOR).length === 0
     ) {
       Tutorial.Start(TutorialStep.RESOURCES);
@@ -302,8 +313,8 @@ export class Player extends Sprite implements IEnemyTarget {
 
   public getSuperskillCost(type: PlayerSuperskill) {
     return progressionLinear({
-      defaultValue: DIFFICULTY[`SUPERSKILL_${type}_COST`],
-      scale: DIFFICULTY.SUPERSKILL_COST_GROWTH,
+      defaultValue: PLAYER_SUPERSKILLS[type].cost,
+      scale: PLAYER_SUPERSKILL_COST_GROWTH,
       level: this.scene.wave.number,
       roundTo: 5,
     });
@@ -346,8 +357,7 @@ export class Player extends Sprite implements IEnemyTarget {
       });
     }
 
-    const duration = DIFFICULTY[`SUPERSKILL_${type}_DURATION`];
-
+    const { duration } = PLAYER_SUPERSKILLS[type];
     this.activeSuperskills[type] = this.scene.addProgression({
       duration,
       frequence: duration,
@@ -362,7 +372,7 @@ export class Player extends Sprite implements IEnemyTarget {
   public getExperienceToUpgrade(type: PlayerSkill) {
     return progressionQuadratic({
       defaultValue: PLAYER_SKILLS[type].experience,
-      scale: DIFFICULTY.PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
+      scale: PLAYER_EXPERIENCE_TO_UPGRADE_GROWTH,
       level: this.upgradeLevel[type],
       roundTo: 10,
     });
@@ -372,24 +382,24 @@ export class Player extends Sprite implements IEnemyTarget {
     switch (type) {
       case PlayerSkill.MAX_HEALTH: {
         return progressionQuadratic({
-          defaultValue: DIFFICULTY.PLAYER_HEALTH,
-          scale: DIFFICULTY.PLAYER_HEALTH_GROWTH,
+          defaultValue: PLAYER_HEALTH,
+          scale: PLAYER_HEALTH_GROWTH,
           level,
           roundTo: 10,
         });
       }
       case PlayerSkill.SPEED: {
         return progressionLinear({
-          defaultValue: DIFFICULTY.PLAYER_SPEED,
-          scale: DIFFICULTY.PLAYER_SPEED_GROWTH,
+          defaultValue: PLAYER_SPEED,
+          scale: PLAYER_SPEED_GROWTH,
           level,
           roundTo: 1,
         });
       }
       case PlayerSkill.STAMINA: {
         return progressionQuadratic({
-          defaultValue: DIFFICULTY.PLAYER_STAMINA,
-          scale: DIFFICULTY.PLAYER_STAMINA_GROWTH,
+          defaultValue: PLAYER_STAMINA,
+          scale: PLAYER_STAMINA_GROWTH,
           level,
         });
       }
@@ -477,17 +487,13 @@ export class Player extends Sprite implements IEnemyTarget {
   }
 
   private onWaveComplete(number: number) {
-    const experience = progressionQuadratic({
-      defaultValue: DIFFICULTY.WAVE_EXPERIENCE,
-      scale: DIFFICULTY.WAVE_EXPERIENCE_GROWTH,
-      level: number,
-    });
-
+    const experience = this.scene.wave.getExperience();
     this.giveExperience(experience);
     this.giveScore(number * 10);
+
     this.live.heal();
 
-    if ((number + 1) % DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE === 0) {
+    if ((number + 1) % PLAYER_SUPERSKILL_UNLOCK_PER_WAVE === 0) {
       this.unlockSuperskill();
     }
   }
@@ -824,7 +830,7 @@ export class Player extends Sprite implements IEnemyTarget {
       this.unlockedSuperskills = data.unlockedSuperskills;
     } else {
       // PATCH: For saves with old version
-      const refund = Math.floor((this.scene.wave.number - 2) / DIFFICULTY.SUPERSKILL_UNLOCK_PER_WAVE) + 1;
+      const refund = Math.floor((this.scene.wave.number - 2) / PLAYER_SUPERSKILL_UNLOCK_PER_WAVE) + 1;
 
       for (let i = 0; i < refund; i++) {
         this.unlockSuperskill();

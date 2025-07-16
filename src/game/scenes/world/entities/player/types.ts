@@ -87,6 +87,11 @@ export type PlayerSkillData = {
   currentLevel: number
 };
 
+export type PlayerSuperskillInfo = {
+  cost: number
+  duration: number
+};
+
 export type PlayerSavePayload = {
   position: PositionAtMatrix
   score: number

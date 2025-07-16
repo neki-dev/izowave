@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import type { WorldScene } from '..';
 import { WORLD_DEPTH_GRAPHIC } from '../const';
 import type { Building } from '../entities/building';
-import { BUILDING_TILE } from '../entities/building/const';
+import { BUILDING_BUILD_EXPERIENCE, BUILDING_LIMITED_BOUND, BUILDING_TILE } from '../entities/building/const';
 import { BUILDINGS } from '../entities/building/factory/const';
 import { BuildingVariant, BuildingAudio, BuildingIcon } from '../entities/building/types';
 import type { BuildingBuildData } from '../entities/building/types';
@@ -15,6 +15,7 @@ import { LEVEL_MAP_PERSPECTIVE, LEVEL_MAP_TILE } from '../level/const';
 import { BiomeType, TileType } from '../level/types';
 import type { PositionAtMatrix, PositionAtWorld } from '../level/types';
 
+import { BUILDER_BUILD_DURATION, BUILDER_BUILD_DURATION_GROWTH } from './const';
 import { BuilderEvent } from './types';
 
 import { isPositionsEqual } from '~core/dimension';
@@ -24,7 +25,6 @@ import { ShaderType } from '~core/shader/types';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
 import { Utils } from '~core/utils';
-import { DIFFICULTY } from '~game/difficulty';
 
 export class Builder extends Phaser.Events.EventEmitter {
   public readonly scene: WorldScene;
@@ -197,7 +197,7 @@ export class Builder extends Phaser.Events.EventEmitter {
     const start = BUILDINGS[variant].AllowByWave ?? 1;
     const limit = Utils.GetStage(start, this.scene.wave.number);
 
-    return Math.min(limit, DIFFICULTY.BUILDING_LIMITED_BOUND);
+    return Math.min(limit, BUILDING_LIMITED_BOUND);
   }
 
   public getBuildingsByVariant<T extends Building>(variant: BuildingVariant) {
@@ -321,14 +321,14 @@ export class Builder extends Phaser.Events.EventEmitter {
       variant: this.variant,
       positionAtMatrix: this.supposedPosition,
       buildDuration: progressionLinear({
-        defaultValue: DIFFICULTY.BUILDER_BUILD_DURATION,
-        scale: DIFFICULTY.BUILDER_BUILD_DURATION_GROWTH,
+        defaultValue: BUILDER_BUILD_DURATION,
+        scale: BUILDER_BUILD_DURATION_GROWTH,
         level: this.scene.player.upgradeLevel[PlayerSkill.BUILD_SPEED],
       }),
     });
 
     this.scene.player.takeResources(BuildingInstance.Cost);
-    this.scene.player.giveExperience(DIFFICULTY.BUILDING_BUILD_EXPERIENCE);
+    this.scene.player.giveExperience(BUILDING_BUILD_EXPERIENCE);
 
     this.scene.fx.playSound(BuildingAudio.BUILD);
 

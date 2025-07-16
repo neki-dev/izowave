@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 
 import { INTERFACE_DESKTOP_BREAKPOINT, INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
-
 export const Label = styled.div`
   color: #fff;
   font-family: var(--font-pixel-text);

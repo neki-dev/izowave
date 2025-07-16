@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import { INTERFACE_MOBILE_BREAKPOINT } from '~core/interface/const';
 
-
 export const Backdrop = styled.div`
   position: fixed;
   inset: 0;

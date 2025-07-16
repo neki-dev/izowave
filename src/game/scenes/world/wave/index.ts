@@ -2,22 +2,21 @@ import Phaser from 'phaser';
 
 import type { WorldScene } from '..';
 import type { Enemy } from '../entities/npc/enemy';
-import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '../entities/npc/enemy/const';
 import { EnemyFactory } from '../entities/npc/enemy/factory';
 import { ENEMIES } from '../entities/npc/enemy/factory/const';
 import { EnemyVariant } from '../entities/npc/enemy/types';
+import { ENEMY_BOSS_SPAWN_WAVE_RATE } from '../entities/npc/enemy/variants/boss/const';
 import { EntityType } from '../entities/types';
 import { WorldEvent, WorldMode } from '../types';
 
-import { WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT_ALARM } from './const';
+import { WAVE_ENEMIES_COUNT, WAVE_ENEMIES_COUNT_GROWTH, WAVE_ENEMIES_SPAWN_PAUSE, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH, WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL, WAVE_EXPERIENCE, WAVE_EXPERIENCE_GROWTH, WAVE_INCREASED_TIME_SCALE, WAVE_TIMELEFT, WAVE_TIMELEFT_ALARM, WAVE_TIMELEFT_GROWTH, WAVE_TIMELEFT_GROWTH_MAX_LEVEL } from './const';
 import type { WaveSavePayload } from './types';
 import { WaveAudio, WaveEvent } from './types';
 
-import { progressionLinear, progressionQuadraticMixed } from '~core/progression';
+import { progressionLinear, progressionQuadratic, progressionQuadraticMixed } from '~core/progression';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
 import { Utils } from '~core/utils';
-import { DIFFICULTY } from '~game/difficulty';
 
 import './resources';
 
@@ -131,6 +130,14 @@ export class Wave extends Phaser.Events.EventEmitter {
     return this.enemiesMaxCount - killedEnemies;
   }
 
+  public getExperience() {
+    return progressionQuadratic({
+      defaultValue: WAVE_EXPERIENCE,
+      scale: WAVE_EXPERIENCE_GROWTH,
+      level: this.number - 1,
+    });
+  }
+
   public skipTimeleft() {
     if (this.going || this.scene.isTimePaused()) {
       return;
@@ -151,10 +158,10 @@ export class Wave extends Phaser.Events.EventEmitter {
     const pause = (this.number === 1 && Tutorial.IsEnabled)
       ? WAVE_TIMELEFT_ALARM
       : progressionLinear({
-        defaultValue: DIFFICULTY.WAVE_TIMELEFT,
-        scale: DIFFICULTY.WAVE_TIMELEFT_GROWTH,
+        defaultValue: WAVE_TIMELEFT,
+        scale: WAVE_TIMELEFT_GROWTH,
         level: this.number,
-        maxLevel: DIFFICULTY.WAVE_TIMELEFT_GROWTH_MAX_LEVEL,
+        maxLevel: WAVE_TIMELEFT_GROWTH_MAX_LEVEL,
         roundTo: 1000,
       });
 
@@ -167,8 +174,8 @@ export class Wave extends Phaser.Events.EventEmitter {
     this.nextSpawnTimestamp = 0;
     this.spawnedEnemiesCount = 0;
     this.enemiesMaxCount = progressionQuadraticMixed({
-      defaultValue: DIFFICULTY.WAVE_ENEMIES_COUNT,
-      scale: DIFFICULTY.WAVE_ENEMIES_COUNT_GROWTH,
+      defaultValue: WAVE_ENEMIES_COUNT,
+      scale: WAVE_ENEMIES_COUNT_GROWTH,
       level: this.number,
     });
 
@@ -229,10 +236,10 @@ export class Wave extends Phaser.Events.EventEmitter {
     }
 
     const pause = progressionLinear({
-      defaultValue: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE,
-      scale: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
+      defaultValue: WAVE_ENEMIES_SPAWN_PAUSE,
+      scale: WAVE_ENEMIES_SPAWN_PAUSE_GROWTH,
       level: this.number,
-      maxLevel: DIFFICULTY.WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL,
+      maxLevel: WAVE_ENEMIES_SPAWN_PAUSE_GROWTH_MAX_LEVEL,
     });
 
     this.nextSpawnTimestamp = this.scene.getTime() + pause;

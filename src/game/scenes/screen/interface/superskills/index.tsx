@@ -4,8 +4,8 @@ import React, { useMemo, useState } from 'react';
 import { Item } from './item';
 
 import { GameScene } from '~game/types';
-import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
 import type { WorldScene } from '~scene/world';
+import { PlayerSuperskill, PlayerEvent } from '~scene/world/entities/player/types';
 
 import { Wrapper } from './styles';
 

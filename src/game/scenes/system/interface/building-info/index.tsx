@@ -4,10 +4,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Controls } from './controls';
 import { Params } from './params';
 
+import { phrase } from '~core/lang';
 import type { WorldScene } from '~game/scenes/world';
 import type { Building } from '~game/scenes/world/entities/building';
 import { GameScene } from '~game/types';
-import { phrase } from '~core/lang';
 import type { BuildingParam, BuildingControl } from '~scene/world/entities/building/types';
 
 import { Name, Level, Health, Wrapper, Head, Body, Container } from './styles';

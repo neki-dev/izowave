@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-
-
 export const Container = styled.div`
   padding: 5px;
   background: var(--color-background-black-75);

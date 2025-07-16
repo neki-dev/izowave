@@ -1,9 +1,9 @@
 import { useGame } from 'phaser-react-ui';
 import React from 'react';
 
+import { phrase } from '~core/lang';
 import type { Game } from '~game/index';
 import { GameState } from '~game/types';
-import { phrase } from '~core/lang';
 import { Button } from '~scene/system/interface/button';
 
 import { Icon } from './styles';

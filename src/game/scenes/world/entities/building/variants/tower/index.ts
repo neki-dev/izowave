@@ -14,17 +14,18 @@ import type {
 import type { BuildingAmmunition } from '../ammunition';
 import type { BuildingBooster } from '../booster';
 
-import { DIFFICULTY } from '~game/difficulty';
-import type { WorldScene } from '~game/scenes/world';
+import { BUIDLING_TOWER_AMMO_AMOUNT, BUIDLING_TOWER_SHOT_SPEED_GROWTH, BUIDLING_TOWER_SHOT_DAMAGE_GROWTH, BUIDLING_TOWER_SHOT_FREEZE_GROWTH } from './const';
+
 import { getClosestByIsometricDistance } from '~core/dimension';
 import { progressionLinear } from '~core/progression';
 import { Tutorial } from '~core/tutorial';
 import { TutorialStep } from '~core/tutorial/types';
+import type { WorldScene } from '~game/scenes/world';
 import { PlayerSuperskill } from '~scene/world/entities/player/types';
 import type { IShot, ShotParams } from '~scene/world/entities/shot/types';
 import { EntityType } from '~scene/world/entities/types';
 
-export class BuildingTower extends Building {
+export abstract class BuildingTower extends Building {
   private shot: Nullable<IShot> = null;
 
   private shotDefaultParams: Nullable<ShotParams> = null;
@@ -37,7 +38,7 @@ export class BuildingTower extends Building {
 
   private set power(v) { this._power = v; }
 
-  private _ammo: number = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+  private _ammo: number = BUIDLING_TOWER_AMMO_AMOUNT;
 
   public get ammo() { return this._ammo; }
 
@@ -103,7 +104,7 @@ export class BuildingTower extends Building {
       label: 'BUILDING_AMMO',
       icon: BuildingIcon.AMMO,
       attention: (this.ammo === 0),
-      value: `${this.ammo}/${DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT}`,
+      value: `${this.ammo}/${BUIDLING_TOWER_AMMO_AMOUNT}`,
     });
 
     return info.concat(super.getInfo());
@@ -150,7 +151,7 @@ export class BuildingTower extends Building {
     if (this.shotDefaultParams?.speed) {
       params.speed = progressionLinear({
         defaultValue: this.shotDefaultParams.speed,
-        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_SPEED_GROWTH,
+        scale: BUIDLING_TOWER_SHOT_SPEED_GROWTH,
         level: this.upgradeLevel,
       });
     }
@@ -160,7 +161,7 @@ export class BuildingTower extends Building {
 
       params.damage = progressionLinear({
         defaultValue: this.shotDefaultParams.damage,
-        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
+        scale: BUIDLING_TOWER_SHOT_DAMAGE_GROWTH,
         level: this.upgradeLevel,
       }) * (rage ? 2 : 1);
     }
@@ -168,7 +169,7 @@ export class BuildingTower extends Building {
     if (this.shotDefaultParams?.freeze) {
       params.freeze = progressionLinear({
         defaultValue: this.shotDefaultParams.freeze,
-        scale: DIFFICULTY.BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
+        scale: BUIDLING_TOWER_SHOT_FREEZE_GROWTH,
         level: this.upgradeLevel,
       });
     }
@@ -195,7 +196,7 @@ export class BuildingTower extends Building {
     const ammunition = this.getAmmunition();
 
     if (ammunition) {
-      this.ammo += ammunition.use(DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT);
+      this.ammo += ammunition.use(BUIDLING_TOWER_AMMO_AMOUNT);
 
       Tutorial.Complete(TutorialStep.RELOAD_TOWER);
 
@@ -287,7 +288,7 @@ export class BuildingTower extends Building {
   }
 
   private onUpgrade() {
-    this.ammo = DIFFICULTY.BUIDLING_TOWER_AMMO_AMOUNT;
+    this.ammo = BUIDLING_TOWER_AMMO_AMOUNT;
 
     if (this.needReload) {
       this.removeAlertIcon();
